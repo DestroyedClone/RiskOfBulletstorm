@@ -34,7 +34,7 @@ namespace DestroyedClone.RiskOfBulletstorm
 
             ConfigFile = new ConfigFile(Path.Combine(Paths.ConfigPath, ModGuid + ".cfg"), true);
 
-            masterItemList = ItemBoilerplate.InitAll("Aetherium");
+            masterItemList = ItemBoilerplate.InitAll("RiskOfBulletstorm");
 
             foreach (ItemBoilerplate x in masterItemList)
             {
