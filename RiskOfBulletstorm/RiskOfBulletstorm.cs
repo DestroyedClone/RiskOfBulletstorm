@@ -13,6 +13,7 @@ using static TILER2.MiscUtil;
 namespace DestroyedClone
 {
     [BepInDependency("com.bepis.r2api")]
+    [BepInDependency(TILER2Plugin.ModGuid, TILER2Plugin.ModVer)]
     [BepInPlugin(ModGuid, ModName, ModVer)]
     public class RiskofBulletstorm : BaseUnityPlugin
     {
