@@ -27,6 +27,16 @@ namespace DestroyedClone
         {
             ConfigFile = new ConfigFile(Path.Combine(Paths.ConfigPath, ModGuid + ".cfg"), true);
             masterItemList = ItemBoilerplate.InitAll("RiskofBulletstorm");
+
+            foreach (ItemBoilerplate x in masterItemList)
+            {
+                x.SetupConfig(ConfigFile);
+            }
+
+            foreach (ItemBoilerplate x in masterItemList)
+            {
+                x.SetupBehavior();
+            }
         }
     }
 }
