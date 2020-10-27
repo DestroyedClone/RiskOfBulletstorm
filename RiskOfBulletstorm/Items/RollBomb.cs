@@ -29,99 +29,50 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "Drop a bomb(s) after using your utility skill.";
+        protected override string GetPickupString(string langID = null) => "Drop bomb(s) after using your utility skill.";
 
-        protected override string GetDescString(string langid = null) => $"Using your utility <style=cIsUtility>drops 1 (+1) bombs</style> for <style=cIsDamage>80% damage</style>.";
+        protected override string GetDescString(string langid = null) => $"Using your utility <style=cIsUtility>drops 1 (+1/stack) bombs</style> for <style=cIsDamage>80% damage</style>.";
 
         protected override string GetLoreString(string langID = null) => "Power Charge\n\nProduces a bomb when dodge rolling.\nThis strange mechanism dispenses explosives when spun.";
 
-        private static List<RoR2.CharacterBody> Playername = new List<RoR2.CharacterBody>();
+        //private static List<RoR2.CharacterBody> Playername = new List<RoR2.CharacterBody>();
 
         //public static GameObject ItemBodyModelPrefab;
-        public static GameObject bombPrefab { get; private set; }
+        public static GameObject BombPrefab { get; private set; }
+        public EntityStateMachine outer;
+        public InputBankTest InputBank
+        {
+            get
+            {
+                return outer.commonComponents.inputBank;
+            }
+        }
 
         public override void SetupBehavior()
         {
             GameObject engiMinePrefab = Resources.Load<GameObject>("prefabs/projectiles/EngiGrenadeProjectile");
-            bombPrefab = engiMinePrefab.InstantiateClone("RollBomb");
-            UnityEngine.Object.Destroy(bombPrefab.GetComponent<ProjectileDeployToOwner>());
+            BombPrefab = engiMinePrefab.InstantiateClone("RollBomb");
+            UnityEngine.Object.Destroy(BombPrefab.GetComponent<ProjectileDeployToOwner>());
         }
         public override void Install()
         {
             base.Install();
-
+            On.EntityStates.BaseState.OnEnter += UsedUtility;
 
         }
         public override void Uninstall()
         {
             base.Uninstall();
-
+            On.EntityStates.BaseState.OnEnter -= UsedUtility;
         }
 
-        public GenericSkill activatorSkillSlot;
-        public EntityStateMachine outer;
-        protected SkillLocator skillLocator
-        {
-            get
+        private void UsedUtility(On.EntityStates.BaseState.orig_OnEnter orig, global::EntityStates.BaseState self)
+        { 
+            if (InputBank.skill3.down)
             {
-                return this.outer.commonComponents.skillLocator;
+                Chat.AddMessage("You used your utility!");
             }
-        }
-        protected InputBankTest inputBank
-        {
-            get
-            {
-                return this.outer.commonComponents.inputBank;
-            }
-        }
-        public bool IsKeyDownAuthority()
-        {
-            if (skillLocator == null || this.activatorSkillSlot == null || inputBank == null)
-            {
-                return false;
-            }
-            switch (skillLocator.FindSkillSlot(this.activatorSkillSlot)) //TODO: Simplify
-            {
-                case SkillSlot.None:
-                    return false;
-                case SkillSlot.Primary:
-                    //return inputBank.skill1.down;
-                    return false;
-                case SkillSlot.Secondary:
-                    //return inputBank.skill2.down;
-                    return false;
-                case SkillSlot.Utility:
-                    //return inputBank.skill3.down;
-                    return true;
-                case SkillSlot.Special:
-                    //return inputBank.skill4.down;
-                    return false;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-        protected virtual bool KeyIsDown()
-        {
-            return IsKeyDownAuthority();
-        }
-        public void usedUtility()
-        {
-            //public GenericSkill activatorSkillSlot;
-            if (this.KeyIsDown())//!skillLocator.FindSkillSlot(SkillSlot.Utility))
-            {
-                //do things
-            }
-        }
-        public void boop()
-        {
-            On.EntityStates.Huntress.ArrowRain.OnEnter += (orig, self) =>
-            {
-                // [The code we want to run]
-                Chat.AddMessage("You used Huntress's Arrow Rain!");
-                // Call the original function (orig)
-                // on the object it's normally called on (self)
-                orig(self);
-            };
+            orig(self);
         }
     }
 }

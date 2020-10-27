@@ -2,19 +2,18 @@
 using BepInEx.Configuration;
 using R2API;
 using R2API.Utils;
-using System.Reflection;
 using UnityEngine;
 using Path = System.IO.Path;
 using TILER2;
 using static TILER2.MiscUtil;
 using RoR2;
-using R2API.AssetPlus;
 using R2API.Networking;
 
 namespace DestroyedClone
 {
-    [BepInDependency("com.bepis.r2api")]
+    [BepInDependency(R2API.R2API.PluginGUID, R2API.R2API.PluginVersion)]
     [BepInDependency(TILER2Plugin.ModGuid, TILER2Plugin.ModVer)]
+    [BepInDependency(EliteSpawningOverhaul.EsoPlugin.PluginGuid)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.EveryoneNeedSameModVersion)]
     [R2APISubmoduleDependency(
         nameof(ItemAPI),

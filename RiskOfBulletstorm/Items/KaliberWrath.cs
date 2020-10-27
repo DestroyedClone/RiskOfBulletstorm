@@ -1,20 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
+﻿
 using EliteSpawningOverhaul;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
 using R2API;
 using RoR2;
-using RoR2.Projectile;
 using TILER2;
 using UnityEngine;
-using UnityEngine.Networking;
-using Object = UnityEngine.Object;
 
-namespace RiskOfBulletstorm
+namespace RiskOfBulletstorm //TODO modify weight of card depending on curse level.
 {
     public class KaliberWrath : Equipment_V2<KaliberWrath>
     {
@@ -53,7 +44,7 @@ namespace RiskOfBulletstorm
             LanguageAPI.Add(jammedEliteDef.EliteDef.modifierToken, "Jammed {0}");
 
             var jammedBuffDef = new CustomBuff(
-            new RoR2.BuffDef
+            new BuffDef
             {
                 name = "Affix_Jammed",
                 buffColor = new Color32(150, 10, 10, 255),
