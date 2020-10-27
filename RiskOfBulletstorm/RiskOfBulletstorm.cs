@@ -16,7 +16,21 @@ namespace DestroyedClone
     [BepInDependency("com.bepis.r2api")]
     [BepInDependency(TILER2Plugin.ModGuid, TILER2Plugin.ModVer)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.EveryoneNeedSameModVersion)]
-    [R2APISubmoduleDependency(nameof(ItemAPI), nameof(LanguageAPI), nameof(ResourcesAPI), nameof(PlayerAPI), nameof(PrefabAPI), nameof(SoundAPI), nameof(OrbAPI), nameof(NetworkingAPI), nameof(EffectAPI))]
+    [R2APISubmoduleDependency(
+        nameof(ItemAPI),
+        nameof(LanguageAPI),
+        nameof(ResourcesAPI),
+        nameof(PlayerAPI),
+        nameof(PrefabAPI),
+        nameof(SoundAPI),
+        nameof(OrbAPI),
+        nameof(NetworkingAPI),
+        nameof(EffectAPI),
+        nameof(EliteAPI),
+        nameof(BuffAPI), //?
+        nameof(CommandHelper), //?
+        nameof(LoadoutAPI), //?
+        nameof(SurvivorAPI))] //?
     [BepInPlugin(ModGuid, ModName, ModVer)]
     public class RiskofBulletstorm : BaseUnityPlugin
     {
@@ -34,9 +48,9 @@ namespace DestroyedClone
 
             masterItemList = T2Module.InitAll<CatalogBoilerplate>(new T2Module.ModInfo
             {
-                displayName = "Aetherium",
-                longIdentifier = "AETHERIUMMOD",
-                shortIdentifier = "ATHRM",
+                displayName = "Risk of Bulletstorm",
+                longIdentifier = "RISKOFBULLETSTORMMOD",
+                shortIdentifier = "ROB",
                 mainConfigFile = ConfigFile
             });
             T2Module.SetupAll_PluginAwake(masterItemList);
