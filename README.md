@@ -27,7 +27,7 @@ No assets currently.
 [Green] Roll Bomb: After using your Utility, drop 1 bomb(s) (+1 per stack) for 80% damage.
 
 #[Equipment]
-[Standard] Spawns a Clay Templar.
+[Standard] Spawns a Clay Templar with +100% health and +50% damage. 
 
 [Lunar]
 
@@ -51,3 +51,4 @@ ThinkInvis - ClassicItems https://github.com/ThinkInvis/RoR2-ClassicItems
 
 Chen - Chen's ClassicItems https://github.com/cheeeeeeeeeen/RoR2-ClassicItems
 
+RyanPallensen - FloodWarning 

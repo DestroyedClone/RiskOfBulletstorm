@@ -9,6 +9,7 @@ using UnityEngine.Networking;
 using TILER2;
 using static TILER2.StatHooks;
 using static TILER2.MiscUtil;
+using static EntityStates.BaseState;
 
 
 namespace RiskOfBulletstorm.Items
@@ -17,15 +18,15 @@ namespace RiskOfBulletstorm.Items
     {
         //TODO: USE CHEN's HEALTH LOSS CODE FOR FLOATS
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How many damage should [+1 Bullets] provide with a single stack? (Default: 0.25 = 25% dmg)", AutoConfigFlags.PreventNetMismatch)]
-        public float DamageBonus { get; private set; } = 0.25f;
+        [AutoConfig("Additional Health Scaling? (Default: 1 = +100% health)", AutoConfigFlags.PreventNetMismatch)]
+        public float HealthBonus { get; private set; } = 1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How many additional damage should each [+1 Bullets] after the first give? (Default: 0.05 = 5% damage)", AutoConfigFlags.PreventNetMismatch)]
-        public float DamageBonusStack { get; private set; } = 0.05f;
+        [AutoConfig("Additional Damage Scaling? (Default: 0.5 = +50% damage)", AutoConfigFlags.PreventNetMismatch)]
+        public float DamagDamageBonuseBonusStack { get; private set; } = 0.5f;
 
         public override string displayName => "Ticket";
-        public override float cooldown { get; protected set; } = 45f;
+        public override float cooldown { get; protected set; } = 1f;
 
         protected override string GetNameString(string langID = null) => displayName;
 
@@ -54,19 +55,39 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            GetStatCoefficients += AddDamage;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
-            GetStatCoefficients -= AddDamage; //
         }
-        private void AddDamage(CharacterBody sender, StatHookEventArgs args)
+        protected override bool PerformEquipmentAction(EquipmentSlot slot)
         {
-            var invCount = GetCount(sender);
-            if (invCount > 0)
-            { args.damageMultAdd += DamageBonus + DamageBonusStack * (invCount - 1); }
+            CharacterBody body = slot.characterBody;
+            if (!body) return false;
+
+            //GameObject gameObject = body.gameObject;
+            //Util.PlaySound(FireMines.throwMineSoundString, gameObject);
+           // SpawnGull(body);
+            if (NetworkServer.active)
+            {
+                CharacterMaster characterMaster = new MasterSummon
+                {
+                    masterPrefab = MasterCatalog.FindMasterPrefab("ClayTemplarMaster"),
+                    position = body.transform.position,
+                    rotation = body.transform.rotation,
+                    summonerBodyObject = body.gameObject,
+                    ignoreTeamMemberLimit = true,
+                    teamIndexOverride = new TeamIndex?(TeamIndex.Player)
+                }.Perform();
+            }
+            return true;
+        }
+
+
+        private void SpawnGull(CharacterBody sender)
+        {
+            
         }
     }
 }
