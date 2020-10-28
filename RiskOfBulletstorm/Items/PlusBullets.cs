@@ -24,7 +24,6 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("How many additional damage should each [+1 Bullets] after the first give? (Default: 0.05 = 5% damage)", AutoConfigFlags.PreventNetMismatch)]
         public float DamageBonusStack { get; private set; } = 0.05f;
 
-        public float damageReward;
         public override string displayName => "+1 Bullets";
         public override ItemTier itemTier => ItemTier.Tier1;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage });
