@@ -1,4 +1,4 @@
-﻿/*
+﻿
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -58,14 +58,28 @@ namespace RiskOfBulletstorm.Items
         }
         private void GenericSkill_OnExecute(On.RoR2.GenericSkill.orig_OnExecute orig, GenericSkill self)
         {
-            if (self.characterBody.Equals(body))
+            var invCount = GetCount(self.characterBody);
+            CharacterBody vBody = self.characterBody;
+            Vector3 corePos = Util.GetCorePosition(vBody);
+            GameObject vGameObject = self.gameObject;
+
+            if (invCount > 0)
             {
-                if (!self.characterBody.skillLocator.utility.Equals(self))
+                if (self.characterBody.skillLocator.utility.Equals(self))
                 {
-                    Chat.AddMessage("Utility Used!");
+                    ProjectileManager.instance.FireProjectile(BombPrefab, corePos, MineDropDirection(),
+                                          vGameObject, RollBombDamage,
+                                          0f, Util.CheckRoll(vBody.crit, vBody.master),
+                                          DamageColorIndex.Item, null, -1f);
                 }
             }
             orig(self);
         }
+        private Quaternion MineDropDirection()
+        {
+            return Util.QuaternionSafeLookRotation(
+                new Vector3(0f, 0f, 0f)
+            );
+        }
     }
-}*/
+}

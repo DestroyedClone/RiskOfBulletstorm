@@ -31,10 +31,11 @@ namespace RiskOfBulletstorm.Items
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How much should your damage be increased when Enraging Photo activates? (Default: 1.00 (+100% damage))", AutoConfigFlags.PreventNetMismatch)]
         public float DmgBoost { get; private set; } = 1.00f;
-        /*
+        
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("If true, damage to shield and barrier (from e.g. Personal Shield Generator, Topaz Brooch) will not count towards triggering Enraging Photo")]
-        public bool requireHealth { get; private set; } = true;*/
+        public bool RequireHealth { get; private set; } = true;
+
         public override string displayName => "Enraging Photo";
         public override ItemTier itemTier => ItemTier.Tier1;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage });
@@ -87,10 +88,17 @@ namespace RiskOfBulletstorm.Items
             On.RoR2.HealthComponent.TakeDamage -= CalculateDamageReward;
             GetStatCoefficients -= AddDamageReward;
         }
-
         private void CalculateDamageReward(On.RoR2.HealthComponent.orig_TakeDamage orig, RoR2.HealthComponent self, RoR2.DamageInfo damageInfo)
         {
             var InventoryCount = GetCount(self.body);
+
+            /*var oldHealth = self.health;
+            var oldCH = self.combinedHealth;
+
+            if (InventoryCount < 1
+                || (RequireHealth && (oldHealth - self.health) / self.fullHealth < HealthThreshold)
+                || (!RequireHealth && (oldCH - self.combinedHealth) / self.fullCombinedHealth < HealthThreshold))
+                return;*/
             if (InventoryCount > 0 && self.body.GetBuffCount(ROBEnraged) < InventoryCount)
             {
                 self.body.AddTimedBuffAuthority(ROBEnraged, (BaseDurationOfBuffInSeconds + (AdditionalDurationOfBuffInSeconds * InventoryCount - 1)));
