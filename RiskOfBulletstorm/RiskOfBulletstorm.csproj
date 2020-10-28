@@ -75,11 +75,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Items\TierLunar\" />
     <Folder Include="Items\TierBoss\" />
     <Folder Include="Items\Tier3\" />
-    <Folder Include="Items\Tier2\" />
-    <Folder Include="Items\Tier1\" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

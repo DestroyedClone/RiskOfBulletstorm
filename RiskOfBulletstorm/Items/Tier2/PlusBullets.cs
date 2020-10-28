@@ -15,7 +15,6 @@ namespace RiskOfBulletstorm.Items
 {
     public class PlusBullets : Item_V2<PlusBullets>
     {
-        //TODO: USE CHEN's HEALTH LOSS CODE FOR FLOATS
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How many damage should [+1 Bullets] provide with a single stack? (Default: 0.1 = 10% dmg)", AutoConfigFlags.PreventNetMismatch)]
         public float DamageBonus { get; private set; } = 0.1f;
@@ -25,14 +24,14 @@ namespace RiskOfBulletstorm.Items
         public float DamageBonusStack { get; private set; } = 0.01f;
 
         public override string displayName => "+1 Bullets";
-        public override ItemTier itemTier => ItemTier.Tier1;
+        public override ItemTier itemTier => ItemTier.Tier2;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage });
 
         protected override string GetNameString(string langID = null) => displayName;
 
         protected override string GetPickupString(string langID = null) => "+1 To Bullet.";
 
-        protected override string GetDescString(string langid = null) => $"Increases damage by <style=cIsDamage>{Pct(DamageBonus)}% damage</style>. <style=cIsDamage>+{Pct(DamageBonusStack)}% damage</style> per stack.";
+        protected override string GetDescString(string langid = null) => $"Increases damage by <style=cIsDamage>{Pct(DamageBonus)} damage</style>. <style=cIsDamage>+{Pct(DamageBonusStack)} damage</style> per stack.";
 
         protected override string GetLoreString(string langID = null) => "Masterwork bullets.\n\nPeer-reviewed studies have shown that these bullets are precisely 1 better than normal bullets.";
 
