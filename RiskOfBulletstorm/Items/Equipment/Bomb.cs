@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 //using System.Text;
@@ -26,7 +25,7 @@ namespace RiskOfBulletstorm.Items
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Cooldown? (Default: 8 = 8 seconds)", AutoConfigFlags.PreventNetMismatch)]
-        public float cooldown_config { get; private set; } = 0.5f;
+        public float Cooldown_config { get; private set; } = 0.5f;
 
         public override string displayName => "Ticket";
         public override float cooldown { get; protected set; } = 2f;
@@ -47,11 +46,11 @@ namespace RiskOfBulletstorm.Items
         {
             GameObject engiMinePrefab = Resources.Load<GameObject>("prefabs/projectiles/EngiGrenadeProjectile");
             BombPrefab = engiMinePrefab.InstantiateClone("RollBomb");
-            BombPrefab.GetComponent<ProjectileSimple>().velocity = 0; //default 50
+            //BombPrefab.GetComponent<ProjectileSimple>().velocity = 0; //default 50
             BombPrefab.GetComponent<ProjectileSimple>().lifetime = 6; //default 5
             BombPrefab.GetComponent<ProjectileDamage>().damageColorIndex = DamageColorIndex.Item;
             BombPrefab.GetComponent<ProjectileImpactExplosion>().lifetime = 6;
-            BombPrefab.GetComponent<ProjectileImpactExplosion>().destroyOnEnemy = false; //default True
+            //BombPrefab.GetComponent<ProjectileImpactExplosion>().destroyOnEnemy = false; //default True
             BombPrefab.GetComponent<ProjectileImpactExplosion>().timerAfterImpact = false;
             UnityEngine.Object.Destroy(BombPrefab.GetComponent<ApplyTorqueOnStart>());
         }
@@ -76,29 +75,26 @@ namespace RiskOfBulletstorm.Items
         {
             CharacterBody body = slot.characterBody;
             if (!body) return false;
+            Vector3 corePos = Util.GetCorePosition(body);
+            GameObject vGameObject = slot.gameObject;
 
             //GameObject gameObject = body.gameObject;
             //Util.PlaySound(FireMines.throwMineSoundString, gameObject);
             // SpawnGull(body);
             if (NetworkServer.active)
             {
-                CharacterMaster characterMaster = new MasterSummon
-                {
-                    masterPrefab = MasterCatalog.FindMasterPrefab("ClayTemplarMaster"),
-                    position = body.transform.position,
-                    rotation = body.transform.rotation,
-                    summonerBodyObject = body.gameObject,
-                    ignoreTeamMemberLimit = true,
-                    teamIndexOverride = new TeamIndex?(TeamIndex.Player)
-                }.Perform();
+                ProjectileManager.instance.FireProjectile(BombPrefab, corePos, MineDropDirection(body),
+                                      vGameObject, DamageDealt,
+                                      0f, Util.CheckRoll(body.crit, body.master),
+                                      DamageColorIndex.Item, null, -1f);
             }
             return true;
         }
-
-
-        private void SpawnGull(CharacterBody sender)
+        private Quaternion MineDropDirection(CharacterBody body)
         {
-
+            return Util.QuaternionSafeLookRotation(
+                new Vector3(0f, 30f, 0f)
+            );
         }
     }
 }
