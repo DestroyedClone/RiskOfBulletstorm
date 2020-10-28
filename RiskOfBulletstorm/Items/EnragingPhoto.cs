@@ -17,16 +17,16 @@ namespace RiskOfBulletstorm.Items
     {
         //TODO: USE CHEN's HEALTH LOSS CODE FOR FLOATS
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How many seconds should Enraging Photo's buff last with a single stack? (Default: 5 (seconds))", AutoConfigFlags.PreventNetMismatch)]
-        public float BaseDurationOfBuffInSeconds { get; private set; } = 5f;
+        [AutoConfig("How many seconds should Enraging Photo's buff last with a single stack? (Default: 3 (seconds))", AutoConfigFlags.PreventNetMismatch)]
+        public float BaseDurationOfBuffInSeconds { get; private set; } = 3f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How many additional seconds of buff should each Enraging Photo after the first give? (Default: 0.5 (seconds))", AutoConfigFlags.PreventNetMismatch)]
-        public float AdditionalDurationOfBuffInSeconds { get; private set; } = 0.5f;
+        [AutoConfig("How many additional seconds of buff should each Enraging Photo after the first give? (Default: 0.25 (seconds))", AutoConfigFlags.PreventNetMismatch)]
+        public float AdditionalDurationOfBuffInSeconds { get; private set; } = 0.25f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What percent of health lost should activate the Enraging Photo's damage bonus? (Default: 0.12 (12%))", AutoConfigFlags.PreventNetMismatch)]
-        public float HealthThreshold { get; private set; } = 0.12f;
+        [AutoConfig("What percent of health lost should activate the Enraging Photo's damage bonus? (Default: 0.33 (33%))", AutoConfigFlags.PreventNetMismatch)]
+        public float HealthThreshold { get; private set; } = 0.33f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How much should your damage be increased when Enraging Photo activates? (Default: 1.00 (+100% damage))", AutoConfigFlags.PreventNetMismatch)]
@@ -37,12 +37,12 @@ namespace RiskOfBulletstorm.Items
         public bool RequireHealth { get; private set; } = true;
 
         public override string displayName => "Enraging Photo";
-        public override ItemTier itemTier => ItemTier.Tier1;
+        public override ItemTier itemTier => ItemTier.Tier2;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage });
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "Deal extra damage for a short time after getting hit.";
+        protected override string GetPickupString(string langID = null) => "Deal extra damage for a short time after receivig a heavy hit.";
 
         protected override string GetDescString(string langid = null) => $"Gain a temporary <style=cIsDamage>{Pct(DmgBoost)} damage bonus</style> upon taking <style=cIsDamage>{Pct(HealthThreshold)} </style> of your health that lasts {BaseDurationOfBuffInSeconds} seconds. <style=cStack>(+{AdditionalDurationOfBuffInSeconds} second duration per additional Enraging Photo.)</style>";
 

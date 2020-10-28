@@ -17,12 +17,12 @@ namespace RiskOfBulletstorm.Items
     {
         //TODO: USE CHEN's HEALTH LOSS CODE FOR FLOATS
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How many damage should [+1 Bullets] provide with a single stack? (Default: 0.22 = 20% dmg)", AutoConfigFlags.PreventNetMismatch)]
-        public float DamageBonus { get; private set; } = 0.2f;
+        [AutoConfig("How many damage should [+1 Bullets] provide with a single stack? (Default: 0.1 = 10% dmg)", AutoConfigFlags.PreventNetMismatch)]
+        public float DamageBonus { get; private set; } = 0.1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How many additional damage should each [+1 Bullets] after the first give? (Default: 0.02 = 2% damage)", AutoConfigFlags.PreventNetMismatch)]
-        public float DamageBonusStack { get; private set; } = 0.02f;
+        [AutoConfig("How many additional damage should each [+1 Bullets] after the first give? (Default: 0.01 = 1% damage)", AutoConfigFlags.PreventNetMismatch)]
+        public float DamageBonusStack { get; private set; } = 0.01f;
 
         public override string displayName => "+1 Bullets";
         public override ItemTier itemTier => ItemTier.Tier1;

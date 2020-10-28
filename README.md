@@ -27,8 +27,13 @@ No assets currently.
 [Green] Roll Bomb: After using your Utility, drop 1 bomb(s) (+1 per stack) for 80% damage.
 
 #[Equipment]
-[Standard] Spawns a Clay Templar with +100% health and +50% damage. 
-=> Scaling doesn't work'
+[Standard] Bomb: Throws a bomb for 80% damage.
+
+[Standard] Proximity Mine: Drops a mine for 100% damage.
+
+[Standard] Ticket: Spawns a Clay Templar with +100% health and +50% damage. 
+=> Scaling doesn't work
+
 
 [Lunar]
 
