@@ -31,7 +31,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "Drop bomb(s) after using your utility skill.";
 
-        protected override string GetDescString(string langid = null) => $"Using your utility <style=cIsUtility>drops 1 (+1/stack) bombs</style> for <style=cIsDamage>80% damage</style>.";
+        protected override string GetDescString(string langid = null) => $"Using your utility <style=cIsUtility>drops 1 (+1/stack) bombs</style> for <style=cIsDamage>{Pct(RollBombDamage)} damage </style>.";
 
         protected override string GetLoreString(string langID = null) => "Power Charge\n\nProduces a bomb when dodge rolling.\nThis strange mechanism dispenses explosives when spun.";
 

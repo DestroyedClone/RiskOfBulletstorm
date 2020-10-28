@@ -28,6 +28,7 @@ No assets currently.
 
 #[Equipment]
 [Standard] Spawns a Clay Templar with +100% health and +50% damage. 
+=> Scaling doesn't work'
 
 [Lunar]
 
