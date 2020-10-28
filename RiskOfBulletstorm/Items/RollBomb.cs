@@ -74,7 +74,7 @@ namespace RiskOfBulletstorm.Items
                 if (self.characterBody.skillLocator.utility.Equals(self))
                 {
                     ProjectileManager.instance.FireProjectile(BombPrefab, corePos, MineDropDirection(),
-                                          vGameObject, RollBombDamage,
+                                          vGameObject, vBody.damage * RollBombDamage,
                                           0f, Util.CheckRoll(vBody.crit, vBody.master),
                                           DamageColorIndex.Item, null, -1f);
                 }

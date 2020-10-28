@@ -92,9 +92,23 @@ namespace RiskOfBulletstorm.Items
             Vector3 corePos = Util.GetCorePosition(userBody);
             {
                 ProjectileManager.instance.FireProjectile(BombPrefab, corePos, MineDropDirection(userBody),
-                                      userGameObject, DamageDealt,
+                                      userGameObject, userBody.damage * DamageDealt,
                                       0f, Util.CheckRoll(userBody.crit, userBody.master),
                                       DamageColorIndex.Item, null, -1f);
+            }
+        }
+        private void On_ESMineArmingWeak(On.EntityStates.Engi.Mine.MineArmingWeak.orig_FixedUpdate orig, MineArmingWeak self)
+        {
+            if (self.outer.name != "InstantMine(Clone)") orig(self);
+            else self.outer.SetNextState(new MineArmingFull());
+        }
+        private void On_ESBaseMineArmingState(On.EntityStates.Engi.Mine.BaseMineArmingState.orig_OnEnter orig, BaseMineArmingState self)
+        {
+            orig(self);
+            if (self.outer.name == "InstantMine(Clone)")
+            {
+                if (self.forceScale != 1f) self.forceScale = 1f;
+                if (self.damageScale != 1f) self.damageScale = 1f;
             }
         }
     }

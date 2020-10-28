@@ -84,7 +84,7 @@ namespace RiskOfBulletstorm.Items
             if (NetworkServer.active)
             {
                 ProjectileManager.instance.FireProjectile(BombPrefab, corePos, MineDropDirection(body),
-                                      vGameObject, DamageDealt,
+                                      vGameObject, body.damage * DamageDealt,
                                       0f, Util.CheckRoll(body.crit, body.master),
                                       DamageColorIndex.Item, null, -1f);
             }
