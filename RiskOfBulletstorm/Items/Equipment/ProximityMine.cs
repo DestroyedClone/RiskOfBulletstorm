@@ -45,7 +45,7 @@ namespace RiskOfBulletstorm.Items
 
         public override void SetupBehavior()
         {
-            GameObject engiMinePrefab = Resources.Load<GameObject>("prefabs/projectiles/EngiGrenadeProjectile");
+            GameObject engiMinePrefab = Resources.Load<GameObject>("prefabs/projectiles/EngiMine");
             BombPrefab = engiMinePrefab.InstantiateClone("ProximityMine");
             UnityEngine.Object.Destroy(BombPrefab.GetComponent<ApplyTorqueOnStart>());
         }
@@ -84,7 +84,7 @@ namespace RiskOfBulletstorm.Items
         private Quaternion MineDropDirection(CharacterBody body)
         {
             return Util.QuaternionSafeLookRotation(
-                new Vector3(0f, 30f, 0f)
+                new Vector3(0f, 0f, 0f)
             );
         }
         private void DropMine(CharacterBody userBody, GameObject userGameObject)

@@ -75,26 +75,20 @@ namespace RiskOfBulletstorm.Items
         {
             CharacterBody body = slot.characterBody;
             if (!body) return false;
-            Vector3 corePos = Util.GetCorePosition(body);
-            GameObject vGameObject = slot.gameObject;
 
-            //GameObject gameObject = body.gameObject;
-            //Util.PlaySound(FireMines.throwMineSoundString, gameObject);
-            // SpawnGull(body);
+            Vector3 corePos = Util.GetCorePosition(body);
+            GameObject GameObject = slot.gameObject;
+            var input = body.inputBank;
+
+            Util.PlaySound(FireMines.throwMineSoundString, GameObject);
             if (NetworkServer.active)
             {
-                ProjectileManager.instance.FireProjectile(BombPrefab, corePos, MineDropDirection(body),
-                                      vGameObject, body.damage * DamageDealt,
+                ProjectileManager.instance.FireProjectile(BombPrefab, corePos, RoR2.Util.QuaternionSafeLookRotation(input.aimDirection),
+                                      GameObject, body.damage * DamageDealt,
                                       0f, Util.CheckRoll(body.crit, body.master),
                                       DamageColorIndex.Item, null, -1f);
             }
             return true;
-        }
-        private Quaternion MineDropDirection(CharacterBody body)
-        {
-            return Util.QuaternionSafeLookRotation(
-                new Vector3(0f, 30f, 0f)
-            );
         }
     }
 }

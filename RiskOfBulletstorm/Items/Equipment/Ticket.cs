@@ -68,19 +68,16 @@ namespace RiskOfBulletstorm.Items
 
             //GameObject gameObject = body.gameObject;
             //Util.PlaySound(FireMines.throwMineSoundString, gameObject);
-           // SpawnGull(body);
-            if (NetworkServer.active)
+            // SpawnGull(body);
+            CharacterMaster characterMaster = new MasterSummon
             {
-                CharacterMaster characterMaster = new MasterSummon
-                {
-                    masterPrefab = MasterCatalog.FindMasterPrefab("ClayTemplarMaster"),
-                    position = body.transform.position,
-                    rotation = body.transform.rotation,
-                    summonerBodyObject = body.gameObject,
-                    ignoreTeamMemberLimit = true,
-                    teamIndexOverride = new TeamIndex?(TeamIndex.Player)
-                }.Perform();
-            }
+                masterPrefab = MasterCatalog.FindMasterPrefab("ClayBruiserMaster"),
+                position = body.transform.position,
+                rotation = body.transform.rotation,
+                summonerBodyObject = body.gameObject,
+                ignoreTeamMemberLimit = true,
+                teamIndexOverride = new TeamIndex?(TeamIndex.Player)
+            }.Perform();
             return true;
         }
     }
