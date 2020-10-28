@@ -68,7 +68,7 @@ namespace RiskOfBulletstorm.Items
         {
             var invCount = GetCount(sender);
             if (invCount > 0)
-            { args.damageMultAdd += DamageBonus + DamageBonusStack * invCount - 1; }
+            { args.damageMultAdd += DamageBonus + DamageBonusStack * (invCount - 1); }
         }
     }
 }

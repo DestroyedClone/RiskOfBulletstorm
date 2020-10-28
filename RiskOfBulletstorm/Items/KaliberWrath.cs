@@ -33,7 +33,7 @@ namespace RiskOfBulletstorm //TODO modify weight of card depending on curse leve
             equipmentDef.enigmaCompatible = false;
 
             var jammedEliteDef = new CustomElite(
-            new RoR2.EliteDef
+            new EliteDef
             {
                 name = "Jammed",
                 modifierToken = "RISKOFBULLETSTORM_ELITE_MODIFIER_JAMMED",

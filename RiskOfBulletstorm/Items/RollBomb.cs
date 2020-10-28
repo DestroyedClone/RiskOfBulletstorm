@@ -23,7 +23,6 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("How many damage should Roll Bomb deal? (Default: 0.8 = 80% damage)", AutoConfigFlags.PreventNetMismatch)]
         public float RollBombDamage { get; private set; } = 0.8f;
 
-
         public override string displayName => "Roll Bomb";
         public override ItemTier itemTier => ItemTier.Tier1;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage });
@@ -40,14 +39,6 @@ namespace RiskOfBulletstorm.Items
 
         //public static GameObject ItemBodyModelPrefab;
         public static GameObject BombPrefab { get; private set; }
-        public EntityStateMachine outer;
-        public InputBankTest InputBank
-        {
-            get
-            {
-                return outer.commonComponents.inputBank;
-            }
-        }
 
         public override void SetupBehavior()
         {
@@ -58,23 +49,23 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            On.EntityStates.BaseState.OnEnter += UsedUtility;
-
+            On.RoR2.GenericSkill.OnExecute += GenericSkill_OnExecute;
         }
         public override void Uninstall()
         {
             base.Uninstall();
-            On.EntityStates.BaseState.OnEnter -= UsedUtility;
+            On.RoR2.GenericSkill.OnExecute -= GenericSkill_OnExecute;
         }
-
-        private void UsedUtility(On.EntityStates.BaseState.orig_OnEnter orig, global::EntityStates.BaseState self)
-        { 
-            if (InputBank.skill3.down)
+        private void GenericSkill_OnExecute(On.RoR2.GenericSkill.orig_OnExecute orig, GenericSkill self)
+        {
+            if (self.characterBody.Equals(body))
             {
-                Chat.AddMessage("You used your utility!");
+                if (!self.characterBody.skillLocator.utility.Equals(self))
+                {
+                    Chat.AddMessage("Utility Used!");
+                }
             }
             orig(self);
         }
     }
-}
-*/
+}*/
