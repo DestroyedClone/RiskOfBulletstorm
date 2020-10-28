@@ -74,4 +74,8 @@
     </Reference>
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy /Y C:\Users\destr\source\repos\RiskOfBulletstorm\RiskOfBulletstorm\bin\Debug\netstandard2.0\RiskOfBulletstorm.dll C:\Users\destr\AppData\Roaming\r2modmanPlus-local\mods\profiles\Testing\BepInEx\plugins\DestroyedClone-test2" />
+  </Target>
+
 </Project>

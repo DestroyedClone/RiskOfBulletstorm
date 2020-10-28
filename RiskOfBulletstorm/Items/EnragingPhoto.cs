@@ -29,8 +29,8 @@ namespace RiskOfBulletstorm.Items
         public float HealthThreshold { get; private set; } = 0.12f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How much should your damage be increased when Enraging Photo activates? (Default: 2.00 (200%))", AutoConfigFlags.PreventNetMismatch)]
-        public float DmgBoost { get; private set; } = 1.50f;
+        [AutoConfig("How much should your damage be increased when Enraging Photo activates? (Default: 1.00 (+100% damage))", AutoConfigFlags.PreventNetMismatch)]
+        public float DmgBoost { get; private set; } = 1.00f;
         /*
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("If true, damage to shield and barrier (from e.g. Personal Shield Generator, Topaz Brooch) will not count towards triggering Enraging Photo")]
