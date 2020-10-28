@@ -13,21 +13,24 @@ Jarlyk - EliteSpawningOverhaul
 No assets currently.
 
 #[Items]
+[Green] +1 Bullets: +25% damage (+5% per stack)
+
 [unimplemented] Bloodied Scarf: Replaces your utility with Huntress Blink
 
 [Green] Enraging Photo: Gain a temporary +100% damage boost (+50% per stack) upon taking 12% of your health in damage for 3 seconds.
-=> TODO: Assets
 => TODO: Health Requirement Loss
 => TODO: Set Tier to Green
 => BetterUI Compat
 
 [unimplemented] Green Guon Stone: 
 
-[Green] +1 Bullets: +25% damage (+5% per stack)
-
-[]
+[Green] Roll Bomb: After using your Utility, drop 1 bomb(s) (+1 per stack) for 80% damage.
 
 #[Equipment]
+[Standard] Spawns a Clay Templar.
+
+[Lunar]
+
 
 #[Curse]
 [unimplemented] Picking up RiskOfBulletstorm items that defy Kaliber adds +0.25 curse. Each subsequent stack of a single item will add +0.1.
@@ -35,7 +38,8 @@ Curse increases the chance of an enemy becoming Jammed.
 
 #[Elites]
 Kaliber's Wrath - Jammed {0}
-Jammed Elites deal 300% ([unimplemented]+20% per stage) damage. This damage scaling better reflects RoR2's health scaling vs Gungeon's.
+Jammed Elites deal 400% ([unimplemented]+20% per stage) damage and have 400% health.
+=> Currently only affects spawned Elites.
 
 
 ## Credits

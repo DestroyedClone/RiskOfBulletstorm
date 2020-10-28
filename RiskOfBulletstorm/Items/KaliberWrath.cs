@@ -11,7 +11,7 @@ namespace RiskOfBulletstorm //TODO modify weight of card depending on curse leve
     {
         public override string displayName => "Wrath of Kaliber";
         public const string PickupText = "Become an aspect of defiance";
-        public string DescText = $"+200% damage dealt.";
+        public string DescText = $"+400% damage dealt.";
         public string loreText = $"Several quotes from what seems to be a form of holy scripture were found around the Gungeon. They reference the Gungeon's past, and made prophecies about its future.\nDue to the references to Kaliber that can be found in the texts, this book is most likely hers, however, it is incomplete.\nGunesis 1:1 In the beginning, the Gungeon was formless and void, and bullets moved over the face of the deep.\nRevolvations 2:1 These are the words of Kaliber, she who grips the seven sidearms in her hands and walks among the six loaded chambers. When the Gun is drawn to the heart of the pacifist, and when the chambers are empty and the shells are spent, the Last of the Jammed will ascend to seal The Breach forever.";
         
         protected override string GetNameString(string langID = null) => displayName;
@@ -59,8 +59,8 @@ namespace RiskOfBulletstorm //TODO modify weight of card depending on curse leve
             {
                 spawnWeight = 0.8f,
                 costMultiplier = 15.0f,
-                damageBoostCoeff = 2.0f,
-                healthBoostCoeff = 3.0f,
+                damageBoostCoeff = 4.0f,
+                healthBoostCoeff = 4.0f,
                 eliteOnlyScaling = 0.5f,
                 eliteType = JammedEliteIndex,
             };
