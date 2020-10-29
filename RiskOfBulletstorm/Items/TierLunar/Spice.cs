@@ -29,7 +29,7 @@ namespace RiskOfBulletstorm.Items
         public string dynamicPickupText = "THE CUBE";
         public float SpiceReplaceChance = 0f;
         protected override string GetPickupString(string langID = null)
-        {;
+        {
             return dynamicPickupText;
         }
 
@@ -58,20 +58,20 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            On.RoR2.HealthComponent.TakeDamage += CalculateSpiceReward;
+            //On.RoR2.HealthComponent.TakeDamage += CalculateSpiceReward;
             GetStatCoefficients += GiveSpiceReward;
+            On.RoR2.CharacterBody.OnInventoryChanged += CalculateSpiceReward;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
-            On.RoR2.HealthComponent.TakeDamage -= CalculateSpiceReward;
+            //On.RoR2.HealthComponent.TakeDamage -= CalculateSpiceReward;
             GetStatCoefficients -= GiveSpiceReward;
-            //On.RoR2.Inventory.FixedUpdate += GiveSpiceReward;
         }
-        private void CalculateSpiceReward(On.RoR2.HealthComponent.orig_TakeDamage orig, RoR2.HealthComponent self, RoR2.DamageInfo damageInfo)
+        private void CalculateSpiceReward(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self) //blessed komrade
         {
-            var InventoryCount = GetCount(self.body);
+            var InventoryCount = GetCount(self);
             switch(InventoryCount)
             {
                 case 0:
@@ -96,11 +96,7 @@ namespace RiskOfBulletstorm.Items
                     SpiceReplaceChance = Mathf.Min(SpiceReplaceChance + 0.05f,1.0f);
                     break;
             }
-
-            if (InventoryCount > 0)
-            {
-            }
-            orig(self, damageInfo);
+            orig(self);
         }
         private static void PickupDropletController_CreatePickupDroplet(On.RoR2.PickupDropletController.orig_CreatePickupDroplet orig, PickupIndex pickupIndex, UnityEngine.Vector3 position, UnityEngine.Vector3 velocity)
         {

@@ -26,13 +26,14 @@ namespace RiskOfBulletstorm.Items
         //public float DamageBonus { get; private set; } = 0.5f;
 
         public override string displayName => "Ticket";
+        public string descText = "Summons Gatling Gull (Clay Templar) as an ally.";
         public override float cooldown { get; protected set; } = 120f;
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "Do You Have Yours?";
+        protected override string GetPickupString(string langID = null) => "Do You Have Yours?\n"+descText;
 
-        protected override string GetDescString(string langid = null) => $"Summons Gatling Gull (Clay Templar) as an ally.";
+        protected override string GetDescString(string langid = null) => $"{descText}";
 
         protected override string GetLoreString(string langID = null) => "Gatling Gull respects martial prowess in Gungeoneers. Spend this ticket to bring in the big guns.";
 

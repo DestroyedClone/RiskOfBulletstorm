@@ -9,6 +9,7 @@ namespace RiskofBulletstorm.Items
     public class TrustyLockpicks : Equipment_V2<TrustyLockpicks>
     {
         public override string displayName => "Skeleton Key";
+        public string descText = "Chance to pick locks. Can only be used once per lock.";
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Chance to break (Default: 0.5 = 50%).", AutoConfigFlags.None, 0f, float.MaxValue)]
@@ -16,8 +17,8 @@ namespace RiskofBulletstorm.Items
 
         public override float cooldown { get; protected set; } = 2f;
         protected override string GetNameString(string langid = null) => displayName;
-        protected override string GetPickupString(string langid = null) => "Who Needs Keys?";
-        protected override string GetDescString(string langid = null) => "Chance to pick locks. Can only be used once per lock.";
+        protected override string GetPickupString(string langid = null) => "Who Needs Keys?\n"+descText;
+        protected override string GetDescString(string langid = null) => "{Pct(unlockChance)} {descText}";
         protected override string GetLoreString(string langid = null) => "These lockpicks have never let the Pilot down, except for the many times they did.";
 
         public TrustyLockpicks() { }

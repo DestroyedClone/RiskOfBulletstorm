@@ -19,21 +19,22 @@ namespace RiskOfBulletstorm.Items
     public class Bomb : Equipment_V2<Bomb>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Damage? (Default: 0.6 = 60% damage)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Damage? (Default: 1.0 = 100% damage)", AutoConfigFlags.PreventNetMismatch)]
         public float DamageDealt { get; private set; } = 1f;
 
         //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         //[AutoConfig("Cooldown? (Default: 8 = 8 seconds)", AutoConfigFlags.PreventNetMismatch)]
         //public float Cooldown_config { get; private set; } = 8f;
 
-        public override string displayName => "Ticket";
+        public override string displayName => "Bomb";
+        public string descText = "Throws a bomb that explodes after a short delay";
         public override float cooldown { get; protected set; } = 8f;
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "Use For Boom";
+        protected override string GetPickupString(string langID = null) => "Use For Boom\n"+descText;
 
-        protected override string GetDescString(string langid = null) => $"Throws a bomb that explodes after a short delay, dealing {Pct(DamageDealt)} damage.";
+        protected override string GetDescString(string langid = null) => $"{descText}, dealing {Pct(DamageDealt)} damage.";
 
         protected override string GetLoreString(string langID = null) => "Countless experienced adventurers have brought Bombs to the Gungeon seeking secret doors, only to be foiled by the existence of Blanks. Still, explosives have their place.";
 

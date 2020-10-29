@@ -32,9 +32,9 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("How much should your damage be increased when Enraging Photo activates? (Default: 1.00 (+100% damage))", AutoConfigFlags.PreventNetMismatch)]
         public float DmgBoost { get; private set; } = 1.00f;
         
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("If true, damage to shield and barrier (from e.g. Personal Shield Generator, Topaz Brooch) will not count towards triggering Enraging Photo")]
-        public bool RequireHealth { get; private set; } = true;
+        //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        //[AutoConfig("If true, damage to shield and barrier (from e.g. Personal Shield Generator, Topaz Brooch) will not count towards triggering Enraging Photo")]
+        //public bool RequireHealth { get; private set; } = true;
 
         public override string displayName => "Enraging Photo";
         public override ItemTier itemTier => ItemTier.Tier2;
@@ -42,11 +42,11 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "Deal extra damage for a short time after receivig a heavy hit.";
+        protected override string GetPickupString(string langID = null) => "\"Don't Believe His Lies\"\nDeal extra damage for a short time after receivig a heavy hit.";
 
         protected override string GetDescString(string langid = null) => $"Gain a temporary <style=cIsDamage>{Pct(DmgBoost)} damage bonus</style> upon taking <style=cIsDamage>{Pct(HealthThreshold)} </style> of your health that lasts {BaseDurationOfBuffInSeconds} seconds. <style=cStack>(+{AdditionalDurationOfBuffInSeconds} second duration per additional Enraging Photo.)</style>";
 
-        protected override string GetLoreString(string langID = null) => "\"Don't Believe His Lies\"\n\nA photo that the Convict brought with her to the Gungeon.\nDeal extra damage for a short time after getting hit.\n\nOn the journey to the Breach, the Pilot once asked her why she always stared at this photo. Later, she was released from the brig.";
+        protected override string GetLoreString(string langID = null) => "A photo that the Convict brought with her to the Gungeon.\nDeal extra damage for a short time after getting hit.\n\nOn the journey to the Breach, the Pilot once asked her why she always stared at this photo. Later, she was released from the brig.";
 
         //private static List<RoR2.CharacterBody> Playername = new List<RoR2.CharacterBody>();
 

@@ -10,20 +10,32 @@ ThinkIvis - TILER2
 Jarlyk - EliteSpawningOverhaul
 
 # Items
-No assets currently.
+TODO:
+1. Assets (Icons, Models, DisplayRules, Sound Effects)
+2. Soft BetterUI Compatibility
+3. Soft Dependencies for other mods
+3a. Equipment: ThinkInvis Beating Embryo
 
 #[Items]
+
+##[Special Items]
+(WIP) [White] Armor: Blocks one hit of damage, then get destroyed.
+
+(WIP) [White] Blank: Press a key to activate, destroying all projectiles, stunning and knocking nearby enemies back. Consumed on use.
+
 ##[White]
 
 ##[Green]
-+1 Bullets: +25% damage (+5% per stack)
++1 Bullets: +10% base damage (+1% per stack)
 
-[Green] Enraging Photo: Gain a temporary +100% damage boost (+50% per stack) upon taking 12% of your health in damage for 3 seconds.
+Enraging Photo: Gain a temporary +100% damage boost  upon taking 33% of your health in damage for 3 (+0.25 per stack) seconds.
 => TODO: Health Requirement Loss
-=> TODO: Set Tier to Green
-=> BetterUI Compat
 
-[unimplemented] Green Guon Stone: Upon taking damage has a chance to heal you instead. 
+Macho Brace: Gain +30% (+10% per stack) damage bonus upon using your utility.
+=> TODO: Add Stacking Bonus
+
+[unimplemented] Green Guon Stone: Upon taking 33% damage, has a 20% chance to heal you instead. Rises to 50% if fatal.
+=> Add Health Check
 
 Roll Bomb: After using your Utility, drop 1 bomb(s) (+1 per stack) for 80% damage.
 
@@ -35,23 +47,25 @@ Roll Bomb: After using your Utility, drop 1 bomb(s) (+1 per stack) for 80% damag
 [unimplemented] Metronome: Gain a damage bonus for every enemy you kill, clears when you use a different skill.
 => \+2% damage bonus for each enemy killed, maxes at +150%(+50%). The bonus is reset if the player uses a different skill.
 
-#[Special Items]
-[White] Armor: Blocks one hit of damage, then get destroyed.
-=> TODO: Add health requirement
-
-[White] Blank: Press a key to activate, destroying all projectiles, stunning and knocking nearby enemies back.
-
-
 #[Equipment]
-[Standard] Bomb: Throws a bomb for 80% damage.
+##[Normal]
+Bomb: Throws a bomb for 100% damage. CD: 8
 
-[Standard] Proximity Mine: Drops a mine for 100% damage.
+Proximity Mine: Drops a mine for 100% damage. CD: 18
 
-[Standard] Ticket: Spawns a Clay Templar with +100% health and +50% damage. 
-=> Scaling doesn't work
+Smoke Bomb: Cloak for 6 seconds. CD: 36
+
+Ticket: Spawns a Clay Templar. CD: 120
+
+[Unimplemented] Trusty Lockpicks: 50% chance to unlock chest. If it fails, the chest is destroyed.
 
 
-[Lunar]
+##[Lunar]
+[Unimplemented] Drill: Unlock a chest and summon a combat-shrine worth of enemies depending on the chest.
+	Normal: 1 
+	Green: 2
+	Red: 4
+	
 
 
 #[Curse]

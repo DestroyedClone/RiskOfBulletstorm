@@ -27,14 +27,15 @@ namespace RiskOfBulletstorm.Items
         public bool RequireHealth { get; private set; } = false;
 
         public override string displayName => "Armor";
+        public string descText = "Prevents a single hit that exceeds ";
         public override ItemTier itemTier => ItemTier.Tier1;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility });
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "Protect Body";
+        protected override string GetPickupString(string langID = null) => "Protect Body\n"+descText+"some health";
 
-        protected override string GetDescString(string langid = null) => $"Prevents a single hit that exceeds {Pct(HealthThreshold)} health";
+        protected override string GetDescString(string langid = null) => $"{descText} {Pct(HealthThreshold)} health";
 
         protected override string GetLoreString(string langID = null) => "beep boop im a robot ADD LORE";
 

@@ -29,13 +29,14 @@ namespace RiskOfBulletstorm.Items
         //public float Cooldown_config { get; private set; } = 8f;
 
         public override string displayName => "Proximity Mine";
-        public override float cooldown { get; protected set; } = 14f;
+        public string descText = "This mine activates when an enemy gets close";
+        public override float cooldown { get; protected set; } = 18f;
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "Use To Place";
+        protected override string GetPickupString(string langID = null) => "Use To Place\n"+descText;
 
-        protected override string GetDescString(string langid = null) => $"This mine activates when an enemy gets close for {Pct(DamageDealt)} damage.";
+        protected override string GetDescString(string langid = null) => $"{descText} for {Pct(DamageDealt)} damage.";
 
         protected override string GetLoreString(string langID = null) => "Appears to be a homage to similar proximity-based explosives from the 64th Tenthdo console game in which 7 men fight for the Platinum Eye.";
 

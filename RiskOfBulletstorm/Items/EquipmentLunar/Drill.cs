@@ -27,17 +27,18 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("Cooldown? (Default: 8 = 8 seconds)", AutoConfigFlags.PreventNetMismatch)]
         public float Cooldown_config { get; private set; } = 0.5f;
 
-        public override string displayName => "Ticket";
+        public override string displayName => "Drill";
+        public string descText = "Opens locked chests. Loud.";
         public override bool isLunar => true;
         public override float cooldown { get; protected set; } = 2f;
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "Use For Boom";
+        protected override string GetPickupString(string langID = null) => "Sawgeant\n"+descText;
 
-        protected override string GetDescString(string langid = null) => $"Throws a bomb that explodes after a short delay, dealing {Pct(DamageDealt)} damage.";
+        protected override string GetDescString(string langid = null) => $"Unlocks a chest <style=cIsDeath>...but spawns enemies depending on the chest's value.</style>";
 
-        protected override string GetLoreString(string langID = null) => "Countless experienced adventurers have brought Bombs to the Gungeon seeking secret doors, only to be foiled by the existence of Blanks. Still, explosives have their place.";
+        protected override string GetLoreString(string langID = null) => "A device once used to access the innermost chambers of ancient currency reliquaries. Cheaply constructed and prone to breaking. In ancient texts, the word \"drill\" is commonly preceeded [sic] or followed by expletives.";
 
         //private static List<RoR2.CharacterBody> Playername = new List<RoR2.CharacterBody>();
 

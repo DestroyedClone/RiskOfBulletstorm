@@ -1,5 +1,4 @@
-﻿/*
-//using System;
+﻿//using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 //using System.Text;
@@ -18,8 +17,8 @@ namespace RiskOfBulletstorm.Items
     {
         //TODO: USE CHEN's HEALTH LOSS CODE FOR FLOATS
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Chance to heal? (Default: 0.2)", AutoConfigFlags.PreventNetMismatch)]
-        public float HealChance { get; private set; } = 0.2f;
+        [AutoConfig("Chance to heal? (Default: 2%)", AutoConfigFlags.PreventNetMismatch)]
+        public float HealChance { get; private set; } = 2f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Base Heal Percent? 0.33", AutoConfigFlags.PreventNetMismatch)]
@@ -34,8 +33,8 @@ namespace RiskOfBulletstorm.Items
         public bool LethalSave { get; private set; } = true;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Lethal Save Chance. Default: 0.5f", AutoConfigFlags.PreventNetMismatch)]
-        public float LethalSaveChance { get; private set; } = 0.5f;
+        [AutoConfig("Lethal Save Chance. Default: 50%", AutoConfigFlags.PreventNetMismatch)]
+        public float LethalSaveChance { get; private set; } = 50f;
         
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("If true, damage to shield and barrier (from e.g. Personal Shield Generator, Topaz Brooch) will not count towards triggering Enraging Photo")]
@@ -82,35 +81,61 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            On.RoR2.HealthComponent.TakeDamage += CalculateDamageReward;
-            GetStatCoefficients += AddDamageReward;
+            On.RoR2.HealthComponent.TakeDamage += TankHit;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
-            On.RoR2.HealthComponent.TakeDamage -= CalculateDamageReward;
-            GetStatCoefficients -= AddDamageReward;
+            On.RoR2.HealthComponent.TakeDamage -= TankHit;
         }
-        private void On_HCTakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo di)
+        private void TankHit(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
-            var oldHealth = self.health;
-            var oldCH = self.combinedHealth;
+            var InventoryCount = GetCount(self.body);
 
-            orig(self, di);
+            //var oldHealth = self.health;
+            //orig(self, damageInfo);
+            var finalChance = HealChance;
 
-            int icnt = GetCount(self.body);
-            if (icnt < 1
-                || (requireHealth && (oldHealth - self.health) / self.fullHealth < healthThreshold)
-                || (!requireHealth && (oldCH - self.combinedHealth) / self.fullCombinedHealth < healthThreshold))
+            if (InventoryCount < 1)
+            //|| (oldHealth - self.health) / self.fullHealth < HealthThreshold)
+            {
                 return;
+            }
 
-        }
 
-        private void AddDamageReward(CharacterBody sender, StatHookEventArgs args)
-        {
-            if (sender.HasBuff(ROBEnraged)) { args.damageMultAdd += DmgBoost; }
+            if (InventoryCount > 0)
+            {
+                if (self.health - damageInfo.damage > 0) //Is your expected health greater than zero?
+                { //nonfatal
+                    if (Util.CheckRoll(HealChance))
+                    {//success
+                        Chat.AddMessage("NONLETHAL SUCCESS");
+                        damageInfo.damage = 0;
+                        self.health *= 1 + HealAmount + (HealAmountStack * (InventoryCount - 1));
+                    }
+                    else
+                    {//fail
+                        Chat.AddMessage("NONLETHAL FAILURE");
+                    }
+                }
+                else 
+                {//fatal
+                    if (Util.CheckRoll(LethalSaveChance))
+                    {//success
+                        Chat.AddMessage("LETHAL SUCCESS");
+                        damageInfo.damage = 0;
+                        self.health *= 1 + HealAmount + (HealAmountStack * (InventoryCount - 1));
+                    }
+                    else
+                    {//fail
+                        Chat.AddMessage("LETHAL FAILURE");
+                    }
+                }
+
+                Chat.AddMessage("Worked!");
+            }
+            orig(self, damageInfo);
         }
     }
 }
-*/

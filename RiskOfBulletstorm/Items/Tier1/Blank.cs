@@ -31,21 +31,22 @@ namespace RiskOfBulletstorm.Items
         public string BlankButtonGamepad { get; private set; } = "T";
 
         public override string displayName => "Blank";
+        public string descText = "Erases all enemy projectiles";
         public override ItemTier itemTier => ItemTier.Tier1;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility, ItemTag.AIBlacklist});
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "Banish Bullets";
+        protected override string GetPickupString(string langID = null) => "Banish Bullets\n"+descText;
 
-        protected override string GetDescString(string langid = null) => $"Erases all enemy projectiles in the stage. Pushes enemies back, and deals {Pct(DamageDealt)} damage.";
+        protected override string GetDescString(string langid = null) => $"{descText} in the stage. Pushes enemies back, and deals {Pct(DamageDealt)} damage.";
 
         protected override string GetLoreString(string langID = null) => "12:01 PM - I've gathered about 7 or so of these bullets. They're a light-blue with a blue cap. Not sure of the usage.\n\n" +
             "12:42 PM - [Kyle] I tried finding one of my guns that I could load it into, but oddly it refuses to fit inside.\n\n" +
-            "12:50 PM - [Kyle] Got upset at trying to shove one of the bullets in and threw it at the wall. I only heard a click before I was pushed back and momentarily stunned. I guess this is how you use it?\n\n" +
+            "12:48 PM - [Kyle] Got upset at trying to shove one of the bullets in and threw it at the wall. I only heard a click before I was pushed back and momentarily stunned. I guess this is how you use it?\n\n" +
             "1:30 PM - [Kyle] Accidentally activated it while fighting a crowd of [REDACTED]. All of the bullets and [SWEAR REDACTED] coming at me vanished, and the enemies pushed the [SWEAR REDACTED] back and stunned instead of me. Think this is how you use this [SWEAR REDACTED].\n\n" +
             "4:30 PM - [Kyle] Carried a couple in my hand and tripped like an idiot, only one of them activated, fortunately. Unfortunately, my weapon broke when it was launched against the wall. I see the boss chamber up next, so I think I can take it with just these bullets.\n\n" +
-            "4:33 PM - [LOG] EmptyMessage: The following transcription was automatically sent without any body. Did you forget to write?\n\n" +
+            "4:33 PM - [LOG] EmptyMessage: The following transcription was automatically sent without any body. Did you accidentally send?\n\n" +
             "12:00 PM - [Kyle] Guess what happened?";
 
         /* 1. Check Key Press (done)
@@ -72,8 +73,10 @@ namespace RiskOfBulletstorm.Items
             base.Install();
             //On_ChargeCaptainShotgun.FixedUpdate += FixedUpdateHook;
             //On.RoR2.CharacterBody += CharacterBody_FixedUpdate;
-            //CharacterBody.FixedUpdate += FixedUpdateHook;
+            //CharacterBody.OnFixedUpdate += FixedUpdateHook;
             //CharacterBody.
+            //characterbody hook_FixedUpdate
+            //On.RoR2.CharacterBody.hook_FixedUpdate += CharacterBody_FixedUpdate;
             On.RoR2.CharacterBody.FixedUpdate += (orig, self) =>
             {
                 if (Input.GetKeyDown(KeyCode.T))
@@ -81,6 +84,7 @@ namespace RiskOfBulletstorm.Items
                     Chat.AddMessage("Blank Used!");
                     return;
                 }
+                orig(self);
             };
         }
 
@@ -94,9 +98,10 @@ namespace RiskOfBulletstorm.Items
                     Chat.AddMessage("Blank Used!");
                     return;
                 }
+                orig(self);
             };
         }
-        /*private static void CharacterBody_FixedUpdate(On.RoR2.CharacterBody.orig_FixedUpdate orig, UnityEngine.Vector3 position, CharacterBody self)
+        private static void CharacterBody_FixedUpdate(On.RoR2.CharacterBody.orig_FixedUpdate orig, UnityEngine.Vector3 position, CharacterBody self)
         {
             if (Input.GetKeyDown(KeyCode.T))
             {
@@ -104,7 +109,7 @@ namespace RiskOfBulletstorm.Items
                 return;
             }
             orig(self);
-        }*/
+        }
         private void RemoveItem(ItemIndex itemIndex)
         {
 
