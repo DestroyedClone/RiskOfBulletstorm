@@ -32,6 +32,9 @@ Roll Bomb: After using your Utility, drop 1 bomb(s) (+1 per stack) for 80% damag
 ##[Lunar]
 [unimplemented] Bloodied Scarf: Replaces your utility with Huntress Blink
 
+[unimplemented] Metronome: Gain a damage bonus for every enemy you kill, clears when you use a different skill.
+=> \+2% damage bonus for each enemy killed, maxes at +150%(+50%). The bonus is reset if the player uses a different skill.
+
 #[Special Items]
 [White] Armor: Blocks one hit of damage, then get destroyed.
 => TODO: Add health requirement
