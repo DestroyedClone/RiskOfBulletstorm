@@ -12,7 +12,7 @@ using static TILER2.MiscUtil;
 
 namespace RiskOfBulletstorm.Items
 {
-    public class Spice : Item_V2<Spice>
+    public class Spice : Item_V2<Spice> //Change to equipment that gives cursed.
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How many seconds should Enraging Photo's buff last with a single stack? (Default: 3 (seconds))", AutoConfigFlags.PreventNetMismatch)]

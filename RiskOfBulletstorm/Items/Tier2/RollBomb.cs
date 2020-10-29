@@ -24,7 +24,7 @@ namespace RiskOfBulletstorm.Items
         public float RollBombDamage { get; private set; } = 0.8f;
 
         public override string displayName => "Roll Bomb";
-        public override ItemTier itemTier => ItemTier.Tier1;
+        public override ItemTier itemTier => ItemTier.Tier2;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage });
 
         protected override string GetNameString(string langID = null) => displayName;
