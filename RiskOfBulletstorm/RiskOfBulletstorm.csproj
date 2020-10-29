@@ -76,7 +76,6 @@
 
   <ItemGroup>
     <Folder Include="Items\TierBoss\" />
-    <Folder Include="Items\Tier3\" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

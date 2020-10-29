@@ -40,8 +40,15 @@ Macho Brace: Gain +30% (+10% per stack) damage bonus upon using your utility.
 Roll Bomb: After using your Utility, drop 1 bomb(s) (+1 per stack) for 80% damage.
 
 ##[Red]
+[unimplemented] Ring of Triggers: Using an equipment fires your primary attack in all directions for 3 (+1 per stack) seconds
+
+Ring of Fire Resistance: Clears all stacks of Fire on the user upon taking damage.
 
 ##[Lunar]
+[unimplemented] Teaching of the Dodge Roll: Replaces the player's Utility with "Dodge Roll" which allows the user to roll with high active i-frames, but have low vulnerability frames afterwards. Removed from item pool upon possession.
+Picking one up with one equipped will roll a random lunar.
+Unknown Compatibility with Strides of Heresy.
+
 [unimplemented] Bloodied Scarf: Replaces your utility with Huntress Blink
 
 [unimplemented] Metronome: Gain a damage bonus for every enemy you kill, clears when you use a different skill.

@@ -15,7 +15,7 @@ namespace RiskOfBulletstorm.Items
 {
     public class GreenGuonStone : Item_V2<GreenGuonStone>
     {
-        //TODO: USE CHEN's HEALTH LOSS CODE FOR FLOATS
+        //TODO: USE CHEN's HEALTH LOSS CODE FOR FLOATS!!!!
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Chance to heal? (Default: 2%)", AutoConfigFlags.PreventNetMismatch)]
         public float HealChance { get; private set; } = 2f;
@@ -44,10 +44,11 @@ namespace RiskOfBulletstorm.Items
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Healing });
 
         protected override string GetNameString(string langID = null) => displayName;
+        public string descText = "Chance to heal upon taking ";
 
-        protected override string GetPickupString(string langID = null) => "Chance To Heal";
+        protected override string GetPickupString(string langID = null) => "Chance To Heal\n"+descText+"damage";
 
-        protected override string GetDescString(string langid = null) => $"TODO";
+        protected override string GetDescString(string langid = null) => $"{HealChance}% {descText} damage. Raises to {LethalSaveChance} if lethal.";
 
         protected override string GetLoreString(string langID = null) => "The Green Guon stone abhors pain, and has a small chance to heal its bearer upon being wounded. It seems to grow more desperate as the risk of death rises.";
 

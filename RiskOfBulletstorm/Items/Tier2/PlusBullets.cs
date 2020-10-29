@@ -29,7 +29,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "+1 To Bullet.";
+        protected override string GetPickupString(string langID = null) => "+1 To Bullet.\nMasterwork bullets deal more damage.";
 
         protected override string GetDescString(string langid = null) => $"Increases damage by <style=cIsDamage>{Pct(DamageBonus)} damage</style>. <style=cIsDamage>+{Pct(DamageBonusStack)} damage</style> per stack.";
 

@@ -51,7 +51,7 @@ namespace RiskOfBulletstorm.Items
             //BombPrefab.GetComponent<ProjectileImpactExplosion>().lifetime = 2;
             BombPrefab.GetComponent<ProjectileImpactExplosion>().destroyOnEnemy = false; //default True
             BombPrefab.GetComponent<ProjectileImpactExplosion>().timerAfterImpact = false;
-            //UnityEngine.Object.Destroy(BombPrefab.GetComponent<ApplyTorqueOnStart>());
+            UnityEngine.Object.Destroy(BombPrefab.GetComponent<ApplyTorqueOnStart>());
         }
         public override void Install()
         {
@@ -74,10 +74,13 @@ namespace RiskOfBulletstorm.Items
             {
                 if (self.characterBody.skillLocator.utility.Equals(self))
                 {
-                    ProjectileManager.instance.FireProjectile(BombPrefab, corePos, MineDropDirection(),
+                    for (int i = 0; i < invCount; i++)
+                    {
+                        ProjectileManager.instance.FireProjectile(BombPrefab, corePos, MineDropDirection(),
                                           vGameObject, vBody.damage * RollBombDamage,
                                           0f, Util.CheckRoll(vBody.crit, vBody.master),
                                           DamageColorIndex.Item, null, -1f);
+                    }
                 }
             }
             orig(self);
