@@ -99,6 +99,14 @@ namespace RiskOfBulletstorm.Items
                 || (RequireHealth && (oldHealth - self.health) / self.fullHealth < HealthThreshold)
                 || (!RequireHealth && (oldCH - self.combinedHealth) / self.fullCombinedHealth < HealthThreshold))
                 return;*/
+            var oldHealth = self.health;
+            orig(self, damageInfo);
+
+            if (InventoryCount < 1
+                || (oldHealth - self.health) / self.fullHealth < HealthThreshold)
+                return;
+            orig(self, damageInfo);
+
             if (InventoryCount > 0 && self.body.GetBuffCount(ROBEnraged) < InventoryCount)
             {
                 self.body.AddTimedBuffAuthority(ROBEnraged, (BaseDurationOfBuffInSeconds + (AdditionalDurationOfBuffInSeconds * InventoryCount - 1)));

@@ -12,7 +12,7 @@ using static TILER2.StatHooks;
 using static TILER2.MiscUtil;
 using EntityStates.Captain.Weapon;
 using On_ChargeCaptainShotgun = On.EntityStates.Captain.Weapon.ChargeCaptainShotgun; //DONT FORET TO REMOVE
-
+using EntityStates.Engi.EngiWeapon;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -32,7 +32,7 @@ namespace RiskOfBulletstorm.Items
 
         public override string displayName => "Blank";
         public override ItemTier itemTier => ItemTier.Tier1;
-        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility });
+        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility, ItemTag.AIBlacklist});
 
         protected override string GetNameString(string langID = null) => displayName;
 
@@ -71,6 +71,7 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             On_ChargeCaptainShotgun.FixedUpdate += FixedUpdateHook;
+            //CharacterBody.FixedUpdate += FixedUpdateHook;
         }
 
         public override void Uninstall()
@@ -90,10 +91,10 @@ namespace RiskOfBulletstorm.Items
         {
 
         }
-        private bool KeyPressed()
+        /*private bool KeyPressed()
         {
             return true;
-        }
+        }*/
  /*       public class CheckButton : MonoBehaviour
         {
             void FixedUpdate()
