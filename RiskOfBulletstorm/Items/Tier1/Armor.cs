@@ -14,7 +14,7 @@ using static TILER2.MiscUtil;
 
 namespace RiskOfBulletstorm.Items
 {
-    public class RoBArmor : Item_V2<RoBArmor>
+    public class Armor : Item_V2<Armor>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Activate a blank when armor is depleted? (Default: true)", AutoConfigFlags.PreventNetMismatch)]

@@ -72,6 +72,8 @@ namespace RiskOfBulletstorm.Items
             base.Install();
             On_ChargeCaptainShotgun.FixedUpdate += FixedUpdateHook;
             //CharacterBody.FixedUpdate += FixedUpdateHook;
+            //CharacterBody.
+            //On.RoR2.CharacterBody += CharacterBody_FixedUpdate;
         }
 
         public override void Uninstall()
@@ -79,13 +81,20 @@ namespace RiskOfBulletstorm.Items
             base.Uninstall();
             On_ChargeCaptainShotgun.FixedUpdate += FixedUpdateHook;
         }
+        private static void CharacterBody_FixedUpdate(On.RoR2.CharacterBody.orig_FixedUpdate orig, UnityEngine.Vector3 position, CharacterBody self)
+        {
+            
+            orig(self);
+        }
         void FixedUpdateHook(On_ChargeCaptainShotgun.orig_FixedUpdate orig, ChargeCaptainShotgun self)
         {
+            //if (isPlayerControlled) return;
             if(Input.GetKeyDown(KeyCode.T))
             {
                 Chat.AddMessage("Blank Used!");
                 return;
             }
+            orig(self);
         }
         public class KillProjectiles : MonoBehaviour
         {
