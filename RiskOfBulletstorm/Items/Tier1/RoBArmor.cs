@@ -66,22 +66,26 @@ namespace RiskOfBulletstorm.Items
         private void TankHit(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
             var InventoryCount = GetCount(self.body);
-            /*
+            
             var oldHealth = self.health;
             var oldCH = self.combinedHealth;
 
-            orig(self, damageInfo);
 
             if (InventoryCount < 1
                 || (RequireHealth && (oldHealth - self.health) / self.fullHealth < HealthThreshold)
                 || (!RequireHealth && (oldCH - self.combinedHealth) / self.fullCombinedHealth < HealthThreshold))
+            {
+                Chat.AddMessage("FAILED");
                 return;
-            */
+            }
+            
             if (InventoryCount > 0)
             {
-                //damageInfo.damage = 0;
+                Chat.AddMessage("Worked!");
+                damageInfo.damage = 0;
                 self.body.inventory.RemoveItem(catalogIndex);
             }
+            orig(self, damageInfo);
         }
     }
 }
