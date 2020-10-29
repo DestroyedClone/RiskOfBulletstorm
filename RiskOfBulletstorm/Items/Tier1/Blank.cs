@@ -48,7 +48,7 @@ namespace RiskOfBulletstorm.Items
             "4:33 PM - [LOG] EmptyMessage: The following transcription was automatically sent without any body. Did you forget to write?\n\n" +
             "12:00 PM - [Kyle] Guess what happened?";
 
-        /* 1. Check Key Press
+        /* 1. Check Key Press (done)
          * 2. Kill all projectiles that aren't allied
          * 3. Spawn a BlastAttack with basedmg*value with a high force aiming slightly upward with a stun damage type
          */
@@ -70,32 +70,46 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            On_ChargeCaptainShotgun.FixedUpdate += FixedUpdateHook;
+            //On_ChargeCaptainShotgun.FixedUpdate += FixedUpdateHook;
+            //On.RoR2.CharacterBody += CharacterBody_FixedUpdate;
             //CharacterBody.FixedUpdate += FixedUpdateHook;
             //CharacterBody.
-            //On.RoR2.CharacterBody += CharacterBody_FixedUpdate;
+            On.RoR2.CharacterBody.FixedUpdate += (orig, self) =>
+            {
+                if (Input.GetKeyDown(KeyCode.T))
+                {
+                    Chat.AddMessage("Blank Used!");
+                    return;
+                }
+            };
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
-            On_ChargeCaptainShotgun.FixedUpdate += FixedUpdateHook;
+            On.RoR2.CharacterBody.FixedUpdate -= (orig, self) =>
+            {
+                if (Input.GetKeyDown(KeyCode.T))
+                {
+                    Chat.AddMessage("Blank Used!");
+                    return;
+                }
+            };
         }
-        private static void CharacterBody_FixedUpdate(On.RoR2.CharacterBody.orig_FixedUpdate orig, UnityEngine.Vector3 position, CharacterBody self)
+        /*private static void CharacterBody_FixedUpdate(On.RoR2.CharacterBody.orig_FixedUpdate orig, UnityEngine.Vector3 position, CharacterBody self)
         {
-            
-            orig(self);
-        }
-        void FixedUpdateHook(On_ChargeCaptainShotgun.orig_FixedUpdate orig, ChargeCaptainShotgun self)
-        {
-            //if (isPlayerControlled) return;
-            if(Input.GetKeyDown(KeyCode.T))
+            if (Input.GetKeyDown(KeyCode.T))
             {
                 Chat.AddMessage("Blank Used!");
                 return;
             }
             orig(self);
+        }*/
+        private void RemoveItem(ItemIndex itemIndex)
+        {
+
         }
+
         public class KillProjectiles : MonoBehaviour
         {
 
