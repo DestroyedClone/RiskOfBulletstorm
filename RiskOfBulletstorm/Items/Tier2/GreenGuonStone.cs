@@ -40,7 +40,7 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("If true, damage to shield and barrier (from e.g. Personal Shield Generator, Topaz Brooch) will not count towards triggering Enraging Photo")]
         public bool requireHealth { get; private set; } = true;
         public override string displayName => "Green Guon Stone";
-        public override ItemTier itemTier => ItemTier.Tier1;
+        public override ItemTier itemTier => ItemTier.Tier2;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Healing });
 
         protected override string GetNameString(string langID = null) => displayName;

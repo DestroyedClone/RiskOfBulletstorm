@@ -16,7 +16,7 @@ namespace RiskOfBulletstorm.Items
     public class RingMiserlyProtection : Item_V2<RingMiserlyProtection>
     {
         public override string displayName => "Ring of Miserly Protection";
-        public override ItemTier itemTier => ItemTier.Tier2;
+        public override ItemTier itemTier => ItemTier.Lunar;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage });
 
         protected override string GetNameString(string langID = null) => displayName;

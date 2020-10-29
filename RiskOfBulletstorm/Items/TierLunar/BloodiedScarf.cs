@@ -21,7 +21,7 @@ namespace RiskOfBulletstorm.Items
 
         public float damageReward;
         public override string displayName => "Bloodied Scarf";
-        public override ItemTier itemTier => ItemTier.Tier1;
+        public override ItemTier itemTier => ItemTier.Lunar;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility });
 
         protected override string GetNameString(string langID = null) => displayName;
