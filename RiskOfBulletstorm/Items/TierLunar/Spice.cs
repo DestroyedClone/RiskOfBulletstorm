@@ -14,12 +14,6 @@ namespace RiskOfBulletstorm.Items
 {
     public class Spice : Item_V2<Spice> //Change to equipment that gives cursed.
     {
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How many seconds should Enraging Photo's buff last with a single stack? (Default: 3 (seconds))", AutoConfigFlags.PreventNetMismatch)]
-        public float BaseDurationOfBuffInSeconds { get; private set; } = 3f;
-
-
-
         public override string displayName => "Spice";
         public override ItemTier itemTier => ItemTier.Lunar;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage });
@@ -36,11 +30,6 @@ namespace RiskOfBulletstorm.Items
         protected override string GetDescString(string langid = null) => $"Provides a bonus to your stats ...so there's no harm in taking more, right?";
 
         protected override string GetLoreString(string langID = null) => "A potent gun-enhancing drug from the far reaches of the galaxy. It is known to be extremely addictive, and extremely expensive.";
-
-        //private static List<RoR2.CharacterBody> Playername = new List<RoR2.CharacterBody>();
-
-        public static GameObject ItemBodyModelPrefab;
-
 
         public override void SetupBehavior()
         {

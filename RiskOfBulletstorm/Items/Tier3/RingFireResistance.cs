@@ -9,7 +9,7 @@ using UnityEngine.Networking;
 using TILER2;
 using static TILER2.StatHooks;
 using static TILER2.MiscUtil;
-
+using UnityEngine.Networking.NetworkSystem;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -47,12 +47,14 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             On.RoR2.HealthComponent.TakeDamage += ClearFire;
+            On.RoR2.CharacterBody.OnInventoryChanged += GiveRandomRed;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
             On.RoR2.HealthComponent.TakeDamage -= ClearFire;
+            On.RoR2.CharacterBody.OnInventoryChanged -= GiveRandomRed;
         }
         private void ClearFire(On.RoR2.HealthComponent.orig_TakeDamage orig, RoR2.HealthComponent self, RoR2.DamageInfo damageInfo)
         {
@@ -66,6 +68,25 @@ namespace RiskOfBulletstorm.Items
                 self.body.RemoveBuff(BuffIndex.OnFire);
             }
             orig(self, damageInfo);
+        }
+        private void GiveRandomRed(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self) //ripped from harbcrate, i did credit though.
+        {
+            orig(self);
+            var amount = GetCount(self);
+            if (amount > 1)
+            {
+                self.inventory.RemoveItem(catalogIndex);
+                PickupIndex loot = Run.instance.treasureRng.NextElementUniform(Run.instance.availableTier3DropList);
+                if (self.isPlayerControlled)
+                    PickupDropletController.CreatePickupDroplet(loot, self.corePosition, Vector3.up * 5);
+                else
+                {
+                    PickupDef def = PickupCatalog.GetPickupDef(loot);
+                    self.inventory.GiveItem(def.itemIndex);
+                    var lootCount = self.inventory.GetItemCount(def.itemIndex);
+                    Chat.AddPickupMessage(self, def.nameToken, ColorCatalog.GetColor(ItemCatalog.GetItemDef(def.itemIndex).colorIndex), (uint)lootCount);
+                }
+            }
         }
     }
 }

@@ -95,3 +95,5 @@ ThinkInvis - ClassicItems https://github.com/ThinkInvis/RoR2-ClassicItems
 Chen - Chen's ClassicItems https://github.com/cheeeeeeeeeen/RoR2-ClassicItems
 
 RyanPallensen - FloodWarning 
+
+Harb - HarbCrate
