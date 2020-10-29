@@ -16,23 +16,23 @@ namespace RiskOfBulletstorm.Items
 {
     public class Ticket : Equipment_V2<Ticket>
     {
-        //TODO: USE CHEN's HEALTH LOSS CODE FOR FLOATS
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Additional Health Scaling? (Default: 1 = +100% health)", AutoConfigFlags.PreventNetMismatch)]
-        public float HealthBonus { get; private set; } = 1f;
 
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Additional Damage Scaling? (Default: 0.5 = +50% damage)", AutoConfigFlags.PreventNetMismatch)]
-        public float DamageBonus { get; private set; } = 0.5f;
+        //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        //[AutoConfig("Additional Health Scaling? (Default: 1 = +100% health)", AutoConfigFlags.PreventNetMismatch)]
+        //public float HealthBonus { get; private set; } = 1f;
+
+        //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        //[AutoConfig("Additional Damage Scaling? (Default: 0.5 = +50% damage)", AutoConfigFlags.PreventNetMismatch)]
+        //public float DamageBonus { get; private set; } = 0.5f;
 
         public override string displayName => "Ticket";
-        public override float cooldown { get; protected set; } = 45f;
+        public override float cooldown { get; protected set; } = 120f;
 
         protected override string GetNameString(string langID = null) => displayName;
 
         protected override string GetPickupString(string langID = null) => "Do You Have Yours?";
 
-        protected override string GetDescString(string langid = null) => $"Summons Gatling Gull as an ally.";
+        protected override string GetDescString(string langid = null) => $"Summons Gatling Gull (Clay Templar) as an ally.";
 
         protected override string GetLoreString(string langID = null) => "Gatling Gull respects martial prowess in Gungeoneers. Spend this ticket to bring in the big guns.";
 

@@ -24,12 +24,12 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("Damage? (Default: 1 = 100% damage)", AutoConfigFlags.PreventNetMismatch)]
         public float DamageDealt { get; private set; } = 1f;
 
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Cooldown? (Default: 8 = 8 seconds)", AutoConfigFlags.PreventNetMismatch)]
-        public float Cooldown_config { get; private set; } = 8f;
+        //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        //[AutoConfig("Cooldown? (Default: 8 = 8 seconds)", AutoConfigFlags.PreventNetMismatch)]
+        //public float Cooldown_config { get; private set; } = 8f;
 
         public override string displayName => "Proximity Mine";
-        public override float cooldown { get; protected set; } = 2f;
+        public override float cooldown { get; protected set; } = 14f;
 
         protected override string GetNameString(string langID = null) => displayName;
 

@@ -105,7 +105,6 @@ namespace RiskOfBulletstorm.Items
             if (InventoryCount < 1
                 || (oldHealth - self.health) / self.fullHealth < HealthThreshold)
                 return;
-            orig(self, damageInfo);
 
             if (InventoryCount > 0 && self.body.GetBuffCount(ROBEnraged) < InventoryCount)
             {

@@ -18,17 +18,16 @@ namespace RiskOfBulletstorm.Items
 {
     public class Bomb : Equipment_V2<Bomb>
     {
-        //TODO: USE CHEN's HEALTH LOSS CODE FOR FLOATS
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Damage? (Default: 0.6 = 60% damage)", AutoConfigFlags.PreventNetMismatch)]
         public float DamageDealt { get; private set; } = 1f;
 
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Cooldown? (Default: 8 = 8 seconds)", AutoConfigFlags.PreventNetMismatch)]
-        public float Cooldown_config { get; private set; } = 8f;
+        //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        //[AutoConfig("Cooldown? (Default: 8 = 8 seconds)", AutoConfigFlags.PreventNetMismatch)]
+        //public float Cooldown_config { get; private set; } = 8f;
 
         public override string displayName => "Ticket";
-        public override float cooldown { get; protected set; } = 2f;
+        public override float cooldown { get; protected set; } = 8f;
 
         protected override string GetNameString(string langID = null) => displayName;
 
@@ -44,8 +43,8 @@ namespace RiskOfBulletstorm.Items
 
         public override void SetupBehavior()
         {
-            GameObject engiMinePrefab = Resources.Load<GameObject>("prefabs/projectiles/CommandoGrenadeProjectile");
-            BombPrefab = engiMinePrefab.InstantiateClone("RollBomb");
+            GameObject commandoGrenadePrefab = Resources.Load<GameObject>("prefabs/projectiles/CommandoGrenadeProjectile");
+            BombPrefab = commandoGrenadePrefab.InstantiateClone("RollBomb");
             BombPrefab.transform.localScale = new Vector3(3, 3, 3);
             //BombPrefab.GetComponent<ProjectileSimple>().velocity = 0; //default 50
             //BombPrefab.GetComponent<ProjectileSimple>().lifetime = 6; //default 5

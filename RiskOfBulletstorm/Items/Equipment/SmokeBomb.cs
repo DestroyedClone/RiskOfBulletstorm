@@ -22,12 +22,12 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("Duration Default: 6 seconds", AutoConfigFlags.PreventNetMismatch)]
         public float CloakDuration { get; private set; } = 6f;
 
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Cooldown? (Default: 8 = 8 seconds)", AutoConfigFlags.PreventNetMismatch)]
-        public float Cooldown_config { get; private set; } = 8f;
+        //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        //[AutoConfig("Cooldown? (Default: 8 = 8 seconds)", AutoConfigFlags.PreventNetMismatch)]
+        //public float Cooldown_config { get; private set; } = 8f;
 
         public override string displayName => "Smoke Bomb";
-        public override float cooldown { get; protected set; } = 2f;
+        public override float cooldown { get; protected set; } = 36f;
 
         protected override string GetNameString(string langID = null) => displayName;
 

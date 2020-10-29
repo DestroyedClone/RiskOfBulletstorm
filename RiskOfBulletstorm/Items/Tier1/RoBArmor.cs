@@ -21,7 +21,7 @@ namespace RiskOfBulletstorm.Items
         public bool ActivateBlank { get; private set; } = true;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Block ETC bla bla %%%%", AutoConfigFlags.PreventNetMismatch)]
-        public float HealthThreshold { get; private set; } = 25f;
+        public float HealthThreshold { get; private set; } = 0.25f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("If true, damage to shield and barrier (from e.g. Personal Shield Generator, Topaz Brooch) will not count towards triggering Enraging Photo")]
         public bool RequireHealth { get; private set; } = false;
@@ -67,17 +67,15 @@ namespace RiskOfBulletstorm.Items
         {
             var InventoryCount = GetCount(self.body);
 
-            var oldHealth = self.health;
+            //var oldHealth = self.health;
             orig(self, damageInfo);
 
-            if (InventoryCount < 1
-                || (oldHealth - self.health) / self.fullHealth < HealthThreshold)
+            if (InventoryCount < 1)
+                //|| (oldHealth - self.health) / self.fullHealth < HealthThreshold)
             {
-                Chat.AddMessage("FAILED");
                 return;
             }
 
-            orig(self, damageInfo);
             if (InventoryCount > 0)
             {
                 Chat.AddMessage("Worked!");
