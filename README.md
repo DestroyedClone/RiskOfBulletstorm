@@ -13,18 +13,31 @@ Jarlyk - EliteSpawningOverhaul
 No assets currently.
 
 #[Items]
-[Green] +1 Bullets: +25% damage (+5% per stack)
+##[White]
 
-[unimplemented] Bloodied Scarf: Replaces your utility with Huntress Blink
+##[Green]
++1 Bullets: +25% damage (+5% per stack)
 
 [Green] Enraging Photo: Gain a temporary +100% damage boost (+50% per stack) upon taking 12% of your health in damage for 3 seconds.
 => TODO: Health Requirement Loss
 => TODO: Set Tier to Green
 => BetterUI Compat
 
-[unimplemented] Green Guon Stone: 
+[unimplemented] Green Guon Stone: Upon taking damage has a chance to heal you instead. 
 
-[Green] Roll Bomb: After using your Utility, drop 1 bomb(s) (+1 per stack) for 80% damage.
+Roll Bomb: After using your Utility, drop 1 bomb(s) (+1 per stack) for 80% damage.
+
+##[Red]
+
+##[Lunar]
+[unimplemented] Bloodied Scarf: Replaces your utility with Huntress Blink
+
+#[Special Items]
+[White] Armor: Blocks one hit of damage, then get destroyed.
+=> TODO: Add health requirement
+
+[White] Blank: Press a key to activate, destroying all projectiles, stunning and knocking nearby enemies back.
+
 
 #[Equipment]
 [Standard] Bomb: Throws a bomb for 80% damage.

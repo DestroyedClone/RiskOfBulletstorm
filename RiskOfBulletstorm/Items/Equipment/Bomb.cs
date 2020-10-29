@@ -25,7 +25,7 @@ namespace RiskOfBulletstorm.Items
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Cooldown? (Default: 8 = 8 seconds)", AutoConfigFlags.PreventNetMismatch)]
-        public float Cooldown_config { get; private set; } = 0.5f;
+        public float Cooldown_config { get; private set; } = 8f;
 
         public override string displayName => "Ticket";
         public override float cooldown { get; protected set; } = 2f;
@@ -44,14 +44,15 @@ namespace RiskOfBulletstorm.Items
 
         public override void SetupBehavior()
         {
-            GameObject engiMinePrefab = Resources.Load<GameObject>("prefabs/projectiles/EngiGrenadeProjectile");
+            GameObject engiMinePrefab = Resources.Load<GameObject>("prefabs/projectiles/CommandoGrenadeProjectile");
             BombPrefab = engiMinePrefab.InstantiateClone("RollBomb");
+            BombPrefab.transform.localScale = new Vector3(3, 3, 3);
             //BombPrefab.GetComponent<ProjectileSimple>().velocity = 0; //default 50
-            BombPrefab.GetComponent<ProjectileSimple>().lifetime = 6; //default 5
+            //BombPrefab.GetComponent<ProjectileSimple>().lifetime = 6; //default 5
             BombPrefab.GetComponent<ProjectileDamage>().damageColorIndex = DamageColorIndex.Item;
-            BombPrefab.GetComponent<ProjectileImpactExplosion>().lifetime = 6;
+            BombPrefab.GetComponent<ProjectileImpactExplosion>().falloffModel = BlastAttack.FalloffModel.None;
             //BombPrefab.GetComponent<ProjectileImpactExplosion>().destroyOnEnemy = false; //default True
-            BombPrefab.GetComponent<ProjectileImpactExplosion>().timerAfterImpact = false;
+            //BombPrefab.GetComponent<ProjectileImpactExplosion>().timerAfterImpact = false;
             UnityEngine.Object.Destroy(BombPrefab.GetComponent<ApplyTorqueOnStart>());
         }
         public override void SetupAttributes()

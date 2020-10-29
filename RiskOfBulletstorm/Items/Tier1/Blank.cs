@@ -80,7 +80,7 @@ namespace RiskOfBulletstorm.Items
         }
         void FixedUpdateHook(On_ChargeCaptainShotgun.orig_FixedUpdate orig, ChargeCaptainShotgun self)
         {
-            if(Input.GetKeyDown(BlankButton))
+            if(Input.GetKeyDown(KeyCode.T))
             {
                 Chat.AddMessage("Blank Used!");
                 return;

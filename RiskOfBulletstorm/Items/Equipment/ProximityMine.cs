@@ -26,7 +26,7 @@ namespace RiskOfBulletstorm.Items
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Cooldown? (Default: 8 = 8 seconds)", AutoConfigFlags.PreventNetMismatch)]
-        public float Cooldown_config { get; private set; } = 0.5f;
+        public float Cooldown_config { get; private set; } = 8f;
 
         public override string displayName => "Proximity Mine";
         public override float cooldown { get; protected set; } = 2f;

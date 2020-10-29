@@ -26,7 +26,7 @@ namespace RiskOfBulletstorm.Items
         public float DamageBonus { get; private set; } = 0.5f;
 
         public override string displayName => "Ticket";
-        public override float cooldown { get; protected set; } = 1f;
+        public override float cooldown { get; protected set; } = 45f;
 
         protected override string GetNameString(string langID = null) => displayName;
 
