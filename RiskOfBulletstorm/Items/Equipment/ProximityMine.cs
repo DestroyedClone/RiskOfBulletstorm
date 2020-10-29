@@ -81,7 +81,7 @@ namespace RiskOfBulletstorm.Items
 
             return true;
         }
-        private Quaternion MineDropDirection(CharacterBody body)
+        private Quaternion MineDropDirection()
         {
             return Util.QuaternionSafeLookRotation(
                 new Vector3(0f, 0f, 0f)
@@ -91,7 +91,7 @@ namespace RiskOfBulletstorm.Items
         {
             Vector3 corePos = Util.GetCorePosition(userBody);
             {
-                ProjectileManager.instance.FireProjectile(BombPrefab, corePos, MineDropDirection(userBody),
+                ProjectileManager.instance.FireProjectile(BombPrefab, corePos, MineDropDirection(),
                                       userGameObject, userBody.damage * DamageDealt,
                                       0f, Util.CheckRoll(userBody.crit, userBody.master),
                                       DamageColorIndex.Item, null, -1f);

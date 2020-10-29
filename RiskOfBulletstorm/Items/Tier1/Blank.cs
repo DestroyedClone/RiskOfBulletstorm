@@ -1,8 +1,8 @@
 ﻿
-//using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-//using System.Text;
+using System.Text;
 using R2API;
 using RoR2;
 using UnityEngine;
@@ -10,6 +10,8 @@ using UnityEngine.Networking;
 using TILER2;
 using static TILER2.StatHooks;
 using static TILER2.MiscUtil;
+using EntityStates.Captain.Weapon;
+using On_ChargeCaptainShotgun = On.EntityStates.Captain.Weapon.ChargeCaptainShotgun; //DONT FORET TO REMOVE
 
 
 namespace RiskOfBulletstorm.Items
@@ -46,6 +48,11 @@ namespace RiskOfBulletstorm.Items
             "4:33 PM - [LOG] EmptyMessage: The following transcription was automatically sent without any body. Did you forget to write?\n\n" +
             "12:00 PM - [Kyle] Guess what happened?";
 
+        /* 1. Check Key Press
+         * 2. Kill all projectiles that aren't allied
+         * 3. Spawn a BlastAttack with basedmg*value with a high force aiming slightly upward with a stun damage type
+         */
+
 
         public override void SetupBehavior()
         {
@@ -63,12 +70,39 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
+            On_ChargeCaptainShotgun.FixedUpdate += FixedUpdateHook;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
+            On_ChargeCaptainShotgun.FixedUpdate += FixedUpdateHook;
         }
-        //public class 
+        void FixedUpdateHook(On_ChargeCaptainShotgun.orig_FixedUpdate orig, ChargeCaptainShotgun self)
+        {
+            if(Input.GetKeyDown(BlankButton))
+            {
+                Chat.AddMessage("Blank Used!");
+                return;
+            }
+        }
+        public class KillProjectiles : MonoBehaviour
+        {
+
+        }
+        private bool KeyPressed()
+        {
+            return true;
+        }
+ /*       public class CheckButton : MonoBehaviour
+        {
+            void FixedUpdate()
+            {
+                if (Input.GetKeyDown("T"))
+                {
+
+                }
+            }
+        }*/
     }
 }
