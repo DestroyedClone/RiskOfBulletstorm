@@ -16,16 +16,18 @@ TODO:
 3. Soft Dependencies for other mods
 3a. Equipment: ThinkInvis Beating Embryo
 
-#[Items]
+#Items
 
-##[Special Items]
+##Special Items
+
 (WIP) [White] Armor: Blocks one hit of damage, then get destroyed.
 
 (WIP) [White] Blank: Press a key to activate, destroying all projectiles, stunning and knocking nearby enemies back. Consumed on use.
 
-##[White]
+##White
 
-##[Green]
+##Green
+
 +1 Bullets: +10% base damage (+1% per stack)
 
 Enraging Photo: Gain a temporary +100% damage boost  upon taking 33% of your health in damage for 3 (+0.25 per stack) seconds.
@@ -39,14 +41,15 @@ Macho Brace: Gain +30% (+10% per stack) damage bonus upon using your utility.
 
 Roll Bomb: After using your Utility, drop 1 bomb(s) (+1 per stack) for 80% damage.
 
-##[Red]
+##Red
 [unimplemented] Ring of Triggers: Using an equipment fires your primary attack in all directions for 3 (+1 per stack) seconds
 
 Ring of Fire Resistance: Clears all stacks of Fire on the user upon taking damage.
 
 Unity: +0.1 (0.05 per stack) damage per unique item in inventory
 
-##[Lunar]
+##Lunar
+
 [unimplemented] Teaching of the Dodge Roll: Replaces the player's Utility with "Dodge Roll" which allows the user to roll with high active i-frames, but have low vulnerability frames afterwards. Removed from item pool upon possession.
 Picking one up with one equipped will roll a random lunar.
 Unknown Compatibility with Strides of Heresy.
@@ -58,8 +61,10 @@ Unknown Compatibility with Strides of Heresy.
 
 Ring of Miserly Protection: Grants +50%(+50% per stack) increased maximum health, ...but all stacks disappear upon purchasing.
 
-#[Equipment]
-##[Normal]
+#Equipment
+
+##Normal
+
 Bomb: Throws a bomb for 100% damage. CD: 8
 
 Proximity Mine: Drops a mine for 100% damage. CD: 18
@@ -71,7 +76,7 @@ Ticket: Spawns a Clay Templar. CD: 120
 [Unimplemented] Trusty Lockpicks: 50% chance to unlock chest. If it fails, the chest is destroyed.
 
 
-##[Lunar]
+##Lunar
 [Unimplemented] Drill: Unlock a chest and summon a combat-shrine worth of enemies depending on the chest.
 	Normal: 1 
 	Green: 2
@@ -79,11 +84,11 @@ Ticket: Spawns a Clay Templar. CD: 120
 	
 
 
-#[Curse]
+#Curse
 [unimplemented] Picking up RiskOfBulletstorm items that defy Kaliber adds +0.25 curse. Each subsequent stack of a single item will add +0.1.
 Curse increases the chance of an enemy becoming Jammed.
 
-#[Elites]
+#Elites
 Kaliber's Wrath - Jammed {0}
 Jammed Elites deal 400% ([unimplemented]+20% per stage) damage and have 400% health.
 => Currently only affects spawned Elites.
