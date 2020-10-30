@@ -1,18 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-//using System.Text;
-using EntityStates;
-using EntityStates.Engi.EngiWeapon;
-using R2API;
+﻿using EntityStates.Engi.EngiWeapon;
 using RoR2;
-using RoR2.Projectile;
 using UnityEngine;
-using UnityEngine.Networking;
 using TILER2;
-using static TILER2.StatHooks;
-using static TILER2.MiscUtil;
-using static EntityStates.BaseState;
 
 namespace RiskOfBulletstorm.Items
 {

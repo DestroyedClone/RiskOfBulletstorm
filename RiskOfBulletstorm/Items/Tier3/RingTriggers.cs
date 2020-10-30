@@ -4,7 +4,7 @@ using System.Text;
 
 namespace RiskOfBulletstorm.Items
 {
-    class RingOfTriggers
+    class RingTriggers
     {
     }
 }
