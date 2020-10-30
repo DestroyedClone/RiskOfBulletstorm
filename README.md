@@ -111,6 +111,8 @@ RyanPallensen - FloodWarning
 
 Harb - HarbCrate
 
+ontrigger - ItemStatsMod https://github.com/ontrigger/ItemStatsMod/blob/4c015d5f54b5f7df788236b7c8546f7cc72743fe/ItemStats/src/Hooks.cs (UI)
+
 # Non-standard
 
 Rein - Nonspecific
