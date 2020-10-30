@@ -97,7 +97,9 @@ Jammed Elites deal 400% ([unimplemented]+20% per stage) damage and have 400% hea
 
 
 ## Credits
-Nearly all the code either directly references or is directly copied from and modified. Including this readme:
+# Repos
+
+Crediting all the repos that I've peered at'
 
 KomradeSpectre - AetheriumMod https://github.com/KomradeSpectre/AetheriumMod
 
@@ -108,6 +110,16 @@ Chen - Chen's ClassicItems https://github.com/cheeeeeeeeeen/RoR2-ClassicItems
 RyanPallensen - FloodWarning 
 
 Harb - HarbCrate
+
+# Non-standard
+
+Rein - Nonspecific
+
+KomradeSpectre, Chenn - Lots, and TILER2 Help
+
+Spice - OKIGotIt, Ghor
+
+rob - help with hooks
 
 ##Credits - Other
 https://stackoverflow.com/questions/105372/how-to-enumerate-an-enum

@@ -112,4 +112,34 @@ namespace RiskOfBulletstorm.Items
         {
         }
     }
+    public class Spice_RewardA : Item_V2<Spice_RewardA>
+    {
+        public override string displayName => "Spice";
+        public override ItemTier itemTier => ItemTier.NoTier;
+        protected override string GetNameString(string langID = null) => displayName;
+        protected override string GetPickupString(string langID = null) => "SpiceReward1";
+
+        protected override string GetDescString(string langid = null) => $"";
+
+        protected override string GetLoreString(string langID = null) => "";
+
+        public override void SetupBehavior(){}
+        public override void SetupAttributes(){base.SetupAttributes();}
+        public override void SetupConfig(){base.SetupConfig();}
+        public override void Install()
+        {
+            base.Install();
+            GetStatCoefficients += GiveSpiceReward;
+        }
+
+        public override void Uninstall()
+        {
+            base.Uninstall();
+            GetStatCoefficients -= GiveSpiceReward;
+        }
+        private void GiveSpiceReward(CharacterBody sender, StatHookEventArgs args)
+        {
+            //args.
+        }
+    }
 }
