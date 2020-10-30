@@ -79,7 +79,7 @@ namespace RiskOfBulletstorm.Items
             if (InventoryCount > 0) //failsafe
             {
                 Chat.AddMessage("Worked!");
-                damageInfo.damage = 0;
+                //damageInfo.damage = 0;
                 self.body.inventory.RemoveItem(catalogIndex);
             }
             orig(self, damageInfo);

@@ -52,6 +52,7 @@ namespace RiskOfBulletstorm.Items
             GetStatCoefficients += GiveSpiceReward;
             On.RoR2.CharacterBody.OnInventoryChanged += CalculateSpiceReward;
             On.RoR2.PickupDropletController.CreatePickupDroplet += PickupDropletController_CreatePickupDroplet;
+            //RoR2.UI.GenericNotification += GenericNotifaction_SetItem;
         }
 
         public override void Uninstall()
@@ -61,6 +62,10 @@ namespace RiskOfBulletstorm.Items
             GetStatCoefficients -= GiveSpiceReward;
             On.RoR2.CharacterBody.OnInventoryChanged -= CalculateSpiceReward;
             On.RoR2.PickupDropletController.CreatePickupDroplet -= PickupDropletController_CreatePickupDroplet;
+        }
+        private void GenericNotifaction_SetItem()
+        {
+
         }
         private void CalculateSpiceReward(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self) //blessed komrade
         {
@@ -90,6 +95,7 @@ namespace RiskOfBulletstorm.Items
                     SpiceReplaceChance = Mathf.Min(SpiceReplaceChance + 5f,100f);
                     break;
             }
+            //protected override string GetPickupString = dynamicPickupText;
             orig(self);
         }
         private void PickupDropletController_CreatePickupDroplet(On.RoR2.PickupDropletController.orig_CreatePickupDroplet orig, PickupIndex pickupIndex, UnityEngine.Vector3 position, UnityEngine.Vector3 velocity)

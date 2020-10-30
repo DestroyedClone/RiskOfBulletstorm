@@ -89,14 +89,17 @@ namespace RiskOfBulletstorm.Items
             var InventoryCount = GetCount(self);
             if (InventoryCount < 0 || !self.isPlayerControlled) { return; }
 
-            if (Input.GetKeyDown(KeyCode.T))
+            if (InventoryCount > 0)
             {
-                if (BlankUsed == false)
+                if (Input.GetKeyDown(KeyCode.T))
                 {
-                    BlankUsed = true;
-                    Chat.AddMessage("Blank Used!");
+                    if (BlankUsed == false)
+                    {
+                        BlankUsed = true;
+                        Chat.AddMessage("Blank Used!");
+                    }
+                    return;
                 }
-                return;
             }
             orig(self);
         }

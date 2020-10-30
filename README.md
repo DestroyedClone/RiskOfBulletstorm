@@ -61,6 +61,8 @@ Unknown Compatibility with Strides of Heresy.
 
 Ring of Miserly Protection: Grants +50%(+50% per stack) increased maximum health, ...but all stacks disappear upon purchasing.
 
+Spice: wadafaggdrgdrgrdg MAKE IT WORK
+
 # Equipment
 
 ## Normal

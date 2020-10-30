@@ -35,8 +35,13 @@ namespace RiskOfBulletstorm.Items
         };*/
         //bool synergy_1 = false; //Soldier's Syringe + Energy Drink = OG Cola: +20% faster attack speed, movement speed, and health regen.
         bool synergy_2 = false; //Harvester's Scythe + Old Guiollotine = Die! Die! Die!: +25 base damage.
-        //ItemIndex synergy_2_a = ItemIndex.CritHeal;
-        //ItemIndex synergy_2_b = ItemIndex.ExecuteLowHealthElite;
+                                //ItemIndex synergy_2_a = ItemIndex.CritHeal;
+                                //ItemIndex synergy_2_b = ItemIndex.ExecuteLowHealthElite;
+
+        /*jaggedArray[,] synergies = { 
+            { 1, 2, 3 },
+            { 4, 5, 6 }
+        };*/
 
         public override void SetupBehavior()
         {
