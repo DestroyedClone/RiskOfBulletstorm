@@ -44,7 +44,7 @@ Roll Bomb: After using your Utility, drop 1 bomb(s) (+1 per stack) for 80% damag
 
 Ring of Fire Resistance: Clears all stacks of Fire on the user upon taking damage.
 
-Ring of Unity: 
+Unity: +0.1 (0.05 per stack) damage per unique item in inventory
 
 ##[Lunar]
 [unimplemented] Teaching of the Dodge Roll: Replaces the player's Utility with "Dodge Roll" which allows the user to roll with high active i-frames, but have low vulnerability frames afterwards. Removed from item pool upon possession.
@@ -101,3 +101,6 @@ Chen - Chen's ClassicItems https://github.com/cheeeeeeeeeen/RoR2-ClassicItems
 RyanPallensen - FloodWarning 
 
 Harb - HarbCrate
+
+##Credits - Other
+https://stackoverflow.com/questions/105372/how-to-enumerate-an-enum

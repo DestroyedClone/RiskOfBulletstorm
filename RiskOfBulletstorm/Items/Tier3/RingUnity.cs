@@ -1,7 +1,7 @@
-﻿//using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-//using System.Text;
+using System.Reflection;
 using R2API;
 using RoR2;
 using UnityEngine;
@@ -39,7 +39,10 @@ namespace RiskOfBulletstorm.Items
 
         //private static List<RoR2.CharacterBody> Playername = new List<RoR2.CharacterBody>();
 
-        public static GameObject ItemBodyModelPrefab;
+        //public static GameObject ItemBodyModelPrefab;
+
+        public int TotalItemCount = 0;
+        public int UnityInventoryCount = 0;
 
         public override void SetupBehavior()
         {
@@ -70,18 +73,38 @@ namespace RiskOfBulletstorm.Items
         {
             orig(self);
             var amount = GetCount(self);
-            var inv = self.inventory;
-            var tier1Items = RoR2.Inventory;
-            Inventory.Get
+            UnityInventoryCount = GetCount(self);
+            //var inv = self.inventory;
+            //int tier1Items = GetItemCount(ItemTier.Tier1, self);
+            //int tier2Items = GetItemCount(ItemTier.Tier2, self);
+
             if (amount < 1) { return; }
             else
             {
-                
+                foreach (ItemTier tier in (ItemTier[])Enum.GetValues(typeof(ItemTier))) //https://stackoverflow.com/questions/105372/how-to-enumerate-an-enum
+                {
+                    TotalItemCount += GetItemCount(tier, self);
+                }
             }
         }
-        private void BoostHealth(CharacterBody sender, StatHookEventArgs args)
+        static int GetItemCount(ItemTier itemTier, CharacterBody self)
         {
-            args.baseDamageAdd += TotalItemCount;
+            int num = 0;
+            ItemIndex itemIndex = ItemIndex.Syringe;
+            ItemIndex itemCount = (ItemIndex)ItemCatalog.itemCount;
+            while (itemIndex < itemCount)
+            {
+                if (ItemCatalog.GetItemDef(itemIndex).tier == itemTier)
+                {
+                    num += self.inventory.GetItemCount(itemIndex);
+                }
+                itemIndex++;
+            }
+            return num;
+        }
+        private void BoostDamage(CharacterBody sender, StatHookEventArgs args)
+        {
+            args.baseDamageAdd += TotalItemCount * (DamageBonus + (DamageBonusStack * (UnityInventoryCount - 1)));
         }
     }
 }
