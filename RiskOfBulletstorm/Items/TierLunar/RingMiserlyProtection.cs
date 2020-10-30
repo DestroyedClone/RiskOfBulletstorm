@@ -67,11 +67,13 @@ namespace RiskOfBulletstorm.Items
         private void PurchaseShatter(On.RoR2.PurchaseInteraction.orig_OnInteractionBegin orig, PurchaseInteraction self, Interactor activator)
         {
             RecentPurchase = true;
+            Chat.AddMessage(activator.name);
+            
             orig(self, activator);
         }
         private void BoostHealth(CharacterBody sender, StatHookEventArgs args)
         {
-            args.healthMultAdd += HealthBonus;
+            //args.healthMultAdd += HealthBonus;
         }
     }
 }

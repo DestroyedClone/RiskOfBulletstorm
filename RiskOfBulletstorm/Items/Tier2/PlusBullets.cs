@@ -55,7 +55,7 @@ namespace RiskOfBulletstorm.Items
         public override void Uninstall()
         {
             base.Uninstall();
-            GetStatCoefficients -= AddDamage; //
+            GetStatCoefficients -= AddDamage; 
         }
         private void AddDamage(CharacterBody sender, StatHookEventArgs args)
         {

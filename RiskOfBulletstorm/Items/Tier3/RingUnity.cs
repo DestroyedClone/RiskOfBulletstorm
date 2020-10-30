@@ -83,11 +83,11 @@ namespace RiskOfBulletstorm.Items
             {
                 foreach (ItemTier tier in (ItemTier[])Enum.GetValues(typeof(ItemTier))) //https://stackoverflow.com/questions/105372/how-to-enumerate-an-enum
                 {
-                    TotalItemCount += GetItemCount(tier, self);
+                    TotalItemCount += GetTotalItemCountOfTier(tier, self);
                 }
             }
         }
-        static int GetItemCount(ItemTier itemTier, CharacterBody self)
+        static int GetTotalItemCountOfTier(ItemTier itemTier, CharacterBody self)
         {
             int num = 0;
             ItemIndex itemIndex = ItemIndex.Syringe;
@@ -104,7 +104,8 @@ namespace RiskOfBulletstorm.Items
         }
         private void BoostDamage(CharacterBody sender, StatHookEventArgs args)
         {
-            args.baseDamageAdd += TotalItemCount * (DamageBonus + (DamageBonusStack * (UnityInventoryCount - 1)));
+            if (UnityInventoryCount > 0)
+            { args.baseDamageAdd += TotalItemCount * (DamageBonus + (DamageBonusStack * (UnityInventoryCount - 1))); }
         }
     }
 }

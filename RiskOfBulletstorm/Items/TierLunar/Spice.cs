@@ -20,8 +20,9 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        public string dynamicPickupText = "THE CUBE";
-        public float SpiceReplaceChance = 0f;
+        private string dynamicPickupText = "THE CUBE";
+        private float SpiceReplaceChance = 0f;
+        private int InventoryCount;
         protected override string GetPickupString(string langID = null)
         {
             return dynamicPickupText;
@@ -50,6 +51,7 @@ namespace RiskOfBulletstorm.Items
             //On.RoR2.HealthComponent.TakeDamage += CalculateSpiceReward;
             GetStatCoefficients += GiveSpiceReward;
             On.RoR2.CharacterBody.OnInventoryChanged += CalculateSpiceReward;
+            On.RoR2.PickupDropletController.CreatePickupDroplet += PickupDropletController_CreatePickupDroplet;
         }
 
         public override void Uninstall()
@@ -57,42 +59,48 @@ namespace RiskOfBulletstorm.Items
             base.Uninstall();
             //On.RoR2.HealthComponent.TakeDamage -= CalculateSpiceReward;
             GetStatCoefficients -= GiveSpiceReward;
+            On.RoR2.CharacterBody.OnInventoryChanged -= CalculateSpiceReward;
+            On.RoR2.PickupDropletController.CreatePickupDroplet -= PickupDropletController_CreatePickupDroplet;
         }
         private void CalculateSpiceReward(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self) //blessed komrade
         {
-            var InventoryCount = GetCount(self);
+            InventoryCount = GetCount(self);
             switch(InventoryCount)
             {
                 case 0:
+                    SpiceReplaceChance = 0f;
                     break;
                 case 1:
-                    SpiceReplaceChance += 0.1f;
+                    SpiceReplaceChance += 10f;
                     dynamicPickupText = "A tantalizing cube of power.";
                     break;
                 case 2:
-                    SpiceReplaceChance += 0.1f;
+                    SpiceReplaceChance += 10f;
                     dynamicPickupText = "One more couldn't hurt.";
                     break;
                 case 3:
-                    SpiceReplaceChance += 0.2f;
+                    SpiceReplaceChance += 20f;
                     dynamicPickupText = "Just one more hit...";
                     break;
                 case 4:
-                    SpiceReplaceChance += 0.3f;
+                    SpiceReplaceChance += 30f;
                     dynamicPickupText = "MORE";
                     break;
                 default:
-                    SpiceReplaceChance = Mathf.Min(SpiceReplaceChance + 0.05f,1.0f);
+                    SpiceReplaceChance = Mathf.Min(SpiceReplaceChance + 5f,100f);
                     break;
             }
             orig(self);
         }
-        private static void PickupDropletController_CreatePickupDroplet(On.RoR2.PickupDropletController.orig_CreatePickupDroplet orig, PickupIndex pickupIndex, UnityEngine.Vector3 position, UnityEngine.Vector3 velocity)
+        private void PickupDropletController_CreatePickupDroplet(On.RoR2.PickupDropletController.orig_CreatePickupDroplet orig, PickupIndex pickupIndex, UnityEngine.Vector3 position, UnityEngine.Vector3 velocity)
         {
-            if (pickupIndex == PickupCatalog.FindPickupIndex(ItemIndex.AlienHead))
-            {
-                pickupIndex = PickupCatalog.FindPickupIndex(ItemIndex.Hoof);
-            }
+ //           if (pickupIndex == PickupCatalog.FindPickupIndex(ItemIndex.AlienHead))
+  //          {
+                if (Util.CheckRoll(SpiceReplaceChance,0,null))
+                {
+                    pickupIndex = PickupCatalog.FindPickupIndex(catalogIndex);
+                }
+           // }
             orig(pickupIndex, position, velocity);
         }
         private void GiveSpiceReward(CharacterBody sender, StatHookEventArgs args)

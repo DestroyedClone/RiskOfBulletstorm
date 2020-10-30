@@ -35,7 +35,7 @@ namespace RiskOfBulletstorm.Items
         {
             GameObject engiMinePrefab = Resources.Load<GameObject>("prefabs/projectiles/EngiGrenadeProjectile");
             BombPrefab = engiMinePrefab.InstantiateClone("RollBomb");
-            BombPrefab.transform.localScale = new Vector3(3, 3, 3);
+            //BombPrefab.transform.localScale = new Vector3(3, 3, 3);
             BombPrefab.GetComponent<ProjectileSimple>().velocity = 0; //default 50
             //BombPrefab.GetComponent<ProjectileSimple>().lifetime = 4; //default 5
             BombPrefab.GetComponent<ProjectileDamage>().damageColorIndex = DamageColorIndex.Item;

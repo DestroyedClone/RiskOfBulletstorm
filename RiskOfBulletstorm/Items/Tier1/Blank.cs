@@ -54,7 +54,7 @@ namespace RiskOfBulletstorm.Items
          * 3. Spawn a BlastAttack with basedmg*value with a high force aiming slightly upward with a stun damage type
          */
 
-
+        public bool BlankUsed = false;
         public override void SetupBehavior()
         {
 
@@ -71,45 +71,35 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            //On_ChargeCaptainShotgun.FixedUpdate += FixedUpdateHook;
             //On.RoR2.CharacterBody += CharacterBody_FixedUpdate;
             //CharacterBody.OnFixedUpdate += FixedUpdateHook;
             //CharacterBody.
             //characterbody hook_FixedUpdate
             //On.RoR2.CharacterBody.hook_FixedUpdate += CharacterBody_FixedUpdate;
-            On.RoR2.CharacterBody.FixedUpdate += (orig, self) =>
-            {
-                if (Input.GetKeyDown(KeyCode.T))
-                {
-                    Chat.AddMessage("Blank Used!");
-                    return;
-                }
-                orig(self);
-            };
+            On.RoR2.CharacterBody.FixedUpdate += CharacterBody_FixedUpdate;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
-            On.RoR2.CharacterBody.FixedUpdate -= (orig, self) =>
-            {
-                if (Input.GetKeyDown(KeyCode.T))
-                {
-                    Chat.AddMessage("Blank Used!");
-                    return;
-                }
-                orig(self);
-            };
+            On.RoR2.CharacterBody.FixedUpdate -= CharacterBody_FixedUpdate;
         }
-        //private static void CharacterBody_FixedUpdate(On.RoR2.CharacterBody.orig_FixedUpdate orig, UnityEngine.Vector3 position, CharacterBody self)
-        //{
-        //    if (Input.GetKeyDown(KeyCode.T))
-        //    {
-        //        Chat.AddMessage("Blank Used!");
-        //        return;
-        //    }
-        //    orig(self);
-        //}
+        private void CharacterBody_FixedUpdate(On.RoR2.CharacterBody.orig_FixedUpdate orig, CharacterBody self)
+        {
+            var InventoryCount = GetCount(self);
+            if (InventoryCount < 0 || !self.isPlayerControlled) { return; }
+
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                if (BlankUsed == false)
+                {
+                    BlankUsed = true;
+                    Chat.AddMessage("Blank Used!");
+                }
+                return;
+            }
+            orig(self);
+        }
         //private void RemoveItem(ItemIndex itemIndex)
         //{
 

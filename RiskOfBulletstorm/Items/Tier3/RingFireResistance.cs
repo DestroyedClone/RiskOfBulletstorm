@@ -69,8 +69,8 @@ namespace RiskOfBulletstorm.Items
                     default:
                         break;
                 }
-                orig(self, damageInfo);
             }
+            orig(self, damageInfo);
         }
             private void GiveRandomRed(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self) //ripped from harbcrate, i did credit though.
         {

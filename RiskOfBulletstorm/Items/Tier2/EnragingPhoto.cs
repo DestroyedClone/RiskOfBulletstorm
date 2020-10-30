@@ -12,7 +12,6 @@ namespace RiskOfBulletstorm.Items
 {
     public class EnragingPhoto : Item_V2<EnragingPhoto>
     {
-        //TODO: USE CHEN's HEALTH LOSS CODE FOR FLOATS
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How many seconds should Enraging Photo's buff last with a single stack? (Default: 3 (seconds))", AutoConfigFlags.PreventNetMismatch)]
         public float BaseDurationOfBuffInSeconds { get; private set; } = 3f;
@@ -101,7 +100,9 @@ namespace RiskOfBulletstorm.Items
 
             if (InventoryCount < 1
                 || (oldHealth - self.health) / self.fullHealth < HealthThreshold)
-                return;
+            {
+                Chat.AddMessage("EnragingPhoto Failed");
+                return; }
 
             if (InventoryCount > 0 && self.body.GetBuffCount(ROBEnraged) < InventoryCount)
             {

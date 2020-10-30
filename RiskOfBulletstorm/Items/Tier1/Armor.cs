@@ -69,15 +69,14 @@ namespace RiskOfBulletstorm.Items
             var InventoryCount = GetCount(self.body);
 
             //var oldHealth = self.health;
-            orig(self, damageInfo);
-
+            //orig(self, damageInfo);
+            //|| (oldHealth - self.health) / self.fullHealth < HealthThreshold)
             if (InventoryCount < 1)
-                //|| (oldHealth - self.health) / self.fullHealth < HealthThreshold)
             {
                 return;
             }
 
-            if (InventoryCount > 0)
+            if (InventoryCount > 0) //failsafe
             {
                 Chat.AddMessage("Worked!");
                 damageInfo.damage = 0;
