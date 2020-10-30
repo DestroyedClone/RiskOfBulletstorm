@@ -101,19 +101,19 @@ namespace RiskOfBulletstorm.Items
                 orig(self);
             };
         }
-        private static void CharacterBody_FixedUpdate(On.RoR2.CharacterBody.orig_FixedUpdate orig, UnityEngine.Vector3 position, CharacterBody self)
-        {
-            if (Input.GetKeyDown(KeyCode.T))
-            {
-                Chat.AddMessage("Blank Used!");
-                return;
-            }
-            orig(self);
-        }
-        private void RemoveItem(ItemIndex itemIndex)
-        {
+        //private static void CharacterBody_FixedUpdate(On.RoR2.CharacterBody.orig_FixedUpdate orig, UnityEngine.Vector3 position, CharacterBody self)
+        //{
+        //    if (Input.GetKeyDown(KeyCode.T))
+        //    {
+        //        Chat.AddMessage("Blank Used!");
+        //        return;
+        //    }
+        //    orig(self);
+        //}
+        //private void RemoveItem(ItemIndex itemIndex)
+        //{
 
-        }
+        //}
 
         public class KillProjectiles : MonoBehaviour
         {

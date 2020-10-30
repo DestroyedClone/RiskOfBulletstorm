@@ -15,21 +15,29 @@ namespace RiskOfBulletstorm.Items
 {
     public class RingMiserlyProtection : Item_V2<RingMiserlyProtection>
     {
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Health Increase", AutoConfigFlags.PreventNetMismatch)]
+        public float HealthBonus { get; private set; } = 1.0f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Health Increase Stack", AutoConfigFlags.PreventNetMismatch)]
+        public float HealthBonusStack { get; private set; } = 0.5f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Enable item synergy? (Default: True)", AutoConfigFlags.PreventNetMismatch)]
+        public bool EnableSynergy { get; private set; } = true;
+        public bool RecentPurchase = false;
         public override string displayName => "Ring of Miserly Protection";
         public override ItemTier itemTier => ItemTier.Lunar;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage });
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "No Burns!\nPrevents damage from fire.";
+        protected override string GetPickupString(string langID = null) => "Aids The Fiscally Responsible\nIncreases health substantially. Any purchases will shatter the ring.";
 
-        protected override string GetDescString(string langid = null) => $"Clears all stacks of Fire on the user upon taking damage.";
+        protected override string GetDescString(string langid = null) => $"Grants +{Pct(HealthBonus)} (+{Pct(HealthBonusStack)} per stack) health <style=cIsDeath>...but breaks completely upon purchasing.</style> ";
 
-        protected override string GetLoreString(string langID = null) => "A ring originally worn by the legendary gunsmith himself. Later in life, Edwin no longer needed it, but the ring proved indispensable during his early years in the Forge. It eventually passed to his eldest daughter.";
-
-        //private static List<RoR2.CharacterBody> Playername = new List<RoR2.CharacterBody>();
-
-        public static GameObject ItemBodyModelPrefab;
+        protected override string GetLoreString(string langID = null) => "Before the Shopkeep opened his shop, he was an avaricious and miserly man. He remains careful about any expenditures, but through capitalism he has purged himself of negative emotion.";
 
         public override void SetupBehavior()
         {
@@ -46,26 +54,24 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            On.RoR2.HealthComponent.TakeDamage += ClearFire;
+            On.RoR2.PurchaseInteraction.OnInteractionBegin += PurchaseShatter;
+            GetStatCoefficients += BoostHealth;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
-            On.RoR2.HealthComponent.TakeDamage -= ClearFire;
+            On.RoR2.PurchaseInteraction.OnInteractionBegin -= PurchaseShatter;
+            GetStatCoefficients += BoostHealth;
         }
-        private void ClearFire(On.RoR2.HealthComponent.orig_TakeDamage orig, RoR2.HealthComponent self, RoR2.DamageInfo damageInfo)
+        private void PurchaseShatter(On.RoR2.PurchaseInteraction.orig_OnInteractionBegin orig, PurchaseInteraction self, Interactor activator)
         {
-            var InventoryCount = GetCount(self.body);
-
-            if (InventoryCount < 1)
-                return;
-
-            if (InventoryCount > 0 && self.body.HasBuff(BuffIndex.OnFire))
-            {
-                self.body.RemoveBuff(BuffIndex.OnFire);
-            }
-            orig(self, damageInfo);
+            RecentPurchase = true;
+            orig(self, activator);
+        }
+        private void BoostHealth(CharacterBody sender, StatHookEventArgs args)
+        {
+            args.healthMultAdd += HealthBonus;
         }
     }
 }

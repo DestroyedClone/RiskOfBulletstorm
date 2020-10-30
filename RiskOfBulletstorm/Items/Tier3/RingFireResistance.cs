@@ -15,7 +15,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "No Burns!\nPrevents damage from fire.";
 
-        protected override string GetDescString(string langid = null) => $"Clears all stacks of Fire on the user upon taking damage.";
+        protected override string GetDescString(string langid = null) => $"Clears all stacks of Fire on the user upon taking damage. Prevents fire damage from inflicting.";
 
         protected override string GetLoreString(string langID = null) => "A ring originally worn by the legendary gunsmith himself. Later in life, Edwin no longer needed it, but the ring proved indispensable during his early years in the Forge. It eventually passed to his eldest daughter.";
 
@@ -54,14 +54,25 @@ namespace RiskOfBulletstorm.Items
 
             if (InventoryCount < 1)
                 return;
-
-            if (InventoryCount > 0 && self.body.HasBuff(BuffIndex.OnFire))
+            else
             {
-                self.body.RemoveBuff(BuffIndex.OnFire);
+                if (self.body.HasBuff(BuffIndex.OnFire))
+                {
+                    self.body.RemoveBuff(BuffIndex.OnFire);
+                }
+                switch (damageInfo.damageType)
+                {
+                    case DamageType.IgniteOnHit:
+                    case DamageType.PercentIgniteOnHit:
+                        damageInfo.damageType = DamageType.Generic;
+                        break;
+                    default:
+                        break;
+                }
+                orig(self, damageInfo);
             }
-            orig(self, damageInfo);
         }
-        private void GiveRandomRed(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self) //ripped from harbcrate, i did credit though.
+            private void GiveRandomRed(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self) //ripped from harbcrate, i did credit though.
         {
             orig(self);
             var amount = GetCount(self);

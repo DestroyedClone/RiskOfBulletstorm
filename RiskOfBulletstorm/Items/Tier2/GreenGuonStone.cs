@@ -30,9 +30,9 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("Lethal Save Chance. Default: 50%", AutoConfigFlags.PreventNetMismatch)]
         public float LethalSaveChance { get; private set; } = 50f;
         
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("If true, damage to shield and barrier (from e.g. Personal Shield Generator, Topaz Brooch) will not count towards triggering Enraging Photo")]
-        public bool requireHealth { get; private set; } = true;
+        //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        //[AutoConfig("If true, damage to shield and barrier (from e.g. Personal Shield Generator, Topaz Brooch) will not count towards triggering Enraging Photo")]
+        //public bool RequireHealth { get; private set; } = true;
         public override string displayName => "Green Guon Stone";
         public override ItemTier itemTier => ItemTier.Tier2;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Healing });
@@ -87,10 +87,6 @@ namespace RiskOfBulletstorm.Items
         private void TankHit(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
             var InventoryCount = GetCount(self.body);
-
-            //var oldHealth = self.health;
-            //orig(self, damageInfo);
-            var finalChance = HealChance;
 
             if (InventoryCount < 1)
             //|| (oldHealth - self.health) / self.fullHealth < HealthThreshold)

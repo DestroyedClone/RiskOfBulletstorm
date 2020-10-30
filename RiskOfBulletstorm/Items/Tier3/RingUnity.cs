@@ -15,6 +15,16 @@ namespace RiskOfBulletstorm.Items
 {
     public class Unity : Item_V2<Unity>
     {
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Damage increase on single stack? (Default: 0.1)" +
+            "\nKeep in mind that this number is MULTIPLIED by the amount of TOTAL items.",
+            AutoConfigFlags.PreventNetMismatch)]
+        public float DamageBonus { get; private set; } = 0.1f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Damage increase on subsequent stacks (Default: 0.01)" +
+            "\nKeep in mind that this number is MULTIPLIED by the amount of TOTAL items.", AutoConfigFlags.PreventNetMismatch)]
+        public float DamageBonusStack { get; private set; } = 0.05f;
         public override string displayName => "Unity";
         public override ItemTier itemTier => ItemTier.Tier3;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage });
@@ -23,7 +33,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "Our Powers Combined\nIncreased combat effectiveness per item.";
 
-        protected override string GetDescString(string langid = null) => $"Clears all stacks of Fire on the user upon taking damage.";
+        protected override string GetDescString(string langid = null) => $"+{DamageBonus} ({DamageBonusStack} per stack) damage per unique item in inventory";
 
         protected override string GetLoreString(string langID = null) => "This ring takes a small amount of power from each gun carried and adds it to the currently equipped gun.";
 
@@ -46,28 +56,32 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            On.RoR2.HealthComponent.TakeDamage += ClearFire;
-            On.RoR2.CharacterBody.OnInventoryChanged += GiveRandomRed;
+            On.RoR2.CharacterBody.OnInventoryChanged += GiveUnityBonus;
+            GetStatCoefficients += BoostDamage;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
-            On.RoR2.HealthComponent.TakeDamage -= ClearFire;
-            On.RoR2.CharacterBody.OnInventoryChanged -= GiveRandomRed;
+            On.RoR2.CharacterBody.OnInventoryChanged -= GiveUnityBonus;
+            GetStatCoefficients -= BoostDamage;
         }
-        private void ClearFire(On.RoR2.HealthComponent.orig_TakeDamage orig, RoR2.HealthComponent self, RoR2.DamageInfo damageInfo)
+        private void GiveUnityBonus(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self) 
         {
-            var InventoryCount = GetCount(self.body);
-
-            if (InventoryCount < 1)
-                return;
-
-            if (InventoryCount > 0 && self.body.HasBuff(BuffIndex.OnFire))
+            orig(self);
+            var amount = GetCount(self);
+            var inv = self.inventory;
+            var tier1Items = RoR2.Inventory;
+            Inventory.Get
+            if (amount < 1) { return; }
+            else
             {
-                self.body.RemoveBuff(BuffIndex.OnFire);
+                
             }
-            orig(self, damageInfo);
+        }
+        private void BoostHealth(CharacterBody sender, StatHookEventArgs args)
+        {
+            args.baseDamageAdd += TotalItemCount;
         }
     }
 }
