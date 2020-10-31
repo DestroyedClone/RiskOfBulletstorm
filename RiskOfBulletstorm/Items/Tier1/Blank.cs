@@ -103,6 +103,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     if (BlankComponent.BlankCooldown <= 0)
                     {
+                        BlankUsed = false;
                         BlankComponent.BlankCooldown -= Time.fixedDeltaTime;
                         if (Input.GetKeyDown(KeyCode.T) && !BlankUsed)
                         {
@@ -110,27 +111,24 @@ namespace RiskOfBulletstorm.Items
                             Chat.AddMessage("Blank Used!");
                         }
 
-                        if (BlankUsed)
+                        new BlastAttack
                         {
-                            new BlastAttack
-                            {
-                                inflictor = self.gameObject,
-                                position = self.corePosition,
-                                procCoefficient = 0f,
-                                losType = BlastAttack.LoSType.NearestHit,
-                                falloffModel = BlastAttack.FalloffModel.None,
-                                baseDamage = self.damage * DamageDealt,
-                                damageType = DamageType.Stun1s,
-                                crit = self.RollCrit(),
-                                radius = 5f,
-                                teamIndex = TeamIndex.Player,
-                                baseForce = 50f
-                            }.Fire();
-                            self.inventory.RemoveItem(catalogIndex);
+                            inflictor = self.gameObject,
+                            position = self.corePosition,
+                            procCoefficient = 0f,
+                            losType = BlastAttack.LoSType.NearestHit,
+                            falloffModel = BlastAttack.FalloffModel.None,
+                            baseDamage = self.damage * DamageDealt,
+                            damageType = DamageType.Stun1s,
+                            crit = self.RollCrit(),
+                            radius = 5f,
+                            teamIndex = TeamIndex.Player,
+                            baseForce = 50f
+                        }.Fire();
+                        self.inventory.RemoveItem(catalogIndex);
 
-                            BlankComponent.BlankCooldown = ConfigBlankCooldown;
-                            BlankUsed = false;
-                        }
+                        BlankComponent.BlankCooldown = ConfigBlankCooldown;
+                        orig(self);
                         return;
                     }
                 }
@@ -139,7 +137,7 @@ namespace RiskOfBulletstorm.Items
         }
         public class BlankComponent : MonoBehaviour
         {
-            public float BlankCooldown = 4;
+            public float BlankCooldown;
         }
 
         public class KillProjectiles : MonoBehaviour

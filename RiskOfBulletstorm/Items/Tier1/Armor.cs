@@ -73,6 +73,7 @@ namespace RiskOfBulletstorm.Items
             //|| (oldHealth - self.health) / self.fullHealth < HealthThreshold)
             if (InventoryCount < 1)
             {
+                orig(self, damageInfo);
                 return;
             }
 

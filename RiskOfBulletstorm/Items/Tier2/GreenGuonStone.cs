@@ -59,15 +59,6 @@ namespace RiskOfBulletstorm.Items
         public override void SetupAttributes()
         {
             base.SetupAttributes();
-            var dmgBuff = new CustomBuff(
-            new BuffDef
-            {
-                buffColor = Color.red,
-                canStack = false,
-                isDebuff = false,
-                name = "Enraged",
-            });
-            ROBEnraged = BuffAPI.Add(dmgBuff);
         }
         public override void SetupConfig()
         {
@@ -87,13 +78,6 @@ namespace RiskOfBulletstorm.Items
         private void TankHit(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
             var InventoryCount = GetCount(self.body);
-
-            if (InventoryCount < 1)
-            //|| (oldHealth - self.health) / self.fullHealth < HealthThreshold)
-            {
-                return;
-            }
-
 
             if (InventoryCount > 0)
             {

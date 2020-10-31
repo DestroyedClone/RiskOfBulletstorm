@@ -99,14 +99,6 @@ namespace RiskOfBulletstorm.Items
 
             //CharacterMotor characterMotor = characterPrefab.GetComponent<CharacterMotor>();
 
-            string[] names = {
-                "Chip1",
-                "Chip2",
-                "Chip3",
-                "Chip4"
-            };
-            string name = names[UnityEngine.Random.Range(0, names.Length)];
-            LanguageAPI.Add("DOG_NAME", name); //https://answers.unity.com/questions/285785/how-to-randomly-pick-a-string-from-an-array.html
             LanguageAPI.Add("DOG_SUBTITLE", "The Petted");
             LanguageAPI.Add("DOG_INTERACT", "Pet the beetle");
             CharacterBody bodyComponent = characterPrefab.GetComponent<CharacterBody>();
@@ -207,11 +199,20 @@ namespace RiskOfBulletstorm.Items
                         {
                             var minDistance = 10f;
                             var maxDistance = 20f;
+
+                            string[] names = {
+                                "1 Chip",
+                                "2 Chap",
+                                "3 Fido",
+                                "4 Spot"
+                            };
+                            string name = names[UnityEngine.Random.Range(0, names.Length)];
+                            LanguageAPI.Add("DOG_NAME", name);
                             MasterSummon masterSummon = new MasterSummon
                             {
                                 masterPrefab = characterPrefab,
                                 position = self.transform.position + new Vector3(UnityEngine.Random.Range(minDistance, maxDistance),
-                                UnityEngine.Random.Range(minDistance, maxDistance),
+                                5,
                                 UnityEngine.Random.Range(minDistance, maxDistance)),
                                 rotation = self.transform.rotation,
                                 summonerBodyObject = self.gameObject,

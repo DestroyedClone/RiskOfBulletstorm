@@ -79,7 +79,7 @@ namespace RiskOfBulletstorm.Items
         private Quaternion MineDropDirection()
         {
             return Util.QuaternionSafeLookRotation(
-                new Vector3(0f, 0f, 0f)
+                new Vector3(Random.Range(-10,10), 0f, Random.Range(-10, 10))
             );
         }
     }

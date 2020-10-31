@@ -70,7 +70,7 @@ namespace RiskOfBulletstorm.Items
             Vector3 corePos = Util.GetCorePosition(body);
             GameObject GameObject = slot.gameObject;
             var input = body.inputBank;
-            Vector3 offset = new Vector3(0,20,0);
+            Vector3 offset = new Vector3(0,0.5f,0);
 
             Util.PlaySound(FireMines.throwMineSoundString, GameObject);
             if (NetworkServer.active)
