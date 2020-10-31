@@ -34,11 +34,11 @@ TODO:
 Enraging Photo: Gain a temporary +100% damage boost  upon taking 33% of your health in damage for 3 (+0.25 per stack) seconds.
 => TODO: Health Requirement Loss
 
-Macho Brace: Gain +30% (+10% per stack) damage bonus upon using your utility.
-=> TODO: Add Stacking Bonus
-
 [unimplemented] Green Guon Stone: Upon taking 33% damage, has a 20% chance to heal you instead. Rises to 50% if fatal.
 => Add Health Check
+
+Macho Brace: Gain +30% (+10% per stack) damage bonus upon using your utility.
+=> TODO: Add Stacking Bonus
 
 Roll Bomb: After using your Utility, drop 1 bomb(s) (+1 per stack) for 80% damage.
 
@@ -52,14 +52,17 @@ Unity: +0.1 (0.05 per stack) damage per unique item in inventory
 
 ## Boss
 
-[unimplemented] Dog: Spawns 1 (+1 per stack) dog(s) that have a 5% chance to dig up a pickup upon completing a room.
+(WIP) Dog: [unimplemented]Spawns 1 (+1 per stack) dog(s) that have a 5% chance to dig up a pickup upon completing a room.
+			Spawns a pettable beetle. (untested)
 
 
 ## Lunar
 
-[unimplemented] Teaching of the Dodge Roll: Replaces the player's Utility with "Dodge Roll" which allows the user to roll with high active i-frames, but have low vulnerability frames afterwards. Removed from item pool upon possession.
+[unimplemented] Teaching of the Dodge Roll: Replaces the player's Utility with "Dodge Roll". Removed from item pool upon possession.
 Picking one up with one equipped will roll a random lunar.
 Unknown Compatibility with Strides of Heresy.
+
+"Dodge Roll" Ability: Roll forward. Immunity to damage upon rolling
 
 [unimplemented] Bloodied Scarf: Replaces your utility with Huntress Blink
 
@@ -84,7 +87,7 @@ Smoke Bomb: Cloak for 6 seconds. CD: 36
 
 Ticket: Spawns a Clay Templar. CD: 120
 
-[Unimplemented] Trusty Lockpicks: 50% chance to unlock chest. If it fails, the chest is destroyed.
+[Unimplemented] Trusty Lockpicks: 50% chance to unlock chest. If it fails, the chest is permanently locked.
 
 
 ## Lunar
@@ -136,3 +139,4 @@ rob - help with hooks
 ##Credits - Other
 https://stackoverflow.com/questions/105372/how-to-enumerate-an-enum
 https://answers.unity.com/questions/285785/how-to-randomly-pick-a-string-from-an-array.html
+https://stackoverflow.com/questions/2893297/iterate-multi-dimensional-array-with-nested-foreach-statement

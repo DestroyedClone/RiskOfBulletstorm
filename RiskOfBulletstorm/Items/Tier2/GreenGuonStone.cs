@@ -102,7 +102,7 @@ namespace RiskOfBulletstorm.Items
                     if (Util.CheckRoll(HealChance))
                     {//success
                         Chat.AddMessage("NONLETHAL SUCCESS");
-                        damageInfo.damage = 0;
+                        //damageInfo.damage = 0;
                         self.health *= 1 + HealAmount + (HealAmountStack * (InventoryCount - 1));
                     }
                     else
@@ -115,7 +115,7 @@ namespace RiskOfBulletstorm.Items
                     if (Util.CheckRoll(LethalSaveChance))
                     {//success
                         Chat.AddMessage("LETHAL SUCCESS");
-                        damageInfo.damage = 0;
+                        //damageInfo.damage = 0;
                         self.health *= 1 + HealAmount + (HealAmountStack * (InventoryCount - 1));
                     }
                     else
