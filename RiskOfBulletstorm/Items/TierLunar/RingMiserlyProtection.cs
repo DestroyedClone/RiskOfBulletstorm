@@ -54,26 +54,42 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            On.RoR2.PurchaseInteraction.OnInteractionBegin += PurchaseShatter;
+            On.RoR2.PurchaseInteraction.OnInteractionBegin += On_InteractionBegin;
             GetStatCoefficients += BoostHealth;
+            On.RoR2.CharacterBody.FixedUpdate += CharacterBody_FixedUpdate;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
-            On.RoR2.PurchaseInteraction.OnInteractionBegin -= PurchaseShatter;
-            GetStatCoefficients += BoostHealth;
+            On.RoR2.PurchaseInteraction.OnInteractionBegin -= On_InteractionBegin;
+            GetStatCoefficients -= BoostHealth;
+            On.RoR2.CharacterBody.FixedUpdate -= CharacterBody_FixedUpdate;
         }
-        private void PurchaseShatter(On.RoR2.PurchaseInteraction.orig_OnInteractionBegin orig, PurchaseInteraction self, Interactor activator)
+        private void On_InteractionBegin(On.RoR2.PurchaseInteraction.orig_OnInteractionBegin orig, PurchaseInteraction self, Interactor activator)
         {
             RecentPurchase = true;
             Chat.AddMessage(activator.name);
             
+
             orig(self, activator);
+        }
+        private void CharacterBody_FixedUpdate(On.RoR2.CharacterBody.orig_FixedUpdate orig, CharacterBody self)
+        {
+            var InventoryCount = GetCount(self);
+            if (!RecentPurchase || InventoryCount < 1)
+            {
+                return;
+            }
+            self.inventory.RemoveItem(catalogIndex, InventoryCount);
+            RecentPurchase = false;
+            orig(self);
         }
         private void BoostHealth(CharacterBody sender, StatHookEventArgs args)
         {
-            //args.healthMultAdd += HealthBonus;
+            var invCount = GetCount(sender);
+            if (invCount > 0)
+            { args.healthMultAdd += HealthBonus + HealthBonusStack * (invCount - 1); }
         }
     }
 }

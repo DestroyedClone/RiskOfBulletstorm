@@ -155,9 +155,12 @@ namespace RiskOfBulletstorm.Items
             purchaseInteraction.cost = 0;
             purchaseInteraction.automaticallyScaleCostWithDifficulty = false;
 
-            DeathRewards deathRewards = characterPrefab.GetComponent<DeathRewards>();
-            deathRewards.expReward = 0;
-            deathRewards.goldReward = 0;
+            /*DeathRewards deathRewards = characterPrefab.GetComponent<DeathRewards>();
+            if (deathRewards)
+            {
+                deathRewards.expReward = 0;
+                deathRewards.goldReward = 0;
+            }*/
         }
 
         private void CreateDoppelganger()

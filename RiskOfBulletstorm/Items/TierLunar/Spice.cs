@@ -112,7 +112,7 @@ namespace RiskOfBulletstorm.Items
         {
         }
     }
-    public class Spice_RewardA : Item_V2<Spice_RewardA>
+    /*public class Spice_RewardA : Item_V2<Spice_RewardA>
     {
         public override string displayName => "Spice";
         public override ItemTier itemTier => ItemTier.NoTier;
@@ -141,5 +141,5 @@ namespace RiskOfBulletstorm.Items
         {
             //args.
         }
-    }
+    }*/
 }

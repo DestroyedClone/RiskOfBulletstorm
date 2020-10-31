@@ -9,7 +9,7 @@ namespace RiskOfBulletstorm.Items
     {
         public override string displayName => "Ring of Fire Resistance";
         public override ItemTier itemTier => ItemTier.Tier3;
-        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage });
+        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility });
 
         protected override string GetNameString(string langID = null) => displayName;
 
@@ -72,7 +72,7 @@ namespace RiskOfBulletstorm.Items
             }
             orig(self, damageInfo);
         }
-            private void GiveRandomRed(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self) //ripped from harbcrate, i did credit though.
+        private void GiveRandomRed(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self) //ripped from harbcrate, i did credit though.
         {
             orig(self);
             var amount = GetCount(self);

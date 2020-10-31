@@ -84,7 +84,7 @@ namespace RiskOfBulletstorm.Items
             On.RoR2.HealthComponent.TakeDamage -= CalculateDamageReward;
             GetStatCoefficients -= AddDamageReward;
         }
-        private void CalculateDamageReward(On.RoR2.HealthComponent.orig_TakeDamage orig, RoR2.HealthComponent self, RoR2.DamageInfo damageInfo)
+        private void CalculateDamageReward(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
             var InventoryCount = GetCount(self.body);
 
@@ -95,14 +95,14 @@ namespace RiskOfBulletstorm.Items
                 || (RequireHealth && (oldHealth - self.health) / self.fullHealth < HealthThreshold)
                 || (!RequireHealth && (oldCH - self.combinedHealth) / self.fullCombinedHealth < HealthThreshold))
                 return;*/
-            var oldHealth = self.health;
+            /*var oldHealth = self.health;
             orig(self, damageInfo);
 
             if (InventoryCount < 1
                 || (oldHealth - self.health) / self.fullHealth < HealthThreshold)
             {
                 Chat.AddMessage("EnragingPhoto Failed");
-                return; }
+                return; }*/
 
             if (InventoryCount > 0 && self.body.GetBuffCount(ROBEnraged) < InventoryCount)
             {

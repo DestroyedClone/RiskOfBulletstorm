@@ -73,6 +73,10 @@ namespace RiskOfBulletstorm.Items
             {
                 if (vBody.skillLocator.utility.Equals(self))
                 {
+                    if (vBody.HasBuff(MachoBrace_Boost)) //should prevent weird stacking
+                    {
+                        vBody.RemoveBuff(MachoBrace_Boost);
+                    }
                     vBody.AddBuff(MachoBrace_Boost);
                 } else
                 {

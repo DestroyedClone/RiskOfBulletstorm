@@ -104,7 +104,7 @@ namespace RiskOfBulletstorm.Items
                     if (BlankComponent.BlankCooldown <= 0)
                     {
                         BlankComponent.BlankCooldown -= Time.fixedDeltaTime;
-                        if (Input.GetKeyDown(KeyCode.T))
+                        if (Input.GetKeyDown(KeyCode.T) && !BlankUsed)
                         {
                             BlankUsed = true;
                             Chat.AddMessage("Blank Used!");
@@ -126,10 +126,10 @@ namespace RiskOfBulletstorm.Items
                                 teamIndex = TeamIndex.Player,
                                 baseForce = 50f
                             }.Fire();
+                            self.inventory.RemoveItem(catalogIndex);
 
                             BlankComponent.BlankCooldown = ConfigBlankCooldown;
                             BlankUsed = false;
-                            Chat.AddMessage("Blanks recharged");
                         }
                         return;
                     }
@@ -139,7 +139,7 @@ namespace RiskOfBulletstorm.Items
         }
         public class BlankComponent : MonoBehaviour
         {
-            public float BlankCooldown;
+            public float BlankCooldown = 4;
         }
 
         public class KillProjectiles : MonoBehaviour

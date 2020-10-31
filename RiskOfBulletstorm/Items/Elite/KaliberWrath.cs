@@ -42,7 +42,7 @@ namespace RiskOfBulletstorm //TODO modify weight of card depending on curse leve
             new EliteDef
             {
                 name = "Jammed",
-                modifierToken = "RISKOFBULLETSTORM_ELITE_MODIFIER_JAMMED",
+                modifierToken = "ROB_ELITE_MODIFIER_JAMMED",
                 color = new Color32(150, 10, 10, 255),
                 eliteEquipmentIndex = equipmentDef.equipmentIndex
             }, 1);

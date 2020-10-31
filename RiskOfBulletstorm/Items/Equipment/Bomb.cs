@@ -70,11 +70,12 @@ namespace RiskOfBulletstorm.Items
             Vector3 corePos = Util.GetCorePosition(body);
             GameObject GameObject = slot.gameObject;
             var input = body.inputBank;
+            Vector3 offset = new Vector3(0,20,0);
 
             Util.PlaySound(FireMines.throwMineSoundString, GameObject);
             if (NetworkServer.active)
             {
-                ProjectileManager.instance.FireProjectile(BombPrefab, corePos, Util.QuaternionSafeLookRotation(input.aimDirection),
+                ProjectileManager.instance.FireProjectile(BombPrefab, corePos+offset, Util.QuaternionSafeLookRotation(input.aimDirection),
                                       GameObject, body.damage * DamageDealt,
                                       0f, Util.CheckRoll(body.crit, body.master),
                                       DamageColorIndex.Item, null, -1f);

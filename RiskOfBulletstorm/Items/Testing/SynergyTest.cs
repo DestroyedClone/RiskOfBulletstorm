@@ -1,4 +1,5 @@
-﻿using System;
+﻿/*
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reflection;
@@ -195,6 +196,7 @@ namespace RiskOfBulletstorm.Items
             {
                 args.baseDamageAdd += 25;
             }
-        }*/
+        }
     }
 }
+*/
