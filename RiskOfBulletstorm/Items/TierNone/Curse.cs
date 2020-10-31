@@ -1,22 +1,28 @@
-﻿using System.Collections.ObjectModel;
+﻿
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Text;
+using R2API;
 using RoR2;
 using UnityEngine;
+using UnityEngine.Networking;
 using TILER2;
 using static TILER2.StatHooks;
 using static TILER2.MiscUtil;
-
+using EntityStates.ScavMonster;
 
 namespace RiskOfBulletstorm.Items
 {
     public class Curse : Item_V2<Curse>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How many curse is needed before Lord of the Jammed spawns? Set it to 1.11 to disable. (Default: 10)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How many curse is needed before Lord of the Jammed spawns? Set it to -1 to disable. (Default: 10)", AutoConfigFlags.PreventNetMismatch)]
         public float CurseMax { get; private set; } = 10f; //THIS IS WHERE I LEFT OFF!!!!!
 
-        public override string displayName => "Curse";
+        public override string displayName => "";
         public override ItemTier itemTier => ItemTier.NoTier;
-        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage });
+        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.AIBlacklist });
 
         protected override string GetNameString(string langID = null) => displayName;
 
@@ -29,6 +35,8 @@ namespace RiskOfBulletstorm.Items
         //private static List<RoR2.CharacterBody> Playername = new List<RoR2.CharacterBody>();
 
         public static GameObject ItemBodyModelPrefab;
+        private int InventoryCount;
+        private bool isMaxCurse = false;
 
         public override void SetupBehavior()
         {
@@ -45,19 +53,29 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            GetStatCoefficients += AddDamage;
+            On.RoR2.CharacterBody.OnInventoryChanged += CalculateCurse;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
-            GetStatCoefficients -= AddDamage;
+            On.RoR2.CharacterBody.OnInventoryChanged -= CalculateCurse;
+
         }
-        private void AddDamage(CharacterBody sender, StatHookEventArgs args)
+        private void CalculateCurse(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self) //blessed komrade
         {
-            var invCount = GetCount(sender);
-            if (invCount > 0)
-            { args.damageMultAdd += DamageBonus + DamageBonusStack * (invCount - 1); }
+            InventoryCount = GetCount(self);
+            if (InventoryCount >= CurseMax)
+            {
+                isMaxCurse = true;
+            }
+            if (isMaxCurse)
+            {
+
+            }
+
+            
+            orig(self);
         }
     }
 }

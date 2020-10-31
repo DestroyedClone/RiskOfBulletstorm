@@ -89,6 +89,7 @@ Ticket: Spawns a Clay Templar. CD: 120
 # Curse
 [unimplemented] Picking up RiskOfBulletstorm items that defy Kaliber adds +0.25 curse. Each subsequent stack of a single item will add +0.1.
 Curse increases the chance of an enemy becoming Jammed.
+At 10 Curse (configurable), the Lord of the Jammed will spawn. Currently spawns an invincible BrotherGlass that's invulnerable.'
 
 # Elites
 Kaliber's Wrath - Jammed {0}
@@ -117,7 +118,7 @@ ontrigger - ItemStatsMod https://github.com/ontrigger/ItemStatsMod/blob/4c015d5f
 
 Rein - Nonspecific
 
-KomradeSpectre, Chenn - Lots, and TILER2 Help
+KomradeSpectre, Chen - Lots, and TILER2 Help
 
 Spice - OKIGotIt, Ghor
 
