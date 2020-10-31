@@ -19,16 +19,21 @@ namespace RiskOfBulletstorm.Items
     public class Blank : Item_V2<Blank>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Damage dealt? (Default: 0.3 = 30% damage)", AutoConfigFlags.PreventNetMismatch)]
-        public float DamageDealt { get; private set; } = 0.3f;
-
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Button to blank (Default: T)", AutoConfigFlags.PreventNetMismatch)]
         public string BlankButton { get; private set; } = "T";
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Gamepad Button to blank (Default: T)", AutoConfigFlags.PreventNetMismatch)]
         public string BlankButtonGamepad { get; private set; } = "T";
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Blank Cooldown (Default: 4 second)", AutoConfigFlags.PreventNetMismatch)]
+        public float ConfigBlankCooldown { get; private set; } = 4f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Damage dealt to enemies on use (Default: 0.1 = 10% damage)", AutoConfigFlags.PreventNetMismatch)]
+        public float DamageDealt { get; private set; } = 0.1f;
+
 
         public override string displayName => "Blank";
         public string descText = "Erases all enemy projectiles";
@@ -51,7 +56,7 @@ namespace RiskOfBulletstorm.Items
 
         /* 1. Check Key Press (done)
          * 2. Kill all projectiles that aren't allied
-         * 3. Spawn a BlastAttack with basedmg*value with a high force aiming slightly upward with a stun damage type
+         * 3. Spawn a BlastAttack with basedmg*value with a high force aiming slightly upward with a stun damage type (done)
          */
 
         public bool BlankUsed = false;
@@ -86,28 +91,56 @@ namespace RiskOfBulletstorm.Items
         }
         private void CharacterBody_FixedUpdate(On.RoR2.CharacterBody.orig_FixedUpdate orig, CharacterBody self)
         {
-            var InventoryCount = GetCount(self);
-            if (InventoryCount < 0 || !self.isPlayerControlled) { return; }
-
-            if (InventoryCount > 0)
+            if (NetworkServer.active && self.master)
             {
-                if (Input.GetKeyDown(KeyCode.T))
+                var BlankComponent = self.master.GetComponent<BlankComponent>();
+                if (!BlankComponent) { BlankComponent = self.masterObject.AddComponent<BlankComponent>(); }
+
+                var InventoryCount = GetCount(self);
+                if (InventoryCount < 0 || !self.isPlayerControlled) { return; }
+
+                if (InventoryCount > 0)
                 {
-                    if (BlankUsed == false)
+                    if (BlankComponent.BlankCooldown <= 0)
                     {
-                        BlankUsed = true;
-                        Chat.AddMessage("Blank Used!");
+                        BlankComponent.BlankCooldown -= Time.fixedDeltaTime;
+                        if (Input.GetKeyDown(KeyCode.T))
+                        {
+                            BlankUsed = true;
+                            Chat.AddMessage("Blank Used!");
+                        }
+
+                        if (BlankUsed)
+                        {
+                            new BlastAttack
+                            {
+                                inflictor = self.gameObject,
+                                position = self.corePosition,
+                                procCoefficient = 0f,
+                                losType = BlastAttack.LoSType.NearestHit,
+                                falloffModel = BlastAttack.FalloffModel.None,
+                                baseDamage = self.damage * DamageDealt,
+                                damageType = DamageType.Stun1s,
+                                crit = self.RollCrit(),
+                                radius = 5f,
+                                teamIndex = TeamIndex.Player,
+                                baseForce = 50f
+                            }.Fire();
+
+                            BlankComponent.BlankCooldown = ConfigBlankCooldown;
+                            BlankUsed = false;
+                            Chat.AddMessage("Blanks recharged");
+                        }
+                        return;
                     }
-                    return;
                 }
+                orig(self);
             }
-            orig(self);
-
         }
-        //private void RemoveItem(ItemIndex itemIndex)
-        //{
-
-        //}
+        public class BlankComponent : MonoBehaviour
+        {
+            public float BlankCooldown;
+        }
 
         public class KillProjectiles : MonoBehaviour
         {

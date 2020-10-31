@@ -97,7 +97,7 @@ namespace RiskOfBulletstorm.Items
         {
             characterPrefab = PrefabAPI.InstantiateClone(Resources.Load<GameObject>("Prefabs/CharacterBodies/BeetleBody"), "DogBody", true);
 
-            CharacterMotor characterMotor = characterPrefab.GetComponent<CharacterMotor>();
+            //CharacterMotor characterMotor = characterPrefab.GetComponent<CharacterMotor>();
 
             string[] names = {
                 "Chip1",
@@ -176,7 +176,7 @@ namespace RiskOfBulletstorm.Items
             component.bodyPrefab = characterPrefab;
         }
 
-        private void SummonFriend(On.RoR2.CharacterBody.orig_FixedUpdate orig, RoR2.CharacterBody self)
+        private void SummonFriend(On.RoR2.CharacterBody.orig_FixedUpdate orig, CharacterBody self)
         {
             if (NetworkServer.active && self.master)
             {
