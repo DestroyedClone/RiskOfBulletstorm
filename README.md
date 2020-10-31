@@ -15,6 +15,7 @@ TODO:
 2. Soft BetterUI Compatibility
 3. Soft Dependencies for other mods
 3a. Equipment: ThinkInvis Beating Embryo
+4. Multiplayer Testing
 
 # Items
 
@@ -42,11 +43,17 @@ Macho Brace: Gain +30% (+10% per stack) damage bonus upon using your utility.
 Roll Bomb: After using your Utility, drop 1 bomb(s) (+1 per stack) for 80% damage.
 
 ## Red
+
 [unimplemented] Ring of Triggers: Using an equipment fires your primary attack in all directions for 3 (+1 per stack) seconds
 
 Ring of Fire Resistance: Clears all stacks of Fire on the user upon taking damage.
 
 Unity: +0.1 (0.05 per stack) damage per unique item in inventory
+
+## Boss
+
+[unimplemented] Dog: Spawns 1 (+1 per stack) dog(s) that have a 5% chance to dig up a pickup upon completing a room.
+
 
 ## Lunar
 
@@ -68,6 +75,8 @@ Spice: wadafaggdrgdrgrdg MAKE IT WORK
 ## Normal
 
 Bomb: Throws a bomb for 100% damage. CD: 8
+
+Portable Turret: Spawns a EngiTurret. CD: 75
 
 Proximity Mine: Drops a mine for 100% damage. CD: 18
 
@@ -126,3 +135,4 @@ rob - help with hooks
 
 ##Credits - Other
 https://stackoverflow.com/questions/105372/how-to-enumerate-an-enum
+https://answers.unity.com/questions/285785/how-to-randomly-pick-a-string-from-an-array.html

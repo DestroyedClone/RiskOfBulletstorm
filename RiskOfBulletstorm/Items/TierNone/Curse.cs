@@ -65,16 +65,15 @@ namespace RiskOfBulletstorm.Items
         private void CalculateCurse(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self) //blessed komrade
         {
             InventoryCount = GetCount(self);
-            if (InventoryCount >= CurseMax)
+            //int InventoryCountLOTJ = GetCount(CurseSpawnLOTJ.instance.InventoryCount_LOTJItem);
+            if (InventoryCount >= CurseMax) //If you're at max curse, set isMaxCurse to true
             {
                 isMaxCurse = true;
             }
-            if (isMaxCurse)
+            if (isMaxCurse) //if you're at max curse, continue
             {
 
             }
-
-            
             orig(self);
         }
     }

@@ -68,10 +68,10 @@ namespace RiskOfBulletstorm.Items
         }
         private void SetNotificationItemHook(GenericNotification.orig_SetItem orig, RoR2.UI.GenericNotification self, ItemDef itemDef)
         {
-            orig(self, itemDef);
 
             //self.descriptionText.token = itemDef.descriptionToken;
             self.descriptionText.token = dynamicPickupText;
+            orig(self, itemDef);
         }
         private void CalculateSpiceReward(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self) //blessed komrade
         {

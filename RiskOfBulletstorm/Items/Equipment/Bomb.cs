@@ -31,22 +31,19 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "Countless experienced adventurers have brought Bombs to the Gungeon seeking secret doors, only to be foiled by the existence of Blanks. Still, explosives have their place.";
 
-        //private static List<RoR2.CharacterBody> Playername = new List<RoR2.CharacterBody>();
-
         public static GameObject BombPrefab { get; private set; }
 
         public override void SetupBehavior()
         {
             GameObject commandoGrenadePrefab = Resources.Load<GameObject>("prefabs/projectiles/CommandoGrenadeProjectile");
-            BombPrefab = commandoGrenadePrefab.InstantiateClone("RollBomb");
-            BombPrefab.transform.localScale = new Vector3(3, 3, 3);
+            BombPrefab = commandoGrenadePrefab.InstantiateClone("Bomb");
+            //BombPrefab.transform.localScale = new Vector3(3, 3, 3);
             //BombPrefab.GetComponent<ProjectileSimple>().velocity = 0; //default 50
             //BombPrefab.GetComponent<ProjectileSimple>().lifetime = 6; //default 5
             BombPrefab.GetComponent<ProjectileDamage>().damageColorIndex = DamageColorIndex.Item;
             BombPrefab.GetComponent<ProjectileImpactExplosion>().falloffModel = BlastAttack.FalloffModel.None;
-            //BombPrefab.GetComponent<ProjectileImpactExplosion>().destroyOnEnemy = false; //default True
-            //BombPrefab.GetComponent<ProjectileImpactExplosion>().timerAfterImpact = false;
-            UnityEngine.Object.Destroy(BombPrefab.GetComponent<ApplyTorqueOnStart>());
+            Object.Destroy(BombPrefab.GetComponent<ApplyTorqueOnStart>());
+
         }
         public override void SetupAttributes()
         {
@@ -77,7 +74,7 @@ namespace RiskOfBulletstorm.Items
             Util.PlaySound(FireMines.throwMineSoundString, GameObject);
             if (NetworkServer.active)
             {
-                ProjectileManager.instance.FireProjectile(BombPrefab, corePos, RoR2.Util.QuaternionSafeLookRotation(input.aimDirection),
+                ProjectileManager.instance.FireProjectile(BombPrefab, corePos, Util.QuaternionSafeLookRotation(input.aimDirection),
                                       GameObject, body.damage * DamageDealt,
                                       0f, Util.CheckRoll(body.crit, body.master),
                                       DamageColorIndex.Item, null, -1f);

@@ -102,6 +102,7 @@ namespace RiskOfBulletstorm.Items
                 }
             }
             orig(self);
+
         }
         //private void RemoveItem(ItemIndex itemIndex)
         //{
@@ -112,19 +113,5 @@ namespace RiskOfBulletstorm.Items
         {
 
         }
-        /*private bool KeyPressed()
-        {
-            return true;
-        }*/
- /*       public class CheckButton : MonoBehaviour
-        {
-            void FixedUpdate()
-            {
-                if (Input.GetKeyDown("T"))
-                {
-
-                }
-            }
-        }*/
     }
 }
