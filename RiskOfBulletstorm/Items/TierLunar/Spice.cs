@@ -1,4 +1,4 @@
-﻿//using System;
+//using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 //using System.Text;
@@ -70,8 +70,9 @@ namespace RiskOfBulletstorm.Items
         {
 
             //self.descriptionText.token = itemDef.descriptionToken;
-            self.descriptionText.token = dynamicPickupText;
             orig(self, itemDef);
+            if (itemDef.itemIndex == catalogIndex)
+            { self.descriptionText.token = dynamicPickupText; }
         }
         private void CalculateSpiceReward(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self) //blessed komrade
         {
@@ -83,17 +84,24 @@ namespace RiskOfBulletstorm.Items
                     break;
                 case 1:
                     dynamicPickupText = "A tantalizing cube of power.";
+                    //self.inventory.GiveItem(Spice_RewardA.instance.catalogIndex);
+                    //self.inventory.GiveItem(ItemIndex.Hoof);
+                    //GiveItemVsMax(self, Spice_RewardA.instance.catalogIndex);
                     break;
                 case 2:
                     dynamicPickupText = "One more couldn't hurt.";
+                    GiveItemVsMax(self, ItemIndex.Feather);
                     break;
                 case 3:
                     dynamicPickupText = "Just one more hit...";
+                    GiveItemVsMax(self, ItemIndex.AlienHead);
                     break;
                 case 4:
                     dynamicPickupText = "MORE";
+                    GiveItemVsMax(self, ItemIndex.LunarBadLuck);
                     break;
                 default:
+                    dynamicPickupText = "MORE";
                     break;
             }
             //protected override string GetPickupString = dynamicPickupText;
@@ -110,36 +118,21 @@ namespace RiskOfBulletstorm.Items
         }
         private void GiveSpiceReward(CharacterBody sender, StatHookEventArgs args)
         {
+
+        }
+        private void GiveItemVsMax(CharacterBody self, ItemIndex itemindex, int amount = 1, int max = 1)
+        {
+            var InventoryCount = GetCount(self);
+            if (InventoryCount < max)
+            {
+                if (InventoryCount+amount > max)
+                {
+                    self.inventory.GiveItem(itemindex, (max-InventoryCount));
+                } else
+                {
+                    self.inventory.GiveItem(itemindex, amount);
+                }
+            }
         }
     }
-    /*public class Spice_RewardA : Item_V2<Spice_RewardA>
-    {
-        public override string displayName => "Spice";
-        public override ItemTier itemTier => ItemTier.NoTier;
-        protected override string GetNameString(string langID = null) => displayName;
-        protected override string GetPickupString(string langID = null) => "SpiceReward1";
-
-        protected override string GetDescString(string langid = null) => $"";
-
-        protected override string GetLoreString(string langID = null) => "";
-
-        public override void SetupBehavior(){}
-        public override void SetupAttributes(){base.SetupAttributes();}
-        public override void SetupConfig(){base.SetupConfig();}
-        public override void Install()
-        {
-            base.Install();
-            GetStatCoefficients += GiveSpiceReward;
-        }
-
-        public override void Uninstall()
-        {
-            base.Uninstall();
-            GetStatCoefficients -= GiveSpiceReward;
-        }
-        private void GiveSpiceReward(CharacterBody sender, StatHookEventArgs args)
-        {
-            //args.
-        }
-    }*/
 }

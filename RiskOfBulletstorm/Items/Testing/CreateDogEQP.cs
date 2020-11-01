@@ -18,66 +18,65 @@ using RoR2.CharacterAI;
 using RoR2.Skills;
 using System.Net;
 using RoR2.Projectile;
+using EliteSpawningOverhaul;
 
 
 namespace RiskOfBulletstorm.Items
 {
-    public class Dog : Item_V2<Dog>
+    public class CreateDog : Equipment_V2<CreateDog>
     {
+
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Can you pet the dog?", AutoConfigFlags.PreventNetMismatch)]
         public bool EnableDogPet { get; private set; } = true;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Chance to dig up an item? (Default 0.1 = 10%)", AutoConfigFlags.PreventNetMismatch)]
-        public float DogDigChance { get; private set; } = 0.1f;
-
+        [AutoConfig("Dog Name 1?", AutoConfigFlags.PreventNetMismatch)]
+        public string DogName1 { get; private set; } = "Chip";
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Additional chance to dig up an item? (Default 0.05 = 5%)", AutoConfigFlags.PreventNetMismatch)]
-        public float DogDigChanceStack { get; private set; } = 0.05f;
-
-        //
+        [AutoConfig("Dog Name 2?", AutoConfigFlags.PreventNetMismatch)]
+        public string DogName2 { get; private set; } = "Charles";
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What should be our duration between summoning the Lunar Chimera? (Default: 30 (30 seconds))", AutoConfigFlags.PreventNetMismatch)]
-        public float lunarChimeraResummonCooldownDuration { get; private set; } = 30f;
+        [AutoConfig("Dog Name 3?", AutoConfigFlags.PreventNetMismatch)]
+        public string DogName3 { get; private set; } = "Christopher";
 
-        //
-
-
-        public override string displayName => "Dog";
-        public override ItemTier itemTier => ItemTier.Tier2;
-        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage });
+        public override string displayName => "Spawn Dog";
+        public string descText = "Junior II\nA faithful companion.";
+        public override float cooldown { get; protected set; } = 120f;
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "Junior II\nA faithful companion. Finds items on teleporter event.";
+        protected override string GetPickupString(string langID = null) => "Do You Have Yours?\n" + descText;
 
         protected override string GetDescString(string langid = null)
         {
-            var descText = $"{Pct(DogDigChance)} (+{Pct(DogDigChanceStack)} chance per stack) chance to dig up a pickup upon teleporter event.";
+            var descText = $"Spawns a dog";
             if (EnableDogPet)
             {
                 descText += $"\nInteract to pet.";
             }
             return descText;
         }
-        protected override string GetLoreString(string langID = null) => "Keeps the Hunter company. He has a good nose for treasure, but all attempts to train him in combat have failed.";
 
-        //private static List<RoR2.CharacterBody> Playername = new List<RoR2.CharacterBody>();
+        protected override string GetLoreString(string langID = null) => "";
 
-        public static GameObject ItemBodyModelPrefab;
         public static GameObject characterPrefab;
         public GameObject friendMaster;
-        public bool RecentlySpawned = false;
+        public string nameModifier = " {0}";
 
         public override void SetupBehavior()
         {
+            base.SetupBehavior();
             CreatePrefab();
             CreateDoppelganger();
+            CreateDogNames();
+
         }
         public override void SetupAttributes()
         {
             base.SetupAttributes();
+            equipmentDef.canDrop = false;
+            equipmentDef.enigmaCompatible = false;
         }
         public override void SetupConfig()
         {
@@ -86,27 +85,18 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-
-            On.RoR2.CharacterBody.FixedUpdate += SummonFriend;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
-            On.RoR2.CharacterBody.FixedUpdate -= SummonFriend;
         }
         internal static void CreatePrefab()
         {
             characterPrefab = PrefabAPI.InstantiateClone(Resources.Load<GameObject>("Prefabs/CharacterBodies/BeetleBody"), "DogBody", true);
 
             //CharacterMotor characterMotor = characterPrefab.GetComponent<CharacterMotor>();
-            string[] names = {
-                                "1 Chip",
-                                "2 Chap",
-                                "3 Fido",
-                                "4 Spot"
-                            };
-            string name = names[UnityEngine.Random.Range(0, names.Length)];
+            string name = "the Beetle";
             LanguageAPI.Add("DOG_NAME", name);
             LanguageAPI.Add("DOG_SUBTITLE", "The Petted");
             LanguageAPI.Add("DOG_INTERACT", "Pet the beetle");
@@ -156,18 +146,84 @@ namespace RiskOfBulletstorm.Items
             purchaseInteraction.cost = 0;
             purchaseInteraction.automaticallyScaleCostWithDifficulty = false;
 
-            /*DeathRewards deathRewards = characterPrefab.GetComponent<DeathRewards>();
-            if (deathRewards)
-            {
-                deathRewards.expReward = 0;
-               deathRewards.goldReward = 0;
-            }
         }
 
+        public static EliteIndex dogEliteIndex1;
+        public static BuffIndex dogBuffIndex1;
+
+        public static EliteIndex dogEliteIndex2;
+        public static BuffIndex dogBuffIndex2;
+
+        public static EliteIndex dogEliteIndex3;
+        public static BuffIndex dogBuffIndex3;
+        private void CreateDogNames() //a disgusting hack, please dont do this
+        {
+
+            var dogEliteDef1 = new CustomElite(
+            new EliteDef
+            {
+                name = "Named 1",
+                modifierToken = "NAMED_TOKEN_1",
+                color = new Color32(150, 10, 10, 255),
+            }, 1);
+            dogEliteIndex1 = EliteAPI.Add(dogEliteDef1);
+            LanguageAPI.Add(dogEliteDef1.EliteDef.modifierToken, DogName1 + nameModifier);
+
+            var dogBuffDef1 = new CustomBuff(
+            new BuffDef
+            {
+                name = "Affix_Jammed",
+                buffColor = new Color32(10, 150, 10, 255),
+                iconPath = "",
+                eliteIndex = dogEliteIndex1,
+                canStack = false
+            });
+            dogBuffIndex1 = BuffAPI.Add(dogBuffDef1);
+
+            var dogEliteDef2 = new CustomElite(
+            new EliteDef
+            {
+                name = "Named 2",
+                modifierToken = "NAMED_TOKEN_2",
+                color = new Color32(10, 10, 150, 255),
+            }, 1);
+            dogEliteIndex2 = EliteAPI.Add(dogEliteDef2);
+            LanguageAPI.Add(dogEliteDef2.EliteDef.modifierToken, DogName2 + nameModifier);
+
+            var dogBuffDef2 = new CustomBuff(
+            new BuffDef
+            {
+                name = "Affix_Jammed",
+                buffColor = new Color32(150, 10, 10, 255),
+                iconPath = "",
+                eliteIndex = dogEliteIndex2,
+                canStack = false
+            });
+            dogBuffIndex2 = BuffAPI.Add(dogBuffDef2);
+
+            var dogEliteDef3 = new CustomElite(
+            new EliteDef
+            {
+                name = "Named 3",
+                modifierToken = "NAMED_TOKEN_3",
+                color = new Color32(150, 10, 10, 255),
+            }, 1);
+            dogEliteIndex3 = EliteAPI.Add(dogEliteDef3);
+            LanguageAPI.Add(dogEliteDef3.EliteDef.modifierToken, DogName3 + nameModifier);
+
+            var dogBuffDef3 = new CustomBuff(
+            new BuffDef
+            {
+                name = "Affix_Jammed",
+                buffColor = new Color32(150, 10, 10, 255),
+                iconPath = "",
+                eliteIndex = dogEliteIndex3,
+                canStack = false
+            });
+            dogBuffIndex3 = BuffAPI.Add(dogBuffDef3);
+        }
         private void CreateDoppelganger()
         {
-            // set up the doppelganger for artifact of vengeance here
-            // quite simple, gets a bit more complex if you're adding your own ai, but commando ai will do
 
             friendMaster = PrefabAPI.InstantiateClone(Resources.Load<GameObject>("Prefabs/CharacterMasters/BeetleMaster"), "DogMaster", true);
 
@@ -179,68 +235,21 @@ namespace RiskOfBulletstorm.Items
             CharacterMaster component = friendMaster.GetComponent<CharacterMaster>();
             component.bodyPrefab = characterPrefab;
         }
-
-        private void SummonFriend(On.RoR2.CharacterBody.orig_FixedUpdate orig, CharacterBody self)
+        protected override bool PerformEquipmentAction(EquipmentSlot slot)
         {
-            if (NetworkServer.active && self.master)
+            CharacterBody body = slot.characterBody;
+            if (!body) return false;
+
+            new MasterSummon
             {
-                var LunarChimeraComponent = self.master.GetComponent<LunarChimeraComponent>();
-                if (!LunarChimeraComponent) { LunarChimeraComponent = self.masterObject.AddComponent<LunarChimeraComponent>(); }
-
-                var SummonerBodyMaster = self.master;
-                if (SummonerBodyMaster) //Check if we're a minion or not. If we are, we don't summon a friend.
-                {
-                    if (SummonerBodyMaster.teamIndex == TeamIndex.Player && !self.isPlayerControlled)
-                    {
-                        orig(self);
-                        return;
-                    }
-                }
-
-                int InventoryCount = GetCount(self);
-                if (InventoryCount > 0)
-                {
-                    if (LunarChimeraComponent.LastChimeraSpawned == null || !LunarChimeraComponent.LastChimeraSpawned.master || !LunarChimeraComponent.LastChimeraSpawned.master.hasBody)
-                    {
-                        LunarChimeraComponent.LastChimeraSpawned = null;
-                        LunarChimeraComponent.ResummonCooldown -= Time.fixedDeltaTime;
-                        if (LunarChimeraComponent.ResummonCooldown <= 0f)
-                        {
-                            var minDistance = 10f;
-                            var maxDistance = 20f;
-
-
-                            MasterSummon masterSummon = new MasterSummon
-                            {
-                                masterPrefab = characterPrefab,
-                                position = self.transform.position + new Vector3(UnityEngine.Random.Range(minDistance, maxDistance),
-                                5,
-                                UnityEngine.Random.Range(minDistance, maxDistance)),
-                                rotation = self.transform.rotation,
-                                summonerBodyObject = self.gameObject,
-                                ignoreTeamMemberLimit = true,
-                                teamIndexOverride = new TeamIndex?(TeamIndex.Player)
-                            };
-                            masterSummon.Perform();
-                            RecentlySpawned = true;
-
-                            if (RecentlySpawned)
-                            {
-                                LunarChimeraComponent.ResummonCooldown = lunarChimeraResummonCooldownDuration;
-                                RecentlySpawned = false;
-                            }
-                        }
-                    }
-                }
-            }
-            orig(self);
-        }
-
-
-        public class LunarChimeraComponent : MonoBehaviour
-        {
-            public CharacterBody LastChimeraSpawned;
-            public float ResummonCooldown;
+                masterPrefab = characterPrefab,
+                position = body.transform.position + new Vector3(0, 5, 0),
+                rotation = body.transform.rotation,
+                summonerBodyObject = body.gameObject,
+                ignoreTeamMemberLimit = true,
+                teamIndexOverride = new TeamIndex?(TeamIndex.Player)
+            }.Perform();
+            return true;
         }
     }
 }

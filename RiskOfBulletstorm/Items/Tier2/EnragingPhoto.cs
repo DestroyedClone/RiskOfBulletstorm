@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿/*
+using System.Collections.ObjectModel;
 //using System.Text;
 using R2API;
 using RoR2;
@@ -102,7 +103,7 @@ namespace RiskOfBulletstorm.Items
                 || (oldHealth - self.health) / self.fullHealth < HealthThreshold)
             {
                 Chat.AddMessage("EnragingPhoto Failed");
-                return; }*/
+                return; }
 
             if (InventoryCount > 0 && self.body.GetBuffCount(ROBEnraged) < InventoryCount)
             {
@@ -117,3 +118,5 @@ namespace RiskOfBulletstorm.Items
         }
     }
 }
+
+*/

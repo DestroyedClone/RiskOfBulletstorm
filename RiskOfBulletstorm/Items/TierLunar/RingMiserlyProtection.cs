@@ -13,7 +13,7 @@ using static TILER2.MiscUtil;
 
 namespace RiskOfBulletstorm.Items
 {
-    public class RingMiserlyProtection : Item_V2<RingMiserlyProtection>
+    public class RingMiserlyProtection : Item_V2<RingMiserlyProtection> //switch to a buff system due to broken
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Health Increase", AutoConfigFlags.PreventNetMismatch)]

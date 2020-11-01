@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿/*
+using System.Collections.ObjectModel;
 using R2API;
 using RoR2;
 using UnityEngine;
@@ -97,3 +98,4 @@ namespace RiskOfBulletstorm.Items
         }
     }
 }
+*/

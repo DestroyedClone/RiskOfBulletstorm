@@ -101,14 +101,14 @@ namespace RiskOfBulletstorm.Items
 
                 if (InventoryCount > 0)
                 {
+                    BlankComponent.BlankCooldown -= Time.fixedDeltaTime;
                     if (BlankComponent.BlankCooldown <= 0)
                     {
                         BlankUsed = false;
-                        BlankComponent.BlankCooldown -= Time.fixedDeltaTime;
                         if (Input.GetKeyDown(KeyCode.T) && !BlankUsed)
                         {
-                            BlankUsed = true;
                             Chat.AddMessage("Blank Used!");
+                            BlankUsed = true;
                         }
 
                         new BlastAttack
@@ -128,8 +128,6 @@ namespace RiskOfBulletstorm.Items
                         self.inventory.RemoveItem(catalogIndex);
 
                         BlankComponent.BlankCooldown = ConfigBlankCooldown;
-                        orig(self);
-                        return;
                     }
                 }
                 orig(self);
