@@ -1,4 +1,4 @@
-﻿/*
+﻿
 using System.Collections.ObjectModel;
 //using System.Text;
 using R2API;
@@ -14,8 +14,8 @@ namespace RiskOfBulletstorm.Items
     public class EnragingPhoto : Item_V2<EnragingPhoto>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How many seconds should Enraging Photo's buff last with a single stack? (Default: 3 (seconds))", AutoConfigFlags.PreventNetMismatch)]
-        public float BaseDurationOfBuffInSeconds { get; private set; } = 3f;
+        [AutoConfig("How many seconds should Enraging Photo's buff last with a single stack? (Default: 1 (seconds))", AutoConfigFlags.PreventNetMismatch)]
+        public float BaseDurationOfBuffInSeconds { get; private set; } = 1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How many additional seconds of buff should each Enraging Photo after the first give? (Default: 0.25 (seconds))", AutoConfigFlags.PreventNetMismatch)]
@@ -89,22 +89,6 @@ namespace RiskOfBulletstorm.Items
         {
             var InventoryCount = GetCount(self.body);
 
-            /*var oldHealth = self.health;
-            var oldCH = self.combinedHealth;
-
-            if (InventoryCount < 1
-                || (RequireHealth && (oldHealth - self.health) / self.fullHealth < HealthThreshold)
-                || (!RequireHealth && (oldCH - self.combinedHealth) / self.fullCombinedHealth < HealthThreshold))
-                return;*/
-            /*var oldHealth = self.health;
-            orig(self, damageInfo);
-
-            if (InventoryCount < 1
-                || (oldHealth - self.health) / self.fullHealth < HealthThreshold)
-            {
-                Chat.AddMessage("EnragingPhoto Failed");
-                return; }
-
             if (InventoryCount > 0 && self.body.GetBuffCount(ROBEnraged) < InventoryCount)
             {
                 self.body.AddTimedBuffAuthority(ROBEnraged, (BaseDurationOfBuffInSeconds + (AdditionalDurationOfBuffInSeconds * InventoryCount - 1)));
@@ -118,5 +102,3 @@ namespace RiskOfBulletstorm.Items
         }
     }
 }
-
-*/

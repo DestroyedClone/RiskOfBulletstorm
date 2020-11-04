@@ -36,12 +36,12 @@ namespace RiskOfBulletstorm.Items
             GameObject engiMinePrefab = Resources.Load<GameObject>("prefabs/projectiles/EngiGrenadeProjectile");
             BombPrefab = engiMinePrefab.InstantiateClone("RollBomb");
             //BombPrefab.transform.localScale = new Vector3(3, 3, 3);
-            BombPrefab.GetComponent<ProjectileSimple>().velocity = 0; //default 50
+            BombPrefab.GetComponent<ProjectileSimple>().velocity = 1; //default 50
             //BombPrefab.GetComponent<ProjectileSimple>().lifetime = 4; //default 5
             BombPrefab.GetComponent<ProjectileDamage>().damageColorIndex = DamageColorIndex.Item;
             //BombPrefab.GetComponent<ProjectileImpactExplosion>().lifetime = 2;
             BombPrefab.GetComponent<ProjectileImpactExplosion>().destroyOnEnemy = false; //default True
-            BombPrefab.GetComponent<ProjectileImpactExplosion>().timerAfterImpact = false;
+            //BombPrefab.GetComponent<ProjectileImpactExplosion>().timerAfterImpact = false;
             UnityEngine.Object.Destroy(BombPrefab.GetComponent<ApplyTorqueOnStart>());
         }
         public override void Install()

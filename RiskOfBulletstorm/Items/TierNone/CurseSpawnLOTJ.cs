@@ -113,6 +113,7 @@ namespace RiskOfBulletstorm.Items
         }
         private void CalculateCurse(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self) //blessed komrade
         {
+            if (GetCount(Curse.instance.inv)
             orig(self);
         }
     }

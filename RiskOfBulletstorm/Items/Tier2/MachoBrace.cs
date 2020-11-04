@@ -1,4 +1,4 @@
-﻿/*
+﻿
 using System.Collections.ObjectModel;
 using R2API;
 using RoR2;
@@ -9,7 +9,7 @@ using static TILER2.MiscUtil;
 
 namespace RiskOfBulletstorm.Items
 {
-	public class MachoBrace : Item_V2<MachoBrace> //Add Glow
+	public class MachoBrace : Item_V2<MachoBrace> //Add Glow (good effect on the invuln from the dio revive buff)
 	{
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Damage Bonus? (Default: 0.3 = +30% damage)", AutoConfigFlags.PreventNetMismatch)]
@@ -26,7 +26,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "Value for Effort\nShots are more powerful when coming out of your utility. Does not affect speed.";
 
-        protected override string GetDescString(string langid = null) => $"Using your utility <style=cIsUtility>drops 1 (+1/stack) bombs</style> for <style=cIsDamage>{Pct(MachoBraceDamage)} damage </style>.";
+        protected override string GetDescString(string langid = null) => $"Using your utility increases the damage of your text attack by <style=cIsDamage>{Pct(MachoBraceDamage)} damage (+{Pct(MachoBraceDamageStack)} per stack) </style>.";
 
         protected override string GetLoreString(string langID = null) => "Training to be the very best takes commitment, and hard work.";
 
@@ -98,4 +98,3 @@ namespace RiskOfBulletstorm.Items
         }
     }
 }
-*/

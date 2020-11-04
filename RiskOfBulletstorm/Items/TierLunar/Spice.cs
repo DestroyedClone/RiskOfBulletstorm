@@ -15,7 +15,7 @@ using System;
 
 namespace RiskOfBulletstorm.Items
 {
-    public class Spice : Item_V2<Spice> //Change to equipment that gives cursed.
+    public class Spice : Item_V2<Spice> //Change to equipment that gives cursed?
     {
         public override string displayName => "Spice";
         public override ItemTier itemTier => ItemTier.Lunar;
@@ -90,15 +90,15 @@ namespace RiskOfBulletstorm.Items
                     break;
                 case 2:
                     dynamicPickupText = "One more couldn't hurt.";
-                    GiveItemVsMax(self, ItemIndex.Feather);
+                    //GiveItemVsMax(self, ItemIndex.Feather);
                     break;
                 case 3:
                     dynamicPickupText = "Just one more hit...";
-                    GiveItemVsMax(self, ItemIndex.AlienHead);
+                    //GiveItemVsMax(self, ItemIndex.AlienHead);
                     break;
                 case 4:
                     dynamicPickupText = "MORE";
-                    GiveItemVsMax(self, ItemIndex.LunarBadLuck);
+                    //GiveItemVsMax(self, ItemIndex.LunarBadLuck);
                     break;
                 default:
                     dynamicPickupText = "MORE";

@@ -1,4 +1,4 @@
-﻿/*
+﻿
 //using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -27,7 +27,7 @@ namespace RiskOfBulletstorm.Items
         public bool RequireHealth { get; private set; } = false;
 
         public override string displayName => "Armor";
-        public string descText = "Prevents a single hit that exceeds ";
+        public string descText = "Prevents a single hit.";
         public override ItemTier itemTier => ItemTier.Tier1;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility });
 
@@ -37,7 +37,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetDescString(string langid = null) => $"{descText} {Pct(HealthThreshold)} health";
 
-        protected override string GetLoreString(string langID = null) => "beep boop im a robot ADD LORE";
+        protected override string GetLoreString(string langID = null) => "This sheet of metal is so fragile that it explodes upon the slightest scratch. Yet we still use it as armor. Go figure.";
 
 
         public override void SetupBehavior()
@@ -71,20 +71,13 @@ namespace RiskOfBulletstorm.Items
             //var oldHealth = self.health;
             //orig(self, damageInfo);
             //|| (oldHealth - self.health) / self.fullHealth < HealthThreshold)
-            if (InventoryCount < 1)
-            {
-                orig(self, damageInfo);
-                return;
-            }
-
             if (InventoryCount > 0) //failsafe
             {
                 Chat.AddMessage("Worked!");
-                //damageInfo.damage = 0;
+                damageInfo.damage = 0;
                 self.body.inventory.RemoveItem(catalogIndex);
             }
             orig(self, damageInfo);
         }
     }
 }
-*/

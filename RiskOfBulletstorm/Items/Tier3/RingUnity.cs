@@ -71,21 +71,20 @@ namespace RiskOfBulletstorm.Items
         }
         private void GiveUnityBonus(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self) 
         {
-            orig(self);
             var amount = GetCount(self);
             UnityInventoryCount = GetCount(self);
             //var inv = self.inventory;
             //int tier1Items = GetItemCount(ItemTier.Tier1, self);
             //int tier2Items = GetItemCount(ItemTier.Tier2, self);
 
-            if (amount < 1) { return; }
-            else
+            if (amount > 0)
             {
                 foreach (ItemTier tier in (ItemTier[])Enum.GetValues(typeof(ItemTier))) //https://stackoverflow.com/questions/105372/how-to-enumerate-an-enum
                 {
                     TotalItemCount += GetTotalItemCountOfTier(tier, self);
                 }
             }
+            orig(self);
         }
         static int GetTotalItemCountOfTier(ItemTier itemTier, CharacterBody self)
         {

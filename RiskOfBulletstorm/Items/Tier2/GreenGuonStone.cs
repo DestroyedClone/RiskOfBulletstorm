@@ -1,4 +1,4 @@
-﻿/*
+﻿
 using System.Collections.ObjectModel;
 using R2API;
 using RoR2;
@@ -82,30 +82,30 @@ namespace RiskOfBulletstorm.Items
 
             if (InventoryCount > 0)
             {
-                if (self.health - damageInfo.damage > 0) //Is your expected health greater than zero?
+                if (self.health - damageInfo.damage > 0) //Is your expected health loss greater than zero?
                 { //nonfatal
                     if (Util.CheckRoll(HealChance))
                     {//success
-                        Chat.AddMessage("NONLETHAL SUCCESS");
-                        //damageInfo.damage = 0;
-                        self.health *= 1 + HealAmount + (HealAmountStack * (InventoryCount - 1));
+                        //Chat.AddMessage("NONLETHAL SUCCESS");
+                        damageInfo.damage = 0;
+                        self.health *= 1 + HealAmount + (HealAmountStack * (InventoryCount - 1)); //update formula
                     }
                     else
                     {//fail
-                        Chat.AddMessage("NONLETHAL FAILURE");
+                        //Chat.AddMessage("NONLETHAL FAILURE");
                     }
                 }
                 else 
                 {//fatal
                     if (Util.CheckRoll(LethalSaveChance))
                     {//success
-                        Chat.AddMessage("LETHAL SUCCESS");
-                        //damageInfo.damage = 0;
+                        Chat.AddMessage("LETHAL SUCCESS!!");
+                        damageInfo.damage = 0;
                         self.health *= 1 + HealAmount + (HealAmountStack * (InventoryCount - 1));
                     }
                     else
                     {//fail
-                        Chat.AddMessage("LETHAL FAILURE");
+                        //Chat.AddMessage("LETHAL FAILURE");
                     }
                 }
 
@@ -115,4 +115,3 @@ namespace RiskOfBulletstorm.Items
         }
     }
 }
-*/

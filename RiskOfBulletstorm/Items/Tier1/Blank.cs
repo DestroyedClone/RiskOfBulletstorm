@@ -27,12 +27,12 @@ namespace RiskOfBulletstorm.Items
         public string BlankButtonGamepad { get; private set; } = "T";
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Blank Cooldown (Default: 4 second)", AutoConfigFlags.PreventNetMismatch)]
-        public float ConfigBlankCooldown { get; private set; } = 4f;
+        [AutoConfig("Blank Cooldown (Default: 1 second)", AutoConfigFlags.PreventNetMismatch)]
+        public float ConfigBlankCooldown { get; private set; } = 1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Damage dealt to enemies on use (Default: 0.1 = 10% damage)", AutoConfigFlags.PreventNetMismatch)]
-        public float DamageDealt { get; private set; } = 0.1f;
+        [AutoConfig("Damage dealt to enemies on use (Default: 0.4 = 40% damage)", AutoConfigFlags.PreventNetMismatch)]
+        public float DamageDealt { get; private set; } = 0.4f;
 
 
         public override string displayName => "Blank";
@@ -93,45 +93,47 @@ namespace RiskOfBulletstorm.Items
         {
             if (NetworkServer.active && self.master)
             {
-                var BlankComponent = self.master.GetComponent<BlankComponent>();
+                // var BlankComponent = self.master.AddComponent<BlankComponent>();
+                BlankComponent BlankComponent = self.master.GetComponent<BlankComponent>();
                 if (!BlankComponent) { BlankComponent = self.masterObject.AddComponent<BlankComponent>(); }
 
                 var InventoryCount = GetCount(self);
-                if (InventoryCount < 0 || !self.isPlayerControlled) { return; }
 
                 if (InventoryCount > 0)
                 {
                     BlankComponent.BlankCooldown -= Time.fixedDeltaTime;
-                    if (BlankComponent.BlankCooldown <= 0)
+                    if (self.isPlayerControlled)
                     {
-                        BlankUsed = false;
-                        if (Input.GetKeyDown(KeyCode.T) && !BlankUsed)
+                        if (BlankComponent.BlankCooldown <= 0)
                         {
-                            Chat.AddMessage("Blank Used!");
-                            BlankUsed = true;
+                            BlankUsed = false;
+                            if (Input.GetKeyDown(KeyCode.T) && !BlankUsed)
+                            {
+                                BlankUsed = true;
+
+                                new BlastAttack
+                                {
+                                    inflictor = self.gameObject,
+                                    position = self.corePosition,
+                                    procCoefficient = 0f,
+                                    losType = BlastAttack.LoSType.NearestHit,
+                                    falloffModel = BlastAttack.FalloffModel.None,
+                                    baseDamage = self.damage * DamageDealt,
+                                    damageType = DamageType.Stun1s,
+                                    crit = self.RollCrit(),
+                                    radius = 5f,
+                                    teamIndex = TeamIndex.Player,
+                                    baseForce = 300f
+                                }.Fire();
+                                self.inventory.RemoveItem(catalogIndex);
+
+                                BlankComponent.BlankCooldown = ConfigBlankCooldown;
+                            }
                         }
-
-                        new BlastAttack
-                        {
-                            inflictor = self.gameObject,
-                            position = self.corePosition,
-                            procCoefficient = 0f,
-                            losType = BlastAttack.LoSType.NearestHit,
-                            falloffModel = BlastAttack.FalloffModel.None,
-                            baseDamage = self.damage * DamageDealt,
-                            damageType = DamageType.Stun1s,
-                            crit = self.RollCrit(),
-                            radius = 5f,
-                            teamIndex = TeamIndex.Player,
-                            baseForce = 50f
-                        }.Fire();
-                        self.inventory.RemoveItem(catalogIndex);
-
-                        BlankComponent.BlankCooldown = ConfigBlankCooldown;
                     }
                 }
-                orig(self);
             }
+            orig(self);
         }
         public class BlankComponent : MonoBehaviour
         {

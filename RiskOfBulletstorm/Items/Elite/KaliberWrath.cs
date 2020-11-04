@@ -1,4 +1,5 @@
-﻿using EliteSpawningOverhaul;
+﻿/*
+using EliteSpawningOverhaul;
 using R2API;
 using RoR2;
 using TILER2;
@@ -112,3 +113,4 @@ namespace RiskOfBulletstorm //TODO modify weight of card depending on curse leve
         }
     }
 }
+*/

@@ -69,20 +69,17 @@ namespace RiskOfBulletstorm.Items
         private void On_InteractionBegin(On.RoR2.PurchaseInteraction.orig_OnInteractionBegin orig, PurchaseInteraction self, Interactor activator)
         {
             RecentPurchase = true;
-            Chat.AddMessage(activator.name);
-            
-
+            //Chat.AddMessage(activator.name);
             orig(self, activator);
         }
         private void CharacterBody_FixedUpdate(On.RoR2.CharacterBody.orig_FixedUpdate orig, CharacterBody self)
         {
             var InventoryCount = GetCount(self);
-            if (!RecentPurchase || InventoryCount < 1)
+            if (RecentPurchase)
             {
-                return;
+                self.inventory.RemoveItem(catalogIndex, InventoryCount);
+                RecentPurchase = false;
             }
-            self.inventory.RemoveItem(catalogIndex, InventoryCount);
-            RecentPurchase = false;
             orig(self);
         }
         private void BoostHealth(CharacterBody sender, StatHookEventArgs args)
