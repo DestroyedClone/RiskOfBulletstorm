@@ -8,6 +8,7 @@ using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
 using TILER2;
+using RoR2.Projectile;
 using static TILER2.StatHooks;
 using static TILER2.MiscUtil;
 using EntityStates.Captain.Weapon;
@@ -31,8 +32,12 @@ namespace RiskOfBulletstorm.Items
         public float ConfigBlankCooldown { get; private set; } = 1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Damage dealt to enemies on use (Default: 0.4 = 40% damage)", AutoConfigFlags.PreventNetMismatch)]
-        public float DamageDealt { get; private set; } = 0.4f;
+        [AutoConfig("Damage dealt to enemies on use (Default: 1 = 100% damage)", AutoConfigFlags.PreventNetMismatch)]
+        public float DamageDealt { get; private set; } = 1f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Radius of projectiles the Blank clears. Set to '0' to disable, or '-1' for infinite range (Default: -1 = Infinite)", AutoConfigFlags.PreventNetMismatch)]
+        public float BlankRadius { get; private set; } = -1f;
 
 
         public override string displayName => "Blank";
@@ -111,17 +116,50 @@ namespace RiskOfBulletstorm.Items
                                     inflictor = self.gameObject,
                                     position = self.corePosition,
                                     procCoefficient = 0f,
-                                    losType = BlastAttack.LoSType.NearestHit,
+                                    losType = BlastAttack.LoSType.None,
                                     falloffModel = BlastAttack.FalloffModel.None,
                                     baseDamage = self.damage * DamageDealt,
                                     damageType = DamageType.Stun1s,
                                     //crit = self.RollCrit(),
-                                    radius = 5f,
+                                    radius = 7f,
                                     teamIndex = TeamIndex.Player,
-                                    baseForce = 300f
+                                    baseForce = 300f,
+                                    bonusForce = new Vector3(0, 100, 0)
                                 }.Fire();
                                 self.inventory.RemoveItem(catalogIndex);
 
+                                if (BlankRadius != 0)
+                                { //Remove all Projectiles
+                                    float BlankRadiusSquared = BlankRadius * BlankRadius;
+                                    bool IsInfiniteRange = (BlankRadius == -1);
+                                    //(TEMP)
+                                    if (IsInfiniteRange) { BlankRadiusSquared = 999 * 999; }
+                                    TeamIndex teamIndex = self.teamComponent.teamIndex;
+                                    List<ProjectileController> instancesList = InstanceTracker.GetInstancesList<ProjectileController>();
+                                    List<ProjectileController> list = new List<ProjectileController>();
+                                    int i = 0;
+                                    int count = instancesList.Count;
+                                    while (i < count)
+                                    {
+                                        ProjectileController projectileController = instancesList[i];
+                                        if (projectileController.teamFilter.teamIndex != teamIndex && (projectileController.transform.position - self.corePosition).sqrMagnitude < BlankRadiusSquared)
+                                        {
+                                            list.Add(projectileController);
+                                        }
+                                        i++;
+                                    }
+                                    int j = 0;
+                                    int count2 = list.Count;
+                                    while (j < count2)
+                                    {
+                                        ProjectileController projectileController2 = list[j];
+                                        if (projectileController2)
+                                        {
+                                            UnityEngine.Object.Destroy(projectileController2.gameObject);
+                                        }
+                                        j++;
+                                    }
+                                }
                                 BlankComponent.BlankCooldown = ConfigBlankCooldown;
                             }
                         }

@@ -21,7 +21,7 @@ TODO:
 
 ## Special Items
 
-(WIP) [White] Armor: Blocks one hit of damage, then get destroyed.
+[White] Armor: Blocks one hit of damage if it dealt more than 25% health or would have killed you, then gets destroyed.
 
 (WIP) [White] Blank: Press a key to activate, destroying all projectiles, stunning and knocking nearby enemies back. Consumed on use.
 
