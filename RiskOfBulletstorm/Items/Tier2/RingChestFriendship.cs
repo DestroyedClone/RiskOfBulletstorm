@@ -70,10 +70,13 @@ namespace RiskOfBulletstorm.Items
         }
         private void CombatDirector_Awake(On.RoR2.CombatDirector.orig_Awake orig, CombatDirector self)
         {
-            var ResultMult = 1 + DirectorCreditMult + DirectorCreditMultStack * (InventoryCount - 1) ;
+            if (InventoryCount > 0)
             {
-                self.creditMultiplier *= ResultMult;
-                Chat.AddMessage("Director credits multiplied by "+ResultMult.ToString());
+                var ResultMult = 1 + DirectorCreditMult + DirectorCreditMultStack * (InventoryCount - 1);
+                {
+                    self.creditMultiplier *= ResultMult;
+                    Chat.AddMessage("Director credits multiplied by " + ResultMult.ToString());
+                }
             }
             orig(self);
         }
