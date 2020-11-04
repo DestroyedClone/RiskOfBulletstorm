@@ -26,6 +26,7 @@ namespace RiskOfBulletstorm.Items
         //private static List<RoR2.CharacterBody> Playername = new List<RoR2.CharacterBody>();
 
         public static GameObject ItemBodyModelPrefab;
+        public int InventoryCount = 0;
 
         public override void SetupBehavior()
         {
@@ -43,6 +44,7 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             On.RoR2.HealthComponent.TakeDamage += ClearFire;
+            On.RoR2.DotController.AddDot += PreventDot;
             On.RoR2.CharacterBody.OnInventoryChanged += GiveRandomRed;
         }
 
@@ -50,11 +52,12 @@ namespace RiskOfBulletstorm.Items
         {
             base.Uninstall();
             On.RoR2.HealthComponent.TakeDamage -= ClearFire;
+            On.RoR2.DotController.AddDot -= PreventDot;
             On.RoR2.CharacterBody.OnInventoryChanged -= GiveRandomRed;
         }
         private void ClearFire(On.RoR2.HealthComponent.orig_TakeDamage orig, RoR2.HealthComponent self, RoR2.DamageInfo damageInfo)
         {
-            var InventoryCount = GetCount(self.body);
+            InventoryCount = GetCount(self.body);
 
             if (InventoryCount > 0)
             {
@@ -65,9 +68,10 @@ namespace RiskOfBulletstorm.Items
                 }
                 //if (DotController.HasDotActive(DotController.DotIndex.Burn) | DotController.HasDotActive(DotController.DotIndex.PercentBurn) | DotController.HasDotActive(DotController.DotIndex.Helfire))
                 //if (DotController.FindDotController(self.body.))
-                {
-
-                }
+                //DoTController Remove
+                //Material remove
+                //ModelLocator component = victimObject.GetComponent<ModelLocator>();
+                //UnityEngine.Object.Destroy(this.burnEffectController)
                 switch (damageInfo.damageType)
                 {
                     case DamageType.IgniteOnHit:
@@ -81,6 +85,24 @@ namespace RiskOfBulletstorm.Items
             }
             orig(self, damageInfo);
         }
+
+        private void PreventDot(On.RoR2.DotController.orig_AddDot orig, DotController self, GameObject attackerObject, float duration, DotIndex dotIndex, float damageMultiplier)
+        {
+            switch (dotIndex)
+            {
+                case DotIndex.Helfire:
+                case DotIndex.Burn:
+                case DotIndex.PercentBurn:
+                    dotIndex = DotIndex.None;
+                    break;
+                default:
+                    break;
+            }
+            orig(self, attackerObject, duration, dotIndex, damageMultiplier);
+
+
+        }
+
         private void GiveRandomRed(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self) //ripped from harbcrate, i did credit though.
         {
             orig(self);
