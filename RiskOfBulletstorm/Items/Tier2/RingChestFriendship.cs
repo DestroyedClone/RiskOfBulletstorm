@@ -28,7 +28,7 @@ namespace RiskOfBulletstorm.Items
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility, ItemTag.AIBlacklist });
 
         protected override string GetNameString(string langID = null) => displayName;
-        private string descText = "Increases the chance of finding chests";
+        private readonly string descText = "Increases the chance of finding chests";
         protected override string GetPickupString(string langID = null) => "Chest Friends Forever\n" + descText;
 
         protected override string GetDescString(string langid = null) => $"{descText} by {Pct(DirectorCreditMult)} + {Pct(DirectorCreditMult)} per stack.";

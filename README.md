@@ -47,6 +47,8 @@ Ring of Chest Friendship: Increases chance of chest spawning by 10% (+1% per sta
 
 Roll Bomb: After using your Utility, drop 1 bomb(s) (+1 per stack) for 80% damage.
 
+Scope: Reduces bullet spread by 10% (+5% per stack).
+
 ## Red
 
 [unimplemented] Ring of Triggers: Using an equipment fires your primary attack in all directions for 3 (+1 per stack) seconds
