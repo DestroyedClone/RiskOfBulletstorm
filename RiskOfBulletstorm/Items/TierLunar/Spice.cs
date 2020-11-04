@@ -118,7 +118,15 @@ namespace RiskOfBulletstorm.Items
         }
         private void GiveSpiceReward(CharacterBody sender, StatHookEventArgs args)
         {
-
+            switch (InventoryCount)
+            {
+                case 0:
+                    break;
+                case 1:
+                    break;
+                default:
+                    break;
+            }
         }
         private void GiveItemVsMax(CharacterBody self, ItemIndex itemindex, int amount = 1, int max = 1)
         {
