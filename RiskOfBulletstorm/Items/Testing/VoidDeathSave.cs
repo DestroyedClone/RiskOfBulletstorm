@@ -42,7 +42,7 @@ namespace RiskOfBulletstorm.Items
             base.Install();
             On.RoR2.HealthComponent.TakeDamage += PreventNullify;
             On.RoR2.HealthComponent.Suicide += PreventSuicide;
-            On.RoR2.CharacterBody.OnInventoryChanged += GiveRandomRed;
+            //On.RoR2.CharacterBody.OnInventoryChanged += GiveRandomRed;
         }
 
         public override void Uninstall()
@@ -50,7 +50,7 @@ namespace RiskOfBulletstorm.Items
             base.Uninstall();
             On.RoR2.HealthComponent.TakeDamage -= PreventNullify;
             On.RoR2.HealthComponent.Suicide -= PreventSuicide;
-            On.RoR2.CharacterBody.OnInventoryChanged -= GiveRandomRed;
+            //On.RoR2.CharacterBody.OnInventoryChanged -= GiveRandomRed;
         }
         private void PreventNullify(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
@@ -81,7 +81,7 @@ namespace RiskOfBulletstorm.Items
                 return;
             }
         }
-        private void GiveRandomRed(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self) //ripped from harbcrate, i did credit though.
+        /*private void GiveRandomRed(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self) //ripped from harbcrate, i did credit though.
         {
             orig(self);
             var amount = GetCount(self);
@@ -99,6 +99,6 @@ namespace RiskOfBulletstorm.Items
                     Chat.AddPickupMessage(self, def.nameToken, ColorCatalog.GetColor(ItemCatalog.GetItemDef(def.itemIndex).colorIndex), (uint)lootCount);
                 }
             }
-        }
+        }*/
     }
 }
