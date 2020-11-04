@@ -10,7 +10,6 @@ namespace RiskOfBulletstorm.Items
 {
     public class GreenGuonStone : Item_V2<GreenGuonStone>
     {
-        //TODO: USE CHEN's HEALTH LOSS CODE FOR FLOATS!!!!
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Chance to heal? (Default: 10%)", AutoConfigFlags.PreventNetMismatch)]
         public float HealChance { get; private set; } = 10f;
