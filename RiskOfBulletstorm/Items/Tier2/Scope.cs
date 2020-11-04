@@ -14,7 +14,7 @@ using System;
 
 namespace RiskOfBulletstorm.Items
 {
-    public class Scope : Item_V2<Scope> //Change to equipment that gives cursed.
+    public class Scope : Item_V2<Scope> 
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Bullet Spread Reduction (Default: 10%)", AutoConfigFlags.PreventNetMismatch)]

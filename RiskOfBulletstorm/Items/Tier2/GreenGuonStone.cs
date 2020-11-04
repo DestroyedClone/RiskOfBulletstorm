@@ -78,6 +78,7 @@ namespace RiskOfBulletstorm.Items
         private void TankHit(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
             var InventoryCount = GetCount(self.body);
+            var actualHealAmount = HealAmount + (HealAmountStack * (InventoryCount - 1));
 
             if (InventoryCount > 0)
             {
@@ -85,10 +86,11 @@ namespace RiskOfBulletstorm.Items
                 { //nonfatal
                     if (Util.CheckRoll(HealChance))
                     {//success
-                        //Chat.AddMessage("NONLETHAL SUCCESS");
+                        Chat.AddMessage("NONLETHAL SUCCESS");
                         damageInfo.rejected = true;
-                        var actualHealAmount = HealAmount + (HealAmountStack * (InventoryCount - 1));
                         self.Heal(actualHealAmount, default, true);
+                        Chat.AddMessage("Damage Blocked: " + damageInfo.damage.ToString());
+                        Chat.AddMessage("Healed for "+actualHealAmount.ToString());
                     }
                     else
                     {//fail
@@ -101,8 +103,9 @@ namespace RiskOfBulletstorm.Items
                     {//success
                         Chat.AddMessage("LETHAL SUCCESS!!");
                         damageInfo.rejected = true;
-                        var actualHealAmount = HealAmount + (HealAmountStack * (InventoryCount - 1));
                         self.Heal(actualHealAmount, default, true);
+                        Chat.AddMessage("Damage Blocked: " + damageInfo.damage.ToString());
+                        Chat.AddMessage("Healed for " + actualHealAmount.ToString());
                     }
                     else
                     {//fail

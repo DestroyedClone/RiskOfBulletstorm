@@ -88,19 +88,20 @@ namespace RiskOfBulletstorm.Items
 
         private void PreventDot(On.RoR2.DotController.orig_AddDot orig, DotController self, GameObject attackerObject, float duration, DotIndex dotIndex, float damageMultiplier)
         {
-            switch (dotIndex)
+            if (InventoryCount > 0)
             {
-                case DotIndex.Helfire:
-                case DotIndex.Burn:
-                case DotIndex.PercentBurn:
-                    dotIndex = DotIndex.None;
-                    break;
-                default:
-                    break;
+                switch (dotIndex)
+                {
+                    case DotIndex.Helfire:
+                    case DotIndex.Burn:
+                    case DotIndex.PercentBurn:
+                        dotIndex = DotIndex.None;
+                        break;
+                    default:
+                        break;
+                }
             }
             orig(self, attackerObject, duration, dotIndex, damageMultiplier);
-
-
         }
 
 

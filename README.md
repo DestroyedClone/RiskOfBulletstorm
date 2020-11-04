@@ -49,7 +49,7 @@ Rocket-Powered Bullets: Increases projectile speed by 50% (+5% per stack).
 
 Roll Bomb: After using your Utility, drop 1 bomb(s) (+1 per stack) for 80% damage.
 
-Scope: Reduces bullet spread by 10% (+5% per stack).
+[nonfunctional] Scope: Reduces bullet spread by 10% (+5% per stack).
 
 ## Red
 

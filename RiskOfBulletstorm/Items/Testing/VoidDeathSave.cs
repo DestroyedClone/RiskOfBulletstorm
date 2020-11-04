@@ -40,7 +40,7 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            On.RoR2.HealthComponent.TakeDamage += PreventNullify;
+            On.RoR2.HealthComponent.TakeDamage += GetInvCount;
             On.RoR2.HealthComponent.Suicide += PreventSuicide;
             //On.RoR2.CharacterBody.OnInventoryChanged += GiveRandomRed;
         }
@@ -48,14 +48,15 @@ namespace RiskOfBulletstorm.Items
         public override void Uninstall()
         {
             base.Uninstall();
-            On.RoR2.HealthComponent.TakeDamage -= PreventNullify;
+            On.RoR2.HealthComponent.TakeDamage -= GetInvCount;
             On.RoR2.HealthComponent.Suicide -= PreventSuicide;
             //On.RoR2.CharacterBody.OnInventoryChanged -= GiveRandomRed;
         }
-        private void PreventNullify(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
+        private void GetInvCount(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
             var InventoryCount = GetCount(self.body);
 
+            /*
             if (InventoryCount > 0)
             {
                 if (damageInfo.damageType == DamageType.VoidDeath)
@@ -64,7 +65,7 @@ namespace RiskOfBulletstorm.Items
                     self.body.inventory.GiveItem(ItemIndex.ExtraLife);
                     self.body.inventory.RemoveItem(catalogIndex);
                 }
-            }
+            }*/
             orig(self, damageInfo);
         }
         private void PreventSuicide(On.RoR2.HealthComponent.orig_Suicide orig, HealthComponent self, GameObject killerOverride, GameObject inflictorOverride, DamageType damageType)
