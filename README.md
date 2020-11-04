@@ -32,9 +32,9 @@ TODO:
 
 +1 Bullets: +10% base damage (+1% per stack)
 
-[unimplemented] Battle Standard: 
+[unimplemented] Battle Standard: Increases damage of non-player allies. Does not apply to turrets.
 
-Enraging Photo: Gain a temporary +100% damage boost upon taking 33% of your health in damage for 3 (+0.25 per stack) seconds.
+Enraging Photo: Gain a temporary +100% damage boost upon taking 33% of your health in damage for 1 (+0.25 per stack) seconds.
 => TODO: Health Requirement Loss
 
 Green Guon Stone: Upon taking 33% damage, has a 10% chance to heal you instead. Rises to 25% if fatal.
@@ -44,6 +44,8 @@ Heals for 50 health + 25 per stack.
 Macho Brace: Gain +30% (+10% per stack) damage bonus upon using your utility.
 
 Ring of Chest Friendship: Increases chance of chest spawning by 10% (+1% per stack)
+
+Rocket-Powered Bullets: Increases projectile speed by 50% (+5% per stack).
 
 Roll Bomb: After using your Utility, drop 1 bomb(s) (+1 per stack) for 80% damage.
 

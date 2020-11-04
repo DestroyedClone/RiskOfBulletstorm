@@ -73,7 +73,7 @@ namespace RiskOfBulletstorm.Items
             var ResultMult = 1 + DirectorCreditMult + DirectorCreditMultStack * (InventoryCount - 1) ;
             {
                 self.creditMultiplier *= ResultMult;
-                Chat.AddMessage("");
+                Chat.AddMessage("Director credits multiplied by "+ResultMult.ToString());
             }
             orig(self);
         }
