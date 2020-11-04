@@ -20,8 +20,8 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("Director Credit Multiplier (Default: 0.1 = +10%)", AutoConfigFlags.PreventNetMismatch)]
         public float DirectorCreditMult { get; private set; } = 0.1f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Director Credit Multiplier (Default: 0.05 = +5%)", AutoConfigFlags.PreventNetMismatch)]
-        public float DirectorCreditMultStack { get; private set; } = 0.05f;
+        [AutoConfig("Director Credit Multiplier (Default: 0.01 = +1%)", AutoConfigFlags.PreventNetMismatch)]
+        public float DirectorCreditMultStack { get; private set; } = 0.01f;
 
         public override string displayName => "Ring of Chest Friendship";
         public override ItemTier itemTier => ItemTier.Tier2;
@@ -29,15 +29,17 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetNameString(string langID = null) => displayName;
         private string descText = "Increases the chance of finding chests";
-        protected override string GetPickupString(string langID = null) => descText;
+        protected override string GetPickupString(string langID = null) => "Chest Friends Forever\n" + descText;
 
-        protected override string GetDescString(string langid = null) => $"{descText} by ";
+        protected override string GetDescString(string langid = null) => $"{descText} by {Pct(DirectorCreditMult)} + {Pct(DirectorCreditMult)} per stack.";
 
-        protected override string GetLoreString(string langID = null) => "";
+        protected override string GetLoreString(string langID = null) => "This ring was first given to Winchester, largely due to a naming mix-up. With little use for treasure, Winchester eventually gave it away as a prize in one of his strange games.";
+
+        private int InventoryCount = 0;
 
         public override void SetupBehavior()
         {
-
+            base.SetupBehavior();
         }
         public override void SetupAttributes()
         {
@@ -51,11 +53,29 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
+            On.RoR2.CharacterBody.OnInventoryChanged += UpdateInvCount;
+            On.RoR2.CombatDirector.Awake += CombatDirector_Awake;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
+            On.RoR2.CharacterBody.OnInventoryChanged -= UpdateInvCount;
+            On.RoR2.CombatDirector.Awake -= CombatDirector_Awake;
+        }
+        private void UpdateInvCount(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self)
+        {
+            InventoryCount = GetCount(self);
+            orig(self);
+        }
+        private void CombatDirector_Awake(On.RoR2.CombatDirector.orig_Awake orig, CombatDirector self)
+        {
+            var ResultMult = 1 + DirectorCreditMult + DirectorCreditMultStack * (InventoryCount - 1) ;
+            {
+                self.creditMultiplier *= ResultMult;
+                Chat.AddMessage("");
+            }
+            orig(self);
         }
     }
 }

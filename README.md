@@ -14,7 +14,8 @@ TODO:
 1. Assets (Icons, Models, DisplayRules, Sound Effects)
 2. Soft BetterUI Compatibility
 3. Soft Dependencies for other mods
-3a. Equipment: ThinkInvis Beating Embryo
+3a. Equipment: ThinkInvis's Classic Items: Beating Embryo
+3b. Mimic-ites: Hailstorm: Mimics
 4. Multiplayer Testing
 
 # Items
@@ -23,7 +24,7 @@ TODO:
 
 [White] Armor: Blocks one hit of damage if it dealt more than 25% health or would have killed you, then gets destroyed.
 
-(WIP) [White] Blank: Press a key to activate, destroying all projectiles, stunning and knocking nearby enemies back. Consumed on use.
+[White] Blank: Press a key to activate, destroying all projectiles, stunning and knocking nearby enemies back. Consumed on use.
 
 ## White
 
@@ -31,14 +32,18 @@ TODO:
 
 +1 Bullets: +10% base damage (+1% per stack)
 
-Enraging Photo: Gain a temporary +100% damage boost  upon taking 33% of your health in damage for 3 (+0.25 per stack) seconds.
+[unimplemented] Battle Standard: 
+
+Enraging Photo: Gain a temporary +100% damage boost upon taking 33% of your health in damage for 3 (+0.25 per stack) seconds.
 => TODO: Health Requirement Loss
 
-[unimplemented] Green Guon Stone: Upon taking 33% damage, has a 20% chance to heal you instead. Rises to 50% if fatal.
-=> Add Health Check
+Green Guon Stone: Upon taking 33% damage, has a 10% chance to heal you instead. Rises to 25% if fatal.
+Heals for 50 health + 25 per stack.
+=> TODO: Add Health Check
 
 Macho Brace: Gain +30% (+10% per stack) damage bonus upon using your utility.
-=> TODO: Add Stacking Bonus
+
+Ring of Chest Friendship: Increases chance of chest spawning by 10% (+1% per stack)
 
 Roll Bomb: After using your Utility, drop 1 bomb(s) (+1 per stack) for 80% damage.
 
@@ -46,7 +51,8 @@ Roll Bomb: After using your Utility, drop 1 bomb(s) (+1 per stack) for 80% damag
 
 [unimplemented] Ring of Triggers: Using an equipment fires your primary attack in all directions for 3 (+1 per stack) seconds
 
-Ring of Fire Resistance: Clears all stacks of Fire on the user upon taking damage.
+Ring of Fire Resistance: Prevents being inflicted with fire damage.
+Replaced with a random red if you already have one.
 
 Unity: +0.1 (0.05 per stack) damage per unique item in inventory
 
@@ -54,6 +60,8 @@ Unity: +0.1 (0.05 per stack) damage per unique item in inventory
 
 (WIP) Dog: [unimplemented]Spawns 1 (+1 per stack) dog(s) that have a 5% chance to dig up a pickup upon completing a room.
 			Spawns a pettable beetle. (untested)
+
+[unimplemented] Master Round: Granted upon clearing a teleporter boss without taking damage. Adds +33% max health.
 
 
 ## Lunar
@@ -71,7 +79,8 @@ Unknown Compatibility with Strides of Heresy.
 
 Ring of Miserly Protection: Grants +50%(+50% per stack) increased maximum health, ...but all stacks disappear upon purchasing.
 
-Spice: wadafaggdrgdrgrdg MAKE IT WORK
+Spice: Increases various stats, but increases the rate at which Spice spawns and increases Curse.
+=> TODO: Add Stat bonuses. 
 
 # Equipment
 
@@ -127,6 +136,8 @@ Harb - HarbCrate
 ontrigger - ItemStatsMod https://github.com/ontrigger/ItemStatsMod/blob/4c015d5f54b5f7df788236b7c8546f7cc72743fe/ItemStats/src/Hooks.cs (UI)
 
 # Non-standard
+
+Crediting people I've actually talked to'
 
 Rein - Nonspecific
 

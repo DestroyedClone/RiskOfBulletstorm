@@ -91,9 +91,10 @@ namespace RiskOfBulletstorm.Items
         }
         private void AddDamageReward(CharacterBody sender, StatHookEventArgs args)
         {
+            var InventoryCount = GetCount(sender);
             if (sender.HasBuff(MachoBrace_Boost))
             {
-                args.damageMultAdd += MachoBraceDamage;
+                args.damageMultAdd += MachoBraceDamage + MachoBraceDamageStack * (InventoryCount - 1);
             }
         }
     }

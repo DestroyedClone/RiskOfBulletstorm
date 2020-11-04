@@ -15,8 +15,8 @@ namespace RiskOfBulletstorm.Items
         public float HealChance { get; private set; } = 10f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Base Heal Amount? Default 150", AutoConfigFlags.PreventNetMismatch)]
-        public float HealAmount { get; private set; } = 150f;
+        [AutoConfig("Base Heal Amount? Default 50", AutoConfigFlags.PreventNetMismatch)]
+        public float HealAmount { get; private set; } = 50f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Stack Heal Amount? Default 25", AutoConfigFlags.PreventNetMismatch)]
@@ -86,11 +86,9 @@ namespace RiskOfBulletstorm.Items
                     if (Util.CheckRoll(HealChance))
                     {//success
                         //Chat.AddMessage("NONLETHAL SUCCESS");
-                        damageInfo.damage = 0;
-                        //var actualHealAmount = (HealAmount + (HealAmountStack * (InventoryCount - 1))); //when i used percentage
+                        damageInfo.rejected = true;
                         var actualHealAmount = HealAmount + (HealAmountStack * (InventoryCount - 1));
                         self.Heal(actualHealAmount, default, true);
-                        //self.health *= 1 + HealAmount + (HealAmountStack * (InventoryCount - 1)); //update formula
                     }
                     else
                     {//fail
@@ -102,7 +100,7 @@ namespace RiskOfBulletstorm.Items
                     if (Util.CheckRoll(LethalSaveChance))
                     {//success
                         Chat.AddMessage("LETHAL SUCCESS!!");
-                        damageInfo.damage = 0;
+                        damageInfo.rejected = true;
                         var actualHealAmount = HealAmount + (HealAmountStack * (InventoryCount - 1));
                         self.Heal(actualHealAmount, default, true);
                     }

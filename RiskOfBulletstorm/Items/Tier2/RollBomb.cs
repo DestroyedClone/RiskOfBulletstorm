@@ -69,7 +69,7 @@ namespace RiskOfBulletstorm.Items
                     {
                         ProjectileManager.instance.FireProjectile(BombPrefab, corePos, MineDropDirection(),
                                           vGameObject, vBody.damage * RollBombDamage,
-                                          0f, Util.CheckRoll(vBody.crit, vBody.master),
+                                          3f, Util.CheckRoll(vBody.crit, vBody.master),
                                           DamageColorIndex.Item, null, -1f);
                     }
                 }

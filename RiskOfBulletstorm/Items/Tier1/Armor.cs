@@ -17,13 +17,13 @@ namespace RiskOfBulletstorm.Items
     public class Armor : Item_V2<Armor>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Activate a blank when armor is depleted? (Default: true)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("[UNIMPLEMENTED] Activate a blank when armor is depleted? (Default: true)", AutoConfigFlags.PreventNetMismatch)]
         public bool ActivateBlank { get; private set; } = true;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Block ETC bla bla %%%%", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Health Threshold for blocking damage. ", AutoConfigFlags.PreventNetMismatch)]
         public float HealthThreshold { get; private set; } = 0.25f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("If true, damage to shield and barrier (from e.g. Personal Shield Generator, Topaz Brooch) will not count towards triggering Enraging Photo")]
+        [AutoConfig("[UNIMPLEMENTED] Protects from death?")]
         public bool RequireHealth { get; private set; } = false;
 
         public override string displayName => "Armor";
@@ -76,7 +76,7 @@ namespace RiskOfBulletstorm.Items
                 if (((oldHealth - self.health) / self.fullHealth < HealthThreshold) || (oldHealth - damageInfo.damage <= 0))
                 {
                     Chat.AddMessage("Armor Shattered!");
-                    damageInfo.damage = 0;
+                    damageInfo.rejected = true;
                     self.body.inventory.RemoveItem(catalogIndex);
                 }
             }
