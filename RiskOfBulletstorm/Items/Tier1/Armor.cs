@@ -29,7 +29,7 @@ namespace RiskOfBulletstorm.Items
         public override string displayName => "Armor";
         public string descText = "Prevents a single hit";
         public override ItemTier itemTier => ItemTier.Tier1;
-        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility });
+        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist });
 
         protected override string GetNameString(string langID = null) => displayName;
 

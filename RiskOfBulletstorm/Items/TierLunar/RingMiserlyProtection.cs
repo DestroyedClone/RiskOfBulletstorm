@@ -29,7 +29,7 @@ namespace RiskOfBulletstorm.Items
         public bool RecentPurchase = false;
         public override string displayName => "Ring of Miserly Protection";
         public override ItemTier itemTier => ItemTier.Lunar;
-        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage });
+        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Healing, ItemTag.Cleansable  });
 
         protected override string GetNameString(string langID = null) => displayName;
 
