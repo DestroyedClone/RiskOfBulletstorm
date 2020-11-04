@@ -76,11 +76,6 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            //On.RoR2.CharacterBody += CharacterBody_FixedUpdate;
-            //CharacterBody.OnFixedUpdate += FixedUpdateHook;
-            //CharacterBody.
-            //characterbody hook_FixedUpdate
-            //On.RoR2.CharacterBody.hook_FixedUpdate += CharacterBody_FixedUpdate;
             On.RoR2.CharacterBody.FixedUpdate += CharacterBody_FixedUpdate;
         }
 
@@ -120,7 +115,7 @@ namespace RiskOfBulletstorm.Items
                                     falloffModel = BlastAttack.FalloffModel.None,
                                     baseDamage = self.damage * DamageDealt,
                                     damageType = DamageType.Stun1s,
-                                    crit = self.RollCrit(),
+                                    //crit = self.RollCrit(),
                                     radius = 5f,
                                     teamIndex = TeamIndex.Player,
                                     baseForce = 300f

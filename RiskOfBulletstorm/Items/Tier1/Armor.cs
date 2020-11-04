@@ -27,15 +27,15 @@ namespace RiskOfBulletstorm.Items
         public bool RequireHealth { get; private set; } = false;
 
         public override string displayName => "Armor";
-        public string descText = "Prevents a single hit.";
+        public string descText = "Prevents a single hit";
         public override ItemTier itemTier => ItemTier.Tier1;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility });
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "Protect Body\n"+descText+"some health";
+        protected override string GetPickupString(string langID = null) => "Protect Body\n"+descText+" from heavy hits";
 
-        protected override string GetDescString(string langid = null) => $"{descText} {Pct(HealthThreshold)} health";
+        protected override string GetDescString(string langid = null) => $"{descText} that would have exceeded {Pct(HealthThreshold)} health.\n If the shot would have killed you, spends itself.";
 
         protected override string GetLoreString(string langID = null) => "This sheet of metal is so fragile that it explodes upon the slightest scratch. Yet we still use it as armor. Go figure.";
 
@@ -68,16 +68,19 @@ namespace RiskOfBulletstorm.Items
         {
             var InventoryCount = GetCount(self.body);
 
-            //var oldHealth = self.health;
-            //orig(self, damageInfo);
-            //|| (oldHealth - self.health) / self.fullHealth < HealthThreshold)
-            if (InventoryCount > 0) //failsafe
-            {
-                Chat.AddMessage("Worked!");
-                damageInfo.damage = 0;
-                self.body.inventory.RemoveItem(catalogIndex);
-            }
+            var oldHealth = self.health;
             orig(self, damageInfo);
+            //|| (oldHealth - self.health) / self.fullHealth < HealthThreshold)
+            if (InventoryCount > 0)
+            {
+                if (((oldHealth - self.health) / self.fullHealth < HealthThreshold) || (oldHealth - damageInfo.damage <= 0))
+                {
+                    Chat.AddMessage("Armor Shattered!");
+                    damageInfo.damage = 0;
+                    self.body.inventory.RemoveItem(catalogIndex);
+                }
+            }
+            //orig(self, damageInfo);
         }
     }
 }

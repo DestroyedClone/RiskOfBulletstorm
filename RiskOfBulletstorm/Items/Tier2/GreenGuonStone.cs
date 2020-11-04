@@ -12,24 +12,24 @@ namespace RiskOfBulletstorm.Items
     {
         //TODO: USE CHEN's HEALTH LOSS CODE FOR FLOATS!!!!
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Chance to heal? (Default: 2%)", AutoConfigFlags.PreventNetMismatch)]
-        public float HealChance { get; private set; } = 2f;
+        [AutoConfig("Chance to heal? (Default: 10%)", AutoConfigFlags.PreventNetMismatch)]
+        public float HealChance { get; private set; } = 10f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Base Heal Percent? 0.33", AutoConfigFlags.PreventNetMismatch)]
-        public float HealAmount { get; private set; } = 0.33f;
+        [AutoConfig("Base Heal Amount? Default 150", AutoConfigFlags.PreventNetMismatch)]
+        public float HealAmount { get; private set; } = 150f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Stack Heal Percent? 0.11", AutoConfigFlags.PreventNetMismatch)]
-        public float HealAmountStack { get; private set; } = 0.11f;
+        [AutoConfig("Stack Heal Amount? Default 25", AutoConfigFlags.PreventNetMismatch)]
+        public float HealAmountStack { get; private set; } = 25f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Increase chance if damage is lethal?", AutoConfigFlags.PreventNetMismatch)]
         public bool LethalSave { get; private set; } = true;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Lethal Save Chance. Default: 50%", AutoConfigFlags.PreventNetMismatch)]
-        public float LethalSaveChance { get; private set; } = 50f;
+        [AutoConfig("Lethal Save Chance. Default: 25%", AutoConfigFlags.PreventNetMismatch)]
+        public float LethalSaveChance { get; private set; } = 25f;
         
         //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         //[AutoConfig("If true, damage to shield and barrier (from e.g. Personal Shield Generator, Topaz Brooch) will not count towards triggering Enraging Photo")]
@@ -88,7 +88,10 @@ namespace RiskOfBulletstorm.Items
                     {//success
                         //Chat.AddMessage("NONLETHAL SUCCESS");
                         damageInfo.damage = 0;
-                        self.health *= 1 + HealAmount + (HealAmountStack * (InventoryCount - 1)); //update formula
+                        //var actualHealAmount = (HealAmount + (HealAmountStack * (InventoryCount - 1))); //when i used percentage
+                        var actualHealAmount = HealAmount + (HealAmountStack * (InventoryCount - 1));
+                        self.Heal(actualHealAmount, default, true);
+                        //self.health *= 1 + HealAmount + (HealAmountStack * (InventoryCount - 1)); //update formula
                     }
                     else
                     {//fail
@@ -101,7 +104,8 @@ namespace RiskOfBulletstorm.Items
                     {//success
                         Chat.AddMessage("LETHAL SUCCESS!!");
                         damageInfo.damage = 0;
-                        self.health *= 1 + HealAmount + (HealAmountStack * (InventoryCount - 1));
+                        var actualHealAmount = HealAmount + (HealAmountStack * (InventoryCount - 1));
+                        self.Heal(actualHealAmount, default, true);
                     }
                     else
                     {//fail
@@ -109,7 +113,7 @@ namespace RiskOfBulletstorm.Items
                     }
                 }
 
-                Chat.AddMessage("Worked!");
+                //Chat.AddMessage("Worked!");
             }
             orig(self, damageInfo);
         }

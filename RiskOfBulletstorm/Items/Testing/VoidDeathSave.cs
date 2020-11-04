@@ -1,27 +1,25 @@
-﻿using System;
+﻿
 using System.Collections.ObjectModel;
-using JetBrains.Annotations;
 using RoR2;
 using UnityEngine;
 using TILER2;
-using static RoR2.DotController;
-using UnityEngine.Networking;
 
 namespace RiskOfBulletstorm.Items
 {
-    public class RingFireResistance : Item_V2<RingFireResistance>
+    public class VoidDeathSave : Item_V2<VoidDeathSave>
     {
-        public override string displayName => "Ring of Fire Resistance";
+        public override string displayName => "Void Altar";
         public override ItemTier itemTier => ItemTier.Tier3;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility });
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "No Burns!\nPrevents damage from fire.";
+        protected override string GetPickupString(string langID = null) => "Prevents being sentenced to Gay Baby Jail, destroys upon use.";
 
-        protected override string GetDescString(string langid = null) => $"Clears all stacks of Fire on the user upon taking damage. Prevents fire damage from inflicting.";
+        protected override string GetDescString(string langid = null) => $"Getting caught in a Void Reaver nullification field " +
+            $"\n Replaced with a random red if an extra is picked up.";
 
-        protected override string GetLoreString(string langID = null) => "A ring originally worn by the legendary gunsmith himself. Later in life, Edwin no longer needed it, but the ring proved indispensable during his early years in the Forge. It eventually passed to his eldest daughter.";
+        protected override string GetLoreString(string langID = null) => "A crystallized Void Fragment in the shape of a small human. Confuses Void Reavers to the point they can't distinguish between this and flesh..";
 
         //private static List<RoR2.CharacterBody> Playername = new List<RoR2.CharacterBody>();
 
@@ -42,44 +40,46 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            On.RoR2.HealthComponent.TakeDamage += ClearFire;
+            On.RoR2.HealthComponent.TakeDamage += PreventNullify;
+            On.RoR2.HealthComponent.Suicide += PreventSuicide;
             On.RoR2.CharacterBody.OnInventoryChanged += GiveRandomRed;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
-            On.RoR2.HealthComponent.TakeDamage -= ClearFire;
+            On.RoR2.HealthComponent.TakeDamage -= PreventNullify;
+            On.RoR2.HealthComponent.Suicide -= PreventSuicide;
             On.RoR2.CharacterBody.OnInventoryChanged -= GiveRandomRed;
         }
-        private void ClearFire(On.RoR2.HealthComponent.orig_TakeDamage orig, RoR2.HealthComponent self, RoR2.DamageInfo damageInfo)
+        private void PreventNullify(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
             var InventoryCount = GetCount(self.body);
 
             if (InventoryCount > 0)
             {
-                if (self.body.HasBuff(BuffIndex.OnFire))
+                if (damageInfo.damageType == DamageType.VoidDeath)
                 {
-                    self.body.RemoveBuff(BuffIndex.OnFire);
-                    Chat.AddMessage("Extinguished!");
-                }
-                //if (DotController.HasDotActive(DotController.DotIndex.Burn) | DotController.HasDotActive(DotController.DotIndex.PercentBurn) | DotController.HasDotActive(DotController.DotIndex.Helfire))
-                //if (DotController.FindDotController(self.body.))
-                {
-
-                }
-                switch (damageInfo.damageType)
-                {
-                    case DamageType.IgniteOnHit:
-                    case DamageType.PercentIgniteOnHit:
-                        damageInfo.damageType = DamageType.Generic;
-                        Chat.AddMessage("Removed Fire from attack!");
-                        break;
-                    default:
-                        break;
+                    damageInfo.damageType = DamageType.Generic;
+                    self.body.inventory.GiveItem(ItemIndex.ExtraLife);
+                    self.body.inventory.RemoveItem(catalogIndex);
                 }
             }
             orig(self, damageInfo);
+        }
+        private void PreventSuicide(On.RoR2.HealthComponent.orig_Suicide orig, HealthComponent self, GameObject killerOverride, GameObject inflictorOverride, DamageType damageType)
+        {
+            var InventoryCount = GetCount(self.body);
+
+            if (InventoryCount < 1)
+            {
+                orig(self, killerOverride, inflictorOverride, damageType);
+                Chat.AddMessage("No void save, followed suicide.");
+            } else
+            {
+                Chat.AddMessage("Void Death saved");
+                return;
+            }
         }
         private void GiveRandomRed(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self) //ripped from harbcrate, i did credit though.
         {
