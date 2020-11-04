@@ -1,4 +1,4 @@
-﻿/*
+﻿
 using System.Collections.ObjectModel;
 using RoR2;
 using UnityEngine;
@@ -53,19 +53,20 @@ namespace RiskOfBulletstorm.Items
         {
             var InventoryCount = GetCount(self.body);
 
-            if (InventoryCount < 1)
-                return;
-            else
+            if (InventoryCount > 0)
             {
                 if (self.body.HasBuff(BuffIndex.OnFire))
                 {
                     self.body.RemoveBuff(BuffIndex.OnFire);
+                    Chat.AddMessage("Extinguished!");
+                    //DotController.DotIndex index = 
                 }
                 switch (damageInfo.damageType)
                 {
                     case DamageType.IgniteOnHit:
                     case DamageType.PercentIgniteOnHit:
                         damageInfo.damageType = DamageType.Generic;
+                        Chat.AddMessage("Removed Fire from attack!");
                         break;
                     default:
                         break;
@@ -94,4 +95,3 @@ namespace RiskOfBulletstorm.Items
         }
     }
 }
-*/
