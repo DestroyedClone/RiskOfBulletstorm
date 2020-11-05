@@ -28,6 +28,10 @@ TODO:
 
 ## White
 
+Cartographer's Ring: Upon starting the next stage, 25% chance (+10% chance per stack) of automatically scanning the stage.
+
+Mustache: {25% (+5% per stack) chance to heal for 25% health.
+
 ## Green
 
 +1 Bullets: +10% base damage (+1% per stack)

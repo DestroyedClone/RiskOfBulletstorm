@@ -29,7 +29,7 @@ namespace RiskOfBulletstorm.Items
         public bool RecentPurchase = false;
         public override string displayName => "Ring of Miserly Protection";
         public override ItemTier itemTier => ItemTier.Lunar;
-        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Healing, ItemTag.Cleansable  });
+        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Healing, ItemTag.Cleansable });
 
         protected override string GetNameString(string langID = null) => displayName;
 
@@ -38,6 +38,8 @@ namespace RiskOfBulletstorm.Items
         protected override string GetDescString(string langid = null) => $"Grants +{Pct(HealthBonus)} (+{Pct(HealthBonusStack)} per stack) health <style=cIsDeath>...but breaks completely upon purchasing.</style> ";
 
         protected override string GetLoreString(string langID = null) => "Before the Shopkeep opened his shop, he was an avaricious and miserly man. He remains careful about any expenditures, but through capitalism he has purged himself of negative emotion.";
+
+        private int InventoryCount = 0;
 
         public override void SetupBehavior()
         {
