@@ -28,6 +28,8 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "This scouter, worn with use, provides detailed data on enemies encountered within the Gungeon. The name \"Ritvik\" is inscribed on the rim.";
 
+        private int InventoryCount = 0;
+
         public override void SetupBehavior()
         {
 
@@ -45,38 +47,56 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             //On.RoR2.CharacterBody.FixedUpdate += CharacterBody_FixedUpdate;
-            On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+            On.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
+            On.RoR2.CharacterBody.OnInventoryChanged += CharacterBody_OnInventoryChanged;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
             //On.RoR2.CharacterBody.FixedUpdate -= CharacterBody_FixedUpdate;
-            On.RoR2.HealthComponent.TakeDamage -= HealthComponent_TakeDamage;
+            On.RoR2.GlobalEventManager.OnHitEnemy -= GlobalEventManager_OnHitEnemy;
+            On.RoR2.CharacterBody.OnInventoryChanged -= CharacterBody_OnInventoryChanged;
         }
-        private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
+
+        private void CharacterBody_OnInventoryChanged(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self)
         {
-            if (damageInfo.attacker == self.gameObject)
+            InventoryCount = GetCount(self);
+            orig(self);
+        }
+        private void GlobalEventManager_OnHitEnemy(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim)
+        {
+            if (damageInfo.attacker == self.gameObject && !damageInfo.rejected)
             {
-                var InventoryCount = GetCount(self.body);
                 if (InventoryCount > 0)
                 {
-                    CharacterBody component = damageInfo.attacker.gameObject.GetComponent<CharacterBody>();
+                    string cutText(float value)
+                    {
+                        var text = value.ToString();
+                        int maxText = Math.Min(text.Length, InventoryCount);
+                        var allowedText = text.Substring(Math.Max(0, text.Length - maxText));
+                        string blockedText = new String('?', text.Length - maxText);
+                        return blockedText + allowedText;
+                    }
+                    CharacterBody component = victim.gameObject.GetComponent<CharacterBody>();
                     var EnemyName = component.name;
                     var EnemyHealthMax = component.maxHealth;
                     var EnemyHealth = component.healthComponent.health;
                     var EnemyShieldMax = component.maxShield;
                     var EnemyShield = component.healthComponent.shield;
-                    var ScouterMsg = "==="+ EnemyName.ToString().ToUpper()+"===" +
-                        "\n FleshHP: " + EnemyHealth.ToString() + " / " + EnemyHealthMax.ToString() +
-                        "\n ShieldHP:" + EnemyShield.ToString() + " / " + EnemyShieldMax.ToString() +
-                        "\n Damage Received" + damageInfo.damage.ToString() + "(" + damageInfo.damageType + ")" +
+                    var DamageType = damageInfo.damageType.ToString();
+                    if (InventoryCount < 2) { DamageType = "???"; }
+                    var ScouterMsg = "===" + EnemyName.ToString().ToUpper() + "===" +
+                        "\n FleshHP: " + cutText(EnemyHealth) + " / " + cutText(EnemyHealthMax) +
+                        "\n ShieldHP:" + cutText(EnemyShield) + " / " + cutText(EnemyShieldMax) +
+                        "\n Damage Received" + cutText(damageInfo.damage) + "(" + DamageType + ")" +
                         "===SCOUTER===";
 
                     Chat.AddMessage(ScouterMsg);
                 }
+
             }
-            orig(self, damageInfo);
+            orig(self, damageInfo, victim);
         }
     }
 }

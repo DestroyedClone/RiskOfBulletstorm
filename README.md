@@ -57,6 +57,8 @@ Roll Bomb: After using your Utility, drop 1 bomb(s) (+1 per stack) for 80% damag
 
 [nonfunctional] Scope: Reduces bullet spread by 10% (+5% per stack).
 
+Scouter: Shows enemy health and damage in chat on hit. Only shows number of digits depending on InventoryCount. DamageType only shows up after 2 Scouters.
+
 ## Red
 
 [unimplemented] Ring of Triggers: Using an equipment fires your primary attack in all directions for 3 (+1 per stack) seconds
@@ -163,4 +165,4 @@ rob - help with hooks
 https://stackoverflow.com/questions/105372/how-to-enumerate-an-enum
 https://answers.unity.com/questions/285785/how-to-randomly-pick-a-string-from-an-array.html
 https://stackoverflow.com/questions/2893297/iterate-multi-dimensional-array-with-nested-foreach-statement
-https://answers.unity.com/questions/285785/how-to-randomly-pick-a-string-from-an-array.html
+https://stackoverflow.com/questions/6413572/how-do-i-get-the-last-four-characters-from-a-string-in-c
