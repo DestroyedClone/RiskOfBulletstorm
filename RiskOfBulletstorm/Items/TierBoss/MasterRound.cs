@@ -31,7 +31,6 @@ namespace RiskOfBulletstorm.Items
         protected override string GetLoreString(string langID = null) => "";
 
         private bool hasBeenHit;
-        private LocalUser LocalUser { get; set; }
 
         public override void SetupBehavior()
         {
@@ -76,21 +75,32 @@ namespace RiskOfBulletstorm.Items
 
         private void OnClientDamageNotified(DamageDealtMessage damageDealtMessage)
         {
-            if (!hasBeenHit && damageDealtMessage.victim && damageDealtMessage.victim == LocalUser.cachedBodyObject)
-            {
-                hasBeenHit = true;
+            for (int i = 0; i < CharacterMaster.readOnlyInstancesList.Count; i++)
+            { //CharacterMaster.readOnlyInstancesList[i] is the player. }
+                var player = CharacterMaster.readOnlyInstancesList[i];
+                if (!hasBeenHit && damageDealtMessage.victim && damageDealtMessage.victim == player.gameObject)
+                {
+                    hasBeenHit = true;
+                }
             }
         }
 
         private void Check()
         {
-            if (LocalUser.cachedBody && LocalUser.cachedBody.healthComponent && LocalUser.cachedBody.healthComponent.alive && !hasBeenHit)
+            for (int i = 0; i < CharacterMaster.readOnlyInstancesList.Count; i++)
             {
-                Chat.AddMessage("Player survived with no hits!");
-                for (int i = 0; i < CharacterMaster.readOnlyInstancesList.Count; i++)
+                var player = CharacterMaster.readOnlyInstancesList[i];
+                var body = player.GetComponent<CharacterBody>();
+                if (body && body.healthComponent && body.healthComponent.alive && !hasBeenHit)
                 {
+                    Chat.AddMessage("Player survived with no hits!");
+
                     CharacterMaster.readOnlyInstancesList[i].GetComponent<CharacterBody>()?.inventory.GiveItem(catalogIndex);
                     Chat.AddMessage("Gave item");
+                }
+                else
+                {
+                    Chat.AddMessage("Player fucked up lol");
                 }
             }
         }
