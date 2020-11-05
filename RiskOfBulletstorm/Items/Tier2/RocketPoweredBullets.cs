@@ -70,12 +70,15 @@ namespace RiskOfBulletstorm.Items
         }
         private void ProjectileManager_FireProjectile_FireProjectileInfo(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_FireProjectileInfo orig, ProjectileManager self, FireProjectileInfo fireProjectileInfo)
         {
-            var ProjMultFinal = 1 + ProjSpeedMult + ProjSpeedMultStack * (InventoryCount - 1);
-            //RocketBulletComponent RocketBulletComponent = self.GetComponent<RocketBulletComponent>();
-            //if (!RocketBulletComponent) { Chat.AddMessage("No bullet component found?"); }
-            Chat.AddMessage("Current Speed Override: "+fireProjectileInfo.speedOverride.ToString()+" x ("+ProjMultFinal.ToString()+") = ("+(fireProjectileInfo.speedOverride*ProjMultFinal).ToString()+")");
-            fireProjectileInfo.speedOverride *= ProjMultFinal;
-            fireProjectileInfo.useSpeedOverride = true;
+            if (InventoryCount > 0)
+            {
+                var ProjMultFinal = 1 + ProjSpeedMult + ProjSpeedMultStack * (InventoryCount - 1);
+                //RocketBulletComponent RocketBulletComponent = self.GetComponent<RocketBulletComponent>();
+                //if (!RocketBulletComponent) { Chat.AddMessage("No bullet component found?"); }
+                Chat.AddMessage("Current Speed Override: " + fireProjectileInfo.speedOverride.ToString() + " x (" + ProjMultFinal.ToString() + ") = (" + (fireProjectileInfo.speedOverride * ProjMultFinal).ToString() + ")");
+                fireProjectileInfo.speedOverride *= ProjMultFinal;
+                fireProjectileInfo.useSpeedOverride = true;
+            }
             orig(self, fireProjectileInfo);
         }
         public class RocketBulletComponent : MonoBehaviour

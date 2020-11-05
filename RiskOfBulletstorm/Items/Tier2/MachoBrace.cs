@@ -70,20 +70,24 @@ namespace RiskOfBulletstorm.Items
             var invCount = GetCount(self.characterBody);
             CharacterBody vBody = self.characterBody;
 
-            if (invCount > 0)
+            if (vBody.skillLocator.FindSkill(self.skillName))
             {
-                if (vBody.skillLocator.utility.Equals(self))
+                if (invCount > 0)
                 {
-                    if (vBody.HasBuff(MachoBrace_Boost)) //should prevent weird stacking
+                    if (vBody.skillLocator.utility.Equals(self)) //is this [redacted] redundant?
                     {
-                        vBody.RemoveBuff(MachoBrace_Boost);
+                        if (vBody.HasBuff(MachoBrace_Boost)) //should prevent weird stacking
+                        {
+                            vBody.RemoveBuff(MachoBrace_Boost);
+                        }
+                        vBody.AddBuff(MachoBrace_Boost);
                     }
-                    vBody.AddBuff(MachoBrace_Boost);
-                } else
-                {
-                    if (vBody.HasBuff(MachoBrace_Boost))
+                    else
                     {
-                        vBody.RemoveBuff(MachoBrace_Boost);
+                        if (vBody.HasBuff(MachoBrace_Boost))
+                        {
+                            vBody.RemoveBuff(MachoBrace_Boost);
+                        }
                     }
                 }
             }

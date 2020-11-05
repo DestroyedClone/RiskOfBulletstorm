@@ -61,16 +61,19 @@ namespace RiskOfBulletstorm.Items
             Vector3 corePos = Util.GetCorePosition(vBody);
             GameObject vGameObject = self.gameObject;
 
-            if (invCount > 0)
+            if (vBody.skillLocator.FindSkill(self.skillName))
             {
-                if (self.characterBody.skillLocator.utility.Equals(self))
+                if (invCount > 0)
                 {
-                    for (int i = 0; i < invCount; i++)
+                    if (self.characterBody.skillLocator.utility.Equals(self))
                     {
-                        ProjectileManager.instance.FireProjectile(BombPrefab, corePos, MineDropDirection(),
-                                          vGameObject, vBody.damage * RollBombDamage,
-                                          3f, Util.CheckRoll(vBody.crit, vBody.master),
-                                          DamageColorIndex.Item, null, -1f);
+                        for (int i = 0; i < invCount; i++)
+                        {
+                            ProjectileManager.instance.FireProjectile(BombPrefab, corePos, MineDropDirection(),
+                                              vGameObject, vBody.damage * RollBombDamage,
+                                              3f, Util.CheckRoll(vBody.crit, vBody.master),
+                                              DamageColorIndex.Item, null, -1f);
+                        }
                     }
                 }
             }

@@ -54,23 +54,41 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            GetStatCoefficients += DecreaseSpread;
+            On.RoR2.BulletAttack.Fire += BulletAttack_Fire;
+            On.RoR2.CharacterBody.OnInventoryChanged += CharacterBody_OnInventoryChanged;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
-            GetStatCoefficients -= DecreaseSpread;
+            On.RoR2.BulletAttack.Fire -= BulletAttack_Fire;
+            On.RoR2.CharacterBody.OnInventoryChanged -= CharacterBody_OnInventoryChanged;
         }
-        private void DecreaseSpread(CharacterBody sender, StatHookEventArgs args)
+        private int InventoryCount = 0;
+
+        private void CharacterBody_OnInventoryChanged(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self)
         {
-            var invCount = GetCount(sender);
-            var ResultMult = SpreadReduction + SpreadReductionStack * (invCount - 1);
-            if (invCount > 0)
-            { 
-                sender.SetSpreadBloom(ResultMult, false);
-                Chat.AddMessage("Bloom reduced by "+ResultMult.ToString());
+            InventoryCount = GetCount(self);
+            orig(self);
+        }
+
+        private void BulletAttack_Fire(On.RoR2.BulletAttack.orig_Fire orig, BulletAttack self)
+        {
+            
+            if (InventoryCount > 0)
+            {
+                var ResultMult = SpreadReduction + SpreadReductionStack * (InventoryCount - 1);
+                //self.maxSpread = Mathf.Max(self.maxSpread * ResultMult * 0.75f, 2 * ResultMult);
+                var oldMax = self.maxSpread;
+                self.maxSpread = Mathf.Max(self.maxSpread * ResultMult, self.maxSpread);
+                var oldMin = self.minSpread;
+                self.minSpread = Mathf.Min(0, self.minSpread * ResultMult);
+
+                //self.owner.GetComponent<CharacterBody>().SetSpreadBloom(ResultMult, false);
+                Chat.AddMessage("Max:" + oldMax.ToString() + "=>" + self.maxSpread.ToString());
+                Chat.AddMessage("Min:" + oldMin.ToString() + "=>" + self.minSpread.ToString());
             }
+            orig(self);
         }
     }
 }

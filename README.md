@@ -55,7 +55,7 @@ Rocket-Powered Bullets: Increases projectile speed by 50% (+5% per stack).
 
 Roll Bomb: After using your Utility, drop 1 bomb(s) (+1 per stack) for 80% damage.
 
-[nonfunctional] Scope: Reduces bullet spread by 10% (+5% per stack).
+Scope: Reduces bullet spread by 10% (+5% per stack).
 
 Scouter: Shows enemy health and damage in chat on hit. Only shows number of digits depending on InventoryCount. DamageType only shows up after 2 Scouters.
 
@@ -166,3 +166,4 @@ https://stackoverflow.com/questions/105372/how-to-enumerate-an-enum
 https://answers.unity.com/questions/285785/how-to-randomly-pick-a-string-from-an-array.html
 https://stackoverflow.com/questions/2893297/iterate-multi-dimensional-array-with-nested-foreach-statement
 https://stackoverflow.com/questions/6413572/how-do-i-get-the-last-four-characters-from-a-string-in-c
+https://stackoverflow.com/questions/411752/best-way-to-repeat-a-character-in-c-sharp
