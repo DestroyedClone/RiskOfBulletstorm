@@ -68,7 +68,6 @@ namespace RiskOfBulletstorm.Items
         }
         private void SetNotificationItemHook(GenericNotification.orig_SetItem orig, RoR2.UI.GenericNotification self, ItemDef itemDef)
         {
-
             //self.descriptionText.token = itemDef.descriptionToken;
             orig(self, itemDef);
             if (itemDef.itemIndex == catalogIndex)

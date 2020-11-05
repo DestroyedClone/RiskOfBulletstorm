@@ -54,7 +54,7 @@ namespace RiskOfBulletstorm.Items
         }
         private void GetInvCount(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
-            var InventoryCount = GetCount(self.body);
+            //var InventoryCount = GetCount(self.body);
 
             /*
             if (InventoryCount > 0)

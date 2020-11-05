@@ -121,10 +121,10 @@ namespace RiskOfBulletstorm.Items
                                     baseDamage = self.damage * DamageDealt,
                                     damageType = DamageType.Stun1s,
                                     //crit = self.RollCrit(),
-                                    radius = 7f,
+                                    radius = 6f,
                                     teamIndex = TeamIndex.Player,
-                                    baseForce = 300f,
-                                    bonusForce = new Vector3(0, 100, 0)
+                                    baseForce = 3000f,
+                                    bonusForce = new Vector3(0, 3000, 0)
                                 }.Fire();
                                 self.inventory.RemoveItem(catalogIndex);
 

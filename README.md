@@ -38,6 +38,8 @@ Mustache: {25% (+5% per stack) chance to heal for 25% health.
 
 [unimplemented] Battle Standard: Increases damage of non-player allies. Does not apply to turrets.
 
+Disarming Personality: Reduces chest prices
+
 Enraging Photo: Gain a temporary +100% damage boost upon taking 33% of your health in damage for 1 (+0.25 per stack) seconds.
 => TODO: Health Requirement Loss
 
@@ -69,7 +71,7 @@ Unity: +0.1 (0.05 per stack) damage per unique item in inventory
 (WIP) Dog: [unimplemented]Spawns 1 (+1 per stack) dog(s) that have a 5% chance to dig up a pickup upon completing a room.
 			Spawns a pettable beetle. (untested)
 
-[unimplemented] Master Round: Granted upon clearing a teleporter boss without taking damage. Adds +33% max health.
+Master Round: Granted upon clearing a teleporter boss without taking damage. Adds 150 max health per stack.
 
 
 ## Lunar
@@ -82,7 +84,7 @@ Unknown Compatibility with Strides of Heresy.
 
 [unimplemented] Bloodied Scarf: Replaces your utility with Huntress Blink
 
-[unimplemented] Metronome: Gain a damage bonus for every enemy you kill, clears when you use a different skill.
+Metronome: Gain a damage bonus for every enemy you kill, clears when you use a different skill.
 => +2% damage bonus for each enemy killed, maxes at +150%(+50%). The bonus is reset if the player uses a different skill.
 
 Ring of Miserly Protection: Grants +50%(+50% per stack) increased maximum health, ...but all stacks disappear upon purchasing.
@@ -121,7 +123,7 @@ Curse increases the chance of an enemy becoming Jammed.
 At 10 Curse (configurable), the Lord of the Jammed will spawn. Currently spawns an invincible BrotherGlass that's invulnerable.'
 
 # Elites
-Kaliber's Wrath - Jammed {0}
+[unimplemented] Kaliber's Wrath - Jammed {0}
 Jammed Elites deal 400% ([unimplemented]+20% per stage) damage and have 400% health.
 => Currently only affects spawned Elites.
 
@@ -142,6 +144,8 @@ RyanPallensen - FloodWarning
 Harb - HarbCrate
 
 ontrigger - ItemStatsMod https://github.com/ontrigger/ItemStatsMod/blob/4c015d5f54b5f7df788236b7c8546f7cc72743fe/ItemStats/src/Hooks.cs (UI)
+
+idow17-meet - Foresight Arifact https://github.com/idow17-meet/ForesightArtifact (disarming personality)
 
 # Non-standard
 
