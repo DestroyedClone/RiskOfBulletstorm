@@ -18,10 +18,10 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Chance to poison per stack (Default: 5%)", AutoConfigFlags.PreventNetMismatch)]
-        public float ProcChance { get; private set; } = 5f;
+        public float ProcChance { get; private set; } = 0.05f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Poison duration (Default: 3 s)", AutoConfigFlags.PreventNetMismatch)]
-        public float duration { get; private set; } = 3f;
+        public float Duration { get; private set; } = 3f;
         public override string displayName => "Irradiated Lead";
         public override ItemTier itemTier => ItemTier.Tier1;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage });
@@ -63,12 +63,15 @@ namespace RiskOfBulletstorm.Items
             orig(self, damageInfo, victim);
             CharacterBody body = damageInfo.attacker.GetComponent<CharacterBody>();
             if (!body) return;
+            Chat.AddMessage("IrradiatedLead: Body Found");
             var InventoryCount = GetCount(body);
             if (InventoryCount < 1) return;
+            Chat.AddMessage("IrradiatedLead: Inventory Success");
             var procChanceFinal = damageInfo.procCoefficient * ProcChance * InventoryCount;
             if (!Util.CheckRoll(procChanceFinal,body.master)) return;
+            Chat.AddMessage("IrradiatedLead: Roll Worked");
 
-            victim.gameObject.GetComponent<CharacterBody>()?.AddTimedBuff(BuffIndex.Blight,duration);
+            victim.gameObject.GetComponent<CharacterBody>()?.AddTimedBuff(BuffIndex.Blight,Duration);
         }
     }
 }

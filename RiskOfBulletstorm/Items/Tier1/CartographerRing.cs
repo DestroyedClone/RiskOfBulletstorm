@@ -18,10 +18,10 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Chance for stage to scan? (Default: 20%)", AutoConfigFlags.PreventNetMismatch)]
-        public float ScanChance { get; private set; } = 20f;
+        public float ScanChance { get; private set; } = 0.2f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Chance for stage to scan? (Default: 20%)", AutoConfigFlags.PreventNetMismatch)]
-        public float ScanChanceStack { get; private set; } = 10f;
+        [AutoConfig("Stack chance for stage to scan? (Default: 10%)", AutoConfigFlags.PreventNetMismatch)]
+        public float ScanChanceStack { get; private set; } = 0.1f;
         public override string displayName => "Cartographer's Ring";
         public override ItemTier itemTier => ItemTier.Tier1;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility });
@@ -66,15 +66,17 @@ namespace RiskOfBulletstorm.Items
         //use Stage.onStageStartGlobal? (suggested by Ghor)
         private void ScanStage(On.RoR2.SceneDirector.orig_PopulateScene orig, SceneDirector self)
         {
+            orig(self);
             if (InventoryCount > 0)
             {
-                var ResultChance = ScanChance + ScanChanceStack * (InventoryCount - 1);
+                var ResultChance = ScanChance*100 + ScanChanceStack*100 * (InventoryCount - 1);
+                Chat.AddMessage("CartRing: Scan Chance: "+ResultChance.ToString());
                 if (Util.CheckRoll(ResultChance))
                 {
+                    Chat.AddMessage("CartRing: Scan Success?");
                     NetworkServer.Spawn(UnityEngine.Object.Instantiate(Resources.Load<GameObject>("Prefabs/NetworkedObjects/ChestScanner"), Vector3.zero, Quaternion.identity));
                 }
             }
-            orig(self);
         }
         private void UpdateInvCount(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self)
         {

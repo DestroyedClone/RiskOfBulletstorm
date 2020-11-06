@@ -22,7 +22,9 @@ TODO:
 
 ## Special Items
 
-[White] Armor: Blocks one hit of damage if it dealt more than 25% health or would have killed you, then gets destroyed.
+[White] Armor: Blocks one hit of damage if it dealt more than 25% health or would have killed you, then gets destroyed after firing a blank.
+
+[unimplemented] [Boss] Old Crest : Identical to Armor, takes priority. Using it on a specific interactable will do something...
 
 [White] Blank: Press a key to activate, destroying all projectiles, stunning and knocking nearby enemies back. Consumed on use.
 
@@ -30,7 +32,7 @@ TODO:
 
 Cartographer's Ring: Upon starting the next stage, 25% chance (+10% chance per stack) of automatically scanning the stage.
 
-Mustache: {25% (+5% per stack) chance to heal for 25% health.
+Mustache: 25% (+5% per stack) chance to heal for 25% health.
 
 ## Green
 
@@ -48,8 +50,9 @@ Heals for 50 health + 25 per stack.
 => TODO: Add Health Check
 
 Macho Brace: Gain +30% (+10% per stack) damage bonus upon using your utility.
+=> TODO: Add check for CombatSkill, add check for equipment use
 
-Ring of Chest Friendship: Increases chance of chest spawning by 10% (+1% per stack)
+Ring of Chest Friendship: Increases credits of interactables by 10% (+1% per stack)
 
 Rocket-Powered Bullets: Increases projectile speed by 50% (+5% per stack).
 

@@ -66,6 +66,7 @@ namespace RiskOfBulletstorm.Items
         private void OnTeleporterBeginCharging(TeleporterInteraction teleporterInteraction)
         {
             hasBeenHit = false;
+            Chat.AddMessage("MasterRound: Teleporter Started Charging");
         }
 
         private void OnTeleporterCharged(TeleporterInteraction teleporterInteraction)
@@ -80,6 +81,7 @@ namespace RiskOfBulletstorm.Items
                 var player = CharacterMaster.readOnlyInstancesList[i];
                 if (!hasBeenHit && damageDealtMessage.victim && damageDealtMessage.victim == player.gameObject)
                 {
+                    Chat.AddMessage("MasterRound: Player Failed!");
                     hasBeenHit = true;
                 }
             }

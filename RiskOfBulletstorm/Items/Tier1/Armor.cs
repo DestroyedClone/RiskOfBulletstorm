@@ -10,6 +10,7 @@ using UnityEngine.Networking;
 using TILER2;
 using static TILER2.StatHooks;
 using static TILER2.MiscUtil;
+using static RiskOfBulletstorm.Shared.BlankRelated;
 
 
 namespace RiskOfBulletstorm.Items
@@ -17,13 +18,13 @@ namespace RiskOfBulletstorm.Items
     public class Armor : Item_V2<Armor>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("[UNIMPLEMENTED] Activate a blank when armor is depleted? (Default: true)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Activate a blank when armor is depleted? (Default: true)", AutoConfigFlags.PreventNetMismatch)]
         public bool ActivateBlank { get; private set; } = true;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Health Threshold for blocking damage. ", AutoConfigFlags.PreventNetMismatch)]
         public float HealthThreshold { get; private set; } = 0.25f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("[UNIMPLEMENTED] Protects from death?")]
+        [AutoConfig("Protects from death?")]
         public bool RequireHealth { get; private set; } = false;
 
         public override string displayName => "Armor";
@@ -70,14 +71,19 @@ namespace RiskOfBulletstorm.Items
 
             var oldHealth = self.health;
             orig(self, damageInfo);
-            //|| (oldHealth - self.health) / self.fullHealth < HealthThreshold)
             if (InventoryCount > 0)
             {
-                if (((oldHealth - self.health) / self.fullHealth < HealthThreshold) || (oldHealth - damageInfo.damage <= 0))
+                if (((oldHealth - self.health) / self.fullHealth < HealthThreshold) || (RequireHealth && (oldHealth - damageInfo.damage <= 0)) && (!damageInfo.rejected) )
                 {
-                    Chat.AddMessage("Armor Shattered!");
+                    damageInfo.damage = 0; //Remove if bloodshrines dont work
                     damageInfo.rejected = true;
                     self.body.inventory.RemoveItem(catalogIndex);
+
+                    if (ActivateBlank)
+                    {
+                        Chat.AddMessage("Armor: Armor Broke, Firing blank!");
+                        FireBlank(self.body.gameObject, self.body.corePosition, 6f, 0.3f, -1);
+                    }
                 }
             }
             //orig(self, damageInfo);

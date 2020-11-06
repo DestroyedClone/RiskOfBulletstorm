@@ -1,7 +1,4 @@
-﻿//using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-//using System.Text;
+﻿using System.Collections.ObjectModel;
 using R2API;
 using RoR2;
 using RoR2.UI;
@@ -54,31 +51,29 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             On.RoR2.CharacterBody.OnInventoryChanged += UpdateInvCount;
-            On.RoR2.CombatDirector.Awake += CombatDirector_Awake;
+            On.RoR2.SceneDirector.Awake += SceneDirector_Awake;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
             On.RoR2.CharacterBody.OnInventoryChanged -= UpdateInvCount;
-            On.RoR2.CombatDirector.Awake -= CombatDirector_Awake;
+            On.RoR2.SceneDirector.Awake -= SceneDirector_Awake;
         }
-        private void UpdateInvCount(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self)
-        {
-            InventoryCount = GetCount(self);
-            orig(self);
-        }
-        private void CombatDirector_Awake(On.RoR2.CombatDirector.orig_Awake orig, CombatDirector self)
+        private void SceneDirector_Awake(On.RoR2.SceneDirector.orig_Awake orig, SceneDirector self)
         {
             orig(self);
             if (InventoryCount > 0)
             {
                 var ResultMult = 1 + DirectorCreditMult + DirectorCreditMultStack * (InventoryCount - 1);
-                {
-                    self.creditMultiplier *= ResultMult;
-                    Chat.AddMessage("Director credits multiplied by " + ResultMult.ToString());
-                }
+                Chat.AddMessage("ChestFriend: Credits "+self.interactableCredit.ToString()+" multiplied by "+ ((int)ResultMult).ToString());
+                self.interactableCredit *= (int)ResultMult;
             }
+        }
+        private void UpdateInvCount(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self)
+        {
+            InventoryCount = GetCount(self);
+            orig(self);
         }
     }
 }

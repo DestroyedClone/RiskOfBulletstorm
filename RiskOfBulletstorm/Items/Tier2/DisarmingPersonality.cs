@@ -69,9 +69,12 @@ namespace RiskOfBulletstorm.Items
             var chest = self.GetComponent<ChestBehavior>();
             if (chest)
             {
+                Chat.AddMessage("DisarmPerson: Chest Found!");
                 if (InventoryCount > 0)
                 {
+                    Chat.AddMessage("DisarmPerson: Inventory Count works!");
                     var ResultMult = CostReductionAmount + CostReductionAmountStack * (InventoryCount - 1);
+                    Chat.AddMessage("DisarmPerson: Cost(" + self.cost.ToString()+")=>"+ ((int)Mathf.Ceil(self.cost * ResultMult)).ToString()) ;
                     self.cost = (int)Mathf.Ceil(self.cost * ResultMult);
                 }
             }

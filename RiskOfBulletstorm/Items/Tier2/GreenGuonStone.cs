@@ -82,38 +82,39 @@ namespace RiskOfBulletstorm.Items
 
             if (InventoryCount > 0)
             {
-                if (self.health - damageInfo.damage > 0) //Is your expected health loss greater than zero?
-                { //nonfatal
-                    if (Util.CheckRoll(HealChance))
-                    {//success
-                        Chat.AddMessage("NONLETHAL SUCCESS");
-                        damageInfo.rejected = true;
-                        self.Heal(actualHealAmount, default, true);
-                        Chat.AddMessage("Damage Blocked: " + damageInfo.damage.ToString());
-                        Chat.AddMessage("Healed for "+actualHealAmount.ToString());
+                if (!damageInfo.rejected)
+                {
+                    if (self.health - damageInfo.damage > 0) //Is your expected health loss greater than zero?
+                    { //nonfatal
+                        if (Util.CheckRoll(HealChance))
+                        {//success
+                            Chat.AddMessage("GreenGuon: NONLETHAL SUCCESS");
+                            damageInfo.rejected = true;
+                            self.Heal(actualHealAmount, default, true);
+                            Chat.AddMessage("GreenGuon: Damage Blocked: " + damageInfo.damage.ToString());
+                            Chat.AddMessage("GreenGuon: Healed for " + actualHealAmount.ToString());
+                        }
+                        else
+                        {//fail
+                         //Chat.AddMessage("NONLETHAL FAILURE");
+                        }
                     }
                     else
-                    {//fail
-                        //Chat.AddMessage("NONLETHAL FAILURE");
+                    {//fatal
+                        if (Util.CheckRoll(LethalSaveChance))
+                        {//success
+                            Chat.AddMessage("GreenGuon: LETHAL SUCCESS!!");
+                            damageInfo.rejected = true;
+                            self.Heal(actualHealAmount, default, true);
+                            Chat.AddMessage("GreenGuon: Damage Blocked: " + damageInfo.damage.ToString());
+                            Chat.AddMessage("GreenGuon: Healed for " + actualHealAmount.ToString());
+                        }
+                        else
+                        {//fail
+                         //Chat.AddMessage("LETHAL FAILURE");
+                        }
                     }
                 }
-                else 
-                {//fatal
-                    if (Util.CheckRoll(LethalSaveChance))
-                    {//success
-                        Chat.AddMessage("LETHAL SUCCESS!!");
-                        damageInfo.rejected = true;
-                        self.Heal(actualHealAmount, default, true);
-                        Chat.AddMessage("Damage Blocked: " + damageInfo.damage.ToString());
-                        Chat.AddMessage("Healed for " + actualHealAmount.ToString());
-                    }
-                    else
-                    {//fail
-                        //Chat.AddMessage("LETHAL FAILURE");
-                    }
-                }
-
-                //Chat.AddMessage("Worked!");
             }
             orig(self, damageInfo);
         }

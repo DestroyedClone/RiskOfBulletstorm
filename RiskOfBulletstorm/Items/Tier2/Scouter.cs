@@ -95,6 +95,9 @@ namespace RiskOfBulletstorm.Items
                     Chat.AddMessage(ScouterMsg);
                 }
 
+            } else
+            {
+                Chat.AddMessage("Scouter: "+damageInfo.attacker.ToString() + " did not equal " + self.gameObject.ToString());
             }
             orig(self, damageInfo, victim);
         }

@@ -34,7 +34,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetNameString(string langID = null) => displayName;
         protected override string GetPickupString(string langID = null) => "<b>A Familiar Face</b>" +
-            "\n<style=\"text-align: center;\">Spending money soothes the soul.</style>";
+            "Spending money soothes the soul.";
 
         protected override string GetDescString(string langid = null) => $"{Pct(HealChance)} (+{Pct(HealChanceStack)} per stack) chance to heal for {Pct(HealAmount)} health.";
 
@@ -71,6 +71,8 @@ namespace RiskOfBulletstorm.Items
 
         private void PurchaseInteraction_OnInteractionBegin(On.RoR2.PurchaseInteraction.orig_OnInteractionBegin orig, PurchaseInteraction self, Interactor activator)
         {
+            orig(self, activator);
+            Chat.AddMessage("Mustache: "+activator.ToString()+" bought from "+self.ToString());
             if (InventoryCount > 0)
             {
                 var ResultChance = HealChance + HealChanceStack * (InventoryCount - 1);
@@ -80,7 +82,6 @@ namespace RiskOfBulletstorm.Items
                     component.healthComponent.Heal(HealAmount, default, true);
                 }
             }
-            orig(self, activator);
         }
         private void UpdateInvCount(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self)
         {

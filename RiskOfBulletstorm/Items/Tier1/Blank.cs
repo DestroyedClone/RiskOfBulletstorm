@@ -1,19 +1,13 @@
 ﻿
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
-using R2API;
 using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
 using TILER2;
 using RoR2.Projectile;
-using static TILER2.StatHooks;
 using static TILER2.MiscUtil;
-using EntityStates.Captain.Weapon;
-using On_ChargeCaptainShotgun = On.EntityStates.Captain.Weapon.ChargeCaptainShotgun; //DONT FORET TO REMOVE
-using EntityStates.Engi.EngiWeapon;
+using static RiskOfBulletstorm.Shared.BlankRelated;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -36,8 +30,12 @@ namespace RiskOfBulletstorm.Items
         public float DamageDealt { get; private set; } = 1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Radius the projectile deals damage (Default: 6f)", AutoConfigFlags.PreventNetMismatch)]
+        public float BlankRadius { get; private set; } = 6f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Radius of projectiles the Blank clears. Set to '0' to disable, or '-1' for infinite range (Default: -1 = Infinite)", AutoConfigFlags.PreventNetMismatch)]
-        public float BlankRadius { get; private set; } = -1f;
+        public float BlankClearRadius { get; private set; } = -1f;
 
 
         public override string displayName => "Blank";
@@ -109,57 +107,11 @@ namespace RiskOfBulletstorm.Items
                             BlankUsed = false;
                             if (Input.GetKeyDown(KeyCode.T) && !BlankUsed)
                             {
+                                Chat.AddMessage("Blank: Blank Used!");
                                 BlankUsed = true;
 
-                                new BlastAttack
-                                {
-                                    inflictor = self.gameObject,
-                                    position = self.corePosition,
-                                    procCoefficient = 0f,
-                                    losType = BlastAttack.LoSType.None,
-                                    falloffModel = BlastAttack.FalloffModel.None,
-                                    baseDamage = self.damage * DamageDealt,
-                                    damageType = DamageType.Stun1s,
-                                    //crit = self.RollCrit(),
-                                    radius = 6f,
-                                    teamIndex = TeamIndex.Player,
-                                    baseForce = 3000f,
-                                    bonusForce = new Vector3(0, 3000, 0)
-                                }.Fire();
                                 self.inventory.RemoveItem(catalogIndex);
-
-                                if (BlankRadius != 0)
-                                { //Remove all Projectiles
-                                    float BlankRadiusSquared = BlankRadius * BlankRadius;
-                                    bool IsInfiniteRange = (BlankRadius == -1);
-                                    //(TEMP)
-                                    if (IsInfiniteRange) { BlankRadiusSquared = 999 * 999; }
-                                    TeamIndex teamIndex = self.teamComponent.teamIndex;
-                                    List<ProjectileController> instancesList = InstanceTracker.GetInstancesList<ProjectileController>();
-                                    List<ProjectileController> list = new List<ProjectileController>();
-                                    int i = 0;
-                                    int count = instancesList.Count;
-                                    while (i < count)
-                                    {
-                                        ProjectileController projectileController = instancesList[i];
-                                        if (projectileController.teamFilter.teamIndex != teamIndex && (projectileController.transform.position - self.corePosition).sqrMagnitude < BlankRadiusSquared)
-                                        {
-                                            list.Add(projectileController);
-                                        }
-                                        i++;
-                                    }
-                                    int j = 0;
-                                    int count2 = list.Count;
-                                    while (j < count2)
-                                    {
-                                        ProjectileController projectileController2 = list[j];
-                                        if (projectileController2)
-                                        {
-                                            UnityEngine.Object.Destroy(projectileController2.gameObject);
-                                        }
-                                        j++;
-                                    }
-                                }
+                                FireBlank(self.gameObject, self.corePosition, BlankRadius, DamageDealt, BlankClearRadius);
                                 BlankComponent.BlankCooldown = ConfigBlankCooldown;
                             }
                         }
@@ -171,11 +123,6 @@ namespace RiskOfBulletstorm.Items
         public class BlankComponent : MonoBehaviour
         {
             public float BlankCooldown;
-        }
-
-        public class KillProjectiles : MonoBehaviour
-        {
-
         }
     }
 }
