@@ -23,7 +23,7 @@ namespace RiskOfBulletstorm.Shared
                 radius = blankRadius,
                 teamIndex = TeamIndex.Player,
                 baseForce = 1000f,
-                bonusForce = new Vector3(0, 1000, 0)
+                bonusForce = new Vector3(0, 800, 0)
             }.Fire();
 
             if (projectileClearRadius != 0)
@@ -40,7 +40,6 @@ namespace RiskOfBulletstorm.Shared
                     if (projectileController.teamFilter.teamIndex != TeamIndex.Player && (projectileController.transform.position - corePosition).sqrMagnitude < blankRadiusSquared)
                     {
                         list.Add(projectileController);
-                        Chat.AddMessage("Projectile Added: " + projectileController.ToString());
                     }
                     i++;
                 }
@@ -51,7 +50,7 @@ namespace RiskOfBulletstorm.Shared
                     ProjectileController projectileController2 = list[j];
                     if (projectileController2)
                     {
-                        UnityEngine.Object.Destroy(projectileController2.gameObject);
+                        Object.Destroy(projectileController2.gameObject);
                     }
                     j++;
                 }

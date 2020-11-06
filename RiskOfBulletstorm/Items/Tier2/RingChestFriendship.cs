@@ -63,6 +63,7 @@ namespace RiskOfBulletstorm.Items
         private void SceneDirector_Awake(On.RoR2.SceneDirector.orig_Awake orig, SceneDirector self)
         {
             orig(self);
+            Chat.AddMessage("ChestFriend: Entered Hook");
             if (InventoryCount > 0)
             {
                 var ResultMult = 1 + DirectorCreditMult + DirectorCreditMultStack * (InventoryCount - 1);

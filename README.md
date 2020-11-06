@@ -23,16 +23,20 @@ TODO:
 ## Special Items
 
 [White] Armor: Blocks one hit of damage if it dealt more than 25% health or would have killed you, then gets destroyed after firing a blank.
+(TODO: SFX)
 
 [unimplemented] [Boss] Old Crest : Identical to Armor, takes priority. Using it on a specific interactable will do something...
 
 [White] Blank: Press a key to activate, destroying all projectiles, stunning and knocking nearby enemies back. Consumed on use.
+(TODO: SFX, Visual effect)
 
 ## White
 
-Cartographer's Ring: Upon starting the next stage, 25% chance (+10% chance per stack) of automatically scanning the stage.
+[nonfunctional] Cartographer's Ring: Upon starting the next stage, 25% chance (+10% chance per stack) of automatically scanning the stage.
 
-Mustache: 25% (+5% per stack) chance to heal for 25% health.
+[nonfunctional] Mustache: 25% (+5% per stack) chance to heal for 25% health.
+
+[nonfunctional] Irradiated Lead: 5% chance per stack to Poison.
 
 ## Green
 
@@ -40,7 +44,7 @@ Mustache: 25% (+5% per stack) chance to heal for 25% health.
 
 [unimplemented] Battle Standard: Increases damage of non-player allies. Does not apply to turrets.
 
-Disarming Personality: Reduces chest prices
+[nonfunctional] Disarming Personality: Reduces chest prices
 
 Enraging Photo: Gain a temporary +100% damage boost upon taking 33% of your health in damage for 1 (+0.25 per stack) seconds.
 => TODO: Health Requirement Loss
@@ -52,15 +56,15 @@ Heals for 50 health + 25 per stack.
 Macho Brace: Gain +30% (+10% per stack) damage bonus upon using your utility.
 => TODO: Add check for CombatSkill, add check for equipment use
 
-Ring of Chest Friendship: Increases credits of interactables by 10% (+1% per stack)
+[nonfunctional] Ring of Chest Friendship: Increases credits of interactables by 10% (+1% per stack)
 
-Rocket-Powered Bullets: Increases projectile speed by 50% (+5% per stack).
+[nonfunctional] Rocket-Powered Bullets: Increases projectile speed by 50% (+5% per stack).
 
 Roll Bomb: After using your Utility, drop 1 bomb(s) (+1 per stack) for 80% damage.
 
-Scope: Reduces bullet spread by 10% (+5% per stack).
+[nonfunctional] Scope: Reduces bullet spread by 10% (+5% per stack).
 
-Scouter: Shows enemy health and damage in chat on hit. Only shows number of digits depending on InventoryCount. DamageType only shows up after 2 Scouters.
+[nonfunctional] Scouter: Shows enemy health and damage in chat on hit. Only shows number of digits depending on InventoryCount. DamageType only shows up after 2 Scouters.
 
 ## Red
 

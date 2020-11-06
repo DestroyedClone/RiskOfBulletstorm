@@ -30,8 +30,8 @@ namespace RiskOfBulletstorm.Items
         public float DamageDealt { get; private set; } = 1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Radius the projectile deals damage (Default: 6f)", AutoConfigFlags.PreventNetMismatch)]
-        public float BlankRadius { get; private set; } = 6f;
+        [AutoConfig("Radius the projectile deals damage (Default: 10f)", AutoConfigFlags.PreventNetMismatch)]
+        public float BlankRadius { get; private set; } = 10f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Radius of projectiles the Blank clears. Set to '0' to disable, or '-1' for infinite range (Default: -1 = Infinite)", AutoConfigFlags.PreventNetMismatch)]
@@ -56,11 +56,6 @@ namespace RiskOfBulletstorm.Items
             "4:30 PM - [Kyle] Carried a couple in my hand and tripped like an idiot, only one of them activated, fortunately. Unfortunately, my weapon broke when it was launched against the wall. I see the boss chamber up next, so I think I can take it with just these bullets.\n\n" +
             "4:33 PM - [LOG] EmptyMessage: The following transcription was automatically sent without any body. Did you accidentally send?\n\n" +
             "12:00 PM - [Kyle] Guess what happened?";
-
-        /* 1. Check Key Press (done)
-         * 2. Kill all projectiles that aren't allied
-         * 3. Spawn a BlastAttack with basedmg*value with a high force aiming slightly upward with a stun damage type (done)
-         */
 
         public bool BlankUsed = false;
         public override void SetupBehavior()

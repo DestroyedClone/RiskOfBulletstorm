@@ -74,7 +74,7 @@ namespace RiskOfBulletstorm.Items
 
         private void BulletAttack_Fire(On.RoR2.BulletAttack.orig_Fire orig, BulletAttack self)
         {
-            
+            Chat.AddMessage("Scope: Entered Hook");
             if (InventoryCount > 0)
             {
                 var ResultMult = SpreadReduction + SpreadReductionStack * (InventoryCount - 1);

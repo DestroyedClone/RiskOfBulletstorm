@@ -78,7 +78,8 @@ namespace RiskOfBulletstorm.Items
         private void TankHit(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
             var InventoryCount = GetCount(self.body);
-            var actualHealAmount = HealAmount + (HealAmountStack * (InventoryCount - 1));
+            //var actualHealAmount = self.fullHealth * (HealAmount + (HealAmountStack * (InventoryCount - 1)));
+            var actualHealAmount = HealAmount + HealAmountStack * (InventoryCount - 1);
 
             if (InventoryCount > 0)
             {

@@ -67,6 +67,7 @@ namespace RiskOfBulletstorm.Items
         private void ScanStage(On.RoR2.SceneDirector.orig_PopulateScene orig, SceneDirector self)
         {
             orig(self);
+            Chat.AddMessage("CartRing: Entered Hook");
             if (InventoryCount > 0)
             {
                 var ResultChance = ScanChance*100 + ScanChanceStack*100 * (InventoryCount - 1);

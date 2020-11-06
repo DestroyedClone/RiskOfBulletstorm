@@ -71,7 +71,7 @@ namespace RiskOfBulletstorm.Items
             if (!Util.CheckRoll(procChanceFinal,body.master)) return;
             Chat.AddMessage("IrradiatedLead: Roll Worked");
 
-            victim.gameObject.GetComponent<CharacterBody>()?.AddTimedBuff(BuffIndex.Blight,Duration);
+            victim.gameObject.GetComponent<CharacterBody>()?.AddTimedBuff(BuffIndex.Blight, Duration);
         }
     }
 }

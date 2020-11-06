@@ -79,6 +79,9 @@ namespace RiskOfBulletstorm.Items
             for (int i = 0; i < CharacterMaster.readOnlyInstancesList.Count; i++)
             { //CharacterMaster.readOnlyInstancesList[i] is the player. }
                 var player = CharacterMaster.readOnlyInstancesList[i];
+                if (!hasBeenHit) Chat.AddMessage("MasterRound OnDamageNotified: " + hasBeenHit.ToString() + "=Hit was Hit!");
+                if (!damageDealtMessage.victim) Chat.AddMessage("MasterRound OnDamageNotified: " + damageDealtMessage.victim.ToString() + "=victim doesn't exist");
+                if (damageDealtMessage.victim != player.gameObject) Chat.AddMessage("MasterRound OnDamageNotified: " + damageDealtMessage.victim.ToString() + "=victim did not equal "+ player.gameObject.ToString());
                 if (!hasBeenHit && damageDealtMessage.victim && damageDealtMessage.victim == player.gameObject)
                 {
                     Chat.AddMessage("MasterRound: Player Failed!");
@@ -93,12 +96,16 @@ namespace RiskOfBulletstorm.Items
             {
                 var player = CharacterMaster.readOnlyInstancesList[i];
                 var body = player.GetComponent<CharacterBody>();
+                if (!body) Chat.AddMessage("MasterRound: "+body.ToString()+"=Body not found");
+                if (!body.healthComponent) Chat.AddMessage("MasterRound: " + body.healthComponent.ToString() + "=Healthcomponent not found");
+                if (!body.healthComponent.alive) Chat.AddMessage("MasterRound: " + body.healthComponent.alive.ToString() + "=alive not found");
+                if (!hasBeenHit) Chat.AddMessage("MasterRound: " + hasBeenHit.ToString() + "=Hit was Hit!");
                 if (body && body.healthComponent && body.healthComponent.alive && !hasBeenHit)
                 {
                     Chat.AddMessage("Player survived with no hits!");
 
                     CharacterMaster.readOnlyInstancesList[i].GetComponent<CharacterBody>()?.inventory.GiveItem(catalogIndex);
-                    Chat.AddMessage("Gave item");
+                    Chat.AddMessage("Gave item to "+ CharacterMaster.readOnlyInstancesList[i].name);
                 }
                 else
                 {

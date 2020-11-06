@@ -66,7 +66,11 @@ namespace RiskOfBulletstorm.Items
         }
         private void GlobalEventManager_OnHitEnemy(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim)
         {
-            if (damageInfo.attacker == self.gameObject && !damageInfo.rejected)
+            Chat.AddMessage("Scouter: Entered Hook");
+            Chat.AddMessage("Scouter: ");
+            if (!damageInfo.attacker) Chat.AddMessage("Scouter: "+damageInfo.attacker.ToString()+"=attacker not found");
+            if (damageInfo.rejected) Chat.AddMessage("Scouter: " + damageInfo.rejected.ToString() + "=rejected not false");
+            if (damageInfo.attacker && !damageInfo.rejected)
             {
                 if (InventoryCount > 0)
                 {
@@ -93,6 +97,9 @@ namespace RiskOfBulletstorm.Items
                         "===SCOUTER===";
 
                     Chat.AddMessage(ScouterMsg);
+                } else
+                {
+                    Chat.AddMessage("Scouter: InventoryCount=" + InventoryCount.ToString());
                 }
 
             } else
