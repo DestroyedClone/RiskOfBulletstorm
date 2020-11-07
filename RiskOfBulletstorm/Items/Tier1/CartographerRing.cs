@@ -52,19 +52,36 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            On.RoR2.SceneDirector.PopulateScene += ScanStage;
+            //On.RoR2.SceneDirector.PopulateScene += ScanStage;
+            Stage.onStageStartGlobal += Stage_onStageStartGlobal;
             On.RoR2.CharacterBody.OnInventoryChanged += UpdateInvCount;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
-            On.RoR2.SceneDirector.PopulateScene -= ScanStage;
+            //On.RoR2.SceneDirector.PopulateScene -= ScanStage;
+            Stage.onStageStartGlobal += Stage_onStageStartGlobal;
             On.RoR2.CharacterBody.OnInventoryChanged -= UpdateInvCount;
         }
 
-        //use Stage.onStageStartGlobal? (suggested by Ghor)
-        private void ScanStage(On.RoR2.SceneDirector.orig_PopulateScene orig, SceneDirector self)
+        //suggested by Ghor
+        private void Stage_onStageStartGlobal(Stage obj)
+        {
+            Chat.AddMessage("CartRing: Entered Hook");
+            if (InventoryCount > 0)
+            {
+                var ResultChance = ScanChance * 100 + ScanChanceStack * 100 * (InventoryCount - 1);
+                Chat.AddMessage("CartRing: Scan Chance: " + ResultChance.ToString());
+                if (Util.CheckRoll(ResultChance))
+                {
+                    Chat.AddMessage("CartRing: Scan Success");
+                    NetworkServer.Spawn(UnityEngine.Object.Instantiate(Resources.Load<GameObject>("Prefabs/NetworkedObjects/ChestScanner"), Vector3.zero, Quaternion.identity));
+                }
+            }
+        }
+
+        /*private void ScanStage(On.RoR2.SceneDirector.orig_PopulateScene orig, SceneDirector self)
         {
             orig(self);
             Chat.AddMessage("CartRing: Entered Hook");
@@ -78,7 +95,7 @@ namespace RiskOfBulletstorm.Items
                     NetworkServer.Spawn(UnityEngine.Object.Instantiate(Resources.Load<GameObject>("Prefabs/NetworkedObjects/ChestScanner"), Vector3.zero, Quaternion.identity));
                 }
             }
-        }
+        }*/
         private void UpdateInvCount(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self)
         {
             InventoryCount = GetCount(self);

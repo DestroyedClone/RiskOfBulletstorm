@@ -2,32 +2,39 @@
 using RoR2;
 using UnityEngine;
 using RoR2.Projectile;
+using System.Net;
 
 namespace RiskOfBulletstorm.Shared
 {
     public static class BlankRelated
     {
-        public static void FireBlank(GameObject attacker, Vector3 corePosition, float blankRadius, float damageMult, float projectileClearRadius)
+        public static void FireBlank(CharacterBody attacker, Vector3 corePosition, float blankRadius, float damageMult, float projectileClearRadius, bool consumeBlank = false)
         {
-            var body = attacker.GetComponent<CharacterBody>();
+            //var body = attacker.GetComponent<CharacterBody>();
+            var blankAmount = attacker.inventory.GetItemCount(Items.Blank.instance.catalogIndex);
+            if (blankAmount == 0 && consumeBlank) //if needs blank and have no blank
+            {
+                Debug.LogError("[RiskOfBulletstorm]: Blank was required, but player had no blank!");
+                return;
+            }
             new BlastAttack
             {
-                attacker = attacker,
+                attacker = attacker.gameObject,
                 position = corePosition,
                 procCoefficient = 0f,
                 losType = BlastAttack.LoSType.None,
                 falloffModel = BlastAttack.FalloffModel.None,
-                baseDamage = body.damage * damageMult,
+                baseDamage = attacker.damage * damageMult,
                 damageType = DamageType.Stun1s,
                 //crit = self.RollCrit(),
                 radius = blankRadius,
                 teamIndex = TeamIndex.Player,
-                baseForce = 1000f,
-                bonusForce = new Vector3(0, 800, 0)
+                baseForce = 2000f,
+                bonusForce = new Vector3(0, 1600, 0)
             }.Fire();
 
             if (projectileClearRadius != 0)
-            { //Remove all Projectiles
+            { 
                 if (projectileClearRadius == -1) { projectileClearRadius = 999; }
                 float blankRadiusSquared = projectileClearRadius * projectileClearRadius;
                 List<ProjectileController> instancesList = InstanceTracker.GetInstancesList<ProjectileController>();
@@ -54,6 +61,10 @@ namespace RiskOfBulletstorm.Shared
                     }
                     j++;
                 }
+            }
+            if (consumeBlank)
+            {
+                attacker.inventory.RemoveItem(Items.Blank.instance.catalogIndex);
             }
         }
     }

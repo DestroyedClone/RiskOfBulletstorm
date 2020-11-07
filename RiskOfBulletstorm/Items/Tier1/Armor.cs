@@ -22,10 +22,10 @@ namespace RiskOfBulletstorm.Items
         public bool ActivateBlank { get; private set; } = true;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Health Threshold for blocking damage. ", AutoConfigFlags.PreventNetMismatch)]
-        public float HealthThreshold { get; private set; } = 0.25f;
+        public float HealthThreshold { get; private set; } = 0.20f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Protects from death?")]
-        public bool RequireHealth { get; private set; } = false;
+        public bool ProtectDeath { get; private set; } = false;
 
         public override string displayName => "Armor";
         public string descText = "Prevents a single hit";
@@ -36,9 +36,10 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "Protect Body\n"+descText+" from heavy hits";
 
-        protected override string GetDescString(string langid = null) => $"{descText} that would have exceeded {Pct(HealthThreshold)} health.\n If the shot would have killed you, spends itself.";
+        protected override string GetDescString(string langid = null) => $"{descText} that would have exceeded {Pct(HealthThreshold)} health.\n Also protects from death.";
 
-        protected override string GetLoreString(string langID = null) => "This sheet of metal is so fragile that it explodes upon the slightest scratch. Yet we still use it as armor. Go figure.";
+        protected override string GetLoreString(string langID = null) => "The blue of this shield was formed from the shavings of a Blank." +
+            "Dents into the weak, aluminium metal from bullets and projectiles trigger the power of the Blank.";
 
 
         public override void SetupBehavior()
@@ -68,25 +69,23 @@ namespace RiskOfBulletstorm.Items
         private void TankHit(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
             var InventoryCount = GetCount(self.body);
+            var health = self.combinedHealth;
+            var endHealth = health - damageInfo.damage;
 
-            var oldHealth = self.health;
-            orig(self, damageInfo);
             if (InventoryCount > 0)
             {
-                if (((oldHealth - self.health) / self.fullHealth < HealthThreshold) || (RequireHealth && (oldHealth - damageInfo.damage <= 0)) && (!damageInfo.rejected) )
+                if ( ( (ProtectDeath && (endHealth <= 0) ) || (endHealth/self.fullHealth < HealthThreshold ) ) && (!damageInfo.rejected) )
                 {
-                    damageInfo.damage = 0; //Remove if bloodshrines dont work
                     damageInfo.rejected = true;
                     self.body.inventory.RemoveItem(catalogIndex);
 
                     if (ActivateBlank)
                     {
-                        Chat.AddMessage("Armor: Armor Broke, Firing blank!");
-                        FireBlank(self.body.gameObject, self.body.corePosition, 6f, 0.3f, -1);
+                        FireBlank(self.body, self.body.corePosition, 6f, 1f, -1);
                     }
                 }
             }
-            //orig(self, damageInfo);
+            orig(self, damageInfo);
         }
     }
 }

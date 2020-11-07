@@ -11,29 +11,27 @@ using TILER2;
 using static TILER2.StatHooks;
 using static TILER2.MiscUtil;
 using static RiskOfBulletstorm.Shared.SharedLead;
-using RiskOfBulletstorm.Shared;
 
 namespace RiskOfBulletstorm.Items
 {
-    public class IrradiatedLead : Item_V2<IrradiatedLead>
+    public class HotLead : Item_V2<HotLead>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Chance to poison per stack (Default: 5%)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Chance to burn per stack (Default: 5%)", AutoConfigFlags.PreventNetMismatch)]
         public float ProcChance { get; private set; } = 0.05f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Poison duration (Default: 3 s)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Burn duration (Default: 3 s)", AutoConfigFlags.PreventNetMismatch)]
         public float Duration { get; private set; } = 3f;
-        public override string displayName => "Irradiated Lead";
+        public override string displayName => "Hot Lead";
         public override ItemTier itemTier => ItemTier.Tier1;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage });
 
         protected override string GetNameString(string langID = null) => displayName;
-        protected override string GetPickupString(string langID = null) => "Poison Shot\nThese irradiated slugs have a chance to poison any target they touch.";
+        protected override string GetPickupString(string langID = null) => "Chance To Ignite\nAll bullets have a chance to ignite foes.";
 
-        protected override string GetDescString(string langid = null) => $"{Pct(ProcChance)} chance per stack to poison enemy for {Duration} seconds";
+        protected override string GetDescString(string langid = null) => $"{Pct(ProcChance)} chance per stack to burn enemy for {Duration} seconds";
 
-        protected override string GetLoreString(string langID = null) => "A favorite of the Resourceful Rat.";
-
+        protected override string GetLoreString(string langID = null) => "Freshly formed shells, straight from the Gungeon's Forge. The metal slug at the center of each round is still molten.";
 
         public override void SetupBehavior()
         {
@@ -64,7 +62,7 @@ namespace RiskOfBulletstorm.Items
         {
             orig(self, damageInfo, victim);
 
-            GiveLeadEffect(damageInfo, victim, catalogIndex, BuffIndex.Blight, DotController.DotIndex.Blight, Duration);
+            GiveLeadEffect(damageInfo, victim, catalogIndex, BuffIndex.OnFire, DotController.DotIndex.Burn, Duration);
         }
     }
 }

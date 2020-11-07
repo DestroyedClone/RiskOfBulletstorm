@@ -105,8 +105,8 @@ namespace RiskOfBulletstorm.Items
                                 Chat.AddMessage("Blank: Blank Used!");
                                 BlankUsed = true;
 
-                                self.inventory.RemoveItem(catalogIndex);
-                                FireBlank(self.gameObject, self.corePosition, BlankRadius, DamageDealt, BlankClearRadius);
+                                //self.inventory.RemoveItem(catalogIndex);
+                                FireBlank(self, self.corePosition, BlankRadius, DamageDealt, BlankClearRadius, true);
                                 BlankComponent.BlankCooldown = ConfigBlankCooldown;
                             }
                         }
