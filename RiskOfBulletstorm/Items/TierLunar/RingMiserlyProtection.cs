@@ -39,8 +39,6 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "Before the Shopkeep opened his shop, he was an avaricious and miserly man. He remains careful about any expenditures, but through capitalism he has purged himself of negative emotion.";
 
-        private int InventoryCount = 0;
-
         public override void SetupBehavior()
         {
 
@@ -58,7 +56,6 @@ namespace RiskOfBulletstorm.Items
             base.Install();
             On.RoR2.PurchaseInteraction.OnInteractionBegin += On_InteractionBegin;
             GetStatCoefficients += BoostHealth;
-            On.RoR2.CharacterBody.FixedUpdate += CharacterBody_FixedUpdate;
         }
 
         public override void Uninstall()
@@ -66,23 +63,18 @@ namespace RiskOfBulletstorm.Items
             base.Uninstall();
             On.RoR2.PurchaseInteraction.OnInteractionBegin -= On_InteractionBegin;
             GetStatCoefficients -= BoostHealth;
-            On.RoR2.CharacterBody.FixedUpdate -= CharacterBody_FixedUpdate;
         }
         private void On_InteractionBegin(On.RoR2.PurchaseInteraction.orig_OnInteractionBegin orig, PurchaseInteraction self, Interactor activator)
         {
-            RecentPurchase = true;
+            var body = activator.gameObject.GetComponent<CharacterBody>();
+            var InventoryCount = body.inventory.GetItemCount(catalogIndex);
+
+            if (InventoryCount > 0)
+            {
+                body.inventory.RemoveItem(catalogIndex, InventoryCount);
+            }
             //Chat.AddMessage(activator.name);
             orig(self, activator);
-        }
-        private void CharacterBody_FixedUpdate(On.RoR2.CharacterBody.orig_FixedUpdate orig, CharacterBody self)
-        {
-            var InventoryCount = GetCount(self);
-            if (RecentPurchase)
-            {
-                self.inventory.RemoveItem(catalogIndex, InventoryCount);
-                RecentPurchase = false;
-            }
-            orig(self);
         }
         private void BoostHealth(CharacterBody sender, StatHookEventArgs args)
         {

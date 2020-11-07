@@ -23,7 +23,8 @@ namespace RiskOfBulletstorm.Shared
 
             if (!body || InventoryCount < 1 || !Util.CheckRoll(procChanceFinal, body.master) || !damageInfo.rejected) return;
 
-            victim.gameObject.GetComponent<CharacterBody>()?.AddTimedBuff(buffIndex, duration);
+            victim.gameObject.GetComponent<CharacterBody>()?.AddTimedBuffAuthority(buffIndex, duration);
+            //AddTimedBuffAuthority vs AddTimedBuff?
             DotController.InflictDot(victim.gameObject, body.gameObject, dotIndex, duration, damageMultiplier); //thanks komrade
         }
     }

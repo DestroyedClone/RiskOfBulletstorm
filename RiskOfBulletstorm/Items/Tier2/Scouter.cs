@@ -28,8 +28,6 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "This scouter, worn with use, provides detailed data on enemies encountered within the Gungeon. The name \"Ritvik\" is inscribed on the rim.";
 
-        private int InventoryCount = 0;
-
         public override void SetupBehavior()
         {
 
@@ -48,7 +46,6 @@ namespace RiskOfBulletstorm.Items
             base.Install();
             //On.RoR2.CharacterBody.FixedUpdate += CharacterBody_FixedUpdate;
             On.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
-            On.RoR2.CharacterBody.OnInventoryChanged += CharacterBody_OnInventoryChanged;
         }
 
         public override void Uninstall()
@@ -56,21 +53,16 @@ namespace RiskOfBulletstorm.Items
             base.Uninstall();
             //On.RoR2.CharacterBody.FixedUpdate -= CharacterBody_FixedUpdate;
             On.RoR2.GlobalEventManager.OnHitEnemy -= GlobalEventManager_OnHitEnemy;
-            On.RoR2.CharacterBody.OnInventoryChanged -= CharacterBody_OnInventoryChanged;
-        }
-
-        private void CharacterBody_OnInventoryChanged(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self)
-        {
-            InventoryCount = GetCount(self);
-            orig(self);
         }
         private void GlobalEventManager_OnHitEnemy(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim)
         {
-            Chat.AddMessage("Scouter: Entered Hook");
-            Chat.AddMessage("Scouter: ");
-            if (!damageInfo.attacker) Chat.AddMessage("Scouter: "+damageInfo.attacker.ToString()+"=attacker not found");
+            var attacker = damageInfo.attacker;
+            CharacterBody body = damageInfo.attacker.GetComponent<CharacterBody>();
+            var InventoryCount = body.inventory.GetItemCount(catalogIndex);
+
+            if (!attacker) Chat.AddMessage("Scouter: "+damageInfo.attacker.ToString()+"=attacker not found");
             if (damageInfo.rejected) Chat.AddMessage("Scouter: " + damageInfo.rejected.ToString() + "=rejected not false");
-            if (damageInfo.attacker && !damageInfo.rejected)
+            if (attacker && !damageInfo.rejected)
             {
                 if (InventoryCount > 0)
                 {
@@ -89,11 +81,17 @@ namespace RiskOfBulletstorm.Items
                     var EnemyShieldMax = component.maxShield;
                     var EnemyShield = component.healthComponent.shield;
                     var DamageType = damageInfo.damageType.ToString();
+                    var Damage = damageInfo.damage;
                     if (InventoryCount < 2) { DamageType = "???"; }
+                    switch (InventoryCount)
+                    {
+                        case 0:
+                            break;
+                    }
                     var ScouterMsg = "===" + EnemyName.ToString().ToUpper() + "===" +
                         "\n FleshHP: " + cutText(EnemyHealth) + " / " + cutText(EnemyHealthMax) +
                         "\n ShieldHP:" + cutText(EnemyShield) + " / " + cutText(EnemyShieldMax) +
-                        "\n Damage Received" + cutText(damageInfo.damage) + "(" + DamageType + ")" +
+                        "\n Damage Received" + cutText(Damage) + "(" + DamageType + ")" +
                         "===SCOUTER===";
 
                     Chat.AddMessage(ScouterMsg);

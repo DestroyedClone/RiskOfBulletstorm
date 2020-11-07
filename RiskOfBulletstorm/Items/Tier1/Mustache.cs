@@ -40,8 +40,6 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "The power of commerce fills your veins... and your follicles! This mustache vertically integrates your purchasing synergies, giving you a chance to be healed on every transaction.";
 
-        private int InventoryCount = 0;
-
         public override void SetupBehavior()
         {
 
@@ -59,20 +57,20 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             On.RoR2.PurchaseInteraction.OnInteractionBegin += PurchaseInteraction_OnInteractionBegin;
-            On.RoR2.CharacterBody.OnInventoryChanged += UpdateInvCount;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
             On.RoR2.PurchaseInteraction.OnInteractionBegin -= PurchaseInteraction_OnInteractionBegin;
-            On.RoR2.CharacterBody.OnInventoryChanged -= UpdateInvCount;
         }
 
         private void PurchaseInteraction_OnInteractionBegin(On.RoR2.PurchaseInteraction.orig_OnInteractionBegin orig, PurchaseInteraction self, Interactor activator)
         {
             orig(self, activator);
-            Chat.AddMessage("Mustache: "+activator.ToString()+" bought from "+self.ToString());
+            CharacterBody body = activator.gameObject.GetComponent<CharacterBody>();
+            var InventoryCount = body.inventory.GetItemCount(catalogIndex);
+            Chat.AddMessage("Mustache: "+activator.ToString()+"|"+ activator.gameObject.ToString()+" bought from " +self.ToString());
             if (InventoryCount > 0)
             {
                 var ResultChance = HealChance + HealChanceStack * (InventoryCount - 1);
@@ -82,11 +80,6 @@ namespace RiskOfBulletstorm.Items
                     component.healthComponent.Heal(HealAmount, default, true);
                 }
             }
-        }
-        private void UpdateInvCount(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self)
-        {
-            InventoryCount = GetCount(self);
-            orig(self);
         }
     }
 }
