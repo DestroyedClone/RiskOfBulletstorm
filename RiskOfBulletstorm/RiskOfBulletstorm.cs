@@ -1,4 +1,5 @@
-﻿using BepInEx;
+﻿using System.Reflection;
+using BepInEx;
 using BepInEx.Configuration;
 using R2API;
 using R2API.Utils;
@@ -7,6 +8,7 @@ using Path = System.IO.Path;
 using TILER2;
 using static TILER2.MiscUtil;
 using RoR2;
+using R2API.AssetPlus;
 using R2API.Networking;
 
 namespace DestroyedClone
@@ -43,6 +45,13 @@ namespace DestroyedClone
         private static ConfigFile ConfigFile;
         private void Awake()
         {
+            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("RiskOfBulletstorm.riskofgungeonassets"))
+            {
+                var bundle = AssetBundle.LoadFromStream(stream);
+                var provider = new AssetBundleResourcesProvider("@RiskOfBulletstorm", bundle);
+                ResourcesAPI.AddProvider(provider);
+            }
+
             ConfigFile = new ConfigFile(Path.Combine(Paths.ConfigPath, ModGuid + ".cfg"), true);
 
             masterItemList = T2Module.InitAll<CatalogBoilerplate>(new T2Module.ModInfo

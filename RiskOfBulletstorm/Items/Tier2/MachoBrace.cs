@@ -74,7 +74,7 @@ namespace RiskOfBulletstorm.Items
             {
                 if (invCount > 0)
                 {
-                    if (vBody.skillLocator.utility.Equals(self)) //is this [redacted] redundant?
+                    if (vBody.skillLocator.utility.Equals(self)) //is this redundant?
                     {
                         if (vBody.HasBuff(MachoBrace_Boost)) //should prevent weird stacking
                         {

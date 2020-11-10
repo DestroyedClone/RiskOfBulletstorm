@@ -86,7 +86,7 @@ namespace RiskOfBulletstorm.Items
             }
             orig(self);
         }
-        static int GetTotalItemCountOfTier(ItemTier itemTier, CharacterBody self)
+        static int GetTotalItemCountOfTier(ItemTier itemTier, CharacterBody self) //borrowed method
         {
             int num = 0;
             ItemIndex itemIndex = ItemIndex.Syringe;

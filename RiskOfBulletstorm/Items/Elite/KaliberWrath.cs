@@ -1,4 +1,4 @@
-﻿/*
+﻿
 using EliteSpawningOverhaul;
 using R2API;
 using RoR2;
@@ -27,7 +27,7 @@ namespace RiskOfBulletstorm //TODO modify weight of card depending on curse leve
             $"\nDue to the references to Kaliber that can be found in the texts, this book is most likely hers, however, it is incomplete." +
             $"\nGunesis 1:1 In the beginning, the Gungeon was formless and void, and bullets moved over the face of the deep." +
             $"\nRevolvations 2:1 These are the words of Kaliber, she who grips the seven sidearms in her hands and walks among the six loaded chambers." +
-            $"When the Gun is drawn to the heart of the pacifist, and when the chambers are empty and the shells are spent, the Last of the Jammed will ascend to seal The Breach forever.";
+            $"\n\nWhen the Gun is drawn to the heart of the pacifist, and when the chambers are empty and the shells are spent, the Last of the Jammed will ascend to seal The Breach forever.";
 
         public static EliteAffixCard JammedEliteCard { get; set; }
         public static EliteIndex JammedEliteIndex;
@@ -36,7 +36,7 @@ namespace RiskOfBulletstorm //TODO modify weight of card depending on curse leve
         public override void SetupAttributes()
         {
             base.SetupAttributes();
-            equipmentDef.canDrop = false;
+            equipmentDef.canDrop = true;
             equipmentDef.enigmaCompatible = false;
 
             var jammedEliteDef = new CustomElite(
@@ -113,4 +113,3 @@ namespace RiskOfBulletstorm //TODO modify weight of card depending on curse leve
         }
     }
 }
-*/

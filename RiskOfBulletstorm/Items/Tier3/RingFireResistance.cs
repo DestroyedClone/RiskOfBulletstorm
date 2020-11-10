@@ -45,7 +45,7 @@ namespace RiskOfBulletstorm.Items
             base.Install();
             On.RoR2.HealthComponent.TakeDamage += ClearFire;
             On.RoR2.DotController.AddDot += PreventDot;
-            //On.RoR2.CharacterBody.OnInventoryChanged += GiveRandomRed;
+            On.RoR2.CharacterBody.OnInventoryChanged += GiveRandomRed;
         }
 
         public override void Uninstall()
@@ -53,7 +53,7 @@ namespace RiskOfBulletstorm.Items
             base.Uninstall();
             On.RoR2.HealthComponent.TakeDamage -= ClearFire;
             On.RoR2.DotController.AddDot -= PreventDot;
-            //On.RoR2.CharacterBody.OnInventoryChanged -= GiveRandomRed;
+            On.RoR2.CharacterBody.OnInventoryChanged -= GiveRandomRed;
         }
         private void ClearFire(On.RoR2.HealthComponent.orig_TakeDamage orig, RoR2.HealthComponent self, RoR2.DamageInfo damageInfo)
         {
@@ -103,9 +103,6 @@ namespace RiskOfBulletstorm.Items
             }
             orig(self, attackerObject, duration, dotIndex, damageMultiplier);
         }
-
-
-        /*
         private void GiveRandomRed(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self) //ripped from harbcrate, i did credit though.
         {
             orig(self);
@@ -124,6 +121,6 @@ namespace RiskOfBulletstorm.Items
                     Chat.AddPickupMessage(self, def.nameToken, ColorCatalog.GetColor(ItemCatalog.GetItemDef(def.itemIndex).colorIndex), (uint)lootCount);
                 }
             }
-        } */
+        } 
     }
 }

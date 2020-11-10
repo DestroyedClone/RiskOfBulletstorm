@@ -35,11 +35,15 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "Known for her impatience, Cadence grew tired of waiting for her bullets to reach their target. She developed these tiny rockets to give each shot extra speed.";
 
-        public int InventoryCount = 0;
+        /*
+        private readonly static List<object> BlacklistedProjectiles = new List<object>
+        {
+            RollBomb.BombPrefab
+        };*/
 
         public override void SetupBehavior()
         {
-
+            base.SetupBehavior();
         }
         public override void SetupAttributes()
         {
@@ -53,39 +57,34 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            On.RoR2.CharacterBody.OnInventoryChanged += UpdateInvCount;
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += ProjectileManager_FireProjectile_FireProjectileInfo;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
-            On.RoR2.CharacterBody.OnInventoryChanged -= UpdateInvCount;
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo -= ProjectileManager_FireProjectile_FireProjectileInfo;
-        }
-        private void UpdateInvCount(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self)
-        {
-            InventoryCount = GetCount(self);
-            orig(self);
         }
         private void ProjectileManager_FireProjectile_FireProjectileInfo(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_FireProjectileInfo orig, ProjectileManager self, FireProjectileInfo fireProjectileInfo)
         {
-            Chat.AddMessage("RocketPoweredBullets: Entered Hook");
+            int InventoryCount = fireProjectileInfo.owner.GetComponent<CharacterBody>().inventory.GetItemCount(catalogIndex);
             if (InventoryCount > 0)
             {
-                var ProjMultFinal = 1 + ProjSpeedMult + ProjSpeedMultStack * (InventoryCount - 1);
+                //if (fireProjectileInfo.projectilePrefab != RollBomb.BombPrefab) { return; }
+                var ProjMultFinal = 1 + (ProjSpeedMult + ProjSpeedMultStack * (InventoryCount - 1));
                 //RocketBulletComponent RocketBulletComponent = self.GetComponent<RocketBulletComponent>();
                 //if (!RocketBulletComponent) { Chat.AddMessage("No bullet component found?"); }
-                Chat.AddMessage("RocketPoweredBullets: Current Speed Override: " + fireProjectileInfo.speedOverride.ToString() + " x (" + ProjMultFinal.ToString() + ") = (" + (fireProjectileInfo.speedOverride * ProjMultFinal).ToString() + ")");
+                Debug.Log("RocketPoweredBullets: Current Speed Override: " + fireProjectileInfo.speedOverride.ToString() + " x (" + ProjMultFinal.ToString() + ") = (" + (fireProjectileInfo.speedOverride * ProjMultFinal).ToString() + ")");
+                if (fireProjectileInfo.speedOverride < 0) fireProjectileInfo.speedOverride *= -1;
                 fireProjectileInfo.speedOverride *= ProjMultFinal;
                 fireProjectileInfo.useSpeedOverride = true;
             }
             orig(self, fireProjectileInfo);
         }
-        public class RocketBulletComponent : MonoBehaviour
+        /*public class RocketBulletComponent : MonoBehaviour
         {
             public float RocketBulletMultiplier;
-        }
+        }*/
 
     }
 }

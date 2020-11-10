@@ -10,7 +10,7 @@ using UnityEngine.Networking;
 using TILER2;
 using static TILER2.StatHooks;
 using static TILER2.MiscUtil;
-using static RiskOfBulletstorm.Shared.SharedLead;
+using static RiskOfBulletstorm.Shared.SharedMethods;
 using RiskOfBulletstorm.Shared;
 
 namespace RiskOfBulletstorm.Items
@@ -90,17 +90,22 @@ namespace RiskOfBulletstorm.Items
             orig(self, damageInfo, victim);
             var body = victim.gameObject.GetComponent<CharacterBody>();
             int BuffCount = body.GetBuffCount(GungeonFreezeStackDebuff);
+            int InventoryCount = damageInfo.attacker.gameObject.GetComponent<CharacterBody>().inventory.GetItemCount(catalogIndex);
 
-            switch(BuffCount)
+            if (InventoryCount > 1)
             {
-                case stacksToFrozen:
-                    body.RemoveBuff(GungeonFreezeStackDebuff);
-                    body.AddTimedBuffAuthority(GungeonFrozenDebuff, Duration * 2);
-                    //Add damage equal to 33% health
-                    break;
-                default:
-                    GiveLeadEffect(damageInfo, victim, catalogIndex, GungeonFreezeStackDebuff, DotController.DotIndex.None, Duration);
-                    break;
+                switch (BuffCount)
+                {
+                    case stacksToFrozen:
+                        Debug.Log("Froze the enemy", self);
+                        body.RemoveBuff(GungeonFreezeStackDebuff);
+                        body.AddTimedBuff(GungeonFrozenDebuff, Duration * 2);
+                        //Add damage equal to 33% health
+                        break;
+                    default:
+                        GiveLeadEffect(damageInfo, victim, catalogIndex, GungeonFreezeStackDebuff, DotController.DotIndex.None, Duration);
+                        break;
+                }
             }
         }
     }

@@ -67,19 +67,23 @@ namespace RiskOfBulletstorm.Items
 
         private void PurchaseInteraction_OnInteractionBegin(On.RoR2.PurchaseInteraction.orig_OnInteractionBegin orig, PurchaseInteraction self, Interactor activator)
         {
-            orig(self, activator);
             CharacterBody body = activator.gameObject.GetComponent<CharacterBody>();
             var InventoryCount = body.inventory.GetItemCount(catalogIndex);
-            Chat.AddMessage("Mustache: "+activator.ToString()+"|"+ activator.gameObject.ToString()+" bought from " +self.ToString());
+            Debug.Log("Mustache: "+activator.ToString()+"|"+ activator.gameObject.ToString()+" bought from " +self.ToString());
             if (InventoryCount > 0)
             {
                 var ResultChance = HealChance + HealChanceStack * (InventoryCount - 1);
                 if (Util.CheckRoll(ResultChance))
                 {
                     CharacterBody component = activator.GetComponent<CharacterBody>();
-                    component.healthComponent.Heal(HealAmount, default, true);
+
+                    //var ResultHeal = HealAmount * component.maxHealth;
+                    var ResultHeal = HealAmount * 100;
+                    component.healthComponent.HealFraction(ResultHeal, default);
+                    Debug.Log("Stache: Player healed for "+ ResultHeal.ToString(), self);
                 }
             }
+            orig(self, activator);
         }
     }
 }

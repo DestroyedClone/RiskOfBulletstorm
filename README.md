@@ -22,7 +22,7 @@ TODO:
 
 ## Special Items
 
-[White] Armor: Blocks one hit of damage if it dealt more than 25% health or would have killed you, then gets destroyed after firing a blank.
+[White] Armor: Destroys itself to block one hit of damage dealing more than 25% health or exceeding your health, and fires a Blank.
 (TODO: SFX)
 
 [unimplemented] [Boss] Old Crest : Identical to Armor, takes priority. Using it on a specific interactable will do something...
@@ -32,39 +32,41 @@ TODO:
 
 ## White
 
-[nonfunctional] Cartographer's Ring: Upon starting the next stage, 25% chance (+10% chance per stack) of automatically scanning the stage.
+Cartographer's Ring: Upon starting the next stage, 25% chance (+10% chance per stack) of automatically scanning the stage.
 
-[nonfunctional] Mustache: 25% (+5% per stack) chance to heal for 25% health.
+Mustache: 25% (+5% per stack) chance to heal for 25% health.
 
 [nonfunctional] Irradiated Lead: 5% chance per stack to Poison.
 
 ## Green
 
-+1 Bullets: +10% base damage (+1% per stack)
++1 Bullets: +25% damage dealt (+5% per stack)
 
 [unimplemented] Battle Standard: Increases damage of non-player allies. Does not apply to turrets.
 
-[nonfunctional] Disarming Personality: Reduces chest prices
+Disarming Personality: Reduces chest prices by -15% (-5% per stack)
 
 Enraging Photo: Gain a temporary +100% damage boost upon taking 33% of your health in damage for 1 (+0.25 per stack) seconds.
 => TODO: Health Requirement Loss
+
+[unimplemented] Ghost Bullets: Projectiles and Bullets pierce 1 (+1 per stack) enemies but reduces subsequent damage by 50% per enemy.
 
 Green Guon Stone: Upon taking 33% damage, has a 10% chance to heal you instead. Rises to 25% if fatal.
 Heals for 50 health + 25 per stack.
 => TODO: Add Health Check
 
-Macho Brace: Gain +30% (+10% per stack) damage bonus upon using your utility.
+Macho Brace: Gain +30% (+10% per stack) damage bonus upon using your utility. Damage bonus is used up when attacking.
 => TODO: Add check for CombatSkill, add check for equipment use
 
-[nonfunctional] Ring of Chest Friendship: Increases credits of interactables by 10% (+1% per stack)
+Ring of Chest Friendship: Increases credits of interactables by +10% (+2% per stack)
 
 [nonfunctional] Rocket-Powered Bullets: Increases projectile speed by 50% (+5% per stack).
 
 Roll Bomb: After using your Utility, drop 1 bomb(s) (+1 per stack) for 80% damage.
 
-[nonfunctional] Scope: Reduces bullet spread by 10% (+5% per stack).
+Scope: Reduces bullet spread by -10% (-5% per stack).
 
-[nonfunctional] Scouter: Shows enemy health and damage in chat on hit. Only shows number of digits depending on InventoryCount. DamageType only shows up after 2 Scouters.
+Scouter: Shows enemy health and damage in chat on hit to a pinged enemy. Only shows number of digits depending on InventoryCount. DamageType only shows up after 2 Scouters.
 
 ## Red
 
@@ -73,23 +75,23 @@ Roll Bomb: After using your Utility, drop 1 bomb(s) (+1 per stack) for 80% damag
 Ring of Fire Resistance: Prevents being inflicted with fire damage.
 Replaced with a random red if you already have one.
 
-Unity: +0.1 (0.05 per stack) damage per unique item in inventory
+Unity: +0.1 (+0.05 per stack) base damage per unique item in inventory
 
 ## Boss
 
-(WIP) Dog: [unimplemented]Spawns 1 (+1 per stack) dog(s) that have a 5% chance to dig up a pickup upon completing a room.
+[unimplemented] Dog: Spawns 1 (+1 per stack) dog(s) that have a 5% chance to dig up a pickup upon completing a room.
 			Spawns a pettable beetle. (untested)
 
-Master Round: Granted upon clearing a teleporter boss without taking damage. Adds 150 max health per stack.
+Master Round: Granted upon clearing a teleporter boss without ANYONE taking damage. Adds 150 max health per stack.
 
 
 ## Lunar
 
 [unimplemented] Teaching of the Dodge Roll: Replaces the player's Utility with "Dodge Roll". Removed from item pool upon possession.
 Picking one up with one equipped will roll a random lunar.
-Unknown Compatibility with Strides of Heresy.
+If you already have a Strides of Heresy, it will refund you Lunar Coins equal to your item stack, then give the item.
 
-"Dodge Roll" Ability: Roll forward. Immunity to damage upon rolling
+[unimplemented] "Dodge Roll" Ability: Roll forward. Immunity to damage upon rolling
 
 [unimplemented] Bloodied Scarf: Replaces your utility with Huntress Blink
 
@@ -99,6 +101,7 @@ Metronome: Gain a damage bonus for every enemy you kill, clears when you use a d
 Ring of Miserly Protection: Grants +50%(+50% per stack) increased maximum health, ...but all stacks disappear upon purchasing.
 
 Spice: Increases various stats, but increases the rate at which Spice spawns and increases Curse.
+For now, it increases base damage by +1 per stack.
 => TODO: Add Stat bonuses. 
 
 # Equipment
@@ -154,15 +157,19 @@ Harb - HarbCrate
 
 ontrigger - ItemStatsMod https://github.com/ontrigger/ItemStatsMod/blob/4c015d5f54b5f7df788236b7c8546f7cc72743fe/ItemStats/src/Hooks.cs (UI)
 
-idow17-meet - Foresight Arifact https://github.com/idow17-meet/ForesightArtifact (disarming personality)
+idow17-meet - Foresight Arifact https://github.com/idow17-meet/ForesightArtifact (Used for Disarming Personality)
+
+DaKo51 - High Priority Item https://github.com/DaKo51/High-Priority-Item (Used for Scouter)
 
 # Non-standard
 
 Crediting people I've actually talked to'
 
-Rein - Nonspecific
+Rein - Nonspecific, DirectorAPI
 
 KomradeSpectre, Chen - Lots, and TILER2 Help
+
+KomradeSpectre - Walking me through the resource process
 
 Spice - OKIGotIt, Ghor
 

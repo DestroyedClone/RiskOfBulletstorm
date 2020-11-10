@@ -8,18 +8,19 @@ namespace RiskOfBulletstorm.Shared
 {
     public static class BlankRelated
     {
-        public static void FireBlank(CharacterBody attacker, Vector3 corePosition, float blankRadius, float damageMult, float projectileClearRadius, bool consumeBlank = false)
+        public static bool FireBlank(CharacterBody attacker, Vector3 corePosition, float blankRadius, float damageMult, float projectileClearRadius, bool consumeBlank = false)
         {
             //var body = attacker.GetComponent<CharacterBody>();
             var blankAmount = attacker.inventory.GetItemCount(Items.Blank.instance.catalogIndex);
             if (blankAmount == 0 && consumeBlank) //if needs blank and have no blank
             {
                 Debug.LogError("[RiskOfBulletstorm]: Blank was required, but player had no blank!");
-                return;
+                return false;
             }
             new BlastAttack
             {
-                attacker = attacker.gameObject,
+                attacker = attacker.gameObject, //who
+                inflictor = blankObject, //how
                 position = corePosition,
                 procCoefficient = 0f,
                 losType = BlastAttack.LoSType.None,
@@ -29,8 +30,9 @@ namespace RiskOfBulletstorm.Shared
                 //crit = self.RollCrit(),
                 radius = blankRadius,
                 teamIndex = TeamIndex.Player,
-                baseForce = 2000f,
-                bonusForce = new Vector3(0, 1600, 0)
+                baseForce = 900,
+                //baseForce = 2000f,
+                //bonusForce = new Vector3(0, 1600, 0)
             }.Fire();
 
             if (projectileClearRadius != 0)
@@ -66,6 +68,9 @@ namespace RiskOfBulletstorm.Shared
             {
                 attacker.inventory.RemoveItem(Items.Blank.instance.catalogIndex);
             }
+            return true;
         }
+
+        public static GameObject blankObject;
     }
 }

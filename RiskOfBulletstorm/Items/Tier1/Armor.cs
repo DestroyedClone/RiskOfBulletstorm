@@ -74,7 +74,7 @@ namespace RiskOfBulletstorm.Items
 
             if (InventoryCount > 0)
             {
-                if ( ( (ProtectDeath && (endHealth <= 0) ) || (endHealth/self.fullHealth < HealthThreshold ) ) && (!damageInfo.rejected) )
+                if ( ( (ProtectDeath && (endHealth <= 0) ) || (endHealth / self.fullHealth >= HealthThreshold ) ) && (!damageInfo.rejected) )
                 {
                     damageInfo.rejected = true;
                     self.body.inventory.RemoveItem(catalogIndex);

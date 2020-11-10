@@ -15,11 +15,11 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How many seconds should Enraging Photo's buff last with a single stack? (Default: 1 (seconds))", AutoConfigFlags.PreventNetMismatch)]
-        public float BaseDurationOfBuffInSeconds { get; private set; } = 1f;
+        public float BaseDurationOfEnragedBuffInSeconds { get; private set; } = 1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How many additional seconds of buff should each Enraging Photo after the first give? (Default: 0.25 (seconds))", AutoConfigFlags.PreventNetMismatch)]
-        public float AdditionalDurationOfBuffInSeconds { get; private set; } = 0.25f;
+        public float AdditionalDurationOfEnragedBuffInSeconds { get; private set; } = 0.25f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What percent of health lost should activate the Enraging Photo's damage bonus? (Default: 0.33 (33%))", AutoConfigFlags.PreventNetMismatch)]
@@ -39,9 +39,9 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "\"Don't Believe His Lies\"\nDeal extra damage for a short time after receivig a heavy hit.";
+        protected override string GetPickupString(string langID = null) => "\"Don't Believe His Lies\"\nDeal extra damage for a short time after receiving a heavy hit.";
 
-        protected override string GetDescString(string langid = null) => $"Gain a temporary <style=cIsDamage>{Pct(DmgBoost)} damage bonus</style> upon taking <style=cIsDamage>{Pct(HealthThreshold)} </style> of your health that lasts {BaseDurationOfBuffInSeconds} seconds. <style=cStack>(+{AdditionalDurationOfBuffInSeconds} second duration per additional Enraging Photo.)</style>";
+        protected override string GetDescString(string langid = null) => $"Gain a temporary <style=cIsDamage>{Pct(DmgBoost)} damage bonus</style> upon taking <style=cIsDamage>{Pct(HealthThreshold)} </style> of your health that lasts {BaseDurationOfEnragedBuffInSeconds} seconds. <style=cStack>(+{AdditionalDurationOfEnragedBuffInSeconds} second duration per additional Enraging Photo.)</style>";
 
         protected override string GetLoreString(string langID = null) => "A photo that the Convict brought with her to the Gungeon.\nDeal extra damage for a short time after getting hit.\n\nOn the journey to the Breach, the Pilot once asked her why she always stared at this photo. Later, she was released from the brig.";
 
@@ -89,9 +89,9 @@ namespace RiskOfBulletstorm.Items
         {
             var InventoryCount = GetCount(self.body);
 
-            if (InventoryCount > 0 && self.body.GetBuffCount(ROBEnraged) < InventoryCount)
+            if (InventoryCount > 0 && self.body.GetBuffCount(ROBEnraged) == 0)
             {
-                self.body.AddTimedBuffAuthority(ROBEnraged, (BaseDurationOfBuffInSeconds + (AdditionalDurationOfBuffInSeconds * InventoryCount - 1)));
+                self.body.AddTimedBuffAuthority(ROBEnraged, (BaseDurationOfEnragedBuffInSeconds + AdditionalDurationOfEnragedBuffInSeconds * (InventoryCount - 1)));
             }
             orig(self, damageInfo);
         }

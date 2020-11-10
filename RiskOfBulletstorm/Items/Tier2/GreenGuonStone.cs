@@ -42,7 +42,8 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "Chance To Heal\n"+descText+"damage";
 
-        protected override string GetDescString(string langid = null) => $"{HealChance}% {descText} damage. Raises to {LethalSaveChance} if lethal.";
+        protected override string GetDescString(string langid = null) => $"{HealChance}% {descText} damage. Raises to {LethalSaveChance} if lethal." +
+            $"\n Heals for {HealAmount} + {HealAmountStack} per stack.";
 
         protected override string GetLoreString(string langID = null) => "The Green Guon stone abhors pain, and has a small chance to heal its bearer upon being wounded. It seems to grow more desperate as the risk of death rises.";
 

@@ -11,6 +11,7 @@ using TILER2;
 using static TILER2.StatHooks;
 using static TILER2.MiscUtil;
 using System;
+using static RiskOfBulletstorm.Shared.HelperUtil;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -31,11 +32,10 @@ namespace RiskOfBulletstorm.Items
         private readonly string descText = "Reduces prices at shops";
         protected override string GetPickupString(string langID = null) => "For You?\n"+descText;
 
-        protected override string GetDescString(string langid = null) => $"{descText} by ";
+        protected override string GetDescString(string langid = null) => $"{descText} by {Pct(CostReductionAmount)} (+{Pct(CostReductionAmount)} per stack)";
 
         protected override string GetLoreString(string langID = null) => "The Pilot is able to talk his way into almost anything, usually gunfights.";
 
-        private int InventoryCount = 0;
         public override void SetupBehavior()
         {
 
@@ -53,36 +53,31 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             On.RoR2.PurchaseInteraction.Awake += LowerCosts;
-            On.RoR2.CharacterBody.OnInventoryChanged += UpdateInvCount;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
             On.RoR2.PurchaseInteraction.Awake -= LowerCosts;
-            On.RoR2.CharacterBody.OnInventoryChanged -= UpdateInvCount;
         }
 
         private void LowerCosts(On.RoR2.PurchaseInteraction.orig_Awake orig, PurchaseInteraction self)
         {
             orig(self);
             var chest = self.GetComponent<ChestBehavior>();
+            int InventoryCount = GetPlayersItemCount(catalogIndex);
+
             if (chest)
             {
-                Chat.AddMessage("DisarmPerson: Chest Found!");
+                Debug.Log("DisarmPerson: Chest Found!", self);
                 if (InventoryCount > 0)
                 {
-                    Chat.AddMessage("DisarmPerson: Inventory Count works!");
-                    var ResultMult = CostReductionAmount + CostReductionAmountStack * (InventoryCount - 1);
-                    Chat.AddMessage("DisarmPerson: Cost(" + self.cost.ToString()+")=>"+ ((int)Mathf.Ceil(self.cost * ResultMult)).ToString()) ;
+                    Debug.Log("DisarmPerson: Inventory Count works!", self);
+                    var ResultMult = Mathf.Min(1 - CostReductionAmount + CostReductionAmountStack * (InventoryCount - 1), 0);
+                    Debug.Log("DisarmPerson: Cost(" + self.cost.ToString()+")=>"+ ((int)Mathf.Ceil(self.cost * ResultMult)).ToString(), self);
                     self.cost = (int)Mathf.Ceil(self.cost * ResultMult);
                 }
             }
-        }
-        private void UpdateInvCount(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self)
-        {
-            InventoryCount = GetCount(self);
-            orig(self);
         }
     }
 }

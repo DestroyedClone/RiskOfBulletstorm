@@ -8,6 +8,8 @@ using TILER2;
 using static TILER2.StatHooks;
 using static TILER2.MiscUtil;
 using System;
+using static RiskOfBulletstorm.Shared.HelperUtil;
+using static R2API.DirectorAPI;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -17,8 +19,8 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("Director Credit Multiplier (Default: 0.1 = +10%)", AutoConfigFlags.PreventNetMismatch)]
         public float DirectorCreditMult { get; private set; } = 0.1f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Director Credit Multiplier (Default: 0.01 = +1%)", AutoConfigFlags.PreventNetMismatch)]
-        public float DirectorCreditMultStack { get; private set; } = 0.01f;
+        [AutoConfig("Director Credit Multiplier (Default: 0.02 = +2%)", AutoConfigFlags.PreventNetMismatch)]
+        public float DirectorCreditMultStack { get; private set; } = 0.02f;
 
         public override string displayName => "Ring of Chest Friendship";
         public override ItemTier itemTier => ItemTier.Tier2;
@@ -31,8 +33,6 @@ namespace RiskOfBulletstorm.Items
         protected override string GetDescString(string langid = null) => $"{descText} by {Pct(DirectorCreditMult)} + {Pct(DirectorCreditMult)} per stack.";
 
         protected override string GetLoreString(string langID = null) => "This ring was first given to Winchester, largely due to a naming mix-up. With little use for treasure, Winchester eventually gave it away as a prize in one of his strange games.";
-
-        private int InventoryCount = 0;
 
         public override void SetupBehavior()
         {
@@ -50,31 +50,50 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            On.RoR2.CharacterBody.OnInventoryChanged += UpdateInvCount;
-            On.RoR2.SceneDirector.Awake += SceneDirector_Awake;
+            //On.RoR2.SceneDirector.Awake += SceneDirector_Awake;
+            //On.RoR2.SceneDirector.Start += SceneDirector_Start;
+            StageSettingsActions += MultiplyCredits;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
-            On.RoR2.CharacterBody.OnInventoryChanged -= UpdateInvCount;
-            On.RoR2.SceneDirector.Awake -= SceneDirector_Awake;
+            //On.RoR2.SceneDirector.Awake -= SceneDirector_Awake;
+            //On.RoR2.SceneDirector.Start -= SceneDirector_Start;
+            StageSettingsActions -= MultiplyCredits;
         }
-        private void SceneDirector_Awake(On.RoR2.SceneDirector.orig_Awake orig, SceneDirector self)
+
+        /*private void SceneDirector_Awake(On.RoR2.SceneDirector.orig_Awake orig, SceneDirector self)
         {
-            orig(self);
-            Chat.AddMessage("ChestFriend: Entered Hook");
+            var InventoryCount = GetPlayersItemCount(catalogIndex);
+            Debug.Log("ChestFriend: Entered Hook", self);
             if (InventoryCount > 0)
             {
                 var ResultMult = 1 + DirectorCreditMult + DirectorCreditMultStack * (InventoryCount - 1);
-                Chat.AddMessage("ChestFriend: Credits "+self.interactableCredit.ToString()+" multiplied by "+ ((int)ResultMult).ToString());
+                Debug.Log("ChestFriend: Credits "+self.interactableCredit.ToString()+" multiplied by "+ ((int)ResultMult).ToString(), self);
                 self.interactableCredit *= (int)ResultMult;
             }
-        }
-        private void UpdateInvCount(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self)
-        {
-            InventoryCount = GetCount(self);
             orig(self);
+        }*/
+
+        /*
+        private void SceneDirector_Start(On.RoR2.SceneDirector.orig_Start orig, SceneDirector self)
+        {
+            var InventoryCount = GetPlayersItemCount(catalogIndex);
+            Debug.Log("ChestFriend: Entered Hook", self);
+            if (InventoryCount > 0)
+            {
+                var ResultMult = 1 + DirectorCreditMult + DirectorCreditMultStack * (InventoryCount - 1);
+                Debug.Log("ChestFriend: Credits " + self.interactableCredit.ToString() + " multiplied by " + ((int)ResultMult).ToString(), self);
+                self.interactableCredit *= (int)ResultMult;
+            }
+            orig(self);
+        } */
+        private void MultiplyCredits(StageSettings stageSettings, StageInfo stageInfo )
+        {
+            var InventoryCount = GetPlayersItemCount(catalogIndex);
+            var ResultMult = 1 + DirectorCreditMult + DirectorCreditMultStack * (InventoryCount - 1);
+            stageSettings.SceneDirectorInteractableCredits *= (int)ResultMult;
         }
     }
 }

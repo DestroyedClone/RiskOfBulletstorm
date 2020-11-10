@@ -18,7 +18,7 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Bullet Spread Reduction (Default: 10%)", AutoConfigFlags.PreventNetMismatch)]
-        public float SpreadReduction { get; private set; } = 1.00f;
+        public float SpreadReduction { get; private set; } = 0.10f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Bullet Spread Reduction Stack (Default: 5%)", AutoConfigFlags.PreventNetMismatch)]
         public float SpreadReductionStack { get; private set; } = 0.05f;
@@ -55,38 +55,31 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             On.RoR2.BulletAttack.Fire += BulletAttack_Fire;
-            On.RoR2.CharacterBody.OnInventoryChanged += CharacterBody_OnInventoryChanged;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
             On.RoR2.BulletAttack.Fire -= BulletAttack_Fire;
-            On.RoR2.CharacterBody.OnInventoryChanged -= CharacterBody_OnInventoryChanged;
-        }
-        private int InventoryCount = 0;
-
-        private void CharacterBody_OnInventoryChanged(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self)
-        {
-            InventoryCount = GetCount(self);
-            orig(self);
         }
 
         private void BulletAttack_Fire(On.RoR2.BulletAttack.orig_Fire orig, BulletAttack self)
         {
-            Chat.AddMessage("Scope: Entered Hook");
+            int InventoryCount = self.owner.GetComponent<CharacterBody>().inventory.GetItemCount(catalogIndex);
             if (InventoryCount > 0)
             {
-                var ResultMult = SpreadReduction + SpreadReductionStack * (InventoryCount - 1);
+                var ResultMult = 1 - (SpreadReduction + SpreadReductionStack * (InventoryCount - 1));
                 //self.maxSpread = Mathf.Max(self.maxSpread * ResultMult * 0.75f, 2 * ResultMult);
+
                 var oldMax = self.maxSpread;
-                self.maxSpread = Mathf.Max(self.maxSpread * ResultMult, self.maxSpread);
+                self.maxSpread = Mathf.Max(self.maxSpread * ResultMult, 0);
+
                 var oldMin = self.minSpread;
                 self.minSpread = Mathf.Min(0, self.minSpread * ResultMult);
 
                 //self.owner.GetComponent<CharacterBody>().SetSpreadBloom(ResultMult, false);
-                Chat.AddMessage("Max:" + oldMax.ToString() + "=>" + self.maxSpread.ToString());
-                Chat.AddMessage("Min:" + oldMin.ToString() + "=>" + self.minSpread.ToString());
+                Debug.Log("Scope: Max:" + oldMax.ToString() + "=>" + self.maxSpread.ToString());
+                Debug.Log("Scope: Min:" + oldMin.ToString() + "=>" + self.minSpread.ToString());
             }
             orig(self);
         }

@@ -13,7 +13,7 @@ using static TILER2.MiscUtil;
 
 namespace RiskOfBulletstorm.Shared
 {
-    public static class SharedLead
+    public static class SharedMethods
     {
         public static void GiveLeadEffect(DamageInfo damageInfo, GameObject victim, ItemIndex itemIndex, BuffIndex buffIndex, DotController.DotIndex dotIndex, float duration, float procChance = 0.05f, float damageMultiplier = 0.25f)
         {
@@ -23,7 +23,7 @@ namespace RiskOfBulletstorm.Shared
 
             if (!body || InventoryCount < 1 || !Util.CheckRoll(procChanceFinal, body.master) || !damageInfo.rejected) return;
 
-            victim.gameObject.GetComponent<CharacterBody>()?.AddTimedBuffAuthority(buffIndex, duration);
+            victim.gameObject.GetComponent<CharacterBody>()?.AddTimedBuff(buffIndex, duration);
             //AddTimedBuffAuthority vs AddTimedBuff?
             DotController.InflictDot(victim.gameObject, body.gameObject, dotIndex, duration, damageMultiplier); //thanks komrade
         }

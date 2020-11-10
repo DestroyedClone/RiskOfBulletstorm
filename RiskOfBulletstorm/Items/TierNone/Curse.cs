@@ -20,7 +20,7 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("How many curse is needed before Lord of the Jammed spawns? Set it to -1 to disable. (Default: 10)", AutoConfigFlags.PreventNetMismatch)]
         public float CurseMax { get; private set; } = 10f; //THIS IS WHERE I LEFT OFF!!!!!
 
-        public override string displayName => "";
+        public override string displayName => "Curse";
         public override ItemTier itemTier => ItemTier.NoTier;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.AIBlacklist });
 
@@ -35,8 +35,6 @@ namespace RiskOfBulletstorm.Items
         //private static List<RoR2.CharacterBody> Playername = new List<RoR2.CharacterBody>();
 
         public static GameObject ItemBodyModelPrefab;
-        private int InventoryCount;
-        private bool isMaxCurse = false;
 
         public override void SetupBehavior()
         {
@@ -62,17 +60,15 @@ namespace RiskOfBulletstorm.Items
             On.RoR2.CharacterBody.OnInventoryChanged -= CalculateCurse;
 
         }
-        private void CalculateCurse(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self) //blessed komrade
+        private void CalculateCurse(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self)
         {
-            InventoryCount = GetCount(self);
+            int CurseInventoryCount = GetCount(self);
+            ItemIndex LOTJItemIndex = CurseSpawnLOTJ.instance.catalogIndex;
+            int MaxCurseInvCount = self.inventory.GetItemCount(LOTJItemIndex);
             //int InventoryCountLOTJ = GetCount(CurseSpawnLOTJ.instance.InventoryCount_LOTJItem);
-            if (InventoryCount >= CurseMax) //If you're at max curse, set isMaxCurse to true
+            if (CurseInventoryCount >= CurseMax && MaxCurseInvCount == 0) 
             {
-                isMaxCurse = true;
-            }
-            if (isMaxCurse) //if you're at max curse, continue
-            {
-
+                self.inventory.GiveItem(LOTJItemIndex);
             }
             orig(self);
         }

@@ -24,9 +24,8 @@ namespace RiskOfBulletstorm.Items
         public float HealthBonusStack { get; private set; } = 0.5f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Enable item synergy? (Default: True)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("[unimplemented] Enable item synergy? (Default: True)", AutoConfigFlags.PreventNetMismatch)]
         public bool EnableSynergy { get; private set; } = true;
-        public bool RecentPurchase = false;
         public override string displayName => "Ring of Miserly Protection";
         public override ItemTier itemTier => ItemTier.Lunar;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Healing, ItemTag.Cleansable });
@@ -72,6 +71,7 @@ namespace RiskOfBulletstorm.Items
             if (InventoryCount > 0)
             {
                 body.inventory.RemoveItem(catalogIndex, InventoryCount);
+                body.RecalculateStats();
             }
             //Chat.AddMessage(activator.name);
             orig(self, activator);

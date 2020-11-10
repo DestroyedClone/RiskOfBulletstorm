@@ -15,15 +15,16 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Button to blank (Default: T)", AutoConfigFlags.PreventNetMismatch)]
-        public string BlankButton { get; private set; } = "T";
+        public KeyCode BlankButton { get; private set; } = KeyCode.T;
+        //https://docs.unity3d.com/ScriptReference/KeyCode.html
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Gamepad Button to blank (Default: T)", AutoConfigFlags.PreventNetMismatch)]
         public string BlankButtonGamepad { get; private set; } = "T";
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Blank Cooldown (Default: 1 second)", AutoConfigFlags.PreventNetMismatch)]
-        public float ConfigBlankCooldown { get; private set; } = 1f;
+        [AutoConfig("Blank Cooldown (Default: 3 second)", AutoConfigFlags.PreventNetMismatch)]
+        public float ConfigBlankCooldown { get; private set; } = 3f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Damage dealt to enemies on use (Default: 1 = 100% damage)", AutoConfigFlags.PreventNetMismatch)]
@@ -58,6 +59,11 @@ namespace RiskOfBulletstorm.Items
             "12:00 PM - [Kyle] Guess what happened?";
 
         public bool BlankUsed = false;
+        public Blank()
+        {
+            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Blank.prefab";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/Blank_Icon.png";
+        }
         public override void SetupBehavior()
         {
 
@@ -94,13 +100,14 @@ namespace RiskOfBulletstorm.Items
 
                 if (InventoryCount > 0)
                 {
+                    if (BlankComponent.BlankCooldown > 0) Debug.Log(BlankComponent.BlankCooldown.ToString(), self);
                     BlankComponent.BlankCooldown -= Time.fixedDeltaTime;
                     if (self.isPlayerControlled)
                     {
                         if (BlankComponent.BlankCooldown <= 0)
                         {
                             BlankUsed = false;
-                            if (Input.GetKeyDown(KeyCode.T) && !BlankUsed)
+                            if (Input.GetKeyDown(BlankButton) && !BlankUsed)
                             {
                                 Chat.AddMessage("Blank: Blank Used!");
                                 BlankUsed = true;

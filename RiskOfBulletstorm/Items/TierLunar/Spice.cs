@@ -25,7 +25,6 @@ namespace RiskOfBulletstorm.Items
 
         private string dynamicPickupText = "THE CUBE";
         private float SpiceReplaceChance = 0f;
-        private int InventoryCount;
         protected override string GetPickupString(string langID = null)
         {
             return dynamicPickupText;
@@ -75,7 +74,7 @@ namespace RiskOfBulletstorm.Items
         }
         private void CalculateSpiceReward(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self) //blessed komrade
         {
-            InventoryCount = GetCount(self);
+            int InventoryCount = GetCount(self);
             SpiceReplaceChance = Math.Min(InventoryCount * 5, 100);
             switch (InventoryCount)
             {
@@ -117,6 +116,8 @@ namespace RiskOfBulletstorm.Items
         }
         private void GiveSpiceReward(CharacterBody sender, StatHookEventArgs args)
         {
+            int InventoryCount = GetCount(sender);
+            args.baseDamageAdd += InventoryCount;
             switch (InventoryCount)
             {
                 case 0:
@@ -127,18 +128,22 @@ namespace RiskOfBulletstorm.Items
                     break;
             }
         }
-        private void GiveItemVsMax(CharacterBody self, ItemIndex itemindex, int amount = 1, int max = 1)
+        /*private static readonly Dictionary<ItemIndex, int> SpiceBonusItems = new Dictionary<ItemIndex, int>
         {
-            var InventoryCount = GetCount(self);
-            if (InventoryCount < max)
+            { ItemIndex.AACannon, 0 },
+            { ItemIndex.AACannon, 1 },
+            { ItemIndex.AACannon, 2 },
+            { ItemIndex.AACannon, 3 },
+        };*/
+        private void SpiceGiveItem(CharacterBody sender, ItemIndex itemIndex, int requiredAmount)
+        {
+            var InventoryCount = sender.inventory.GetItemCount(itemIndex) ;
+            if (InventoryCount == requiredAmount)
             {
-                if (InventoryCount+amount > max)
-                {
-                    self.inventory.GiveItem(itemindex, (max-InventoryCount));
-                } else
-                {
-                    self.inventory.GiveItem(itemindex, amount);
-                }
+
+            } else
+            {
+
             }
         }
     }
