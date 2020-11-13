@@ -59,16 +59,17 @@ namespace RiskOfBulletstorm.Items
             orig(self, damageInfo);
             // BLANK LOGIC //
             var characterBody = damageInfo.attacker.GetComponent<CharacterBody>();
-            if (!characterBody || !damageInfo.inflictor == blankObject)
-            {
-                return;
-            }
+
+            if (!characterBody) return;
+            if (!damageInfo.inflictor) return;
+            if (!damageInfo.inflictor == blankObject) return;
 
             var prcf = 50;
-            var mass = self.body.characterMotor?.mass ?? (self.body.rigidbody?.mass ?? 1f);
+            var mass = characterBody.characterMotor?.mass ?? (characterBody.rigidbody?.mass ?? 1f);
+
             Vector3 ZeroYVector3(Vector3 vector3)
             {
-                return new Vector3(vector3.x, 0, vector3.y);
+                return new Vector3(vector3.x, 0, vector3.z);
             }
 
             if (damageInfo.force == Vector3.zero)

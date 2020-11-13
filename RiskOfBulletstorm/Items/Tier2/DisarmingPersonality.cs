@@ -36,6 +36,12 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "The Pilot is able to talk his way into almost anything, usually gunfights.";
 
+        public DisarmingPersonality()
+        {
+            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/DisarmingPersonality.prefab";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/DisarmingPersonalityIcon.png";
+        }
+
         public override void SetupBehavior()
         {
 
@@ -69,10 +75,9 @@ namespace RiskOfBulletstorm.Items
 
             if (chest)
             {
-                Debug.Log("DisarmPerson: Chest Found!", self);
+                //Debug.Log("DisarmPerson: Chest Found!", self);
                 if (InventoryCount > 0)
                 {
-                    Debug.Log("DisarmPerson: Inventory Count works!", self);
                     var ResultMult = Mathf.Min(1 - CostReductionAmount + CostReductionAmountStack * (InventoryCount - 1), 0);
                     Debug.Log("DisarmPerson: Cost(" + self.cost.ToString()+")=>"+ ((int)Mathf.Ceil(self.cost * ResultMult)).ToString(), self);
                     self.cost = (int)Mathf.Ceil(self.cost * ResultMult);

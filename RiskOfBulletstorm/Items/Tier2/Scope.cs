@@ -32,12 +32,17 @@ namespace RiskOfBulletstorm.Items
         protected override string GetDescString(string langid = null) => $"Decreases bullet spread by {Pct(SpreadReduction)}" +
             $"\n(+{Pct(SpreadReductionStack)} per stack)";
 
-        protected override string GetLoreString(string langID = null) => "4:44 - [Kate] Found this wicked sweet scope in a chest." +
-            "\n 4:55 - [Kate] Actually trying to fight with this on my face is kinda hard, might ditch." +
-            "\n 5:20 - [Kate] Think this stuff really speaks to me, feels like I'm hitting my shots more often." +
-            "\n 6:00 - [Kate] Alright, I'm keeping it. I feel so... like... focused... It's pretty great!" +
-            "\n 6:02 - [Kate] Think this is like... covered in alien mind control invisible text? No biggie, whatever helps! :)";
+        protected override string GetLoreString(string langID = null) => "4:44 - [Kate] Found this scope in a chest, reporting back." +
+            "\n 4:55 - [Kate] Seems to work pretty well whether it's attached or not." +
+            "\n 5:20 - [Kate] This really works quite well, my shots are hitting more often." +
+            "\n 6:00 - [Kate] Alright, I'm keeping it. Can't explain it, feels like I'm actually tightening the spread." +
+            "\n 6:02 - [Kate] Scratch that, this is ACTUALLY tightening the spread of bullets. Well, whatever helps.";
 
+        public Scope()
+        {
+            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Scope.prefab";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/ScopeIcon.png";
+        }
         public override void SetupBehavior()
         {
 
@@ -65,21 +70,22 @@ namespace RiskOfBulletstorm.Items
 
         private void BulletAttack_Fire(On.RoR2.BulletAttack.orig_Fire orig, BulletAttack self)
         {
+            //doesn't work on MULT?????
             int InventoryCount = self.owner.GetComponent<CharacterBody>().inventory.GetItemCount(catalogIndex);
             if (InventoryCount > 0)
             {
                 var ResultMult = 1 - (SpreadReduction + SpreadReductionStack * (InventoryCount - 1));
                 //self.maxSpread = Mathf.Max(self.maxSpread * ResultMult * 0.75f, 2 * ResultMult);
 
-                var oldMax = self.maxSpread;
+                //var oldMax = self.maxSpread;
                 self.maxSpread = Mathf.Max(self.maxSpread * ResultMult, 0);
 
-                var oldMin = self.minSpread;
+                //var oldMin = self.minSpread;
                 self.minSpread = Mathf.Min(0, self.minSpread * ResultMult);
 
                 //self.owner.GetComponent<CharacterBody>().SetSpreadBloom(ResultMult, false);
-                Debug.Log("Scope: Max:" + oldMax.ToString() + "=>" + self.maxSpread.ToString());
-                Debug.Log("Scope: Min:" + oldMin.ToString() + "=>" + self.minSpread.ToString());
+                //Debug.Log("Scope: Max:" + oldMax.ToString() + "=>" + self.maxSpread.ToString());
+                //Debug.Log("Scope: Min:" + oldMin.ToString() + "=>" + self.minSpread.ToString());
             }
             orig(self);
         }

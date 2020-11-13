@@ -29,7 +29,11 @@ namespace RiskOfBulletstorm.Items
             "Explosives were common in Gunpan during the Sworden invasions of the 333th century. Soft cased hand-held bombs were later designed to release smoke, poison gas and shrapnel made from iron and pottery." +
             "Vintage smoke bombs were created in 2848, by Order of the Gungeon Capdom inventor Rollbert Smokes-a-lot. He developed early Calibernese-style fireworks and later modified the formula to produce more smoke for a longer period of time.";
 
-        public static GameObject BombPrefab { get; private set; }
+        public SmokeBomb()
+        {
+            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/smokebomb.prefab";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/SmokeBombIcon.png";
+        }
 
         public override void SetupBehavior()
         {

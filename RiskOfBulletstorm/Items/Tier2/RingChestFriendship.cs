@@ -93,7 +93,11 @@ namespace RiskOfBulletstorm.Items
         {
             var InventoryCount = GetPlayersItemCount(catalogIndex);
             var ResultMult = 1 + DirectorCreditMult + DirectorCreditMultStack * (InventoryCount - 1);
+            var OldValue = stageSettings.SceneDirectorInteractableCredits;
             stageSettings.SceneDirectorInteractableCredits *= (int)ResultMult;
+            var newValue = stageSettings.SceneDirectorInteractableCredits;
+
+            Debug.Log("ChestFriend: "+OldValue.ToString() + "->" + newValue.ToString());
         }
     }
 }

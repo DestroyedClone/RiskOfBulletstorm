@@ -68,16 +68,18 @@ namespace RiskOfBulletstorm.Items
         private void ProjectileManager_FireProjectile_FireProjectileInfo(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_FireProjectileInfo orig, ProjectileManager self, FireProjectileInfo fireProjectileInfo)
         {
             int InventoryCount = fireProjectileInfo.owner.GetComponent<CharacterBody>().inventory.GetItemCount(catalogIndex);
+            //ProjectileSimple projectileSimple = self.gameObject.GetComponent<ProjectileSimple>();
             if (InventoryCount > 0)
             {
                 //if (fireProjectileInfo.projectilePrefab != RollBomb.BombPrefab) { return; }
                 var ProjMultFinal = 1 + (ProjSpeedMult + ProjSpeedMultStack * (InventoryCount - 1));
-                //RocketBulletComponent RocketBulletComponent = self.GetComponent<RocketBulletComponent>();
-                //if (!RocketBulletComponent) { Chat.AddMessage("No bullet component found?"); }
-                Debug.Log("RocketPoweredBullets: Current Speed Override: " + fireProjectileInfo.speedOverride.ToString() + " x (" + ProjMultFinal.ToString() + ") = (" + (fireProjectileInfo.speedOverride * ProjMultFinal).ToString() + ")");
-                if (fireProjectileInfo.speedOverride < 0) fireProjectileInfo.speedOverride *= -1;
-                fireProjectileInfo.speedOverride *= ProjMultFinal;
-                fireProjectileInfo.useSpeedOverride = true;
+                if (fireProjectileInfo.useSpeedOverride)
+                    fireProjectileInfo.speedOverride = Math.Abs(ProjMultFinal * fireProjectileInfo.speedOverride);
+                else
+                {
+                    fireProjectileInfo.speedOverride = Math.Abs(ProjMultFinal * 1);
+                    fireProjectileInfo.useSpeedOverride = true;
+                }
             }
             orig(self, fireProjectileInfo);
         }

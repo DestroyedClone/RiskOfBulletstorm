@@ -1,4 +1,4 @@
-﻿/*
+﻿
 //using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -42,6 +42,11 @@ namespace RiskOfBulletstorm.Items
             $"\nIncreases charm duration by {CharmDurationBonus} seconds per stack.";
 
         protected override string GetLoreString(string langID = null) => "Before the advancement of Gundead society, belligerent bands of Bullet Kin would rally around these banners before their raids upon the upper chambers.";
+        public BattleStandard()
+        {
+            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/BattleStandard.prefab";
+            //iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/RingUnityIcon.png";
+        }
 
         public override void SetupBehavior()
         {
@@ -59,13 +64,13 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            CharacterBody.onBodyStartGlobal += CharacterBody_onBodyStartGlobal;
+            //CharacterBody.onBodyStartGlobal += CharacterBody_onBodyStartGlobal;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
-            CharacterBody.onBodyStartGlobal -= CharacterBody_onBodyStartGlobal;
+            //CharacterBody.onBodyStartGlobal -= CharacterBody_onBodyStartGlobal;
         }
 
         private void CharacterBody_onBodyStartGlobal(CharacterBody obj) //Borrowed from Chen's Gradius Mod
@@ -98,4 +103,3 @@ namespace RiskOfBulletstorm.Items
         }
     }
 }
-*/

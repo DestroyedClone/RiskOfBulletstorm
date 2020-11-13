@@ -31,11 +31,12 @@ namespace DestroyedClone
         nameof(BuffAPI), //?
         nameof(CommandHelper), //?
         nameof(LoadoutAPI), //?
-        nameof(SurvivorAPI))] //?
+        nameof(SurvivorAPI),
+        nameof(LoadoutAPI))] //?
     [BepInPlugin(ModGuid, ModName, ModVer)]
     public class RiskofBulletstorm : BaseUnityPlugin
     {
-        public const string ModVer = "1.0.0";
+        public const string ModVer = "0.0.5";
         public const string ModName = "Risk of Bulletstorm";
         public const string ModGuid = "com.DestroyedClone.RiskOfBulletstorm";
 

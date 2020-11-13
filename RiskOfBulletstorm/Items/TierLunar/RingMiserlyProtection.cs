@@ -32,12 +32,17 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "Aids The Fiscally Responsible\nIncreases health substantially. Any purchases will shatter the ring.";
+        protected override string GetPickupString(string langID = null) => "Aids The Fiscally Responsible\nIncreases health substantially. Any shrine purchases will shatter the ring.";
 
         protected override string GetDescString(string langid = null) => $"Grants +{Pct(HealthBonus)} (+{Pct(HealthBonusStack)} per stack) health <style=cIsDeath>...but breaks completely upon purchasing.</style> ";
 
         protected override string GetLoreString(string langID = null) => "Before the Shopkeep opened his shop, he was an avaricious and miserly man. He remains careful about any expenditures, but through capitalism he has purged himself of negative emotion.";
 
+        public RingMiserlyProtection()
+        {
+            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/RingMiserlyProtection.prefab";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/RingMiserlyProtectionIcon.png";
+        }
         public override void SetupBehavior()
         {
 
@@ -68,10 +73,14 @@ namespace RiskOfBulletstorm.Items
             var body = activator.gameObject.GetComponent<CharacterBody>();
             var InventoryCount = body.inventory.GetItemCount(catalogIndex);
 
-            if (InventoryCount > 0)
+            if (self.isShrine || !self.GetComponent<ShrineCombatBehavior>())
             {
-                body.inventory.RemoveItem(catalogIndex, InventoryCount);
-                body.RecalculateStats();
+                if (InventoryCount > 0)
+                {
+                    //body.inventory.RemoveItem(catalogIndex, InventoryCount);
+                    body.inventory.RemoveItem(catalogIndex);
+                    body.RecalculateStats();
+                }
             }
             //Chat.AddMessage(activator.name);
             orig(self, activator);

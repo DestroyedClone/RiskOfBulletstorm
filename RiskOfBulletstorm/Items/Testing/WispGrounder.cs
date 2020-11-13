@@ -9,33 +9,31 @@ using System;
 using static RiskOfBulletstorm.Shared.HelperUtil;
 using RoR2.Projectile;
 using UnityEngine;
-using EntityStates.GolemMonster;
 
 namespace RiskOfBulletstorm.Items
 {
-    public class WispFiresProjectiles : Item_V2<WispFiresProjectiles>
+    public class GungeonArtifact : Item_V2<GungeonArtifact>
     {
-        public override string displayName => "Wisp Speculum";
+        public override string displayName => "Projectile Artifact";
         public override ItemTier itemTier => ItemTier.Lunar;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility, ItemTag.AIBlacklist });
 
         protected override string GetNameString(string langID = null) => displayName;
-        protected override string GetPickupString(string langID = null) => "Forces wisps to fire projectiles instead of bullets";
+        protected override string GetPickupString(string langID = null) => "Forces enemies to shoot projectiles instead of bullets";
 
         protected override string GetDescString(string langid = null) => $"";
 
         protected override string GetLoreString(string langID = null) => "";
 
-        public static GameObject BombPrefab { get; private set; }
+        public static GameObject GungeonBulletPrefab { get; private set; }
 
         public override void SetupBehavior()
         {
-            GameObject engiMinePrefab = Resources.Load<GameObject>("prefabs/projectiles/EngiGrenadeProjectile");
-            BombPrefab = engiMinePrefab.InstantiateClone("RollBomb");
-            BombPrefab.GetComponent<ProjectileSimple>().velocity = 1; //default 50
-            BombPrefab.GetComponent<ProjectileDamage>().damageColorIndex = DamageColorIndex.Item;
-            BombPrefab.GetComponent<ProjectileImpactExplosion>().destroyOnEnemy = false; //default True
-            UnityEngine.Object.Destroy(BombPrefab.GetComponent<ApplyTorqueOnStart>());
+            base.SetupBehavior();
+            GameObject RoboBallProjectilePrefab = Resources.Load<GameObject>("prefabs/projectiles/RoboBallProjectile");
+            GungeonBulletPrefab = RoboBallProjectilePrefab.InstantiateClone("GungeonBullet");
+            //GungeonBulletPrefab.GetComponent<ProjectileSimple>().velocity = 1; //default 50
+            //UnityEngine.Object.Destroy(GungeonBulletPrefab.GetComponent<ApplyTorqueOnStart>());
         }
         public override void SetupAttributes()
         {
@@ -49,37 +47,69 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            On.EntityStates.Wisp1Monster.FireEmbers.OnEnter += FireEmbers_OnEnter;
+            //On.EntityStates.Wisp1Monster.FireEmbers.OnEnter += FireEmbers_OnEnter;
+            //On.RoR2.BulletAttack.Fire += BulletAttack_Fire;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
-            On.EntityStates.Wisp1Monster.FireEmbers.OnEnter -= FireEmbers_OnEnter;
+            //On.EntityStates.Wisp1Monster.FireEmbers.OnEnter -= FireEmbers_OnEnter;
+            //On.RoR2.BulletAttack.Fire -= BulletAttack_Fire;
         }
-        private void FireEmbers_OnEnter(On.EntityStates.Wisp1Monster.FireEmbers.orig_OnEnter orig, EntityStates.Wisp1Monster.FireEmbers self)
-        {
-            int InvCount = GetPlayersItemCount(catalogIndex);
-            if (InvCount == 0)
-            {
-                orig(self);
-                return;
-            }
-            var health = self.outer.gameObject.GetComponent<HealthComponent>();
-            self.outer.enabled = false;
-            orig(self);
-            if (true == false)
-            {
-                DamageInfo damageInfo = new DamageInfo
-                {
-                    damage = health.fullCombinedHealth,
-                    damageType = DamageType.BypassOneShotProtection
-                };
 
-                health.TakeDamage(damageInfo);
-                Chat.AddMessage("Fuck you, Wisp!");
-                orig(self);
+        private void BulletAttack_Fire(On.RoR2.BulletAttack.orig_Fire orig, BulletAttack self)
+        {
+            var body = self.owner.GetComponent<CharacterBody>();
+
+            if (body)
+            {
+                if (body.baseNameToken == "WISP_BODY_NAME")
+                {
+                    var health = body.GetComponent<HealthComponent>();
+                    if (health)
+                    {
+                        ProjectileImpactExplosion projectileImpactExplosion = GungeonBulletPrefab.GetComponent<ProjectileImpactExplosion>();
+                        ProjectileDamage projectileDamage = GungeonBulletPrefab.GetComponent<ProjectileDamage>();
+                        ProjectileSimple projectileSimple = GungeonBulletPrefab.GetComponent<ProjectileSimple>();
+
+                        GungeonBulletPrefab.GetComponent<ProjectileController>().owner = self.owner;
+                        //weapon
+                        //origin
+                        //aimVector
+                        //minSpread
+                        //maxSpread
+                        projectileDamage.damage = self.damage * 3; //*3 because it normally fires 3 bullets
+                        projectileDamage.force = self.force;
+                        //tracereffectprefab self.tracerEffectPrefab
+                        //muzzlename
+                        projectileImpactExplosion.impactEffect = self.hitEffectPrefab;
+                        projectileDamage.crit = self.isCrit;
+                        //falloffmodel
+                        //hiteffectnormal
+                        //radius
+                        //proc chance
+                        //
+                        projectileImpactExplosion.blastRadius = 1;
+                        projectileSimple.velocity = 100;
+
+                        //https://stackoverflow.com/questions/36781086/how-to-convert-vector3-to-quaternion
+                        //var V3 = self.aimVector;
+                        //Quaternion quaternion = Quaternion.Euler(V3.x, V3.y, V3.z);
+                        Quaternion quaternion = Util.QuaternionSafeLookRotation(self.aimVector);
+
+                        self.damage = 0;
+                        self.procCoefficient = 0;
+                        self.bulletCount = 0;
+                        self.hitEffectPrefab = null;
+                        self.tracerEffectPrefab = null;
+
+                        //ProjectileManager.instance.FireProjectile();
+                        ProjectileManager.instance.FireProjectile(GungeonBulletPrefab, self.origin, quaternion, self.owner, projectileDamage.damage, projectileDamage.force, projectileDamage.crit);
+                    }
+                }
             }
+            orig(self);
         }
     }
 }

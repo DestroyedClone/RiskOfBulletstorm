@@ -11,7 +11,7 @@ Jarlyk - EliteSpawningOverhaul
 
 # Items
 TODO:
-1. Assets (Icons, Models, DisplayRules, Sound Effects)
+1. Assets (DisplayRules, Sound Effects)
 2. Soft BetterUI Compatibility
 3. Soft Dependencies for other mods
 3a. Equipment: ThinkInvis's Classic Items: Beating Embryo
@@ -160,6 +160,8 @@ ontrigger - ItemStatsMod https://github.com/ontrigger/ItemStatsMod/blob/4c015d5f
 idow17-meet - Foresight Arifact https://github.com/idow17-meet/ForesightArtifact (Used for Disarming Personality)
 
 DaKo51 - High Priority Item https://github.com/DaKo51/High-Priority-Item (Used for Scouter)
+
+Rico - AffixGen https://github.com/RicoValdezio/RoR2-AffixGen/blob/master/Equipment/AffixEquipBehaviour.cs (Equipment Removal)
 
 # Non-standard
 

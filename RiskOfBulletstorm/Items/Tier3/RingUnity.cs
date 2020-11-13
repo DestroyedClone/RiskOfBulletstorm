@@ -11,6 +11,8 @@ using static TILER2.StatHooks;
 using static TILER2.MiscUtil;
 using UnityEngine.Networking.NetworkSystem;
 
+//TY Harb
+
 namespace RiskOfBulletstorm.Items
 {
     public class Unity : Item_V2<Unity>
@@ -37,12 +39,13 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "This ring takes a small amount of power from each gun carried and adds it to the currently equipped gun.";
 
-        //private static List<RoR2.CharacterBody> Playername = new List<RoR2.CharacterBody>();
+        //FieldInfo itemStacksField;
 
-        //public static GameObject ItemBodyModelPrefab;
-
-        public int TotalItemCount = 0;
-        public int UnityInventoryCount = 0;
+        public Unity()
+        {
+            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/RingUnity.prefab";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/RingUnityIcon.png";
+        }
 
         public override void SetupBehavior()
         {
@@ -59,33 +62,24 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            On.RoR2.CharacterBody.OnInventoryChanged += GiveUnityBonus;
             GetStatCoefficients += BoostDamage;
+            On.RoR2.Run.Start += Run_Start;
+        }
+
+        private void Run_Start(On.RoR2.Run.orig_Start orig, Run self)
+        {
+            orig(self);
+            //itemStacksField = typeof(Inventory).GetField("itemStacks", BindingFlags.Instance | BindingFlags.NonPublic);
+
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
-            On.RoR2.CharacterBody.OnInventoryChanged -= GiveUnityBonus;
             GetStatCoefficients -= BoostDamage;
+            On.RoR2.Run.Start -= Run_Start;
         }
-        private void GiveUnityBonus(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self) 
-        {
-            var amount = GetCount(self);
-            UnityInventoryCount = GetCount(self);
-            //var inv = self.inventory;
-            //int tier1Items = GetItemCount(ItemTier.Tier1, self);
-            //int tier2Items = GetItemCount(ItemTier.Tier2, self);
 
-            if (amount > 0)
-            {
-                foreach (ItemTier tier in (ItemTier[])Enum.GetValues(typeof(ItemTier))) //https://stackoverflow.com/questions/105372/how-to-enumerate-an-enum
-                {
-                    TotalItemCount += GetTotalItemCountOfTier(tier, self);
-                }
-            }
-            orig(self);
-        }
         static int GetTotalItemCountOfTier(ItemTier itemTier, CharacterBody self) //borrowed method
         {
             int num = 0;
@@ -103,6 +97,21 @@ namespace RiskOfBulletstorm.Items
         }
         private void BoostDamage(CharacterBody sender, StatHookEventArgs args)
         {
+            var UnityInventoryCount = sender.inventory.GetItemCount(catalogIndex);
+            //var inv = self.inventory;
+            //int tier1Items = GetItemCount(ItemTier.Tier1, self);
+            //int tier2Items = GetItemCount(ItemTier.Tier2, self);
+
+            int TotalItemCount = 0;
+
+            if (UnityInventoryCount > 0)
+            {
+                foreach (ItemTier tier in (ItemTier[])Enum.GetValues(typeof(ItemTier))) //https://stackoverflow.com/questions/105372/how-to-enumerate-an-enum
+                {
+                    TotalItemCount += GetTotalItemCountOfTier(tier, sender);
+                }
+            }
+
             if (UnityInventoryCount > 0)
             { args.baseDamageAdd += TotalItemCount * (DamageBonus + (DamageBonusStack * (UnityInventoryCount - 1))); }
         }

@@ -32,8 +32,9 @@ namespace RiskOfBulletstorm.Items
 
         private bool hasBeenHit = false;
         private bool teleporterCharging = false;
-        //private int currentHits = 0;
-        //private int allowedHits = 10;
+        private int currentHits = 0;
+        private int allowedHits = 3;
+        private bool rebound = false;
 
         public override void SetupBehavior()
         {
@@ -53,7 +54,6 @@ namespace RiskOfBulletstorm.Items
             base.Install();
             TeleporterInteraction.onTeleporterBeginChargingGlobal += OnTeleporterBeginCharging;
             TeleporterInteraction.onTeleporterChargedGlobal += OnTeleporterCharged;
-            //GlobalEventManager.onClientDamageNotified += OnClientDamageNotified;
             On.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
             GetStatCoefficients += MasterRound_GetStatCoefficients;
         }
@@ -63,13 +63,14 @@ namespace RiskOfBulletstorm.Items
             base.Uninstall();
             TeleporterInteraction.onTeleporterBeginChargingGlobal -= OnTeleporterBeginCharging;
             TeleporterInteraction.onTeleporterChargedGlobal -= OnTeleporterCharged;
-            //GlobalEventManager.onClientDamageNotified -= OnClientDamageNotified;
             On.RoR2.GlobalEventManager.OnHitEnemy -= GlobalEventManager_OnHitEnemy;
             GetStatCoefficients -= MasterRound_GetStatCoefficients;
         }
 
         private void OnTeleporterBeginCharging(TeleporterInteraction teleporterInteraction)
         {
+            //get stage number and multiply the allowed hits
+
             hasBeenHit = false;
             teleporterCharging = true;
             Chat.AddMessage("MasterRound: Teleporter Started Charging");
@@ -90,37 +91,26 @@ namespace RiskOfBulletstorm.Items
                     for (int i = 0; i < CharacterMaster.readOnlyInstancesList.Count; i++)
                     { //CharacterMaster.readOnlyInstancesList[i] is the player. }
                         var player = CharacterMaster.readOnlyInstancesList[i];
-                        if (hasBeenHit) Chat.AddMessage("MasterRound OnDamageNotified: " + hasBeenHit.ToString() + "=Player was Hit!");
-                        if (!victim) Chat.AddMessage("MasterRound OnDamageNotified: " + victim.ToString() + "=victim doesn't exist");
-                        if (victim != player.gameObject) Chat.AddMessage("MasterRound OnDamageNotified: " + victim.ToString() + "=victim did not equal " + player.gameObject.ToString());
+                        if (hasBeenHit) return; // Chat.AddMessage("MasterRound OnDamageNotified: " + hasBeenHit.ToString() + "=Player was Hit!");
+                        if (!victim) return; // Chat.AddMessage("MasterRound OnDamageNotified: " + victim.ToString() + "=victim doesn't exist");
+                        if (victim != player.gameObject) return; //Chat.AddMessage("MasterRound OnDamageNotified: " + victim.ToString() + "=victim did not equal " + player.gameObject.ToString());
                         if (!hasBeenHit && victim && victim == player.gameObject && !damageInfo.rejected && damageInfo.damage > 0)
                         {
-                            Chat.AddMessage("MasterRound: "+victim.name+" got hit!");
-                            hasBeenHit = true;
+                            if (currentHits < allowedHits)
+                            {
+                                currentHits++;
+                                Chat.AddMessage("MasterRound: " + victim.name + " got hit! Remaining Hits: "+ (allowedHits - currentHits).ToString());
+                            }
+                            else
+                            {
+                                hasBeenHit = true;
+                                Chat.AddMessage("MasterRound: dequalified!");
+                            }
                         }
                     }
                 }
             }
         }
-
-        /*private void OnClientDamageNotified(DamageDealtMessage damageDealtMessage)
-        {
-            if (teleporterCharging)
-            {
-                for (int i = 0; i < CharacterMaster.readOnlyInstancesList.Count; i++)
-                { //CharacterMaster.readOnlyInstancesList[i] is the player. }
-                    var player = CharacterMaster.readOnlyInstancesList[i];
-                    if (hasBeenHit) Chat.AddMessage("MasterRound OnDamageNotified: " + hasBeenHit.ToString() + "=Hit was Hit!");
-                    if (!damageDealtMessage.victim) Chat.AddMessage("MasterRound OnDamageNotified: " + damageDealtMessage.victim.ToString() + "=victim doesn't exist");
-                    if (damageDealtMessage.victim != player.gameObject) Chat.AddMessage("MasterRound OnDamageNotified: " + damageDealtMessage.victim.ToString() + "=victim did not equal " + player.gameObject.ToString());
-                    if (!hasBeenHit && damageDealtMessage.victim && damageDealtMessage.victim == player.gameObject)
-                    {
-                        Chat.AddMessage("MasterRound: Player Failed!");
-                        hasBeenHit = true;
-                    }
-                }
-            }
-        }*/
 
         private void Check(TeleporterInteraction teleporterInteraction)
         {
@@ -128,19 +118,25 @@ namespace RiskOfBulletstorm.Items
             {
                 for (int i = 0; i < CharacterMaster.readOnlyInstancesList.Count; i++)
                 {
-                    //var player = CharacterMaster.readOnlyInstancesList[i];
-                    //var body = player.GetComponent<CharacterBody>();
 
                     //body.GetComponent<CharacterBody>()?.inventory.GiveItem(catalogIndex);
-                    Chat.AddMessage("Gave Master Round to "+ CharacterMaster.readOnlyInstancesList[i].name);
-                    Chat.AddMessage("Player survived with no hits!");
-                    PickupIndex pickupIndex = PickupCatalog.FindPickupIndex(catalogIndex);
-                    Vector3 pickupVelocity = new Vector3(100 * i, 100, 100 * i);
-                    PickupDropletController.CreatePickupDroplet(pickupIndex, teleporterInteraction.transform.position, pickupVelocity);
+
+                    var player = CharacterMaster.readOnlyInstancesList[i];
+                    if (player)
+                    {
+                        var body = player.GetComponent<CharacterBody>();
+                        if (body)
+                        {
+                            Chat.AddMessage(i.ToString() + "= Gave Master Round to " + player.name);
+                            PickupIndex pickupIndex = PickupCatalog.FindPickupIndex(catalogIndex);
+                            Vector3 pickupVelocity = new Vector3(100 * i, 100, 100 * i);
+                            PickupDropletController.CreatePickupDroplet(pickupIndex, teleporterInteraction.transform.position, pickupVelocity);
+                        }
+                    }
                 }
             } else
             {
-                Chat.AddMessage("Player didn't survive te its");
+                Chat.AddMessage("Players didn't survive the hits");
             }
         }
         private void MasterRound_GetStatCoefficients(CharacterBody sender, StatHookEventArgs args)

@@ -31,6 +31,11 @@ namespace RiskOfBulletstorm.Items
         //private static List<RoR2.CharacterBody> Playername = new List<RoR2.CharacterBody>();
 
         public static GameObject ItemBodyModelPrefab;
+        public Ticket()
+        {
+            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Ticket.prefab";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/TicketIcon.png";
+        }
 
         public override void SetupBehavior()
         {

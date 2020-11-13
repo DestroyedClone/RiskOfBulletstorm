@@ -19,7 +19,7 @@ namespace RiskOfBulletstorm.Items
     {
         public override string displayName => "Spice";
         public override ItemTier itemTier => ItemTier.Lunar;
-        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage });
+        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage, ItemTag.AIBlacklist });
 
         protected override string GetNameString(string langID = null) => displayName;
 
@@ -33,7 +33,11 @@ namespace RiskOfBulletstorm.Items
         protected override string GetDescString(string langid = null) => $"Provides a bonus to your stats ...so there's no harm in taking more, right?";
 
         protected override string GetLoreString(string langID = null) => "A potent gun-enhancing drug from the far reaches of the galaxy. It is known to be extremely addictive, and extremely expensive.";
-
+        public Spice()
+        {
+            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Spice.prefab";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/Spice.png";
+        }
         public override void SetupBehavior()
         {
 
@@ -105,12 +109,13 @@ namespace RiskOfBulletstorm.Items
             //protected override string GetPickupString = dynamicPickupText;
             orig(self);
         }
-        private void PickupDropletController_CreatePickupDroplet(On.RoR2.PickupDropletController.orig_CreatePickupDroplet orig, PickupIndex pickupIndex, UnityEngine.Vector3 position, UnityEngine.Vector3 velocity)
+        private void PickupDropletController_CreatePickupDroplet(On.RoR2.PickupDropletController.orig_CreatePickupDroplet orig, PickupIndex pickupIndex, Vector3 position, Vector3 velocity)
         {
             var body = PlayerCharacterMasterController.instances[0].master.GetBody();
             if (Util.CheckRoll(SpiceReplaceChance, body.master))
             {
-                pickupIndex = PickupCatalog.FindPickupIndex(catalogIndex);
+                if (pickupIndex != PickupCatalog.FindPickupIndex(ItemIndex.ArtifactKey)) //safety to prevent softlocks
+                    pickupIndex = PickupCatalog.FindPickupIndex(catalogIndex);
             }
             orig(pickupIndex, position, velocity);
         }

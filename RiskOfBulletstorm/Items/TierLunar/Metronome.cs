@@ -28,7 +28,7 @@ namespace RiskOfBulletstorm.Items
 
         public override string displayName => "Metronome";
         public override ItemTier itemTier => ItemTier.Tier2;
-        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage });
+        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage, ItemTag.AIBlacklist });
 
         protected override string GetNameString(string langID = null) => displayName;
         protected override string GetPickupString(string langID = null) => "Better And Better\nImproves your damage with sequential kills, but loses it upon another skill.";
@@ -47,6 +47,12 @@ namespace RiskOfBulletstorm.Items
             "\n Tick, Tick, tick, tick";
 
         int LastSkillSlotUsed = 0;
+
+        public Metronome()
+        {
+            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Metronome.prefab";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/MetronomeIcon.png";
+        }
 
         public override void SetupBehavior()
         {

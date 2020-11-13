@@ -32,9 +32,15 @@ namespace RiskOfBulletstorm.Items
         protected override string GetLoreString(string langID = null) => "Countless experienced adventurers have brought Bombs to the Gungeon seeking secret doors, only to be foiled by the existence of Blanks. Still, explosives have their place.";
 
         public static GameObject BombPrefab { get; private set; }
+        public Bomb()
+        {
+            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Bomb.prefab";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/BombIcon.png";
+        }
 
         public override void SetupBehavior()
         {
+            base.SetupBehavior();
             GameObject commandoGrenadePrefab = Resources.Load<GameObject>("prefabs/projectiles/CommandoGrenadeProjectile");
             BombPrefab = commandoGrenadePrefab.InstantiateClone("Bomb");
             //BombPrefab.transform.localScale = new Vector3(3, 3, 3);

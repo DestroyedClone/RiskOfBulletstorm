@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 55013882
+CRC: 1700175405
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 2beaafeced46431228ee579a4c3c6da2
+    Hash: 4bb7ed380f8d7fb7d546ff93596b06a3
   TypeTreeHash:
     serializedVersion: 2
     Hash: 21747e4ee48f36c7a65f9afbfd77f392
@@ -28,8 +28,67 @@ ClassTypes:
 - Class: 213
   Script: {instanceID: 0}
 Assets:
+- Assets/Models/Prefabs/Scouter.prefab
+- Assets/Models/Raw Models/Enraging Photo.fbx
+- Assets/Models/Raw Models/Spice.fbx
+- Assets/Textures/Icons/RingMiserlyProtectionIcon.png
+- Assets/Models/Prefabs/Scope.prefab
+- Assets/Models/Prefabs/Mustache.prefab
+- Assets/Models/Prefabs/BattleStandard.prefab
+- Assets/Textures/Materials/Globe.mat
+- Assets/Textures/Materials/Blue.mat
+- Assets/Textures/Materials/TranslucentGreen.mat
+- Assets/Models/Prefabs/DisarmingPersonality.prefab
+- Assets/Models/Raw Models/RingMiserlyProtection.fbx
+- Assets/Models/Raw Models/smokebomb.fbx
+- Assets/Models/Prefabs/Bomb.prefab
+- Assets/Models/Raw Models/Ammolet.fbx
+- Assets/Models/Raw Models/Scope.fbx
+- Assets/Textures/Materials/MetalGold.mat
+- Assets/Models/Prefabs/EnragingPhoto.prefab
+- Assets/Textures/Materials/EmissionRed.mat
+- Assets/Textures/Materials/Magenta.mat
+- Assets/Models/Prefabs/SmokeBomb.prefab
+- Assets/Textures/Icons/RingCartographerIcon.png
+- Assets/Textures/Materials/Brown.mat
+- Assets/Models/Raw Models/Ticket.fbx
+- Assets/Textures/Icons/ScouterIcon.png
+- Assets/Textures/Icons/Spice.png
+- Assets/Textures/Materials/White.mat
+- Assets/Models/Prefabs/Ticket.prefab
+- Assets/Textures/Materials/Green.mat
+- Assets/Textures/Materials/Pink.mat
+- Assets/Models/Prefabs/RingUnity.prefab
+- Assets/Models/Raw Models/Battle Standard.fbx
+- Assets/Models/Prefabs/Metronome.prefab
 - Assets/Textures/Materials/Blank.mat
+- Assets/Models/Raw Models/Metronome.fbx
 - Assets/Textures/Icons/Blank_Icon.png
+- Assets/Textures/Icons/MetronomeIcon.png
+- Assets/Textures/Materials/Orange.mat
 - Assets/Models/Raw Models/Blank.fbx
+- Assets/Textures/Icons/SmokeBombIcon.png
+- Assets/Models/Raw Models/RingUnity.fbx
+- Assets/Textures/Icons/BombIcon.png
+- Assets/Models/Prefabs/RingMiserlyProtection.prefab
+- Assets/Models/Raw Models/RingCartographer.fbx
+- Assets/Textures/Materials/MetalD.Grey.mat
+- Assets/Textures/Materials/MaterialTextures/Materials/EnragingPhotoTexture.mat
+- Assets/Textures/Icons/TicketIcon.png
+- Assets/Models/Raw Models/Bomb.fbx
+- Assets/Models/Prefabs/RingCartographer.prefab
+- Assets/Textures/Icons/ScopeIcon.png
 - Assets/Models/Prefabs/Blank.prefab
+- Assets/Textures/Materials/MetalGrey.mat
+- Assets/Models/Raw Models/Scouter.fbx
+- Assets/Textures/Icons/RingUnityIcon.png
+- Assets/Textures/Materials/MaterialTextures/EnragingPhotoTexture.png
+- Assets/Textures/Materials/Scouter_Earpiece.mat
+- Assets/Models/Raw Models/DisarmingPersonality.fbx
+- Assets/Models/Prefabs/Spice.prefab
+- Assets/Models/Raw Models/Mustache.fbx
+- Assets/Textures/Icons/DisarmingPersonalityIcon.png
+- Assets/Textures/Materials/DisarmingPersonality_Yellow.mat
+- Assets/Textures/Icons/MustacheIcon.png
+- Assets/Textures/Materials/Bomb.mat
 Dependencies: []
