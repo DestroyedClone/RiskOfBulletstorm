@@ -63,17 +63,26 @@ namespace RiskOfBulletstorm.Items
             ItemBodyModelPrefab.AddComponent<ItemDisplay>();
             //ItemBodyModelPrefab.GetComponent<ItemDisplay>().rendererInfos = ItemHelpers.ItemDisplaySetup(ItemBodyModelPrefab);
 
-            Vector3 generalScale = new Vector3(0.4f, 0.4f, 0.4f);
+            Vector3 generalScale = new Vector3(0.1f, 0.1f, 0.1f);
             ItemDisplayRuleDict rules = new ItemDisplayRuleDict(new ItemDisplayRule[]
             {
                 new ItemDisplayRule
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Chest",
+                    childName = "Hand.L",
                     localPos = new Vector3(0.75f, 0.5f, 0),
                     localAngles = new Vector3(0, 0, 0),
-                    localScale = new Vector3(0.1f, 0.1f, 0.1f)
+                    localScale = generalScale
+                },
+                new ItemDisplayRule
+                {
+                    ruleType = ItemDisplayRuleType.ParentedPrefab,
+                    followerPrefab = ItemBodyModelPrefab,
+                    childName = "Hand.R",
+                    localPos = new Vector3(0.75f, 0.5f, 0),
+                    localAngles = new Vector3(0, 0, 0),
+                    localScale = generalScale
                 }
             });
             rules.Add("mdlHuntress", new ItemDisplayRule[]
@@ -82,13 +91,13 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Chest",
+                    childName = "Muzzle",
                     localPos = new Vector3(0.75f, 0.5f, 0),
                     localAngles = new Vector3(0, 0, 0),
-                    localScale = new Vector3(0.1f, 0.1f, 0.1f)
+                    localScale = generalScale
                 }
             });
-            rules.Add("mdlToolbot", new ItemDisplayRule[]
+            rules.Add("mdlToolbot", new ItemDisplayRule[] // 
             {
                 new ItemDisplayRule
                 {
@@ -100,7 +109,7 @@ namespace RiskOfBulletstorm.Items
                     localScale = generalScale
                 }
             });
-            rules.Add("mdlEngi", new ItemDisplayRule[]
+            rules.Add("mdlEngi", new ItemDisplayRule[] // 
             {
                 new ItemDisplayRule
                 {
@@ -118,10 +127,19 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Chest",
+                    childName = "Lower_Arm.L",
                     localPos = new Vector3(0f, 0.025f, 0.19f),
                     localAngles = new Vector3(11f, 180f, 0f),
-                    localScale = generalScale * 0.9f
+                    localScale = generalScale
+                },
+                new ItemDisplayRule
+                {
+                    ruleType = ItemDisplayRuleType.ParentedPrefab,
+                    followerPrefab = ItemBodyModelPrefab,
+                    childName = "Lower_Arm.R",
+                    localPos = new Vector3(0f, 0.025f, 0.19f),
+                    localAngles = new Vector3(11f, 180f, 0f),
+                    localScale = generalScale
                 }
             });
             rules.Add("mdlMerc", new ItemDisplayRule[]
@@ -142,7 +160,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Base",
+                    childName = "weaponplatform",
                     localPos = new Vector3(-0.85f, 0.25f, 0f),
                     localAngles = new Vector3(0f, 180f, 90f),
                     localScale = generalScale

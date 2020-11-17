@@ -32,6 +32,7 @@ Scope: Reduces bullet spread by -10% (-5% per stack).
 ## Lunar
 
 Metronome: Gain a damage bonus for every enemy you kill, clears when you use a different skill.
+
 => +2% damage bonus for each enemy killed, maxes at +150%(+50%). The bonus is reset if the player uses a different skill.
 
 # Equipment
