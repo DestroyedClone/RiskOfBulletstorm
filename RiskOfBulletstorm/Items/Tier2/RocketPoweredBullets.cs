@@ -74,11 +74,15 @@ namespace RiskOfBulletstorm.Items
                 //if (fireProjectileInfo.projectilePrefab != RollBomb.BombPrefab) { return; }
                 var ProjMultFinal = 1 + (ProjSpeedMult + ProjSpeedMultStack * (InventoryCount - 1));
                 if (fireProjectileInfo.useSpeedOverride)
+                {
                     fireProjectileInfo.speedOverride = Math.Abs(ProjMultFinal * fireProjectileInfo.speedOverride);
+                    Chat.AddMessage("Resulting RPB speed: " + fireProjectileInfo.speedOverride);
+                }
                 else
                 {
-                    fireProjectileInfo.speedOverride = Math.Abs(ProjMultFinal * 1);
                     fireProjectileInfo.useSpeedOverride = true;
+                    fireProjectileInfo.speedOverride = Math.Abs(ProjMultFinal * 1);
+                    Chat.AddMessage("Resulting RPB speed: " + fireProjectileInfo.speedOverride);
                 }
             }
             orig(self, fireProjectileInfo);

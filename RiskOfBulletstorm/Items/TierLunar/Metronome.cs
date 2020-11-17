@@ -24,22 +24,24 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("Additional max kills per stack?", AutoConfigFlags.PreventNetMismatch)]
         public int MaxKillsStack { get; private set; } = 25;
 
-        public float dmgCoeff = 0.02f;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Damage", AutoConfigFlags.PreventNetMismatch)]
+        public float DmgCoeff { get; private set; } = 0.02f;
 
         public override string displayName => "Metronome";
-        public override ItemTier itemTier => ItemTier.Tier2;
+        public override ItemTier itemTier => ItemTier.Lunar;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage, ItemTag.AIBlacklist });
 
         protected override string GetNameString(string langID = null) => displayName;
-        protected override string GetPickupString(string langID = null) => "Better And Better\nImproves your damage with sequential kills, but loses it upon another skill.";
+        protected override string GetPickupString(string langID = null) => "Better And Better\nImproves your damage with sequential kills, but loses some upon another skill.";
 
-        protected override string GetDescString(string langid = null) => $"Improves your damage by {Pct(dmgCoeff)} per kill with the same skill." +
+        protected override string GetDescString(string langid = null) => $"Improves your damage by {Pct(DmgCoeff)} per kill with the same skill." +
             $"\n Max Kills: {MaxKills} + {MaxKillsStack} per stack." +
-            $"\n Using a different skill will reset your bonus.";
+            $"\n Using a different skill will reset your bonus by {MaxKillsStack}";
 
         protected override string GetLoreString(string langID = null) => "Tick, tick, tick, tick...." +
             "\n The metronome struck back and forth, and with every strike, a bullet ended a life." +
-            "\n The sharpshooter grew stronger and stronger with each kill, his sniper shredding through skin, clothing, armor, even bullet-proof scales." +
+            "\n The sharpshooter grew stronger and stronger with each kill, his rifle shredding through skin, clothing, armor, even bullet-proof scales." +
             "\n He always had his machete at his hip, incase anyone got in too close. He knew if he struck, he would strike with the force of a thousand bullets." +
             "\n But he was wrong." +
             "\n An enemy came in close. Too close for his sniper. So he struck, not with the force of many, but with the force of one." +
@@ -84,37 +86,47 @@ namespace RiskOfBulletstorm.Items
             GetStatCoefficients -= Metronome_GetStatCoefficients;
             On.RoR2.GenericSkill.OnExecute -= GenericSkill_OnExecute;
         }
+
         private void GenericSkill_OnExecute(On.RoR2.GenericSkill.orig_OnExecute orig, GenericSkill self)
         {
-            var invCount = GetCount(self.characterBody);
             CharacterBody vBody = self.characterBody;
-            SkillLocator skillLocation = vBody.skillLocator;
-            MetronomeTrackKills MetronomeTrackKills = self.gameObject.GetComponent<MetronomeTrackKills>();
-
-            void SetLastSkillSlot(int SlotNumber)
+            if (vBody)
             {
-                if (LastSkillSlotUsed != SlotNumber)
+                int invCount = vBody.inventory.GetItemCount(catalogIndex);
+                SkillLocator skillLocation = vBody.skillLocator;
+                if (skillLocation)
                 {
-                    LastSkillSlotUsed = SlotNumber;
-                    MetronomeTrackKills.kills = 0;
-                    Debug.Log("Metronome: Kills reset due to change to slot " + LastSkillSlotUsed.ToString(), self);
-                }
-            }
+                    MetronomeTrackKills MetronomeTrackKills = self.gameObject.GetComponent<MetronomeTrackKills>();
+                    if (MetronomeTrackKills)
+                    {
 
-            if (skillLocation.FindSkill(self.skillName))
-            {
-                if (invCount > 0)
-                {
-                    if (skillLocation.primary.Equals(self))         { SetLastSkillSlot(0); } 
-                    else if (skillLocation.secondary.Equals(self))  { SetLastSkillSlot(1); }
-                    else if (skillLocation.utility.Equals(self))    { SetLastSkillSlot(2); }
-                    else if (skillLocation.special.Equals(self))    { SetLastSkillSlot(3); } 
-                    else { Debug.LogError("Metronome: Invalid Skill Slot accessed!", self); }
+                        void SetLastSkillSlot(int SlotNumber)
+                        {
+                            if (LastSkillSlotUsed != SlotNumber)
+                            {
+                                LastSkillSlotUsed = SlotNumber;
+                                MetronomeTrackKills.kills = Math.Min(0, MetronomeTrackKills.kills - MaxKillsStack);
+                                Debug.Log("Metronome: Kills reset due to change to slot " + LastSkillSlotUsed.ToString(), self);
+                            }
+                        }
+
+                        if (skillLocation.FindSkill(self.skillName)) //Updates last skill slot used
+                        {
+                            if (invCount > 0)
+                            {
+                                if (skillLocation.primary.Equals(self)) { SetLastSkillSlot(0); }
+                                else if (skillLocation.secondary.Equals(self)) { SetLastSkillSlot(1); }
+                                else if (skillLocation.utility.Equals(self)) { SetLastSkillSlot(2); }
+                                else if (skillLocation.special.Equals(self)) { SetLastSkillSlot(3); }
+                                else { Debug.LogError("Metronome: Invalid Skill Slot accessed!", self); }
+                            }
+                        }
+                    }
                 }
             }
             orig(self);
         }
-        private void CharacterBody_OnInventoryChanged(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self)
+        private void CharacterBody_OnInventoryChanged(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self) //Update Max Kills
         {
             var InventoryCount = GetCount(self);
             MetronomeTrackKills MetronomeTrackKills = self.gameObject.GetComponent<MetronomeTrackKills>();
@@ -124,7 +136,7 @@ namespace RiskOfBulletstorm.Items
                 MetronomeTrackKills.maxkills = MaxKills + MaxKillsStack * InventoryCount;
 
                 var compMaxKills = MetronomeTrackKills.maxkills;
-                if (MetronomeTrackKills.kills > compMaxKills) MetronomeTrackKills.kills = compMaxKills;
+                if (MetronomeTrackKills.kills > compMaxKills) MetronomeTrackKills.kills = compMaxKills; //this resets it if you have less metronomes from like cleansing
             } else
             {
                 if (MetronomeTrackKills) { UnityEngine.Object.Destroy(MetronomeTrackKills); }
@@ -138,7 +150,6 @@ namespace RiskOfBulletstorm.Items
             {
                 var attackerBody = damageReport?.attackerBody;
                 int inventoryCount = GetCount(attackerBody);
-                //var InventoryCount = attackerBody.inventory.GetItemCount(catalogIndex);
                 if (attackerBody)
                 {
                     if (inventoryCount > 0)
@@ -147,7 +158,7 @@ namespace RiskOfBulletstorm.Items
                         if (componentExists?.kills < componentExists?.maxkills)
                         {
                             componentExists.kills += 1;
-                            Debug.Log("Metronome: Kill Added to slot "+ LastSkillSlotUsed.ToString(), self);
+                            //Debug.Log("Metronome: Kill Added to slot "+ LastSkillSlotUsed.ToString(), self);
                         }
                     }
                 }
@@ -160,8 +171,7 @@ namespace RiskOfBulletstorm.Items
             MetronomeTrackKills MetronomeTrackKills = sender.gameObject.GetComponent<MetronomeTrackKills>();
             if (MetronomeTrackKills)
             {
-                var DamageMultiplier = dmgCoeff * MetronomeTrackKills.kills;
-                args.damageMultAdd += DamageMultiplier;
+                args.damageMultAdd += DmgCoeff * MetronomeTrackKills.kills;
             }
         }
 

@@ -20,7 +20,7 @@ namespace RiskOfBulletstorm.Items
         //public float Cooldown_config { get; private set; } = 8f;
 
         public override string displayName => "Orange";
-        public override float cooldown { get; protected set; } = 8f;
+        public override float cooldown { get; protected set; } = 1f;
 
         protected override string GetNameString(string langID = null) => displayName;
 
@@ -61,7 +61,7 @@ namespace RiskOfBulletstorm.Items
             {
                 if (!Util.CheckRoll(Rarity, body.master)) //rarity roll
                 {
-                    PickupIndex loot = Run.instance.treasureRng.NextElementUniform(Run.instance.availableTier3DropList);
+                    PickupIndex loot = Run.instance.treasureRng.NextElementUniform(Run.instance.availableEquipmentDropList);
                     PickupDef def = PickupCatalog.GetPickupDef(loot);
                     pickupIndex = PickupCatalog.FindPickupIndex(def.itemIndex);
                 }
@@ -83,7 +83,7 @@ namespace RiskOfBulletstorm.Items
             health.HealFraction(1, default);
             inventory.SetEquipmentIndex(EquipmentIndex.None); //credit to : Rico
 
-            return true;
+            return false;
         }
     }
 }

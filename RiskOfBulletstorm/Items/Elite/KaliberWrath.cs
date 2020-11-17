@@ -92,24 +92,9 @@ namespace RiskOfBulletstorm //TODO modify weight of card depending on curse leve
                 args.critAdd += CritBoost;
             }
         }
-        protected override bool PerformEquipmentAction(RoR2.EquipmentSlot slot)
+        protected override bool PerformEquipmentAction(EquipmentSlot slot)
         {
             return false;
-        }
-
-        public class JammedBuffChecker : MonoBehaviour
-        {
-            public RoR2.TemporaryOverlay Overlay;
-            public RoR2.CharacterBody Body;
-
-            public void FixedUpdate()
-            {
-                if (!Body.HasBuff(JammedBuffIndex))
-                {
-                    UnityEngine.Object.Destroy(Overlay);
-                    UnityEngine.Object.Destroy(this);
-                }
-            }
         }
     }
 }

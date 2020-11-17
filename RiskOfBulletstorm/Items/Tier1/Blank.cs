@@ -55,7 +55,7 @@ namespace RiskOfBulletstorm.Items
             "12:48 PM - [Kyle] Got upset at trying to shove one of the bullets in and threw it at the wall. I only heard a click before I was pushed back and momentarily stunned. I guess this is how you use it?\n\n" +
             "1:30 PM - [Kyle] Accidentally activated it while fighting a crowd of [REDACTED]. All of the bullets and [SWEAR REDACTED] coming at me vanished, and the enemies pushed the [SWEAR REDACTED] back and stunned instead of me. Think this is how you use this [SWEAR REDACTED].\n\n" +
             "4:30 PM - [Kyle] Carried a couple in my hand and tripped like an idiot, only one of them activated, fortunately. Unfortunately, my weapon broke when it was launched against the wall. I see the boss chamber up next, so I think I can take it with just these bullets.\n\n" +
-            "4:33 PM - [LOG] EmptyMessage: The following transcription was automatically sent without any body. Did you accidentally send?\n\n" +
+            "4:33 PM - [LOG] EmptyMessage: The following transcription was automatically sent without any body. Did you accidentally hit send?\n\n" +
             "12:00 PM - [Kyle] Guess what happened?";
 
         public bool BlankUsed = false;

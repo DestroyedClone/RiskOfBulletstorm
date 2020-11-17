@@ -13,7 +13,6 @@ using static TILER2.StatHooks;
 using static TILER2.MiscUtil;
 using EntityStates.ScavMonster;
 using EntityStates.Engi.EngiWeapon;
-//using Aetherium.Utils;
 using RoR2.CharacterAI;
 using RoR2.Skills;
 using System.Net;
@@ -27,30 +26,26 @@ namespace RiskOfBulletstorm.Items
     {
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Can you pet the dog?", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Can you pet the beetle?", AutoConfigFlags.PreventNetMismatch)]
         public bool EnableDogPet { get; private set; } = true;
 
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Dog Name 1?", AutoConfigFlags.PreventNetMismatch)]
-        public string DogName1 { get; private set; } = "Chip";
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Dog Name 2?", AutoConfigFlags.PreventNetMismatch)]
-        public string DogName2 { get; private set; } = "Charles";
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Dog Name 3?", AutoConfigFlags.PreventNetMismatch)]
-        public string DogName3 { get; private set; } = "Christopher";
+        private readonly bool BarkAtMimics = false;
 
-        public override string displayName => "Spawn Dog";
-        public string descText = "Junior II\nA faithful companion.";
-        public override float cooldown { get; protected set; } = 120f;
+        public override string displayName => "Spawn Beetle";
+        public override float cooldown { get; protected set; } = 45f;
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "Do You Have Yours?\n" + descText;
+        protected override string GetPickupString(string langID = null) => "Junior II\nA faithful companion.";
 
         protected override string GetDescString(string langid = null)
         {
-            var descText = $"Spawns a dog";
+            var descText = $"Spawns a beetle." +
+                $"\nHas a chance to dig up a pickup";
+            if (BarkAtMimics)
+            {
+                descText += "Barks at mimics.";
+            }
             if (EnableDogPet)
             {
                 descText += $"\nInteract to pet.";
@@ -58,19 +53,16 @@ namespace RiskOfBulletstorm.Items
             return descText;
         }
 
-        protected override string GetLoreString(string langID = null) => "";
+        protected override string GetLoreString(string langID = null) => "Keeps the Survivor company. He has a good nose for treasure, but all attempts to train him in combat have failed.";
 
         public static GameObject characterPrefab;
         public GameObject friendMaster;
-        public string nameModifier = " {0}";
 
         public override void SetupBehavior()
         {
             base.SetupBehavior();
             CreatePrefab();
             CreateDoppelganger();
-            CreateDogNames();
-
         }
         public override void SetupAttributes()
         {
@@ -85,18 +77,25 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
+            if (EnableDogPet) On.RoR2.PurchaseInteraction.OnInteractionBegin += PetBeetle;
+        }
+
+        private void PetBeetle(On.RoR2.PurchaseInteraction.orig_OnInteractionBegin orig, PurchaseInteraction self, Interactor activator)
+        {
+            orig(self, activator);
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
+            if (EnableDogPet) On.RoR2.PurchaseInteraction.OnInteractionBegin -= PetBeetle;
         }
         internal static void CreatePrefab()
         {
             characterPrefab = PrefabAPI.InstantiateClone(Resources.Load<GameObject>("Prefabs/CharacterBodies/BeetleBody"), "DogBody", true);
 
             //CharacterMotor characterMotor = characterPrefab.GetComponent<CharacterMotor>();
-            string name = "the Beetle";
+            string name = "Chip the Beetle";
             LanguageAPI.Add("DOG_NAME", name);
             LanguageAPI.Add("DOG_SUBTITLE", "The Petted");
             LanguageAPI.Add("DOG_INTERACT", "Pet the beetle");
@@ -131,97 +130,43 @@ namespace RiskOfBulletstorm.Items
             HealthComponent healthComponent = characterPrefab.GetComponent<HealthComponent>();
             healthComponent.dontShowHealthbar = true;
 
+            int ArtifactShellBodyIndex = BodyCatalog.FindBodyIndex("ArtifactShellBody");
+            GameObject ArtifactShellBodyGameObject = BodyCatalog.GetBodyPrefab(ArtifactShellBodyIndex);
+                Highlight ASBHighlight = ArtifactShellBodyGameObject.GetComponent<Highlight>();
+                Renderer ASBHtargetRenderer = ASBHighlight.targetRenderer;
+
             Highlight highlight = characterPrefab.AddComponent<Highlight>() as Highlight;
             highlight.pickupIndex = PickupCatalog.FindPickupIndex(ItemIndex.Syringe);
-            //highlight.targetRenderer = Sphere(UnityEngine.MeshRenderer);
+            if (ASBHtargetRenderer)
+            {
+                highlight.targetRenderer = ASBHtargetRenderer;
+            } else
+            {
+                Debug.Log("Not found! awdasdadwdas");
+            }
             highlight.strength = 1;
             highlight.highlightColor = Highlight.HighlightColor.interactive;
-            highlight.isOn = true; //false
+            highlight.isOn = false; //false
 
-            PurchaseInteraction purchaseInteraction = characterPrefab.AddComponent<PurchaseInteraction>() as PurchaseInteraction;
+            PurchaseInteraction purchaseInteraction = characterPrefab.AddComponent<PurchaseInteraction>();
             purchaseInteraction.displayNameToken = "DOG_NAME";
             purchaseInteraction.contextToken = "DOG_INTERACT";
             purchaseInteraction.costType = CostTypeIndex.None;
             purchaseInteraction.available = true;
             purchaseInteraction.cost = 0;
             purchaseInteraction.automaticallyScaleCostWithDifficulty = false;
+            purchaseInteraction.ignoreSpherecastForInteractability = true;
+            purchaseInteraction.setUnavailableOnTeleporterActivated = false;
+            purchaseInteraction.isShrine = false;
+            purchaseInteraction.isGoldShrine = false;
 
+            RoR2.Hologram.HologramProjector hologramProjector = characterPrefab.AddComponent<RoR2.Hologram.HologramProjector>();
+            hologramProjector.displayDistance = 15;
+
+            GenericDisplayNameProvider genericDisplayNameProvider = characterPrefab.AddComponent<RoR2.GenericDisplayNameProvider>();
+            genericDisplayNameProvider.displayToken = "DOG_NAME";
         }
 
-        public static EliteIndex dogEliteIndex1;
-        public static BuffIndex dogBuffIndex1;
-
-        public static EliteIndex dogEliteIndex2;
-        public static BuffIndex dogBuffIndex2;
-
-        public static EliteIndex dogEliteIndex3;
-        public static BuffIndex dogBuffIndex3;
-        private void CreateDogNames() //a disgusting hack, please dont do this
-        {
-
-            var dogEliteDef1 = new CustomElite(
-            new EliteDef
-            {
-                name = "Named 1",
-                modifierToken = "NAMED_TOKEN_1",
-                color = new Color32(150, 10, 10, 255),
-            }, 1);
-            dogEliteIndex1 = EliteAPI.Add(dogEliteDef1);
-            LanguageAPI.Add(dogEliteDef1.EliteDef.modifierToken, DogName1 + nameModifier);
-
-            var dogBuffDef1 = new CustomBuff(
-            new BuffDef
-            {
-                name = "Affix_Jammed",
-                buffColor = new Color32(10, 150, 10, 255),
-                iconPath = "",
-                eliteIndex = dogEliteIndex1,
-                canStack = false
-            });
-            dogBuffIndex1 = BuffAPI.Add(dogBuffDef1);
-
-            var dogEliteDef2 = new CustomElite(
-            new EliteDef
-            {
-                name = "Named 2",
-                modifierToken = "NAMED_TOKEN_2",
-                color = new Color32(10, 10, 150, 255),
-            }, 1);
-            dogEliteIndex2 = EliteAPI.Add(dogEliteDef2);
-            LanguageAPI.Add(dogEliteDef2.EliteDef.modifierToken, DogName2 + nameModifier);
-
-            var dogBuffDef2 = new CustomBuff(
-            new BuffDef
-            {
-                name = "Affix_Jammed",
-                buffColor = new Color32(150, 10, 10, 255),
-                iconPath = "",
-                eliteIndex = dogEliteIndex2,
-                canStack = false
-            });
-            dogBuffIndex2 = BuffAPI.Add(dogBuffDef2);
-
-            var dogEliteDef3 = new CustomElite(
-            new EliteDef
-            {
-                name = "Named 3",
-                modifierToken = "NAMED_TOKEN_3",
-                color = new Color32(150, 10, 10, 255),
-            }, 1);
-            dogEliteIndex3 = EliteAPI.Add(dogEliteDef3);
-            LanguageAPI.Add(dogEliteDef3.EliteDef.modifierToken, DogName3 + nameModifier);
-
-            var dogBuffDef3 = new CustomBuff(
-            new BuffDef
-            {
-                name = "Affix_Jammed",
-                buffColor = new Color32(150, 10, 10, 255),
-                iconPath = "",
-                eliteIndex = dogEliteIndex3,
-                canStack = false
-            });
-            dogBuffIndex3 = BuffAPI.Add(dogBuffDef3);
-        }
         private void CreateDoppelganger()
         {
 

@@ -11,7 +11,6 @@ namespace RiskOfBulletstorm.Items
 {
     public class ProximityMine : Equipment_V2<ProximityMine>
     {
-        //TODO: USE CHEN's HEALTH LOSS CODE FOR FLOATS
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Damage? (Default: 1 = 100% damage)", AutoConfigFlags.PreventNetMismatch)]
         public float DamageDealt { get; private set; } = 1f;

@@ -33,8 +33,8 @@ namespace RiskOfBulletstorm.Items
         private bool hasBeenHit = false;
         private bool teleporterCharging = false;
         private int currentHits = 0;
-        private int allowedHits = 3;
-        private bool rebound = false;
+        private readonly int allowedHits = 3;
+        //private bool rebound = false;
 
         public override void SetupBehavior()
         {
@@ -91,10 +91,10 @@ namespace RiskOfBulletstorm.Items
                     for (int i = 0; i < CharacterMaster.readOnlyInstancesList.Count; i++)
                     { //CharacterMaster.readOnlyInstancesList[i] is the player. }
                         var player = CharacterMaster.readOnlyInstancesList[i];
-                        if (hasBeenHit) return; // Chat.AddMessage("MasterRound OnDamageNotified: " + hasBeenHit.ToString() + "=Player was Hit!");
-                        if (!victim) return; // Chat.AddMessage("MasterRound OnDamageNotified: " + victim.ToString() + "=victim doesn't exist");
-                        if (victim != player.gameObject) return; //Chat.AddMessage("MasterRound OnDamageNotified: " + victim.ToString() + "=victim did not equal " + player.gameObject.ToString());
-                        if (!hasBeenHit && victim && victim == player.gameObject && !damageInfo.rejected && damageInfo.damage > 0)
+                        if (hasBeenHit) Chat.AddMessage("MasterRound OnDamageNotified: " + hasBeenHit.ToString() + "=Player was Hit!");
+                        if (!victim) Chat.AddMessage("MasterRound OnDamageNotified: " + victim.ToString() + "=victim doesn't exist");
+                        if (victim != player.gameObject) Chat.AddMessage("MasterRound OnDamageNotified: " + victim.ToString() + "=victim did not equal " + player.gameObject.ToString());
+                        if (!hasBeenHit && victim && victim == player.gameObject && !damageInfo.rejected)
                         {
                             if (currentHits < allowedHits)
                             {

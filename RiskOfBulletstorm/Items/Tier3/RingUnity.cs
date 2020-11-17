@@ -97,11 +97,12 @@ namespace RiskOfBulletstorm.Items
         }
         private void BoostDamage(CharacterBody sender, StatHookEventArgs args)
         {
-            var UnityInventoryCount = sender.inventory.GetItemCount(catalogIndex);
+            var inventory = sender.inventory;
+            if (!inventory) return;
+            var UnityInventoryCount = inventory.GetItemCount(catalogIndex);
             //var inv = self.inventory;
             //int tier1Items = GetItemCount(ItemTier.Tier1, self);
             //int tier2Items = GetItemCount(ItemTier.Tier2, self);
-
             int TotalItemCount = 0;
 
             if (UnityInventoryCount > 0)
@@ -110,10 +111,8 @@ namespace RiskOfBulletstorm.Items
                 {
                     TotalItemCount += GetTotalItemCountOfTier(tier, sender);
                 }
+                args.baseDamageAdd += TotalItemCount * (DamageBonus + (DamageBonusStack * (UnityInventoryCount - 1)));
             }
-
-            if (UnityInventoryCount > 0)
-            { args.baseDamageAdd += TotalItemCount * (DamageBonus + (DamageBonusStack * (UnityInventoryCount - 1))); }
         }
     }
 }

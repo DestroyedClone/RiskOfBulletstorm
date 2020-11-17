@@ -32,6 +32,9 @@ namespace RiskOfBulletstorm.Items
         protected override string GetLoreString(string langID = null) => "Countless experienced adventurers have brought Bombs to the Gungeon seeking secret doors, only to be foiled by the existence of Blanks. Still, explosives have their place.";
 
         public static GameObject BombPrefab { get; private set; }
+
+        public static GameObject ItemBodyModelPrefab;
+
         public Bomb()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Bomb.prefab";
@@ -53,7 +56,140 @@ namespace RiskOfBulletstorm.Items
         }
         public override void SetupAttributes()
         {
+            if (ItemBodyModelPrefab == null)
+            {
+                ItemBodyModelPrefab = Resources.Load<GameObject>("@RiskOfBulletstorm:Assets/Models/Prefabs/Bomb.prefab");
+                displayRules = GenerateItemDisplayRules();
+            }
             base.SetupAttributes();
+        }
+        private static ItemDisplayRuleDict GenerateItemDisplayRules()
+        {
+            ItemBodyModelPrefab.AddComponent<ItemDisplay>();
+            //ItemBodyModelPrefab.GetComponent<ItemDisplay>().rendererInfos = ItemHelpers.ItemDisplaySetup(ItemBodyModelPrefab);
+
+            Vector3 generalScale = new Vector3(0.4f, 0.4f, 0.4f);
+            ItemDisplayRuleDict rules = new ItemDisplayRuleDict(new ItemDisplayRule[]
+            {
+                new ItemDisplayRule
+                {
+                    ruleType = ItemDisplayRuleType.ParentedPrefab,
+                    followerPrefab = ItemBodyModelPrefab,
+                    childName = "Chest",
+                    localPos = new Vector3(0.75f, 0.5f, 0),
+                    localAngles = new Vector3(0, 0, 0),
+                    localScale = new Vector3(0.1f, 0.1f, 0.1f)
+                }
+            });
+            rules.Add("mdlHuntress", new ItemDisplayRule[]
+            {
+                new ItemDisplayRule
+                {
+                    ruleType = ItemDisplayRuleType.ParentedPrefab,
+                    followerPrefab = ItemBodyModelPrefab,
+                    childName = "Chest",
+                    localPos = new Vector3(0.75f, 0.5f, 0),
+                    localAngles = new Vector3(0, 0, 0),
+                    localScale = new Vector3(0.1f, 0.1f, 0.1f)
+                }
+            });
+            rules.Add("mdlToolbot", new ItemDisplayRule[]
+            {
+                new ItemDisplayRule
+                {
+                    ruleType = ItemDisplayRuleType.ParentedPrefab,
+                    followerPrefab = ItemBodyModelPrefab,
+                    childName = "Chest",
+                    localPos = new Vector3(-0.1f, -0.3f, 3.3f),
+                    localAngles = new Vector3(0f, 180f, 0f),
+                    localScale = generalScale
+                }
+            });
+            rules.Add("mdlEngi", new ItemDisplayRule[]
+            {
+                new ItemDisplayRule
+                {
+                    ruleType = ItemDisplayRuleType.ParentedPrefab,
+                    followerPrefab = ItemBodyModelPrefab,
+                    childName = "Chest",
+                    localPos = new Vector3(0f, 0.1f, 0.29f),
+                    localAngles = new Vector3(10f, 180f, 0f),
+                    localScale = generalScale
+                }
+            });
+            rules.Add("mdlMage", new ItemDisplayRule[]
+            {
+                new ItemDisplayRule
+                {
+                    ruleType = ItemDisplayRuleType.ParentedPrefab,
+                    followerPrefab = ItemBodyModelPrefab,
+                    childName = "Chest",
+                    localPos = new Vector3(0f, 0.025f, 0.19f),
+                    localAngles = new Vector3(11f, 180f, 0f),
+                    localScale = generalScale * 0.9f
+                }
+            });
+            rules.Add("mdlMerc", new ItemDisplayRule[]
+            {
+                new ItemDisplayRule
+                {
+                    ruleType = ItemDisplayRuleType.ParentedPrefab,
+                    followerPrefab = ItemBodyModelPrefab,
+                    childName = "Chest",
+                    localPos = new Vector3(0f, 0f, 0.2f),
+                    localAngles = new Vector3(0f, 180f, 0f),
+                    localScale = generalScale
+                }
+            });
+            rules.Add("mdlTreebot", new ItemDisplayRule[]
+            {
+                new ItemDisplayRule
+                {
+                    ruleType = ItemDisplayRuleType.ParentedPrefab,
+                    followerPrefab = ItemBodyModelPrefab,
+                    childName = "Base",
+                    localPos = new Vector3(-0.85f, 0.25f, 0f),
+                    localAngles = new Vector3(0f, 180f, 90f),
+                    localScale = generalScale
+                }
+            });
+            rules.Add("mdlLoader", new ItemDisplayRule[]
+            {
+                new ItemDisplayRule
+                {
+                    ruleType = ItemDisplayRuleType.ParentedPrefab,
+                    followerPrefab = ItemBodyModelPrefab,
+                    childName = "Chest",
+                    localPos = new Vector3(0f, 0.05f, 0.3f),
+                    localAngles = new Vector3(0f, 180f, 0f),
+                    localScale = generalScale
+                }
+            });
+            rules.Add("mdlCroco", new ItemDisplayRule[]
+            {
+                new ItemDisplayRule
+                {
+                    ruleType = ItemDisplayRuleType.ParentedPrefab,
+                    followerPrefab = ItemBodyModelPrefab,
+                    childName = "Chest",
+                    localPos = new Vector3(0f, 0.5f, -2.6f),
+                    localAngles = new Vector3(-20f, 180f, 0f),
+                    localScale = generalScale
+                }
+            });
+            rules.Add("mdlCaptain", new ItemDisplayRule[]
+            {
+                new ItemDisplayRule
+                {
+                    ruleType = ItemDisplayRuleType.ParentedPrefab,
+                    followerPrefab = ItemBodyModelPrefab,
+                    childName = "Chest",
+                    localPos = new Vector3(0.05f, 0.1f, 0.22f),
+                    localAngles = new Vector3(5f, 210f, 0f),
+                    localScale = generalScale
+                }
+            });
+            return rules;
         }
         public override void SetupConfig()
         {

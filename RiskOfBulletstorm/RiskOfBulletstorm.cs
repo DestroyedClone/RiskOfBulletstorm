@@ -30,10 +30,11 @@ namespace DestroyedClone
         nameof(EliteAPI),
         nameof(BuffAPI), //?
         nameof(CommandHelper), //?
-        nameof(LoadoutAPI), //?
-        nameof(SurvivorAPI),
-        nameof(LoadoutAPI))] //?
+        nameof(LoadoutAPI), //Artifacts
+        nameof(SurvivorAPI))] //?
     [BepInPlugin(ModGuid, ModName, ModVer)]
+    //[BepInDependency("com.ThinkInvisible.Yeet", BepInDependency.DependencyFlags.SoftDependency)]
+    //[BepInDependency("KookehsDropItemMod", BepInDependency.DependencyFlags.SoftDependency)]
     public class RiskofBulletstorm : BaseUnityPlugin
     {
         public const string ModVer = "0.0.5";
