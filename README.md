@@ -23,17 +23,19 @@ TODO:
 
 ## White
 
-Mustache: Heal for +5% (+5% per stack) health upon purchasing something.
+(Model | DisplayRules) Mustache: Heal for +10% (+10% per stack) health upon purchasing something.
 
 ## Green
 
-Scope: Reduces bullet spread by -10% (-5% per stack).
+Scope: Reduces bullet spread by -10% (-5% per stack). 
+
+At a minimum of 3 stacks, will make REX's Syringes aim directly.
 
 ## Lunar
 
-Metronome: Gain a damage bonus for every enemy you kill, clears when you use a different skill.
+Metronome: Gain a damage bonus for every enemy you kill with the same skill. Lose 25 kills upon using a different skill.
 
-=> +2% damage bonus for each enemy killed, maxes at +150%(+50%). The bonus is reset if the player uses a different skill.
+=> +2% damage bonus for each enemy killed, maxes at +150%(+50%). The bonus is reduced by 25 kills if the player uses a different skill.
 
 # Equipment
 

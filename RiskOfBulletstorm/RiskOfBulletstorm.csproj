@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -9,7 +9,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Items\**" />
+    <Compile Remove="Shared\**" />
+    <EmbeddedResource Remove="Items\**" />
+    <EmbeddedResource Remove="Shared\**" />
+    <None Remove="Items\**" />
+    <None Remove="Shared\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="riskofgungeonassets" />
+	  <Folder Remove="Items" />
   </ItemGroup>
 
   <ItemGroup>
@@ -89,11 +99,6 @@
     <Reference Include="UnityEngine.PhysicsModule">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Items\EquipmentLunar\" />
-    <Folder Include="Items\TierLunar\Spice\" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
