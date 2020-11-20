@@ -10,12 +10,14 @@ using static TILER2.MiscUtil;
 using RoR2;
 using R2API.AssetPlus;
 using R2API.Networking;
+using ThinkInvisible.ClassicItems;
 
 namespace DestroyedClone
 {
     [BepInDependency(R2API.R2API.PluginGUID, R2API.R2API.PluginVersion)]
     [BepInDependency(TILER2Plugin.ModGuid, TILER2Plugin.ModVer)]
     [BepInDependency(EliteSpawningOverhaul.EsoPlugin.PluginGuid)]
+    [BepInDependency(ClassicItemsPlugin.ModGuid, BepInDependency.DependencyFlags.SoftDependency)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.EveryoneNeedSameModVersion)]
     [R2APISubmoduleDependency(
         nameof(ItemAPI),
@@ -37,7 +39,7 @@ namespace DestroyedClone
     //[BepInDependency("KookehsDropItemMod", BepInDependency.DependencyFlags.SoftDependency)]
     public class RiskofBulletstorm : BaseUnityPlugin
     {
-        public const string ModVer = "0.0.5";
+        public const string ModVer = "1.0.0";
         public const string ModName = "Risk of Bulletstorm";
         public const string ModGuid = "com.DestroyedClone.RiskOfBulletstorm";
 

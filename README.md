@@ -1,76 +1,57 @@
 # Risk of Bulletstorm
+A mod for Risk of Rain 2 that plans to add custom content, modified from Enter The Gungeon. Currently Multiplayer untested.
 
-A mod for Risk of Rain 2. Built with BepInEx and R2API and TILER2
-
-Plans to add a bunch of custom items, modified from Enter the Gungeon.
-
+There's a config, but I'm not sure if it works. Feel free to message me in the Risk of Rain 2 Modding discord for any broken junk or suggestions.
+***
 # Dependencies
-
+BepInEx and R2API
 ThinkIvis - TILER2
-
 Jarlyk - EliteSpawningOverhaul
 
-# Items
-TODO:
-1. Assets (DisplayRules, Sound Effects)
-2. Soft BetterUI Compatibility
-3. Soft Dependencies for other mods
-3a. Equipment: ThinkInvis's Classic Items: Beating Embryo
-3b. Mimic-ites: Hailstorm: Mimics
-4. Multiplayer Testing
+# Compatibility with other mods
+1. Classic-Items : Beating Embryo Support
+2. Bandit Reloaded : Item Displays
+3. HAND : Item Displays
 
-# Items
+# Planned
+* (Green) Enraging Photo: Boosts damage for a short time after getting hit
+* (Boss) Dog: Chance to find pickups
+* (Green) Military Training: Improves firing
+* (Green) Disarming Personality: Reduces shop prices
+* (Red) Number 2: Boosts stats while alone
+* (Green) Live Ammo: Immunity to contact damage, hitbox to utility
+* (Green) Battery Bullets: Electrifies bullets
+***
+1. BetterUI, ItemStatsMod Support
+2. Multiplayer Testing
 
+***
+# Items
 ## White
-
-(Model | DisplayRules) Mustache: Heal for +10% (+10% per stack) health upon purchasing something.
+Mustache: Heal for +10% (+10% per stack) health upon purchasing something.
 
 ## Green
-
 Scope: Reduces bullet spread by -10% (-5% per stack). 
 
-At a minimum of 3 stacks, will make REX's Syringes aim directly.
-
 ## Lunar
-
-Metronome: Gain a damage bonus for every enemy you kill with the same skill. Lose 25 kills upon using a different skill.
-
-=> +2% damage bonus for each enemy killed, maxes at +150%(+50%). The bonus is reduced by 25 kills if the player uses a different skill.
+Metronome: Gain a 2% damage bonus for every enemy you kill with the same skill, up yo 150%. Gain 50 extra stacks per pickup. Lose 25 stacks upon using a different skill.
 
 # Equipment
-
 ## Normal
-
-Bomb: Throws a bomb for 100% damage. CD: 8
+Bomb: Throws a bomb for 100% damage. CD: 10s
 
 # Elites
-
-Jammed Elites: +200% damage, +100% crit chance
+(Default: Disabled) Jammed Elites: +200% damage, +100% crit chance
 
 ## Credits
-# Repos
-
-KomradeSpectre - AetheriumMod https://github.com/KomradeSpectre/AetheriumMod
-
-ThinkInvis - ClassicItems https://github.com/ThinkInvis/RoR2-ClassicItems
-
-Chen - Chen's ClassicItems https://github.com/cheeeeeeeeeen/RoR2-ClassicItems
-
-Rico - AffixGen https://github.com/RicoValdezio/RoR2-AffixGen/blob/master/Equipment/AffixEquipBehaviour.cs (Equipment Removal)
-
-# Non-standard
-
+Rico - Equipment Removal
 Rein - Nonspecific, DirectorAPI
-
 KomradeSpectre, Chen - Lots, and TILER2 Help
-
 KomradeSpectre - Walking me through the resource process
-
-Spice - OKIGotIt, Ghor
-
+OKIGotIt, Ghor - Spice
 rob - help with hooks
 
-##Credits - Other
+## Credits - Other
 https://stackoverflow.com/questions/105372/how-to-enumerate-an-enum
 https://answers.unity.com/questions/285785/how-to-randomly-pick-a-string-from-an-array.html
 https://stackoverflow.com/questions/2893297/iterate-multi-dimensional-array-with-nested-foreach-statement

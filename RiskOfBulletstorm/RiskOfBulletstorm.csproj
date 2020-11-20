@@ -21,6 +21,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Releases\Items\LunarEqp\" />
+    <Folder Include="Releases\Items\Boss\" />
+    <Folder Include="Releases\Items\T3\" />
     <None Remove="riskofgungeonassets" />
 	  <Folder Remove="Items" />
   </ItemGroup>
@@ -50,6 +53,9 @@
     </Reference>
     <Reference Include="BepInEx.Preloader">
       <HintPath>lib\BepInEx.Preloader.dll</HintPath>
+    </Reference>
+    <Reference Include="ClassicItems">
+      <HintPath>lib\ClassicItems.dll</HintPath>
     </Reference>
     <Reference Include="EliteSpawningOverhaul">
       <HintPath>lib\EliteSpawningOverhaul.dll</HintPath>
