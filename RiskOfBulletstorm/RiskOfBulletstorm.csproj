@@ -11,18 +11,18 @@
   <ItemGroup>
     <Compile Remove="Items\**" />
     <Compile Remove="lib\**" />
-    <Compile Remove="Shared\**" />
     <EmbeddedResource Remove="Items\**" />
     <EmbeddedResource Remove="lib\**" />
-    <EmbeddedResource Remove="Shared\**" />
     <None Remove="Items\**" />
     <None Remove="lib\**" />
-    <None Remove="Shared\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Releases\Items\Boss\Beetle.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Releases\Items\LunarEqp\" />
-    <Folder Include="Releases\Items\Boss\" />
     <Folder Include="Releases\Items\T3\" />
     <None Remove="riskofgungeonassets" />
 	  <Folder Remove="Items" />

@@ -22,19 +22,10 @@ TODO:
 
 ## Special Items
 
-[White] Armor: Destroys itself to block one hit of damage dealing more than 25% health or exceeding your health, and fires a Blank.
-(TODO: SFX)
-
 [unimplemented] [Boss] Old Crest : Identical to Armor, takes priority. Using it on a specific interactable will do something...
-
-[White] Blank: Press a key to activate, destroying all projectiles, stunning and knocking nearby enemies back. Consumed on use.
-(TODO: SFX, Visual effect)
 
 ## White
 
-Cartographer's Ring: Upon starting the next stage, 25% chance (+10% chance per stack) of automatically scanning the stage.
-
-Mustache: 25% (+5% per stack) chance to heal for 25% health.
 
 [nonfunctional] Irradiated Lead: 5% chance per stack to Poison.
 
@@ -43,11 +34,6 @@ Mustache: 25% (+5% per stack) chance to heal for 25% health.
 +1 Bullets: +25% damage dealt (+5% per stack)
 
 [unimplemented] Battle Standard: Increases damage of non-player allies. Does not apply to turrets.
-
-Disarming Personality: Reduces chest prices by -15% (-5% per stack)
-
-Enraging Photo: Gain a temporary +100% damage boost upon taking 33% of your health in damage for 1 (+0.25 per stack) seconds.
-=> TODO: Health Requirement Loss
 
 [unimplemented] Ghost Bullets: Projectiles and Bullets pierce 1 (+1 per stack) enemies but reduces subsequent damage by 50% per enemy.
 
@@ -62,10 +48,6 @@ Ring of Chest Friendship: Increases credits of interactables by +10% (+2% per st
 
 [nonfunctional] Rocket-Powered Bullets: Increases projectile speed by 50% (+5% per stack).
 
-Roll Bomb: After using your Utility, drop 1 bomb(s) (+1 per stack) for 80% damage.
-
-Scope: Reduces bullet spread by -10% (-5% per stack).
-
 Scouter: Shows enemy health and damage in chat on hit to a pinged enemy. Only shows number of digits depending on InventoryCount. DamageType only shows up after 2 Scouters.
 
 ## Red
@@ -74,16 +56,6 @@ Scouter: Shows enemy health and damage in chat on hit to a pinged enemy. Only sh
 
 Ring of Fire Resistance: Prevents being inflicted with fire damage.
 Replaced with a random red if you already have one.
-
-Unity: +0.1 (+0.05 per stack) base damage per unique item in inventory
-
-## Boss
-
-[unimplemented] Beetle: Spawns 1 beetle that have a 5% (+5% per stack) chance to dig up a pickup upon completing a room.
-(Instead of Gungeon's Dog)
-
-Master Round: Granted upon clearing a teleporter boss without ANYONE taking damage. Adds 150 max health per stack.
-
 
 ## Lunar
 
@@ -95,11 +67,6 @@ If you already have a Strides of Heresy, it will refund you Lunar Coins equal to
 
 [unimplemented] Bloodied Scarf: Replaces your utility with Huntress Blink
 
-Metronome: Gain a damage bonus for every enemy you kill, clears when you use a different skill.
-=> +2% damage bonus for each enemy killed, maxes at +150%(+50%). The bonus is reset if the player uses a different skill.
-
-Ring of Miserly Protection: Grants +50%(+50% per stack) increased maximum health, ...but all stacks disappear upon purchasing.
-
 Spice: Increases various stats, but increases the rate at which Spice spawns and increases Curse.
 For now, it increases base damage by +1 per stack.
 => TODO: Add Stat bonuses. 
@@ -107,8 +74,6 @@ For now, it increases base damage by +1 per stack.
 # Equipment
 
 ## Normal
-
-Bomb: Throws a bomb for 100% damage. CD: 8
 
 Proximity Mine: Drops a mine for 100% damage. CD: 18
 

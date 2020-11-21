@@ -17,6 +17,8 @@ namespace RiskOfBulletstorm.Shared
                 Debug.LogError("[RiskOfBulletstorm]: Blank was required, but player had no blank!");
                 return false;
             }
+            Util.PlaySound(EntityStates.Engi.EngiWeapon.FireMines.throwMineSoundString, attacker.gameObject); //SOUND PLAY
+            // EFFECT HERE
             new BlastAttack
             {
                 attacker = attacker.gameObject, //who
