@@ -15,19 +15,19 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How many seconds should Enraging Photo's buff last with a single stack? (Default: 1 (seconds))", AutoConfigFlags.PreventNetMismatch)]
-        public float BaseDurationOfEnragedBuffInSeconds { get; private set; } = 1f;
+        public float EnragingPhoto_BaseDuration { get; private set; } = 1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How many additional seconds of buff should each Enraging Photo after the first give? (Default: 0.25 (seconds))", AutoConfigFlags.PreventNetMismatch)]
-        public float AdditionalDurationOfEnragedBuffInSeconds { get; private set; } = 0.25f;
+        public float EnragingPhoto_StackDuration { get; private set; } = 0.25f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What percent of health lost should activate the Enraging Photo's damage bonus? (Default: 0.33 (33%))", AutoConfigFlags.PreventNetMismatch)]
-        public float HealthThreshold { get; private set; } = 0.33f;
+        public float EnragingPhoto_HealthThreshold { get; private set; } = 0.33f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How much should your damage be increased when Enraging Photo activates? (Default: 1.00 (+100% damage))", AutoConfigFlags.PreventNetMismatch)]
-        public float DmgBoost { get; private set; } = 1.00f;
+        public float EnragingPhoto_DmgBoost { get; private set; } = 1.00f;
         
         //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         //[AutoConfig("If true, damage to shield and barrier (from e.g. Personal Shield Generator, Topaz Brooch) will not count towards triggering Enraging Photo")]
@@ -41,7 +41,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "\"Don't Believe His Lies\"\nDeal extra damage for a short time after receiving a heavy hit.";
 
-        protected override string GetDescString(string langid = null) => $"Gain a temporary <style=cIsDamage>{Pct(DmgBoost)} damage bonus</style> upon taking <style=cIsDamage>{Pct(HealthThreshold)} </style> of your health that lasts {BaseDurationOfEnragedBuffInSeconds} seconds. <style=cStack>(+{AdditionalDurationOfEnragedBuffInSeconds} second duration per additional Enraging Photo.)</style>";
+        protected override string GetDescString(string langid = null) => $"Gain a temporary <style=cIsDamage>{Pct(EnragingPhoto_DmgBoost)} damage bonus</style> upon taking <style=cIsDamage>{Pct(EnragingPhoto_HealthThreshold)} </style> of your health that lasts {EnragingPhoto_BaseDuration} seconds. <style=cStack>(+{EnragingPhoto_StackDuration} second duration per additional Enraging Photo.)</style>";
 
         protected override string GetLoreString(string langID = null) => "A photo that the Convict brought with her to the Gungeon.\nDeal extra damage for a short time after getting hit.\n\nOn the journey to the Breach, the Pilot once asked her why she always stared at this photo. Later, she was released from the brig.";
 
@@ -224,14 +224,14 @@ namespace RiskOfBulletstorm.Items
 
             if (InventoryCount > 0 && self.body.GetBuffCount(ROBEnraged) == 0)
             {
-                self.body.AddTimedBuffAuthority(ROBEnraged, (BaseDurationOfEnragedBuffInSeconds + AdditionalDurationOfEnragedBuffInSeconds * (InventoryCount - 1)));
+                self.body.AddTimedBuffAuthority(ROBEnraged, (EnragingPhoto_BaseDuration + EnragingPhoto_StackDuration * (InventoryCount - 1)));
             }
             orig(self, damageInfo);
         }
 
         private void AddDamageReward(CharacterBody sender, StatHookEventArgs args)
         {
-            if (sender.HasBuff(ROBEnraged)) { args.damageMultAdd += DmgBoost; }
+            if (sender.HasBuff(ROBEnraged)) { args.damageMultAdd += EnragingPhoto_DmgBoost; }
         }
     }
 }

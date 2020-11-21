@@ -17,11 +17,11 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Health Increase", AutoConfigFlags.PreventNetMismatch)]
-        public float HealthBonus { get; private set; } = 1.0f;
+        public float RingMiserlyProtection_HealthBonus { get; private set; } = 1.0f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Health Increase Stack", AutoConfigFlags.PreventNetMismatch)]
-        public float HealthBonusStack { get; private set; } = 0.5f;
+        public float RingMiserlyProtection_HealthBonusStack { get; private set; } = 0.5f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("[unimplemented] Enable item synergy? (Default: True)", AutoConfigFlags.PreventNetMismatch)]
@@ -32,9 +32,9 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "Aids The Fiscally Responsible\nIncreases health substantially. Any shrine purchases will shatter the ring.";
+        protected override string GetPickupString(string langID = null) => "Aids The Fiscally Responsible\nIncreases health substantially. Any shrine purchases will shatter a ring.";
 
-        protected override string GetDescString(string langid = null) => $"Grants +{Pct(HealthBonus)} (+{Pct(HealthBonusStack)} per stack) health <style=cIsDeath>...but breaks completely upon purchasing.</style> ";
+        protected override string GetDescString(string langid = null) => $"Grants +{Pct(RingMiserlyProtection_HealthBonus)} (+{Pct(RingMiserlyProtection_HealthBonusStack)} per stack) health <style=cIsDeath>...but breaks a ring completely upon using a shrine.</style> ";
 
         protected override string GetLoreString(string langID = null) => "Before the Shopkeep opened his shop, he was an avaricious and miserly man. He remains careful about any expenditures, but through capitalism he has purged himself of negative emotion.";
 
@@ -73,11 +73,10 @@ namespace RiskOfBulletstorm.Items
             var body = activator.gameObject.GetComponent<CharacterBody>();
             var InventoryCount = body.inventory.GetItemCount(catalogIndex);
 
-            if (self.isShrine || !self.GetComponent<ShrineCombatBehavior>())
+            if (self.isShrine && !self.GetComponent<ShrineCombatBehavior>())
             {
                 if (InventoryCount > 0)
                 {
-                    //body.inventory.RemoveItem(catalogIndex, InventoryCount);
                     body.inventory.RemoveItem(catalogIndex);
                     body.RecalculateStats();
                 }
@@ -88,8 +87,7 @@ namespace RiskOfBulletstorm.Items
         private void BoostHealth(CharacterBody sender, StatHookEventArgs args)
         {
             var invCount = GetCount(sender);
-            if (invCount > 0)
-            { args.healthMultAdd += HealthBonus + HealthBonusStack * (invCount - 1); }
+            if (invCount > 0) args.healthMultAdd += RingMiserlyProtection_HealthBonus + RingMiserlyProtection_HealthBonusStack * (invCount - 1);
         }
     }
 }

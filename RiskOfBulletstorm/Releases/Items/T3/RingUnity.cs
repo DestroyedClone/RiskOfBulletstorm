@@ -21,12 +21,12 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("Damage increase on single stack? (Default: 0.1)" +
             "\nKeep in mind that this number is MULTIPLIED by the amount of TOTAL items.",
             AutoConfigFlags.PreventNetMismatch)]
-        public float DamageBonus { get; private set; } = 0.1f;
+        public float RingUnity_DamageBonus { get; private set; } = 0.1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Damage increase on subsequent stacks (Default: 0.01)" +
             "\nKeep in mind that this number is MULTIPLIED by the amount of TOTAL items.", AutoConfigFlags.PreventNetMismatch)]
-        public float DamageBonusStack { get; private set; } = 0.01f;
+        public float RingUnity_DamageBonusStack { get; private set; } = 0.01f;
         public override string displayName => "Unity";
         public override ItemTier itemTier => ItemTier.Tier3;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage });
@@ -35,7 +35,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "Our Powers Combined\nIncreased combat effectiveness per item.";
 
-        protected override string GetDescString(string langid = null) => $"+{DamageBonus} ({DamageBonusStack} per stack) damage per unique item in inventory";
+        protected override string GetDescString(string langid = null) => $"+{RingUnity_DamageBonus} ({RingUnity_DamageBonusStack} per stack) damage per unique item in inventory";
 
         protected override string GetLoreString(string langID = null) => "This ring takes a small amount of power from each gun carried and adds it to the currently equipped gun.";
 
@@ -111,7 +111,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     TotalItemCount += GetTotalItemCountOfTier(tier, sender);
                 }
-                args.baseDamageAdd += TotalItemCount * (DamageBonus + (DamageBonusStack * (UnityInventoryCount - 1)));
+                args.baseDamageAdd += TotalItemCount * (RingUnity_DamageBonus + (RingUnity_DamageBonusStack * (UnityInventoryCount - 1)));
             }
         }
     }

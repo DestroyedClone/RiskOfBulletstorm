@@ -30,10 +30,10 @@ Shells?
 Half + Full Heart: Restores 35%/60% health on pickup. Can fill barrier.
 Armor: Destroys itself to block one hit of damage dealing more than 25% health or exceeding your health, and fires a Blank. (TODO: SFX)
 Blank: Press a key to activate, destroying all projectiles, stunning and knocking nearby enemies back. Consumed on use. (TODO: SFX, Visual effect)
-Key: Opens a locked chest for free.
+Key: Opens a locked chest for free. Consumed on use.
 Cell Key: ??? No?
 Ray Key: ??? Maybe?
-Ammo: Bandolier clone
+Ammo: Bandolier clone (X)
 Spread Ammo: Bandolier clone that applies to all players
 
 ## White

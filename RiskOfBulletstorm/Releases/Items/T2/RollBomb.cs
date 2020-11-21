@@ -12,7 +12,7 @@ namespace RiskOfBulletstorm.Items
 	{
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How many damage should Roll Bomb deal? (Default: 0.8 = 80% damage)", AutoConfigFlags.PreventNetMismatch)]
-        public float RollBombDamage { get; private set; } = 0.8f;
+        public float RollBomb_Damage { get; private set; } = 0.8f;
 
         public override string displayName => "Roll Bomb";
         public override ItemTier itemTier => ItemTier.Tier2;
@@ -22,7 +22,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "Power Charge\nDrop bomb(s) after using your utility skill.";
 
-        protected override string GetDescString(string langid = null) => $"Using your utility <style=cIsUtility>drops 1 (+1/stack) bombs</style> for <style=cIsDamage>{Pct(RollBombDamage)} damage </style>.";
+        protected override string GetDescString(string langid = null) => $"Using your utility <style=cStack>drops 1 (+1/stack) bombs</style> for <style=cIsDamage>{Pct(RollBomb_Damage)} damage </style>.";
 
         protected override string GetLoreString(string langID = null) => "Produces a bomb when dodge rolling.\nThis strange mechanism dispenses explosives when spun.";
 
@@ -42,7 +42,7 @@ namespace RiskOfBulletstorm.Items
             //BombPrefab.GetComponent<ProjectileImpactExplosion>().lifetime = 2;
             BombPrefab.GetComponent<ProjectileImpactExplosion>().destroyOnEnemy = false; //default True
             //BombPrefab.GetComponent<ProjectileImpactExplosion>().timerAfterImpact = false;
-            UnityEngine.Object.Destroy(BombPrefab.GetComponent<ApplyTorqueOnStart>());
+            Object.Destroy(BombPrefab.GetComponent<ApplyTorqueOnStart>());
         }
         public override void Install()
         {
@@ -69,8 +69,8 @@ namespace RiskOfBulletstorm.Items
                     {
                         for (int i = 0; i < invCount; i++)
                         {
-                            ProjectileManager.instance.FireProjectile(BombPrefab, corePos, MineDropDirection(),
-                                              vGameObject, vBody.damage * RollBombDamage,
+                            ProjectileManager.instance.FireProjectile(BombPrefab, corePos, RollBombFireDirection(),
+                                              vGameObject, vBody.damage * RollBomb_Damage,
                                               3f, Util.CheckRoll(vBody.crit, vBody.master),
                                               DamageColorIndex.Item, null, -1f);
                         }
@@ -79,7 +79,7 @@ namespace RiskOfBulletstorm.Items
             }
             orig(self);
         }
-        private Quaternion MineDropDirection()
+        private Quaternion RollBombFireDirection() //credit: chen
         {
             return Util.QuaternionSafeLookRotation(
                 new Vector3(Random.Range(-10,10), 0f, Random.Range(-10, 10))

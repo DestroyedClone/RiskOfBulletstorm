@@ -20,24 +20,24 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Chance for stage to scan? (Default: 20%)", AutoConfigFlags.PreventNetMismatch)]
-        public float ScanChance { get; private set; } = 0.2f;
+        public float CartographerRing_ScanChance { get; private set; } = 0.2f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Stack chance for stage to scan? (Default: 10%)", AutoConfigFlags.PreventNetMismatch)]
-        public float ScanChanceStack { get; private set; } = 0.1f;
+        public float CartographerRing_ScanChanceStack { get; private set; } = 0.1f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Duration of scanner in seconds (Default: 0-Infinite.)", AutoConfigFlags.PreventNetMismatch)]
-        public float ScanDuration { get; private set; } = 0f;
+        public float CartographerRing_ScanDuration { get; private set; } = 0f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Destroy the scans on teleporter start? (Default: false)", AutoConfigFlags.PreventNetMismatch)]
-        public bool DestroyOnTeleporterStart { get; private set; } = true;
+        public bool CartographerRing_DestroyOnTeleporterStart { get; private set; } = true;
         public override string displayName => "Cartographer's Ring";
         public override ItemTier itemTier => ItemTier.Tier1;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility, ItemTag.AIBlacklist });
 
         protected override string GetNameString(string langID = null) => displayName;
         protected override string GetPickupString(string langID = null) => "Some Floors Are Familiar\nSometimes reveals the floor.";
-        protected override string GetDescString(string langid = null) => $"{Pct(ScanChance)} chance of activating a Permanent Scanner upon stage start." +
-            $"\n (+{Pct(ScanChanceStack)} per stack)." +
+        protected override string GetDescString(string langid = null) => $"{Pct(CartographerRing_ScanChance)} chance of activating a Permanent Scanner upon stage start." +
+            $"\n (+{Pct(CartographerRing_ScanChanceStack)} per stack)." +
             $"\n Chance is shared amongst players.";
 
         protected override string GetLoreString(string langID = null) => "The Gungeon is unmappable, but it was not always so. It is said that in his youth, the great cartographer Woban has created four great maps, one for each floor of the Gungeon. While working on the fifth and final map, the walls suddenly began to shift strangely; they continue to do so to this day.";
@@ -55,14 +55,14 @@ namespace RiskOfBulletstorm.Items
             chestRevealer.pulseEffectScale = 0;
 
             DestroyOnTimer destroyOnTimer = PermanentScannerPrefab.GetComponent<DestroyOnTimer>();
-            if (ScanDuration <= 0)
+            if (CartographerRing_ScanDuration <= 0)
             {
                 //UnityEngine.Object.Destroy(PermanentScannerPrefab.GetComponent<DestroyOnTimer>());
                 destroyOnTimer.duration = 9999999;
             }
             else
             {
-                destroyOnTimer.duration = ScanDuration;
+                destroyOnTimer.duration = CartographerRing_ScanDuration;
             }
 
         }
@@ -89,7 +89,7 @@ namespace RiskOfBulletstorm.Items
         }
         private void DestroyScanner(TeleporterInteraction obj)
         {
-            if (DestroyOnTeleporterStart)
+            if (CartographerRing_DestroyOnTeleporterStart)
             {
                 UnityEngine.Object.Destroy(PermanentScannerPrefab);
             }
@@ -102,7 +102,7 @@ namespace RiskOfBulletstorm.Items
 
             if (InventoryCount > 0)
             {
-                var ResultChance = ScanChance + ScanChanceStack * (InventoryCount - 1);
+                var ResultChance = CartographerRing_ScanChance + CartographerRing_ScanChanceStack * (InventoryCount - 1);
                 Debug.Log("CartRing: Scan Chance: " + ResultChance.ToString());
                 if (Util.CheckRoll(ResultChance))
                 {

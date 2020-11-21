@@ -18,11 +18,11 @@ namespace RiskOfBulletstorm.Items
     public class DisarmingPersonality : Item_V2<DisarmingPersonality>
     {
         [AutoConfig("Base cost reduction? Default 0.15 15%", AutoConfigFlags.PreventNetMismatch)]
-        public float CostReductionAmount { get; private set; } = 0.15f;
+        public float DisarmingPersonality_CostReductionAmount { get; private set; } = 0.15f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Stack cost reduction? Default 0.05 5%", AutoConfigFlags.PreventNetMismatch)]
-        public float CostReductionAmountStack { get; private set; } = 0.05f;
+        public float DisarmingPersonality_CostReductionAmountStack { get; private set; } = 0.05f;
 
         public override string displayName => "Disarming Personality";
         public override ItemTier itemTier => ItemTier.Tier2;
@@ -32,7 +32,7 @@ namespace RiskOfBulletstorm.Items
         private readonly string descText = "Reduces prices at shops";
         protected override string GetPickupString(string langID = null) => "For You?\n"+descText;
 
-        protected override string GetDescString(string langid = null) => $"{descText} by {Pct(CostReductionAmount)} (+{Pct(CostReductionAmount)} per stack)";
+        protected override string GetDescString(string langid = null) => $"{descText} by {Pct(DisarmingPersonality_CostReductionAmount)} (+{Pct(DisarmingPersonality_CostReductionAmount)} per stack)";
 
         protected override string GetLoreString(string langID = null) => "The Pilot is able to talk his way into almost anything, usually gunfights.";
 
@@ -78,7 +78,7 @@ namespace RiskOfBulletstorm.Items
                 //Debug.Log("DisarmPerson: Chest Found!", self);
                 if (InventoryCount > 0)
                 {
-                    var ResultMult = Mathf.Min(1 - CostReductionAmount + CostReductionAmountStack * (InventoryCount - 1), 0);
+                    var ResultMult = Mathf.Min(1 - DisarmingPersonality_CostReductionAmount + DisarmingPersonality_CostReductionAmountStack * (InventoryCount - 1), 0);
                     Debug.Log("DisarmPerson: Cost(" + self.cost.ToString()+")=>"+ ((int)Mathf.Ceil(self.cost * ResultMult)).ToString(), self);
                     self.cost = (int)Mathf.Ceil(self.cost * ResultMult);
                 }

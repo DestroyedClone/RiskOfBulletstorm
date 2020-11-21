@@ -52,23 +52,39 @@ namespace RiskOfBulletstorm.Items
             On.RoR2.PurchaseInteraction.OnInteractionBegin -= InteractWithChest;
         }
 
+
         private void InteractWithChest(On.RoR2.PurchaseInteraction.orig_OnInteractionBegin orig, PurchaseInteraction self, Interactor activator)
         {
-            bool CanAfford = self.CanBeAffordedByInteractor(activator);
+            //bool CanAfford = self.CanBeAffordedByInteractor(activator);
 
             CharacterBody characterBody = activator.GetComponent<CharacterBody>();
-            int InventoryCount = characterBody.inventory.GetItemCount(catalogIndex);
-            if (InventoryCount > 0)
+            if (characterBody)
             {
-                if (self.isShrine == false && self.available && self.costType == CostTypeIndex.Money)
+                Inventory inventory = characterBody.inventory;
+                if (inventory)
                 {
-                    self.SetAvailable(false);
-                    self.gameObject.GetComponent<ChestBehavior>().Open();
+                    int InventoryCount = characterBody.inventory.GetItemCount(catalogIndex);
+                    if (InventoryCount > 0)
+                    {
+                        if (self.isShrine == false && self.available && self.costType == CostTypeIndex.Money) //if not shrine, is available, and is not a lunar pod
+                        {
+                            Debug.Log("Key Triggered!");
+                            self.SetAvailable(false);
+                            self.Networkavailable = false;
 
-                    self.cost = 0;
+                            self.gameObject.GetComponent<ChestBehavior>().Open();
+
+                            self.cost = 0;
+                            self.Networkcost = 0;
+
+                            self.onPurchase.Invoke(activator);
+                            self.lastActivator = activator;
+
+                            inventory.RemoveItem(catalogIndex);
+                        }
+                    }
                 }
             }
-
             orig(self, activator);
         }
     }
