@@ -6,11 +6,16 @@ using UnityEngine;
 using UnityEngine.Networking;
 using TILER2;
 using static TILER2.MiscUtil;
+using ThinkInvisible.ClassicItems;
 
 namespace RiskOfBulletstorm.Items
 {
     public class Ration : Equipment_V2<Ration>
     {
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Heal%? (Default: 0.4 = 40% heal)", AutoConfigFlags.PreventNetMismatch)]
+        public float Ration_HealAmount { get; private set; } = 0.4f;
+
         public override string displayName => "Ration";
         public override float cooldown { get; protected set; } = 1f;
 
@@ -18,14 +23,14 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "Calories, Mate\nProvides healing on use. If equipped, will be used automatically on death.";
 
-        protected override string GetDescString(string langid = null) => $"40% heal. One-Time Use. Automatically used upon fatal damage.";
+        protected override string GetDescString(string langid = null) => $"{Pct(Ration_HealAmount)} heal. One-Time Use. Automatically used upon fatal damage.";
 
         protected override string GetLoreString(string langID = null) => "This MRE comes in the form of a dry and dense cookie. It doesn't taste great, but it delivers the calories the body needs.";
 
         public override void SetupBehavior()
         {
             base.SetupBehavior();
-
+            Embryo_V2.instance.Compat_Register(catalogIndex);
         }
         public override void SetupAttributes()
         {
@@ -68,7 +73,8 @@ namespace RiskOfBulletstorm.Items
 
         private void RationUse(HealthComponent health, Inventory inventory)
         {
-            health.HealFraction(0.4f, default);
+            health.HealFraction(Ration_HealAmount, default);
+            if (instance.CheckEmbryoProc(health.body)) health.HealFraction(Ration_HealAmount, default);
             inventory.SetEquipmentIndex(EquipmentIndex.None); //credit to : Rico
         }
 

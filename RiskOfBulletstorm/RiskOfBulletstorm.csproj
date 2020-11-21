@@ -18,10 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Releases\Items\Boss\Beetle.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Releases\Items\LunarEqp\" />
     <Folder Include="Releases\Items\T3\" />
     <None Remove="riskofgungeonassets" />

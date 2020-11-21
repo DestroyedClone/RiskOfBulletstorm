@@ -6,14 +6,15 @@ using UnityEngine;
 using UnityEngine.Networking;
 using TILER2;
 using static TILER2.MiscUtil;
+using ThinkInvisible.ClassicItems;
 
 namespace RiskOfBulletstorm.Items
 {
     public class Orange : Equipment_V2<Orange>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Rarity? (Default: 0.45 = 45% chance to spawn)", AutoConfigFlags.PreventNetMismatch)]
-        public float Rarity { get; private set; } = 0.45f;
+        [AutoConfig("Rarity? (Default: 0.2 = 20% chance to spawn)", AutoConfigFlags.PreventNetMismatch)]
+        public float Orange_Rarity { get; private set; } = 0.2f;
 
         //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         //[AutoConfig("Cooldown? (Default: 8 = 8 seconds)", AutoConfigFlags.PreventNetMismatch)]
@@ -26,14 +27,14 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "You're Not Alexander\nWith this orange, your style... it's impetuous. Your defense, impregnable.";
 
-        protected override string GetDescString(string langid = null) => $"100% heal. One-time Use. 50% rarer. Permanently reduces cooldown and recharge rate.";
+        protected override string GetDescString(string langid = null) => $"100% heal. One-time Use. {Pct(Orange_Rarity)} rarer. Permanently increases health by 10% and reduces recharge rate";
 
         protected override string GetLoreString(string langID = null) => "God Hand reference";
 
         public override void SetupBehavior()
         {
             base.SetupBehavior();
-
+            Embryo_V2.instance.Compat_Register(catalogIndex);
         }
         public override void SetupAttributes()
         {
@@ -59,7 +60,7 @@ namespace RiskOfBulletstorm.Items
             var body = PlayerCharacterMasterController.instances[0].master.GetBody();
             if (pickupIndex == PickupCatalog.FindPickupIndex(catalogIndex)) //if it's the orange
             {
-                if (!Util.CheckRoll(Rarity, body.master)) //rarity roll
+                if (!Util.CheckRoll(Orange_Rarity, body.master)) //rarity roll
                 {
                     PickupIndex loot = Run.instance.treasureRng.NextElementUniform(Run.instance.availableEquipmentDropList);
                     PickupDef def = PickupCatalog.GetPickupDef(loot);
@@ -78,9 +79,14 @@ namespace RiskOfBulletstorm.Items
             Inventory inventory = body.inventory;
             if (!inventory) return false;
 
-            inventory.GiveItem(ItemIndex.Infusion);
-            inventory.GiveItem(ItemIndex.AlienHead);
-            health.HealFraction(1, default);
+            int DeployCount = instance.CheckEmbryoProc(body) ? 2 : 1; //Embryo Check
+
+            for (int i = 0; i < DeployCount; i++)
+            {
+                inventory.GiveItem(ItemIndex.BoostHp);
+                inventory.GiveItem(ItemIndex.AlienHead);
+                health.HealFraction(1, default);
+            }
             inventory.SetEquipmentIndex(EquipmentIndex.None); //credit to : Rico
 
             return false;

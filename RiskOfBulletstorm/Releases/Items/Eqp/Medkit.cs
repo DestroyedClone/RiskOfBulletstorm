@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using TILER2;
 using static TILER2.MiscUtil;
+using ThinkInvisible.ClassicItems;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -13,11 +14,11 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Heal%? (Default: 1.0 = 100% heal)", AutoConfigFlags.PreventNetMismatch)]
-        public float HealAmount { get; private set; } = 1f;
+        public float Medkit_HealAmount { get; private set; } = 1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Barrier%? (Default: 1.0 = 100% barrier)", AutoConfigFlags.PreventNetMismatch)]
-        public float BarrierAmount { get; private set; } = 1f;
+        [AutoConfig("Barrier%? (Default: 0.5 = 50%% barrier)", AutoConfigFlags.PreventNetMismatch)]
+        public float Medkit_BarrierAmount { get; private set; } = 0.5f;
 
         //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         //[AutoConfig("Cooldown? (Default: 8 = 8 seconds)", AutoConfigFlags.PreventNetMismatch)]
@@ -31,15 +32,16 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => descText + "\nMedkits provides substantial healing when used.";
 
-        protected override string GetDescString(string langid = null) => $"{descText}, healing {Pct(HealAmount)} health and filling barrier by {Pct(BarrierAmount)}.";
+        protected override string GetDescString(string langid = null) => $"{descText}, healing {Pct(Medkit_HealAmount)} health and filling barrier by {Pct(Medkit_BarrierAmount)}.";
 
         protected override string GetLoreString(string langID = null) => "Contains a small piece of fairy." +
             "\nSeeking a place that would provide a near constant flow of the desperate and injured, Médecins Sans Diplôme recognized the Gungeon as the perfect place to found their practice.";
 
+
         public override void SetupBehavior()
         {
             base.SetupBehavior();
-
+            Embryo_V2.instance.Compat_Register(catalogIndex);
         }
         public override void SetupAttributes()
         {
@@ -65,8 +67,15 @@ namespace RiskOfBulletstorm.Items
             HealthComponent health = body.healthComponent;
             if (!health) return false;
 
-            health.HealFraction(1, default);
-            health.AddBarrier(health.fullBarrier);
+            var BarrierAmt = health.fullBarrier * Medkit_BarrierAmount;
+
+            health.HealFraction(Medkit_HealAmount, default);
+            health.AddBarrier(BarrierAmt);
+            if (instance.CheckEmbryoProc(body))
+            {
+                health.HealFraction(Medkit_HealAmount, default);
+                health.AddBarrier(BarrierAmt);
+            }
             return true;
         }
     }
