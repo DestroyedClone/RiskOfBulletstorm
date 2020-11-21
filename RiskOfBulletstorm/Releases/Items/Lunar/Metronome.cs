@@ -49,8 +49,6 @@ namespace RiskOfBulletstorm.Items
             "\n And it only took one strike to end him." +
             "\n Tick, Tick, tick, tick";
 
-        int LastSkillSlotUsed = 0;
-
         public Metronome()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Metronome.prefab";
@@ -103,9 +101,9 @@ namespace RiskOfBulletstorm.Items
 
                         void SetLastSkillSlot(int SlotNumber)
                         {
-                            if (LastSkillSlotUsed != SlotNumber)
+                            if (MetronomeTrackKills.LastSkillSlotUsed != SlotNumber)
                             {
-                                LastSkillSlotUsed = SlotNumber;
+                                MetronomeTrackKills.LastSkillSlotUsed = SlotNumber;
                                 MetronomeTrackKills.kills = Math.Min(0, MetronomeTrackKills.kills - Metronome_MaxKillsStack);
                                 //Debug.Log("Metronome: Kills reset due to change to slot " + LastSkillSlotUsed.ToString(), self);
                             }
@@ -180,7 +178,7 @@ namespace RiskOfBulletstorm.Items
         {
             public int kills;
             public int maxkills;
-            //public int LastSkillSlotUsed = 0;
+            public int LastSkillSlotUsed = 0;
         }
     }
 }
