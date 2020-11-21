@@ -27,9 +27,10 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "You're Not Alexander\nWith this orange, your style... it's impetuous. Your defense, impregnable.";
 
-        protected override string GetDescString(string langid = null) => $"100% heal. One-time Use. {Pct(Orange_Rarity)} rarer. Permanently increases health by 10% and reduces recharge rate";
+        protected override string GetDescString(string langid = null) => $"</style=cIsHealing>100% heal.</style> <style=cIsUtility>Permanently increases health by 10% and reduces equipment recharge rate by 10%</style>" +
+            $"\n<style=cDeath>One-time Use.</style> <style=cWorldEvent>{Pct(Orange_Rarity)} rarer.</style> ";
 
-        protected override string GetLoreString(string langID = null) => "God Hand reference";
+        protected override string GetLoreString(string langID = null) => "";
 
         public override void SetupBehavior()
         {

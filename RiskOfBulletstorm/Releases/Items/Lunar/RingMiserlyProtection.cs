@@ -32,9 +32,9 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "Aids The Fiscally Responsible\nIncreases health substantially. Any shrine purchases will shatter a ring.";
+        protected override string GetPickupString(string langID = null) => "Aids The Fiscally Responsible\n<style=cHealth>Increases health substantially.</style> <style=cDeath>Any shrine purchases will shatter a ring.</style>";
 
-        protected override string GetDescString(string langid = null) => $"Grants +{Pct(RingMiserlyProtection_HealthBonus)} (+{Pct(RingMiserlyProtection_HealthBonusStack)} per stack) health <style=cIsDeath>...but breaks a ring completely upon using a shrine.</style> ";
+        protected override string GetDescString(string langid = null) => $"Grants <style=cHealth>+{Pct(RingMiserlyProtection_HealthBonus)}</style> <style=cStack>(+{Pct(RingMiserlyProtection_HealthBonusStack)} per stack)</style> health <style=cDeath>...but breaks a ring completely upon using a shrine.</style> ";
 
         protected override string GetLoreString(string langID = null) => "Before the Shopkeep opened his shop, he was an avaricious and miserly man. He remains careful about any expenditures, but through capitalism he has purged himself of negative emotion.";
 

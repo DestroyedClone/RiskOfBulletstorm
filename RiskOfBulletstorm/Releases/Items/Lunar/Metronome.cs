@@ -34,11 +34,11 @@ namespace RiskOfBulletstorm.Items
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage, ItemTag.AIBlacklist });
 
         protected override string GetNameString(string langID = null) => displayName;
-        protected override string GetPickupString(string langID = null) => "Better And Better\nImproves your damage with sequential kills, but loses some upon another skill.";
+        protected override string GetPickupString(string langID = null) => "Better And Better\nImproves your damage with sequential kills, <style=cDeath>but loses some upon another skill.</style>";
 
         protected override string GetDescString(string langid = null) => $"Improves your damage by <style=cIsDamage>{Pct(Metronome_DmgCoeff)} per kill</style> with the same skill." +
-            $"\n Max Kills: {Metronome_MaxKills} + <style=cStack>{Metronome_MaxKillsStack} per stack." +
-            $"\n Using a different skill will reset your bonus by {Metronome_MaxKillsStack}</style>";
+            $"\n <style=cStack>Max Kills: {Metronome_MaxKills} + {Metronome_MaxKillsStack} per stack.</style>" +
+            $"\n <style=cDeath>Using a different skill will reset your bonus by {Metronome_MaxKillsStack}</style>";
 
         protected override string GetLoreString(string langID = null) => "Tick, tick, tick, tick...." +
             "\n The metronome struck back and forth, and with every strike, a bullet ended a life." +
@@ -180,6 +180,7 @@ namespace RiskOfBulletstorm.Items
         {
             public int kills;
             public int maxkills;
+            //public int LastSkillSlotUsed = 0;
         }
     }
 }

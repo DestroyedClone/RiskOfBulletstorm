@@ -48,7 +48,7 @@ Roll Bomb: After using your Utility, drop 1 bomb(s) (+1 per stack) for 80% damag
 
 ## Red
 Unity: +0.1 (+0.05 per stack) base damage per unique item in inventory
-Number 2: Boosts your damage when you're the only survivor/team:player alive.'
+Number 2: Boosts your damage when you're the only survivor/team:player alive.
 
 ## Lunar
 Metronome: Gain a 2% damage bonus for every enemy you kill with the same skill, up to 150%. Gain 50 extra stacks per pickup. Lose 25 stacks upon using a different skill.

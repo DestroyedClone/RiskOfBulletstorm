@@ -26,7 +26,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "On A Roll\nHeals for a small amount. Increases damage dealt until injured again.";
 
-        protected override string GetDescString(string langid = null) => $"Heals for {Pct(Meatbun_HealAmount)} health, and increases damage by +{Pct(Meatbun_DamageBonus)} until you take damage.";
+        protected override string GetDescString(string langid = null) => $"<style=cIsHealing>Heals for {Pct(Meatbun_HealAmount)} health</style>, and <style=cIsDamage>increases damage by +{Pct(Meatbun_DamageBonus)}</style> until you take damage.";
 
         protected override string GetLoreString(string langID = null) => "A delicious, freshly baked roll! Sometimes, things just work out.";
 

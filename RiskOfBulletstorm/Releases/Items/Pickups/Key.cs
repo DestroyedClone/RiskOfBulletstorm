@@ -21,9 +21,9 @@ namespace RiskOfBulletstorm.Items
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility, ItemTag.WorldUnique });
 
         protected override string GetNameString(string langID = null) => displayName;
-        protected override string GetPickupString(string langID = null) => "Can unlock chests. Consumed on use.";
+        protected override string GetPickupString(string langID = null) => "<style=cIsUtility>Can unlock chests.</style>\n Consumed on use.";
 
-        protected override string GetDescString(string langid = null) => $"Can unlock chests. Consumed on use.";
+        protected override string GetDescString(string langid = null) => $"<style=cIsUtility>Can unlock chests.</style>\n Consumed on use.";
 
         protected override string GetLoreString(string langID = null) => "";
 

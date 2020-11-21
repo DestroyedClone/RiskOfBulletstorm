@@ -31,7 +31,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetNameString(string langID = null) => displayName;
         protected override string GetPickupString(string langID = null) => "Steady Aim\nA standard scope. Increases accuracy!";
 
-        protected override string GetDescString(string langid = null) => $"Decreases bullet spread by {Pct(Scope_SpreadReduction)}" +
+        protected override string GetDescString(string langid = null) => $"<style=cIsUtility>Decreases bullet spread by {Pct(Scope_SpreadReduction)}</style>" +
             $"\n<style=cStack>(+{Pct(Scope_SpreadReductionStack)} per stack)</style>";
 
         protected override string GetLoreString(string langID = null) => "4:44 - [Kate] Found this scope in a chest, reporting back." +

@@ -41,7 +41,8 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "\"Don't Believe His Lies\"\nDeal extra damage for a short time after receiving a heavy hit.";
 
-        protected override string GetDescString(string langid = null) => $"Gain a temporary <style=cIsDamage>{Pct(EnragingPhoto_DmgBoost)} damage bonus</style> upon taking <style=cIsDamage>{Pct(EnragingPhoto_HealthThreshold)} </style> of your health that lasts {EnragingPhoto_BaseDuration} seconds. <style=cStack>(+{EnragingPhoto_StackDuration} second duration per additional Enraging Photo.)</style>";
+        protected override string GetDescString(string langid = null) => $"Gain a temporary <style=cIsHealth>{Pct(EnragingPhoto_DmgBoost)} damage bonus</style> upon taking <style=cIsHealth>{Pct(EnragingPhoto_HealthThreshold)} </style> of your health that lasts {EnragingPhoto_BaseDuration} seconds." +
+            $"\n<style=cStack>(+{EnragingPhoto_StackDuration} second duration per additional Enraging Photo.)</style>";
 
         protected override string GetLoreString(string langID = null) => "A photo that the Convict brought with her to the Gungeon.\nDeal extra damage for a short time after getting hit.\n\nOn the journey to the Breach, the Pilot once asked her why she always stared at this photo. Later, she was released from the brig.";
 
