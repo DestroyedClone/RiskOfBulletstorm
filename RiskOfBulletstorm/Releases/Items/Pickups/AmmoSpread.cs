@@ -35,6 +35,7 @@ namespace RiskOfBulletstorm.Items
             GameObject ammoPickupPrefab = Resources.Load<GameObject>("Prefabs/NetworkedObjects/AmmoPack");
             Pickup_AmmoSpread = ammoPickupPrefab.InstantiateClone("AmmoSpread");
             Pickup_AmmoSpread.GetComponent<DestroyOnTimer>().duration = 30f;
+            Pickup_AmmoSpread.GetComponent<BeginRapidlyActivatingAndDeactivating>().delayBeforeBeginningBlinking = 25f;
             Pickup_AmmoSpread.AddComponent<GiveAmmoToTeam>();
 
             UnityEngine.Object.Destroy(Pickup_AmmoSpread.GetComponent<VelocityRandomOnStart>());
@@ -67,12 +68,12 @@ namespace RiskOfBulletstorm.Items
             GiveAmmoToTeam ammoToTeam = self.GetComponent<GiveAmmoToTeam>();
             if (ammoToTeam)
             {
-                TeamComponent[] array2 = UnityEngine.Object.FindObjectsOfType<TeamComponent>();
-                TeamIndex teamIndex = other.gameObject.GetComponent<TeamComponent>().teamIndex;
+                TeamComponent[] array2 = UnityEngine.Object.FindObjectsOfType<TeamComponent>(); //gorag opus yoink
+                //TeamIndex teamIndex = other.gameObject.GetComponent<TeamComponent>().teamIndex;
                 //SkillLocator skillLocator = other.GetComponent<SkillLocator>();
                 for (int i = 0; i < array2.Length; i++)
                 {
-                    if (array2[i].teamIndex == teamIndex)
+                    if (array2[i].teamIndex == TeamIndex.Player)
                     {
                         //array2[i].GetComponent<CharacterBody>().AddTimedBuff(BuffIndex.TeamWarCry, 7f);
                         array2[i].GetComponent<SkillLocator>().ApplyAmmoPack();
@@ -89,7 +90,6 @@ namespace RiskOfBulletstorm.Items
             {
                 pickupIndex = PickupCatalog.FindPickupIndex(ItemIndex.None);
                 SpawnAmmoPickup(body.gameObject.transform.position);
-                position = new Vector3(0, -9999, 0); //lol idk how to remove it
             }
 
             orig(pickupIndex, position, velocity);

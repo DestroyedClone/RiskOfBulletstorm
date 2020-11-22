@@ -78,6 +78,7 @@ namespace RiskOfBulletstorm.Items
                 if (InventoryCount > 0)
                 {
                     body.inventory.RemoveItem(catalogIndex);
+                    Util.PlaySound("Play_char_glass_death", body.gameObject);
                     body.RecalculateStats();
                 }
             }

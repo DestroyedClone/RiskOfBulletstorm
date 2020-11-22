@@ -9,7 +9,7 @@ namespace RiskOfBulletstorm.Shared
         {
             int InventoryCount = 0;
             for (int i = 0; i < CharacterMaster.readOnlyInstancesList.Count; i++)
-            { //CharacterMaster.readOnlyInstancesList[i] is the player. 
+            {
                 InventoryCount += CharacterMaster.readOnlyInstancesList[i].inventory.GetItemCount(itemIndex);
             }
             return InventoryCount;

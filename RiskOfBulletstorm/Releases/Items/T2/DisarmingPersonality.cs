@@ -81,7 +81,7 @@ namespace RiskOfBulletstorm.Items
                 if (InventoryCount > 0)
                 {
                     var ResultMult = Mathf.Min(1 - DisarmingPersonality_CostReductionAmount + DisarmingPersonality_CostReductionAmountStack * (InventoryCount - 1), 0);
-                    Debug.Log("DisarmPerson: Cost(" + self.cost.ToString()+")=>"+ ((int)Mathf.Ceil(self.cost * ResultMult)).ToString(), self);
+                    //Debug.Log("DisarmPerson: Cost(" + self.cost.ToString()+")=>"+ ((int)Mathf.Ceil(self.cost * ResultMult)).ToString(), self);
                     self.cost = (int)Mathf.Ceil(self.cost * ResultMult);
                 }
             }

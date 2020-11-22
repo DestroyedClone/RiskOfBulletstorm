@@ -64,7 +64,7 @@ namespace RiskOfBulletstorm.Items
             GameObject sporeGrenadePrefab = Resources.Load<GameObject>("prefabs/projectiles/SporeGrenadeProjectile");
             MolotovPrefab = sporeGrenadePrefab.InstantiateClone("Molotov");
             MolotovPrefab.GetComponent<ProjectileDamage>().damageColorIndex = DamageColorIndex.Item;
-            MolotovPrefab.GetComponent<ProjectileImpactExplosion>().childrenProjectilePrefab = sporeGrenadeDotZonePrefab;
+            MolotovPrefab.GetComponent<ProjectileImpactExplosion>().childrenProjectilePrefab = MolotovDotZonePrefab;
             //Object.Destroy(MolotovPrefab.GetComponent<ApplyTorqueOnStart>());
 
             ProjectileCatalog.getAdditionalEntries += list => list.Add(MolotovPrefab);

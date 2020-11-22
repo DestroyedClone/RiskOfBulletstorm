@@ -31,14 +31,14 @@ namespace RiskOfBulletstorm.Items
         public static BuffIndex Curse { get; private set; }
         public static BuffIndex Stealth { get; private set; }
         public static BuffIndex Petrification { get; private set; }
-        public static BuffIndex Anger { get; private set; }
+        public static BuffIndex Anger { get; private set; } //
         public static BuffIndex Buffed { get; private set; }
         public static BuffIndex BurnEnemy { get; private set; }
         public static BuffIndex PoisonEnemy { get; private set; }
         public static BuffIndex Charm { get; private set; }
         public static BuffIndex Encheesed { get; private set; }
         public static BuffIndex Fear { get; private set; }
-        public static BuffIndex Jammed { get; private set; }
+        public static BuffIndex Jammed { get; private set; } //
         public static BuffIndex Slow { get; private set; }
         public static BuffIndex Freeze { get; private set; }
         public static BuffIndex Stun { get; private set; }
@@ -65,6 +65,18 @@ namespace RiskOfBulletstorm.Items
                 name = "Enraged",
             });
             Anger = BuffAPI.Add(angerBuff);
+
+            var jammedBuff = new CustomBuff(
+            new BuffDef
+            {
+                name = "Affix_Jammed",
+                buffColor = new Color32(150, 10, 10, 255),
+                canStack = false,
+                isDebuff = false,
+                iconPath = "",
+                //eliteIndex = JammedEliteIndex,
+            });
+            Jammed = BuffAPI.Add(jammedBuff);
         }
         public override void SetupConfig()
         {
@@ -74,6 +86,7 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             GetStatCoefficients += AddRewards;
+            
         }
 
         public override void Uninstall()
@@ -84,6 +97,12 @@ namespace RiskOfBulletstorm.Items
         private void AddRewards(CharacterBody sender, StatHookEventArgs args)
         {
             if (sender.HasBuff(Anger)) { args.damageMultAdd += EnragingPhoto.instance.EnragingPhoto_DmgBoost; }
+            if (sender.HasBuff(Jammed))
+            {
+                args.damageMultAdd += Items.Curse.instance.Curse_DamageBoost;
+                args.attackSpeedMultAdd += 0.2f;
+                args.moveSpeedMultAdd += 0.2f;
+            }
         }
     }
 }

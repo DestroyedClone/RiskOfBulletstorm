@@ -73,6 +73,13 @@ Coolant Leak: Covers an area with water, dousing enemies in water.
 # Elites
 (Default: Disabled) Jammed Elites: +200% damage, +100% crit chance
 
+# Changelog
+1.1.0 - Added 7 new equipment, 1 lunar, 4 pickups, 1 white, 3 greens, 2 reds
+
+1.0.1 - Reverted dependency of R2API. Adjusted item descriptions.
+
+1.0.0 - Released!
+
 ## Credits
 Rico - Equipment Removal
 Rein - Nonspecific, DirectorAPI

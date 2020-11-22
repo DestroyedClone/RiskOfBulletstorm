@@ -21,11 +21,11 @@ namespace RiskOfBulletstorm.Items
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage, ItemTag.Utility, ItemTag.AIBlacklist });
 
         protected override string GetNameString(string langID = null) => displayName;
-        protected override string GetPickupString(string langID = null) => "";
+        protected override string GetPickupString(string langID = null) => "Sidekick No More\nBoosts stats when alone.";
 
-        protected override string GetDescString(string langid = null) => $"";
+        protected override string GetDescString(string langid = null) => $"Increases <style=cIsUtility>base movespeed by 3</style>, and <style=cIsDamage>base damage by 3</style> for every dead survivor.";
 
-        protected override string GetLoreString(string langID = null) => "";
+        protected override string GetLoreString(string langID = null) => "Now that the protagonist is dead, it's time to shine!";
 
         public override void SetupBehavior()
         {
@@ -43,11 +43,89 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
+            GetStatCoefficients += CultistPassiveItem_GetStatCoefficients;
+            On.RoR2.Stage.RespawnCharacter += Stage_RespawnCharacter;
+            On.RoR2.GlobalEventManager.OnPlayerCharacterDeath += GlobalEventManager_OnPlayerCharacterDeath;
+            On.RoR2.CharacterBody.OnInventoryChanged += CharacterBody_OnInventoryChanged;
+        }
+
+        private void CharacterBody_OnInventoryChanged(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self)
+        {
+            orig(self);
+            int InventoryCount = GetCount(self);
+            CultistPassiveComponent passiveComponent = self.gameObject.GetComponent<CultistPassiveComponent>();
+            if (InventoryCount > 0)
+            {
+                if (!passiveComponent) { passiveComponent = self.gameObject.AddComponent<CultistPassiveComponent>(); }
+                UpdateComponentForEveryone();
+            }
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
+            GetStatCoefficients -= CultistPassiveItem_GetStatCoefficients;
+            On.RoR2.Stage.RespawnCharacter -= Stage_RespawnCharacter;
+            On.RoR2.GlobalEventManager.OnPlayerCharacterDeath -= GlobalEventManager_OnPlayerCharacterDeath;
+            On.RoR2.CharacterBody.OnInventoryChanged -= CharacterBody_OnInventoryChanged;
+        }
+
+        private void CultistPassiveItem_GetStatCoefficients(CharacterBody sender, StatHookEventArgs args)
+        {
+            var component = sender.GetComponent<CultistPassiveComponent>();
+            var deadAmt = component.deadProtagonists;
+            if (component)
+            {
+                args.baseDamageAdd += 3 * deadAmt;
+                args.baseMoveSpeedAdd += 3 * deadAmt;
+            }
+        }
+
+        private void Stage_RespawnCharacter(On.RoR2.Stage.orig_RespawnCharacter orig, Stage self, CharacterMaster characterMaster)
+        {
+            orig(self, characterMaster);
+            UpdateComponentForEveryone();
+        }
+
+        private void GlobalEventManager_OnPlayerCharacterDeath(On.RoR2.GlobalEventManager.orig_OnPlayerCharacterDeath orig, GlobalEventManager self, DamageReport damageReport, NetworkUser victimNetworkUser)
+        {
+            orig(self, damageReport, victimNetworkUser);
+            UpdateComponentForEveryone();
+        }
+
+        private int GetDeadAmount()
+        {
+            int deadAmt = 0;
+            for (int i = 0; i < CharacterMaster.readOnlyInstancesList.Count; i++)
+            {
+                var player = CharacterMaster.readOnlyInstancesList[i];
+                if (player.IsDeadAndOutOfLivesServer())
+                {
+                    deadAmt++;
+                }
+            }
+            return deadAmt;
+        }
+
+        private void UpdateComponentForEveryone()
+        {
+            int AmountDead = GetDeadAmount();
+            if (AmountDead > 0)
+            {
+                foreach (var player in CharacterMaster.readOnlyInstancesList)
+                {
+                    CultistPassiveComponent passiveComponent = player.GetComponent<CultistPassiveComponent>();
+                    if (passiveComponent)
+                    {
+                        passiveComponent.deadProtagonists = AmountDead;
+                    }
+                }
+            }
+        }
+
+        public class CultistPassiveComponent : MonoBehaviour
+        {
+            public int deadProtagonists = 0;
         }
     }
 }

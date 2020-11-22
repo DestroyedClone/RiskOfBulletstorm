@@ -124,8 +124,6 @@ namespace RiskOfBulletstorm.Items
             orig(self);
         }
 
-
-
         public class BlankComponent : MonoBehaviour
         {
             public float BlankCooldown;

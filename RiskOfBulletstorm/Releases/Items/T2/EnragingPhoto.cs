@@ -58,7 +58,7 @@ namespace RiskOfBulletstorm.Items
         }
         public override void SetupAttributes()
         {
-            ROBEnraged = GungeonBuffController.instance.Anger;
+            ROBEnraged = GungeonBuffController.Anger;
             if (ItemBodyModelPrefab == null)
             {
                 ItemBodyModelPrefab = Resources.Load<GameObject>("@RiskOfBulletstorm:Assets/Models/Prefabs/EnragingPhoto.prefab");

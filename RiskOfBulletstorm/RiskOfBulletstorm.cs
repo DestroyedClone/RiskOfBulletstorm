@@ -39,7 +39,7 @@ namespace DestroyedClone
     //[BepInDependency("KookehsDropItemMod", BepInDependency.DependencyFlags.SoftDependency)]
     public class RiskofBulletstorm : BaseUnityPlugin
     {
-        public const string ModVer = "1.0.0";
+        public const string ModVer = "1.1.0";
         public const string ModName = "Risk of Bulletstorm";
         public const string ModGuid = "com.DestroyedClone.RiskOfBulletstorm";
 

@@ -11,10 +11,18 @@
   <ItemGroup>
     <Compile Remove="Items\**" />
     <Compile Remove="lib\**" />
+    <Compile Remove="Releases\Items\Boss\**" />
     <EmbeddedResource Remove="Items\**" />
     <EmbeddedResource Remove="lib\**" />
+    <EmbeddedResource Remove="Releases\Items\Boss\**" />
     <None Remove="Items\**" />
     <None Remove="lib\**" />
+    <None Remove="Releases\Items\Boss\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Releases\Items\Eqp\SupplyDrop.cs" />
+    <Compile Remove="Releases\Items\T3\CultistPassiveItem.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,6 +33,33 @@
 
   <ItemGroup>
     <EmbeddedResource Include="riskofgungeonassets" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="lib\0Harmony.dll" />
+    <None Include="lib\Assembly-CSharp.dll" />
+    <None Include="lib\Assembly-CSharp.R2API.mm.dll" />
+    <None Include="lib\BepInEx.dll" />
+    <None Include="lib\BepInEx.Harmony.dll" />
+    <None Include="lib\BepInEx.MonoMod.Loader.dll" />
+    <None Include="lib\BepInEx.Preloader.dll" />
+    <None Include="lib\ClassicItems.dll" />
+    <None Include="lib\EliteSpawningOverhaul.dll" />
+    <None Include="lib\HGCSharpUtils.dll" />
+    <None Include="lib\MMHOOK_Assembly-CSharp.dll" />
+    <None Include="lib\Mono.Cecil.dll" />
+    <None Include="lib\Mono.Cecil.Mdb.dll" />
+    <None Include="lib\Mono.Cecil.Pdb.dll" />
+    <None Include="lib\Mono.Cecil.Rocks.dll" />
+    <None Include="lib\MonoMod.RuntimeDetour.dll" />
+    <None Include="lib\MonoMod.Utils.dll" />
+    <None Include="lib\R2API.dll" />
+    <None Include="lib\TILER2.dll" />
+    <None Include="lib\UnityEngine.AssetBundleModule.dll" />
+    <None Include="lib\UnityEngine.CoreModule.dll" />
+    <None Include="lib\UnityEngine.dll" />
+    <None Include="lib\UnityEngine.Networking.dll" />
+    <None Include="lib\UnityEngine.PhysicsModule.dll" />
   </ItemGroup>
 
   <ItemGroup>

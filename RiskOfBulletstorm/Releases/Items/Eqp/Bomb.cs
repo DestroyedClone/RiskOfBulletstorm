@@ -23,7 +23,7 @@ namespace RiskOfBulletstorm.Items
 
         public override string displayName => "Bomb";
         public string descText = "Throws a bomb that explodes after a short delay";
-        public override float cooldown { get; protected set; } = 10f; //???????????
+        public override float cooldown { get; protected set; } = 12f; //???????????
 
         protected override string GetNameString(string langID = null) => displayName;
 
@@ -273,8 +273,8 @@ namespace RiskOfBulletstorm.Items
         {
             CharacterBody body = slot.characterBody;
             if (!body) return false;
-
             GameObject gameObject = slot.gameObject;
+            if (!gameObject) return false;
 
             //int DeployCount = instance.CheckEmbryoProc(body) ? 2 : 1; //Embryo Check
 

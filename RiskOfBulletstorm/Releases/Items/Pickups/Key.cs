@@ -21,9 +21,9 @@ namespace RiskOfBulletstorm.Items
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility, ItemTag.WorldUnique });
 
         protected override string GetNameString(string langID = null) => displayName;
-        protected override string GetPickupString(string langID = null) => "<style=cIsUtility>Can unlock chests.</style>\n Consumed on use.";
+        protected override string GetPickupString(string langID = null) => "<style=cIsUtility>Can unlock chests.</style>\nConsumed on use.";
 
-        protected override string GetDescString(string langid = null) => $"<style=cIsUtility>Can unlock chests.</style>\n Consumed on use.";
+        protected override string GetDescString(string langid = null) => $"<style=cIsUtility>Can unlock chests.</style>\nConsumed on use.";
 
         protected override string GetLoreString(string langID = null) => "";
 
@@ -43,49 +43,77 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            On.RoR2.PurchaseInteraction.OnInteractionBegin += InteractWithChest;
+            //On.RoR2.Interactor.PerformInteraction += Interactor_PerformInteraction;
+            On.RoR2.PurchaseInteraction.GetInteractability += PurchaseInteraction_GetInteractability;
         }
 
-        public override void Uninstall()
+        private Interactability PurchaseInteraction_GetInteractability(On.RoR2.PurchaseInteraction.orig_GetInteractability orig, PurchaseInteraction self, Interactor activator)
         {
-            base.Uninstall();
-            On.RoR2.PurchaseInteraction.OnInteractionBegin -= InteractWithChest;
-        }
-
-
-        private void InteractWithChest(On.RoR2.PurchaseInteraction.orig_OnInteractionBegin orig, PurchaseInteraction self, Interactor activator)
-        {
-            //bool CanAfford = self.CanBeAffordedByInteractor(activator);
-
-            CharacterBody characterBody = activator.GetComponent<CharacterBody>();
+            CharacterBody characterBody = self.GetComponent<CharacterBody>();
             if (characterBody)
             {
                 Inventory inventory = characterBody.inventory;
                 if (inventory)
                 {
-                    int InventoryCount = characterBody.inventory.GetItemCount(catalogIndex);
-                    if (InventoryCount > 0)
+                    if (self.isShrine == false && self.available && self.costType == CostTypeIndex.Money) //if not shrine, is available, and is not a lunar pod
                     {
-                        if (self.isShrine == false && self.available && self.costType == CostTypeIndex.Money) //if not shrine, is available, and is not a lunar pod
+                        int InventoryCount = characterBody.inventory.GetItemCount(catalogIndex);
+                        if (InventoryCount > 0)
                         {
-                            Debug.Log("Key Triggered!");
-                            self.SetAvailable(false);
-                            self.Networkavailable = false;
-
-                            self.gameObject.GetComponent<ChestBehavior>().Open();
-
-                            self.cost = 0;
-                            self.Networkcost = 0;
-
-                            self.onPurchase.Invoke(activator);
-                            self.lastActivator = activator;
-
-                            inventory.RemoveItem(catalogIndex);
+                            return Interactability.Available;
                         }
                     }
                 }
             }
-            orig(self, activator);
+            return orig(self, activator);
+        }
+
+        public override void Uninstall()
+        {
+            base.Uninstall();
+            //On.RoR2.Interactor.PerformInteraction -= Interactor_PerformInteraction;
+            On.RoR2.PurchaseInteraction.GetInteractability -= PurchaseInteraction_GetInteractability;
+        }
+
+        private void Interactor_PerformInteraction(On.RoR2.Interactor.orig_PerformInteraction orig, Interactor self, GameObject interactableObject)
+        {
+            PurchaseInteraction purchaseInteraction = interactableObject.GetComponent<PurchaseInteraction>();
+            if (purchaseInteraction)
+            {
+                //bool CanAfford = self.CanBeAffordedByInteractor(activator);
+
+                CharacterBody characterBody = self.GetComponent<CharacterBody>();
+                if (characterBody)
+                {
+                    Inventory inventory = characterBody.inventory;
+                    if (inventory)
+                    {
+                        int InventoryCount = characterBody.inventory.GetItemCount(catalogIndex);
+                        if (InventoryCount > 0)
+                        {
+                            purchaseInteraction.GetInteractability(self);
+
+                            if (purchaseInteraction.isShrine == false && purchaseInteraction.available && purchaseInteraction.costType == CostTypeIndex.Money) //if not shrine, is available, and is not a lunar pod
+                            {
+                                Debug.Log("Key Triggered!");
+                                purchaseInteraction.SetAvailable(false);
+                                purchaseInteraction.Networkavailable = false;
+
+                                purchaseInteraction.gameObject.GetComponent<ChestBehavior>().Open();
+
+                                purchaseInteraction.cost = 0;
+                                purchaseInteraction.Networkcost = 0;
+
+                                purchaseInteraction.onPurchase.Invoke(self);
+                                purchaseInteraction.lastActivator = self;
+
+                                inventory.RemoveItem(catalogIndex);
+                            }
+                        }
+                    }
+                }
+            }
+            orig(self, interactableObject);
         }
     }
 }

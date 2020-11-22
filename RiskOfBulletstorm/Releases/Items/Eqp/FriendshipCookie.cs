@@ -56,17 +56,24 @@ namespace RiskOfBulletstorm.Items
             if (!inventory) return false;
             int revivedPlayers = 0;
 
-            for (int i = 0; i < CharacterMaster.readOnlyInstancesList.Count; i++)
+            var playerList = CharacterMaster.readOnlyInstancesList;
+            int playerAmt = playerList.Count;
+
+            if (playerAmt > 1) //Multiplayer
             {
-                var player = CharacterMaster.readOnlyInstancesList[i];
-                if (player.IsDeadAndOutOfLivesServer())
+                for (int i = 0; i < playerAmt; i++)
                 {
-                    Stage.instance.RespawnCharacter(player);
-                    revivedPlayers++;
+                    var player = playerList[i];
+                    if (player.IsDeadAndOutOfLivesServer())
+                    {
+                        Stage.instance.RespawnCharacter(player);
+                        revivedPlayers++;
+                    }
                 }
             }
-            if (revivedPlayers > 0)
+            if (revivedPlayers > 0 || playerAmt == 1) //anyone revived or its singleplayer
             {
+                inventory.GiveItem(ItemIndex.Infusion);
                 inventory.SetEquipmentIndex(EquipmentIndex.None); //credit to : Rico
                 return true;
             }

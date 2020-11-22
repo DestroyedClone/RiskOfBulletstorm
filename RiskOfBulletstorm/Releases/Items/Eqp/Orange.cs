@@ -65,7 +65,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     PickupIndex loot = Run.instance.treasureRng.NextElementUniform(Run.instance.availableEquipmentDropList);
                     PickupDef def = PickupCatalog.GetPickupDef(loot);
-                    pickupIndex = PickupCatalog.FindPickupIndex(def.itemIndex);
+                    pickupIndex = PickupCatalog.FindPickupIndex(def.equipmentIndex);
                 }
             }
             orig(pickupIndex, position, velocity);

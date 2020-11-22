@@ -26,7 +26,7 @@ namespace RiskOfBulletstorm.Items
 
         public override string displayName => "Medkit";
         public string descText = "Heals";
-        public override float cooldown { get; protected set; } = 8f;
+        public override float cooldown { get; protected set; } = 90f;
 
         protected override string GetNameString(string langID = null) => displayName;
 
