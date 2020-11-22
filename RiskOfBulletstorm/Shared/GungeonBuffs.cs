@@ -26,27 +26,27 @@ namespace RiskOfBulletstorm.Items
         protected override string GetDescString(string langid = null) => $"";
 
         protected override string GetLoreString(string langID = null) => "";
-        public BuffIndex Burn { get; private set; }
-        public BuffIndex Poison { get; private set; }
-        public BuffIndex Curse { get; private set; }
-        public BuffIndex Stealth { get; private set; }
-        public BuffIndex Petrification { get; private set; }
-        public BuffIndex Anger { get; private set; }
-        public BuffIndex Buffed { get; private set; }
-        public BuffIndex BurnEnemy { get; private set; }
-        public BuffIndex PoisonEnemy { get; private set; }
-        public BuffIndex Charm { get; private set; }
-        public BuffIndex Encheesed { get; private set; }
-        public BuffIndex Fear { get; private set; }
-        public BuffIndex Jammed { get; private set; }
-        public BuffIndex Slow { get; private set; }
-        public BuffIndex Freeze { get; private set; }
-        public BuffIndex Stun { get; private set; }
-        public BuffIndex Weakened { get; private set; }
-        public BuffIndex Tangled { get; private set; }
-        public BuffIndex Encircled { get; private set; }
-        public BuffIndex Glittered { get; private set; }
-        public BuffIndex Bloody { get; private set; }
+        public static BuffIndex Burn { get; private set; }
+        public static BuffIndex Poison { get; private set; }
+        public static BuffIndex Curse { get; private set; }
+        public static BuffIndex Stealth { get; private set; }
+        public static BuffIndex Petrification { get; private set; }
+        public static BuffIndex Anger { get; private set; }
+        public static BuffIndex Buffed { get; private set; }
+        public static BuffIndex BurnEnemy { get; private set; }
+        public static BuffIndex PoisonEnemy { get; private set; }
+        public static BuffIndex Charm { get; private set; }
+        public static BuffIndex Encheesed { get; private set; }
+        public static BuffIndex Fear { get; private set; }
+        public static BuffIndex Jammed { get; private set; }
+        public static BuffIndex Slow { get; private set; }
+        public static BuffIndex Freeze { get; private set; }
+        public static BuffIndex Stun { get; private set; }
+        public static BuffIndex Weakened { get; private set; }
+        public static BuffIndex Tangled { get; private set; }
+        public static BuffIndex Encircled { get; private set; }
+        public static BuffIndex Glittered { get; private set; }
+        public static BuffIndex Bloody { get; private set; }
 
         public override void SetupBehavior()
         {

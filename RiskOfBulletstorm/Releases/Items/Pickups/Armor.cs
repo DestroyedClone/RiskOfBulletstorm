@@ -9,7 +9,7 @@ using UnityEngine.Networking;
 using TILER2;
 using static TILER2.StatHooks;
 using static TILER2.MiscUtil;
-using static RiskOfBulletstorm.Shared.BlankRelated;
+using static RiskOfBulletstorm.Shared.Blanks.MasterBlankItem;
 
 
 namespace RiskOfBulletstorm.Items
