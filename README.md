@@ -47,7 +47,7 @@ Disarming Personality: Reduces chest prices by -15% (-5% per stack)
 Roll Bomb: After using your Utility, drop 1 bomb(s) (+1 per stack) for 80% damage.
 
 ## Red
-Unity: +0.1 (+0.05 per stack) base damage per unique item in inventory
+Unity: +0.1 (+0.01 per stack) base damage per unique item in inventory
 Number 2: Boosts your damage when you're the only survivor/team:player alive.
 
 ## Lunar
@@ -65,7 +65,7 @@ Meatbun: Heals the player for 33% health. Grants double damage until the player 
 Medkit: Fully heals the player and maxes out barrier. Cooldown 3x as long as foreign fruit
 Orange: 50% less likely to be found in chests. Consuming permanently reduces recharge rate by 10% (hyperbolic), adds an infusion, fully heals the player, but is removed from the inventory.
 
-Molotov: fire throw aoe mushrum
+Molotov: Throws a molotov.
 Supply Drop: Drops an equipment beacon
 Friendship Cookie: Revives all survivors
 Coolant Leak: Covers an area with water, dousing enemies in water.

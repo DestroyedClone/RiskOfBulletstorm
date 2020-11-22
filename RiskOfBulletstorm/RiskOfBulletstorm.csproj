@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <Folder Include="Releases\Items\LunarEqp\" />
-    <Folder Include="Releases\Items\T3\" />
     <None Remove="riskofgungeonassets" />
 	  <Folder Remove="Items" />
   </ItemGroup>
