@@ -54,25 +54,17 @@ namespace RiskOfBulletstorm.Items
 
         public override void SetupBehavior()
         {
-
+            base.SetupBehavior();
         }
         public override void SetupAttributes()
         {
+            ROBEnraged = GungeonBuffController.instance.Anger;
             if (ItemBodyModelPrefab == null)
             {
                 ItemBodyModelPrefab = Resources.Load<GameObject>("@RiskOfBulletstorm:Assets/Models/Prefabs/EnragingPhoto.prefab");
                 displayRules = GenerateItemDisplayRules();
             }
             base.SetupAttributes();
-            var dmgBuff = new CustomBuff(
-            new BuffDef
-            {
-                buffColor = Color.red,
-                canStack = false,
-                isDebuff = false,
-                name = "Enraged",
-            });
-            ROBEnraged = BuffAPI.Add(dmgBuff);
         }
         private static ItemDisplayRuleDict GenerateItemDisplayRules()
         {
@@ -210,29 +202,27 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             On.RoR2.HealthComponent.TakeDamage += CalculateDamageReward;
-            GetStatCoefficients += AddDamageReward;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
             On.RoR2.HealthComponent.TakeDamage -= CalculateDamageReward;
-            GetStatCoefficients -= AddDamageReward;
         }
         private void CalculateDamageReward(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
             var InventoryCount = GetCount(self.body);
-
-            if (InventoryCount > 0 && self.body.GetBuffCount(ROBEnraged) == 0)
+            var oldHealth = self.health;
+            orig(self, damageInfo);
+            var healthCompare = (oldHealth - self.health) / self.fullHealth;
+            if (healthCompare >= EnragingPhoto_HealthThreshold)
             {
-                self.body.AddTimedBuffAuthority(ROBEnraged, (EnragingPhoto_BaseDuration + EnragingPhoto_StackDuration * (InventoryCount - 1)));
+                if (InventoryCount > 0 && self.body.GetBuffCount(ROBEnraged) == 0)
+                {
+                    self.body.AddTimedBuffAuthority(ROBEnraged, (EnragingPhoto_BaseDuration + EnragingPhoto_StackDuration * (InventoryCount - 1)));
+                }
             }
             orig(self, damageInfo);
-        }
-
-        private void AddDamageReward(CharacterBody sender, StatHookEventArgs args)
-        {
-            if (sender.HasBuff(ROBEnraged)) { args.damageMultAdd += EnragingPhoto_DmgBoost; }
         }
     }
 }

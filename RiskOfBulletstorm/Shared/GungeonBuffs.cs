@@ -73,11 +73,17 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
+            GetStatCoefficients += AddRewards;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
+            GetStatCoefficients -= AddRewards;
+        }
+        private void AddRewards(CharacterBody sender, StatHookEventArgs args)
+        {
+            if (sender.HasBuff(Anger)) { args.damageMultAdd += EnragingPhoto.instance.EnragingPhoto_DmgBoost; }
         }
     }
 }
