@@ -23,7 +23,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetNameString(string langID = null) => displayName;
         protected override string GetPickupString(string langID = null) => "Fleeting Defense\nBlocks projectiles, but shatters if its owner is wounded.";
 
-        protected override string GetDescString(string langid = null) => $"Each guon stone <style=cIsUtility>blocks a projectile or bullet</style>" +
+        protected override string GetDescString(string langid = null) => $"Orbits the player, <style=cIsUtility>blocking enemy shots on contact.</style>" +
             $"\nIf you get hit, <style=cDeath>all stacks shatter</style>.";
 
         protected override string GetLoreString(string langID = null) => "A gift from the Lady of Pane.\n\nGungeoneers who say a prayer to this silly goddess receive her blessing of three Glass Guon Stones.";
@@ -49,12 +49,22 @@ namespace RiskOfBulletstorm.Items
 
         private void OnHurt(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
-            throw new NotImplementedException();
+            int InventoryCount = GetCount(self.body);
+            if (InventoryCount > 0)
+            {
+                if (!damageInfo.rejected && damageInfo.damage > 0)
+                {
+                    Util.PlaySound("Play_char_glass_death", self.body.gameObject);
+                    self.body.inventory.RemoveItem(catalogIndex, InventoryCount);
+                }
+            }
+            orig(self, damageInfo);
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
+            On.RoR2.HealthComponent.TakeDamage -= OnHurt;
         }
     }
 }
