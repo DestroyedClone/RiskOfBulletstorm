@@ -14,8 +14,8 @@ namespace RiskOfBulletstorm.Items
     public class Orange : Equipment_V2<Orange>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Rarity? (Default: 0.2 = 20% chance to spawn)", AutoConfigFlags.PreventNetMismatch)]
-        public float Orange_Rarity { get; private set; } = 0.2f;
+        [AutoConfig("Rarity? (Default: 0.8 = 80% chance to spawn)", AutoConfigFlags.PreventNetMismatch)]
+        public float Orange_Rarity { get; private set; } = 0.8f;
 
         //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         //[AutoConfig("Cooldown? (Default: 8 = 8 seconds)", AutoConfigFlags.PreventNetMismatch)]
@@ -28,7 +28,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "You're Not Alexander\nWith this orange, your style... it's impetuous. Your defense, impregnable.";
 
-        protected override string GetDescString(string langid = null) => $"</style=cIsHealing>100% heal.</style> <style=cIsUtility>Permanently increases health by 10% and reduces equipment recharge rate by 10%</style>" +
+        protected override string GetDescString(string langid = null) => $"<style=cIsHealing>100% heal.</style> <style=cIsUtility>Permanently increases health by 10% and reduces equipment recharge rate by 10%</style>" +
             $"\n<style=cDeath>One-time Use.</style> <style=cWorldEvent>{Pct(Orange_Rarity)} rarer.</style> ";
 
         protected override string GetLoreString(string langID = null) => "";
@@ -87,7 +87,7 @@ namespace RiskOfBulletstorm.Items
             for (int i = 0; i < DeployCount; i++)
             {
                 inventory.GiveItem(ItemIndex.BoostHp);
-                inventory.GiveItem(ItemIndex.AlienHead);
+                inventory.GiveItem(ItemIndex.BoostEquipmentRecharge);
                 health.HealFraction(1, default);
             }
             inventory.SetEquipmentIndex(EquipmentIndex.None); //credit to : Rico

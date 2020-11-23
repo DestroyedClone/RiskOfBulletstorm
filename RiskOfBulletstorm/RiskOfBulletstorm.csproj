@@ -12,12 +12,15 @@
     <Compile Remove="Items\**" />
     <Compile Remove="lib\**" />
     <Compile Remove="Releases\Items\Boss\**" />
+    <Compile Remove="Releases\Items\Elites\**" />
     <EmbeddedResource Remove="Items\**" />
     <EmbeddedResource Remove="lib\**" />
     <EmbeddedResource Remove="Releases\Items\Boss\**" />
+    <EmbeddedResource Remove="Releases\Items\Elites\**" />
     <None Remove="Items\**" />
     <None Remove="lib\**" />
     <None Remove="Releases\Items\Boss\**" />
+    <None Remove="Releases\Items\Elites\**" />
   </ItemGroup>
 
   <ItemGroup>

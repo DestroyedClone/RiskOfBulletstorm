@@ -22,8 +22,8 @@ namespace RiskOfBulletstorm.Items
         public float EnragingPhoto_StackDuration { get; private set; } = 0.25f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What percent of health lost should activate the Enraging Photo's damage bonus? (Default: 0.33 (33%))", AutoConfigFlags.PreventNetMismatch)]
-        public float EnragingPhoto_HealthThreshold { get; private set; } = 0.33f;
+        [AutoConfig("What percent of health lost should activate the Enraging Photo's damage bonus? (Default: 0.11 = 11%)", AutoConfigFlags.PreventNetMismatch)]
+        public float EnragingPhoto_HealthThreshold { get; private set; } = 0.11f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How much should your damage be increased when Enraging Photo activates? (Default: 1.00 (+100% damage))", AutoConfigFlags.PreventNetMismatch)]

@@ -296,7 +296,7 @@ namespace RiskOfBulletstorm.Items
                     {
 
                         var InventoryCount = body.inventory.GetItemCount(catalogIndex);
-                        Debug.Log("Mustache: " + activator.ToString() + "|" + activator.gameObject.ToString() + " bought from " + self.ToString());
+                        //Debug.Log("Mustache: " + activator.ToString() + "|" + activator.gameObject.ToString() + " bought from " + self.ToString());
                         if (InventoryCount > 0)
                         {
                             CharacterBody component = activator.GetComponent<CharacterBody>();

@@ -106,7 +106,7 @@ namespace RiskOfBulletstorm.Items
 
             health.HealFraction(Meatbun_HealAmount, default);
             body.AddBuff(MeatbunBoost);
-            if (instance.CheckEmbryoProc(body)) body.AddBuff(MeatbunBoost);
+            if (instance.CheckEmbryoProc(body)) health.HealFraction(Meatbun_HealAmount, default);
             return true;
         }
     }
