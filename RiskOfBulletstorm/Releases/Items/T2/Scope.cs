@@ -13,6 +13,7 @@ using static TILER2.StatHooks;
 using static TILER2.MiscUtil;
 using System;
 using RoR2.Projectile;
+using EntityStates;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -42,6 +43,8 @@ namespace RiskOfBulletstorm.Items
 
         public static GameObject ItemBodyModelPrefab;
         //private static GameObject REXPrefab = EntityStates.Treebot.Weapon.FireSyringe.projectilePrefab;
+        //private static readonly string NailgunMuzzleName = BaseNailgunState.muzzleName;
+        //private static readonly GameObject NailgunTracer = BaseNailgunState.tracerEffectPrefab;
 
         public Scope()
         {
@@ -395,22 +398,32 @@ namespace RiskOfBulletstorm.Items
         private void BulletAttack_Fire(On.RoR2.BulletAttack.orig_Fire orig, BulletAttack self)
         {
             //doesn't work on MULT?????
-            int InventoryCount = self.owner.GetComponent<CharacterBody>().inventory.GetItemCount(catalogIndex);
-            if (InventoryCount > 0)
+            CharacterBody characterBody = self.owner.GetComponent<CharacterBody>();
+            if (characterBody)
             {
-                var ResultMult = 1 - (Scope_SpreadReduction + Scope_SpreadReductionStack * (InventoryCount - 1));
-                //self.maxSpread = Mathf.Max(self.maxSpread * ResultMult * 0.75f, 2 * ResultMult);
+                int InventoryCount = characterBody.inventory.GetItemCount(catalogIndex);
+                if (InventoryCount > 0)
+                {
+                    var ResultMult = 1 - (Scope_SpreadReduction + Scope_SpreadReductionStack * (InventoryCount - 1));
+                    //self.maxSpread = Mathf.Max(self.maxSpread * ResultMult * 0.75f, 2 * ResultMult);
 
-                //var oldMax = self.maxSpread;
-                self.maxSpread = Mathf.Max(self.maxSpread * ResultMult, 0);
+                    characterBody.SetSpreadBloom(Mathf.Min(0, characterBody.spreadBloomAngle * ResultMult), false); //should affect MULT
 
-                //var oldMin = self.minSpread;
-                self.minSpread = Mathf.Min(0, self.minSpread * ResultMult);
+                    //var oldMax = self.maxSpread;
+                    self.maxSpread = Mathf.Max(self.maxSpread * ResultMult, 0);
 
-                //self.owner.GetComponent<CharacterBody>().SetSpreadBloom(ResultMult, false);
-                //Debug.Log("Scope: Max:" + oldMax.ToString() + "=>" + self.maxSpread.ToString());
-                //Debug.Log("Scope: Min:" + oldMin.ToString() + "=>" + self.minSpread.ToString());
+                    //var oldMin = self.minSpread;
+                    self.minSpread = Mathf.Min(0, self.minSpread * ResultMult);
 
+                    self.spreadPitchScale = Mathf.Min(0, self.spreadPitchScale * ResultMult);
+                    self.spreadYawScale = Mathf.Min(0, self.spreadYawScale * ResultMult);
+
+
+                    //self.owner.GetComponent<CharacterBody>().SetSpreadBloom(ResultMult, false);
+                    //Debug.Log("Scope: Max:" + oldMax.ToString() + "=>" + self.maxSpread.ToString());
+                    //Debug.Log("Scope: Min:" + oldMin.ToString() + "=>" + self.minSpread.ToString());
+
+                }
             }
             orig(self);
         }
