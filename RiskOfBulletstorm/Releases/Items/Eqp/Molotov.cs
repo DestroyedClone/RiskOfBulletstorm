@@ -14,17 +14,17 @@ namespace RiskOfBulletstorm.Items
     public class Molotov : Equipment_V2<Molotov>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Damage?? (Default: 0.6 = 60% dps)", AutoConfigFlags.PreventNetMismatch)]
-        public float Molotov_Damage { get; private set; } = 0.6f;
+        [AutoConfig("Damage?? (Default: 0.2 = 20% dps)", AutoConfigFlags.PreventNetMismatch)]
+        public float Molotov_Damage { get; private set; } = 0.2f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Frequency of damage ticks? Formula is (1 / Molotov_Frequency)" +
-            "\n(Default: 20 = Every 1/20th of a second)", AutoConfigFlags.PreventNetMismatch)]
-        public float Molotov_Frequency { get; private set; } = 20f;
+            "\n(Default: 40 = Every 1/40th of a second)", AutoConfigFlags.PreventNetMismatch)]
+        public float Molotov_Frequency { get; private set; } = 40f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Duration?? (Default: 20 = 20 seconds)", AutoConfigFlags.PreventNetMismatch)]
-        public float Molotov_Duration { get; private set; } = 20f;
+        [AutoConfig("Duration?? (Default: 8 seconds)", AutoConfigFlags.PreventNetMismatch)]
+        public float Molotov_Duration { get; private set; } = 8f;
 
         //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         //[AutoConfig("Cooldown? (Default: 8 = 8 seconds)", AutoConfigFlags.PreventNetMismatch)]
@@ -32,7 +32,7 @@ namespace RiskOfBulletstorm.Items
 
         public override string displayName => "Molotov";
         public string descText = "Upon use, throws a Molotov that sets an area on fire";
-        public override float cooldown { get; protected set; } = 35f; //???????????
+        public override float cooldown { get; protected set; } = 35f;
 
         protected override string GetNameString(string langID = null) => displayName;
 
