@@ -108,6 +108,7 @@ namespace RiskOfBulletstorm.Items
 
             if (obj.teamComponent.teamIndex != TeamIndex.Player)
             {
+                Chat.AddMessage("Curse: Rolled with " + RollValue + " with item count: " + PlayerItemCount);
                 if (Util.CheckRoll(RollValue))
                 {
                     Chat.AddMessage("Jammed Enemy with chance:"+RollValue);

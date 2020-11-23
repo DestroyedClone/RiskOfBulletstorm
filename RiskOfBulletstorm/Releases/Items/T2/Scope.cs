@@ -378,7 +378,7 @@ namespace RiskOfBulletstorm.Items
                         int InventoryCount = cb.inventory.GetItemCount(catalogIndex);
                         if (InventoryCount > 0)
                         {
-                            var ResultMult = Mathf.Max((Scope_SpreadReduction + Scope_SpreadReductionStack * (InventoryCount - 1)), 1);
+                            var ResultMult = (Scope_SpreadReduction + Scope_SpreadReductionStack * (InventoryCount - 1));
                             InputBankTest input = cb.inputBank;
                             if (input)
                             {
@@ -389,15 +389,15 @@ namespace RiskOfBulletstorm.Items
 
                                 if (fireProjectileInfo.projectilePrefab == REXPrefab)
                                 {
-                                    Chat.AddMessage("Syringe fired");
-                                    fireProjectileInfo.rotation = UpdatedAngle;
+                                    //Chat.AddMessage("Syringe fired");
                                 }
                                 //if (inventory.currentEquipmentIndex == EquipmentIndex.Saw)
                                 else if (fireProjectileInfo.projectilePrefab == SawPrefab)
                                 {
-                                    Chat.AddMessage("Saws fired");
-                                    fireProjectileInfo.rotation = UpdatedAngle;
+                                    //Chat.AddMessage("Saws fired");
                                 }
+                                //Chat.AddMessage("Scope Lerp: " + aimDir + " and " + rotation + " resulting " + UpdatedAngle);
+                                fireProjectileInfo.rotation = UpdatedAngle;
                             }
                         }
                     }

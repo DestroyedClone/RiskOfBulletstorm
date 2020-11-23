@@ -80,8 +80,9 @@ namespace RiskOfBulletstorm.Items
                 //Debug.Log("DisarmPerson: Chest Found!", self);
                 if (InventoryCount > 0)
                 {
-                    var ResultMult = Mathf.Min(1 - DisarmingPersonality_CostReductionAmount + DisarmingPersonality_CostReductionAmountStack * (InventoryCount - 1), 0);
-                    //Debug.Log("DisarmPerson: Cost(" + self.cost.ToString()+")=>"+ ((int)Mathf.Ceil(self.cost * ResultMult)).ToString(), self);
+                    var ResultMultUnclamp = 1 - DisarmingPersonality_CostReductionAmount + DisarmingPersonality_CostReductionAmountStack * (InventoryCount - 1);
+                    var ResultMult = Mathf.Min(ResultMultUnclamp, 0);
+                    Debug.Log("DisarmPerson: Cost(" + self.cost+")=>"+ ((int)Mathf.Ceil(self.cost * ResultMult))+ " by "+ResultMultUnclamp+" shrunk to "+ ResultMult, self);
                     self.cost = (int)Mathf.Ceil(self.cost * ResultMult);
                 }
             }

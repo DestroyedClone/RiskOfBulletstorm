@@ -43,23 +43,28 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            //On.RoR2.Interactor.PerformInteraction += Interactor_PerformInteraction;
+            On.RoR2.Interactor.PerformInteraction += Interactor_PerformInteraction;
             On.RoR2.PurchaseInteraction.GetInteractability += PurchaseInteraction_GetInteractability;
         }
 
         private Interactability PurchaseInteraction_GetInteractability(On.RoR2.PurchaseInteraction.orig_GetInteractability orig, PurchaseInteraction self, Interactor activator)
         {
-            CharacterBody characterBody = self.GetComponent<CharacterBody>();
+            //Chat.AddMessage("Key: Entered Hook with "+self+" and "+activator);
+            CharacterBody characterBody = activator.GetComponent<CharacterBody>();
             if (characterBody)
             {
+                //Chat.AddMessage("Key: Entered CB");
                 Inventory inventory = characterBody.inventory;
                 if (inventory)
                 {
+                    //Chat.AddMessage("Key: Entered Inv");
                     if (self.isShrine == false && self.available && self.costType == CostTypeIndex.Money) //if not shrine, is available, and is not a lunar pod
                     {
+                        //Chat.AddMessage("Key: Entered Primary Check");
                         int InventoryCount = characterBody.inventory.GetItemCount(catalogIndex);
                         if (InventoryCount > 0)
                         {
+                            Chat.AddMessage("Key: Entered Worked!");
                             return Interactability.Available;
                         }
                     }
@@ -71,7 +76,7 @@ namespace RiskOfBulletstorm.Items
         public override void Uninstall()
         {
             base.Uninstall();
-            //On.RoR2.Interactor.PerformInteraction -= Interactor_PerformInteraction;
+            On.RoR2.Interactor.PerformInteraction -= Interactor_PerformInteraction;
             On.RoR2.PurchaseInteraction.GetInteractability -= PurchaseInteraction_GetInteractability;
         }
 

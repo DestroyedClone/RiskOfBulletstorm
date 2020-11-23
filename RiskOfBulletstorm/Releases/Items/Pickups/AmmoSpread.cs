@@ -68,6 +68,8 @@ namespace RiskOfBulletstorm.Items
             GiveAmmoToTeam ammoToTeam = self.GetComponent<GiveAmmoToTeam>();
             if (ammoToTeam)
             {
+                Chat.AddMessage("AmmoSpread: Player walked into");
+                int AppliedPlayers = 0;
                 TeamComponent[] array2 = UnityEngine.Object.FindObjectsOfType<TeamComponent>(); //gorag opus yoink
                 //TeamIndex teamIndex = other.gameObject.GetComponent<TeamComponent>().teamIndex;
                 //SkillLocator skillLocator = other.GetComponent<SkillLocator>();
@@ -76,8 +78,21 @@ namespace RiskOfBulletstorm.Items
                     if (array2[i].teamIndex == TeamIndex.Player)
                     {
                         //array2[i].GetComponent<CharacterBody>().AddTimedBuff(BuffIndex.TeamWarCry, 7f);
-                        array2[i].GetComponent<SkillLocator>().ApplyAmmoPack();
+                        array2[i].GetComponent<CharacterBody>().GetComponent<SkillLocator>().ApplyAmmoPack();
+                        Chat.AddMessage("AmmoSpread: "+ array2[i]+" applied!");
+                        EffectManager.SimpleEffect(self.pickupEffect, self.transform.position, Quaternion.identity, true);
                     }
+                }
+                SkillLocator skillLocator = other.GetComponent<SkillLocator>();
+                if (skillLocator)
+                {
+                    AppliedPlayers++;
+                    skillLocator.ApplyAmmoPack();
+                    Chat.AddMessage("AmmoSpread: Given to "+other);
+                }
+                if (AppliedPlayers > 0)
+                {
+                    UnityEngine.Object.Destroy(self.baseObject);
                 }
             }
             orig(self, other);
@@ -88,7 +103,7 @@ namespace RiskOfBulletstorm.Items
             
             if (pickupIndex == PickupCatalog.FindPickupIndex(catalogIndex)) //safety to prevent softlocks
             {
-                pickupIndex = PickupCatalog.FindPickupIndex(ItemIndex.None);
+                pickupIndex = PickupCatalog.FindPickupIndex(ItemIndex.Syringe);
                 SpawnAmmoPickup(body.gameObject.transform.position);
             }
 

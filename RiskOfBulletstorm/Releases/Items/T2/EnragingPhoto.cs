@@ -213,7 +213,7 @@ namespace RiskOfBulletstorm.Items
             var oldHealth = self.health;
             orig(self, damageInfo);
             var healthCompare = (oldHealth - self.health) / self.fullHealth;
-            Chat.AddMessage("angry photo health comparison: "+healthCompare+"");
+            //Chat.AddMessage("angry photo health comparison: "+healthCompare+"");
             if (healthCompare >= EnragingPhoto_HealthThreshold)
             {
                 if (InventoryCount > 0 && self.body.GetBuffCount(AngerBuff) == 0)
