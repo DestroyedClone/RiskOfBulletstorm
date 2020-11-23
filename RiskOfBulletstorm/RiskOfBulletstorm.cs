@@ -47,8 +47,13 @@ namespace DestroyedClone
         internal static FilingDictionary<CatalogBoilerplate> masterItemList = new FilingDictionary<CatalogBoilerplate>();
 
         private static ConfigFile ConfigFile;
+
+        internal static BepInEx.Logging.ManualLogSource _logger;
+
         private void Awake()
         {
+            _logger = Logger;
+
             using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("RiskOfBulletstorm.riskofgungeonassets"))
             {
                 var bundle = AssetBundle.LoadFromStream(stream);

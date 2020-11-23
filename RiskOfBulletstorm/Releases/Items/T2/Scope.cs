@@ -42,9 +42,10 @@ namespace RiskOfBulletstorm.Items
             "\n 6:02 - [Kate] Scratch that, this is ACTUALLY reducing the spread of bullets. I'm kinda curious how it works, but I'll study it back at the Breach later.";
 
         public static GameObject ItemBodyModelPrefab;
-        //private static GameObject REXPrefab = EntityStates.Treebot.Weapon.FireSyringe.projectilePrefab;
+        private static readonly GameObject REXPrefab = EntityStates.Treebot.Weapon.FireSyringe.projectilePrefab;
         //private static readonly string NailgunMuzzleName = BaseNailgunState.muzzleName;
         //private static readonly GameObject NailgunTracer = BaseNailgunState.tracerEffectPrefab;
+        private static readonly GameObject SawPrefab = Resources.Load<GameObject>("Prefabs/Projectiles/Sawmerang");
 
         public Scope()
         {
@@ -360,39 +361,56 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             On.RoR2.BulletAttack.Fire += BulletAttack_Fire;
-            //On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += ProjectileManager_FireProjectile_FireProjectileInfo;
+            On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += ProjectileManager_FireProjectile_FireProjectileInfo;
         }
 
-        /*private void ProjectileManager_FireProjectile_FireProjectileInfo(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_FireProjectileInfo orig, ProjectileManager self, FireProjectileInfo fireProjectileInfo)
-        { Doesnt work hahahahahahhah :(
-            var owner = fireProjectileInfo.owner;
+        private void ProjectileManager_FireProjectile_FireProjectileInfo(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_FireProjectileInfo orig, ProjectileManager self, FireProjectileInfo fireProjectileInfo)
+        {
+            GameObject owner = fireProjectileInfo.owner;
             if (owner)
             {
-                var cb = owner.GetComponent<CharacterBody>();
+                CharacterBody cb = owner.GetComponent<CharacterBody>();
                 if (cb)
                 {
-                    int invcount = cb.inventory.GetItemCount(catalogIndex);
-                    if (invcount > 2)
+                    Inventory inventory = cb.inventory;
+                    if (inventory)
                     {
-                        if (cb.inputBank)
+                        int InventoryCount = cb.inventory.GetItemCount(catalogIndex);
+                        if (InventoryCount > 0)
                         {
-                            var aimDir = Util.QuaternionSafeLookRotation(cb.inputBank.aimDirection);
-
-                            if (fireProjectileInfo.projectilePrefab == REXPrefab)
+                            var ResultMult = Mathf.Max((Scope_SpreadReduction + Scope_SpreadReductionStack * (InventoryCount - 1)), 1);
+                            InputBankTest input = cb.inputBank;
+                            if (input)
                             {
-                                fireProjectileInfo.rotation = aimDir;
+                                Quaternion aimDir = Util.QuaternionSafeLookRotation(input.aimDirection);
+                                Quaternion rotation = fireProjectileInfo.rotation;
+
+                                Quaternion UpdatedAngle = Quaternion.Lerp(rotation, aimDir, ResultMult);
+
+                                if (fireProjectileInfo.projectilePrefab == REXPrefab)
+                                {
+                                    Chat.AddMessage("Syringe fired");
+                                    fireProjectileInfo.rotation = UpdatedAngle;
+                                }
+                                //if (inventory.currentEquipmentIndex == EquipmentIndex.Saw)
+                                else if (fireProjectileInfo.projectilePrefab == SawPrefab)
+                                {
+                                    Chat.AddMessage("Saws fired");
+                                    fireProjectileInfo.rotation = UpdatedAngle;
+                                }
                             }
                         }
                     }
                 }
             }
             orig(self, fireProjectileInfo);
-        }*/
+        }
 
         public override void Uninstall()
         {
             base.Uninstall();
             On.RoR2.BulletAttack.Fire -= BulletAttack_Fire;
+            On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo -= ProjectileManager_FireProjectile_FireProjectileInfo;
         }
 
         private void BulletAttack_Fire(On.RoR2.BulletAttack.orig_Fire orig, BulletAttack self)

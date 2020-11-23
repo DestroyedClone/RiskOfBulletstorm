@@ -19,7 +19,8 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "It's Delicious!\nBaked fresh every morning by Mom! It's to die for! Or, just maybe, to live for.";
 
-        protected override string GetDescString(string langid = null) => $"Upon use, <style=cIsHealing>revives all players</style>.";
+        protected override string GetDescString(string langid = null) => $"Upon use, <style=cIsHealing>revives all players</style>. Consumed." +
+            $"\n SINGLEPLAYER: Gives an infusion. Consumed.";
 
         protected override string GetLoreString(string langID = null) => "Baked fresh every morning by Mom! It's to die for! Or, just maybe, to live for.";
 
@@ -71,9 +72,10 @@ namespace RiskOfBulletstorm.Items
                     }
                 }
             }
+            if (playerAmt == 1) inventory.GiveItem(ItemIndex.Infusion);
+
             if (revivedPlayers > 0 || playerAmt == 1) //anyone revived or its singleplayer
             {
-                inventory.GiveItem(ItemIndex.Infusion);
                 inventory.SetEquipmentIndex(EquipmentIndex.None); //credit to : Rico
                 return true;
             }

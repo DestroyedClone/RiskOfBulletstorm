@@ -49,8 +49,7 @@ namespace RiskOfBulletstorm.Items
         //private static List<RoR2.CharacterBody> Playername = new List<RoR2.CharacterBody>();
 
         public static GameObject ItemBodyModelPrefab;
-
-        public BuffIndex ROBEnraged { get; private set; }
+        private static readonly BuffIndex AngerBuff = GungeonBuffController.Anger;
 
         public override void SetupBehavior()
         {
@@ -58,7 +57,6 @@ namespace RiskOfBulletstorm.Items
         }
         public override void SetupAttributes()
         {
-            ROBEnraged = GungeonBuffController.Anger;
             if (ItemBodyModelPrefab == null)
             {
                 ItemBodyModelPrefab = Resources.Load<GameObject>("@RiskOfBulletstorm:Assets/Models/Prefabs/EnragingPhoto.prefab");
@@ -215,11 +213,12 @@ namespace RiskOfBulletstorm.Items
             var oldHealth = self.health;
             orig(self, damageInfo);
             var healthCompare = (oldHealth - self.health) / self.fullHealth;
+            Chat.AddMessage("angry photo health comparison: "+healthCompare+"");
             if (healthCompare >= EnragingPhoto_HealthThreshold)
             {
-                if (InventoryCount > 0 && self.body.GetBuffCount(ROBEnraged) == 0)
+                if (InventoryCount > 0 && self.body.GetBuffCount(AngerBuff) == 0)
                 {
-                    self.body.AddTimedBuffAuthority(ROBEnraged, (EnragingPhoto_BaseDuration + EnragingPhoto_StackDuration * (InventoryCount - 1)));
+                    self.body.AddTimedBuffAuthority(AngerBuff, (EnragingPhoto_BaseDuration + EnragingPhoto_StackDuration * (InventoryCount - 1)));
                 }
             }
             orig(self, damageInfo);

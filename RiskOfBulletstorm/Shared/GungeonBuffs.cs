@@ -86,7 +86,6 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             GetStatCoefficients += AddRewards;
-            
         }
 
         public override void Uninstall()

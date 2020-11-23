@@ -7,6 +7,7 @@ using UnityEngine.Networking;
 using TILER2;
 using static TILER2.MiscUtil;
 using ThinkInvisible.ClassicItems;
+using RiskOfBulletstorm;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -63,6 +64,7 @@ namespace RiskOfBulletstorm.Items
             {
                 if (!Util.CheckRoll(Orange_Rarity, body.master)) //rarity roll
                 {
+                    Chat.AddMessage("Orange was re-rolled!");
                     PickupIndex loot = Run.instance.treasureRng.NextElementUniform(Run.instance.availableEquipmentDropList);
                     PickupDef def = PickupCatalog.GetPickupDef(loot);
                     pickupIndex = PickupCatalog.FindPickupIndex(def.equipmentIndex);

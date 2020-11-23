@@ -104,12 +104,13 @@ namespace RiskOfBulletstorm.Items
                 default:
                     RollValue = 0.50f;
                     break;
-            }
+            } //adjusts jammed chance
 
             if (obj.teamComponent.teamIndex != TeamIndex.Player)
             {
                 if (Util.CheckRoll(RollValue))
                 {
+                    Chat.AddMessage("Jammed Enemy with chance:"+RollValue);
                     obj.AddBuff(GungeonBuffController.Jammed);
                 }
             }
