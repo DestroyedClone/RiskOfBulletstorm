@@ -82,11 +82,11 @@ namespace RiskOfBulletstorm.Items
                 if (instance.CheckEmbryoProc(body))
                 {
                     AttemptUnlock(BestInteractableObject, interactionDriver);
-                    body.inventory.SetEquipmentIndex(EquipmentIndex.None);
+                    Util.PlaySound(EntityStates.Engi.EngiWeapon.FireMines.throwMineSoundString, body.gameObject);
                 }
             } else
             {
-                body.inventory.SetEquipmentIndex(EquipmentIndex.None);
+                Util.PlaySound(EntityStates.Engi.EngiWeapon.FireMines.throwMineSoundString, body.gameObject);
             }
             return true;
         }
