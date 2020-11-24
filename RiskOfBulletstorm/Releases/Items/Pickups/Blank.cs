@@ -59,7 +59,6 @@ namespace RiskOfBulletstorm.Items
             "4:33 PM - [LOG] EmptyMessage: The following transcription was automatically sent without any body. Did you accidentally hit send?\n\n" +
             "12:00 PM - [Kyle] Guess what happened?";
 
-        public bool BlankUsed = false;
         public Blank()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Blank.prefab";
@@ -82,6 +81,7 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             On.RoR2.CharacterBody.FixedUpdate += CharacterBody_FixedUpdate;
+            //On.RoR2.UI.ChatBox.
         }
 
         public override void Uninstall()
@@ -96,9 +96,9 @@ namespace RiskOfBulletstorm.Items
                 // var BlankComponent = self.master.AddComponent<BlankComponent>();
                 BlankComponent BlankComponent = self.master.GetComponent<BlankComponent>();
                 if (!BlankComponent) { BlankComponent = self.masterObject.AddComponent<BlankComponent>(); }
+                bool BlankUsed = BlankComponent.BlankUsed;
 
                 var InventoryCount = GetCount(self);
-
                 if (InventoryCount > 0)
                 {
                     //if (BlankComponent.BlankCooldown > 0) Debug.Log(BlankComponent.BlankCooldown.ToString(), self);
@@ -110,7 +110,6 @@ namespace RiskOfBulletstorm.Items
                             BlankUsed = false;
                             if (Input.GetKeyDown(BlankButton) && !BlankUsed)
                             {
-                                Chat.AddMessage("Blank: Blank Used!");
                                 BlankUsed = true;
 
                                 //self.inventory.RemoveItem(catalogIndex);
@@ -126,7 +125,8 @@ namespace RiskOfBulletstorm.Items
 
         public class BlankComponent : MonoBehaviour
         {
-            public float BlankCooldown;
+            public float BlankCooldown = Blank.instance.ConfigBlankCooldown;
+            public bool BlankUsed = false;
         }
     }
 }

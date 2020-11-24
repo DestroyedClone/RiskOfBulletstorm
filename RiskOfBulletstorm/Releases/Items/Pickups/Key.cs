@@ -105,8 +105,8 @@ namespace RiskOfBulletstorm.Items
 
                                 purchaseInteraction.gameObject.GetComponent<ChestBehavior>().Open();
 
-                                purchaseInteraction.cost = 0;
-                                purchaseInteraction.Networkcost = 0;
+                                //purchaseInteraction.cost = 0;
+                                //purchaseInteraction.Networkcost = 0;
 
                                 purchaseInteraction.onPurchase.Invoke(self);
                                 purchaseInteraction.lastActivator = self;

@@ -24,7 +24,7 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("Cooldown? (Default: 8 = 8 seconds)", AutoConfigFlags.PreventNetMismatch)]
         public float TrustyLockpicks_Cooldown { get; private set; } = 8f;
 
-        public override string displayName => "Portable Table Device";
+        public override string displayName => "Trusty Lockpicks";
         public override float cooldown { get; protected set; } = 35f;
 
         protected override string GetNameString(string langID = null) => displayName;
@@ -37,6 +37,7 @@ namespace RiskOfBulletstorm.Items
 
         private readonly PickupIndex BFGPickupIndex = PickupCatalog.FindPickupIndex(EquipmentIndex.BFG);
         private readonly PickupIndex SyringePickupIndex = PickupCatalog.FindPickupIndex(ItemIndex.Syringe);
+        private readonly string unlockSound = EntityStates.Engi.EngiWeapon.FireMines.throwMineSoundString;
 
         public override void SetupBehavior()
         {
@@ -75,20 +76,19 @@ namespace RiskOfBulletstorm.Items
             PurchaseInteraction purchaseInteraction = BestInteractableObject.GetComponent<PurchaseInteraction>();
             if (!purchaseInteraction) return false;
 
+            float newUnlockChance = TrustyLockpicks_UnlockChance;
+            if (instance.CheckEmbryoProc(body)) newUnlockChance += (newUnlockChance * newUnlockChance);
+
             //interactionDriver.interactor.interactableCooldown = 0.25f;
 
-            if (!AttemptUnlock(BestInteractableObject, interactionDriver))
+            if (AttemptUnlock(BestInteractableObject, interactionDriver)) //if the first roll failed
             {
-                if (instance.CheckEmbryoProc(body))
-                {
-                    AttemptUnlock(BestInteractableObject, interactionDriver);
-                    Util.PlaySound(EntityStates.Engi.EngiWeapon.FireMines.throwMineSoundString, body.gameObject);
-                }
+                return true;
             } else
             {
-                Util.PlaySound(EntityStates.Engi.EngiWeapon.FireMines.throwMineSoundString, body.gameObject);
+                Chat.AddMessage("failed unlcok");
+                return false;
             }
-            return true;
         }
 
         private bool AttemptUnlock(GameObject chestObject, InteractionDriver interactionDriver)
@@ -96,12 +96,36 @@ namespace RiskOfBulletstorm.Items
             Highlight highlight = chestObject.GetComponent<Highlight>();
             PurchaseInteraction purchaseInteraction = chestObject.GetComponent<PurchaseInteraction>();
             if (!highlight) return false;
-            if (highlight.pickupIndex != BFGPickupIndex) return false;
+            //if (highlight.pickupIndex != BFGPickupIndex) return false;
             if (!purchaseInteraction) return false;
+            TrustyLockpickFailed attempted = chestObject.GetComponent<TrustyLockpickFailed>();
+            if (attempted) return false;
+
             if (!purchaseInteraction.isShrine && purchaseInteraction.available && purchaseInteraction.costType == CostTypeIndex.Money)
             {
-                interactionDriver.interactor.AttemptInteraction(chestObject);
-                return true;
+                Interactor interactor = interactionDriver.interactor;
+                //interactionDriver.interactor.AttemptInteraction(chestObject);
+                if (Util.CheckRoll(TrustyLockpicks_UnlockChance))
+                {
+                    purchaseInteraction.SetAvailable(false);
+                    purchaseInteraction.Networkavailable = false;
+
+                    purchaseInteraction.gameObject.GetComponent<ChestBehavior>().Open();
+
+                    //purchaseInteraction.cost = 0;
+                    //purchaseInteraction.Networkcost = 0;
+
+                    purchaseInteraction.onPurchase.Invoke(interactor);
+                    purchaseInteraction.lastActivator = interactor;
+                    Util.PlaySound(unlockSound, RoR2Application.instance.gameObject);
+                    return true;
+                } else
+                {
+                    purchaseInteraction.cost = Mathf.CeilToInt(purchaseInteraction.cost * TrustyLockpicks_PriceHike);
+                    purchaseInteraction.Networkcost = purchaseInteraction.cost;
+                    chestObject.AddComponent<TrustyLockpickFailed>();
+                    return true;
+                }
             }
             else
             {
@@ -115,7 +139,10 @@ namespace RiskOfBulletstorm.Items
             if (!highlight) return orig(self, activator);
 
             PickupIndex h_pickupIndex = highlight.pickupIndex;
-            if (h_pickupIndex != BFGPickupIndex) return orig(self, activator);
+            if (h_pickupIndex == BFGPickupIndex) return orig(self, activator);
+
+            TrustyLockpickFailed attempted = self.gameObject.GetComponent<TrustyLockpickFailed>();
+            if (attempted) return orig(self, activator);
 
             CharacterBody characterBody = activator.GetComponent<CharacterBody>();
             if (characterBody)
@@ -138,7 +165,12 @@ namespace RiskOfBulletstorm.Items
             return orig(self, activator);
         }
 
-        private void Interactor_PerformInteraction(On.RoR2.Interactor.orig_PerformInteraction orig, Interactor self, GameObject interactableObject)
+        private class TrustyLockpickFailed : MonoBehaviour
+        {
+
+        }
+
+        /*private void Interactor_PerformInteraction(On.RoR2.Interactor.orig_PerformInteraction orig, Interactor self, GameObject interactableObject)
         {
             Highlight highlight = interactableObject.GetComponent<Highlight>();
             if (!highlight)
@@ -182,6 +214,6 @@ namespace RiskOfBulletstorm.Items
                 }
             }
             orig(self, interactableObject);
-        }
+        }*/
     }
 }

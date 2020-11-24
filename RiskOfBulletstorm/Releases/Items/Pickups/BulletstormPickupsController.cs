@@ -30,9 +30,9 @@ namespace RiskOfBulletstorm.Items
 
         private int globalDeaths = 0;
 
-        private readonly int StageMultiplier = 2;
-        private readonly int DifficultyMultiplier = 1;
-        private readonly int KillRequirement = 20;
+        //private readonly int StageMultiplier = 2;
+        //private readonly int DifficultyMultiplier = 1;
+        private readonly int KillRequirement = 10;
 
         private readonly PickupIndex KeyIndex = Key.instance.pickupIndex;
         private readonly PickupIndex BlankIndex = Blank.instance.pickupIndex;
@@ -42,18 +42,19 @@ namespace RiskOfBulletstorm.Items
 
         //WeightedSelection<PickupIndex> weightedSelection = new WeightedSelection<PickupIndex>();
 
-        WeightedSelection<PickupIndex> weightedSelection = new WeightedSelection<PickupIndex>();
+        private WeightedSelection<PickupIndex> weightedSelection;
 
         public override void SetupBehavior()
         {
-
+            base.SetupBehavior();
         }
         public override void SetupAttributes()
         {
             base.SetupAttributes();
+            weightedSelection = new WeightedSelection<PickupIndex>();
             weightedSelection.AddChoice(KeyIndex, 0.5f);
-            weightedSelection.AddChoice(BlankIndex, 0.5f);
-            weightedSelection.AddChoice(ArmorIndex, 0.5f);
+            weightedSelection.AddChoice(BlankIndex, 0.3f);
+            weightedSelection.AddChoice(ArmorIndex, 0.2f);
 
         }
         public override void SetupConfig()
@@ -65,18 +66,13 @@ namespace RiskOfBulletstorm.Items
             base.Install();
             On.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
             On.RoR2.Stage.Start += Stage_Start;
-            StageSettingsActions += BulletstormPickupsController_StageSettingsActions;
-        }
-
-        private void BulletstormPickupsController_StageSettingsActions(StageSettings arg1, StageInfo arg2)
-        {
-            
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
             On.RoR2.GlobalEventManager.OnCharacterDeath -= GlobalEventManager_OnCharacterDeath;
+            On.RoR2.Stage.Start -= Stage_Start;
         }
         private void Stage_Start(On.RoR2.Stage.orig_Start orig, RoR2.Stage self)
         {
