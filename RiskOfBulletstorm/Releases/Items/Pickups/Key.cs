@@ -64,7 +64,7 @@ namespace RiskOfBulletstorm.Items
                         int InventoryCount = characterBody.inventory.GetItemCount(catalogIndex);
                         if (InventoryCount > 0)
                         {
-                            Chat.AddMessage("Key: Entered Worked!");
+                            //Chat.AddMessage("Key: Entered Worked!");
                             return Interactability.Available;
                         }
                     }
@@ -100,7 +100,6 @@ namespace RiskOfBulletstorm.Items
 
                             if (purchaseInteraction.isShrine == false && purchaseInteraction.available && purchaseInteraction.costType == CostTypeIndex.Money) //if not shrine, is available, and is not a lunar pod
                             {
-                                Debug.Log("Key Triggered!");
                                 purchaseInteraction.SetAvailable(false);
                                 purchaseInteraction.Networkavailable = false;
 

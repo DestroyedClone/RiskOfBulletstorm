@@ -60,31 +60,34 @@ namespace RiskOfBulletstorm.Shared.Blanks
         {
             orig(self, damageInfo);
             // BLANK LOGIC //
-            var characterBody = damageInfo.attacker.GetComponent<CharacterBody>();
-
-            if (characterBody)
+            var attacker = damageInfo.attacker;
+            if (attacker)
             {
-                if (damageInfo.inflictor)
+                var characterBody = attacker.GetComponent<CharacterBody>();
+
+                if (characterBody)
                 {
-                    if (damageInfo.inflictor == BlankObject)
+                    if (damageInfo.inflictor)
                     {
-                        var prcf = 50;
-                        var mass = characterBody.characterMotor?.mass ?? (characterBody.rigidbody?.mass ?? 1f);
-
-                        Vector3 ZeroYVector3(Vector3 vector3)
+                        if (damageInfo.inflictor == BlankObject)
                         {
-                            return new Vector3(vector3.x, 0, vector3.z);
-                        }
+                            var prcf = 50;
+                            var mass = characterBody.characterMotor?.mass ?? (characterBody.rigidbody?.mass ?? 1f);
 
-                        if (damageInfo.force == Vector3.zero)
-                            damageInfo.force += Vector3.Normalize(ZeroYVector3(damageInfo.position - characterBody.corePosition)) * prcf * mass;
-                        else
-                            damageInfo.force += Vector3.Normalize(ZeroYVector3(damageInfo.force)) * prcf * mass;
-                        Debug.Log("Blank Force Applied!", self);
+                            Vector3 ZeroYVector3(Vector3 vector3)
+                            {
+                                return new Vector3(vector3.x, 0, vector3.z);
+                            }
+
+                            if (damageInfo.force == Vector3.zero)
+                                damageInfo.force += Vector3.Normalize(ZeroYVector3(damageInfo.position - characterBody.corePosition)) * prcf * mass;
+                            else
+                                damageInfo.force += Vector3.Normalize(ZeroYVector3(damageInfo.force)) * prcf * mass;
+                            //Debug.Log("Blank Force Applied!", self);
+                        }
                     }
                 }
             }
-
             // BLANK LOGIC //
 
         }

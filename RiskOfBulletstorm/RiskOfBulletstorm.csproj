@@ -24,7 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Releases\Items\Eqp\PortableTableDevice.cs" />
     <Compile Remove="Releases\Items\Eqp\SupplyDrop.cs" />
+    <Compile Remove="Releases\Items\Pickups\AmmoSpread.cs" />
     <Compile Remove="Releases\Items\Pickups\GuonStoneGlass.cs" />
     <Compile Remove="Releases\Items\T3\CultistPassiveItem.cs" />
   </ItemGroup>

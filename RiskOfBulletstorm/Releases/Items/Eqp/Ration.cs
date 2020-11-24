@@ -55,18 +55,22 @@ namespace RiskOfBulletstorm.Items
 
         private void TankHit(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
-            var combinedHealth = self.combinedHealth;
-            var endHealth = combinedHealth - damageInfo.damage;
             var body = self.body;
-            var inventory = body.inventory;
-
-            if (inventory.GetEquipmentIndex() == catalogIndex)
+            if (body)
             {
-                if ((endHealth <= 0) && (!damageInfo.rejected))
+                var inventory = body.inventory;
+                if (inventory)
                 {
-                    damageInfo.rejected = true;
+                    if (inventory.GetEquipmentIndex() == catalogIndex)
+                    {
+                        var endHealth = self.combinedHealth - damageInfo.damage;
+                        if ((endHealth <= 0) && (!damageInfo.rejected))
+                        {
+                            damageInfo.rejected = true;
 
-                    RationUse(self, inventory);
+                            RationUse(self, inventory);
+                        }
+                    }
                 }
             }
             orig(self, damageInfo);

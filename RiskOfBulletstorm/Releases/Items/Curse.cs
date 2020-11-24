@@ -101,6 +101,9 @@ namespace RiskOfBulletstorm.Items
                 case 10:
                     RollValue = 0.50f;
                     break;
+                case 11:
+                    RollValue = 1f;
+                    break;
                 default:
                     RollValue = 0.50f;
                     break;
