@@ -82,13 +82,72 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             On.RoR2.CharacterBody.FixedUpdate += CharacterBody_FixedUpdate;
+            On.RoR2.UI.ChatBox.FocusInputField += ChatBox_FocusInputField;
+            On.RoR2.UI.ChatBox.UnfocusInputField += ChatBox_UnfocusInputField;
+            On.RoR2.UI.ConsoleWindow.OnEnable += ConsoleWindow_OnEnable;
+            On.RoR2.UI.ConsoleWindow.OnDisable += ConsoleWindow_OnDisable;
+        }
+
+        private void ConsoleWindow_OnDisable(On.RoR2.UI.ConsoleWindow.orig_OnDisable orig, RoR2.UI.ConsoleWindow self)
+        {
+            ReadOnlyCollection<CharacterBody> readOnlyLocalCharacterList = CharacterBody.readOnlyInstancesList;
+            BlankComponent blankComponent = readOnlyLocalCharacterList[0].GetComponent<BlankComponent>();
+            if (blankComponent)
+            {
+                blankComponent.canUse = true;
+                Chat.AddMessage(blankComponent.canUse.ToString()+"Con");
+            }
+        }
+
+        private void ConsoleWindow_OnEnable(On.RoR2.UI.ConsoleWindow.orig_OnEnable orig, RoR2.UI.ConsoleWindow self)
+        {
+            ReadOnlyCollection<CharacterBody> readOnlyLocalCharacterList = CharacterBody.readOnlyInstancesList;
+            BlankComponent blankComponent = readOnlyLocalCharacterList[0].GetComponent<BlankComponent>();
+            if (blankComponent)
+            {
+                blankComponent.canUse = false;
+                Chat.AddMessage(blankComponent.canUse.ToString()+"Con");
+            }
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
             On.RoR2.CharacterBody.FixedUpdate -= CharacterBody_FixedUpdate;
+            On.RoR2.UI.ChatBox.FocusInputField -= ChatBox_FocusInputField;
+            On.RoR2.UI.ChatBox.UnfocusInputField -= ChatBox_UnfocusInputField;
+            On.RoR2.UI.ConsoleWindow.OnEnable -= ConsoleWindow_OnEnable;
+            On.RoR2.UI.ConsoleWindow.OnDisable -= ConsoleWindow_OnDisable;
         }
+
+
+        private void ChatBox_UnfocusInputField(On.RoR2.UI.ChatBox.orig_UnfocusInputField orig, RoR2.UI.ChatBox self)
+        {
+            orig(self);
+            //ReadOnlyCollection<NetworkUser> readOnlyLocalPlayersList = NetworkUser.readOnlyLocalPlayersList;
+            ReadOnlyCollection<CharacterBody> readOnlyLocalCharacterList = CharacterBody.readOnlyInstancesList;
+            BlankComponent blankComponent = readOnlyLocalCharacterList[0].GetComponent<BlankComponent>();
+            if (blankComponent)
+            {
+                blankComponent.canUse = false;
+                Chat.AddMessage(blankComponent.canUse.ToString());
+            }
+        }
+
+        private void ChatBox_FocusInputField(On.RoR2.UI.ChatBox.orig_FocusInputField orig, RoR2.UI.ChatBox self)
+        {
+            orig(self);
+            //ReadOnlyCollection<NetworkUser> readOnlyLocalPlayersList = NetworkUser.readOnlyLocalPlayersList;
+            ReadOnlyCollection<CharacterBody> readOnlyLocalCharacterList = CharacterBody.readOnlyInstancesList;
+            BlankComponent blankComponent = readOnlyLocalCharacterList[0].GetComponent<BlankComponent>();
+            if (blankComponent)
+            {
+                blankComponent.canUse = true;
+                Chat.AddMessage(blankComponent.canUse.ToString());
+            }
+        }
+
+
         private void CharacterBody_FixedUpdate(On.RoR2.CharacterBody.orig_FixedUpdate orig, CharacterBody self)
         {
             if (NetworkServer.active && self.master)
@@ -97,6 +156,7 @@ namespace RiskOfBulletstorm.Items
                 BlankComponent BlankComponent = self.master.GetComponent<BlankComponent>();
                 if (!BlankComponent) { BlankComponent = self.masterObject.AddComponent<BlankComponent>(); }
 
+
                 var InventoryCount = GetCount(self);
                 if (InventoryCount > 0)
                 {
@@ -104,15 +164,18 @@ namespace RiskOfBulletstorm.Items
                     BlankComponent.BlankCooldown -= Time.fixedDeltaTime;
                     if (self.isPlayerControlled)
                     {
-                        if (BlankComponent.BlankCooldown <= 0)
+                        if (BlankComponent.canUse)
                         {
-                            BlankComponent.BlankUsed = false;
-                            if (Input.GetKeyDown(BlankButton) && !BlankComponent.BlankUsed)
+                            if (BlankComponent.BlankCooldown <= 0)
                             {
-                                BlankComponent.BlankUsed = true;
-                                //self.inventory.RemoveItem(catalogIndex);
-                                FireBlank(self, self.corePosition, BlankRadius, Blank_DamageDealt, BlankClearRadius, true);
-                                BlankComponent.BlankCooldown = ConfigBlankCooldown;
+                                BlankComponent.BlankUsed = false;
+                                if (Input.GetKeyDown(BlankButton) && !BlankComponent.BlankUsed)
+                                {
+                                    BlankComponent.BlankUsed = true;
+                                    //self.inventory.RemoveItem(catalogIndex);
+                                    FireBlank(self, self.corePosition, BlankRadius, Blank_DamageDealt, BlankClearRadius, true);
+                                    BlankComponent.BlankCooldown = ConfigBlankCooldown;
+                                }
                             }
                         }
                     }
@@ -123,8 +186,9 @@ namespace RiskOfBulletstorm.Items
 
         public class BlankComponent : MonoBehaviour
         {
-            public float BlankCooldown = Blank.instance.ConfigBlankCooldown;
+            public float BlankCooldown = instance.ConfigBlankCooldown;
             public bool BlankUsed = false;
+            public bool canUse = false;
         }
     }
 }

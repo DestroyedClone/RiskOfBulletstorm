@@ -49,7 +49,7 @@ namespace RiskOfBulletstorm.Items
         //private static List<RoR2.CharacterBody> Playername = new List<RoR2.CharacterBody>();
 
         public static GameObject ItemBodyModelPrefab;
-        private static readonly BuffIndex AngerBuff = GungeonBuffController.Anger;
+        public static readonly BuffIndex AngerBuff = GungeonBuffController.Anger;
 
         public override void SetupBehavior()
         {
@@ -218,7 +218,7 @@ namespace RiskOfBulletstorm.Items
             {
                 if (InventoryCount > 0 && self.body.GetBuffCount(AngerBuff) == 0)
                 {
-                    self.body.AddTimedBuffAuthority(AngerBuff, (EnragingPhoto_BaseDuration + EnragingPhoto_StackDuration * (InventoryCount - 1)));
+                    self.body.AddTimedBuffAuthority(GungeonBuffController.Anger, (EnragingPhoto_BaseDuration + EnragingPhoto_StackDuration * (InventoryCount - 1)));
                 }
             }
             orig(self, damageInfo);

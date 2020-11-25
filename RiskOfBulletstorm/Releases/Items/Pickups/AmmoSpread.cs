@@ -65,6 +65,7 @@ namespace RiskOfBulletstorm.Items
 
         private void AmmoPickup_OnTriggerStay(On.RoR2.AmmoPickup.orig_OnTriggerStay orig, AmmoPickup self, Collider other)
         {
+            Chat.AddMessage("Something entered me uguu~");
             GiveAmmoToTeam ammoToTeam = self.GetComponent<GiveAmmoToTeam>();
             if (ammoToTeam)
             {

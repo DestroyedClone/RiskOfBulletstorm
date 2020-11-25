@@ -81,7 +81,7 @@ namespace RiskOfBulletstorm.Items
 
             //interactionDriver.interactor.interactableCooldown = 0.25f;
 
-            if (AttemptUnlock(BestInteractableObject, interactionDriver)) //if the first roll failed
+            if (AttemptUnlock(BestInteractableObject, interactionDriver, newUnlockChance)) //if the first roll failed
             {
                 return true;
             } else
@@ -91,7 +91,7 @@ namespace RiskOfBulletstorm.Items
             }
         }
 
-        private bool AttemptUnlock(GameObject chestObject, InteractionDriver interactionDriver)
+        private bool AttemptUnlock(GameObject chestObject, InteractionDriver interactionDriver, float UnlockChance)
         {
             Highlight highlight = chestObject.GetComponent<Highlight>();
             PurchaseInteraction purchaseInteraction = chestObject.GetComponent<PurchaseInteraction>();
@@ -105,7 +105,7 @@ namespace RiskOfBulletstorm.Items
             {
                 Interactor interactor = interactionDriver.interactor;
                 //interactionDriver.interactor.AttemptInteraction(chestObject);
-                if (Util.CheckRoll(TrustyLockpicks_UnlockChance))
+                if (Util.CheckRoll(UnlockChance))
                 {
                     purchaseInteraction.SetAvailable(false);
                     purchaseInteraction.Networkavailable = false;

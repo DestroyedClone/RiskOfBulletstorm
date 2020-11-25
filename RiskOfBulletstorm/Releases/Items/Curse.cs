@@ -81,31 +81,31 @@ namespace RiskOfBulletstorm.Items
                     break;
                 case 1:
                 case 2:
-                    RollValue = 0.01f;
+                    RollValue = 1f;
                     break;
                 case 3:
                 case 4:
-                    RollValue = 0.02f;
+                    RollValue = 2f;
                     break;
                 case 5:
                 case 6:
-                    RollValue = 0.05f;
+                    RollValue = 5f;
                     break;
                 case 7:
                 case 8:
-                    RollValue = 0.10f;
+                    RollValue = 10f;
                     break;
                 case 9:
-                    RollValue = 0.25f;
+                    RollValue = 25f;
                     break;
                 case 10:
-                    RollValue = 0.50f;
+                    RollValue = 50f;
                     break;
-                case 11:
-                    RollValue = 1f;
+                case 100:
+                    RollValue = 100f;
                     break;
                 default:
-                    RollValue = 0.50f;
+                    RollValue = 50f;
                     break;
             } //adjusts jammed chance
 
