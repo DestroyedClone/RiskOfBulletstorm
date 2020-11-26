@@ -32,6 +32,12 @@ namespace RiskOfBulletstorm.Items
         //public static GameObject ItemBodyModelPrefab;
         public static GameObject BombPrefab { get; private set; }
 
+        public RollBomb()
+        {
+            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Rollbomb.prefab";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/RollBombIcon.png";
+        }
+
         public override void SetupBehavior()
         {
             GameObject engiMinePrefab = Resources.Load<GameObject>("prefabs/projectiles/EngiGrenadeProjectile");

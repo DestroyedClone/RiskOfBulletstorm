@@ -32,6 +32,11 @@ namespace RiskOfBulletstorm.Items
 
         public BuffIndex MeatbunBoost { get; private set; }
 
+        public Meatbun()
+        {
+            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Meatbun.prefab";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/MeatbunIcon.png";
+        }
         public override void SetupBehavior()
         {
             base.SetupBehavior();

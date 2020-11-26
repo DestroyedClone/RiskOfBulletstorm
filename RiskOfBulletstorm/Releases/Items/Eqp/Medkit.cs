@@ -37,7 +37,11 @@ namespace RiskOfBulletstorm.Items
         protected override string GetLoreString(string langID = null) => "Contains a small piece of fairy." +
             "\nSeeking a place that would provide a near constant flow of the desperate and injured, Médecins Sans Diplôme recognized the Gungeon as the perfect place to found their practice.";
 
-
+        public Medkit()
+        {
+            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Medkit.prefab";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/Medkit.png";
+        }
         public override void SetupBehavior()
         {
             base.SetupBehavior();

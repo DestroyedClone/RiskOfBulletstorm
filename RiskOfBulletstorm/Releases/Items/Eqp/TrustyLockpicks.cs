@@ -38,7 +38,11 @@ namespace RiskOfBulletstorm.Items
         private readonly PickupIndex BFGPickupIndex = PickupCatalog.FindPickupIndex(EquipmentIndex.BFG);
         private readonly PickupIndex SyringePickupIndex = PickupCatalog.FindPickupIndex(ItemIndex.Syringe);
         private readonly string unlockSound = EntityStates.Engi.EngiWeapon.FireMines.throwMineSoundString;
-
+        public TrustyLockpicks()
+        {
+            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/TrustyLockpicks.prefab";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/TrustyLockpicksIcon.png";
+        }
         public override void SetupBehavior()
         {
             base.SetupBehavior();

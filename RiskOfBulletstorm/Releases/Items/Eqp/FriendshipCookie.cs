@@ -24,6 +24,11 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "Baked fresh every morning by Mom! It's to die for! Or, just maybe, to live for.";
 
+        public FriendshipCookie()
+        {
+            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/FriendshipCookie.prefab";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/FriendshipCookieIcon.png";
+        }
 
         public override void SetupBehavior()
         {
@@ -60,11 +65,10 @@ namespace RiskOfBulletstorm.Items
             var playerList = CharacterMaster.readOnlyInstancesList;
             int playerAmt = playerList.Count;
 
-            if (playerAmt > 1) //Multiplayer
+            if (playerAmt > 1)
             {
-                for (int i = 0; i < playerAmt; i++)
+                foreach (CharacterMaster player in playerList)
                 {
-                    var player = playerList[i];
                     if (player.IsDeadAndOutOfLivesServer())
                     {
                         Stage.instance.RespawnCharacter(player);
@@ -72,7 +76,7 @@ namespace RiskOfBulletstorm.Items
                     }
                 }
             }
-            if (playerAmt == 1) inventory.GiveItem(ItemIndex.Infusion);
+            else if (playerAmt == 1) inventory.GiveItem(ItemIndex.Infusion);
 
             if (revivedPlayers > 0 || playerAmt == 1) //anyone revived or its singleplayer
             {

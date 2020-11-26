@@ -34,6 +34,10 @@ namespace RiskOfBulletstorm.Items
         protected override string GetDescString(string langid = null) => $"Places a barrel nearby.";
 
         protected override string GetLoreString(string langID = null) => "";
+
+        private static InteractableSpawnCard iscBarrel;
+        private static GameObject BarrelPrefab;
+
         public PortableBarrelDevice()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Barrel.prefab";
@@ -44,6 +48,14 @@ namespace RiskOfBulletstorm.Items
         {
             base.SetupBehavior();
             Embryo_V2.instance.Compat_Register(catalogIndex);
+            iscBarrel = (InteractableSpawnCard)Resources.Load<SpawnCard>("SpawnCards/InteractableSpawnCard/iscBarrel");
+            iscBarrel = Object.Instantiate(iscBarrel);
+            BarrelPrefab = iscBarrel.prefab;
+            BarrelPrefab = BarrelPrefab.InstantiateClone($"Bulletstorm{BarrelPrefab.name}");
+            BarrelInteraction barrelInteraction = BarrelPrefab.GetComponent<BarrelInteraction>();
+            barrelInteraction.expReward = 0;
+            barrelInteraction.goldReward = 0;
+            iscBarrel.prefab = BarrelPrefab;
         }
         public override void SetupAttributes()
         {
@@ -69,29 +81,25 @@ namespace RiskOfBulletstorm.Items
             HealthComponent health = body.healthComponent;
             if (!health) return false;
 
-            var BarrierAmt = health.fullBarrier * Medkit_BarrierAmount;
-
-            
+            PlaceTable(body);
             if (instance.CheckEmbryoProc(body))
             {
-                
+                PlaceTable(body);
             }
             return true;
         }
 
-        private void PlaceTable()
+        private void PlaceTable(CharacterBody characterBody)
         {
-            isc.DoSpawn(args.senderBody.transform.position, new Quaternion(), new DirectorSpawnRequest(
-                isc,
+            iscBarrel.DoSpawn(characterBody.transform.position, characterBody.transform.rotation, new DirectorSpawnRequest(
+                iscBarrel,
                 new DirectorPlacementRule
                 {
                     placementMode = DirectorPlacementRule.PlacementMode.NearestNode,
                     maxDistance = 100f,
                     minDistance = 20f,
-                    position = args.senderBody.transform.position,
                     preventOverhead = true
-                },
-                RoR2Application.rng)
+                }, RoR2Application.rng)
             );
         }
     }

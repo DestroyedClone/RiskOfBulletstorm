@@ -33,7 +33,11 @@ namespace RiskOfBulletstorm.Items
         public override string displayName => "Molotov";
         public string descText = "Upon use, throws a Molotov that sets an area on fire";
         public override float cooldown { get; protected set; } = 35f;
-
+        public Molotov()
+        {
+            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Molotov.prefab";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/MolotovIcon.png";
+        }
         protected override string GetNameString(string langID = null) => displayName;
 
         protected override string GetPickupString(string langID = null) => "Feel The Burn\n" + descText;

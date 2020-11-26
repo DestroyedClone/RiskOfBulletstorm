@@ -12,16 +12,11 @@ using static TILER2.MiscUtil;
 namespace RiskOfBulletstorm.Items
 {
     public class SupplyDrop : Equipment_V2<SupplyDrop>
-    {
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Damage?? (Default: 0.6 = 60% dps)", AutoConfigFlags.PreventNetMismatch)]
-        public float Molotov_Damage { get; private set; } = 0.6f;
-
-        //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+    {//[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         //[AutoConfig("Cooldown? (Default: 8 = 8 seconds)", AutoConfigFlags.PreventNetMismatch)]
         //public float Cooldown_config { get; private set; } = 8f;
 
-        public override string displayName => "Molotov";
+        public override string displayName => "Supply Drop";
         public string descText = "Calls in an ammo drop";
         public override float cooldown { get; protected set; } = 35f; //???????????
 
@@ -36,6 +31,11 @@ namespace RiskOfBulletstorm.Items
         public static GameObject SupplyDropPrefab { get; private set; }
 
         public static GameObject ItemBodyModelPrefab;
+        public SupplyDrop()
+        {
+            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/SupplyDrop.prefab";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/SupplyDropIcon.png";
+        }
 
         public override void SetupBehavior()
         {
@@ -43,6 +43,8 @@ namespace RiskOfBulletstorm.Items
 
             GameObject sporeGrenadePrefab = Resources.Load<GameObject>("prefabs/projectiles/CaptainSupplyDrop, EquipmentRestock");
             SupplyDropPrefab = sporeGrenadePrefab.InstantiateClone("SupplyDrop");
+            SupplyDropPrefab.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            SupplyDropPrefab.transform.rotation = new Quaternion();
 
             //Object.Destroy(MolotovPrefab.GetComponent<ApplyTorqueOnStart>());
 
@@ -270,24 +272,20 @@ namespace RiskOfBulletstorm.Items
             int radiusMult = instance.CheckEmbryoProc(body) ? 2 : 1; //Embryo Check
 
             Util.PlaySound(EntityStates.Captain.Weapon.CallAirstrikeBase.fireAirstrikeSoundString, gameObject);
-            FireSupplyDrop(body, gameObject, radiusMult);
+            FireSupplyDrop(body, radiusMult);
             return true;
         }
 
-        public void FireSupplyDrop(CharacterBody body, GameObject gameObject, float radiusMult = 1)
+        public void FireSupplyDrop(CharacterBody body, float radiusMult = 1)
         {
             Vector3 corePos = Util.GetCorePosition(body);
-            InputBankTest input = body.inputBank;
             SupplyDropPrefab.GetComponent<TeamFilter>().teamIndex = body.teamComponent.teamIndex;
             SupplyDropPrefab.GetComponent<GenericOwnership>().ownerObject = body.gameObject;
+            SupplyDropPrefab.transform.position = corePos + Vector3.up * 5;
 
             if (NetworkServer.active)
             {
-                //NetworkServer.Spawn(SupplyDropPrefab);
-                ProjectileManager.instance.FireProjectile(SupplyDropPrefab, corePos, Util.QuaternionSafeLookRotation(input.aimDirection),
-                                      gameObject, body.damage * Molotov_Damage,
-                                      0f, Util.CheckRoll(body.crit, body.master),
-                                      DamageColorIndex.Item, null, -1f);
+                NetworkServer.Spawn(SupplyDropPrefab);
             }
         }
     }

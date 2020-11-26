@@ -32,7 +32,11 @@ namespace RiskOfBulletstorm.Items
             $"\n<style=cDeath>One-time Use.</style> <style=cWorldEvent>{Pct(Orange_Rarity)} rarer.</style> ";
 
         protected override string GetLoreString(string langID = null) => "";
-
+        public Orange()
+        {
+            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Orange.prefab";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/OrangeIcon.png";
+        }
         public override void SetupBehavior()
         {
             base.SetupBehavior();
@@ -84,11 +88,14 @@ namespace RiskOfBulletstorm.Items
 
             int DeployCount = instance.CheckEmbryoProc(body) ? 2 : 1; //Embryo Check
 
+            Color32 color = Color.magenta;
+
             for (int i = 0; i < DeployCount; i++)
             {
                 inventory.GiveItem(ItemIndex.BoostHp);
                 inventory.GiveItem(ItemIndex.BoostEquipmentRecharge);
                 health.HealFraction(1, default);
+                Chat.AddPickupMessage(body, pickupToken, color, (uint)DeployCount);
             }
             inventory.SetEquipmentIndex(EquipmentIndex.None); //credit to : Rico
 

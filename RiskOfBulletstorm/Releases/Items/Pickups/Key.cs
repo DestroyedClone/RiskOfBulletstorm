@@ -27,6 +27,11 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "";
 
+        public Key()
+        {
+            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Key.prefab";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/KeyIcon.png";
+        }
         public override void SetupBehavior()
         {
 

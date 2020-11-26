@@ -23,7 +23,7 @@ namespace RiskOfBulletstorm.Items
 
         public override string displayName => "Bomb";
         public string descText = "Throws a bomb that explodes after a short delay";
-        public override float cooldown { get; protected set; } = 12f; //???????????
+        public override float cooldown { get; protected set; } = 12f;
 
         protected override string GetNameString(string langID = null) => displayName;
 

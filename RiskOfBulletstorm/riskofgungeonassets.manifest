@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 4153075338
+CRC: 862855264
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 5fccdbf4dd2798da0875d034490e0ad5
+    Hash: 5d919d18f1af617b0ecbbe24f566991b
   TypeTreeHash:
     serializedVersion: 2
     Hash: 21747e4ee48f36c7a65f9afbfd77f392
@@ -28,27 +28,38 @@ ClassTypes:
 - Class: 213
   Script: {instanceID: 0}
 Assets:
+- Assets/Models/Raw Models/Number 2 Worn.fbx
+- Assets/Models/Prefabs/Armor.prefab
 - Assets/Models/Prefabs/Scouter.prefab
 - Assets/Models/Raw Models/Enraging Photo.fbx
 - Assets/Models/Raw Models/Spice.fbx
 - Assets/Textures/Icons/RingMiserlyProtectionIcon.png
 - Assets/Models/Prefabs/Scope.prefab
+- Assets/Textures/Materials/FriendshipCookie.mat
 - Assets/Models/Prefabs/Mustache.prefab
 - Assets/Models/Prefabs/BattleStandard.prefab
+- Assets/Models/Raw Models/Armor.fbx
 - Assets/Textures/Materials/Globe.mat
 - Assets/Textures/Materials/Blue.mat
 - Assets/Textures/Materials/TranslucentGreen.mat
 - Assets/Models/Prefabs/DisarmingPersonality.prefab
+- Assets/Models/Prefabs/Orange.prefab
+- Assets/Models/Raw Models/Key.fbx
 - Assets/Models/Raw Models/RingMiserlyProtection.fbx
 - Assets/Models/Raw Models/smokebomb.fbx
 - Assets/Models/Prefabs/Bomb.prefab
 - Assets/Models/Raw Models/Ammolet.fbx
 - Assets/Models/Raw Models/Scope.fbx
 - Assets/Textures/Materials/MetalGold.mat
+- Assets/Models/Prefabs/Medkit.prefab
+- Assets/Models/Prefabs/Ration.prefab
+- Assets/Models/Raw Models/Ration.fbx
 - Assets/Models/Prefabs/EnragingPhoto.prefab
 - Assets/Textures/Materials/EmissionRed.mat
+- Assets/Models/Prefabs/CultistPassiveItem.prefab
 - Assets/Textures/Materials/Magenta.mat
 - Assets/Models/Prefabs/SmokeBomb.prefab
+- Assets/Models/Raw Models/Barrel.fbx
 - Assets/Textures/Icons/RingCartographerIcon.png
 - Assets/Textures/Materials/Brown.mat
 - Assets/Models/Raw Models/Ticket.fbx
@@ -58,33 +69,55 @@ Assets:
 - Assets/Models/Prefabs/Ticket.prefab
 - Assets/Textures/Materials/Green.mat
 - Assets/Textures/Materials/Pink.mat
+- Assets/Textures/Materials/GlassCyan.mat
 - Assets/Models/Prefabs/RingUnity.prefab
+- Assets/Models/Raw Models/Orange.fbx
+- Assets/Models/Prefabs/Rollbomb.prefab
 - Assets/Models/Raw Models/Battle Standard.fbx
+- Assets/Models/Raw Models/Supply Drop.fbx
+- Assets/Models/Raw Models/Molotov.fbx
+- Assets/Models/Prefabs/FriendshipCookie.prefab
+- Assets/Textures/Materials/Glass.mat
+- Assets/Models/Prefabs/Meatbun.prefab
 - Assets/Models/Prefabs/Metronome.prefab
 - Assets/Textures/Materials/Blank.mat
+- Assets/Models/Prefabs/Molotov.prefab
 - Assets/Models/Raw Models/Metronome.fbx
+- Assets/Models/Raw Models/Number 2 Item.fbx
 - Assets/Textures/Icons/Blank_Icon.png
 - Assets/Textures/Icons/MetronomeIcon.png
+- Assets/Models/Prefabs/TrustyLockpicks.prefab
 - Assets/Textures/Materials/Orange.mat
 - Assets/Models/Raw Models/Blank.fbx
+- Assets/Models/Raw Models/Medkit.fbx
 - Assets/Textures/Icons/SmokeBombIcon.png
 - Assets/Models/Raw Models/RingUnity.fbx
 - Assets/Textures/Icons/BombIcon.png
 - Assets/Models/Prefabs/RingMiserlyProtection.prefab
+- Assets/Textures/Materials/FlatWhite.mat
 - Assets/Models/Raw Models/RingCartographer.fbx
 - Assets/Textures/Materials/MetalD.Grey.mat
+- Assets/Models/Raw Models/Friendship Cookie.fbx
 - Assets/Textures/Materials/MaterialTextures/Materials/EnragingPhotoTexture.mat
+- Assets/Models/Raw Models/Rollbomb.fbx
 - Assets/Textures/Icons/TicketIcon.png
 - Assets/Models/Raw Models/Bomb.fbx
 - Assets/Models/Prefabs/RingCartographer.prefab
+- Assets/Models/Prefabs/SupplyDrop.prefab
 - Assets/Textures/Icons/ScopeIcon.png
+- Assets/Textures/Materials/EmissionMagenta.mat
 - Assets/Models/Prefabs/Blank.prefab
+- Assets/Models/Prefabs/Key.prefab
 - Assets/Textures/Materials/MetalGrey.mat
 - Assets/Models/Raw Models/Scouter.fbx
+- Assets/Models/Prefabs/CultistPassiveWorn.prefab
 - Assets/Textures/Icons/RingUnityIcon.png
 - Assets/Textures/Materials/MaterialTextures/EnragingPhotoTexture.png
 - Assets/Textures/Materials/Scouter_Earpiece.mat
+- Assets/Models/Raw Models/Meatbun.fbx
 - Assets/Models/Raw Models/DisarmingPersonality.fbx
+- Assets/Models/Prefabs/Barrel.prefab
+- Assets/Models/Raw Models/TrustyLockpicks.fbx
 - Assets/Models/Prefabs/Spice.prefab
 - Assets/Models/Raw Models/Mustache.fbx
 - Assets/Textures/Icons/DisarmingPersonalityIcon.png

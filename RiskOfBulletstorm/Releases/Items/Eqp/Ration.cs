@@ -27,7 +27,11 @@ namespace RiskOfBulletstorm.Items
             $"\n<style=cDeath>One-Time Use.</style> <style=cIsUtility>Automatically used upon fatal damage.</style>";
 
         protected override string GetLoreString(string langID = null) => "This MRE comes in the form of a dry and dense cookie. It doesn't taste great, but it delivers the calories the body needs.";
-
+        public Ration()
+        {
+            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Ration.prefab";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/RationIcon.png";
+        }
         public override void SetupBehavior()
         {
             base.SetupBehavior();

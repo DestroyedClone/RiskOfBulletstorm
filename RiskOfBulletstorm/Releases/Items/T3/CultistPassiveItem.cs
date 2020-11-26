@@ -26,7 +26,11 @@ namespace RiskOfBulletstorm.Items
         protected override string GetDescString(string langid = null) => $"Increases <style=cIsUtility>base movespeed by 3</style>, and <style=cIsDamage>base damage by 3</style> for every dead survivor.";
 
         protected override string GetLoreString(string langID = null) => "Now that the protagonist is dead, it's time to shine!";
-
+        public CultistPassiveItem()
+        {
+            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/CultistPassiveItem.prefab";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/CultistPassiveIcon.png";
+        }
         public override void SetupBehavior()
         {
 
@@ -96,9 +100,8 @@ namespace RiskOfBulletstorm.Items
         private int GetDeadAmount()
         {
             int deadAmt = 0;
-            for (int i = 0; i < CharacterMaster.readOnlyInstancesList.Count; i++)
+            foreach (CharacterMaster player in CharacterMaster.readOnlyInstancesList)
             {
-                var player = CharacterMaster.readOnlyInstancesList[i];
                 if (player.IsDeadAndOutOfLivesServer())
                 {
                     deadAmt++;

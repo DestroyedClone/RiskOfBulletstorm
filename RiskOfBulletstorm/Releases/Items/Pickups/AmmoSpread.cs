@@ -17,7 +17,7 @@ namespace RiskOfBulletstorm.Items
     public class PickupAmmoSpread : Item_V2<PickupAmmoSpread>
     {
         public override string displayName => "Spread Ammo";
-        public override ItemTier itemTier => ItemTier.Tier1;
+        public override ItemTier itemTier => ItemTier.NoTier;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility, ItemTag.WorldUnique });
 
         protected override string GetNameString(string langID = null) => displayName;
@@ -71,16 +71,18 @@ namespace RiskOfBulletstorm.Items
             {
                 Chat.AddMessage("AmmoSpread: Player walked into");
                 int AppliedPlayers = 0;
-                TeamComponent[] array2 = UnityEngine.Object.FindObjectsOfType<TeamComponent>(); //gorag opus yoink
+                //TeamComponent[] array2 = UnityEngine.Object.FindObjectsOfType<TeamComponent>(); //gorag opus yoink
+                ReadOnlyCollection<TeamComponent> array2 = TeamComponent.GetTeamMembers(TeamIndex.Player);
                 //TeamIndex teamIndex = other.gameObject.GetComponent<TeamComponent>().teamIndex;
                 //SkillLocator skillLocator = other.GetComponent<SkillLocator>();
-                for (int i = 0; i < array2.Length; i++)
+
+                foreach (TeamComponent teamComponent in array2)
                 {
-                    if (array2[i].teamIndex == TeamIndex.Player)
+                    if (teamComponent.teamIndex == TeamIndex.Player)
                     {
-                        //array2[i].GetComponent<CharacterBody>().AddTimedBuff(BuffIndex.TeamWarCry, 7f);
-                        array2[i].GetComponent<CharacterBody>().GetComponent<SkillLocator>().ApplyAmmoPack();
-                        Chat.AddMessage("AmmoSpread: "+ array2[i]+" applied!");
+                        CharacterBody body = teamComponent.GetComponent<CharacterBody>();
+                        body.GetComponent<SkillLocator>().ApplyAmmoPack();
+                        Chat.AddMessage("AmmoSpread: " + body.GetUserName() + " applied!");
                         EffectManager.SimpleEffect(self.pickupEffect, self.transform.position, Quaternion.identity, true);
                     }
                 }

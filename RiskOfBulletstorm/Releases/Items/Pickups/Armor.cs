@@ -46,6 +46,11 @@ namespace RiskOfBulletstorm.Items
         protected override string GetLoreString(string langID = null) => "The blue of this shield was formed from the shavings of a Blank." +
             "Dents into the weak, aluminium metal from bullets and projectiles trigger the power of the Blank.";
 
+        public Armor()
+        {
+            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Armor.prefab";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/ArmorIcon.png";
+        }
 
         public override void SetupBehavior()
         {
