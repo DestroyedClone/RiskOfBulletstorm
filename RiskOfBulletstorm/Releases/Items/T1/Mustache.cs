@@ -21,6 +21,10 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("Percentage of health to heal per stack? (Default: 0.10 = 10%)", AutoConfigFlags.PreventNetMismatch)]
         public float Mustache_HealAmount { get; private set; } = 0.10f;
 
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Should it heal upon using a bloodshrine? Default: false", AutoConfigFlags.PreventNetMismatch)]
+        public bool Mustache_BloodShrine { get; private set; } = false;
+
         public override string displayName => "Mustache";
         public override ItemTier itemTier => ItemTier.Tier1;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Healing, ItemTag.AIBlacklist });
@@ -43,7 +47,7 @@ namespace RiskOfBulletstorm.Items
 
         public override void SetupBehavior()
         {
-
+            base.SetupBehavior();
         }
         public override void SetupAttributes()
         {
@@ -287,26 +291,34 @@ namespace RiskOfBulletstorm.Items
         private void PurchaseInteraction_OnInteractionBegin(On.RoR2.PurchaseInteraction.orig_OnInteractionBegin orig, PurchaseInteraction self, Interactor activator)
         {
             orig(self, activator);
-            if (activator.gameObject)
+            var gameObject = activator.gameObject;
+            if (gameObject)
             {
-                CharacterBody body = activator.gameObject.GetComponent<CharacterBody>();
+                CharacterBody body = gameObject.GetComponent<CharacterBody>();
                 if (body)
                 {
                     if (body.inventory)
                     {
-
                         var InventoryCount = body.inventory.GetItemCount(catalogIndex);
                         //Debug.Log("Mustache: " + activator.ToString() + "|" + activator.gameObject.ToString() + " bought from " + self.ToString());
                         if (InventoryCount > 0)
                         {
                             CharacterBody component = activator.GetComponent<CharacterBody>();
 
-                            //self.costType Think it's fine to let it trigger on blood shrine uses, maybe add a config later?
-                            //var ResultHeal = HealAmount * component.maxHealth;
+                            var ResultHeal = Mustache_HealAmount * InventoryCount;
                             if (component)
                             {
-                                var ResultHeal = Mustache_HealAmount * InventoryCount;
-                                component.healthComponent.HealFraction(ResultHeal, default);
+                                if (self.costType == CostTypeIndex.PercentHealth) //messy for now because head is slow
+                                {
+                                    if (Mustache_BloodShrine)
+                                    {
+                                        component.healthComponent.HealFraction(ResultHeal, default);
+                                    }
+                                }
+                                else
+                                {
+                                    component.healthComponent.HealFraction(ResultHeal, default);
+                                }
                             }
                         }
                     }

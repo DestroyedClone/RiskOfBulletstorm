@@ -78,96 +78,37 @@ namespace RiskOfBulletstorm.Items
         {
             base.SetupConfig();
         }
-        public override void Install()
+
+        public override void Install() 
         {
             base.Install();
             On.RoR2.CharacterBody.FixedUpdate += CharacterBody_FixedUpdate;
-            On.RoR2.UI.ChatBox.FocusInputField += ChatBox_FocusInputField;
-            On.RoR2.UI.ChatBox.UnfocusInputField += ChatBox_UnfocusInputField;
-            On.RoR2.UI.ConsoleWindow.OnEnable += ConsoleWindow_OnEnable;
-            On.RoR2.UI.ConsoleWindow.OnDisable += ConsoleWindow_OnDisable;
-        }
-
-        private void ConsoleWindow_OnDisable(On.RoR2.UI.ConsoleWindow.orig_OnDisable orig, RoR2.UI.ConsoleWindow self)
-        {
-            orig(self);
-            ReadOnlyCollection<CharacterBody> readOnlyLocalCharacterList = CharacterBody.readOnlyInstancesList;
-            BlankComponent blankComponent = readOnlyLocalCharacterList[0].GetComponent<BlankComponent>();
-            if (blankComponent)
-            {
-                blankComponent.canUse = true;
-                Chat.AddMessage(blankComponent.canUse.ToString()+"Con");
-            }
-        }
-
-        private void ConsoleWindow_OnEnable(On.RoR2.UI.ConsoleWindow.orig_OnEnable orig, RoR2.UI.ConsoleWindow self)
-        {
-            orig(self);
-            ReadOnlyCollection<CharacterBody> readOnlyLocalCharacterList = CharacterBody.readOnlyInstancesList;
-            BlankComponent blankComponent = readOnlyLocalCharacterList[0].GetComponent<BlankComponent>();
-            if (blankComponent)
-            {
-                blankComponent.canUse = false;
-                Chat.AddMessage(blankComponent.canUse.ToString()+"Con");
-            }
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
             On.RoR2.CharacterBody.FixedUpdate -= CharacterBody_FixedUpdate;
-            On.RoR2.UI.ChatBox.FocusInputField -= ChatBox_FocusInputField;
-            On.RoR2.UI.ChatBox.UnfocusInputField -= ChatBox_UnfocusInputField;
-            On.RoR2.UI.ConsoleWindow.OnEnable -= ConsoleWindow_OnEnable;
-            On.RoR2.UI.ConsoleWindow.OnDisable -= ConsoleWindow_OnDisable;
         }
-
-
-        private void ChatBox_UnfocusInputField(On.RoR2.UI.ChatBox.orig_UnfocusInputField orig, RoR2.UI.ChatBox self)
-        {
-            orig(self);
-            //ReadOnlyCollection<NetworkUser> readOnlyLocalPlayersList = NetworkUser.readOnlyLocalPlayersList;
-            ReadOnlyCollection<CharacterBody> readOnlyLocalCharacterList = CharacterBody.readOnlyInstancesList;
-            BlankComponent blankComponent = readOnlyLocalCharacterList[0].GetComponent<BlankComponent>();
-            if (blankComponent)
-            {
-                blankComponent.canUse = false;
-                Chat.AddMessage(blankComponent.canUse.ToString());
-            }
-        }
-
-        private void ChatBox_FocusInputField(On.RoR2.UI.ChatBox.orig_FocusInputField orig, RoR2.UI.ChatBox self)
-        {
-            orig(self);
-            //ReadOnlyCollection<NetworkUser> readOnlyLocalPlayersList = NetworkUser.readOnlyLocalPlayersList;
-            ReadOnlyCollection<CharacterBody> readOnlyLocalCharacterList = CharacterBody.readOnlyInstancesList;
-            BlankComponent blankComponent = readOnlyLocalCharacterList[0].GetComponent<BlankComponent>();
-            if (blankComponent)
-            {
-                blankComponent.canUse = true;
-                Chat.AddMessage(blankComponent.canUse.ToString());
-            }
-        }
-
 
         private void CharacterBody_FixedUpdate(On.RoR2.CharacterBody.orig_FixedUpdate orig, CharacterBody self)
         {
+            orig(self);
             if (NetworkServer.active && self.master)
             {
+                var LocalUserList = LocalUserManager.readOnlyLocalUsersList;
+
                 // var BlankComponent = self.master.AddComponent<BlankComponent>();
                 BlankComponent BlankComponent = self.master.GetComponent<BlankComponent>();
                 if (!BlankComponent) { BlankComponent = self.masterObject.AddComponent<BlankComponent>(); }
 
-
                 var InventoryCount = GetCount(self);
                 if (InventoryCount > 0)
                 {
-                    //if (BlankComponent.BlankCooldown > 0) Debug.Log(BlankComponent.BlankCooldown.ToString(), self);
                     BlankComponent.BlankCooldown -= Time.fixedDeltaTime;
                     if (self.isPlayerControlled)
                     {
-                        Chat.AddMessage("Blank: Can use? "+BlankComponent.canUse);
-                        if (BlankComponent.canUse)
+                        if (!LocalUserList[0].isUIFocused) //TY KingEnderBrine for the help
                         {
                             if (BlankComponent.BlankCooldown <= 0)
                             {
@@ -175,7 +116,6 @@ namespace RiskOfBulletstorm.Items
                                 if (Input.GetKeyDown(BlankButton) && !BlankComponent.BlankUsed)
                                 {
                                     BlankComponent.BlankUsed = true;
-                                    //self.inventory.RemoveItem(catalogIndex);
                                     FireBlank(self, self.corePosition, BlankRadius, Blank_DamageDealt, BlankClearRadius, true);
                                     BlankComponent.BlankCooldown = ConfigBlankCooldown;
                                 }
@@ -184,14 +124,12 @@ namespace RiskOfBulletstorm.Items
                     }
                 }
             }
-            orig(self);
         }
 
         public class BlankComponent : MonoBehaviour
         {
             public float BlankCooldown = instance.ConfigBlankCooldown;
             public bool BlankUsed = false;
-            public bool canUse = false;
         }
     }
 }

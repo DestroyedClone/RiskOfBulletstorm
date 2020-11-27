@@ -30,7 +30,7 @@ namespace RiskOfBulletstorm.Shared.Blanks
 
         protected override string GetLoreString(string langID = null) => "";
         public static GameObject BlankObject; // { get; private set; }
-        //private readonly string BlankSound = EntityStates.Treebot.Weapon.FireSonicBoom.
+        //private readonly string BlankSound = EntityStates.Treebot.Weapon.FirePlantSonicBoom.impactSoundString;
         //private readonly string BlankEffect = "Prefabs/Effects/TreebotShockwaveEffect";
 
         public override void SetupBehavior()
@@ -103,7 +103,7 @@ namespace RiskOfBulletstorm.Shared.Blanks
                 //Debug.LogError("[RiskOfBulletstorm]: Blank was required, but player had no blank!");
                 return false;
             }
-            Util.PlaySound(EntityStates.Treebot.Weapon.FirePlantSonicBoom.impactSoundString, attacker.gameObject); //SOUND PLAY
+            Util.PlayScaledSound(EntityStates.Treebot.Weapon.FirePlantSonicBoom.impactSoundString, attacker.gameObject, 0.75f);
             // EFFECT HERE
             EffectManager.SpawnEffect(EntityStates.Treebot.Weapon.FirePlantSonicBoom.hitEffectPrefab, new EffectData
             {

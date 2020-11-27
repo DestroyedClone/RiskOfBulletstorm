@@ -14,15 +14,11 @@ namespace RiskOfBulletstorm.Items
     public class Orange : Equipment_V2<Orange>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Rarity? (Default: 0.8 = 80% chance to spawn)", AutoConfigFlags.PreventNetMismatch)]
-        public float Orange_Rarity { get; private set; } = 0.8f;
-
-        //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        //[AutoConfig("Cooldown? (Default: 8 = 8 seconds)", AutoConfigFlags.PreventNetMismatch)]
-        //public float Cooldown_config { get; private set; } = 8f;
+        [AutoConfig("Rarity? (Default: 80% chance to spawn)", AutoConfigFlags.PreventNetMismatch)]
+        public float Orange_Rarity { get; private set; } = 80.00f;
 
         public override string displayName => "Orange";
-        public override float cooldown { get; protected set; } = 1f;
+        public override float cooldown { get; protected set; } = 0f;
 
         protected override string GetNameString(string langID = null) => displayName;
 
@@ -61,14 +57,14 @@ namespace RiskOfBulletstorm.Items
             base.Uninstall();
             On.RoR2.PickupDropletController.CreatePickupDroplet -= PickupDropletController_CreatePickupDroplet;
         }
+
         private void PickupDropletController_CreatePickupDroplet(On.RoR2.PickupDropletController.orig_CreatePickupDroplet orig, PickupIndex pickupIndex, Vector3 position, Vector3 velocity)
         {
             var body = PlayerCharacterMasterController.instances[0].master.GetBody();
             if (pickupIndex == PickupCatalog.FindPickupIndex(catalogIndex)) //if it's the orange
             {
-                if (!Util.CheckRoll(Orange_Rarity, body.master)) //rarity roll
+                if (Util.CheckRoll(Orange_Rarity, body.master)) //rarity roll
                 {
-                    Chat.AddMessage("Orange was re-rolled!");
                     PickupIndex loot = Run.instance.treasureRng.NextElementUniform(Run.instance.availableEquipmentDropList);
                     PickupDef def = PickupCatalog.GetPickupDef(loot);
                     pickupIndex = PickupCatalog.FindPickupIndex(def.equipmentIndex);
@@ -88,14 +84,11 @@ namespace RiskOfBulletstorm.Items
 
             int DeployCount = instance.CheckEmbryoProc(body) ? 2 : 1; //Embryo Check
 
-            Color32 color = Color.magenta;
-
             for (int i = 0; i < DeployCount; i++)
             {
                 inventory.GiveItem(ItemIndex.BoostHp);
                 inventory.GiveItem(ItemIndex.BoostEquipmentRecharge);
                 health.HealFraction(1, default);
-                Chat.AddPickupMessage(body, pickupToken, color, (uint)DeployCount);
             }
             inventory.SetEquipmentIndex(EquipmentIndex.None); //credit to : Rico
 

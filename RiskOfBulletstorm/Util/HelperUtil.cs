@@ -7,10 +7,13 @@ namespace RiskOfBulletstorm.Shared
     {
         public static int GetPlayersItemCount(ItemIndex itemIndex)
         {
+            var instances = PlayerCharacterMasterController.instances;
             int InventoryCount = 0;
-            for (int i = 0; i < CharacterMaster.readOnlyInstancesList.Count; i++)
+            foreach (PlayerCharacterMasterController playerCharacterMaster in instances)
             {
-                InventoryCount += CharacterMaster.readOnlyInstancesList[i].inventory.GetItemCount(itemIndex);
+                var master = playerCharacterMaster.master;
+                var body = master.GetBody();
+                if (body) InventoryCount += body.inventory.GetItemCount(itemIndex);
             }
             return InventoryCount;
         }
@@ -18,6 +21,7 @@ namespace RiskOfBulletstorm.Shared
         {
             int InventoryCount = 0;
             GameObject playerObject = null;
+
             for (int i = 0; i < CharacterMaster.readOnlyInstancesList.Count; i++)
             { //CharacterMaster.readOnlyInstancesList[i] is the player. 
                 var player = CharacterMaster.readOnlyInstancesList[i];
@@ -30,20 +34,15 @@ namespace RiskOfBulletstorm.Shared
             }
             return playerObject;
         }
-    }
-    /*private void GiveItemVsMax(CharacterBody self, ItemIndex itemindex, int amount = 1, int max = 1)
-    {
-        var InventoryCount = GetCount(self);
-        if (InventoryCount < max)
+        public static void GiveItemIfLess(CharacterBody self, ItemIndex itemindex, int amount = 1, int max = 1)
         {
-            if (InventoryCount + amount > max)
+            var InventoryCount = self.inventory.GetItemCount(itemindex);
+            if (InventoryCount < max)
             {
-                self.inventory.GiveItem(itemindex, (max - InventoryCount));
-            }
-            else
-            {
+                if (InventoryCount + amount > max) amount = max - InventoryCount;
+
                 self.inventory.GiveItem(itemindex, amount);
             }
         }
-    }*/
+    }
 }

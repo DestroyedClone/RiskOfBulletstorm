@@ -26,13 +26,13 @@ namespace RiskOfBulletstorm.Items
 
         public override string displayName => "Medkit";
         public string descText = "Heals";
-        public override float cooldown { get; protected set; } = 90f;
+        public override float cooldown { get; protected set; } = 145f;
 
         protected override string GetNameString(string langID = null) => displayName;
 
         protected override string GetPickupString(string langID = null) => descText + "\nMedkits provides substantial healing when used.";
 
-        protected override string GetDescString(string langid = null) => $"{descText}, <style=cIsHealing>healing {Pct(Medkit_HealAmount)} health and filling barrier by {Pct(Medkit_BarrierAmount)}</style>.";
+        protected override string GetDescString(string langid = null) => $"{descText} for <style=cIsHealing>{Pct(Medkit_HealAmount)} health and filling barrier by {Pct(Medkit_BarrierAmount)}</style>.";
 
         protected override string GetLoreString(string langID = null) => "Contains a small piece of fairy." +
             "\nSeeking a place that would provide a near constant flow of the desperate and injured, Médecins Sans Diplôme recognized the Gungeon as the perfect place to found their practice.";

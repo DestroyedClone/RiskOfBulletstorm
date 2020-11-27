@@ -17,12 +17,16 @@ namespace RiskOfBulletstorm.Items
 {
     public class DisarmingPersonality : Item_V2<DisarmingPersonality>
     {
-        [AutoConfig("Base cost reduction? Default 0.15 15%", AutoConfigFlags.PreventNetMismatch)]
-        public float DisarmingPersonality_CostReductionAmount { get; private set; } = 0.15f;
+        [AutoConfig("Base cost reduction? Default 0.1 10%", AutoConfigFlags.PreventNetMismatch)]
+        public float DisarmingPersonality_CostReductionAmount { get; private set; } = 0.1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Stack cost reduction? Default 0.05 5%", AutoConfigFlags.PreventNetMismatch)]
         public float DisarmingPersonality_CostReductionAmountStack { get; private set; } = 0.05f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Max cost reduction?? Default 0.6 60%", AutoConfigFlags.PreventNetMismatch)]
+        public float DisarmingPersonality_CostReductionAmountLimit { get; private set; } = 0.6f;
 
         public override string displayName => "Disarming Personality";
         public override ItemTier itemTier => ItemTier.Tier2;
@@ -33,7 +37,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetPickupString(string langID = null) => "For You?\n"+descText;
 
         protected override string GetDescString(string langid = null) => $"<style=cIsUtility>{descText} by {Pct(DisarmingPersonality_CostReductionAmount)}</style>" +
-            $"\n<style=cStack>(+{Pct(DisarmingPersonality_CostReductionAmount)} per stack)</stack>" +
+            $"\n<style=cStack>(+{Pct(DisarmingPersonality_CostReductionAmount)} per stack) up to {Pct(DisarmingPersonality_CostReductionAmountLimit )}</stack>" +
             $"\n <style=cSub>Chance is shared amongst players.</style>";
 
         protected override string GetLoreString(string langID = null) => "The Pilot is able to talk his way into almost anything, usually gunfights.";
@@ -77,13 +81,16 @@ namespace RiskOfBulletstorm.Items
 
             if (chest)
             {
-                //Debug.Log("DisarmPerson: Chest Found!", self);
                 if (InventoryCount > 0)
                 {
-                    var ResultMultUnclamp = 1 - DisarmingPersonality_CostReductionAmount + DisarmingPersonality_CostReductionAmountStack * (InventoryCount - 1);
-                    var ResultMult = Mathf.Max(ResultMultUnclamp, 0);
-                    //Debug.Log("DisarmPerson: Cost(" + self.cost+")=>"+ ((int)Mathf.Ceil(self.cost * ResultMult))+ " by "+ResultMultUnclamp+" shrunk to "+ ResultMult, self);
+                    //var ResultMultUnclamp = 1 - DisarmingPersonality_CostReductionAmount + DisarmingPersonality_CostReductionAmountStack * (InventoryCount - 1);
+                    //var ResultMult = Mathf.Max(ResultMultUnclamp, 0);
+                        //credit to harb
+
+                    var ResultMult = (DisarmingPersonality_CostReductionAmount + (1 - DisarmingPersonality_CostReductionAmount) * (1 - (DisarmingPersonality_CostReductionAmountLimit / Mathf.Pow(InventoryCount + DisarmingPersonality_CostReductionAmountLimit, DisarmingPersonality_CostReductionAmountStack))));
+
                     self.cost = (int)Mathf.Ceil(self.cost * ResultMult);
+                    self.Networkcost = self.cost;
                 }
             }
         }

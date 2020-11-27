@@ -21,9 +21,10 @@ namespace RiskOfBulletstorm.Items
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility, ItemTag.WorldUnique });
 
         protected override string GetNameString(string langID = null) => displayName;
-        protected override string GetPickupString(string langID = null) => "<style=cIsUtility>Can unlock chests.</style>\nConsumed on use.";
+        private readonly string desc = $"<style=cIsUtility>Can unlock chests.</style>\nConsumed on use.";
+        protected override string GetPickupString(string langID = null) => desc;
 
-        protected override string GetDescString(string langid = null) => $"<style=cIsUtility>Can unlock chests.</style>\nConsumed on use.";
+        protected override string GetDescString(string langid = null) => desc;
 
         protected override string GetLoreString(string langID = null) => "";
 
@@ -90,8 +91,6 @@ namespace RiskOfBulletstorm.Items
             PurchaseInteraction purchaseInteraction = interactableObject.GetComponent<PurchaseInteraction>();
             if (purchaseInteraction)
             {
-                //bool CanAfford = self.CanBeAffordedByInteractor(activator);
-
                 CharacterBody characterBody = self.GetComponent<CharacterBody>();
                 if (characterBody)
                 {

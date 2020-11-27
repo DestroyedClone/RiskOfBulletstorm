@@ -71,7 +71,6 @@ namespace RiskOfBulletstorm.Items
                         if ((endHealth <= 0) && (!damageInfo.rejected))
                         {
                             damageInfo.rejected = true;
-
                             RationUse(self, inventory);
                         }
                     }

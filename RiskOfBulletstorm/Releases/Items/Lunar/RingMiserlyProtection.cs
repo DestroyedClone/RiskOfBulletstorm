@@ -16,16 +16,12 @@ namespace RiskOfBulletstorm.Items
     public class RingMiserlyProtection : Item_V2<RingMiserlyProtection> //switch to a buff system due to broken
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Health Increase", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Health Increase. Default: +100%", AutoConfigFlags.PreventNetMismatch)]
         public float RingMiserlyProtection_HealthBonus { get; private set; } = 1.0f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Health Increase Stack", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Health Increase Stack. Default: +50%", AutoConfigFlags.PreventNetMismatch)]
         public float RingMiserlyProtection_HealthBonusStack { get; private set; } = 0.5f;
-
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("[unimplemented] Enable item synergy? (Default: True)", AutoConfigFlags.PreventNetMismatch)]
-        public bool EnableSynergy { get; private set; } = true;
         public override string displayName => "Ring of Miserly Protection";
         public override ItemTier itemTier => ItemTier.Lunar;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Healing, ItemTag.Cleansable });
@@ -34,7 +30,8 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "Aids The Fiscally Responsible\n<style=cHealth>Increases health substantially.</style> <style=cDeath>Any shrine purchases will shatter a ring.</style>";
 
-        protected override string GetDescString(string langid = null) => $"Grants <style=cHealth>+{Pct(RingMiserlyProtection_HealthBonus)}</style> <style=cStack>(+{Pct(RingMiserlyProtection_HealthBonusStack)} per stack)</style> health <style=cDeath>...but breaks a ring completely upon using a shrine.</style> ";
+        protected override string GetDescString(string langid = null) => $"Grants <style=cHealth>+{Pct(RingMiserlyProtection_HealthBonus)}</style> <style=cStack>(+{Pct(RingMiserlyProtection_HealthBonusStack)} per stack)</style> health." +
+            $"\n <style=cDeath>...but breaks a ring completely upon using a shrine.</style> ";
 
         protected override string GetLoreString(string langID = null) => "Before the Shopkeep opened his shop, he was an avaricious and miserly man. He remains careful about any expenditures, but through capitalism he has purged himself of negative emotion.";
 
@@ -70,20 +67,25 @@ namespace RiskOfBulletstorm.Items
         }
         private void On_InteractionBegin(On.RoR2.PurchaseInteraction.orig_OnInteractionBegin orig, PurchaseInteraction self, Interactor activator)
         {
+            orig(self, activator);
             var body = activator.gameObject.GetComponent<CharacterBody>();
-            var InventoryCount = body.inventory.GetItemCount(catalogIndex);
-
-            if (self.isShrine && !self.GetComponent<ShrineCombatBehavior>())
+            if (!body)
             {
-                if (InventoryCount > 0)
+                var inventory = body.inventory;
+                if (inventory)
                 {
-                    body.inventory.RemoveItem(catalogIndex);
-                    Util.PlaySound("Play_char_glass_death", body.gameObject);
-                    body.RecalculateStats();
+                    var InventoryCount = body.inventory.GetItemCount(catalogIndex);
+                    if (self.isShrine && !self.GetComponent<ShrineCombatBehavior>())
+                    {
+                        if (InventoryCount > 0)
+                        {
+                            body.inventory.RemoveItem(catalogIndex);
+                            Util.PlaySound("Play_char_glass_death", body.gameObject);
+                            body.RecalculateStats();
+                        }
+                    }
                 }
             }
-            //Chat.AddMessage(activator.name);
-            orig(self, activator);
         }
         private void BoostHealth(CharacterBody sender, StatHookEventArgs args)
         {

@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Releases\Items\Eqp\MultiplayerBuddy.cs" />
     <Compile Remove="Releases\Items\Eqp\SupplyDrop.cs" />
     <Compile Remove="Releases\Items\Pickups\BulletstormPickupsController.cs" />
     <Compile Remove="Releases\Items\Pickups\GuonStoneGlass.cs" />

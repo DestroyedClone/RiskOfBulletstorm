@@ -14,16 +14,16 @@ namespace RiskOfBulletstorm.Items
     public class Bomb : Equipment_V2<Bomb>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Damage? (Default: 1.0 = 100% damage)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Damage (Default: 100% damage)", AutoConfigFlags.PreventNetMismatch)]
         public float Bomb_DamageDealt { get; private set; } = 1f;
 
-        //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        //[AutoConfig("Cooldown? (Default: 8 = 8 seconds)", AutoConfigFlags.PreventNetMismatch)]
-        //public float Cooldown_config { get; private set; } = 8f;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Cooldown (Default: 14.00 seconds)", AutoConfigFlags.PreventNetMismatch)]
+        public override float cooldown { get; protected set; } = 14.00f;
 
         public override string displayName => "Bomb";
         public string descText = "Throws a bomb that explodes after a short delay";
-        public override float cooldown { get; protected set; } = 12f;
+        //public override float cooldown { get; protected set; } = Cooldown_config;
 
         protected override string GetNameString(string langID = null) => displayName;
 
@@ -47,15 +47,24 @@ namespace RiskOfBulletstorm.Items
         {
             base.SetupBehavior();
             GameObject commandoGrenadePrefab = Resources.Load<GameObject>("prefabs/projectiles/CommandoGrenadeProjectile");
-            BombPrefab = commandoGrenadePrefab.InstantiateClone("Bomb");
-            //BombPrefab.transform.localScale = new Vector3(3, 3, 3);
-            //BombPrefab.GetComponent<ProjectileSimple>().velocity = 0; //default 50
-            //BombPrefab.GetComponent<ProjectileSimple>().lifetime = 6; //default 5
+            BombPrefab = commandoGrenadePrefab.InstantiateClone("Bulletstorm_Bomb");
+            BombPrefab.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+            BombPrefab.GetComponent<ProjectileSimple>().velocity = 35; //default 50
+            BombPrefab.GetComponent<ProjectileSimple>().lifetime = 5; //default 5
             BombPrefab.GetComponent<ProjectileDamage>().damageColorIndex = DamageColorIndex.Item;
             BombPrefab.GetComponent<ProjectileImpactExplosion>().falloffModel = BlastAttack.FalloffModel.None;
             Object.Destroy(BombPrefab.GetComponent<ApplyTorqueOnStart>());
 
+            var model = Resources.Load<GameObject>(modelResourcePath);
+            model.AddComponent<NetworkIdentity>();
+            model.AddComponent<ProjectileGhostController>();
+
+            var controller = BombPrefab.GetComponent<ProjectileController>();
+            controller.ghostPrefab = model;
+
             ProjectileCatalog.getAdditionalEntries += list => list.Add(BombPrefab);
+
+            if (BombPrefab) PrefabAPI.RegisterNetworkPrefab(BombPrefab);
 
             Embryo_V2.instance.Compat_Register(catalogIndex);
         }
@@ -272,9 +281,8 @@ namespace RiskOfBulletstorm.Items
         protected override bool PerformEquipmentAction(EquipmentSlot slot)
         {
             CharacterBody body = slot.characterBody;
-            if (!body) return false;
             GameObject gameObject = slot.gameObject;
-            if (!gameObject) return false;
+            if (!gameObject || !body) return false;
 
             //int DeployCount = instance.CheckEmbryoProc(body) ? 2 : 1; //Embryo Check
 

@@ -52,6 +52,8 @@ namespace RiskOfBulletstorm.Items
 
         public static GameObject ItemBodyModelPrefab;
 
+
+
         public override void SetupBehavior()
         {
             base.SetupBehavior();
@@ -71,7 +73,7 @@ namespace RiskOfBulletstorm.Items
             MolotovPrefab.GetComponent<ProjectileImpactExplosion>().childrenProjectilePrefab = MolotovDotZonePrefab;
             //Object.Destroy(MolotovPrefab.GetComponent<ApplyTorqueOnStart>());
 
-            var model = Resources.Load<GameObject>("@RiskOfBulletstorm:Assets/Models/Prefabs/Molotov.prefab");
+            var model = Resources.Load<GameObject>(modelResourcePath);
             model.AddComponent<NetworkIdentity>();
             model.AddComponent<ProjectileGhostController>();
 
@@ -90,7 +92,7 @@ namespace RiskOfBulletstorm.Items
         {
             if (ItemBodyModelPrefab == null)
             {
-                ItemBodyModelPrefab = Resources.Load<GameObject>("@RiskOfBulletstorm:Assets/Models/Prefabs/Bomb.prefab");
+                ItemBodyModelPrefab = Resources.Load<GameObject>(modelResourcePath);
                 displayRules = GenerateItemDisplayRules();
             }
             base.SetupAttributes();

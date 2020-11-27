@@ -34,6 +34,7 @@ namespace RiskOfBulletstorm.Items
         private static InteractableSpawnCard iscBarrelNew;
         private static InteractableSpawnCard iscBarrel;
         private static GameObject BarrelPrefab;
+        private static DirectorPlacementRule placementRule;
 
         public PortableBarrelDevice()
         {
@@ -48,7 +49,7 @@ namespace RiskOfBulletstorm.Items
             iscBarrel = (InteractableSpawnCard)Resources.Load<SpawnCard>("SpawnCards/InteractableSpawnCard/iscBarrel1");
             iscBarrelNew = Object.Instantiate(iscBarrel);
             BarrelPrefab = iscBarrelNew.prefab;
-            BarrelPrefab = BarrelPrefab.InstantiateClone($"BarrelBulletstorm");
+            BarrelPrefab = BarrelPrefab.InstantiateClone($"Bulletstorm_Barrel");
             BarrelInteraction barrelInteraction = BarrelPrefab.GetComponent<BarrelInteraction>();
             barrelInteraction.expReward = 0;
             barrelInteraction.goldReward = 0;
@@ -57,6 +58,13 @@ namespace RiskOfBulletstorm.Items
         public override void SetupAttributes()
         {
             base.SetupAttributes();
+            placementRule = new DirectorPlacementRule
+            {
+                placementMode = DirectorPlacementRule.PlacementMode.NearestNode,
+                maxDistance = 100f,
+                minDistance = 20f,
+                preventOverhead = true
+            };
         }
         public override void SetupConfig()
         {
@@ -89,14 +97,7 @@ namespace RiskOfBulletstorm.Items
         private void PlaceTable(CharacterBody characterBody)
         {
             iscBarrelNew.DoSpawn(characterBody.transform.position, characterBody.transform.rotation, new DirectorSpawnRequest(
-                iscBarrelNew,
-                new DirectorPlacementRule
-                {
-                    placementMode = DirectorPlacementRule.PlacementMode.NearestNode,
-                    maxDistance = 100f,
-                    minDistance = 20f,
-                    preventOverhead = true
-                }, RoR2Application.rng)
+                iscBarrelNew, placementRule, RoR2Application.rng)
             );
         }
     }

@@ -1,11 +1,9 @@
 ﻿
 using System.Collections.ObjectModel;
-//using System.Text;
 using R2API;
 using RoR2;
 using UnityEngine;
 using TILER2;
-using static TILER2.StatHooks;
 using static TILER2.MiscUtil;
 
 
@@ -213,7 +211,6 @@ namespace RiskOfBulletstorm.Items
             var oldHealth = self.health;
             orig(self, damageInfo);
             var healthCompare = (oldHealth - self.health) / self.fullHealth;
-            //Chat.AddMessage("angry photo health comparison: "+healthCompare+"");
             if (healthCompare >= EnragingPhoto_HealthThreshold)
             {
                 if (InventoryCount > 0 && self.body.GetBuffCount(AngerBuff) == 0)
@@ -221,7 +218,6 @@ namespace RiskOfBulletstorm.Items
                     self.body.AddTimedBuffAuthority(GungeonBuffController.Anger, (EnragingPhoto_BaseDuration + EnragingPhoto_StackDuration * (InventoryCount - 1)));
                 }
             }
-            orig(self, damageInfo);
         }
     }
 }

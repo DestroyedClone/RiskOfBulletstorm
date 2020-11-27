@@ -21,17 +21,28 @@ namespace RiskOfBulletstorm.Items
         public float TrustyLockpicks_PriceHike { get; private set; } = 2.0f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Lock the chest instead? Takes priority over increasing the price. Default: false;", AutoConfigFlags.PreventNetMismatch)]
+        public bool TrustyLockpicks_KillChest { get; private set; } = false;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Cooldown? (Default: 8 = 8 seconds)", AutoConfigFlags.PreventNetMismatch)]
-        public float TrustyLockpicks_Cooldown { get; private set; } = 8f;
+        public override float cooldown { get; protected set; } = 60f;
 
         public override string displayName => "Trusty Lockpicks";
-        public override float cooldown { get; protected set; } = 35f;
 
         protected override string GetNameString(string langID = null) => displayName;
 
         protected override string GetPickupString(string langID = null) => "Who Needs Keys?\nChance to pick locks. Can only be used once per lock.";
 
-        protected override string GetDescString(string langid = null) => $"{Pct(TrustyLockpicks_UnlockChance)} to unlock a chest. If it fails, it increases the price by {Pct(TrustyLockpicks_PriceHike)}";
+        protected override string GetDescString(string langid = null)
+        {
+            string desc = $"{Pct(TrustyLockpicks_UnlockChance)} to unlock a chest. On fail, it ";
+            if (TrustyLockpicks_KillChest)
+                desc += $"breaks the chest.";
+            else
+                desc += $"increases the price by {Pct(TrustyLockpicks_PriceHike)}";
+            return desc;
+            }
 
         protected override string GetLoreString(string langID = null) => "These lockpicks have never let the Pilot down, except for the many times they did.";
 
@@ -59,14 +70,12 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            //On.RoR2.Interactor.PerformInteraction += Interactor_PerformInteraction;
             On.RoR2.PurchaseInteraction.GetInteractability += PurchaseInteraction_GetInteractability;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
-            //On.RoR2.Interactor.PerformInteraction -= Interactor_PerformInteraction;
             On.RoR2.PurchaseInteraction.GetInteractability -= PurchaseInteraction_GetInteractability;
         }
         protected override bool PerformEquipmentAction(EquipmentSlot slot)
@@ -90,7 +99,6 @@ namespace RiskOfBulletstorm.Items
                 return true;
             } else
             {
-                Chat.AddMessage("failed unlcok");
                 return false;
             }
         }
@@ -122,14 +130,20 @@ namespace RiskOfBulletstorm.Items
                     purchaseInteraction.onPurchase.Invoke(interactor);
                     purchaseInteraction.lastActivator = interactor;
                     Util.PlaySound(unlockSound, RoR2Application.instance.gameObject);
-                    return true;
                 } else
                 {
-                    purchaseInteraction.cost = Mathf.CeilToInt(purchaseInteraction.cost * TrustyLockpicks_PriceHike);
-                    purchaseInteraction.Networkcost = purchaseInteraction.cost;
-                    chestObject.AddComponent<TrustyLockpickFailed>();
-                    return true;
+                    if (TrustyLockpicks_KillChest)
+                    {
+                        Object.Destroy(purchaseInteraction);
+                    }
+                    else
+                    {
+                        purchaseInteraction.cost = Mathf.CeilToInt(purchaseInteraction.cost * TrustyLockpicks_PriceHike);
+                        purchaseInteraction.Networkcost = purchaseInteraction.cost;
+                        chestObject.AddComponent<TrustyLockpickFailed>();
+                    }
                 }
+                return true;
             }
             else
             {
@@ -173,51 +187,5 @@ namespace RiskOfBulletstorm.Items
         {
 
         }
-
-        /*private void Interactor_PerformInteraction(On.RoR2.Interactor.orig_PerformInteraction orig, Interactor self, GameObject interactableObject)
-        {
-            Highlight highlight = interactableObject.GetComponent<Highlight>();
-            if (!highlight)
-            {
-                orig(self, interactableObject);
-            }
-
-            PurchaseInteraction purchaseInteraction = interactableObject.GetComponent<PurchaseInteraction>();
-            if (purchaseInteraction)
-            {
-                //bool CanAfford = self.CanBeAffordedByInteractor(activator);
-
-                CharacterBody characterBody = self.GetComponent<CharacterBody>();
-                if (characterBody)
-                {
-                    Inventory inventory = characterBody.inventory;
-                    if (inventory)
-                    {
-                        EquipmentIndex equipmentIndex = inventory.GetEquipmentIndex();
-                        if (equipmentIndex == catalogIndex)
-                        {
-                            purchaseInteraction.GetInteractability(self);
-
-                            if (purchaseInteraction.isShrine == false && purchaseInteraction.available && purchaseInteraction.costType == CostTypeIndex.Money ) //if not shrine, is available, and is not a lunar pod
-                            {
-                                purchaseInteraction.SetAvailable(false);
-                                purchaseInteraction.Networkavailable = false;
-
-                                purchaseInteraction.gameObject.GetComponent<ChestBehavior>().Open();
-
-                                purchaseInteraction.cost = 0;
-                                purchaseInteraction.Networkcost = 0;
-
-                                purchaseInteraction.onPurchase.Invoke(self);
-                                purchaseInteraction.lastActivator = self;
-
-                                inventory.SetEquipmentIndex(EquipmentIndex.None);
-                            }
-                        }
-                    }
-                }
-            }
-            orig(self, interactableObject);
-        }*/
     }
 }

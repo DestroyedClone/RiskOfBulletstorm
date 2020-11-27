@@ -16,6 +16,13 @@ namespace RiskOfBulletstorm.Items
 {
     public class PickupAmmoSpread : Item_V2<PickupAmmoSpread>
     {
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Lifetime of Ammo Spread. Default: 30 seconds", AutoConfigFlags.PreventNetMismatch)]
+        public float AmmoSpread_Lifetime { get; private set; } = 30f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("At how many seconds should it start blinking? Default: 25 seconds", AutoConfigFlags.PreventNetMismatch)]
+        public float AmmoSpread_LifetimeBlinking { get; private set; } = 30f;
         public override string displayName => "Spread Ammo";
         public override ItemTier itemTier => ItemTier.NoTier;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility, ItemTag.WorldUnique });
@@ -33,12 +40,15 @@ namespace RiskOfBulletstorm.Items
         {
             base.SetupBehavior();
             GameObject ammoPickupPrefab = Resources.Load<GameObject>("Prefabs/NetworkedObjects/AmmoPack");
-            Pickup_AmmoSpread = ammoPickupPrefab.InstantiateClone("AmmoSpread");
+            Pickup_AmmoSpread = ammoPickupPrefab.InstantiateClone("Bulletstorm_AmmoSpread");
             Pickup_AmmoSpread.GetComponent<DestroyOnTimer>().duration = 30f;
-            Pickup_AmmoSpread.GetComponent<BeginRapidlyActivatingAndDeactivating>().delayBeforeBeginningBlinking = 25f;
+            Pickup_AmmoSpread.GetComponent<BeginRapidlyActivatingAndDeactivating>().delayBeforeBeginningBlinking = Math.Min(AmmoSpread_LifetimeBlinking, AmmoSpread_Lifetime);
             Pickup_AmmoSpread.AddComponent<GiveAmmoToTeam>();
 
             UnityEngine.Object.Destroy(Pickup_AmmoSpread.GetComponent<VelocityRandomOnStart>());
+
+            ProjectileCatalog.getAdditionalEntries += list => list.Add(ammoPickupPrefab);
+            if (ammoPickupPrefab) PrefabAPI.RegisterNetworkPrefab(ammoPickupPrefab);
         }
         public override void SetupAttributes()
         {
@@ -106,7 +116,7 @@ namespace RiskOfBulletstorm.Items
             
             if (pickupIndex == PickupCatalog.FindPickupIndex(catalogIndex)) //safety to prevent softlocks
             {
-                pickupIndex = PickupCatalog.FindPickupIndex(ItemIndex.Syringe);
+                pickupIndex = PickupCatalog.FindPickupIndex(ItemIndex.None);
                 SpawnAmmoPickup(body.gameObject.transform.position);
             }
 

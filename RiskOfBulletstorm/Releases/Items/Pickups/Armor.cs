@@ -37,7 +37,8 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetDescString(string langid = null)
         {
-            string descString = $"<style=cIsUtility>{descText}</style> that would have exceeded <style=cIsDamage>{Pct(Armor_HealthThreshold)} health.</style>";
+            string descString = $"<style=cIsUtility>{descText}</style> that would have exceeded <style=cIsDamage>{Pct(Armor_HealthThreshold)} health</style>";
+            if (Armor_ActivateBlank) descString += $"\nand <style=cIsUtility>activates a Blank</style>";
             if (Armor_ProtectDeath) descString += $"\n </style=cIsUtility>Also protects from death.</style>" +
                     $"\nConsumed on use.";
             return descString;
@@ -86,9 +87,9 @@ namespace RiskOfBulletstorm.Items
             {
                 if (
                     (
-                        (Armor_ProtectDeath && endHealth <= 0 ) || 
-                        (endHealth / self.fullHealth >= Armor_HealthThreshold) ) && 
-                        (!damageInfo.rejected)
+                        (Armor_ProtectDeath && endHealth <= 0 ) || // If it protects from death and you would have died, *OR*
+                        (endHealth / self.fullHealth >= Armor_HealthThreshold) ) &&  // the damage dealt exceeds armor threshold
+                        (!damageInfo.rejected) //and its not rejected
                     )
                 {
                     damageInfo.rejected = true;

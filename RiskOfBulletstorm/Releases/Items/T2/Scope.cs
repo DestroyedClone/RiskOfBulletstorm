@@ -25,6 +25,14 @@ namespace RiskOfBulletstorm.Items
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Bullet Spread Reduction Stack (Default: 5%)", AutoConfigFlags.PreventNetMismatch)]
         public float Scope_SpreadReductionStack { get; private set; } = 0.05f;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("If enabled, Scope will affect the Disposable Missile Launcher", AutoConfigFlags.PreventNetMismatch)]
+        public bool Scope_EnableDML { get; private set; } = true;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("If enabled, Scope will only tighten the spread of specific projectiles." +
+            "\nNote that disabling MIGHT cause some projectiles to behave differently, but will affect every projectile.." +
+            "\nWhitelisted Projectiles: REX syringe, Sawmerang, Preon Accumulator", AutoConfigFlags.PreventNetMismatch)]
+        public bool Scope_WhitelistProjectiles { get; private set; } = true;
         public override string displayName => "Scope";
         public override ItemTier itemTier => ItemTier.Tier2;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility });
@@ -36,16 +44,24 @@ namespace RiskOfBulletstorm.Items
             $"\n<style=cStack>(+{Pct(Scope_SpreadReductionStack)} per stack)</style>";
 
         protected override string GetLoreString(string langID = null) => "4:44 - [Kate] Found this scope in a chest, reporting back." +
-            "\n 4:55 - [Kate] Seems to work pretty well whether it's attached or not." +
-            "\n 5:20 - [Kate] This really works quite well, my shots are hitting more often." +
+            "\n 4:55 - [Kate] Seems to work whether it's attached or not, but I can't really look through it if it's not actually attached. Decision: attaching it." +
+            "\n 5:20 - [Kate] This is great, I can start keeping safer distances, even with the spread." +
             "\n 6:00 - [Kate] Alright, I'm keeping it. Can't explain it, feels like I'm actually tightening the spread." +
             "\n 6:02 - [Kate] Scratch that, this is ACTUALLY reducing the spread of bullets. I'm kinda curious how it works, but I'll study it back at the Breach later.";
 
-        public static GameObject ItemBodyModelPrefab;
-        private static readonly GameObject REXPrefab = EntityStates.Treebot.Weapon.FireSyringe.projectilePrefab;
         //private static readonly string NailgunMuzzleName = BaseNailgunState.muzzleName;
         //private static readonly GameObject NailgunTracer = BaseNailgunState.tracerEffectPrefab;
+        public static GameObject ItemBodyModelPrefab;
+        private static readonly GameObject REXPrefab = EntityStates.Treebot.Weapon.FireSyringe.projectilePrefab;
         private static readonly GameObject SawPrefab = Resources.Load<GameObject>("Prefabs/Projectiles/Sawmerang");
+        private static readonly GameObject BFGPrefab = Resources.Load<GameObject>("Prefabs/Projectiles/BeamSphere");
+        private static readonly GameObject DisposableMissileLauncherPrefab = Resources.Load<GameObject>("Prefabs/Projectiles/MissileProjectile");
+        public static List<GameObject> WhitelistedProjectiles = new List<GameObject>
+        {
+            REXPrefab,
+            SawPrefab,
+            BFGPrefab
+        };
 
         public Scope()
         {
@@ -64,6 +80,8 @@ namespace RiskOfBulletstorm.Items
                 displayRules = GenerateItemDisplayRules();
             }
             base.SetupAttributes();
+            if (Scope_EnableDML)
+                WhitelistedProjectiles.Add(DisposableMissileLauncherPrefab);
         }
         private static ItemDisplayRuleDict GenerateItemDisplayRules()
         {
@@ -364,6 +382,13 @@ namespace RiskOfBulletstorm.Items
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += ProjectileManager_FireProjectile_FireProjectileInfo;
         }
 
+        public override void Uninstall()
+        {
+            base.Uninstall();
+            On.RoR2.BulletAttack.Fire -= BulletAttack_Fire;
+            On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo -= ProjectileManager_FireProjectile_FireProjectileInfo;
+        }
+
         private void ProjectileManager_FireProjectile_FireProjectileInfo(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_FireProjectileInfo orig, ProjectileManager self, FireProjectileInfo fireProjectileInfo)
         {
             GameObject owner = fireProjectileInfo.owner;
@@ -382,35 +407,29 @@ namespace RiskOfBulletstorm.Items
                             InputBankTest input = cb.inputBank;
                             if (input)
                             {
+                                GameObject projectilePrefab = fireProjectileInfo.projectilePrefab;
                                 Quaternion aimDir = Util.QuaternionSafeLookRotation(input.aimDirection);
                                 Quaternion rotation = fireProjectileInfo.rotation;
 
                                 Quaternion UpdatedAngle = Quaternion.Lerp(rotation, aimDir, ResultMult);
 
-                                if (fireProjectileInfo.projectilePrefab == REXPrefab)
+                                if (Scope_WhitelistProjectiles)
                                 {
-                                    //Chat.AddMessage("Syringe fired");
-                                }
-                                //if (inventory.currentEquipmentIndex == EquipmentIndex.Saw)
-                                else if (fireProjectileInfo.projectilePrefab == SawPrefab)
+                                    if (WhitelistedProjectiles.Contains(projectilePrefab))
+                                    {
+                                        fireProjectileInfo.rotation = UpdatedAngle;
+                                    }
+                                    //Chat.AddMessage("Scope Lerp: " + aimDir + " and " + rotation + " resulting " + UpdatedAngle);
+                                } else
                                 {
-                                    //Chat.AddMessage("Saws fired");
+                                    fireProjectileInfo.rotation = UpdatedAngle;
                                 }
-                                //Chat.AddMessage("Scope Lerp: " + aimDir + " and " + rotation + " resulting " + UpdatedAngle);
-                                fireProjectileInfo.rotation = UpdatedAngle;
                             }
                         }
                     }
                 }
             }
             orig(self, fireProjectileInfo);
-        }
-
-        public override void Uninstall()
-        {
-            base.Uninstall();
-            On.RoR2.BulletAttack.Fire -= BulletAttack_Fire;
-            On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo -= ProjectileManager_FireProjectile_FireProjectileInfo;
         }
 
         private void BulletAttack_Fire(On.RoR2.BulletAttack.orig_Fire orig, BulletAttack self)

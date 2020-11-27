@@ -14,13 +14,13 @@ namespace RiskOfBulletstorm.Items
     {
         public override string displayName => "Friendship Cookie";
         public override float cooldown { get; protected set; } = 0f;
-
         protected override string GetNameString(string langID = null) => displayName;
 
         protected override string GetPickupString(string langID = null) => "It's Delicious!\nBaked fresh every morning by Mom! It's to die for! Or, just maybe, to live for.";
 
-        protected override string GetDescString(string langid = null) => $"Upon use, <style=cIsHealing>revives all players</style>. Consumed." +
-            $"\n SINGLEPLAYER: Gives an infusion. Consumed.";
+        protected override string GetDescString(string langid = null) => $"Upon use, <style=cIsHealing>revives all players</style>." +
+            $"\n SINGLEPLAYER: Gives an infusion." +
+            $"\n Consumed on use.";
 
         protected override string GetLoreString(string langID = null) => "Baked fresh every morning by Mom! It's to die for! Or, just maybe, to live for.";
 
@@ -62,16 +62,18 @@ namespace RiskOfBulletstorm.Items
             if (!inventory) return false;
             int revivedPlayers = 0;
 
-            var playerList = CharacterMaster.readOnlyInstancesList;
+            var playerList = PlayerCharacterMasterController.instances;
+            //var playerList = CharacterMaster.readOnlyInstancesList;
             int playerAmt = playerList.Count;
 
             if (playerAmt > 1)
             {
-                foreach (CharacterMaster player in playerList)
+                foreach (PlayerCharacterMasterController player in playerList)
                 {
-                    if (player.IsDeadAndOutOfLivesServer())
+                    var master = player.master;
+                    if (master.IsDeadAndOutOfLivesServer())
                     {
-                        Stage.instance.RespawnCharacter(player);
+                        Stage.instance.RespawnCharacter(master);
                         revivedPlayers++;
                     }
                 }
