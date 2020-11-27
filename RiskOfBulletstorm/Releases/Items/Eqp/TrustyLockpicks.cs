@@ -14,7 +14,7 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Unlock chance: 50%", AutoConfigFlags.PreventNetMismatch)]
-        public float TrustyLockpicks_UnlockChance { get; private set; } = 0.5f;
+        public float TrustyLockpicks_UnlockChance { get; private set; } = 50f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Price increase on fail: 200%", AutoConfigFlags.PreventNetMismatch)]
@@ -81,11 +81,11 @@ namespace RiskOfBulletstorm.Items
             if (!purchaseInteraction) return false;
 
             float newUnlockChance = TrustyLockpicks_UnlockChance;
-            if (instance.CheckEmbryoProc(body)) newUnlockChance += (newUnlockChance * newUnlockChance);
+            if (instance.CheckEmbryoProc(body)) newUnlockChance += newUnlockChance * 0.5f;
 
             //interactionDriver.interactor.interactableCooldown = 0.25f;
 
-            if (AttemptUnlock(BestInteractableObject, interactionDriver, newUnlockChance)) //if the first roll failed
+            if (AttemptUnlock(BestInteractableObject, interactionDriver, newUnlockChance)) 
             {
                 return true;
             } else

@@ -90,6 +90,7 @@ namespace RiskOfBulletstorm.Items
 
         private void ConsoleWindow_OnDisable(On.RoR2.UI.ConsoleWindow.orig_OnDisable orig, RoR2.UI.ConsoleWindow self)
         {
+            orig(self);
             ReadOnlyCollection<CharacterBody> readOnlyLocalCharacterList = CharacterBody.readOnlyInstancesList;
             BlankComponent blankComponent = readOnlyLocalCharacterList[0].GetComponent<BlankComponent>();
             if (blankComponent)
@@ -101,6 +102,7 @@ namespace RiskOfBulletstorm.Items
 
         private void ConsoleWindow_OnEnable(On.RoR2.UI.ConsoleWindow.orig_OnEnable orig, RoR2.UI.ConsoleWindow self)
         {
+            orig(self);
             ReadOnlyCollection<CharacterBody> readOnlyLocalCharacterList = CharacterBody.readOnlyInstancesList;
             BlankComponent blankComponent = readOnlyLocalCharacterList[0].GetComponent<BlankComponent>();
             if (blankComponent)
@@ -164,6 +166,7 @@ namespace RiskOfBulletstorm.Items
                     BlankComponent.BlankCooldown -= Time.fixedDeltaTime;
                     if (self.isPlayerControlled)
                     {
+                        Chat.AddMessage("Blank: Can use? "+BlankComponent.canUse);
                         if (BlankComponent.canUse)
                         {
                             if (BlankComponent.BlankCooldown <= 0)

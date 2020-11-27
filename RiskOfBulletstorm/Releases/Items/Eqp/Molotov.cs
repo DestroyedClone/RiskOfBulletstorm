@@ -71,8 +71,18 @@ namespace RiskOfBulletstorm.Items
             MolotovPrefab.GetComponent<ProjectileImpactExplosion>().childrenProjectilePrefab = MolotovDotZonePrefab;
             //Object.Destroy(MolotovPrefab.GetComponent<ApplyTorqueOnStart>());
 
+            var model = Resources.Load<GameObject>("@RiskOfBulletstorm:Assets/Models/Prefabs/Molotov.prefab");
+            model.AddComponent<NetworkIdentity>();
+            model.AddComponent<ProjectileGhostController>();
+
+            var controller = MolotovPrefab.GetComponent<ProjectileController>();
+            controller.ghostPrefab = model;
+
             ProjectileCatalog.getAdditionalEntries += list => list.Add(MolotovPrefab);
             ProjectileCatalog.getAdditionalEntries += list => list.Add(MolotovDotZonePrefab);
+
+            if (MolotovPrefab) PrefabAPI.RegisterNetworkPrefab(MolotovPrefab);
+            if (MolotovDotZonePrefab) PrefabAPI.RegisterNetworkPrefab(MolotovDotZonePrefab);
 
             Embryo_V2.instance.Compat_Register(catalogIndex);
         }

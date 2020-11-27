@@ -16,10 +16,6 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("Heal%? (Default: 1.0 = 100% heal)", AutoConfigFlags.PreventNetMismatch)]
         public float PortableTableDevice_HealAmount { get; private set; } = 1f;
 
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Barrier%? (Default: 0.5 = 50%% barrier)", AutoConfigFlags.PreventNetMismatch)]
-        public float Medkit_BarrierAmount { get; private set; } = 0.5f;
-
         //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         //[AutoConfig("Cooldown? (Default: 8 = 8 seconds)", AutoConfigFlags.PreventNetMismatch)]
         //public float Cooldown_config { get; private set; } = 8f;
@@ -35,6 +31,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "";
 
+        private static InteractableSpawnCard iscBarrelNew;
         private static InteractableSpawnCard iscBarrel;
         private static GameObject BarrelPrefab;
 
@@ -48,14 +45,14 @@ namespace RiskOfBulletstorm.Items
         {
             base.SetupBehavior();
             Embryo_V2.instance.Compat_Register(catalogIndex);
-            iscBarrel = (InteractableSpawnCard)Resources.Load<SpawnCard>("SpawnCards/InteractableSpawnCard/iscBarrel");
-            iscBarrel = Object.Instantiate(iscBarrel);
-            BarrelPrefab = iscBarrel.prefab;
-            BarrelPrefab = BarrelPrefab.InstantiateClone($"Bulletstorm{BarrelPrefab.name}");
+            iscBarrel = (InteractableSpawnCard)Resources.Load<SpawnCard>("SpawnCards/InteractableSpawnCard/iscBarrel1");
+            iscBarrelNew = Object.Instantiate(iscBarrel);
+            BarrelPrefab = iscBarrelNew.prefab;
+            BarrelPrefab = BarrelPrefab.InstantiateClone($"BarrelBulletstorm");
             BarrelInteraction barrelInteraction = BarrelPrefab.GetComponent<BarrelInteraction>();
             barrelInteraction.expReward = 0;
             barrelInteraction.goldReward = 0;
-            iscBarrel.prefab = BarrelPrefab;
+            iscBarrelNew.prefab = BarrelPrefab;
         }
         public override void SetupAttributes()
         {
@@ -91,8 +88,8 @@ namespace RiskOfBulletstorm.Items
 
         private void PlaceTable(CharacterBody characterBody)
         {
-            iscBarrel.DoSpawn(characterBody.transform.position, characterBody.transform.rotation, new DirectorSpawnRequest(
-                iscBarrel,
+            iscBarrelNew.DoSpawn(characterBody.transform.position, characterBody.transform.rotation, new DirectorSpawnRequest(
+                iscBarrelNew,
                 new DirectorPlacementRule
                 {
                     placementMode = DirectorPlacementRule.PlacementMode.NearestNode,

@@ -31,6 +31,8 @@ namespace RiskOfBulletstorm.Items
         public static GameObject SupplyDropPrefab { get; private set; }
 
         public static GameObject ItemBodyModelPrefab;
+
+        private static GameObject sporeGrenadePrefab;
         public SupplyDrop()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/SupplyDrop.prefab";
@@ -40,9 +42,9 @@ namespace RiskOfBulletstorm.Items
         public override void SetupBehavior()
         {
             base.SetupBehavior();
-
-            GameObject sporeGrenadePrefab = Resources.Load<GameObject>("prefabs/projectiles/CaptainSupplyDrop, EquipmentRestock");
-            SupplyDropPrefab = sporeGrenadePrefab.InstantiateClone("SupplyDrop");
+            sporeGrenadePrefab = Resources.Load<GameObject>("Prefabs/Projectiles/CaptainSupplyDrop, EquipmentRestock");
+            sporeGrenadePrefab = Resources.Load<GameObject>("Prefabs/Projectiles/CaptainSupplyDrop");
+            SupplyDropPrefab = sporeGrenadePrefab.InstantiateClone("BulletStormSupplyDrop");
             SupplyDropPrefab.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
             SupplyDropPrefab.transform.rotation = new Quaternion();
 
@@ -51,7 +53,7 @@ namespace RiskOfBulletstorm.Items
             ProjectileCatalog.getAdditionalEntries += list => list.Add(SupplyDropPrefab);
 
             Embryo_V2.instance.Compat_Register(catalogIndex);
-        }
+            }
         public override void SetupAttributes()
         {
             if (ItemBodyModelPrefab == null)

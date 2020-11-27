@@ -77,9 +77,9 @@ namespace RiskOfBulletstorm.Items
         private void CultistPassiveItem_GetStatCoefficients(CharacterBody sender, StatHookEventArgs args)
         {
             var component = sender.GetComponent<CultistPassiveComponent>();
-            var deadAmt = component.deadProtagonists;
             if (component)
             {
+                var deadAmt = component.deadProtagonists;
                 args.baseDamageAdd += 3 * deadAmt;
                 args.baseMoveSpeedAdd += 3 * deadAmt;
             }
