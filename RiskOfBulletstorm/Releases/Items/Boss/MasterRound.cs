@@ -35,9 +35,32 @@ namespace RiskOfBulletstorm.Items
         protected override string GetNameString(string langID = null) => displayName;
         protected override string GetPickupString(string langID = null) => "Nth Chamber";
 
-        protected override string GetDescString(string langid = null) => $"This rare artifact indicates mastery of the Nth chamber.";
+        protected override string GetDescString(string langid = null) => $"<style=cIsHealth>+150 health</style>";
 
-        protected override string GetLoreString(string langID = null) => "";
+        protected override string GetLoreString(string langID = null) => "Apocryphal texts recovered from cultists of the Order indicate that the Gun and the Bullet are linked somehow." +
+            "\nAny who enter the Gungeon are doomed to remain, living countless lives in an effort to break the cycle." +
+            "\nFew return from the deadly route that leads to the Forge. Yet fewer survive that venture into less-explored territory." +
+            "\nA monument to the legendary hero greets all who challenge the Gungeon, though their identity has been lost to the ages." +
+            "\nThe legendary hero felled the beast at the heart of the Gungeon with five rounds. According to the myth, the sixth remains unfired.";
+        readonly string[] adjustedPickup =
+        {
+            "first",
+            "second",
+            "third",
+            "fourth",
+            "fifth",
+            "endless"
+        };
+
+        readonly string[] adjustedDesc =
+        {
+            "rare",
+            "potent",
+            "exceptional",
+            "extraordinary",
+            "unfathomable",
+            "unprecedented"
+        };
 
         public override void SetupBehavior()
         {
@@ -59,6 +82,7 @@ namespace RiskOfBulletstorm.Items
             TeleporterInteraction.onTeleporterChargedGlobal += TeleporterInteraction_onTeleporterChargedGlobal;
             On.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
             GetStatCoefficients += MasterRoundNth_GetStatCoefficients;
+            On.RoR2.UI.GenericNotification.SetItem += GenericNotification_SetItem;
         }
 
         public override void Uninstall()
@@ -68,6 +92,7 @@ namespace RiskOfBulletstorm.Items
             TeleporterInteraction.onTeleporterChargedGlobal -= TeleporterInteraction_onTeleporterChargedGlobal;
             On.RoR2.GlobalEventManager.OnHitEnemy -= GlobalEventManager_OnHitEnemy;
             GetStatCoefficients -= MasterRoundNth_GetStatCoefficients;
+            On.RoR2.UI.GenericNotification.SetItem -= GenericNotification_SetItem;
         }
 
         private void MasterRoundNth_GetStatCoefficients(CharacterBody sender, StatHookEventArgs args)
@@ -114,6 +139,23 @@ namespace RiskOfBulletstorm.Items
                 //SAFETY
                 MasterRoundComponent.teleporterCharging = true;
             }
+        }
+        private void GenericNotification_SetItem(On.RoR2.UI.GenericNotification.orig_SetItem orig, GenericNotification self, ItemDef itemDef)
+        {
+            orig(self, itemDef);
+            if (itemDef.itemIndex != catalogIndex) return;
+            var StageCount = Run.instance.stageClearCount;
+            if (StageCount > adjustedPickup.Length) StageCount = adjustedPickup.Length-1;
+            string numberString = adjustedPickup[StageCount];
+            string descString = adjustedDesc[StageCount];
+
+            //https://www.dotnetperls.com/uppercase-first-letter
+            string numberCapitalized = char.ToUpper(numberString[0]) + numberString.Substring(1);
+
+            string output = numberCapitalized + " Chamber" +
+                "\nThis " + descString + " artifact indicates mastery of the " + numberString + " chamber.";
+
+            self.descriptionText.token = output;
         }
 
         private void Check(TeleporterInteraction teleporterInteraction)

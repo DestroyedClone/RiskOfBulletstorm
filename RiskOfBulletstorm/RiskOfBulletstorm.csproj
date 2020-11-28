@@ -26,12 +26,13 @@
     <Compile Remove="Releases\Items\Eqp\CoolantLeak.cs" />
     <Compile Remove="Releases\Items\Eqp\MultiplayerBuddy.cs" />
     <Compile Remove="Releases\Items\Eqp\SupplyDrop.cs" />
+    <Compile Remove="Releases\Items\LunarEqp\Spice.cs" />
     <Compile Remove="Releases\Items\Pickups\GuonStoneGlass.cs" />
     <Compile Remove="Releases\Items\T1\CartographerRing.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Items\TierBoss\" />
+    <Folder Include="Items\" />
     <Folder Include="Releases\Items\LunarEqp\" />
     <None Remove="riskofgungeonassets" />
 	  <Folder Remove="Items" />
