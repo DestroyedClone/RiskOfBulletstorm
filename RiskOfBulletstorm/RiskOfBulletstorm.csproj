@@ -11,19 +11,18 @@
   <ItemGroup>
     <Compile Remove="Items\**" />
     <Compile Remove="lib\**" />
-    <Compile Remove="Releases\Items\Boss\**" />
     <Compile Remove="Releases\Items\Elites\**" />
     <EmbeddedResource Remove="Items\**" />
     <EmbeddedResource Remove="lib\**" />
-    <EmbeddedResource Remove="Releases\Items\Boss\**" />
     <EmbeddedResource Remove="Releases\Items\Elites\**" />
     <None Remove="Items\**" />
     <None Remove="lib\**" />
-    <None Remove="Releases\Items\Boss\**" />
     <None Remove="Releases\Items\Elites\**" />
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Releases\Items\Boss\Beetle.cs" />
+    <Compile Remove="Releases\Items\Boss\Dog.cs" />
     <Compile Remove="Releases\Items\Eqp\CoolantLeak.cs" />
     <Compile Remove="Releases\Items\Eqp\MultiplayerBuddy.cs" />
     <Compile Remove="Releases\Items\Eqp\SupplyDrop.cs" />
@@ -32,6 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Items\TierBoss\" />
     <Folder Include="Releases\Items\LunarEqp\" />
     <None Remove="riskofgungeonassets" />
 	  <Folder Remove="Items" />

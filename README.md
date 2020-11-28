@@ -16,7 +16,6 @@ Jarlyk - EliteSpawningOverhaul
 # Planned
 * (Boss) Dog: Chance to find pickups
 * (Green) Military Training: Improves firing
-* (Red) Number 2: Boosts stats while alone
 * (Green) Live Ammo: Immunity to contact damage, hitbox to utility
 * (Green) Battery Bullets: Electrifies bullets
 ***
@@ -26,13 +25,14 @@ Jarlyk - EliteSpawningOverhaul
 ***
 # Items
 ## Pickups
+Every 50 kills, the game will have a 20% chance to *spawn a random weighted pickup*.
 **Armor**: Destroys itself to block one hit of damage dealing more than 20% health or fatal, and fires a Blank. (TODO: SFX)
-**Blank**: Press a key to activate, destroying all projectiles, stunning and knocking nearby enemies back. Consumed on use. (TODO: SFX, Visual effect)
+**Blank**: Press T to activate, destroying all projectiles, stunning and knocking nearby enemies back. Consumed on use. (TODO: SFX, Visual effect)
 **Key**: Opens a locked chest for free. Consumed on use.
-**Spread Ammo**: Spawns a bandolier pack that restores *all* players' cooldowns.
+**Spread Ammo**: Spawns a bandolier pack that restores *all* players' cooldowns and restores one equipment charge to all equipment.
 
 ## White
-**Cartographer's Rin**g: Upon starting the next stage, 20% chance (+10% chance per stack) of automatically revealing all chests.
+**Cartographer's Ring**: Upon starting the next stage, 20% chance (+10% chance per stack) of automatically revealing all chests.
 **Mustache**: Heal for +10% (+10% per stack) health upon purchasing something.
 
 ## Green
@@ -81,8 +81,12 @@ Jarlyk - EliteSpawningOverhaul
 **[Jammed]**: +100% damage, +20% attack speed, +20% movement speed.
 
 # Changelog
-1.1.0 - Content Update
-
+1.1.0 - Content Update:
+*Added--* 4 Pickups, 1 white, 3 greens, 2 reds, 2 lunars, 2 boss items, and 8 new equipment.
+*Mustache--* Added config for interaction with Blood Shrines.
+*Scope--* now affects REX syringes, Sawmerang, Preon Accumulator, and (config) Disposable Missile Launcher. Added experimental config for applying it to all projectiles (may break some projectiles).
+*Metronome--* Added config for stack loss.
+*Bomb--* Added assets, increased cooldown
 
 1.0.1 - Reverted dependency of R2API. Adjusted item descriptions.
 
@@ -95,10 +99,3 @@ KomradeSpectre, Chen - Lots, and TILER2 Help
 KomradeSpectre - Walking me through the resource process
 OKIGotIt, Ghor - Spice
 rob - help with hooks
-
-## Credits - Other
-https://stackoverflow.com/questions/105372/how-to-enumerate-an-enum
-https://answers.unity.com/questions/285785/how-to-randomly-pick-a-string-from-an-array.html
-https://stackoverflow.com/questions/2893297/iterate-multi-dimensional-array-with-nested-foreach-statement
-https://stackoverflow.com/questions/6413572/how-do-i-get-the-last-four-characters-from-a-string-in-c
-https://stackoverflow.com/questions/411752/best-way-to-repeat-a-character-in-c-sharp
