@@ -121,12 +121,14 @@ namespace RiskOfBulletstorm.Items
             int AmountDead = GetDeadAmount();
             if (AmountDead > 0)
             {
-                foreach (var player in CharacterMaster.readOnlyInstancesList)
+                var list = PlayerCharacterMasterController.instances;
+                foreach (var player in list)
                 {
-                    CultistPassiveComponent passiveComponent = player.GetComponent<CultistPassiveComponent>();
-                    if (passiveComponent)
+                    var body = player.master?.GetBody();
+                    if (body)
                     {
-                        passiveComponent.deadProtagonists = AmountDead;
+                        var passiveComponent = body.GetComponent<CultistPassiveComponent>();
+                        if (passiveComponent) passiveComponent.deadProtagonists = AmountDead;
                     }
                 }
             }

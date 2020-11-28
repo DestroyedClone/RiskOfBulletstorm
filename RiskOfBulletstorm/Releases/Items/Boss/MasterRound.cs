@@ -112,6 +112,7 @@ namespace RiskOfBulletstorm.Items
             if (!component) return;
             if (!MasterRound_AllowSelfDamage && damageInfo.attacker == victim) return;
             if (damageInfo.rejected || damageInfo.damage < MasterRound_MinimumDamage) return;
+            if (!component.teleporterCharging) return;
             component.currentHits++;
         }
 
@@ -132,12 +133,14 @@ namespace RiskOfBulletstorm.Items
             var StageCount = Run.instance.stageClearCount;
             foreach (var player in playerList)
             {
-                var gameObject = player.body.gameObject;
-                var MasterRoundComponent = gameObject.GetComponent<MasterRoundComponent>();
-                if (!MasterRoundComponent) MasterRoundComponent = gameObject.AddComponent<MasterRoundComponent>();
-                MasterRoundComponent.allowedHits = MasterRound_AllowedHits + StageCount;
-                //SAFETY
-                MasterRoundComponent.teleporterCharging = true;
+                var body = player.master.GetBody();
+                if (body)
+                {
+                    var MasterRoundComponent = body.gameObject.GetComponent<MasterRoundComponent>();
+                    if (!MasterRoundComponent) MasterRoundComponent = body.gameObject.AddComponent<MasterRoundComponent>();
+                    MasterRoundComponent.allowedHits = MasterRound_AllowedHits + StageCount;
+                    MasterRoundComponent.teleporterCharging = true;
+                }
             }
         }
         private void GenericNotification_SetItem(On.RoR2.UI.GenericNotification.orig_SetItem orig, GenericNotification self, ItemDef itemDef)

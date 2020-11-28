@@ -85,7 +85,7 @@ namespace RiskOfBulletstorm.Items
 
                 foreach (TeamComponent teamComponent in array2)
                 {
-                    CharacterBody body = teamComponent.GetComponent<CharacterBody>();
+                    CharacterBody body = teamComponent.body;
                     if (body)
                     {
                         body.GetComponent<SkillLocator>()?.ApplyAmmoPack();

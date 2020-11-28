@@ -70,8 +70,7 @@ namespace RiskOfBulletstorm.Items
         private void Run_Start(On.RoR2.Run.orig_Start orig, Run self)
         {
             orig(self);
-            //itemStacksField = typeof(Inventory).GetField("itemStacks", BindingFlags.Instance | BindingFlags.NonPublic);
-
+            //try caching the item count?
         }
 
         public override void Uninstall()
@@ -81,38 +80,30 @@ namespace RiskOfBulletstorm.Items
             On.RoR2.Run.Start -= Run_Start;
         }
 
-        static int GetTotalItemCountOfTier(ItemTier itemTier, CharacterBody self) //borrowed method
+        static int GetUniqueItemCount(CharacterBody characterBody)
         {
             int num = 0;
             ItemIndex itemIndex = ItemIndex.Syringe;
             ItemIndex itemCount = (ItemIndex)ItemCatalog.itemCount;
             while (itemIndex < itemCount)
             {
-                if (ItemCatalog.GetItemDef(itemIndex).tier == itemTier)
-                {
-                    num += self.inventory.GetItemCount(itemIndex);
-                }
+                if (characterBody.inventory.GetItemCount(itemIndex) > 0)
+                    num++;
                 itemIndex++;
             }
             return num;
         }
+
+
         private void BoostDamage(CharacterBody sender, StatHookEventArgs args)
         {
             var inventory = sender.inventory;
             if (!inventory) return;
             var UnityInventoryCount = inventory.GetItemCount(catalogIndex);
-            //var inv = self.inventory;
-            //int tier1Items = GetItemCount(ItemTier.Tier1, self);
-            //int tier2Items = GetItemCount(ItemTier.Tier2, self);
-            int TotalItemCount = 0;
 
             if (UnityInventoryCount > 0)
             {
-                foreach (ItemTier tier in (ItemTier[])Enum.GetValues(typeof(ItemTier))) //https://stackoverflow.com/questions/105372/how-to-enumerate-an-enum
-                {
-                    TotalItemCount += GetTotalItemCountOfTier(tier, sender);
-                }
-                args.baseDamageAdd += TotalItemCount * (RingUnity_DamageBonus + (RingUnity_DamageBonusStack * (UnityInventoryCount - 1)));
+                args.baseDamageAdd += GetUniqueItemCount(sender) * (RingUnity_DamageBonus + (RingUnity_DamageBonusStack * (UnityInventoryCount - 1)));
             }
         }
     }
