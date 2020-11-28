@@ -1,6 +1,6 @@
-﻿using R2API;
+﻿
+using R2API;
 using RoR2;
-using RoR2.Projectile;
 using UnityEngine;
 using UnityEngine.Networking;
 using TILER2;
@@ -23,6 +23,9 @@ namespace RiskOfBulletstorm.Items
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Max amount of buffs from Meatbun. (Default: 5)", AutoConfigFlags.PreventNetMismatch)]
         public int Meatbun_BuffLimit { get; private set; } = 5;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("% health threshold to remove buff (Default: 0.05 = 5% health loss)", AutoConfigFlags.PreventNetMismatch)]
+        public float Meatbun_HealthThreshold { get; private set; } = 0.05f;
 
         public override string displayName => "Meatbun";
         public override float cooldown { get; protected set; } = 90f;
@@ -80,12 +83,17 @@ namespace RiskOfBulletstorm.Items
 
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
+            var oldHealth = self.health;
             orig(self, damageInfo);
+            var healthCompare = (oldHealth - self.health) / self.fullHealth;
             var body = self.body;
             if (body)
             {
-                int MeatBunBoostCount = body.GetBuffCount(MeatbunBoost);
-                for (int i = 0; i < MeatBunBoostCount; i++) body.RemoveBuff(MeatbunBoost);
+                if (healthCompare >= Meatbun_HealthThreshold)
+                {
+                    int MeatBunBoostCount = body.GetBuffCount(MeatbunBoost);
+                    for (int i = 0; i < MeatBunBoostCount; i++) body.RemoveBuff(MeatbunBoost);
+                }
             }
         }
 
@@ -99,7 +107,9 @@ namespace RiskOfBulletstorm.Items
                     int MeatBunBoostCount = body.GetBuffCount(MeatbunBoost);
                     if (MeatBunBoostCount > 0)
                     {
-                        damageInfo.damage *= MeatBunBoostCount * Meatbun_DamageBonus;
+                        var olddmg = (float)damageInfo.damage;
+                        damageInfo.damage *= 1 + (MeatBunBoostCount * Meatbun_DamageBonus);
+                        Debug.Log("Meatbun: Increased damage from " + olddmg + " to " + damageInfo.damage + " with " + MeatBunBoostCount + " stacks");
                     }
                 }
             }

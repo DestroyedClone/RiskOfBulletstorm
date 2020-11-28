@@ -75,33 +75,26 @@ namespace RiskOfBulletstorm.Items
 
         private void AmmoPickup_OnTriggerStay(On.RoR2.AmmoPickup.orig_OnTriggerStay orig, AmmoPickup self, Collider other)
         {
-            Chat.AddMessage("Something entered me uguu~");
-            GiveAmmoToTeam ammoToTeam = self.GetComponent<GiveAmmoToTeam>();
+            GiveAmmoToTeam ammoToTeam = self.gameObject.GetComponent<GiveAmmoToTeam>();
             if (ammoToTeam)
             {
                 Chat.AddMessage("AmmoSpread: Player walked into");
                 int AppliedPlayers = 0;
                 //TeamComponent[] array2 = UnityEngine.Object.FindObjectsOfType<TeamComponent>(); //gorag opus yoink
                 ReadOnlyCollection<TeamComponent> array2 = TeamComponent.GetTeamMembers(TeamIndex.Player);
-                //TeamIndex teamIndex = other.gameObject.GetComponent<TeamComponent>().teamIndex;
-                //SkillLocator skillLocator = other.GetComponent<SkillLocator>();
 
                 foreach (TeamComponent teamComponent in array2)
                 {
-                    if (teamComponent.teamIndex == TeamIndex.Player)
+                    CharacterBody body = teamComponent.GetComponent<CharacterBody>();
+                    if (body)
                     {
-                        CharacterBody body = teamComponent.GetComponent<CharacterBody>();
-                        body.GetComponent<SkillLocator>().ApplyAmmoPack();
+                        body.GetComponent<SkillLocator>()?.ApplyAmmoPack();
+                        body.inventory?.RestockEquipmentCharges(0, 1);
+                        if (body.inventory?.GetEquipmentSlotCount() > 1) body.inventory?.RestockEquipmentCharges(1, 1); //MULT
                         Chat.AddMessage("AmmoSpread: " + body.GetUserName() + " applied!");
                         EffectManager.SimpleEffect(self.pickupEffect, self.transform.position, Quaternion.identity, true);
+                        AppliedPlayers++;
                     }
-                }
-                SkillLocator skillLocator = other.GetComponent<SkillLocator>();
-                if (skillLocator)
-                {
-                    AppliedPlayers++;
-                    skillLocator.ApplyAmmoPack();
-                    Chat.AddMessage("AmmoSpread: Given to "+other);
                 }
                 if (AppliedPlayers > 0)
                 {
@@ -113,14 +106,15 @@ namespace RiskOfBulletstorm.Items
         private void CreatePickup(On.RoR2.PickupDropletController.orig_CreatePickupDroplet orig, PickupIndex pickupIndex, Vector3 position, Vector3 velocity)
         {
             var body = PlayerCharacterMasterController.instances[0].master.GetBody();
-            
+
             if (pickupIndex == PickupCatalog.FindPickupIndex(catalogIndex)) //safety to prevent softlocks
             {
-                pickupIndex = PickupCatalog.FindPickupIndex(ItemIndex.None);
                 SpawnAmmoPickup(body.gameObject.transform.position);
             }
-
-            orig(pickupIndex, position, velocity);
+            else
+            {
+                orig(pickupIndex, position, velocity);
+            }
         }
 
         private void SpawnAmmoPickup(Vector3 sapPosition)

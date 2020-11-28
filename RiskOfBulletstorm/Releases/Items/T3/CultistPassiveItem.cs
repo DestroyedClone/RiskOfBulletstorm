@@ -23,9 +23,12 @@ namespace RiskOfBulletstorm.Items
         protected override string GetNameString(string langID = null) => displayName;
         protected override string GetPickupString(string langID = null) => "Sidekick No More\nBoosts stats when alone.";
 
-        protected override string GetDescString(string langid = null) => $"Increases <style=cIsUtility>base movespeed by 3</style>, and <style=cIsDamage>base damage by 3</style> for every dead survivor.";
+        protected override string GetDescString(string langid = null) => $"Increases <style=cIsUtility>base movespeed by {statboost}</style>, and <style=cIsDamage>base damage by {statboost}</style> for every dead survivor.";
 
         protected override string GetLoreString(string langID = null) => "Now that the protagonist is dead, it's time to shine!";
+
+        private readonly int statboost = 6;
+
         public CultistPassiveItem()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/CultistPassiveItem.prefab";
@@ -80,8 +83,8 @@ namespace RiskOfBulletstorm.Items
             if (component)
             {
                 var deadAmt = component.deadProtagonists;
-                args.baseDamageAdd += 3 * deadAmt;
-                args.baseMoveSpeedAdd += 3 * deadAmt;
+                args.baseDamageAdd += statboost * deadAmt;
+                args.baseMoveSpeedAdd += statboost * deadAmt;
             }
         }
 
@@ -100,9 +103,12 @@ namespace RiskOfBulletstorm.Items
         private int GetDeadAmount()
         {
             int deadAmt = 0;
-            foreach (CharacterMaster player in CharacterMaster.readOnlyInstancesList)
+            var list = PlayerCharacterMasterController.instances;
+            if (list.Count == 1)
+                return 1;
+            foreach (var player in list)
             {
-                if (player.IsDeadAndOutOfLivesServer())
+                if (player.master.IsDeadAndOutOfLivesServer())
                 {
                     deadAmt++;
                 }

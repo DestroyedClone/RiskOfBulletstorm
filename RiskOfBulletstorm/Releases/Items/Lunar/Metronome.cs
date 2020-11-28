@@ -148,20 +148,17 @@ namespace RiskOfBulletstorm.Items
 
         private void GlobalEventManager_OnCharacterDeath(On.RoR2.GlobalEventManager.orig_OnCharacterDeath orig, GlobalEventManager self, DamageReport damageReport)
         {
-            if (self.gameObject)
+            var attackerBody = damageReport?.attackerBody;
+            int inventoryCount = GetCount(attackerBody);
+            if (attackerBody)
             {
-                var attackerBody = damageReport?.attackerBody;
-                int inventoryCount = GetCount(attackerBody);
-                if (attackerBody)
+                if (inventoryCount > 0)
                 {
-                    if (inventoryCount > 0)
+                    var componentExists = attackerBody.GetComponent<MetronomeTrackKills>();
+                    if (componentExists?.kills < componentExists?.maxkills)
                     {
-                        var componentExists = attackerBody.GetComponent<MetronomeTrackKills>();
-                        if (componentExists?.kills < componentExists?.maxkills)
-                        {
-                            componentExists.kills += 1;
-                            //Debug.Log("Metronome: Kill Added to slot "+ LastSkillSlotUsed.ToString(), self);
-                        }
+                        componentExists.kills ++;
+                        //Debug.Log("Metronome: Kill Added to slot "+ LastSkillSlotUsed.ToString(), self);
                     }
                 }
             }

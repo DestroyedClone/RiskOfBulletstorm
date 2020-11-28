@@ -17,7 +17,7 @@ namespace RiskOfBulletstorm.Items
     public class Key : Item_V2<Key>
     {
         public override string displayName => "Key";
-        public override ItemTier itemTier => ItemTier.Tier1;
+        public override ItemTier itemTier => ItemTier.NoTier;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility, ItemTag.WorldUnique });
 
         protected override string GetNameString(string langID = null) => displayName;
@@ -55,23 +55,23 @@ namespace RiskOfBulletstorm.Items
 
         private Interactability PurchaseInteraction_GetInteractability(On.RoR2.PurchaseInteraction.orig_GetInteractability orig, PurchaseInteraction self, Interactor activator)
         {
-            //Chat.AddMessage("Key: Entered Hook with "+self+" and "+activator);
-            CharacterBody characterBody = activator.GetComponent<CharacterBody>();
-            if (characterBody)
+            TrustyLockpicks.TrustyLockpickFailed attempted = self.gameObject.GetComponent<TrustyLockpicks.TrustyLockpickFailed>();
+
+            if (!attempted)
             {
-                //Chat.AddMessage("Key: Entered CB");
-                Inventory inventory = characterBody.inventory;
-                if (inventory)
+                CharacterBody characterBody = activator.GetComponent<CharacterBody>();
+                if (characterBody)
                 {
-                    //Chat.AddMessage("Key: Entered Inv");
-                    if (self.isShrine == false && self.available && self.costType == CostTypeIndex.Money) //if not shrine, is available, and is not a lunar pod
+                    Inventory inventory = characterBody.inventory;
+                    if (inventory)
                     {
-                        //Chat.AddMessage("Key: Entered Primary Check");
-                        int InventoryCount = characterBody.inventory.GetItemCount(catalogIndex);
-                        if (InventoryCount > 0)
+                        if (self.isShrine == false && self.available && self.costType == CostTypeIndex.Money) //if not shrine, is available, and is not a lunar pod
                         {
-                            //Chat.AddMessage("Key: Entered Worked!");
-                            return Interactability.Available;
+                            int InventoryCount = characterBody.inventory.GetItemCount(catalogIndex);
+                            if (InventoryCount > 0)
+                            {
+                                return Interactability.Available;
+                            }
                         }
                     }
                 }
@@ -91,31 +91,35 @@ namespace RiskOfBulletstorm.Items
             PurchaseInteraction purchaseInteraction = interactableObject.GetComponent<PurchaseInteraction>();
             if (purchaseInteraction)
             {
-                CharacterBody characterBody = self.GetComponent<CharacterBody>();
-                if (characterBody)
+                TrustyLockpicks.TrustyLockpickFailed attempted = interactableObject.GetComponent<TrustyLockpicks.TrustyLockpickFailed>();
+                if (!attempted)
                 {
-                    Inventory inventory = characterBody.inventory;
-                    if (inventory)
+                    CharacterBody characterBody = self.GetComponent<CharacterBody>();
+                    if (characterBody)
                     {
-                        int InventoryCount = characterBody.inventory.GetItemCount(catalogIndex);
-                        if (InventoryCount > 0)
+                        Inventory inventory = characterBody.inventory;
+                        if (inventory)
                         {
-                            purchaseInteraction.GetInteractability(self);
-
-                            if (purchaseInteraction.isShrine == false && purchaseInteraction.available && purchaseInteraction.costType == CostTypeIndex.Money) //if not shrine, is available, and is not a lunar pod
+                            int InventoryCount = characterBody.inventory.GetItemCount(catalogIndex);
+                            if (InventoryCount > 0)
                             {
-                                purchaseInteraction.SetAvailable(false);
-                                purchaseInteraction.Networkavailable = false;
+                                purchaseInteraction.GetInteractability(self);
 
-                                purchaseInteraction.gameObject.GetComponent<ChestBehavior>().Open();
+                                if (purchaseInteraction.isShrine == false && purchaseInteraction.available && purchaseInteraction.costType == CostTypeIndex.Money) //if not shrine, is available, and is not a lunar pod
+                                {
+                                    purchaseInteraction.SetAvailable(false);
+                                    purchaseInteraction.Networkavailable = false;
 
-                                //purchaseInteraction.cost = 0;
-                                //purchaseInteraction.Networkcost = 0;
+                                    purchaseInteraction.gameObject.GetComponent<ChestBehavior>().Open();
 
-                                purchaseInteraction.onPurchase.Invoke(self);
-                                purchaseInteraction.lastActivator = self;
+                                    //purchaseInteraction.cost = 0;
+                                    //purchaseInteraction.Networkcost = 0;
 
-                                inventory.RemoveItem(catalogIndex);
+                                    purchaseInteraction.onPurchase.Invoke(self);
+                                    purchaseInteraction.lastActivator = self;
+
+                                    inventory.RemoveItem(catalogIndex);
+                                }
                             }
                         }
                     }

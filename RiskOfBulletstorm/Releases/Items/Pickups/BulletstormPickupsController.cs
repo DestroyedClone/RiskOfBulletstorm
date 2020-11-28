@@ -12,11 +12,21 @@ using static TILER2.StatHooks;
 using static TILER2.MiscUtil;
 using System;
 using static R2API.DirectorAPI;
+using static RiskOfBulletstorm.Shared.HelperUtil;
 
 namespace RiskOfBulletstorm.Items
 {
     public class BulletstormPickupsController : Item_V2<BulletstormPickupsController>
     {
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Enable Pickups?", AutoConfigFlags.PreventNetMismatch)]
+        public bool BUP_Enable { get; private set; } = true;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("RequiredKills = 10", AutoConfigFlags.PreventNetMismatch)]
+        public int BUP_RequiredKills { get; private set; } = 10;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Multiplier per stage count = 2.00x", AutoConfigFlags.PreventNetMismatch)]
+        public float BUP_StageMultiplier { get; private set; } = 2f;
         public override string displayName => "BulletstormPickupsController";
         public override ItemTier itemTier => ItemTier.NoTier;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.WorldUnique, ItemTag.AIBlacklist });
@@ -28,21 +38,21 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "";
 
-        private int globalDeaths = 0;
-
         //private readonly int StageMultiplier = 2;
         //private readonly int DifficultyMultiplier = 1;
-        private readonly int KillRequirement = 10;
 
         private readonly PickupIndex KeyIndex = Key.instance.pickupIndex;
         private readonly PickupIndex BlankIndex = Blank.instance.pickupIndex;
         private readonly PickupIndex ArmorIndex = Armor.instance.pickupIndex;
+        private readonly PickupIndex AmmoSpreadIndex = PickupAmmoSpread.instance.pickupIndex;
 
-        private readonly float PickupRollChance = 0.20f;
+        private readonly float PickupRollChance = 20f;
 
         //WeightedSelection<PickupIndex> weightedSelection = new WeightedSelection<PickupIndex>();
 
         private WeightedSelection<PickupIndex> weightedSelection;
+
+        private GameObject currentStage; 
 
         public override void SetupBehavior()
         {
@@ -54,7 +64,8 @@ namespace RiskOfBulletstorm.Items
             weightedSelection = new WeightedSelection<PickupIndex>();
             weightedSelection.AddChoice(KeyIndex, 0.5f);
             weightedSelection.AddChoice(BlankIndex, 0.3f);
-            weightedSelection.AddChoice(ArmorIndex, 0.2f);
+            weightedSelection.AddChoice(ArmorIndex, 0.1f);
+            weightedSelection.AddChoice(AmmoSpreadIndex, 0.1f);
 
         }
         public override void SetupConfig()
@@ -64,39 +75,63 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            On.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
-            On.RoR2.Stage.Start += Stage_Start;
+            if (BUP_Enable)
+            {
+                On.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
+                RoR2.Stage.onStageStartGlobal += Stage_onStageStartGlobal;
+            }
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
-            On.RoR2.GlobalEventManager.OnCharacterDeath -= GlobalEventManager_OnCharacterDeath;
-            On.RoR2.Stage.Start -= Stage_Start;
-        }
-        private void Stage_Start(On.RoR2.Stage.orig_Start orig, RoR2.Stage self)
-        {
-            orig(self);
-            globalDeaths = 0;
+            if (BUP_Enable)
+            {
+                On.RoR2.GlobalEventManager.OnCharacterDeath -= GlobalEventManager_OnCharacterDeath;
+                RoR2.Stage.onStageStartGlobal -= Stage_onStageStartGlobal;
+            }
         }
 
-        private void CreatePickup(PickupIndex pickupIndex, Vector3 position)
+        private void Stage_onStageStartGlobal(RoR2.Stage obj)
         {
-            PickupDropletController.CreatePickupDroplet(pickupIndex, position, Vector3.up * 5);
+            var gameObj = obj.gameObject;
+            BulletstormPickupsComponent pickupsComponent = gameObj.GetComponent<BulletstormPickupsComponent>();
+            if (!pickupsComponent) pickupsComponent = gameObj.AddComponent<BulletstormPickupsComponent>();
+            currentStage = gameObj;
+        }
+
+        private bool CheckIfDoll(DamageInfo dmginfo)
+        {
+            if (!dmginfo.inflictor && dmginfo.procCoefficient == 1 && dmginfo.damageColorIndex == DamageColorIndex.Item && dmginfo.force == Vector3.zero && dmginfo.damageType == DamageType.Generic)
+                return true;
+            else
+                return false;
         }
 
         private void GlobalEventManager_OnCharacterDeath(On.RoR2.GlobalEventManager.orig_OnCharacterDeath orig, GlobalEventManager self, DamageReport damageReport)
         {
             orig(self, damageReport);
+            if (!currentStage) return;
+            var dmginfo = damageReport.damageInfo;
+            if (CheckIfDoll(dmginfo)) return;
+            if (dmginfo.attacker.GetComponent<TeamComponent>()?.teamIndex == TeamIndex.Player) return;
+            BulletstormPickupsComponent pickupsComponent = currentStage?.GetComponent<BulletstormPickupsComponent>();
+            if (!pickupsComponent) return;
+            var kills = pickupsComponent.globalDeaths;
             CharacterBody VictimBody = damageReport.victimBody;
+
             if (VictimBody)
             {
+                var stageCount = Run.instance.stageClearCount;
+                var StageMult = BUP_StageMultiplier * stageCount;
                 Vector3 PickupPosition = VictimBody.transform.position;
-                //int StageMultAdd = StageMultiplier * Run.instance.stageClearCount;
+                if (stageCount > 1) StageMult = 1;
+
                 //int DiffMultAdd = Run.instance.selectedDifficulty;
-                
-                globalDeaths++;
-                if (globalDeaths % KillRequirement == 0)
+                var requiredKills = BUP_RequiredKills * StageMult;
+
+                kills++;
+                if (kills % requiredKills == 0)
                 {
                     if (Util.CheckRoll(PickupRollChance)) //Roll to spawn pickups
                     {
@@ -104,11 +139,15 @@ namespace RiskOfBulletstorm.Items
 
                         var randfloat = UnityEngine.Random.Range(0f, 1f);
                         PickupIndex dropList = weightedSelection.Evaluate(randfloat);
-                        CreatePickup(dropList, PickupPosition);
-
+                        PickupDropletController.CreatePickupDroplet(dropList, PickupPosition, Vector3.up * 5);
                     }
                 }
             }
+        }
+
+        public class BulletstormPickupsComponent : MonoBehaviour
+        {
+            public int globalDeaths = 0;
         }
     }
 }

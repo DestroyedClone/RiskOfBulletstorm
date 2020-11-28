@@ -32,6 +32,7 @@ namespace RiskOfBulletstorm.Shared.Blanks
         public static GameObject BlankObject; // { get; private set; }
         //private readonly string BlankSound = EntityStates.Treebot.Weapon.FirePlantSonicBoom.impactSoundString;
         //private readonly string BlankEffect = "Prefabs/Effects/TreebotShockwaveEffect";
+        public GameObject BlankEffect;
 
         public override void SetupBehavior()
         {
@@ -40,6 +41,7 @@ namespace RiskOfBulletstorm.Shared.Blanks
         public override void SetupAttributes()
         {
             base.SetupAttributes();
+            BlankEffect = (GameObject)Resources.Load("prefabs/effects/SonicBoomEffect.prefab");
         }
         public override void SetupConfig()
         {
@@ -73,7 +75,7 @@ namespace RiskOfBulletstorm.Shared.Blanks
                     {
                         if (damageInfo.inflictor == BlankObject)
                         {
-                            var prcf = 50;
+                            var prcf = 150;
                             var mass = characterBody.characterMotor?.mass ?? (characterBody.rigidbody?.mass ?? 1f);
 
                             Vector3 ZeroYVector3(Vector3 vector3)
@@ -105,11 +107,11 @@ namespace RiskOfBulletstorm.Shared.Blanks
             }
             Util.PlayScaledSound(EntityStates.Treebot.Weapon.FirePlantSonicBoom.impactSoundString, attacker.gameObject, 0.75f);
             // EFFECT HERE
-            EffectManager.SpawnEffect(EntityStates.Treebot.Weapon.FirePlantSonicBoom.hitEffectPrefab, new EffectData
+            EffectManager.SpawnEffect((GameObject)Resources.Load("prefabs/effects/SonicBoomEffect.prefab"), new EffectData
             {
-                origin = attacker.transform.position + Vector3.up * 5,
+                origin = attacker.transform.position + Vector3.up * 2,
                 rotation = Util.QuaternionSafeLookRotation(Vector3.up),
-                scale = 3f
+                scale = 4f
             }, false) ;
 
             // BLAST ATTACK //

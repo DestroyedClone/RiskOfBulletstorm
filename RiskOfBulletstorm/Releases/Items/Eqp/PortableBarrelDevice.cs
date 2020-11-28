@@ -60,7 +60,7 @@ namespace RiskOfBulletstorm.Items
             base.SetupAttributes();
             placementRule = new DirectorPlacementRule
             {
-                placementMode = DirectorPlacementRule.PlacementMode.NearestNode,
+                placementMode = DirectorPlacementRule.PlacementMode.RandomNormalized,
                 maxDistance = 100f,
                 minDistance = 20f,
                 preventOverhead = true
@@ -73,18 +73,25 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
+            On.RoR2.BarrelInteraction.OnInteractionBegin += DestroyBarrel;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
+            On.RoR2.BarrelInteraction.OnInteractionBegin -= DestroyBarrel;
+        }
+
+        private void DestroyBarrel(On.RoR2.BarrelInteraction.orig_OnInteractionBegin orig, BarrelInteraction self, Interactor activator)
+        {
+            orig(self, activator);
+            var component = self.gameObject.GetComponent<BarrelDestroyOnInteraction>();
+            if (component) Object.Destroy(self.gameObject);
         }
         protected override bool PerformEquipmentAction(EquipmentSlot slot)
         {
             CharacterBody body = slot.characterBody;
             if (!body) return false;
-            HealthComponent health = body.healthComponent;
-            if (!health) return false;
 
             PlaceTable(body);
             if (instance.CheckEmbryoProc(body))
@@ -99,6 +106,10 @@ namespace RiskOfBulletstorm.Items
             iscBarrelNew.DoSpawn(characterBody.transform.position, characterBody.transform.rotation, new DirectorSpawnRequest(
                 iscBarrelNew, placementRule, RoR2Application.rng)
             );
+        }
+        private class BarrelDestroyOnInteraction : MonoBehaviour
+        {
+
         }
     }
 }

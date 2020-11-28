@@ -26,6 +26,9 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("Duration?? (Default: 8 seconds)", AutoConfigFlags.PreventNetMismatch)]
         public float Molotov_Duration { get; private set; } = 8f;
 
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Beating Embryo: Damage Multiplier?? (Default: 150% damage multiplier)", AutoConfigFlags.PreventNetMismatch)]
+        public float Molotov_BeatingEmbryo { get; private set; } = 1.5f;
         //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         //[AutoConfig("Cooldown? (Default: 8 = 8 seconds)", AutoConfigFlags.PreventNetMismatch)]
         //public float Cooldown_config { get; private set; } = 8f;
@@ -60,7 +63,7 @@ namespace RiskOfBulletstorm.Items
 
             //needs to be declared first
             GameObject sporeGrenadeDotZonePrefab = Resources.Load<GameObject>("prefabs/projectiles/SporeGrenadeProjectileDotZone");
-            MolotovDotZonePrefab = sporeGrenadeDotZonePrefab.InstantiateClone("MolotovDotZone");
+            MolotovDotZonePrefab = sporeGrenadeDotZonePrefab.InstantiateClone("Bulletstorm_MolotovDotZone");
             MolotovDotZonePrefab.GetComponent<ProjectileDamage>().damageType = DamageType.IgniteOnHit;
             ProjectileDotZone projectileDotZone = MolotovDotZonePrefab.GetComponent<ProjectileDotZone>();
             projectileDotZone.damageCoefficient = Molotov_Damage;
@@ -68,10 +71,12 @@ namespace RiskOfBulletstorm.Items
             projectileDotZone.lifetime = Molotov_Duration;
 
             GameObject sporeGrenadePrefab = Resources.Load<GameObject>("prefabs/projectiles/SporeGrenadeProjectile");
-            MolotovPrefab = sporeGrenadePrefab.InstantiateClone("Molotov");
+            MolotovPrefab = sporeGrenadePrefab.InstantiateClone("Bulletstorm_Molotov");
             MolotovPrefab.GetComponent<ProjectileDamage>().damageColorIndex = DamageColorIndex.Item;
             MolotovPrefab.GetComponent<ProjectileImpactExplosion>().childrenProjectilePrefab = MolotovDotZonePrefab;
-            //Object.Destroy(MolotovPrefab.GetComponent<ApplyTorqueOnStart>());
+
+            ApplyTorqueOnStart applyTorque = MolotovPrefab.AddComponent<ApplyTorqueOnStart>();
+            applyTorque.randomize = true;
 
             var model = Resources.Load<GameObject>(modelResourcePath);
             model.AddComponent<NetworkIdentity>();
@@ -305,24 +310,22 @@ namespace RiskOfBulletstorm.Items
 
             GameObject gameObject = slot.gameObject;
 
-            //int DeployCount = instance.CheckEmbryoProc(body) ? 2 : 1; //Embryo Check
-
             Util.PlaySound(FireMines.throwMineSoundString, gameObject);
-            FireMolotov(body, gameObject);
-            if (instance.CheckEmbryoProc(body)) FireMolotov(body, gameObject, 1f);
+            var damageMult = 1f;
+            if (instance.CheckEmbryoProc(body)) damageMult = Molotov_BeatingEmbryo;
+            FireMolotov(body, gameObject, damageMult);
             return true;
         }
 
-        public void FireMolotov(CharacterBody body, GameObject gameObject, float yOffset = 0)
+        public void FireMolotov(CharacterBody body, GameObject gameObject, float damageMultiplier = 1f)
         {
             Vector3 corePos = Util.GetCorePosition(body);
-            Vector3 offset = new Vector3(0f, yOffset, 0f);
             InputBankTest input = body.inputBank;
 
             if (NetworkServer.active)
             {
-                ProjectileManager.instance.FireProjectile(MolotovPrefab, corePos+offset, Util.QuaternionSafeLookRotation(input.aimDirection),
-                                      gameObject, body.damage * Molotov_Damage,
+                ProjectileManager.instance.FireProjectile(MolotovPrefab, corePos, Util.QuaternionSafeLookRotation(input.aimDirection),
+                                      gameObject, body.damage * Molotov_Damage * damageMultiplier,
                                       0f, Util.CheckRoll(body.crit, body.master),
                                       DamageColorIndex.Item, null, -1f);
             }

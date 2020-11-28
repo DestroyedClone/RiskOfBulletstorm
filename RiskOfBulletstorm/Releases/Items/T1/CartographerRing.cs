@@ -152,6 +152,9 @@ namespace RiskOfBulletstorm.Items
         private void RevealChest(On.RoR2.PurchaseInteraction.orig_Awake orig, PurchaseInteraction self)
         {
             orig(self);
+            if (!currentStage) return;
+            var component = currentStage.GetComponent<BulletstormRevealChests>();
+            if (!component) return;
             var gameObject = self.gameObject;
             if (!gameObject) return;
             var transform = gameObject.transform;
@@ -161,8 +164,9 @@ namespace RiskOfBulletstorm.Items
                 GameObject prefab = UnityEngine.Object.Instantiate(PermanentPoiPrefab);
                 PositionIndicator positionIndicator = prefab.GetComponent<PositionIndicator>();
                 positionIndicator.targetTransform = transform;
-                currentStage.GetComponent<BulletstormRevealChests>()?.positionIndicators.Add(positionIndicator);
-                currentStage.GetComponent<BulletstormRevealChests>()?.purchaseInteractions.Add(self);
+                positionIndicator.alwaysVisibleObject = gameObject; //remember to remove
+                component.positionIndicators.Add(positionIndicator);
+                component.purchaseInteractions.Add(self);
             }
         }
 

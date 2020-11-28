@@ -41,7 +41,7 @@ namespace RiskOfBulletstorm.Items
 
         public override string displayName => "Blank";
         public string descText = "Erases all enemy projectiles";
-        public override ItemTier itemTier => ItemTier.Tier1;
+        public override ItemTier itemTier => ItemTier.NoTier;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist });
 
         protected override string GetNameString(string langID = null) => displayName;

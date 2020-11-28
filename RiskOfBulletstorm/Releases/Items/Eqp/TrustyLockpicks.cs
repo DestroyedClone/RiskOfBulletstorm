@@ -90,7 +90,7 @@ namespace RiskOfBulletstorm.Items
             if (!purchaseInteraction) return false;
 
             float newUnlockChance = TrustyLockpicks_UnlockChance;
-            if (instance.CheckEmbryoProc(body)) newUnlockChance += newUnlockChance * 0.5f;
+            if (instance.CheckEmbryoProc(body)) newUnlockChance *= 1.3f;
 
             //interactionDriver.interactor.interactableCooldown = 0.25f;
 
@@ -117,6 +117,7 @@ namespace RiskOfBulletstorm.Items
             {
                 Interactor interactor = interactionDriver.interactor;
                 //interactionDriver.interactor.AttemptInteraction(chestObject);
+                Chat.AddMessage("Rolled: "+ UnlockChance);
                 if (Util.CheckRoll(UnlockChance))
                 {
                     purchaseInteraction.SetAvailable(false);
@@ -130,6 +131,7 @@ namespace RiskOfBulletstorm.Items
                     purchaseInteraction.onPurchase.Invoke(interactor);
                     purchaseInteraction.lastActivator = interactor;
                     Util.PlaySound(unlockSound, RoR2Application.instance.gameObject);
+
                 } else
                 {
                     if (TrustyLockpicks_KillChest)
@@ -183,7 +185,7 @@ namespace RiskOfBulletstorm.Items
             return orig(self, activator);
         }
 
-        private class TrustyLockpickFailed : MonoBehaviour
+        public class TrustyLockpickFailed : MonoBehaviour
         {
 
         }

@@ -66,6 +66,8 @@ namespace RiskOfBulletstorm.Items
             //var playerList = CharacterMaster.readOnlyInstancesList;
             int playerAmt = playerList.Count;
 
+            bool EmbryoProc = instance.CheckEmbryoProc(body);
+
             if (playerAmt > 1)
             {
                 foreach (PlayerCharacterMasterController player in playerList)
@@ -74,11 +76,27 @@ namespace RiskOfBulletstorm.Items
                     if (master.IsDeadAndOutOfLivesServer())
                     {
                         Stage.instance.RespawnCharacter(master);
+                        if (EmbryoProc)
+                        {
+                            var healthComponent = master.GetBody()?.GetComponent<HealthComponent>();
+
+                            if (healthComponent)
+                            {
+                                var fullBarrier = healthComponent.fullBarrier;
+                                if (NetworkServer.active)
+                                {
+                                    healthComponent.AddBarrier(fullBarrier);
+                                } else
+                                {
+                                    healthComponent.AddBarrierAuthority(fullBarrier);
+                                }
+                            }
+                        }
                         revivedPlayers++;
                     }
                 }
             }
-            else if (playerAmt == 1) inventory.GiveItem(ItemIndex.Infusion);
+            else if (playerAmt == 1) inventory.GiveItem(ItemIndex.Infusion, EmbryoProc ? 2 : 1);
 
             if (revivedPlayers > 0 || playerAmt == 1) //anyone revived or its singleplayer
             {
