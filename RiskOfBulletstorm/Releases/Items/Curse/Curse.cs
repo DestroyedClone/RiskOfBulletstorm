@@ -32,6 +32,18 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("How much additional crit should a Jammed enemy have? (Default: 1 (+100%))", AutoConfigFlags.PreventNetMismatch)]
         public float Curse_CritBoost { get; private set; } = 1f;
 
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Allow bosses to become Jammed?", AutoConfigFlags.PreventNetMismatch)]
+        public bool Curse_AllowBosses { get; private set; } = true;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Allow Happiest Mask ghosts to retain their Jammed status?", AutoConfigFlags.PreventNetMismatch)]
+        public bool Curse_AllowGhosts { get; private set; } = true;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("[Aetherium Support] Allow Unstable Design spawns to become jammed?", AutoConfigFlags.PreventNetMismatch)]
+        public bool Curse_AllowUnstableDesign { get; private set; } = true;
+
         public override string displayName => "CurseMasterItem";
         public override ItemTier itemTier => ItemTier.NoTier;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.AIBlacklist, ItemTag.WorldUnique });
@@ -43,6 +55,8 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "";
 
+        
+
         public override void SetupBehavior()
         {
 
@@ -50,7 +64,6 @@ namespace RiskOfBulletstorm.Items
         public override void SetupAttributes()
         {
             base.SetupAttributes();
-
         }
         public override void SetupConfig()
         {
@@ -60,61 +73,104 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             CharacterBody.onBodyStartGlobal += JamEnemy;
-            On.RoR2.CharacterBody.OnInventoryChanged += UpdateCurseCount;
+            On.RoR2.Util.TryToCreateGhost += Util_TryToCreateGhost;
+        }
+
+        private CharacterBody Util_TryToCreateGhost(On.RoR2.Util.orig_TryToCreateGhost orig, CharacterBody targetBody, CharacterBody ownerBody, int duration)
+        {
+            if (!Curse_AllowGhosts) return orig(targetBody, ownerBody, duration);
+            int wasCursed = targetBody.GetBuffCount(GungeonBuffController.Jammed);
+            if (wasCursed > 0)
+            {
+
+            }
+
+            return orig(targetBody, ownerBody, duration);
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
             CharacterBody.onBodyStartGlobal -= JamEnemy;
-            On.RoR2.CharacterBody.OnInventoryChanged -= UpdateCurseCount;
         }
+
         private void JamEnemy(CharacterBody obj)
         {
+            var teamComponent = obj.teamComponent;
+            if (!teamComponent) return;
+
             int PlayerItemCount = HelperUtil.GetPlayersItemCount(catalogIndex);
             float RollValue = 0f;
+            float RollValueBosses = 0f;
 
-            //values are multiplied by 2 because each Curse item corresponds with 0.5 curse.
+            var teamIndex = teamComponent.teamIndex;
+
             switch (PlayerItemCount)
             {
                 case 0:
-                    RollValue = 0f;
                     break;
+                case 1:
                 case 2:
-                case 4:
                     RollValue = 1f;
                     break;
-                case 6:
-                case 8:
+                case 3:
+                case 4:
                     RollValue = 2f;
                     break;
-                case 10:
-                case 12:
+                case 5:
+                case 6:
                     RollValue = 5f;
                     break;
-                case 14:
-                case 16:
+                case 7:
+                case 8:
                     RollValue = 10f;
+                    RollValueBosses = 20f;
                     break;
-                case 18:
+                case 9:
                     RollValue = 25f;
+                    RollValueBosses = 30f;
                     break;
-                default: //20 and default
+                default: //10 and default
                     RollValue = 50f;
+                    RollValueBosses = 50f;
                     break;
             } //adjusts jammed chance
 
-            if (obj.teamComponent.teamIndex != TeamIndex.Player)
+            // NORMAL CHECK //
+            if (teamIndex != TeamIndex.Player)
             {
-                if (Util.CheckRoll(RollValue))
+                //BOSS CHECK
+                if (obj.isBoss)
                 {
-                    obj.AddBuff(GungeonBuffController.Jammed);
+                    if (Curse_AllowBosses)
+                    {
+                        if (Util.CheckRoll(RollValueBosses))
+                        {
+                            obj.AddBuff(GungeonBuffController.Jammed);
+                        }
+                    }
+                }
+                else
+                {
+                    if (Util.CheckRoll(RollValue))
+                    {
+                        obj.AddBuff(GungeonBuffController.Jammed);
+                    }
                 }
             }
-        }
-        private void UpdateCurseCount(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self)
-        {
-            orig(self);
+            // AETHERIUM SUPPORT //
+            else if (teamIndex == TeamIndex.Player && Curse_AllowUnstableDesign)
+            {
+                bool AetheriumCheck = obj.master.bodyPrefab.name.Contains("Aetherium");
+                if (AetheriumCheck)
+                {
+                    Chat.AddMessage("Chimera Success!");
+                    if (Util.CheckRoll(RollValue))
+                    {
+                        obj.AddBuff(GungeonBuffController.Jammed);
+                    }
+                }
+            }
         }
     }
 }
