@@ -131,6 +131,7 @@ namespace RiskOfBulletstorm.Items
                 var requiredKills = BUP_RequiredKills * StageMult;
 
                 kills++;
+                Chat.AddMessage("kills: "+kills+" / "+ requiredKills);
                 if (kills % requiredKills == 0)
                 {
                     if (Util.CheckRoll(PickupRollChance)) //Roll to spawn pickups

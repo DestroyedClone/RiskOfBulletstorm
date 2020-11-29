@@ -1,5 +1,6 @@
 ﻿using RoR2;
 using UnityEngine;
+using RiskOfBulletstorm;
 
 namespace RiskOfBulletstorm.Shared
 {
@@ -89,6 +90,21 @@ namespace RiskOfBulletstorm.Shared
             if (characterBody)
                 return HelperUtil.GetPlayersItemCount(curseIndex);
             return characterBody.inventory.GetItemCount(curseIndex);
+        }
+
+        public static void JamEnemy(CharacterBody body, float curseChance = 100f)
+        {
+            var curseEffect = (GameObject)Resources.Load("prefabs/effects/DeathMarkAfflictionEffect.prefab");
+            if (Util.CheckRoll(curseChance))
+            {
+                EffectManager.SpawnEffect(curseEffect, new EffectData
+                {
+                    origin = body.transform.position + Vector3.up * 2,
+                    rotation = Util.QuaternionSafeLookRotation(Vector3.up),
+                    scale = 2f
+                }, false);
+                body.AddBuff(Items.GungeonBuffController.Jammed);
+            }
         }
     }
     public static class SpawnUtil

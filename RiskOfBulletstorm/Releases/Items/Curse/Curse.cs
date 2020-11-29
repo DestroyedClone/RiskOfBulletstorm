@@ -36,9 +36,9 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("Allow bosses to become Jammed?", AutoConfigFlags.PreventNetMismatch)]
         public bool Curse_AllowBosses { get; private set; } = true;
 
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        /*[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Allow Happiest Mask ghosts to retain their Jammed status?", AutoConfigFlags.PreventNetMismatch)]
-        public bool Curse_AllowGhosts { get; private set; } = true;
+        public bool Curse_AllowGhosts { get; private set; } = true;*/
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("[Aetherium Support] Allow Unstable Design spawns to become jammed?", AutoConfigFlags.PreventNetMismatch)]
@@ -55,15 +55,17 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "";
 
+        public GameObject curseEffect;
         
 
         public override void SetupBehavior()
         {
-
+            base.SetupBehavior();
         }
         public override void SetupAttributes()
         {
             base.SetupAttributes();
+            curseEffect = (GameObject)Resources.Load("prefabs/effects/DeathMarkAfflictionEffect.prefab");
         }
         public override void SetupConfig()
         {
@@ -73,19 +75,6 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             CharacterBody.onBodyStartGlobal += JamEnemy;
-            On.RoR2.Util.TryToCreateGhost += Util_TryToCreateGhost;
-        }
-
-        private CharacterBody Util_TryToCreateGhost(On.RoR2.Util.orig_TryToCreateGhost orig, CharacterBody targetBody, CharacterBody ownerBody, int duration)
-        {
-            if (!Curse_AllowGhosts) return orig(targetBody, ownerBody, duration);
-            int wasCursed = targetBody.GetBuffCount(GungeonBuffController.Jammed);
-            if (wasCursed > 0)
-            {
-
-            }
-
-            return orig(targetBody, ownerBody, duration);
         }
 
         public override void Uninstall()
@@ -144,18 +133,12 @@ namespace RiskOfBulletstorm.Items
                 {
                     if (Curse_AllowBosses)
                     {
-                        if (Util.CheckRoll(RollValueBosses))
-                        {
-                            obj.AddBuff(GungeonBuffController.Jammed);
-                        }
+                        CurseUtil.JamEnemy(obj, RollValueBosses);
                     }
                 }
                 else
                 {
-                    if (Util.CheckRoll(RollValue))
-                    {
-                        obj.AddBuff(GungeonBuffController.Jammed);
-                    }
+                    CurseUtil.JamEnemy(obj, RollValue);
                 }
             }
             // AETHERIUM SUPPORT //
@@ -165,10 +148,7 @@ namespace RiskOfBulletstorm.Items
                 if (AetheriumCheck)
                 {
                     Chat.AddMessage("Chimera Success!");
-                    if (Util.CheckRoll(RollValue))
-                    {
-                        obj.AddBuff(GungeonBuffController.Jammed);
-                    }
+                    CurseUtil.JamEnemy(obj, RollValue);
                 }
             }
         }
