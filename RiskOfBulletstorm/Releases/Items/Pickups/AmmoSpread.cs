@@ -45,7 +45,9 @@ namespace RiskOfBulletstorm.Items
             Pickup_AmmoSpread.GetComponent<DestroyOnTimer>().duration = 30f;
             Pickup_AmmoSpread.GetComponent<BeginRapidlyActivatingAndDeactivating>().delayBeforeBeginningBlinking = Math.Min(AmmoSpread_LifetimeBlinking, AmmoSpread_Lifetime);
             Pickup_AmmoSpread.GetComponent<TeamFilter>().teamIndex = TeamIndex.Player;
-            Pickup_AmmoSpread.AddComponent<AmmoPickupSpread>();
+            AmmoPickupSpread ammoPickupSpread = Pickup_AmmoSpread.AddComponent<AmmoPickupSpread>();
+            ammoPickupSpread.pickupEffect = PickupEffect;
+            ammoPickupSpread.teamFilter.teamIndex = TeamIndex.Player;
 
             UnityEngine.Object.Destroy(Pickup_AmmoSpread.GetComponent<VelocityRandomOnStart>());
             UnityEngine.Object.Destroy(Pickup_AmmoSpread.GetComponent<AmmoPickup>());
@@ -56,7 +58,7 @@ namespace RiskOfBulletstorm.Items
         public override void SetupAttributes()
         {
             base.SetupAttributes();
-
+            PickupEffect = (GameObject)Resources.Load("prefabs/effects/AmmoPackPickupEffect");
         }
         public override void SetupConfig()
         {
@@ -65,55 +67,23 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            On.RoR2.AmmoPickup.OnTriggerStay += AmmoPickup_OnTriggerStay;
             On.RoR2.PickupDropletController.CreatePickupDroplet += CreatePickup;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
-            On.RoR2.AmmoPickup.OnTriggerStay -= AmmoPickup_OnTriggerStay;
             On.RoR2.PickupDropletController.CreatePickupDroplet -= CreatePickup;
         }
 
-        private void AmmoPickup_OnTriggerStay(On.RoR2.AmmoPickup.orig_OnTriggerStay orig, AmmoPickup self, Collider other)
-        {
-            GiveAmmoToTeam ammoToTeam = self.gameObject.GetComponent<GiveAmmoToTeam>();
-            if (ammoToTeam)
-            {
-                Chat.AddMessage("AmmoSpread: Player walked into");
-                int AppliedPlayers = 0;
-                //TeamComponent[] array2 = UnityEngine.Object.FindObjectsOfType<TeamComponent>(); //gorag opus yoink
-                ReadOnlyCollection<TeamComponent> array2 = TeamComponent.GetTeamMembers(TeamIndex.Player);
-
-                foreach (TeamComponent teamComponent in array2)
-                {
-                    CharacterBody body = teamComponent.body;
-                    if (body)
-                    {
-                        body.GetComponent<SkillLocator>()?.ApplyAmmoPack();
-                        body.inventory?.RestockEquipmentCharges(0, 1);
-                        if (body.inventory?.GetEquipmentSlotCount() > 1) body.inventory?.RestockEquipmentCharges(1, 1); //MULT
-                        Chat.AddMessage("AmmoSpread: " + body.GetUserName() + " applied!");
-                        EffectManager.SimpleEffect(self.pickupEffect, self.transform.position, Quaternion.identity, true);
-                        AppliedPlayers++;
-                    }
-                }
-                if (AppliedPlayers > 0)
-                {
-                    EffectManager.SimpleEffect(self.pickupEffect, self.transform.position, Quaternion.identity, true);
-                    UnityEngine.Object.Destroy(self.baseObject);
-                }
-            }
-            orig(self, other);
-        }
         private void CreatePickup(On.RoR2.PickupDropletController.orig_CreatePickupDroplet orig, PickupIndex pickupIndex, Vector3 position, Vector3 velocity)
         {
-            var body = PlayerCharacterMasterController.instances[0].master.GetBody();
+            //var body = PlayerCharacterMasterController.instances[0].master.GetBody();
 
             if (pickupIndex == PickupCatalog.FindPickupIndex(catalogIndex)) //safety to prevent softlocks
             {
-                SpawnAmmoPickup(body.gameObject.transform.position);
+                //SpawnAmmoPickup(body.gameObject.transform.position);
+                SpawnAmmoPickup(position);
             }
             else
             {
@@ -130,10 +100,6 @@ namespace RiskOfBulletstorm.Items
 
         public class AmmoPickupSpread : MonoBehaviour
         {
-            void OnEnable()
-            {
-
-            }
             void OnTriggerStay(Collider other)
             {
                 if (NetworkServer.active && this.alive && TeamComponent.GetObjectTeam(other.gameObject) == this.teamFilter.teamIndex)
