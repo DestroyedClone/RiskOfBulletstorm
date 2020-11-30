@@ -124,14 +124,7 @@ namespace RiskOfBulletstorm.Items
             public float uselifetime = 4;
             public bool used = false;
 
-            private void OnEnable()
-            {
-            }
-
-            private void OnDisable()
-            {
-            }
-
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
             private void FixedUpdate()
             {
                 if (used) //shorten the lifetime to the use time.

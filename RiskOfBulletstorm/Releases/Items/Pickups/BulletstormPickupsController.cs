@@ -85,11 +85,23 @@ namespace RiskOfBulletstorm.Items
             base.Uninstall();
             On.RoR2.GlobalEventManager.OnCharacterDeath -= GlobalEventManager_OnCharacterDeath;
             RoR2.Stage.onStageStartGlobal -= Stage_onStageStartGlobal;
+            On.RoR2.Stage.OnEnable += Stage_OnEnable;
+        }
+
+        private void Stage_OnEnable(On.RoR2.Stage.orig_OnEnable orig, RoR2.Stage self)
+        {
+            orig(self);
+            Debug.Log("onenable entered");
+            var gameObj = self.gameObject;
+            BulletstormPickupsComponent pickupsComponent = gameObj.GetComponent<BulletstormPickupsComponent>();
+            if (!pickupsComponent) pickupsComponent = gameObj.AddComponent<BulletstormPickupsComponent>();
+            currentStage = gameObj;
         }
 
         private void Stage_onStageStartGlobal(RoR2.Stage obj)
         {
             var gameObj = obj.gameObject;
+            Debug.Log("on stage start entered");
             BulletstormPickupsComponent pickupsComponent = gameObj.GetComponent<BulletstormPickupsComponent>();
             if (!pickupsComponent) pickupsComponent = gameObj.AddComponent<BulletstormPickupsComponent>();
             currentStage = gameObj;
@@ -98,20 +110,24 @@ namespace RiskOfBulletstorm.Items
         private bool CheckIfDoll(DamageInfo dmginfo)
         {
             if (!dmginfo.inflictor && dmginfo.procCoefficient == 1 && dmginfo.damageColorIndex == DamageColorIndex.Item && dmginfo.force == Vector3.zero && dmginfo.damageType == DamageType.Generic)
+            {
+                Debug.Log("Doll Detected!");
                 return true;
+            }
             else
                 return false;
         }
 
         private void GlobalEventManager_OnCharacterDeath(On.RoR2.GlobalEventManager.orig_OnCharacterDeath orig, GlobalEventManager self, DamageReport damageReport)
         {
-            orig(self, damageReport);
-            if (!currentStage) return; //if the current stage hasnt been set
             var dmginfo = damageReport.damageInfo;
-            if (CheckIfDoll(dmginfo)) return;
-            if (dmginfo.attacker.GetComponent<TeamComponent>()?.teamIndex == TeamIndex.Player) return; //if its a friendly death
             BulletstormPickupsComponent pickupsComponent = currentStage?.GetComponent<BulletstormPickupsComponent>();
-            if (!pickupsComponent) return; 
+            if (!currentStage || CheckIfDoll(dmginfo) || damageReport.victimTeamIndex == TeamIndex.Player || !pickupsComponent)
+            {
+                orig(self, damageReport);
+                return;
+            }
+            Debug.Log("initial pickups checks passed");
             var kills = pickupsComponent.globalDeaths;
             CharacterBody VictimBody = damageReport.victimBody;
 
@@ -119,8 +135,8 @@ namespace RiskOfBulletstorm.Items
             {
                 var stageCount = Run.instance.stageClearCount;
                 var StageMult = BUP_StageMultiplier * stageCount;
-                Vector3 PickupPosition = VictimBody.transform.position;
-                if (stageCount > 1) StageMult = 1;
+                Vector3 PickupPosition = VictimBody.transform.position + Vector3.up *2f;
+                if (stageCount < 1) StageMult = 1;
 
                 //int DiffMultAdd = Run.instance.selectedDifficulty;
                 var requiredKills = BUP_RequiredKills * StageMult;
@@ -136,9 +152,11 @@ namespace RiskOfBulletstorm.Items
                         var randfloat = UnityEngine.Random.Range(0f, 1f);
                         PickupIndex dropList = weightedSelection.Evaluate(randfloat);
                         PickupDropletController.CreatePickupDroplet(dropList, PickupPosition, Vector3.up * 5);
+                        kills = 0;
                     }
                 }
             }
+
         }
 
         public class BulletstormPickupsComponent : MonoBehaviour
