@@ -48,7 +48,8 @@ namespace RiskOfBulletstorm.Items
             base.SetupBehavior();
             GameObject commandoGrenadePrefab = Resources.Load<GameObject>("prefabs/projectiles/CommandoGrenadeProjectile");
             BombPrefab = commandoGrenadePrefab.InstantiateClone("Bulletstorm_Bomb");
-            BombPrefab.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+            var BombScale = 3f;
+            BombPrefab.transform.localScale = new Vector3(BombScale, BombScale, BombScale);
             BombPrefab.GetComponent<ProjectileSimple>().velocity = 25; //default 50
             BombPrefab.GetComponent<ProjectileSimple>().lifetime = 5; //default 5
             BombPrefab.GetComponent<ProjectileDamage>().damageColorIndex = DamageColorIndex.Item;

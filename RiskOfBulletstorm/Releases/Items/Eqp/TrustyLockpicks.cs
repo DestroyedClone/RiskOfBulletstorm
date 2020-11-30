@@ -22,7 +22,7 @@ namespace RiskOfBulletstorm.Items
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Lock the chest instead? Takes priority over increasing the price. Default: false", AutoConfigFlags.PreventNetMismatch)]
-        public bool TrustyLockpicks_KillChest { get; private set; } = false;
+        public bool TrustyLockpicks_KillChest { get; private set; } = true;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Cooldown? (Default: 8 = 8 seconds)", AutoConfigFlags.PreventNetMismatch)]
@@ -47,9 +47,12 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "These lockpicks have never let the Pilot down, except for the many times they did.";
 
-        private readonly PickupIndex BFGPickupIndex = PickupCatalog.FindPickupIndex(EquipmentIndex.BFG);
+        private readonly PickupIndex BFGPickupIndex;
         private readonly PickupIndex SyringePickupIndex = PickupCatalog.FindPickupIndex(ItemIndex.Syringe);
         private readonly string unlockSound = EntityStates.Engi.EngiWeapon.FireMines.throwMineSoundString;
+        private readonly GameObject UnlockEffect = Resources.Load<GameObject>("prefabs/effects/LevelUpEffect");
+        private readonly GameObject Fail_DestroyEffect = Resources.Load<GameObject>("prefabs/effects/ShieldBreakEffect");
+        private readonly GameObject Fail_LockEffect = Resources.Load<GameObject>("prefabs/effects/prefabs/effects/WarCryEffect");
         public TrustyLockpicks()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/TrustyLockpicks.prefab";
@@ -63,6 +66,7 @@ namespace RiskOfBulletstorm.Items
         public override void SetupAttributes()
         {
             base.SetupAttributes();
+
         }
         public override void SetupConfig()
         {
@@ -114,6 +118,9 @@ namespace RiskOfBulletstorm.Items
             TrustyLockpickFailed attempted = chestObject.GetComponent<TrustyLockpickFailed>();
             if (attempted) return false;
 
+            GameObject selectedEffect;
+            Vector3 offset = Vector3.up * 2f;
+
             if (!purchaseInteraction.isShrine && purchaseInteraction.available && purchaseInteraction.costType == CostTypeIndex.Money)
             {
                 Interactor interactor = interactionDriver.interactor;
@@ -131,20 +138,24 @@ namespace RiskOfBulletstorm.Items
 
                     purchaseInteraction.onPurchase.Invoke(interactor);
                     purchaseInteraction.lastActivator = interactor;
-                    Util.PlaySound(unlockSound, RoR2Application.instance.gameObject);
+                    Util.PlaySound(unlockSound, interactor.gameObject);
+                    EffectManager.SimpleEffect(UnlockEffect, chestObject.transform.position + offset, Quaternion.identity, true);
 
                 } else
                 {
                     if (TrustyLockpicks_KillChest)
                     {
                         Object.Destroy(purchaseInteraction);
+                        selectedEffect = Fail_DestroyEffect;
                     }
                     else
                     {
                         purchaseInteraction.cost = Mathf.CeilToInt(purchaseInteraction.cost * TrustyLockpicks_PriceHike);
                         purchaseInteraction.Networkcost = purchaseInteraction.cost;
                         chestObject.AddComponent<TrustyLockpickFailed>();
+                        selectedEffect = Fail_LockEffect;
                     }
+                    EffectManager.SimpleEffect(selectedEffect, chestObject.transform.position + offset, Quaternion.identity, true);
                 }
                 return true;
             }

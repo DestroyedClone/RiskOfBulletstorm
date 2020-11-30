@@ -100,7 +100,8 @@ namespace RiskOfBulletstorm.Items
 
         public class AmmoPickupSpread : MonoBehaviour
         {
-            void OnTriggerStay(Collider other)
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
+            private void OnTriggerStay(Collider other)
             {
                 if (NetworkServer.active && this.alive && TeamComponent.GetObjectTeam(other.gameObject) == this.teamFilter.teamIndex)
                 {
