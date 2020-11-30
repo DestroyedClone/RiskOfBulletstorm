@@ -13,22 +13,21 @@ namespace RiskOfBulletstorm.Items
     public class PortableBarrelDevice : Equipment_V2<PortableBarrelDevice>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How long should the barrel stick around after being spawned?", AutoConfigFlags.PreventNetMismatch)]
-        public static float PortableTableDevice_Lifetime { get; private set; } = Mathf.Infinity;
+        [AutoConfig("How long should the barrel stick around after being spawned? Default: 16 seconds", AutoConfigFlags.PreventNetMismatch)]
+        public static float PortableTableDevice_Lifetime { get; private set; } = 16;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How long should the barrel stick around after being interacted with?", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How long should the barrel stick around after being interacted with? Default: 4 seconds", AutoConfigFlags.PreventNetMismatch)]
         public static float PortableTableDevice_UseLifetime { get; private set; } = 4f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How many barrels should be allowed to spawn within the world? Default: 30, Set to -1 for infinite", AutoConfigFlags.PreventNetMismatch)]
         public static int PortableTableDevice_MaxBarrels { get; private set; } = 30;
 
-        //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        //[AutoConfig("Cooldown? (Default: 8 = 8 seconds)", AutoConfigFlags.PreventNetMismatch)]
-        //public float Cooldown_config { get; private set; } = 8f;
-
         public override string displayName => "Portable Barrel Device";
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Cooldown (Default: 30 seconds)", AutoConfigFlags.PreventNetMismatch)]
         public override float cooldown { get; protected set; } = 30f;
 
         protected override string GetNameString(string langID = null) => displayName;

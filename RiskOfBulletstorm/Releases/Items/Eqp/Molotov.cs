@@ -29,13 +29,14 @@ namespace RiskOfBulletstorm.Items
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Beating Embryo: Damage Multiplier?? (Default: 150% damage multiplier)", AutoConfigFlags.PreventNetMismatch)]
         public float Molotov_BeatingEmbryo { get; private set; } = 1.5f;
-        //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        //[AutoConfig("Cooldown? (Default: 8 = 8 seconds)", AutoConfigFlags.PreventNetMismatch)]
-        //public float Cooldown_config { get; private set; } = 8f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Cooldown (Default: 35 seconds)", AutoConfigFlags.PreventNetMismatch)]
+        public override float cooldown { get; protected set; } = 35f;
 
         public override string displayName => "Molotov";
         public string descText = "Upon use, throws a Molotov that sets an area on fire";
-        public override float cooldown { get; protected set; } = 35f;
+
         public Molotov()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Molotov.prefab";
@@ -45,8 +46,8 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "Feel The Burn\n" + descText;
 
-        private readonly float DPS = Molotov_Damage * (Molotov_Frequency);
-        protected override string GetDescString(string langid = null) => $"{descText}, dealing <style=cIsDamage>{Pct(DPS)} damage per second</style> for <style=cIsDamage>{Molotov_Duration} seconds</style>.";
+        //private readonly float DPS = Molotov_Damage * (Molotov_Frequency);
+        protected override string GetDescString(string langid = null) => $"{descText}, dealing <style=cIsDamage>{Pct(Molotov_Damage)} damage per {1/Molotov_Frequency}seconds </style> for <style=cIsDamage>{Molotov_Duration} seconds</style>.";
 
         protected override string GetLoreString(string langID = null) => "Molotov cocktails aren't guns, and so they are frowned upon by long-dwelling Gungeoneers. They get the job done regardless." +
             "\nKnowing the Hegemony wouldn't let her bring her own weaponry to the Gungeon, the Convict smuggled these few bottles in with the transport's cargo.";
@@ -70,6 +71,7 @@ namespace RiskOfBulletstorm.Items
             projectileDotZone.damageCoefficient = Molotov_Damage;
             projectileDotZone.resetFrequency = Molotov_Frequency;
             projectileDotZone.lifetime = Molotov_Duration;
+            projectileDotZone.impactEffect = Resources.Load<GameObject>("prefabs/effects/ShieldBreakEffect");
 
             GameObject sporeGrenadePrefab = Resources.Load<GameObject>("prefabs/projectiles/SporeGrenadeProjectile");
             MolotovPrefab = sporeGrenadePrefab.InstantiateClone("Bulletstorm_Molotov");
@@ -79,7 +81,7 @@ namespace RiskOfBulletstorm.Items
 
             ApplyTorqueOnStart applyTorque = MolotovPrefab.AddComponent<ApplyTorqueOnStart>();
             applyTorque.randomize = true;
-            applyTorque.localTorque = new Vector3(200f, 400f, 200f);
+            applyTorque.localTorque = new Vector3(400f, 400f, 400f);
 
             var model = Resources.Load<GameObject>(modelResourcePath);
             model.AddComponent<NetworkIdentity>();

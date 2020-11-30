@@ -27,8 +27,11 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("% health threshold to remove buff (Default: 0.05 = 5% health loss)", AutoConfigFlags.PreventNetMismatch)]
         public float Meatbun_HealthThreshold { get; private set; } = 0.05f;
 
-        public override string displayName => "Meatbun";
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Cooldown (Default: 90 seconds)", AutoConfigFlags.PreventNetMismatch)]
         public override float cooldown { get; protected set; } = 90f;
+
+        public override string displayName => "Meatbun";
 
         protected override string GetNameString(string langID = null) => displayName;
 

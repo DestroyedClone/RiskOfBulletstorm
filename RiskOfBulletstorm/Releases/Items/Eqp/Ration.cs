@@ -16,8 +16,9 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("Heal%? (Default: 0.4 = 40% heal)", AutoConfigFlags.PreventNetMismatch)]
         public float Ration_HealAmount { get; private set; } = 0.4f;
 
+        public override float cooldown { get; protected set; } = 0f;
+
         public override string displayName => "Ration";
-        public override float cooldown { get; protected set; } = 1f;
 
         protected override string GetNameString(string langID = null) => displayName;
 

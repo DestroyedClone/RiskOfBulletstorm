@@ -23,6 +23,21 @@ namespace RiskOfBulletstorm.Utils
             }
             return InventoryCount;
         }
+        public static void GiveItemToPlayers(ItemIndex itemIndex)
+        {
+            var instances = PlayerCharacterMasterController.instances;
+            foreach (PlayerCharacterMasterController playerCharacterMaster in instances)
+            {
+                var master = playerCharacterMaster.master;
+                var body = master.GetBody();
+                var inventory = master.inventory;
+                if (inventory)
+                {
+                    inventory.GiveItem(itemIndex);
+                }
+            }
+        }
+
         public static GameObject GetFirstPlayerWithItem(ItemIndex itemIndex)
         {
             int InventoryCount = 0;

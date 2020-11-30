@@ -20,13 +20,12 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("Barrier%? (Default: 0.5 = 50%% barrier)", AutoConfigFlags.PreventNetMismatch)]
         public float Medkit_BarrierAmount { get; private set; } = 0.5f;
 
-        //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        //[AutoConfig("Cooldown? (Default: 8 = 8 seconds)", AutoConfigFlags.PreventNetMismatch)]
-        //public float Cooldown_config { get; private set; } = 8f;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Cooldown (Default: 100 seconds)", AutoConfigFlags.PreventNetMismatch)]
+        public override float cooldown { get; protected set; } = 100f;
 
         public override string displayName => "Medkit";
         public string descText = "Heals";
-        public override float cooldown { get; protected set; } = 145f;
 
         protected override string GetNameString(string langID = null) => displayName;
 

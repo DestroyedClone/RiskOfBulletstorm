@@ -25,7 +25,7 @@ namespace RiskOfBulletstorm.Items
         public bool TrustyLockpicks_KillChest { get; private set; } = true;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Cooldown? (Default: 8 = 8 seconds)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Cooldown? (Default: 60 seconds)", AutoConfigFlags.PreventNetMismatch)]
         public override float cooldown { get; protected set; } = 60f;
 
         public override string displayName => "Trusty Lockpicks";
@@ -151,9 +151,12 @@ namespace RiskOfBulletstorm.Items
 
                 } else
                 {
+                    var displaynamecomponent = chestObject.GetComponent<GenericDisplayNameProvider>();
+                    if (displaynamecomponent) displaynamecomponent.displayToken = prefix + displaynamecomponent.displayToken;
                     if (TrustyLockpicks_KillChest)
                     {
-                        purchaseInteraction.displayNameToken = prefix + purchaseInteraction.displayNameToken;
+
+                        purchaseInteraction.displayNameToken = (prefix + purchaseInteraction.displayNameToken);
                         purchaseInteraction.costType = CostTypeIndex.None;
 
                         Object.Destroy(purchaseInteraction);
