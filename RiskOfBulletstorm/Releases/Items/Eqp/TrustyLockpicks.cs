@@ -21,7 +21,7 @@ namespace RiskOfBulletstorm.Items
         public float TrustyLockpicks_PriceHike { get; private set; } = 2.0f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Lock the chest instead? Takes priority over increasing the price. Default: false;", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Lock the chest instead? Takes priority over increasing the price. Default: false", AutoConfigFlags.PreventNetMismatch)]
         public bool TrustyLockpicks_KillChest { get; private set; } = false;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
@@ -36,13 +36,14 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetDescString(string langid = null)
         {
-            string desc = $"{Pct(TrustyLockpicks_UnlockChance)} to unlock a chest. On fail, it ";
+            string desc = $"<style=cIsUtility>{TrustyLockpicks_UnlockChance}% chance</style> to <style=cIsUtility>unlock a chest</style>. <style=cDeath>On fail,</style> it ";
             if (TrustyLockpicks_KillChest)
                 desc += $"breaks the chest.";
             else
                 desc += $"increases the price by {Pct(TrustyLockpicks_PriceHike)}";
+            desc += $"</style>";
             return desc;
-            }
+        }
 
         protected override string GetLoreString(string langID = null) => "These lockpicks have never let the Pilot down, except for the many times they did.";
 

@@ -31,6 +31,7 @@
     <Compile Remove="Releases\Items\Eqp\SupplyDrop.cs" />
     <Compile Remove="Releases\Items\LunarEqp\Spice.cs" />
     <Compile Remove="Releases\Items\LunarEqp\SpiceEquipment.cs" />
+    <Compile Remove="Releases\Items\Pickups\dx.cs" />
     <Compile Remove="Releases\Items\Pickups\GuonStoneGlass.cs" />
     <Compile Remove="Releases\Items\T1\CartographerRing.cs" />
   </ItemGroup>
@@ -55,7 +56,6 @@
     <None Include="lib\BepInEx.MonoMod.Loader.dll" />
     <None Include="lib\BepInEx.Preloader.dll" />
     <None Include="lib\ClassicItems.dll" />
-    <None Include="lib\EliteSpawningOverhaul.dll" />
     <None Include="lib\HGCSharpUtils.dll" />
     <None Include="lib\MMHOOK_Assembly-CSharp.dll" />
     <None Include="lib\Mono.Cecil.dll" />

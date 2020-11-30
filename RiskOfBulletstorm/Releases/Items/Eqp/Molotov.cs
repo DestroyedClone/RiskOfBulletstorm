@@ -15,12 +15,12 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Damage?? (Default: 0.2 = 20% dps)", AutoConfigFlags.PreventNetMismatch)]
-        public float Molotov_Damage { get; private set; } = 0.2f;
+        public static float Molotov_Damage { get; private set; } = 0.2f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Frequency of damage ticks? Formula is (1 / Molotov_Frequency)" +
-            "\n(Default: 40 = Every 1/40th of a second)", AutoConfigFlags.PreventNetMismatch)]
-        public float Molotov_Frequency { get; private set; } = 40f;
+            "\n(Default: 80 = Every 1/80th of a second)", AutoConfigFlags.PreventNetMismatch)]
+        public static float Molotov_Frequency { get; private set; } = 80f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Duration?? (Default: 8 seconds)", AutoConfigFlags.PreventNetMismatch)]
@@ -45,7 +45,8 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "Feel The Burn\n" + descText;
 
-        protected override string GetDescString(string langid = null) => $"{descText}, dealing <style=cIsDamage>{Pct(Molotov_Damage)} damage per {Molotov_Frequency}th of a second for {Molotov_Duration} seconds</style>.";
+        private readonly float DPS = Molotov_Damage * (1 / Molotov_Frequency);
+        protected override string GetDescString(string langid = null) => $"{descText}, dealing <style=cIsDamage>{Pct(DPS)} damage per second</style> for <style=cIsDamage>{Molotov_Duration} seconds</style>.";
 
         protected override string GetLoreString(string langID = null) => "Molotov cocktails aren't guns, and so they are frowned upon by long-dwelling Gungeoneers. They get the job done regardless." +
             "\nKnowing the Hegemony wouldn't let her bring her own weaponry to the Gungeon, the Convict smuggled these few bottles in with the transport's cargo.";
@@ -77,10 +78,12 @@ namespace RiskOfBulletstorm.Items
 
             ApplyTorqueOnStart applyTorque = MolotovPrefab.AddComponent<ApplyTorqueOnStart>();
             applyTorque.randomize = true;
+            applyTorque.localTorque = new Vector3(300f, 300f, 300f);
 
             var model = Resources.Load<GameObject>(modelResourcePath);
             model.AddComponent<NetworkIdentity>();
             model.AddComponent<ProjectileGhostController>();
+            model.transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
 
             var controller = MolotovPrefab.GetComponent<ProjectileController>();
             controller.ghostPrefab = model;

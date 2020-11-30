@@ -138,6 +138,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     var MasterRoundComponent = body.gameObject.GetComponent<MasterRoundComponent>();
                     if (!MasterRoundComponent) MasterRoundComponent = body.gameObject.AddComponent<MasterRoundComponent>();
+                    Chat.AddMessage("Added component to body");
                     MasterRoundComponent.allowedHits = MasterRound_AllowedHits + StageCount;
                     MasterRoundComponent.teleporterCharging = true;
                 }
@@ -176,10 +177,13 @@ namespace RiskOfBulletstorm.Items
             }
             if (success)
             {
-                for (int i = 0; i < comps.Length; i++)
+                for (int i = 1; i <= comps.Length; i++)
                 {
+                    //var rotvalue = (360 / playercount) * i;
+                    var rotvalue = 360 / i;
+
                     PickupIndex pickupIndex = PickupCatalog.FindPickupIndex(catalogIndex);
-                    Vector3 pickupVelocity = new Vector3(360 / i, 100, 360 / i);
+                    Vector3 pickupVelocity = new Vector3(rotvalue, 100, rotvalue);
                     PickupDropletController.CreatePickupDroplet(pickupIndex, teleporterInteraction.transform.position, pickupVelocity);
                 }
             }

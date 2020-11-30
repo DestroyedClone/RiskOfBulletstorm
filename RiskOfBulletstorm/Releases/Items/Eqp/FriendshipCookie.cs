@@ -19,8 +19,8 @@ namespace RiskOfBulletstorm.Items
         protected override string GetPickupString(string langID = null) => "It's Delicious!\nBaked fresh every morning by Mom! It's to die for! Or, just maybe, to live for.";
 
         protected override string GetDescString(string langid = null) => $"Upon use, <style=cIsHealing>revives all players</style>." +
-            $"\n SINGLEPLAYER: Gives an infusion." +
-            $"\n Consumed on use.";
+            $"\nSINGLEPLAYER: Gives an infusion." +
+            $"\nConsumed on use.";
 
         protected override string GetLoreString(string langID = null) => "Baked fresh every morning by Mom! It's to die for! Or, just maybe, to live for.";
 

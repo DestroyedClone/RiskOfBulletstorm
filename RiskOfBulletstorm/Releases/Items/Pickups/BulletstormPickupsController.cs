@@ -18,14 +18,14 @@ namespace RiskOfBulletstorm.Items
 {
     public class BulletstormPickupsController : Item_V2<BulletstormPickupsController>
     {
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Enable Pickups?", AutoConfigFlags.PreventNetMismatch)]
+        //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        //[AutoConfig("Enable Pickups?", AutoConfigFlags.PreventNetMismatch)]
         public bool BUP_Enable { get; private set; } = true;
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("RequiredKills = 10", AutoConfigFlags.PreventNetMismatch)]
+        //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        //[AutoConfig("RequiredKills = 10", AutoConfigFlags.PreventNetMismatch)]
         public int BUP_RequiredKills { get; private set; } = 10;
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Multiplier per stage count = 2.00x", AutoConfigFlags.PreventNetMismatch)]
+        //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        //[AutoConfig("Multiplier per stage count = 2.00x", AutoConfigFlags.PreventNetMismatch)]
         public float BUP_StageMultiplier { get; private set; } = 2f;
         public override string displayName => "BulletstormPickupsController";
         public override ItemTier itemTier => ItemTier.NoTier;
@@ -41,16 +41,12 @@ namespace RiskOfBulletstorm.Items
         //private readonly int StageMultiplier = 2;
         //private readonly int DifficultyMultiplier = 1;
 
-        private readonly PickupIndex KeyIndex = Key.instance.pickupIndex;
-        private readonly PickupIndex BlankIndex = Blank.instance.pickupIndex;
-        private readonly PickupIndex ArmorIndex = Armor.instance.pickupIndex;
-        private readonly PickupIndex AmmoSpreadIndex = PickupAmmoSpread.instance.pickupIndex;
 
         private readonly float PickupRollChance = 20f;
 
         //WeightedSelection<PickupIndex> weightedSelection = new WeightedSelection<PickupIndex>();
 
-        private WeightedSelection<PickupIndex> weightedSelection;
+        public WeightedSelection<PickupIndex> weightedSelection = new WeightedSelection<PickupIndex>(4);
 
         private GameObject currentStage; 
 
@@ -61,13 +57,18 @@ namespace RiskOfBulletstorm.Items
         public override void SetupAttributes()
         {
             base.SetupAttributes();
-            weightedSelection = new WeightedSelection<PickupIndex>();
-            weightedSelection.AddChoice(KeyIndex, 0.5f);
-            weightedSelection.AddChoice(BlankIndex, 0.3f);
-            weightedSelection.AddChoice(ArmorIndex, 0.1f);
-            weightedSelection.AddChoice(AmmoSpreadIndex, 0.1f);
-
+            //weightedSelection = new WeightedSelection<PickupIndex>();
         }
+        public override void SetupLate()
+        {
+            base.SetupLate();
+            //needs to setup late so the indicies can be setup
+            weightedSelection.AddChoice(Key.instance.pickupIndex, 0.5f);
+            weightedSelection.AddChoice(Blank.instance.pickupIndex, 0.3f);
+            weightedSelection.AddChoice(Armor.instance.pickupIndex, 0.1f);
+            weightedSelection.AddChoice(PickupAmmoSpread.instance.pickupIndex, 0.1f);
+        }
+
         public override void SetupConfig()
         {
             base.SetupConfig();
@@ -75,21 +76,15 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            if (BUP_Enable)
-            {
-                On.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
-                RoR2.Stage.onStageStartGlobal += Stage_onStageStartGlobal;
-            }
+            On.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
+            RoR2.Stage.onStageStartGlobal += Stage_onStageStartGlobal;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
-            if (BUP_Enable)
-            {
-                On.RoR2.GlobalEventManager.OnCharacterDeath -= GlobalEventManager_OnCharacterDeath;
-                RoR2.Stage.onStageStartGlobal -= Stage_onStageStartGlobal;
-            }
+            On.RoR2.GlobalEventManager.OnCharacterDeath -= GlobalEventManager_OnCharacterDeath;
+            RoR2.Stage.onStageStartGlobal -= Stage_onStageStartGlobal;
         }
 
         private void Stage_onStageStartGlobal(RoR2.Stage obj)
@@ -111,12 +106,12 @@ namespace RiskOfBulletstorm.Items
         private void GlobalEventManager_OnCharacterDeath(On.RoR2.GlobalEventManager.orig_OnCharacterDeath orig, GlobalEventManager self, DamageReport damageReport)
         {
             orig(self, damageReport);
-            if (!currentStage) return;
+            if (!currentStage) return; //if the current stage hasnt been set
             var dmginfo = damageReport.damageInfo;
             if (CheckIfDoll(dmginfo)) return;
-            if (dmginfo.attacker.GetComponent<TeamComponent>()?.teamIndex == TeamIndex.Player) return;
+            if (dmginfo.attacker.GetComponent<TeamComponent>()?.teamIndex == TeamIndex.Player) return; //if its a friendly death
             BulletstormPickupsComponent pickupsComponent = currentStage?.GetComponent<BulletstormPickupsComponent>();
-            if (!pickupsComponent) return;
+            if (!pickupsComponent) return; 
             var kills = pickupsComponent.globalDeaths;
             CharacterBody VictimBody = damageReport.victimBody;
 

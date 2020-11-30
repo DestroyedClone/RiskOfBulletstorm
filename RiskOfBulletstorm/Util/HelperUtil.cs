@@ -100,7 +100,7 @@ namespace RiskOfBulletstorm.Shared
                 EffectManager.SpawnEffect(curseEffect, new EffectData
                 {
                     origin = body.transform.position + Vector3.up * 2,
-                    rotation = Util.QuaternionSafeLookRotation(Vector3.up),
+                    //rotation = Util.QuaternionSafeLookRotation(Vector3.up),
                     scale = 2f
                 }, false);
                 body.AddBuff(Items.GungeonBuffController.Jammed);

@@ -17,8 +17,8 @@ namespace RiskOfBulletstorm.Items
         public float Meatbun_HealAmount { get; private set; } = 0.33f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Damage Bonus %? (Default: 0.45 = +45% damage)", AutoConfigFlags.PreventNetMismatch)]
-        public float Meatbun_DamageBonus { get; private set; } = 0.45f;
+        [AutoConfig("Damage Bonus %? (Default: 0.1 = +10% damage)", AutoConfigFlags.PreventNetMismatch)]
+        public float Meatbun_DamageBonus { get; private set; } = 0.1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Max amount of buffs from Meatbun. (Default: 5)", AutoConfigFlags.PreventNetMismatch)]
@@ -70,18 +70,38 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            On.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
-            On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+            On.RoR2.HealthComponent.TakeDamage += RemoveBuffs;
+            On.RoR2.HealthComponent.TakeDamage += IncreaseDmg;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
-            On.RoR2.GlobalEventManager.OnHitEnemy -= GlobalEventManager_OnHitEnemy;
-            On.RoR2.HealthComponent.TakeDamage -= HealthComponent_TakeDamage;
+            On.RoR2.HealthComponent.TakeDamage -= RemoveBuffs;
+            On.RoR2.HealthComponent.TakeDamage -= IncreaseDmg;
         }
 
-        private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
+        private void IncreaseDmg(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
+        {
+            var attacker = damageInfo.attacker;
+            if (attacker)
+            {
+                CharacterBody body = attacker.GetComponent<CharacterBody>();
+                if (body)
+                {
+                    int MeatBunBoostCount = body.GetBuffCount(MeatbunBoost);
+                    if (MeatBunBoostCount > 0)
+                    {
+                        var olddmg = (float)damageInfo.damage;
+                        damageInfo.damage *= 1 + (MeatBunBoostCount * Meatbun_DamageBonus);
+                        Debug.Log("Meatbun: Increased damage from " + olddmg + " to " + damageInfo.damage + " with " + MeatBunBoostCount + " stacks");
+                    }
+                }
+            }
+            orig(self, damageInfo);
+        }
+
+        private void RemoveBuffs(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
             var oldHealth = self.health;
             orig(self, damageInfo);
@@ -95,25 +115,6 @@ namespace RiskOfBulletstorm.Items
                     for (int i = 0; i < MeatBunBoostCount; i++) body.RemoveBuff(MeatbunBoost);
                 }
             }
-        }
-
-        private void GlobalEventManager_OnHitEnemy(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim)
-        {
-            if (damageInfo.attacker)
-            {
-                CharacterBody body = damageInfo.attacker.GetComponent<CharacterBody>();
-                if (body)
-                {
-                    int MeatBunBoostCount = body.GetBuffCount(MeatbunBoost);
-                    if (MeatBunBoostCount > 0)
-                    {
-                        var olddmg = (float)damageInfo.damage;
-                        damageInfo.damage *= 1 + (MeatBunBoostCount * Meatbun_DamageBonus);
-                        Debug.Log("Meatbun: Increased damage from " + olddmg + " to " + damageInfo.damage + " with " + MeatBunBoostCount + " stacks");
-                    }
-                }
-            }
-            orig(self, damageInfo, victim);
         }
 
         protected override bool PerformEquipmentAction(EquipmentSlot slot)

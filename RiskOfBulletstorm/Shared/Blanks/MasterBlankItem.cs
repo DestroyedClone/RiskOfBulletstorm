@@ -32,7 +32,7 @@ namespace RiskOfBulletstorm.Shared.Blanks
         public static GameObject BlankObject; // { get; private set; }
         public static string BlankSound = EntityStates.Treebot.Weapon.FirePlantSonicBoom.impactSoundString;
         //private readonly string BlankEffect = "Prefabs/Effects/TreebotShockwaveEffect";
-        public static GameObject BlankEffect;
+        public static GameObject BlankEffect = (GameObject)Resources.Load("prefabs/effects/SonicBoomEffect");
 
         public override void SetupBehavior()
         {
@@ -41,7 +41,7 @@ namespace RiskOfBulletstorm.Shared.Blanks
         public override void SetupAttributes()
         {
             base.SetupAttributes();
-            BlankEffect = (GameObject)Resources.Load("prefabs/effects/SonicBoomEffect.prefab");
+            //BlankEffect = (GameObject)Resources.Load("prefabs/effects/SonicBoomEffect.prefab");
         }
         public override void SetupConfig()
         {

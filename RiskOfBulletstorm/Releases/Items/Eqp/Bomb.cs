@@ -56,13 +56,13 @@ namespace RiskOfBulletstorm.Items
             //Object.Destroy(BombPrefab.GetComponent<ApplyTorqueOnStart>());
 
             var model = Resources.Load<GameObject>(modelResourcePath);
-            model.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            model.transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
             model.AddComponent<NetworkIdentity>();
             model.AddComponent<ProjectileGhostController>();
 
             var controller = BombPrefab.GetComponent<ProjectileController>();
             controller.ghostPrefab = model;
-            controller.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            controller.transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
 
             ProjectileCatalog.getAdditionalEntries += list => list.Add(BombPrefab);
 

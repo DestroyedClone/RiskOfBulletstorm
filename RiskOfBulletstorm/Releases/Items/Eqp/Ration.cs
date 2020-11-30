@@ -23,8 +23,9 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "Calories, Mate\nProvides healing on use. If equipped, will be used automatically on death.";
 
-        protected override string GetDescString(string langid = null) => $"<style=cIsHealing>{Pct(Ration_HealAmount)} heal.</style>" +
-            $"\n<style=cDeath>One-Time Use.</style> <style=cIsUtility>Automatically used upon fatal damage.</style>";
+        protected override string GetDescString(string langid = null) => $"Heals for <style=cIsHealing>{Pct(Ration_HealAmount)} health.</style>" +
+            $"\n<style=cIsUtility>Automatically used upon fatal damage." +
+            $"\n</style><style=cDeath>One-Time Use.</style>";
 
         protected override string GetLoreString(string langID = null) => "This MRE comes in the form of a dry and dense cookie. It doesn't taste great, but it delivers the calories the body needs.";
         public Ration()

@@ -75,6 +75,7 @@ namespace RiskOfBulletstorm.Items
                 if (inventory)
                 {
                     var InventoryCount = body.inventory.GetItemCount(catalogIndex);
+                    Chat.AddMessage("isShrine"+ self.isShrine+"IsCombatShrine"+ self.GetComponent<ShrineCombatBehavior>()+"InvCount"+InventoryCount);
                     if (self.isShrine && !self.GetComponent<ShrineCombatBehavior>())
                     {
                         if (InventoryCount > 0)

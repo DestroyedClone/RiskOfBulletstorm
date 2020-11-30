@@ -14,7 +14,7 @@ namespace RiskOfBulletstorm.Items
     public class Orange : Equipment_V2<Orange>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Rarity? (Default: 80% chance to spawn)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Rarity? (Default: 80.00% chance to spawn)", AutoConfigFlags.PreventNetMismatch)]
         public float Orange_Rarity { get; private set; } = 80.00f;
 
         public override string displayName => "Orange";
@@ -24,8 +24,8 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "You're Not Alexander\nWith this orange, your style... it's impetuous. Your defense, impregnable.";
 
-        protected override string GetDescString(string langid = null) => $"<style=cIsHealing>100% heal.</style> <style=cIsUtility>Permanently increases health by 10% and reduces equipment recharge rate by 10%</style>" +
-            $"\n<style=cDeath>One-time Use.</style> <style=cWorldEvent>{Pct(Orange_Rarity)} rarer.</style> ";
+        protected override string GetDescString(string langid = null) => $"<style=cIsHealing>100% heal.</style> <style=cHealth>Permanently increases health by 10%</style> and <style=cIsUtility>reduces equipment recharge rate by 10%</style>" +
+            $"\n<style=cDeath>One-time Use.</style> <style=cWorldEvent>{Orange_Rarity}% rarer.</style> ";
 
         protected override string GetLoreString(string langID = null) => "";
         public Orange()
@@ -63,7 +63,7 @@ namespace RiskOfBulletstorm.Items
             var body = PlayerCharacterMasterController.instances[0].master.GetBody();
             if (pickupIndex == PickupCatalog.FindPickupIndex(catalogIndex)) //if it's the orange
             {
-                if (Util.CheckRoll(Orange_Rarity, body.master)) //rarity roll
+                if (!Util.CheckRoll(Orange_Rarity, body.master)) //rarity roll
                 {
                     PickupIndex loot = Run.instance.treasureRng.NextElementUniform(Run.instance.availableEquipmentDropList);
                     PickupDef def = PickupCatalog.GetPickupDef(loot);

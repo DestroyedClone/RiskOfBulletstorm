@@ -35,6 +35,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetLoreString(string langID = null) => "";
 
         public static GameObject Pickup_AmmoSpread { get; private set; }
+        public static GameObject PickupEffect;
 
         public override void SetupBehavior()
         {
@@ -43,11 +44,13 @@ namespace RiskOfBulletstorm.Items
             Pickup_AmmoSpread = ammoPickupPrefab.InstantiateClone("Bulletstorm_AmmoSpread");
             Pickup_AmmoSpread.GetComponent<DestroyOnTimer>().duration = 30f;
             Pickup_AmmoSpread.GetComponent<BeginRapidlyActivatingAndDeactivating>().delayBeforeBeginningBlinking = Math.Min(AmmoSpread_LifetimeBlinking, AmmoSpread_Lifetime);
-            Pickup_AmmoSpread.AddComponent<GiveAmmoToTeam>();
+            Pickup_AmmoSpread.GetComponent<TeamFilter>().teamIndex = TeamIndex.Player;
+            Pickup_AmmoSpread.AddComponent<AmmoPickupSpread>();
 
             UnityEngine.Object.Destroy(Pickup_AmmoSpread.GetComponent<VelocityRandomOnStart>());
+            UnityEngine.Object.Destroy(Pickup_AmmoSpread.GetComponent<AmmoPickup>());
 
-            ProjectileCatalog.getAdditionalEntries += list => list.Add(ammoPickupPrefab);
+            //ProjectileCatalog.getAdditionalEntries += list => list.Add(ammoPickupPrefab);
             if (ammoPickupPrefab) PrefabAPI.RegisterNetworkPrefab(ammoPickupPrefab);
         }
         public override void SetupAttributes()
@@ -98,6 +101,7 @@ namespace RiskOfBulletstorm.Items
                 }
                 if (AppliedPlayers > 0)
                 {
+                    EffectManager.SimpleEffect(self.pickupEffect, self.transform.position, Quaternion.identity, true);
                     UnityEngine.Object.Destroy(self.baseObject);
                 }
             }
@@ -119,14 +123,57 @@ namespace RiskOfBulletstorm.Items
 
         private void SpawnAmmoPickup(Vector3 sapPosition)
         {
-            Pickup_AmmoSpread.GetComponent<TeamFilter>().teamIndex = TeamIndex.Player;
+            //Pickup_AmmoSpread.GetComponent<TeamFilter>().teamIndex = TeamIndex.Player;
             GameObject gameObject7 = UnityEngine.Object.Instantiate(Pickup_AmmoSpread, sapPosition, new Quaternion(0f, 0f, 0f, 0f));
             NetworkServer.Spawn(gameObject7);
         }
 
-        public class GiveAmmoToTeam : MonoBehaviour
+        public class AmmoPickupSpread : MonoBehaviour
         {
+            void OnEnable()
+            {
 
+            }
+            void OnTriggerStay(Collider other)
+            {
+                if (NetworkServer.active && this.alive && TeamComponent.GetObjectTeam(other.gameObject) == this.teamFilter.teamIndex)
+                {
+                    ReadOnlyCollection<TeamComponent> teamComponents = TeamComponent.GetTeamMembers(this.teamFilter.teamIndex);
+
+                    SkillLocator component = other.GetComponent<SkillLocator>();
+                    if (!component) return;
+
+                    this.alive = false;
+
+                    foreach (TeamComponent teamComponent in teamComponents)
+                    {
+                        CharacterBody body = teamComponent.body;
+                        if (body)
+                        {
+                            body.GetComponent<SkillLocator>()?.ApplyAmmoPack();
+                            body.inventory?.RestockEquipmentCharges(0, 1);
+                            if (body.inventory?.GetEquipmentSlotCount() > 1) body.inventory?.RestockEquipmentCharges(1, 1); //MULT
+                            Chat.AddMessage("AmmoSpread: " + body.GetUserName() + " applied!");
+                            EffectManager.SimpleEffect(this.pickupEffect, this.transform.position, Quaternion.identity, true);
+                        }
+                    }
+                    Destroy(this.baseObject);
+                }
+            }
+
+            // Token: 0x04000743 RID: 1859
+            [Tooltip("The base object to destroy when this pickup is consumed.")]
+            public GameObject baseObject;
+
+            // Token: 0x04000744 RID: 1860
+            [Tooltip("The team filter object which determines who can pick up this pack.")]
+            public TeamFilter teamFilter;
+
+            // Token: 0x04000745 RID: 1861
+            public GameObject pickupEffect;
+
+            // Token: 0x04000746 RID: 1862
+            private bool alive = true;
         }
     }
 }
