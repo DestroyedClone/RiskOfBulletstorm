@@ -24,7 +24,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "You're Not Alexander\nWith this orange, your style... it's impetuous. Your defense, impregnable.";
 
-        protected override string GetDescString(string langid = null) => $"<style=cIsHealing>100% heal.</style> <style=cHealth>Permanently increases health by 10%</style> and <style=cIsUtility>reduces equipment recharge rate by 10%</style>" +
+        protected override string GetDescString(string langid = null) => $"<style=cIsHealing>100% heal.</style> <style=cIsHealth>Permanently increases health by 10%</style> and <style=cIsUtility>reduces equipment recharge rate by 10%</style>" +
             $"\n<style=cDeath>One-time Use.</style> <style=cWorldEvent>{Orange_Rarity}% rarer.</style> ";
 
         protected override string GetLoreString(string langID = null) => "";

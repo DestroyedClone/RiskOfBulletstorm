@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 //using System.Text;
 using R2API;
 using RoR2;
@@ -27,15 +28,18 @@ namespace RiskOfBulletstorm.Items
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Allow the player's own damage to count as a hit? Default: false", AutoConfigFlags.PreventNetMismatch)]
         public bool MasterRound_AllowSelfDamage { get; private set; } = false;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Show who gets hit in chat? Default: false", AutoConfigFlags.PreventNetMismatch)]
+        public bool MasterRound_ShowHitInChat { get; private set; } = false;
 
         public override string displayName => "Master Round";
         public override ItemTier itemTier => ItemTier.Boss;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Healing, ItemTag.WorldUnique });
 
         protected override string GetNameString(string langID = null) => displayName;
-        protected override string GetPickupString(string langID = null) => "Nth Chamber";
+        protected override string GetPickupString(string langID = null) => "Given to those who survive the boss fight without exceeding a certain amount of hits";
 
-        protected override string GetDescString(string langid = null) => $"<style=cIsHealth>+150 health</style>";
+        protected override string GetDescString(string langid = null) => $"Increases maximum health by <style=cIsHealing>{MasterRound_MaxHealthAdd} health</style> <style=cStack>(+{MasterRound_MaxHealthAdd} per stack)</style>";
 
         protected override string GetLoreString(string langID = null) => "Apocryphal texts recovered from cultists of the Order indicate that the Gun and the Bullet are linked somehow." +
             "\nAny who enter the Gungeon are doomed to remain, living countless lives in an effort to break the cycle." +
@@ -60,6 +64,16 @@ namespace RiskOfBulletstorm.Items
             "extraordinary",
             "unfathomable",
             "unprecedented"
+        };
+
+        readonly string[] bannedStages =
+        {
+            "mysteryspace",
+            "limbo",
+            "bazaar",
+            "artifactworld",
+            "goldshores",
+            "arena"
         };
 
         public override void SetupBehavior()
@@ -114,6 +128,10 @@ namespace RiskOfBulletstorm.Items
             if (damageInfo.rejected || damageInfo.damage < MasterRound_MinimumDamage) return;
             if (!component.teleporterCharging) return;
             component.currentHits++;
+            if (MasterRound_ShowHitInChat)
+            {
+                Chat.AddMessage("MasterRound: " + victim.name + " has " + component.currentHits + "/" + component.allowedHits);
+            }
         }
 
         private void TeleporterInteraction_onTeleporterChargedGlobal(TeleporterInteraction obj)
@@ -138,7 +156,6 @@ namespace RiskOfBulletstorm.Items
                 {
                     var MasterRoundComponent = body.gameObject.GetComponent<MasterRoundComponent>();
                     if (!MasterRoundComponent) MasterRoundComponent = body.gameObject.AddComponent<MasterRoundComponent>();
-                    Chat.AddMessage("Added component to body");
                     MasterRoundComponent.allowedHits = MasterRound_AllowedHits + StageCount;
                     MasterRoundComponent.teleporterCharging = true;
                 }
@@ -148,13 +165,25 @@ namespace RiskOfBulletstorm.Items
         {
             orig(self, itemDef);
             if (itemDef.itemIndex != catalogIndex) return;
+            if (bannedStages.Contains(SceneCatalog.mostRecentSceneDef.baseSceneName)) return;
             var StageCount = Run.instance.stageClearCount;
-            if (StageCount > adjustedPickup.Length) StageCount = adjustedPickup.Length-1;
+            //if (StageCount > adjustedPickup.Length) StageCount = adjustedPickup.Length-1;
+
+
             string numberString = adjustedPickup[StageCount];
+            string numberCapitalized = char.ToUpper(numberString[0]) + numberString.Substring(1);
             string descString = adjustedDesc[StageCount];
 
+            Chat.AddMessage(SceneCatalog.mostRecentSceneDef.baseSceneName);
+            if (bannedStages.Contains(SceneCatalog.mostRecentSceneDef.baseSceneName))
+            {
+                numberString = "WDAWDAWDWffsfsadss ";
+                descString = "asdwadawd";
+                numberCapitalized = "sdwad@@##@sd";
+            }
+
+
             //https://www.dotnetperls.com/uppercase-first-letter
-            string numberCapitalized = char.ToUpper(numberString[0]) + numberString.Substring(1);
 
             string output = numberCapitalized + " Chamber" +
                 "\nThis " + descString + " artifact indicates mastery of the " + numberString + " chamber.";
@@ -183,7 +212,7 @@ namespace RiskOfBulletstorm.Items
                     var rotvalue = 360 / i;
 
                     PickupIndex pickupIndex = PickupCatalog.FindPickupIndex(catalogIndex);
-                    Vector3 pickupVelocity = new Vector3(rotvalue, 100, rotvalue);
+                    Vector3 pickupVelocity = new Vector3(rotvalue, 20, rotvalue);
                     PickupDropletController.CreatePickupDroplet(pickupIndex, teleporterInteraction.transform.position, pickupVelocity);
                 }
             }

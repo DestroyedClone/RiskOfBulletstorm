@@ -45,7 +45,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "Feel The Burn\n" + descText;
 
-        private readonly float DPS = Molotov_Damage * (1 / Molotov_Frequency);
+        private readonly float DPS = Molotov_Damage * (Molotov_Frequency);
         protected override string GetDescString(string langid = null) => $"{descText}, dealing <style=cIsDamage>{Pct(DPS)} damage per second</style> for <style=cIsDamage>{Molotov_Duration} seconds</style>.";
 
         protected override string GetLoreString(string langID = null) => "Molotov cocktails aren't guns, and so they are frowned upon by long-dwelling Gungeoneers. They get the job done regardless." +
@@ -75,10 +75,11 @@ namespace RiskOfBulletstorm.Items
             MolotovPrefab = sporeGrenadePrefab.InstantiateClone("Bulletstorm_Molotov");
             MolotovPrefab.GetComponent<ProjectileDamage>().damageColorIndex = DamageColorIndex.Item;
             MolotovPrefab.GetComponent<ProjectileImpactExplosion>().childrenProjectilePrefab = MolotovDotZonePrefab;
+            MolotovPrefab.GetComponent<ProjectileSimple>().velocity = 35; //50
 
             ApplyTorqueOnStart applyTorque = MolotovPrefab.AddComponent<ApplyTorqueOnStart>();
             applyTorque.randomize = true;
-            applyTorque.localTorque = new Vector3(300f, 300f, 300f);
+            applyTorque.localTorque = new Vector3(200f, 400f, 200f);
 
             var model = Resources.Load<GameObject>(modelResourcePath);
             model.AddComponent<NetworkIdentity>();

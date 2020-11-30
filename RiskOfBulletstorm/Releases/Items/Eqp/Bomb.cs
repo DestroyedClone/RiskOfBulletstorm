@@ -23,7 +23,6 @@ namespace RiskOfBulletstorm.Items
 
         public override string displayName => "Bomb";
         public string descText = "Throws a bomb that explodes after a short delay";
-        //public override float cooldown { get; protected set; } = Cooldown_config;
 
         protected override string GetNameString(string langID = null) => displayName;
 
@@ -57,13 +56,14 @@ namespace RiskOfBulletstorm.Items
             //Object.Destroy(BombPrefab.GetComponent<ApplyTorqueOnStart>());
 
             var model = Resources.Load<GameObject>(modelResourcePath);
-            model.transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
+            var modelScale = 0.15f;
+            model.transform.localScale = new Vector3(modelScale, modelScale, modelScale);
             model.AddComponent<NetworkIdentity>();
             model.AddComponent<ProjectileGhostController>();
 
             var controller = BombPrefab.GetComponent<ProjectileController>();
             controller.ghostPrefab = model;
-            controller.transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
+            //controller.transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
 
             ProjectileCatalog.getAdditionalEntries += list => list.Add(BombPrefab);
 

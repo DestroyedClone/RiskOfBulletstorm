@@ -50,6 +50,84 @@ namespace RiskOfBulletstorm.Shared
                 self.inventory.GiveItem(itemindex, amount);
             }
         }
+
+        public static string NumbertoOrdinal(int number)
+        {
+            string words = NumberToWords(number);
+            words = words.TrimEnd('\\');
+            if (words.EndsWith("One"))
+            {
+                words = words.Remove(words.LastIndexOf("One") + 0).Trim();
+                words += "First";
+            }
+            else if (words.EndsWith("Two"))
+            {
+                words = words.Remove(words.LastIndexOf("Two") + 0).Trim();
+                words += "Second";
+            }
+            else if (words.EndsWith("Three"))
+            {
+                words = words.Remove(words.LastIndexOf("Three") + 0).Trim();
+                words += "Third";
+            }
+            else if (words.EndsWith("Five"))
+            {
+                words = words.Remove(words.LastIndexOf("Five") + 0).Trim();
+                words += "Fifth";
+            }
+            else if (words.EndsWith("Eight"))
+            {
+                words = words.Remove(words.LastIndexOf("Eight") + 0).Trim();
+                words += "Eighth";
+            }
+            else if (words.EndsWith("Nine"))
+            {
+                words = words.Remove(words.LastIndexOf("Nine") + 0).Trim();
+                words += "Ninth";
+            }
+            else
+            {
+                words += "th";
+            }
+            return words;
+        } //https://stackoverflow.com/questions/48966570/integer-to-long-ordinal-string-in-c-net
+
+        public static string NumberToWords(int number)
+        {
+            if (number == 0)
+                return "zero";
+
+            if (number < 0)
+                return "minus " + NumberToWords(Mathf.Abs(number));
+
+            string words = "";
+            if ((number / 100) > 0)
+            {
+                words += NumberToWords(number / 100) + " hundred ";
+                number %= 100;
+            }
+
+            if (number > 0)
+            {
+                if (words != "")
+                    words += "and ";
+
+                var unitsMap = new[] { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen" };
+                var tensMap = new[] { "zero", "ten", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety" };
+
+                if (number < 20)
+                    words += unitsMap[number];
+                else
+                {
+                    words += tensMap[number / 10];
+                    if ((number % 10) > 0)
+                        words += "-" + unitsMap[number % 10];
+                }
+            }
+
+            return words;
+        } //https://stackoverflow.com/questions/2729752/converting-numbers-in-to-words-c-sharp
+
     }
     public static class CurseUtil
     {

@@ -85,17 +85,6 @@ namespace RiskOfBulletstorm.Items
             base.Uninstall();
             On.RoR2.GlobalEventManager.OnCharacterDeath -= GlobalEventManager_OnCharacterDeath;
             RoR2.Stage.onStageStartGlobal -= Stage_onStageStartGlobal;
-            On.RoR2.Stage.OnEnable += Stage_OnEnable;
-        }
-
-        private void Stage_OnEnable(On.RoR2.Stage.orig_OnEnable orig, RoR2.Stage self)
-        {
-            orig(self);
-            Debug.Log("onenable entered");
-            var gameObj = self.gameObject;
-            BulletstormPickupsComponent pickupsComponent = gameObj.GetComponent<BulletstormPickupsComponent>();
-            if (!pickupsComponent) pickupsComponent = gameObj.AddComponent<BulletstormPickupsComponent>();
-            currentStage = gameObj;
         }
 
         private void Stage_onStageStartGlobal(RoR2.Stage obj)
@@ -104,6 +93,15 @@ namespace RiskOfBulletstorm.Items
             Debug.Log("on stage start entered");
             BulletstormPickupsComponent pickupsComponent = gameObj.GetComponent<BulletstormPickupsComponent>();
             if (!pickupsComponent) pickupsComponent = gameObj.AddComponent<BulletstormPickupsComponent>();
+
+
+            var stageCount = Run.instance.stageClearCount;
+            var StageMult = BUP_StageMultiplier * stageCount;
+            if (stageCount < 1) StageMult = 1;
+            var requiredKills = BUP_RequiredKills * StageMult;
+
+            pickupsComponent.requiredKills = (int)requiredKills;
+
             currentStage = gameObj;
         }
 
@@ -124,22 +122,21 @@ namespace RiskOfBulletstorm.Items
             BulletstormPickupsComponent pickupsComponent = currentStage?.GetComponent<BulletstormPickupsComponent>();
             if (!currentStage || CheckIfDoll(dmginfo) || damageReport.victimTeamIndex == TeamIndex.Player || !pickupsComponent)
             {
+                Debug.Log("current stage"+currentStage+"| Doll?"+CheckIfDoll(dmginfo)+"| teamindex"+damageReport.victimTeamIndex+" pickups component"+pickupsComponent);
                 orig(self, damageReport);
                 return;
             }
             Debug.Log("initial pickups checks passed");
             var kills = pickupsComponent.globalDeaths;
+            var requiredKills = pickupsComponent.requiredKills;
             CharacterBody VictimBody = damageReport.victimBody;
 
             if (VictimBody)
             {
-                var stageCount = Run.instance.stageClearCount;
-                var StageMult = BUP_StageMultiplier * stageCount;
+                Chat.AddMessage("Body found"+VictimBody);
                 Vector3 PickupPosition = VictimBody.transform.position + Vector3.up *2f;
-                if (stageCount < 1) StageMult = 1;
 
                 //int DiffMultAdd = Run.instance.selectedDifficulty;
-                var requiredKills = BUP_RequiredKills * StageMult;
 
                 kills++;
                 Chat.AddMessage("kills: "+kills+" / "+ requiredKills);
@@ -161,6 +158,7 @@ namespace RiskOfBulletstorm.Items
         public class BulletstormPickupsComponent : MonoBehaviour
         {
             public int globalDeaths = 0;
+            public int requiredKills = 10;
         }
     }
 }

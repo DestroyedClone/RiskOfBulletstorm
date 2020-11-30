@@ -20,6 +20,10 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("How long should the barrel stick around after being interacted with?", AutoConfigFlags.PreventNetMismatch)]
         public static float PortableTableDevice_UseLifetime { get; private set; } = 4f;
 
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("How many barrels should be allowed to spawn within the world? Default: 30, Set to -1 for infinite", AutoConfigFlags.PreventNetMismatch)]
+        public static int PortableTableDevice_MaxBarrels { get; private set; } = 30;
+
         //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         //[AutoConfig("Cooldown? (Default: 8 = 8 seconds)", AutoConfigFlags.PreventNetMismatch)]
         //public float Cooldown_config { get; private set; } = 8f;
@@ -103,19 +107,31 @@ namespace RiskOfBulletstorm.Items
             CharacterBody body = slot.characterBody;
             if (!body) return false;
 
-            PlaceTable(body);
-            if (instance.CheckEmbryoProc(body))
+            if (PlaceTable(body))
             {
-                PlaceTable(body);
+                if (instance.CheckEmbryoProc(body))
+                {
+                    PlaceTable(body);
+                }
+                return true;
+            } else
+            {
+                return false;
             }
-            return true;
         }
 
-        private void PlaceTable(CharacterBody characterBody)
+        private bool PlaceTable(CharacterBody characterBody)
         {
-            iscBarrelNew.DoSpawn(characterBody.transform.position, characterBody.transform.rotation, new DirectorSpawnRequest(
-                iscBarrelNew, placementRule, RoR2Application.rng)
-            );
+            var maxBarrels = PortableTableDevice_MaxBarrels;
+            var barrelAmt = Object.FindObjectsOfType<BarrelDestroyOnInteraction>().Length;
+
+            if (barrelAmt < maxBarrels || maxBarrels == -1)
+            {
+                iscBarrelNew.DoSpawn(characterBody.transform.position, characterBody.transform.rotation, new DirectorSpawnRequest(
+                    iscBarrelNew, placementRule, RoR2Application.rng));
+                return true;
+            }
+            return false;
         }
 
         private class BarrelDestroyOnInteraction : MonoBehaviour

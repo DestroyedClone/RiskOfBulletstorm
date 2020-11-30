@@ -53,6 +53,8 @@ namespace RiskOfBulletstorm.Items
         private readonly GameObject UnlockEffect = Resources.Load<GameObject>("prefabs/effects/LevelUpEffect");
         private readonly GameObject Fail_DestroyEffect = Resources.Load<GameObject>("prefabs/effects/ShieldBreakEffect");
         private readonly GameObject Fail_LockEffect = Resources.Load<GameObject>("prefabs/effects/prefabs/effects/WarCryEffect");
+        private readonly string prefix = "TRUSTYLOCKPICKS_";
+        private readonly string suffix = " (Broken Lock)";
         public TrustyLockpicks()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/TrustyLockpicks.prefab";
@@ -67,6 +69,10 @@ namespace RiskOfBulletstorm.Items
         {
             base.SetupAttributes();
 
+            LanguageAPI.Add(prefix+"CHEST1_NAME", "Chest"+suffix);
+            LanguageAPI.Add(prefix + "CHEST2_NAME", "Large Chest" + suffix);
+            LanguageAPI.Add(prefix + "GOLDCHEST_NAME", "Legendary Chest" + suffix);
+            LanguageAPI.Add(prefix + "EQUIPMENTBARREL_NAME", "Equipment Barrel" + suffix);
         }
         public override void SetupConfig()
         {
@@ -101,6 +107,7 @@ namespace RiskOfBulletstorm.Items
 
             if (AttemptUnlock(BestInteractableObject, interactionDriver, newUnlockChance)) 
             {
+                
                 return true;
             } else
             {
@@ -117,15 +124,16 @@ namespace RiskOfBulletstorm.Items
             if (!purchaseInteraction) return false;
             TrustyLockpickFailed attempted = chestObject.GetComponent<TrustyLockpickFailed>();
             if (attempted) return false;
+            if (!interactionDriver) return false;
 
             GameObject selectedEffect;
-            Vector3 offset = Vector3.up * 2f;
+            Vector3 offset = Vector3.up * 1f;
+
 
             if (!purchaseInteraction.isShrine && purchaseInteraction.available && purchaseInteraction.costType == CostTypeIndex.Money)
             {
                 Interactor interactor = interactionDriver.interactor;
                 //interactionDriver.interactor.AttemptInteraction(chestObject);
-                Chat.AddMessage("Rolled: "+ UnlockChance);
                 if (Util.CheckRoll(UnlockChance))
                 {
                     purchaseInteraction.SetAvailable(false);
@@ -145,16 +153,21 @@ namespace RiskOfBulletstorm.Items
                 {
                     if (TrustyLockpicks_KillChest)
                     {
+                        purchaseInteraction.displayNameToken = prefix + purchaseInteraction.displayNameToken;
+                        purchaseInteraction.costType = CostTypeIndex.None;
+
                         Object.Destroy(purchaseInteraction);
+                        Object.Destroy(highlight);
+
                         selectedEffect = Fail_DestroyEffect;
                     }
                     else
                     {
                         purchaseInteraction.cost = Mathf.CeilToInt(purchaseInteraction.cost * TrustyLockpicks_PriceHike);
                         purchaseInteraction.Networkcost = purchaseInteraction.cost;
-                        chestObject.AddComponent<TrustyLockpickFailed>();
                         selectedEffect = Fail_LockEffect;
                     }
+                    chestObject.AddComponent<TrustyLockpickFailed>();
                     EffectManager.SimpleEffect(selectedEffect, chestObject.transform.position + offset, Quaternion.identity, true);
                 }
                 return true;
