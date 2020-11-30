@@ -11,7 +11,7 @@ using TILER2;
 using static TILER2.StatHooks;
 using static TILER2.MiscUtil;
 using System;
-using RiskOfBulletstorm.Shared;
+using RiskOfBulletstorm.Utils;
 
 namespace RiskOfBulletstorm.Items
 {

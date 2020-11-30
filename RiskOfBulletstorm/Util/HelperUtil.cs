@@ -2,7 +2,7 @@
 using UnityEngine;
 using RiskOfBulletstorm;
 
-namespace RiskOfBulletstorm.Shared
+namespace RiskOfBulletstorm.Utils
 {
     public static class HelperUtil
     {

@@ -11,6 +11,7 @@ using UnityEngine.Networking;
 using TILER2;
 using static TILER2.StatHooks;
 using static TILER2.MiscUtil;
+using static RiskOfBulletstorm.Utils.HelperUtil;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -170,9 +171,15 @@ namespace RiskOfBulletstorm.Items
             //if (StageCount > adjustedPickup.Length) StageCount = adjustedPickup.Length-1;
 
 
-            string numberString = adjustedPickup[StageCount];
-            string numberCapitalized = char.ToUpper(numberString[0]) + numberString.Substring(1);
-            string descString = adjustedDesc[StageCount];
+            string numberCapitalized = NumbertoOrdinal(StageCount);
+            //string numberCapitalized = char.ToUpper(numberString[0]) + numberString.Substring(1);
+            string numberString = numberCapitalized.ToLower();
+            string descString = adjustedDesc[adjustedDesc.Length - 1];
+
+            if (StageCount <= adjustedDesc.Length)
+            {
+                descString = adjustedDesc[StageCount-1];
+            }
 
             Chat.AddMessage(SceneCatalog.mostRecentSceneDef.baseSceneName);
             if (bannedStages.Contains(SceneCatalog.mostRecentSceneDef.baseSceneName))
