@@ -127,7 +127,7 @@ namespace RiskOfBulletstorm.Items
                 return;
             }
             Debug.Log("initial pickups checks passed");
-            var kills = pickupsComponent.globalDeaths;
+            //var kills = pickupsComponent.globalDeaths;
             var requiredKills = pickupsComponent.requiredKills;
             CharacterBody VictimBody = damageReport.victimBody;
 
@@ -138,9 +138,9 @@ namespace RiskOfBulletstorm.Items
 
                 //int DiffMultAdd = Run.instance.selectedDifficulty;
 
-                kills++;
-                Chat.AddMessage("kills: "+kills+" / "+ requiredKills);
-                if (kills % requiredKills == 0)
+                pickupsComponent.globalDeaths++;
+                Chat.AddMessage("kills: "+ pickupsComponent.globalDeaths + " / "+ requiredKills);
+                if (pickupsComponent.globalDeaths % requiredKills == 0)
                 {
                     if (Util.CheckRoll(PickupRollChance)) //Roll to spawn pickups
                     {
