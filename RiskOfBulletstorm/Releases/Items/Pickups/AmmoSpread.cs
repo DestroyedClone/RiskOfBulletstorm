@@ -22,7 +22,7 @@ namespace RiskOfBulletstorm.Items
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("At how many seconds should it start blinking? Default: 25 seconds", AutoConfigFlags.PreventNetMismatch)]
-        public float AmmoSpread_LifetimeBlinking { get; private set; } = 30f;
+        public float AmmoSpread_LifetimeBlinking { get; private set; } = 25f;
         public override string displayName => "Spread Ammo";
         public override ItemTier itemTier => ItemTier.NoTier;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility, ItemTag.WorldUnique });
@@ -35,7 +35,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetLoreString(string langID = null) => "";
 
         public static GameObject Pickup_AmmoSpread { get; private set; }
-        public static GameObject PickupEffect;
+        //public static GameObject PickupEffect = (GameObject)Resources.Load("prefabs/effects/AmmoPackPickupEffect");
 
         public override void SetupBehavior()
         {
@@ -45,20 +45,24 @@ namespace RiskOfBulletstorm.Items
             Pickup_AmmoSpread.GetComponent<DestroyOnTimer>().duration = 30f;
             Pickup_AmmoSpread.GetComponent<BeginRapidlyActivatingAndDeactivating>().delayBeforeBeginningBlinking = Math.Min(AmmoSpread_LifetimeBlinking, AmmoSpread_Lifetime);
             Pickup_AmmoSpread.GetComponent<TeamFilter>().teamIndex = TeamIndex.Player;
-            AmmoPickupSpread ammoPickupSpread = Pickup_AmmoSpread.AddComponent<AmmoPickupSpread>();
-            ammoPickupSpread.pickupEffect = PickupEffect;
-            ammoPickupSpread.teamFilter.teamIndex = TeamIndex.Player;
+
+            Debug.Log("Attempting to add pickupspread");
+            Pickup_AmmoSpread.AddComponent<AmmoPickupSpread>();
+            Debug.Log("PickupSpread added");
 
             UnityEngine.Object.Destroy(Pickup_AmmoSpread.GetComponent<VelocityRandomOnStart>());
             UnityEngine.Object.Destroy(Pickup_AmmoSpread.GetComponent<AmmoPickup>());
 
             //ProjectileCatalog.getAdditionalEntries += list => list.Add(ammoPickupPrefab);
-            if (ammoPickupPrefab) PrefabAPI.RegisterNetworkPrefab(ammoPickupPrefab);
+            //if (Pickup_AmmoSpread) PrefabAPI.RegisterNetworkPrefab(Pickup_AmmoSpread);
+        }
+        public override void SetupLate()
+        {
+            base.SetupLate();
         }
         public override void SetupAttributes()
         {
             base.SetupAttributes();
-            PickupEffect = (GameObject)Resources.Load("prefabs/effects/AmmoPackPickupEffect");
         }
         public override void SetupConfig()
         {
@@ -101,6 +105,14 @@ namespace RiskOfBulletstorm.Items
         public class AmmoPickupSpread : MonoBehaviour
         {
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
+            private void OnEnable()
+            {
+                if (gameObject)
+                this.baseObject = this.gameObject;
+                teamFilter.teamIndex = TeamIndex.Player;
+            }
+
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
             private void OnTriggerStay(Collider other)
             {
                 if (NetworkServer.active && this.alive && TeamComponent.GetObjectTeam(other.gameObject) == this.teamFilter.teamIndex)
@@ -137,7 +149,7 @@ namespace RiskOfBulletstorm.Items
             public TeamFilter teamFilter;
 
             // Token: 0x04000745 RID: 1861
-            public GameObject pickupEffect;
+            public GameObject pickupEffect = (GameObject)Resources.Load("prefabs/effects/AmmoPackPickupEffect");
 
             // Token: 0x04000746 RID: 1862
             private bool alive = true;

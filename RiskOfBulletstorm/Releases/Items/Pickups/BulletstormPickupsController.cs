@@ -152,7 +152,6 @@ namespace RiskOfBulletstorm.Items
                         var randfloat = UnityEngine.Random.Range(0f, 1f);
                         PickupIndex dropList = weightedSelection.Evaluate(randfloat);
                         PickupDropletController.CreatePickupDroplet(dropList, PickupPosition, Vector3.up * 5);
-                        kills = 0;
                     }
                 }
             }

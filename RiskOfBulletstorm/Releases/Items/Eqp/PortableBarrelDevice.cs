@@ -67,7 +67,7 @@ namespace RiskOfBulletstorm.Items
             base.SetupAttributes();
             placementRule = new DirectorPlacementRule
             {
-                placementMode = DirectorPlacementRule.PlacementMode.RandomNormalized,
+                placementMode = DirectorPlacementRule.PlacementMode.Approximate,
                 maxDistance = 100f,
                 minDistance = 20f,
                 preventOverhead = true
