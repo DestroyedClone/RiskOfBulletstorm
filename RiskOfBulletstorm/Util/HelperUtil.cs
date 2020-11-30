@@ -23,17 +23,16 @@ namespace RiskOfBulletstorm.Utils
             }
             return InventoryCount;
         }
-        public static void GiveItemToPlayers(ItemIndex itemIndex)
+        public static void GiveItemToPlayers(ItemIndex itemIndex, int amount = 1, int max = 1)
         {
             var instances = PlayerCharacterMasterController.instances;
             foreach (PlayerCharacterMasterController playerCharacterMaster in instances)
             {
                 var master = playerCharacterMaster.master;
-                var body = master.GetBody();
                 var inventory = master.inventory;
                 if (inventory)
                 {
-                    inventory.GiveItem(itemIndex);
+                    GiveItemIfLess(inventory, itemIndex, amount, max);
                 }
             }
         }
@@ -55,14 +54,14 @@ namespace RiskOfBulletstorm.Utils
             }
             return playerObject;
         }
-        public static void GiveItemIfLess(CharacterBody self, ItemIndex itemindex, int amount = 1, int max = 1)
+        public static void GiveItemIfLess(Inventory self, ItemIndex itemindex, int amount = 1, int max = 1)
         {
-            var InventoryCount = self.inventory.GetItemCount(itemindex);
+            var InventoryCount = self.GetItemCount(itemindex);
             if (InventoryCount < max)
             {
                 if (InventoryCount + amount > max) amount = max - InventoryCount;
 
-                self.inventory.GiveItem(itemindex, amount);
+                self.GiveItem(itemindex, amount);
             }
         }
 

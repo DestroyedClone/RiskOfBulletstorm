@@ -45,13 +45,14 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            Stage.onStageStartGlobal += Stage_onStageStartGlobal;
+            On.EntityStates.BrotherHaunt.FireRandomProjectiles.OnEnter += FireRandomProjectiles_OnEnter;
         }
 
-        private void Stage_onStageStartGlobal(Stage obj)
+        private void FireRandomProjectiles_OnEnter(On.EntityStates.BrotherHaunt.FireRandomProjectiles.orig_OnEnter orig, EntityStates.BrotherHaunt.FireRandomProjectiles self)
         {
+            orig(self);
             var currentScene = SceneCatalog.currentSceneName;
-            if (currentScene == "outro")
+            if (currentScene == "moon")
             {
                 if (NetworkServer.active)
                 {
@@ -64,7 +65,7 @@ namespace RiskOfBulletstorm.Items
         public override void Uninstall()
         {
             base.Uninstall();
-            Stage.onStageStartGlobal -= Stage_onStageStartGlobal;
+            On.EntityStates.BrotherHaunt.FireRandomProjectiles.OnEnter -= FireRandomProjectiles_OnEnter;
         }
     }
 }
