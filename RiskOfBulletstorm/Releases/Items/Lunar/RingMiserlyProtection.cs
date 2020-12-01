@@ -61,30 +61,23 @@ namespace RiskOfBulletstorm.Items
             GetStatCoefficients += BoostHealth;
         }
 
-        private void ShrineChanceBehavior_onShrineChancePurchaseGlobal(bool outcome, Interactor interactor)
+        private void ShrineChanceBehavior_onShrineChancePurchaseGlobal(bool gaveItem, Interactor interactor)
         {
-            Chat.AddMessage(outcome.ToString());
-            if (outcome)
+            var body = interactor.gameObject.GetComponent<CharacterBody>();
+            if (!body)
             {
-                var body = interactor.gameObject.GetComponent<CharacterBody>();
-                if (!body)
+                var inventory = body.inventory;
+                if (inventory)
                 {
-                    var inventory = body.inventory;
-                    if (inventory)
+                    var InventoryCount = body.inventory.GetItemCount(catalogIndex);
+                    if (InventoryCount > 0)
                     {
-                        var InventoryCount = body.inventory.GetItemCount(catalogIndex);
-                        if (InventoryCount > 0)
-                        {
-                            body.inventory.RemoveItem(catalogIndex);
-                            Util.PlaySound("Play_char_glass_death", body.gameObject);
-                            EffectManager.SimpleEffect(ShatterEffect, body.gameObject.transform.position, Quaternion.identity, true);
-                            body.RecalculateStats();
-                        }
+                        body.inventory.RemoveItem(catalogIndex);
+                        Util.PlaySound("Play_char_glass_death", body.gameObject);
+                        EffectManager.SimpleEffect(ShatterEffect, body.gameObject.transform.position, Quaternion.identity, true);
+                        body.RecalculateStats();
                     }
                 }
-            } else
-            {
-
             }
         }
 
