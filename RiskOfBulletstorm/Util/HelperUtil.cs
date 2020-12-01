@@ -1,4 +1,8 @@
-﻿using RoR2;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using RoR2;
+using RoR2.UI;
 using UnityEngine;
 using RiskOfBulletstorm;
 
@@ -34,7 +38,7 @@ namespace RiskOfBulletstorm.Utils
 
                 if (inventory)
                 {
-                    GiveItemIfLess(inventory, itemIndex, showInChat, body, amount, max);
+                    GiveItemIfLess(master, itemIndex, showInChat, body, amount, max);
                 }
             }
         }
@@ -56,30 +60,41 @@ namespace RiskOfBulletstorm.Utils
             }
             return playerObject;
         }
-        public static int GiveItemIfLess(Inventory self, ItemIndex itemindex, bool showInChat = true, CharacterBody characterBody = null, int amount = 1, int max = 1)
+        public static int GiveItemIfLess(CharacterMaster characterMaster, ItemIndex itemIndex, bool showInChat = true, CharacterBody characterBody = null, int amount = 1, int max = 1)
         {
-            var InventoryCount = self.GetItemCount(itemindex);
+            var self = characterMaster.inventory;
+            var InventoryCount = self.GetItemCount(itemIndex);
             var result = 0;
-            var pickupindex = PickupCatalog.FindPickupIndex(itemindex);
-            var pickupDef = PickupCatalog.GetPickupDef(pickupindex);
-            var nameToken = pickupDef.nameToken;
-            var color = pickupDef.baseColor;
+            //var pickupindex = PickupCatalog.FindPickupIndex(itemIndex);
+            //var pickupDef = PickupCatalog.GetPickupDef(pickupindex);
             if (InventoryCount < max)
             {
                 if (InventoryCount + amount > max) amount = max - InventoryCount;
-
-                self.GiveItem(itemindex, amount);
-                result = amount;
+                self.GiveItem(itemIndex, amount);
 
                 if (showInChat)
                 {
                     if (result > 0)
                     {
-                        Chat.AddPickupMessage(characterBody, nameToken, color, (uint)result);
+                        //Chat.AddPickupMessage(characterBody, nameToken, color, (uint)result);
+                        SimulatePickup(characterMaster, itemIndex);
                     }
                 }
+                result = amount;
             }
             return result;
+        }
+        public static void SimulatePickup(CharacterMaster characterMaster, ItemIndex itemIndex)
+        {
+            //var list = NotificationQueue.instancesList;
+            var pickupindex = PickupCatalog.FindPickupIndex(itemIndex);
+            //var pickupDef = PickupCatalog.GetPickupDef(pickupindex);
+            //var nameToken = pickupDef.nameToken;
+            //var color = pickupDef.baseColor;
+
+            GenericPickupController.SendPickupMessage(characterMaster, pickupindex);
+            Util.PlaySound("Play_UI_item_pickup", characterMaster.GetBodyObject());
+
         }
 
         public static string NumbertoOrdinal(int number)

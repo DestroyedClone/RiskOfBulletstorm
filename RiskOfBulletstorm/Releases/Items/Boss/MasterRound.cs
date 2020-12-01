@@ -174,11 +174,11 @@ namespace RiskOfBulletstorm.Items
             string numberCapitalized = NumbertoOrdinal(StageCount);
             //string numberCapitalized = char.ToUpper(numberString[0]) + numberString.Substring(1);
             string numberString = numberCapitalized.ToLower();
-            string descString = adjustedDesc[adjustedDesc.Length - 1];
+            string descString = adjustedDesc[Mathf.Clamp(StageCount, 0, adjustedDesc.Length)];
 
             if (StageCount <= adjustedDesc.Length)
             {
-                descString = adjustedDesc[StageCount-1];
+                descString = adjustedDesc[0];
             }
 
             Chat.AddMessage(SceneCatalog.mostRecentSceneDef.baseSceneName);
@@ -188,7 +188,6 @@ namespace RiskOfBulletstorm.Items
                 descString = "cheated";
                 numberCapitalized = "Bazaar";
             }
-
 
             //https://www.dotnetperls.com/uppercase-first-letter
 

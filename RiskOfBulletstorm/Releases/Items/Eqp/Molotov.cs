@@ -14,13 +14,13 @@ namespace RiskOfBulletstorm.Items
     public class Molotov : Equipment_V2<Molotov>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Damage?? (Default: 0.2 = 20% dps)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Damage?? (Default: 0.1 = 10% base damage)", AutoConfigFlags.PreventNetMismatch)]
         public static float Molotov_Damage { get; private set; } = 0.2f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Frequency of damage ticks? Formula is (1 / Molotov_Frequency)" +
-            "\n(Default: 80 = Every 1/80th of a second)", AutoConfigFlags.PreventNetMismatch)]
-        public static float Molotov_Frequency { get; private set; } = 80f;
+            "\n(Default: 60 = Every 1/60th of a second) (Max: 60)", AutoConfigFlags.PreventNetMismatch)]
+        public static float Molotov_Frequency { get; private set; } = 60f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Duration?? (Default: 8 seconds)", AutoConfigFlags.PreventNetMismatch)]
@@ -46,7 +46,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "Feel The Burn\n" + descText;
 
-        //private readonly float DPS = Molotov_Damage * (Molotov_Frequency);
+        private readonly float DPS = Molotov_Damage * (Molotov_Frequency);
         protected override string GetDescString(string langid = null) => $"{descText}, dealing <style=cIsDamage>{Pct(Molotov_Damage)} damage per [1/{Molotov_Frequency}] seconds </style> for <style=cIsDamage>{Molotov_Duration} seconds</style>.";
 
         protected override string GetLoreString(string langID = null) => "Molotov cocktails aren't guns, and so they are frowned upon by long-dwelling Gungeoneers. They get the job done regardless." +
@@ -83,7 +83,7 @@ namespace RiskOfBulletstorm.Items
 
             ApplyTorqueOnStart applyTorque = MolotovPrefab.AddComponent<ApplyTorqueOnStart>();
             applyTorque.randomize = true;
-            applyTorque.localTorque = new Vector3(10f, 400f, 10f);
+            applyTorque.localTorque = new Vector3(400f, 10f, 400f);
 
             var model = Resources.Load<GameObject>(modelResourcePath);
             model.AddComponent<NetworkIdentity>();
