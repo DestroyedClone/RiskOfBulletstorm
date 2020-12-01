@@ -60,6 +60,7 @@ namespace RiskOfBulletstorm.Items
 
         readonly string[] adjustedDesc =
         {
+            "questionable",
             "rare",
             "potent",
             "exceptional",
@@ -168,7 +169,7 @@ namespace RiskOfBulletstorm.Items
             orig(self, itemDef);
             if (itemDef.itemIndex != catalogIndex) return;
             //if (bannedStages.Contains(SceneCatalog.mostRecentSceneDef.baseSceneName)) return;
-            var StageCount = Run.instance.stageClearCount;
+            var StageCount = Mathf.Max(Run.instance.stageClearCount + 1, 1);
             //if (StageCount > adjustedPickup.Length) StageCount = adjustedPickup.Length-1;
 
 
@@ -176,11 +177,6 @@ namespace RiskOfBulletstorm.Items
             //string numberCapitalized = char.ToUpper(numberString[0]) + numberString.Substring(1);
             string numberString = numberCapitalized.ToLower();
             string descString = adjustedDesc[Mathf.Clamp(StageCount, 0, adjustedDesc.Length)];
-
-            if (StageCount <= adjustedDesc.Length)
-            {
-                descString = adjustedDesc[0];
-            }
 
             //https://www.dotnetperls.com/uppercase-first-letter
 
