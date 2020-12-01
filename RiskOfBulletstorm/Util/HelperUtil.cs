@@ -60,6 +60,8 @@ namespace RiskOfBulletstorm.Utils
             }
             return playerObject;
         }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Used when showInChat is not false")]
         public static int GiveItemIfLess(CharacterMaster characterMaster, ItemIndex itemIndex, bool showInChat = true, CharacterBody characterBody = null, int amount = 1, int max = 1)
         {
             var self = characterMaster.inventory;

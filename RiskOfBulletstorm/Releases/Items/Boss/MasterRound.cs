@@ -47,7 +47,8 @@ namespace RiskOfBulletstorm.Items
             "\nFew return from the deadly route that leads to the Forge. Yet fewer survive that venture into less-explored territory." +
             "\nA monument to the legendary hero greets all who challenge the Gungeon, though their identity has been lost to the ages." +
             "\nThe legendary hero felled the beast at the heart of the Gungeon with five rounds. According to the myth, the sixth remains unfired.";
-        readonly string[] adjustedPickup =
+        
+        /*readonly string[] adjustedPickup =
         {
             "first",
             "second",
@@ -55,7 +56,7 @@ namespace RiskOfBulletstorm.Items
             "fourth",
             "fifth",
             "endless"
-        };
+        };*/
 
         readonly string[] adjustedDesc =
         {
