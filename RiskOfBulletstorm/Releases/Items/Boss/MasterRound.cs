@@ -181,18 +181,15 @@ namespace RiskOfBulletstorm.Items
                 descString = adjustedDesc[0];
             }
 
-            Chat.AddMessage(SceneCatalog.mostRecentSceneDef.baseSceneName);
-            if (bannedStages.Contains(SceneCatalog.mostRecentSceneDef.baseSceneName))
-            {
-                numberString = "bazaar";
-                descString = "cheated";
-                numberCapitalized = "Bazaar";
-            }
-
             //https://www.dotnetperls.com/uppercase-first-letter
 
             string output = numberCapitalized + " Chamber" +
                 "\nThis " + descString + " artifact indicates mastery of the " + numberString + " chamber.";
+            Chat.AddMessage(SceneCatalog.mostRecentSceneDef.baseSceneName);
+            if (bannedStages.Contains(SceneCatalog.mostRecentSceneDef.baseSceneName))
+            {
+                output = "huh? how did you...";
+            }
 
             self.descriptionText.token = output;
         }
