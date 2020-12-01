@@ -125,7 +125,7 @@ namespace RiskOfBulletstorm.Items
             var barrelAmt = Object.FindObjectsOfType<BarrelDestroyOnInteraction>().Length;
             var offset = characterBody.characterMotor.capsuleCollider.height / 2;
             var position = characterBody.corePosition;
-            var resultpos = position - Vector3.down * offset;
+            var resultpos = position + Vector3.down * offset;
 
             if (barrelAmt < maxBarrels || maxBarrels == -1)
             {

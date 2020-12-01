@@ -23,16 +23,18 @@ namespace RiskOfBulletstorm.Utils
             }
             return InventoryCount;
         }
-        public static void GiveItemToPlayers(ItemIndex itemIndex, int amount = 1, int max = 1)
+        public static void GiveItemToPlayers(ItemIndex itemIndex, bool showInChat = true, int amount = 1, int max = 1)
         {
             var instances = PlayerCharacterMasterController.instances;
             foreach (PlayerCharacterMasterController playerCharacterMaster in instances)
             {
                 var master = playerCharacterMaster.master;
                 var inventory = master.inventory;
+                var body = playerCharacterMaster.body;
+
                 if (inventory)
                 {
-                    GiveItemIfLess(inventory, itemIndex, amount, max);
+                    GiveItemIfLess(inventory, itemIndex, showInChat, body, amount, max);
                 }
             }
         }
@@ -54,15 +56,30 @@ namespace RiskOfBulletstorm.Utils
             }
             return playerObject;
         }
-        public static void GiveItemIfLess(Inventory self, ItemIndex itemindex, int amount = 1, int max = 1)
+        public static int GiveItemIfLess(Inventory self, ItemIndex itemindex, bool showInChat = true, CharacterBody characterBody = null, int amount = 1, int max = 1)
         {
             var InventoryCount = self.GetItemCount(itemindex);
+            var result = 0;
+            var pickupindex = PickupCatalog.FindPickupIndex(itemindex);
+            var pickupDef = PickupCatalog.GetPickupDef(pickupindex);
+            var nameToken = pickupDef.nameToken;
+            var color = pickupDef.baseColor;
             if (InventoryCount < max)
             {
                 if (InventoryCount + amount > max) amount = max - InventoryCount;
 
                 self.GiveItem(itemindex, amount);
+                result = amount;
+
+                if (showInChat)
+                {
+                    if (result > 0)
+                    {
+                        Chat.AddPickupMessage(characterBody, nameToken, color, (uint)result);
+                    }
+                }
             }
+            return result;
         }
 
         public static string NumbertoOrdinal(int number)

@@ -47,7 +47,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetPickupString(string langID = null) => "Feel The Burn\n" + descText;
 
         //private readonly float DPS = Molotov_Damage * (Molotov_Frequency);
-        protected override string GetDescString(string langid = null) => $"{descText}, dealing <style=cIsDamage>{Pct(Molotov_Damage)} damage per {1/Molotov_Frequency}seconds </style> for <style=cIsDamage>{Molotov_Duration} seconds</style>.";
+        protected override string GetDescString(string langid = null) => $"{descText}, dealing <style=cIsDamage>{Pct(Molotov_Damage)} damage per [1/{Molotov_Frequency}] seconds </style> for <style=cIsDamage>{Molotov_Duration} seconds</style>.";
 
         protected override string GetLoreString(string langID = null) => "Molotov cocktails aren't guns, and so they are frowned upon by long-dwelling Gungeoneers. They get the job done regardless." +
             "\nKnowing the Hegemony wouldn't let her bring her own weaponry to the Gungeon, the Convict smuggled these few bottles in with the transport's cargo.";
@@ -56,6 +56,8 @@ namespace RiskOfBulletstorm.Items
         public static GameObject MolotovDotZonePrefab { get; private set; }
 
         public static GameObject ItemBodyModelPrefab;
+
+        public static GameObject GlassBreakEffect = Resources.Load<GameObject>("prefabs/effects/ShieldBreakEffect");
 
 
 
@@ -71,7 +73,7 @@ namespace RiskOfBulletstorm.Items
             projectileDotZone.damageCoefficient = Molotov_Damage;
             projectileDotZone.resetFrequency = Molotov_Frequency;
             projectileDotZone.lifetime = Molotov_Duration;
-            projectileDotZone.impactEffect = Resources.Load<GameObject>("prefabs/effects/ShieldBreakEffect");
+            projectileDotZone.impactEffect = GlassBreakEffect;
 
             GameObject sporeGrenadePrefab = Resources.Load<GameObject>("prefabs/projectiles/SporeGrenadeProjectile");
             MolotovPrefab = sporeGrenadePrefab.InstantiateClone("Bulletstorm_Molotov");
@@ -81,7 +83,7 @@ namespace RiskOfBulletstorm.Items
 
             ApplyTorqueOnStart applyTorque = MolotovPrefab.AddComponent<ApplyTorqueOnStart>();
             applyTorque.randomize = true;
-            applyTorque.localTorque = new Vector3(400f, 400f, 400f);
+            applyTorque.localTorque = new Vector3(10f, 400f, 10f);
 
             var model = Resources.Load<GameObject>(modelResourcePath);
             model.AddComponent<NetworkIdentity>();
@@ -325,12 +327,15 @@ namespace RiskOfBulletstorm.Items
 
         public void FireMolotov(CharacterBody body, GameObject gameObject, float damageMultiplier = 1f)
         {
-            Vector3 corePos = Util.GetCorePosition(body);
             InputBankTest input = body.inputBank;
+            
+            var offset = body.characterMotor.capsuleCollider.height / 3;
+            var position = body.corePosition;
+            var resultpos = position + Vector3.up * offset;
 
             if (NetworkServer.active)
             {
-                ProjectileManager.instance.FireProjectile(MolotovPrefab, corePos, Util.QuaternionSafeLookRotation(input.aimDirection),
+                ProjectileManager.instance.FireProjectile(MolotovPrefab, resultpos, Util.QuaternionSafeLookRotation(input.aimDirection),
                                       gameObject, body.damage * Molotov_Damage * damageMultiplier,
                                       0f, Util.CheckRoll(body.crit, body.master),
                                       DamageColorIndex.Item, null, -1f);

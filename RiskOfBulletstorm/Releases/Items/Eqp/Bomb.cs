@@ -36,6 +36,8 @@ namespace RiskOfBulletstorm.Items
 
         public static GameObject ItemBodyModelPrefab;
 
+        public static string ProjectileModelPath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Bomb.prefab";
+
         public Bomb()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Bomb.prefab";
@@ -45,6 +47,7 @@ namespace RiskOfBulletstorm.Items
         public override void SetupBehavior()
         {
             base.SetupBehavior();
+
             GameObject commandoGrenadePrefab = Resources.Load<GameObject>("prefabs/projectiles/CommandoGrenadeProjectile");
             BombPrefab = commandoGrenadePrefab.InstantiateClone("Bulletstorm_Bomb");
             var BombScale = 1.25f;
@@ -55,7 +58,7 @@ namespace RiskOfBulletstorm.Items
             BombPrefab.GetComponent<ProjectileImpactExplosion>().falloffModel = BlastAttack.FalloffModel.None;
             //Object.Destroy(BombPrefab.GetComponent<ApplyTorqueOnStart>());
 
-            var model = Resources.Load<GameObject>(modelResourcePath);
+            var model = Resources.Load<GameObject>(ProjectileModelPath);
             var modelScale = 0.15f;
             model.transform.localScale = new Vector3(modelScale, modelScale, modelScale);
             model.AddComponent<NetworkIdentity>();
@@ -297,13 +300,17 @@ namespace RiskOfBulletstorm.Items
 
         public void FireBomb(CharacterBody body, GameObject gameObject, float yOffset = 0)
         {
-            Vector3 corePos = Util.GetCorePosition(body);
-            Vector3 offset = new Vector3(0f, yOffset, 0f);
+            var offset = body.characterMotor.capsuleCollider.height / 3;
+            var position = body.corePosition;
+
+            var newyOffset = Vector3.up * yOffset;
+            var resultpos = position + Vector3.up * offset + newyOffset;
+
             InputBankTest input = body.inputBank;
 
             if (NetworkServer.active)
             {
-                ProjectileManager.instance.FireProjectile(BombPrefab, corePos+offset, Util.QuaternionSafeLookRotation(input.aimDirection),
+                ProjectileManager.instance.FireProjectile(BombPrefab, resultpos, Util.QuaternionSafeLookRotation(input.aimDirection),
                                       gameObject, body.damage * Bomb_DamageDealt,
                                       0f, Util.CheckRoll(body.crit, body.master),
                                       DamageColorIndex.Item, null, -1f);

@@ -47,7 +47,6 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "These lockpicks have never let the Pilot down, except for the many times they did.";
 
-        private readonly PickupIndex BFGPickupIndex;
         private readonly PickupIndex SyringePickupIndex = PickupCatalog.FindPickupIndex(ItemIndex.Syringe);
         private readonly string unlockSound = EntityStates.Engi.EngiWeapon.FireMines.throwMineSoundString;
         private readonly GameObject UnlockEffect = Resources.Load<GameObject>("prefabs/effects/LevelUpEffect");
@@ -69,7 +68,7 @@ namespace RiskOfBulletstorm.Items
         {
             base.SetupAttributes();
 
-            LanguageAPI.Add(prefix+"CHEST1_NAME", "Chest"+suffix);
+            LanguageAPI.Add(prefix + "CHEST1_NAME", "Chest"+suffix);
             LanguageAPI.Add(prefix + "CHEST2_NAME", "Large Chest" + suffix);
             LanguageAPI.Add(prefix + "GOLDCHEST_NAME", "Legendary Chest" + suffix);
             LanguageAPI.Add(prefix + "EQUIPMENTBARREL_NAME", "Equipment Barrel" + suffix);
@@ -158,9 +157,10 @@ namespace RiskOfBulletstorm.Items
 
                         purchaseInteraction.displayNameToken = (prefix + purchaseInteraction.displayNameToken);
                         purchaseInteraction.costType = CostTypeIndex.None;
+                        purchaseInteraction.SetAvailable(false);
 
-                        Object.Destroy(purchaseInteraction);
-                        Object.Destroy(highlight);
+                        //Object.Destroy(purchaseInteraction);
+                        //Object.Destroy(highlight);
 
                         selectedEffect = Fail_DestroyEffect;
                     }
@@ -186,9 +186,6 @@ namespace RiskOfBulletstorm.Items
             Highlight highlight = self.gameObject.GetComponent<Highlight>();
             if (!highlight) return orig(self, activator);
 
-            PickupIndex h_pickupIndex = highlight.pickupIndex;
-            if (h_pickupIndex == BFGPickupIndex) return orig(self, activator);
-
             TrustyLockpickFailed attempted = self.gameObject.GetComponent<TrustyLockpickFailed>();
             if (attempted) return orig(self, activator);
 
@@ -203,7 +200,6 @@ namespace RiskOfBulletstorm.Items
                         EquipmentIndex equipmentIndex = inventory.GetEquipmentIndex();
                         if (equipmentIndex == catalogIndex)
                         {
-                            highlight.pickupIndex = BFGPickupIndex;
                             return Interactability.Available;
                         }
                     }
