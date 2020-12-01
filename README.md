@@ -1,12 +1,11 @@
 # Risk of Bulletstorm
 A mod for Risk of Rain 2 that plans to add custom content, modified from Enter The Gungeon. Currently Multiplayer untested.
 
-There's a config, but I'm not sure if it works. Feel free to message me in the Risk of Rain 2 Modding discord for any broken junk or suggestions.
+Feel free to message me in the Risk of Rain 2 Modding discord for any broken junk or suggestions.
 ***
 # Dependencies
 BepInEx and R2API
 ThinkIvis - TILER2
-Jarlyk - EliteSpawningOverhaul
 
 # Compatibility with other mods
 1. **Classic-Items** : Beating Embryo Support
@@ -16,6 +15,7 @@ Jarlyk - EliteSpawningOverhaul
 # Planned
 * (Boss) Dog: Chance to find pickups
 * (Green) Military Training: Improves firing
+* (Red) Number 2: Boosts stats while alone
 * (Green) Live Ammo: Immunity to contact damage, hitbox to utility
 * (Green) Battery Bullets: Electrifies bullets
 ***
@@ -51,7 +51,7 @@ Every 50 kills, the game will have a 20% chance to *spawn a random weighted pick
 
 ## Boss
 **Beetle**: Spawns 1 beetle that have a 5% (+5% per stack) chance to dig up a pickup upon completing a room.
-**Master Round**: Granted upon clearing a teleporter boss without ANYONE taking damage. Adds 150 max health per stack.
+**Master Round**: Granted upon clearing a teleporter boss, as long as no player took more than 3 hits each. Adds 150 max health per stack.
 
 # Equipment
 ## Normal
@@ -64,7 +64,7 @@ Every 50 kills, the game will have a 20% chance to *spawn a random weighted pick
 *-> BEmbryo: Heals again for an additional 33% health.*
 **Medkit**: Fully heals the player and maxes out barrier. CD: 145s
 *-> BEmbryo: Activates twice.*
-**Molotov**: Throw to cover an area in flames for 20% of your damage every 1/40th of a second for 8 seconds.
+**Molotov**: Throw to cover an area in flames for 10% of your damage every 1/60th of a second for 8 seconds. 
 *-> BEmbryo: Molotov deals 10% more damage.*
 **Orange**: 80% chance to spawn (or 20% rarer). Consuming permanently reduces equipment recharge rate by 10%, increases health by 10%, fully heals the player, but is removed from the inventory.
 *-> BEmbryo: Activates twice.*
@@ -75,10 +75,13 @@ Every 50 kills, the game will have a 20% chance to *spawn a random weighted pick
 **Trusty Lockpicks**: 50% chance to unlock a chest. If it fails, doubles its price and prevents further picklocking or using Keys.
 *-> BEmbryo: Adds 30% of your base chance to unlock. By default, raises your unlock chance to 65%.*
 
-
 # Special
 **Curse** - Certain items have apply curse. The chance of encountering a Jammed enemy increases as you gain more Curse. This is independent of elite affixes.
 **[Jammed]**: +100% damage, +20% attack speed, +20% movement speed.
+
+# Current Issues:
+* (?) Trusty Lockpicks unlocks don't trigger Mustache.
+* (Medium) No way to get curse
 
 # Changelog
 1.1.0 - Content Update:
@@ -87,6 +90,7 @@ Every 50 kills, the game will have a 20% chance to *spawn a random weighted pick
 *Scope--* now affects REX syringes, Sawmerang, Preon Accumulator, and (config) Disposable Missile Launcher. Added experimental config for applying it to all projectiles (may break some projectiles).
 *Metronome--* Added config for stack loss.
 *Bomb--* Added assets, increased cooldown
+*EliteSpawningOverhaul)--* Temporarily removed dependency
 
 1.0.1 - Reverted dependency of R2API. Adjusted item descriptions.
 
