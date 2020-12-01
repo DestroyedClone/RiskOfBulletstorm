@@ -166,7 +166,7 @@ namespace RiskOfBulletstorm.Items
         {
             orig(self, itemDef);
             if (itemDef.itemIndex != catalogIndex) return;
-            if (bannedStages.Contains(SceneCatalog.mostRecentSceneDef.baseSceneName)) return;
+            //if (bannedStages.Contains(SceneCatalog.mostRecentSceneDef.baseSceneName)) return;
             var StageCount = Run.instance.stageClearCount;
             //if (StageCount > adjustedPickup.Length) StageCount = adjustedPickup.Length-1;
 
@@ -184,9 +184,9 @@ namespace RiskOfBulletstorm.Items
             Chat.AddMessage(SceneCatalog.mostRecentSceneDef.baseSceneName);
             if (bannedStages.Contains(SceneCatalog.mostRecentSceneDef.baseSceneName))
             {
-                numberString = "WDAWDAWDWffsfsadss ";
-                descString = "asdwadawd";
-                numberCapitalized = "sdwad@@##@sd";
+                numberString = "bazaar";
+                descString = "cheated";
+                numberCapitalized = "Bazaar";
             }
 
 

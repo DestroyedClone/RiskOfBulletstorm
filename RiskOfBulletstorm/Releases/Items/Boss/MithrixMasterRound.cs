@@ -45,19 +45,48 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            On.EntityStates.BrotherHaunt.FireRandomProjectiles.OnEnter += FireRandomProjectiles_OnEnter;
+            //On.EntityStates.BrotherHaunt.FireRandomProjectiles.OnEnter += FireRandomProjectiles_OnEnter;
+            On.EntityStates.Missions.BrotherEncounter.EncounterFinished.OnEnter += EncounterFinished_OnEnter;
+        }
+
+        private void EncounterFinished_OnEnter(On.EntityStates.Missions.BrotherEncounter.EncounterFinished.orig_OnEnter orig, EntityStates.Missions.BrotherEncounter.EncounterFinished self)
+        {
+            orig(self);
+            //var currentScene = SceneCatalog.currentSceneName;
+            Debug.Log("Entered FireProjectiles");
+            //if (currentScene == "moon")
+            if (true)
+            {
+                Debug.Log("On the moon");
+                if (NetworkServer.active)
+                {
+                    Debug.Log("Here");
+                    HelperUtil.GiveItemToPlayers(catalogIndex);
+                }
+                else
+                {
+
+                    Debug.Log("Network server not active");
+                }
+            }
         }
 
         private void FireRandomProjectiles_OnEnter(On.EntityStates.BrotherHaunt.FireRandomProjectiles.orig_OnEnter orig, EntityStates.BrotherHaunt.FireRandomProjectiles self)
         {
             orig(self);
             var currentScene = SceneCatalog.currentSceneName;
+            Debug.Log("Entered FireProjectiles");
             if (currentScene == "moon")
             {
+                Debug.Log("On the moon");
                 if (NetworkServer.active)
                 {
                     Debug.Log("Here");
                     HelperUtil.GiveItemToPlayers(catalogIndex);
+                } else
+                {
+
+                    Debug.Log("Network server not active");
                 }
             }
         }
@@ -65,7 +94,8 @@ namespace RiskOfBulletstorm.Items
         public override void Uninstall()
         {
             base.Uninstall();
-            On.EntityStates.BrotherHaunt.FireRandomProjectiles.OnEnter -= FireRandomProjectiles_OnEnter;
+            //On.EntityStates.BrotherHaunt.FireRandomProjectiles.OnEnter -= FireRandomProjectiles_OnEnter;
+            On.EntityStates.Missions.BrotherEncounter.EncounterFinished.OnEnter -= EncounterFinished_OnEnter;
         }
     }
 }
