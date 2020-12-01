@@ -123,10 +123,13 @@ namespace RiskOfBulletstorm.Items
         {
             var maxBarrels = PortableTableDevice_MaxBarrels;
             var barrelAmt = Object.FindObjectsOfType<BarrelDestroyOnInteraction>().Length;
+            var offset = characterBody.characterMotor.capsuleCollider.height / 2;
+            var position = characterBody.corePosition;
+            var resultpos = position - Vector3.down * offset;
 
             if (barrelAmt < maxBarrels || maxBarrels == -1)
             {
-                iscBarrelNew.DoSpawn(characterBody.transform.position, characterBody.transform.rotation, new DirectorSpawnRequest(
+                iscBarrelNew.DoSpawn(resultpos, characterBody.transform.rotation, new DirectorSpawnRequest(
                     iscBarrelNew, placementRule, RoR2Application.rng));
                 return true;
             }
@@ -142,7 +145,7 @@ namespace RiskOfBulletstorm.Items
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
             private void OnEnable()
             {
-
+                //gameObject.transform.position
             }
 
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
