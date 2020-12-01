@@ -57,29 +57,21 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            On.RoR2.PurchaseInteraction.OnInteractionBegin += On_InteractionBegin;
+            ShrineChanceBehavior.onShrineChancePurchaseGlobal += ShrineChanceBehavior_onShrineChancePurchaseGlobal;
             GetStatCoefficients += BoostHealth;
         }
 
-        public override void Uninstall()
+        private void ShrineChanceBehavior_onShrineChancePurchaseGlobal(bool outcome, Interactor interactor)
         {
-            base.Uninstall();
-            On.RoR2.PurchaseInteraction.OnInteractionBegin -= On_InteractionBegin;
-            GetStatCoefficients -= BoostHealth;
-        }
-        private void On_InteractionBegin(On.RoR2.PurchaseInteraction.orig_OnInteractionBegin orig, PurchaseInteraction self, Interactor activator)
-        {
-            orig(self, activator);
-            var body = activator.gameObject.GetComponent<CharacterBody>();
-            if (!body)
+            if (outcome)
             {
-                var inventory = body.inventory;
-                if (inventory)
+                var body = interactor.gameObject.GetComponent<CharacterBody>();
+                if (!body)
                 {
-                    var InventoryCount = body.inventory.GetItemCount(catalogIndex);
-                    Chat.AddMessage("isShrine="+ self.isShrine+" IsCombatShrine="+ self.GetComponent<ShrineCombatBehavior>()+" InvCount="+InventoryCount);
-                    if (self.isShrine && !self.GetComponent<ShrineCombatBehavior>())
+                    var inventory = body.inventory;
+                    if (inventory)
                     {
+                        var InventoryCount = body.inventory.GetItemCount(catalogIndex);
                         if (InventoryCount > 0)
                         {
                             body.inventory.RemoveItem(catalogIndex);
@@ -91,6 +83,14 @@ namespace RiskOfBulletstorm.Items
                 }
             }
         }
+
+        public override void Uninstall()
+        {
+            base.Uninstall();
+            ShrineChanceBehavior.onShrineChancePurchaseGlobal -= ShrineChanceBehavior_onShrineChancePurchaseGlobal;
+            GetStatCoefficients -= BoostHealth;
+        }
+
         private void BoostHealth(CharacterBody sender, StatHookEventArgs args)
         {
             var invCount = GetCount(sender);
