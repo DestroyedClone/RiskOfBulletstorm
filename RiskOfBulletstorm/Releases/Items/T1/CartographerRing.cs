@@ -13,7 +13,7 @@ using static TILER2.MiscUtil;
 using System;
 using System.Linq;
 using JetBrains.Annotations;
-using static RiskOfBulletstorm.Shared.HelperUtil;
+using static RiskOfBulletstorm.Utils.HelperUtil;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -29,8 +29,13 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("Duration of scanner in seconds (Default: 0-Infinite.)", AutoConfigFlags.PreventNetMismatch)]
         public float CartographerRing_ScanDuration { get; private set; } = 0f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Continue to pulse scans after the stage starts? (Default: false)", AutoConfigFlags.PreventNetMismatch)]
+        public bool CartographerRing_KeepScanningPastStart { get; private set; } = false;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Destroy the scans on teleporter start? (Default: false)", AutoConfigFlags.PreventNetMismatch)]
         public bool CartographerRing_DestroyOnTeleporterStart { get; private set; } = true;
+
         public override string displayName => "Cartographer's Ring";
         public override ItemTier itemTier => ItemTier.Tier1;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility, ItemTag.AIBlacklist });
@@ -43,33 +48,42 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "The Gungeon is unmappable, but it was not always so. It is said that in his youth, the great cartographer Woban has created four great maps, one for each floor of the Gungeon. While working on the fifth and final map, the walls suddenly began to shift strangely; they continue to do so to this day.";
 
-        //public static GameObject PermanentScannerPrefab; // the survivor body prefab
-        public static GameObject PermanentPoiPrefab;
-        public static Stage currentStage;
+        public static GameObject PermanentScannerPrefab;
 
         public override void SetupBehavior()
         {
             base.SetupBehavior();
-            /*PermanentScannerPrefab = PrefabAPI.InstantiateClone(Resources.Load<GameObject>("Prefabs/NetworkedObjects/ChestScanner"), "Bulletstorm_ChestScanner");
+            PermanentScannerPrefab = PrefabAPI.InstantiateClone(Resources.Load<GameObject>("Prefabs/NetworkedObjects/ChestScanner"), "Bulletstorm_ChestScanner");
             ChestRevealer chestRevealer = PermanentScannerPrefab.GetComponent<ChestRevealer>();
             chestRevealer.radius = 1000;
             chestRevealer.pulseTravelSpeed = 1000;
-            chestRevealer.revealDuration = 99999;
-            chestRevealer.pulseEffectScale = 0;*/
+            chestRevealer.revealDuration = 1;
+            chestRevealer.pulseInterval = 10;
+            chestRevealer.pulseEffectScale = 0;
+            chestRevealer.pulseEffectPrefab = null; //light mode users
 
-            PermanentPoiPrefab = PrefabAPI.InstantiateClone(Resources.Load<GameObject>("Prefabs/PositionIndicators/PoiPositionIndicator"), "Bulletstorm_PoiPositionIndicator");
-            //var RevealedObject = PermanentPoiPrefab.Comop
-
-            /*DestroyOnTimer destroyOnTimer = PermanentScannerPrefab.GetComponent<DestroyOnTimer>();
-            if (CartographerRing_ScanDuration <= 0)
+            if (CartographerRing_ScanDuration < 0)
             {
-                //UnityEngine.Object.Destroy(PermanentScannerPrefab.GetComponent<DestroyOnTimer>());
-                destroyOnTimer.duration = 9999999;
+                chestRevealer.revealDuration = 99999; //~27 hours
+            }
+            else
+            {
+                chestRevealer.revealDuration = Mathf.Max(1, CartographerRing_ScanDuration);
+            }
+
+            DestroyOnTimer destroyOnTimer = PermanentScannerPrefab.GetComponent<DestroyOnTimer>();
+
+            if (CartographerRing_KeepScanningPastStart)
+            {
+                UnityEngine.Object.Destroy(destroyOnTimer);
+                //destroyOnTimer.duration = 99999;
             }
             else
             {
                 destroyOnTimer.duration = CartographerRing_ScanDuration;
-            }*/
+            }
+
+            if (PermanentScannerPrefab) PrefabAPI.RegisterNetworkPrefab(PermanentScannerPrefab);
         }
         public override void SetupAttributes()
         {
@@ -83,42 +97,17 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             Stage.onStageStartGlobal += Stage_onStageStartGlobal;
-            On.RoR2.PurchaseInteraction.Awake += RevealChest;
             Stage.onServerStageComplete += StageEnd_DestroyComponent;
-            On.RoR2.PurchaseInteraction.OnInteractionBegin += PurchaseInteraction_OnInteractionBegin;
             if (CartographerRing_DestroyOnTeleporterStart)
                 TeleporterInteraction.onTeleporterBeginChargingGlobal += TeleporterCharged_DestroyComponent;
         }
 
-        private void PurchaseInteraction_OnInteractionBegin(On.RoR2.PurchaseInteraction.orig_OnInteractionBegin orig, PurchaseInteraction self, Interactor activator)
-        {
-            orig(self, activator);
-            if (!currentStage) return;
-
-            var component = currentStage.GetComponent<BulletstormRevealChests>();
-            if (component)
-            {
-                var purchaseInteractions = component.purchaseInteractions;
-                var positionIndicators = component.positionIndicators;
-                for (int i = 0; i < purchaseInteractions.Count; i++)
-                {
-                    if (purchaseInteractions[i] == self)
-                    {
-                        purchaseInteractions.Remove(self);
-                        positionIndicators.RemoveAt(i);
-                        break;
-                    }
-                }
-            }
-        }
 
         public override void Uninstall()
         {
             base.Uninstall();
             Stage.onStageStartGlobal -= Stage_onStageStartGlobal;
-            On.RoR2.PurchaseInteraction.Awake -= RevealChest;
             Stage.onServerStageComplete -= StageEnd_DestroyComponent;
-            On.RoR2.PurchaseInteraction.OnInteractionBegin -= PurchaseInteraction_OnInteractionBegin;
             if (CartographerRing_DestroyOnTeleporterStart)
                 TeleporterInteraction.onTeleporterBeginChargingGlobal -= TeleporterCharged_DestroyComponent;
         }
@@ -134,39 +123,14 @@ namespace RiskOfBulletstorm.Items
 
         private void DestroyIndicators()
         {
-            if (currentStage)
+            if (PermanentScannerPrefab)
             {
-                BulletstormRevealChests component = currentStage.GetComponent<BulletstormRevealChests>();
-                if (component)
+                //https://stackoverflow.com/questions/604831/collection-was-modified-enumeration-operation-may-not-execute
+                foreach (var comp in ChestRevealer.RevealedObject.currentlyRevealedObjects.ToList())
                 {
-                    var positionIndicators = component.positionIndicators;
-                    foreach (PositionIndicator obj in positionIndicators)
-                    {
-                        UnityEngine.Object.Destroy(obj);
-                    }
-                    UnityEngine.Object.Destroy(component);
+                    comp.Value.enabled = false;
                 }
-            }
-        }
-
-        private void RevealChest(On.RoR2.PurchaseInteraction.orig_Awake orig, PurchaseInteraction self)
-        {
-            orig(self);
-            if (!currentStage) return;
-            var component = currentStage.GetComponent<BulletstormRevealChests>();
-            if (!component) return;
-            var gameObject = self.gameObject;
-            if (!gameObject) return;
-            var transform = gameObject.transform;
-
-            if (self.available)
-            {
-                GameObject prefab = UnityEngine.Object.Instantiate(PermanentPoiPrefab);
-                PositionIndicator positionIndicator = prefab.GetComponent<PositionIndicator>();
-                positionIndicator.targetTransform = transform;
-                positionIndicator.alwaysVisibleObject = gameObject; //remember to remove
-                component.positionIndicators.Add(positionIndicator);
-                component.purchaseInteractions.Add(self);
+                UnityEngine.Object.Destroy(PermanentScannerPrefab);
             }
         }
 
@@ -174,28 +138,16 @@ namespace RiskOfBulletstorm.Items
         private void Stage_onStageStartGlobal(Stage obj)
         {
             int InventoryCount = GetPlayersItemCount(catalogIndex);
-            var gameObject = obj.gameObject;
-            currentStage = obj;
 
             if (InventoryCount > 0)
             {
                 var ResultChance = CartographerRing_ScanChance + CartographerRing_ScanChanceStack * (InventoryCount - 1);
                 if (Util.CheckRoll(ResultChance))
                 {
-                    if (!gameObject.GetComponent<BulletstormRevealChests>()) gameObject.AddComponent<BulletstormRevealChests>();
-                    //NetworkServer.Spawn(UnityEngine.Object.Instantiate(PermanentScannerPrefab));
+                    NetworkServer.Spawn(UnityEngine.Object.Instantiate(PermanentScannerPrefab));
                 }
             }
         }
 
-        public class BulletstormRevealChests : MonoBehaviour
-        {
-            public List<PositionIndicator> positionIndicators;
-            public List<PurchaseInteraction> purchaseInteractions;
-        }
-        public class BulletstormChestRevealed : MonoBehaviour
-        {
-
-        }
     }
 }

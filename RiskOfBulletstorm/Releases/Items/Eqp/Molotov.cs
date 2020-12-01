@@ -46,8 +46,8 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "Feel The Burn\n" + descText;
 
-        private readonly float DPS = Molotov_Damage * (Molotov_Frequency);
-        protected override string GetDescString(string langid = null) => $"{descText}, dealing <style=cIsDamage>{Pct(Molotov_Damage)} damage per [1/{Molotov_Frequency}] seconds </style> for <style=cIsDamage>{Molotov_Duration} seconds</style>.";
+        //private readonly float DPS = Molotov_Damage * (Molotov_Frequency);
+        protected override string GetDescString(string langid = null) => $"{descText}, dealing <style=cIsDamage>{Pct(Molotov_Damage)} damage per [1/{Molotov_Frequency}]th seconds </style> for <style=cIsDamage>{Molotov_Duration} seconds</style>.";
 
         protected override string GetLoreString(string langID = null) => "Molotov cocktails aren't guns, and so they are frowned upon by long-dwelling Gungeoneers. They get the job done regardless." +
             "\nKnowing the Hegemony wouldn't let her bring her own weaponry to the Gungeon, the Convict smuggled these few bottles in with the transport's cargo.";
@@ -71,7 +71,7 @@ namespace RiskOfBulletstorm.Items
             MolotovDotZonePrefab.GetComponent<ProjectileDamage>().damageType = DamageType.IgniteOnHit;
             ProjectileDotZone projectileDotZone = MolotovDotZonePrefab.GetComponent<ProjectileDotZone>();
             projectileDotZone.damageCoefficient = Molotov_Damage;
-            projectileDotZone.resetFrequency = Molotov_Frequency;
+            projectileDotZone.resetFrequency = Mathf.Clamp(Molotov_Frequency,0f,60f);
             projectileDotZone.lifetime = Molotov_Duration;
             projectileDotZone.impactEffect = GlassBreakEffect;
 
