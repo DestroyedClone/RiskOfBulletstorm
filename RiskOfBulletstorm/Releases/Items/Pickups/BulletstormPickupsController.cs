@@ -153,6 +153,7 @@ namespace RiskOfBulletstorm.Items
                     {
                         Chat.AddMessage("Roll failed");
                     }
+                    //Okay, there's no way we'll hit the integer limit, so no need to set it to zero again.
                 }
             }
 

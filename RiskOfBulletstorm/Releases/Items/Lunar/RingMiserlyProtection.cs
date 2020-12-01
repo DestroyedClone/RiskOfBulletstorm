@@ -35,6 +35,8 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "Before the Shopkeep opened his shop, he was an avaricious and miserly man. He remains careful about any expenditures, but through capitalism he has purged himself of negative emotion.";
 
+        private readonly GameObject ShatterEffect = Resources.Load<GameObject>("prefabs/effects/ShieldBreakEffect");
+
         public RingMiserlyProtection()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/RingMiserlyProtection.prefab";
@@ -75,13 +77,14 @@ namespace RiskOfBulletstorm.Items
                 if (inventory)
                 {
                     var InventoryCount = body.inventory.GetItemCount(catalogIndex);
-                    Chat.AddMessage("isShrine"+ self.isShrine+"IsCombatShrine"+ self.GetComponent<ShrineCombatBehavior>()+"InvCount"+InventoryCount);
+                    Chat.AddMessage("isShrine="+ self.isShrine+" IsCombatShrine="+ self.GetComponent<ShrineCombatBehavior>()+" InvCount="+InventoryCount);
                     if (self.isShrine && !self.GetComponent<ShrineCombatBehavior>())
                     {
                         if (InventoryCount > 0)
                         {
                             body.inventory.RemoveItem(catalogIndex);
                             Util.PlaySound("Play_char_glass_death", body.gameObject);
+                            EffectManager.SimpleEffect(ShatterEffect, body.gameObject.transform.position, Quaternion.identity, true);
                             body.RecalculateStats();
                         }
                     }

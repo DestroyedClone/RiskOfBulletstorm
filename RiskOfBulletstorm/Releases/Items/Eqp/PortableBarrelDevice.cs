@@ -140,6 +140,12 @@ namespace RiskOfBulletstorm.Items
             public bool used = false;
 
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
+            private void OnEnable()
+            {
+
+            }
+
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
             private void FixedUpdate()
             {
                 if (used) //shorten the lifetime to the use time.
