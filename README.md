@@ -101,7 +101,7 @@ Every 50 kills, the game will have a 20% chance to *spawn a random weighted pick
  - *Scope---* now affects REX syringes, Sawmerang, Preon Accumulator, and (config) Disposable Missile Launcher. Added experimental config for applying it to all projectiles (may break some projectiles).
  - *Metronome---* Added config for stack loss.
  - *Bomb---* Added assets, increased cooldown
- - *EliteSpawningOverhaul)---* Temporarily removed dependency. Deciding whether to keep or not.
+ - *EliteSpawningOverhaul---* Temporarily removed dependency. Deciding whether to keep or not.
 
 1.0.1 - Reverted dependency of R2API. Adjusted item descriptions.
 
