@@ -63,6 +63,7 @@ namespace RiskOfBulletstorm.Items
 
         private void ShrineChanceBehavior_onShrineChancePurchaseGlobal(bool outcome, Interactor interactor)
         {
+            Chat.AddMessage(outcome.ToString());
             if (outcome)
             {
                 var body = interactor.gameObject.GetComponent<CharacterBody>();
@@ -81,6 +82,9 @@ namespace RiskOfBulletstorm.Items
                         }
                     }
                 }
+            } else
+            {
+
             }
         }
 
