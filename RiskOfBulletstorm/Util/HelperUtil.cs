@@ -70,30 +70,39 @@ namespace RiskOfBulletstorm.Utils
             if (InventoryCount < max)
             {
                 if (InventoryCount + amount > max) amount = max - InventoryCount;
-                self.GiveItem(itemIndex, amount);
-
-                if (showInChat)
+                if (!showInChat)
+                    self.GiveItem(itemIndex, amount);
+                else
                 {
                     if (result > 0)
                     {
-                        //Chat.AddPickupMessage(characterBody, nameToken, color, (uint)result);
-                        SimulatePickup(characterMaster, itemIndex);
+                        SimulatePickup(characterMaster, itemIndex, amount);
                     }
                 }
                 result = amount;
             }
             return result;
         }
-        public static void SimulatePickup(CharacterMaster characterMaster, ItemIndex itemIndex)
+        public static void SimulatePickup(CharacterMaster characterMaster, ItemIndex itemIndex, int amount = 1)
         {
-            //var list = NotificationQueue.instancesList;
-            var pickupindex = PickupCatalog.FindPickupIndex(itemIndex);
-            //var pickupDef = PickupCatalog.GetPickupDef(pickupindex);
-            //var nameToken = pickupDef.nameToken;
-            //var color = pickupDef.baseColor;
+            var self = characterMaster.inventory;
+            var list = NotificationQueue.instancesList;
+            var pickupIndex = PickupCatalog.FindPickupIndex(itemIndex);
+            var pickupDef = PickupCatalog.GetPickupDef(pickupIndex);
+            var nameToken = pickupDef.nameToken;
+            var color = pickupDef.baseColor;
+            var body = characterMaster.GetBody();
 
-            GenericPickupController.SendPickupMessage(characterMaster, pickupindex);
+            GenericPickupController.SendPickupMessage(characterMaster, pickupIndex);
+            
+            Chat.AddPickupMessage(body, nameToken, color, (uint)amount);
             Util.PlaySound("Play_UI_item_pickup", characterMaster.GetBodyObject());
+
+            self.GiveItem(itemIndex, amount);
+            for (int i = 0; i < list.Count; i++)
+            {
+                list[i].OnPickup(characterMaster, pickupIndex);
+            }
 
         }
 
