@@ -1,3 +1,4 @@
+
 # Risk of Bulletstorm
 A mod for Risk of Rain 2 that plans to add custom content, modified from Enter The Gungeon. Currently Multiplayer Untested.
 
@@ -71,7 +72,7 @@ Every 50 kills, the game will have a 20% chance to *spawn a random weighted pick
 	 - *BEmbryo: Molotov deals 10% more damage.*
  - **Orange**: 80% chance to spawn (or 20% rarer). Consuming permanently reduces equipment recharge rate by 10%, increases health by 10%, fully heals the player, but is removed from the inventory.
 	 - *BEmbryo: Activates twice.*
- - **Portable Barrel Device**: Places a barrel.
+ - **Portable Barrel Device**: Places a barrel. 
 	 - *BEmbryo: Places *two* barrels.*
  - **Ration**: Heals for 40% health. Automatically used upon taking fatal damage. Consumed on use.
 	 - *BEmbryo: Heals twice.*
@@ -88,12 +89,19 @@ Every 50 kills, the game will have a 20% chance to *spawn a random weighted pick
 
 # Changelog
 1.1.0 - Content Update:
-*Added--* 4 Pickups, 1 white, 3 greens, 2 reds, 2 lunars, 2 boss items, and 8 new equipment.
-*Mustache--* Added config for interaction with Blood Shrines.
-*Scope--* now affects REX syringes, Sawmerang, Preon Accumulator, and (config) Disposable Missile Launcher. Added experimental config for applying it to all projectiles (may break some projectiles).
-*Metronome--* Added config for stack loss.
-*Bomb--* Added assets, increased cooldown
-*EliteSpawningOverhaul)--* Temporarily removed dependency
+ -  *Added---* 
+	 - Pickups: Armor, Blank, Key, and Spread Ammo, 	
+	 - Whites: Cartographer's Ring,
+	 - Greens: Disarming Personality, Enraging Photo, Roll Bomb
+	 - Reds: Unity, Number 2
+	 - Lunars: Ring of Miserly Protection
+	 - Boss: Master Round
+	 - Equipment: Friendsip Cookie, Meatbun, Medkit, Molotov, Orange, Portable ~~Table~~ Barrel Device, Ration, Trusty Lockpicks
+ - *Mustache---* Added config for interaction with Blood Shrines.
+ - *Scope---* now affects REX syringes, Sawmerang, Preon Accumulator, and (config) Disposable Missile Launcher. Added experimental config for applying it to all projectiles (may break some projectiles).
+ - *Metronome---* Added config for stack loss.
+ - *Bomb---* Added assets, increased cooldown
+ - *EliteSpawningOverhaul)---* Temporarily removed dependency. Deciding whether to keep or not.
 
 1.0.1 - Reverted dependency of R2API. Adjusted item descriptions.
 
