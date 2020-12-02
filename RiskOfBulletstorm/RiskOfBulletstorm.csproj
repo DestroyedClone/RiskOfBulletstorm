@@ -26,6 +26,7 @@
   <ItemGroup>
     <Compile Remove="Releases\Items\Boss\Beetle.cs" />
     <Compile Remove="Releases\Items\Boss\Dog.cs" />
+    <Compile Remove="Releases\Items\Controllers\BulletstormChestController.cs" />
     <Compile Remove="Releases\Items\Eqp\CoolantLeak.cs" />
     <Compile Remove="Releases\Items\Eqp\MultiplayerBuddy.cs" />
     <Compile Remove="Releases\Items\Eqp\SupplyDrop.cs" />
