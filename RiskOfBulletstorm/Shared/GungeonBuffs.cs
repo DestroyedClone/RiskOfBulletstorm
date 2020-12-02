@@ -52,8 +52,9 @@ namespace RiskOfBulletstorm.Items
 
         private ItemIndex SpiceTally;
 
-        private static readonly float[,] SpiceBonusesAdditive = Spice.SpiceBonusesAdditive;
-        private static readonly float[,] SpiceBonuses = Spice.SpiceBonuses;
+        private float[,] SpiceBonusesAdditive;
+        private float[,] SpiceBonuses;
+        private float[] SpiceBonusesConstantMaxed;
 
         public override void SetupBehavior()
         {
@@ -93,7 +94,12 @@ namespace RiskOfBulletstorm.Items
         public override void SetupLate()
         {
             base.SetupLate();
+            //so we dont crash
             SpiceTally = Spice.SpiceTally;
+            SpiceBonusesAdditive = Spice.SpiceBonusesAdditive;
+            SpiceBonuses = Spice.SpiceBonuses;
+            SpiceBonusesConstantMaxed = Spice.SpiceBonusesConstantMaxed;
+
         }
         public override void Install()
         {
@@ -116,7 +122,7 @@ namespace RiskOfBulletstorm.Items
                 args.damageMultAdd += Items.Curse.instance.Curse_DamageBoost;
                 args.attackSpeedMultAdd += 0.2f;
                 args.moveSpeedMultAdd += 0.2f;
-                //overlap attack
+                //Contact damage is handled by the component
             }
             var SpiceTallyCount = sender.inventory.GetItemCount(SpiceTally);
             switch (SpiceTallyCount)
@@ -132,9 +138,17 @@ namespace RiskOfBulletstorm.Items
                     //accuracy
                     //enemy bullet speed
                     //damage (HANDLED IN HealthComponent_TakeDamage!!)
-
                     break;
                 default:
+                    var healthMultAdd = SpiceBonusesAdditive[5, 0] * SpiceTallyCount;
+                    var attackSpeedAdd = SpiceBonusesConstantMaxed[1];
+                    SpiceTallyCount -= 4;
+                    //health, attack speed, shot accuracy, enemy bullet speed, damage
+                    args.healthMultAdd += SpiceBonusesAdditive[5, 0] * SpiceTallyCount;
+                    //attack speed
+                    //accuracy
+                    //enemy
+                    //damage (HANDLED IN HealthComponent_TakeDamage!!)
                     break;
             }
         }

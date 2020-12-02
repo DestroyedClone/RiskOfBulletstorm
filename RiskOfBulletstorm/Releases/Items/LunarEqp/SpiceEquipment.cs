@@ -56,6 +56,8 @@ namespace RiskOfBulletstorm.Items
             { 0f, +0.4f, +0.15f, -0.15f, +0.35f }, //4
         };
 
+        public static readonly float[] SpiceBonusesConstantMaxed = new float[] {0f, 0.4f, 0f, -0.15f, 0f };
+
         public Spice()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Spice.prefab";
