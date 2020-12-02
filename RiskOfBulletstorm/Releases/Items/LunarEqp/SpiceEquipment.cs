@@ -89,15 +89,28 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             On.RoR2.PickupDropletController.CreatePickupDroplet += PickupDropletController_CreatePickupDroplet;
-            GenericNotification.SetItem += SetNotificationItemHook;
+            GenericNotification.SetEquipment += GenericNotification_SetEquipment;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
             On.RoR2.PickupDropletController.CreatePickupDroplet -= PickupDropletController_CreatePickupDroplet;
-            GenericNotification.SetItem -= SetNotificationItemHook;
+            GenericNotification.SetEquipment -= GenericNotification_SetEquipment;
         }
+        private void GenericNotification_SetEquipment(GenericNotification.orig_SetEquipment orig, RoR2.UI.GenericNotification self, EquipmentDef equipmentDef)
+        {
+            orig(self, equipmentDef);
+            if (equipmentDef.equipmentIndex == catalogIndex)
+            {
+                var LocalUserList = LocalUserManager.readOnlyLocalUsersList;
+                var localUser = LocalUserList[0];
+                var inventoryCount = localUser.cachedBody.inventory.GetItemCount(SpiceTally);
+                var index = Mathf.Max(inventoryCount, SpiceDescArray.Length - 1);
+                self.descriptionText.token = SpiceDescArray[index];
+            }
+        }
+
         private void PickupDropletController_CreatePickupDroplet(On.RoR2.PickupDropletController.orig_CreatePickupDroplet orig, PickupIndex pickupIndex, Vector3 position, Vector3 velocity)
         {
             //var body = PlayerCharacterMasterController.instances[0].master.GetBody();
@@ -114,20 +127,6 @@ namespace RiskOfBulletstorm.Items
             }
 
             orig(pickupIndex, position, velocity);
-        }
-
-        private void SetNotificationItemHook(GenericNotification.orig_SetItem orig, RoR2.UI.GenericNotification self, ItemDef itemDef)
-        {
-            //self.descriptionText.token = itemDef.descriptionToken;
-            orig(self, itemDef);
-            if (equipmentDef.equipmentIndex == catalogIndex)
-            {
-                var LocalUserList = LocalUserManager.readOnlyLocalUsersList;
-                var localUser = LocalUserList[0];
-                var inventoryCount = localUser.cachedBody.inventory.GetItemCount(SpiceTally);
-                var index = Mathf.Max(inventoryCount, SpiceDescArray.Length - 1);
-                self.descriptionText.token = SpiceDescArray[index];
-            }
         }
 
         protected override bool PerformEquipmentAction(EquipmentSlot slot)
