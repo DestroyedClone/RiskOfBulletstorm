@@ -151,7 +151,7 @@ namespace RiskOfBulletstorm.Items
                     SpiceMult = SpiceBonuses[ItemCount_Spice, 3];
                 }
             }
-
+            Debug.Log("Speed Mult = "+SpiceMult);
             return SpiceMult;
         }
 
