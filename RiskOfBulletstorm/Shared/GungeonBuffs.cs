@@ -140,16 +140,15 @@ namespace RiskOfBulletstorm.Items
                 case 3:
                 case 4:
                     //health, attack speed, shot accuracy, enemy bullet speed, damage
-                    args.healthMultAdd += SpiceBonuses[SpiceTallyCount,0];
+                    args.healthMultAdd += HeartValue * SpiceBonuses[SpiceTallyCount,0];
                     args.attackSpeedMultAdd += SpiceBonuses[SpiceTallyCount, 1];
                     //accuracy 
                     //enemy bullet speed
                     //damage
                     break;
                 default:
-                    var healthMultAdd = HeartValue * SpiceBonusesAdditive[5, 0] * SpiceTallyCount;
+                    var healthMultAdd = HeartValue * SpiceBonusesAdditive[5, 0] * (SpiceTallyCount - 4);
                     var attackSpeedAdd = SpiceBonusesConstantMaxed[1];
-                    SpiceTallyCount -= 4;
                     //health, attack speed, shot accuracy, enemy bullet speed, damage
                     args.healthMultAdd += healthMultAdd;
                     args.attackSpeedMultAdd += attackSpeedAdd;
