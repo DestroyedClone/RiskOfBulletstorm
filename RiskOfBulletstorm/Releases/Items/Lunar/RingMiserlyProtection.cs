@@ -64,7 +64,7 @@ namespace RiskOfBulletstorm.Items
         private void ShrineChanceBehavior_onShrineChancePurchaseGlobal(bool gaveItem, Interactor interactor)
         {
             var body = interactor.gameObject.GetComponent<CharacterBody>();
-            if (!body)
+            if (body)
             {
                 var inventory = body.inventory;
                 if (inventory)
