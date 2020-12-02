@@ -116,6 +116,13 @@ namespace RiskOfBulletstorm.Items
         }
         private void AddRewards(CharacterBody sender, StatHookEventArgs args)
         {
+            /*
+            Health: Handled Here
+            Attack Speed: Handled Here
+            Accuracy: BulletstormExtraStatsController
+            Enemy Bullet Speed: BulletstormExtraStatsController
+            Damage: HealthComponent_TakeDamage
+            */
             if (sender.HasBuff(Anger)) { args.damageMultAdd += EnragingPhoto.instance.EnragingPhoto_DmgBoost; }
             if (sender.HasBuff(Jammed))
             {
@@ -135,20 +142,20 @@ namespace RiskOfBulletstorm.Items
                     //health, attack speed, shot accuracy, enemy bullet speed, damage
                     args.healthMultAdd += SpiceBonuses[SpiceTallyCount,0];
                     args.attackSpeedMultAdd += SpiceBonuses[SpiceTallyCount, 1];
-                    //accuracy
+                    //accuracy 
                     //enemy bullet speed
-                    //damage (HANDLED IN HealthComponent_TakeDamage!!)
+                    //damage
                     break;
                 default:
-                    var healthMultAdd = SpiceBonusesAdditive[5, 0] * SpiceTallyCount;
+                    var healthMultAdd = HeartValue * SpiceBonusesAdditive[5, 0] * SpiceTallyCount;
                     var attackSpeedAdd = SpiceBonusesConstantMaxed[1];
                     SpiceTallyCount -= 4;
                     //health, attack speed, shot accuracy, enemy bullet speed, damage
-                    args.healthMultAdd += SpiceBonusesAdditive[5, 0] * SpiceTallyCount;
-                    //attack speed
+                    args.healthMultAdd += healthMultAdd;
+                    args.attackSpeedMultAdd += attackSpeedAdd;
                     //accuracy
                     //enemy
-                    //damage (HANDLED IN HealthComponent_TakeDamage!!)
+                    //damage
                     break;
             }
         }
@@ -164,9 +171,13 @@ namespace RiskOfBulletstorm.Items
                     if (inventory)
                     {
                         var SpiceTallyCount = inventory.GetItemCount(SpiceTally);
-                        if (true)
+                        if (SpiceTallyCount > 0)
                         {
-                            damageInfo.damage *= 1;
+                            var DamageMult = 0f;
+
+
+
+                            damageInfo.damage *= 1 + DamageMult;
                         }
                     }
                 }

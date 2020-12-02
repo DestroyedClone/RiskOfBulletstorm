@@ -21,18 +21,18 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Bullet Spread Reduction (Default: 10%)", AutoConfigFlags.PreventNetMismatch)]
-        public float Scope_SpreadReduction { get; private set; } = 0.10f;
+        public static float Scope_SpreadReduction { get; private set; } = 0.10f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Bullet Spread Reduction Stack (Default: 5%)", AutoConfigFlags.PreventNetMismatch)]
-        public float Scope_SpreadReductionStack { get; private set; } = 0.05f;
+        public static float Scope_SpreadReductionStack { get; private set; } = 0.05f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("If enabled, Scope will affect the Disposable Missile Launcher", AutoConfigFlags.PreventNetMismatch)]
-        public bool Scope_EnableDML { get; private set; } = true;
+        public static bool Scope_EnableDML { get; private set; } = true;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("If enabled, Scope will only tighten the spread of specific projectiles." +
             "\nNote that disabling MIGHT cause some projectiles to behave differently, but will affect every projectile.." +
             "\nWhitelisted Projectiles: REX syringe, Sawmerang, Preon Accumulator", AutoConfigFlags.PreventNetMismatch)]
-        public bool Scope_WhitelistProjectiles { get; private set; } = true;
+        public static bool Scope_WhitelistProjectiles { get; private set; } = true;
         public override string displayName => "Scope";
         public override ItemTier itemTier => ItemTier.Tier2;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility });
@@ -52,16 +52,6 @@ namespace RiskOfBulletstorm.Items
         //private static readonly string NailgunMuzzleName = BaseNailgunState.muzzleName;
         //private static readonly GameObject NailgunTracer = BaseNailgunState.tracerEffectPrefab;
         public static GameObject ItemBodyModelPrefab;
-        private static readonly GameObject REXPrefab = EntityStates.Treebot.Weapon.FireSyringe.projectilePrefab;
-        private static readonly GameObject SawPrefab = Resources.Load<GameObject>("Prefabs/Projectiles/Sawmerang");
-        private static readonly GameObject BFGPrefab = Resources.Load<GameObject>("Prefabs/Projectiles/BeamSphere");
-        private static readonly GameObject DisposableMissileLauncherPrefab = Resources.Load<GameObject>("Prefabs/Projectiles/MissileProjectile");
-        public static List<GameObject> WhitelistedProjectiles = new List<GameObject>
-        {
-            REXPrefab,
-            SawPrefab,
-            BFGPrefab
-        };
 
         public Scope()
         {
@@ -80,8 +70,6 @@ namespace RiskOfBulletstorm.Items
                 displayRules = GenerateItemDisplayRules();
             }
             base.SetupAttributes();
-            if (Scope_EnableDML)
-                WhitelistedProjectiles.Add(DisposableMissileLauncherPrefab);
         }
         private static ItemDisplayRuleDict GenerateItemDisplayRules()
         {
@@ -378,91 +366,11 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            On.RoR2.BulletAttack.Fire += BulletAttack_Fire;
-            On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += ProjectileManager_FireProjectile_FireProjectileInfo;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
-            On.RoR2.BulletAttack.Fire -= BulletAttack_Fire;
-            On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo -= ProjectileManager_FireProjectile_FireProjectileInfo;
-        }
-
-        private void ProjectileManager_FireProjectile_FireProjectileInfo(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_FireProjectileInfo orig, ProjectileManager self, FireProjectileInfo fireProjectileInfo)
-        {
-            GameObject owner = fireProjectileInfo.owner;
-            if (owner)
-            {
-                CharacterBody cb = owner.GetComponent<CharacterBody>();
-                if (cb)
-                {
-                    Inventory inventory = cb.inventory;
-                    if (inventory)
-                    {
-                        int InventoryCount = cb.inventory.GetItemCount(catalogIndex);
-                        if (InventoryCount > 0)
-                        {
-                            var ResultMult = (Scope_SpreadReduction + Scope_SpreadReductionStack * (InventoryCount - 1));
-                            InputBankTest input = cb.inputBank;
-                            if (input)
-                            {
-                                GameObject projectilePrefab = fireProjectileInfo.projectilePrefab;
-                                Quaternion aimDir = Util.QuaternionSafeLookRotation(input.aimDirection);
-                                Quaternion rotation = fireProjectileInfo.rotation;
-
-                                Quaternion UpdatedAngle = Quaternion.Lerp(rotation, aimDir, ResultMult);
-
-                                if (Scope_WhitelistProjectiles)
-                                {
-                                    if (WhitelistedProjectiles.Contains(projectilePrefab))
-                                    {
-                                        fireProjectileInfo.rotation = UpdatedAngle;
-                                    }
-                                    //Chat.AddMessage("Scope Lerp: " + aimDir + " and " + rotation + " resulting " + UpdatedAngle);
-                                } else
-                                {
-                                    fireProjectileInfo.rotation = UpdatedAngle;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            orig(self, fireProjectileInfo);
-        }
-
-        private void BulletAttack_Fire(On.RoR2.BulletAttack.orig_Fire orig, BulletAttack self)
-        {
-            //doesn't work on MULT?????
-            CharacterBody characterBody = self.owner.GetComponent<CharacterBody>();
-            if (characterBody)
-            {
-                int InventoryCount = characterBody.inventory.GetItemCount(catalogIndex);
-                if (InventoryCount > 0)
-                {
-                    var ResultMult = 1 - (Scope_SpreadReduction + Scope_SpreadReductionStack * (InventoryCount - 1));
-                    //self.maxSpread = Mathf.Max(self.maxSpread * ResultMult * 0.75f, 2 * ResultMult);
-
-                    characterBody.SetSpreadBloom(Mathf.Min(0, characterBody.spreadBloomAngle * ResultMult), false); //should affect MULT
-
-                    //var oldMax = self.maxSpread;
-                    self.maxSpread = Mathf.Max(self.maxSpread * ResultMult, 0);
-
-                    //var oldMin = self.minSpread;
-                    self.minSpread = Mathf.Min(0, self.minSpread * ResultMult);
-
-                    self.spreadPitchScale = Mathf.Min(0, self.spreadPitchScale * ResultMult);
-                    self.spreadYawScale = Mathf.Min(0, self.spreadYawScale * ResultMult);
-
-
-                    //self.owner.GetComponent<CharacterBody>().SetSpreadBloom(ResultMult, false);
-                    //Debug.Log("Scope: Max:" + oldMax.ToString() + "=>" + self.maxSpread.ToString());
-                    //Debug.Log("Scope: Min:" + oldMin.ToString() + "=>" + self.minSpread.ToString());
-
-                }
-            }
-            orig(self);
         }
     }
 }
