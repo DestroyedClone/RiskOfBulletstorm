@@ -27,7 +27,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "A potent gun-enhancing drug from the far reaches of the galaxy. It is known to be extremely addictive, and extremely expensive.";
 
-        public ItemIndex SpiceTally { get; private set; }
+        public static ItemIndex SpiceTally { get; private set; }
 
         public string[] SpiceDescArray =
         {
@@ -35,6 +35,25 @@ namespace RiskOfBulletstorm.Items
             "One more couldn't hurt.",
             "Just one more hit...",
             "MORE"
+        };
+
+        //health, attack speed, shot accuracy, enemy bullet speed, damage
+        public static readonly float[,] SpiceBonusesAdditive = new float[,]
+        {
+            { 0f, 0f, 0f, 0f, 0f },
+            { +1f, +0.2f, +0.25f, 0f, 0f },
+            { +1f, +0.2f, 0f, -0.1f, 0f },
+            { -1f, 0f, 0f, -0.05f, +0.2f },
+            { -1f, 0f, -0.1f, 0f, +0.15f },
+        };
+
+        public static readonly float[,] SpiceBonuses = new float[,]
+        {
+            { 0f, 0f, 0f, 0f, 0f }, //0
+            { +1f, +0.2f, +0.25f, 0f, 0f }, //1
+            { +2f, +0.4f, +0.25f, -0.1f, 0f }, //2
+            { +1f, +0.4f, +0.25f, -0.15f, +0.2f }, //3
+            { 0f, +0.4f, +0.15f, -0.15f, +0.35f }, //4
         };
 
         public Spice()

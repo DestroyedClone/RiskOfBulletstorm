@@ -48,6 +48,13 @@ namespace RiskOfBulletstorm.Items
         public static BuffIndex Glittered { get; private set; }
         public static BuffIndex Bloody { get; private set; }
 
+        private static readonly float HeartValue = 0.33f;
+
+        private ItemIndex SpiceTally;
+
+        private static readonly float[,] SpiceBonusesAdditive = Spice.SpiceBonusesAdditive;
+        private static readonly float[,] SpiceBonuses = Spice.SpiceBonuses;
+
         public override void SetupBehavior()
         {
             base.SetupBehavior();
@@ -82,16 +89,24 @@ namespace RiskOfBulletstorm.Items
         {
             base.SetupConfig();
         }
+
+        public override void SetupLate()
+        {
+            base.SetupLate();
+            SpiceTally = Spice.SpiceTally;
+        }
         public override void Install()
         {
             base.Install();
             GetStatCoefficients += AddRewards;
+            On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
             GetStatCoefficients -= AddRewards;
+            On.RoR2.HealthComponent.TakeDamage -= HealthComponent_TakeDamage;
         }
         private void AddRewards(CharacterBody sender, StatHookEventArgs args)
         {
@@ -103,6 +118,46 @@ namespace RiskOfBulletstorm.Items
                 args.moveSpeedMultAdd += 0.2f;
                 //overlap attack
             }
+            var SpiceTallyCount = sender.inventory.GetItemCount(SpiceTally);
+            switch (SpiceTallyCount)
+            {
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                    //health, attack speed, shot accuracy, enemy bullet speed, damage
+                    args.healthMultAdd += SpiceBonuses[SpiceTallyCount,0];
+                    args.attackSpeedMultAdd += SpiceBonuses[SpiceTallyCount, 1];
+                    //accuracy
+                    //enemy bullet speed
+                    //damage (HANDLED IN HealthComponent_TakeDamage!!)
+
+                    break;
+                default:
+                    break;
+            }
+        }
+        private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
+        {
+            var attacker = damageInfo.attacker;
+            if (attacker)
+            {
+                CharacterBody body = attacker.GetComponent<CharacterBody>();
+                if (body)
+                {
+                    var inventory = body.inventory;
+                    if (inventory)
+                    {
+                        var SpiceTallyCount = inventory.GetItemCount(SpiceTally);
+                        if (true)
+                        {
+                            damageInfo.damage *= 1;
+                        }
+                    }
+                }
+            }
+            orig(self, damageInfo);
         }
 
         public static BlastAttack JammedContactDamage = new BlastAttack
@@ -157,6 +212,9 @@ namespace RiskOfBulletstorm.Items
                         healthComponents.Add(healthComponent);
                         ContactDamageCooldown = ContactDamageCooldownFull;
                     }
+                } else
+                {
+                    Destroy(this); //no point in running if there's no healthcomponent
                 }
             }
 
