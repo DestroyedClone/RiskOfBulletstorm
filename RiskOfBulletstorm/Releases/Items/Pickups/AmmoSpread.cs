@@ -107,8 +107,6 @@ namespace RiskOfBulletstorm.Items
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
             private void OnEnable()
             {
-                if (gameObject)
-                this.baseObject = this.gameObject;
                 teamFilter.teamIndex = TeamIndex.Player;
             }
 
@@ -136,13 +134,9 @@ namespace RiskOfBulletstorm.Items
                             EffectManager.SimpleEffect(this.pickupEffect, this.transform.position, Quaternion.identity, true);
                         }
                     }
-                    Destroy(this.baseObject);
+                    Destroy(gameObject);
                 }
             }
-
-            // Token: 0x04000743 RID: 1859
-            [Tooltip("The base object to destroy when this pickup is consumed.")]
-            public GameObject baseObject;
 
             // Token: 0x04000744 RID: 1860
             [Tooltip("The team filter object which determines who can pick up this pack.")]
