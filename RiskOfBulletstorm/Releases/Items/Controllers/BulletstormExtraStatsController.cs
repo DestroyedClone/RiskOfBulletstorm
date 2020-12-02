@@ -137,21 +137,25 @@ namespace RiskOfBulletstorm.Items
 
         private float CalculateEnemyProjectileSpeedMultiplier()
         {
-            int ItemCount_Spice = GetPlayerWithMostItemIndex(ItemIndex_SpiceTally).inventory.GetItemCount(ItemIndex_SpiceTally);
+            var characterBody = GetPlayerWithMostItemIndex(ItemIndex_SpiceTally);
             float SpiceMult = 0f;
-
-            if (ItemCount_Spice > 0)
+            if (characterBody)
             {
-                if (ItemCount_Spice > 4)
+                int ItemCount_Spice = characterBody.inventory.GetItemCount(ItemIndex_SpiceTally);
+
+                if (ItemCount_Spice > 0)
                 {
-                    SpiceMult = SpiceBonusesConstantMaxed[3];
+                    if (ItemCount_Spice > 4)
+                    {
+                        SpiceMult = SpiceBonusesConstantMaxed[3];
+                    }
+                    else
+                    {
+                        SpiceMult = SpiceBonuses[ItemCount_Spice, 3];
+                    }
                 }
-                else
-                {
-                    SpiceMult = SpiceBonuses[ItemCount_Spice, 3];
-                }
+                Debug.Log("Speed Mult = " + SpiceMult);
             }
-            Debug.Log("Speed Mult = "+SpiceMult);
             return SpiceMult;
         }
 
