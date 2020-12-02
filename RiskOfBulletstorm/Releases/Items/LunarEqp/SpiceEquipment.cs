@@ -102,12 +102,17 @@ namespace RiskOfBulletstorm.Items
         {
             //var body = PlayerCharacterMasterController.instances[0].master.GetBody();
             var characterBody = GetPlayerWithMostItemIndex(SpiceTally);
-            var SpiceReplaceChance = characterBody.inventory.GetItemCount(SpiceTally);
-            if (Util.CheckRoll(SpiceReplaceChance))
+            if (characterBody)
             {
-                if (pickupIndex != PickupCatalog.FindPickupIndex(ItemIndex.ArtifactKey)) //safety to prevent softlocks
-                    pickupIndex = PickupCatalog.FindPickupIndex(catalogIndex);
+                var SpiceReplaceChance = characterBody.inventory.GetItemCount(SpiceTally);
+                if (Util.CheckRoll(SpiceReplaceChance))
+                {
+
+                    if (pickupIndex != PickupCatalog.FindPickupIndex(ItemIndex.ArtifactKey)) //safety to prevent softlocks
+                        pickupIndex = PickupCatalog.FindPickupIndex(catalogIndex);
+                }
             }
+
             orig(pickupIndex, position, velocity);
         }
 
