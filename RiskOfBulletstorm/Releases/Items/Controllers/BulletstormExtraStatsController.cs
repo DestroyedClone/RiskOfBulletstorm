@@ -90,25 +90,7 @@ namespace RiskOfBulletstorm.Items
             base.Install();
             On.RoR2.BulletAttack.Fire += AdjustSpreadBullets;
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += AdjustSpreadProjectiles;
-            On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += AdjustSpeedProjectile;
-        }
-
-        private void AdjustSpeedProjectile(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_FireProjectileInfo orig, ProjectileManager self, FireProjectileInfo fireProjectileInfo)
-        {
-            GameObject owner = fireProjectileInfo.owner;
-            if (owner)
-            {
-                CharacterBody cb = owner.GetComponent<CharacterBody>();
-                if (cb)
-                {
-                    Inventory inventory = cb.inventory;
-                    if (inventory)
-                    {
-                        
-                    }
-                }
-            }
-            orig(self, fireProjectileInfo);
+            On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += AdjustSpeedEnemyProjectile;
         }
 
         public override void Uninstall()
@@ -116,7 +98,61 @@ namespace RiskOfBulletstorm.Items
             base.Uninstall();
             On.RoR2.BulletAttack.Fire -= AdjustSpreadBullets;
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo -= AdjustSpreadProjectiles;
-            On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo -= AdjustSpeedProjectile;
+            On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo -= AdjustSpeedEnemyProjectile;
+        }
+
+        private void AdjustSpeedEnemyProjectile(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_FireProjectileInfo orig, ProjectileManager self, FireProjectileInfo fireProjectileInfo)
+        {
+            GameObject owner = fireProjectileInfo.owner;
+            if (owner)
+            {
+                CharacterBody cb = owner.GetComponent<CharacterBody>();
+                if (cb)
+                {
+                    var teamComponent = cb.teamComponent;
+                    if (teamComponent)
+                    {
+                        var teamIndex = teamComponent.teamIndex;
+                        if (teamIndex != TeamIndex.Player) //Enemies only
+                        {
+                            var prefab = fireProjectileInfo.projectilePrefab;
+                            if (prefab)
+                            {
+                                ProjectileSimple projectileSimple = prefab.GetComponent<ProjectileSimple>();
+                                if (projectileSimple)
+                                {
+                                    //var oldSpeed = projectileSimple.velocity;
+                                    var speedMult = CalculateEnemyProjectileSpeedMultiplier();
+
+                                    projectileSimple.velocity *= speedMult;
+                                }
+                            }
+                        }
+                        //fireProjectileInfo._speedOverride = fireProjectileInfo.
+                    }
+                }
+            }
+            orig(self, fireProjectileInfo);
+        }
+
+        private float CalculateEnemyProjectileSpeedMultiplier()
+        {
+            int ItemCount_Spice = GetPlayerWithMostItemIndex(ItemIndex_SpiceTally).inventory.GetItemCount(ItemIndex_SpiceTally);
+            float SpiceMult = 0f;
+
+            if (ItemCount_Spice > 0)
+            {
+                if (ItemCount_Spice > 4)
+                {
+                    SpiceMult = SpiceBonusesConstantMaxed[3];
+                }
+                else
+                {
+                    SpiceMult = SpiceBonuses[ItemCount_Spice, 3];
+                }
+            }
+
+            return SpiceMult;
         }
 
         private float CalculateSpreadMultiplier(Inventory inventory)
@@ -141,7 +177,6 @@ namespace RiskOfBulletstorm.Items
 
             return ResultMult;
         }
-
 
         private void AdjustSpreadProjectiles(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_FireProjectileInfo orig, ProjectileManager self, FireProjectileInfo fireProjectileInfo)
         {

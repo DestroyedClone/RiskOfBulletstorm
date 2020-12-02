@@ -15,9 +15,10 @@ namespace RiskOfBulletstorm.Items
 {
     public class Spice : Equipment_V2<Spice>
     {
-
         public override string displayName => "Spice";
         public override float cooldown { get; protected set; } = 0f;
+        public override bool isEnigmaCompatible => false;
+        public override bool isLunar => true;
 
         protected override string GetNameString(string langID = null) => displayName;
 
