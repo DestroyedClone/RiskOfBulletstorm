@@ -30,14 +30,12 @@
     <Compile Remove="Releases\Items\Eqp\MultiplayerBuddy.cs" />
     <Compile Remove="Releases\Items\Eqp\SupplyDrop.cs" />
     <Compile Remove="Releases\Items\LunarEqp\Spice.cs" />
-    <Compile Remove="Releases\Items\LunarEqp\SpiceEquipment.cs" />
     <Compile Remove="Releases\Items\Pickups\dx.cs" />
     <Compile Remove="Releases\Items\Pickups\GuonStoneGlass.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Items\" />
-    <Folder Include="Releases\Items\LunarEqp\" />
     <None Remove="riskofgungeonassets" />
 	  <Folder Remove="Items" />
   </ItemGroup>
