@@ -101,7 +101,22 @@ namespace RiskOfBulletstorm.Items
                 args.damageMultAdd += Items.Curse.instance.Curse_DamageBoost;
                 args.attackSpeedMultAdd += 0.2f;
                 args.moveSpeedMultAdd += 0.2f;
+                //overlap attack
             }
+        }
+
+        public class IsJammed : MonoBehaviour
+        {
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
+            void OnEnable()
+            {
+                if (!characterBody.HasBuff(Jammed))
+                {
+                    characterBody.AddBuff(Jammed);
+                }
+            }
+
+            public CharacterBody characterBody;
         }
     }
 }

@@ -5,6 +5,7 @@ using RoR2;
 using RoR2.UI;
 using UnityEngine;
 using RiskOfBulletstorm;
+using static RiskOfBulletstorm.Items.GungeonBuffController;
 
 namespace RiskOfBulletstorm.Utils
 {
@@ -238,7 +239,9 @@ namespace RiskOfBulletstorm.Utils
                     //rotation = Util.QuaternionSafeLookRotation(Vector3.up),
                     scale = 2f
                 }, false);
-                body.AddBuff(Items.GungeonBuffController.Jammed);
+                //body.AddBuff(Items.GungeonBuffController.Jammed);
+                IsJammed jammed = body.gameObject.AddComponent<IsJammed>();
+                jammed.characterBody = body;
             }
         }
     }
