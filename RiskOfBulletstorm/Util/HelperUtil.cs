@@ -240,7 +240,8 @@ namespace RiskOfBulletstorm.Utils
                     scale = 2f
                 }, false);
                 //body.AddBuff(Items.GungeonBuffController.Jammed);
-                IsJammed jammed = body.gameObject.AddComponent<IsJammed>();
+                IsJammed jammed = body.gameObject.GetComponent<IsJammed>();
+                if (!jammed) jammed = body.gameObject.AddComponent<IsJammed>();
                 jammed.characterBody = body;
             }
         }

@@ -105,6 +105,29 @@ namespace RiskOfBulletstorm.Items
             }
         }
 
+        public static BlastAttack JammedContactDamage = new BlastAttack
+        {
+            losType = BlastAttack.LoSType.NearestHit,
+            damageColorIndex = DamageColorIndex.Default,
+            damageType = DamageType.Generic,
+            procCoefficient = 0f,
+            procChainMask = default,
+            baseForce = 0,
+            falloffModel = BlastAttack.FalloffModel.None,
+
+        };
+
+        public static DamageInfo JammedContactDamageInfo = new DamageInfo
+        {
+            damage = 0, //gets set by component
+            crit = false,
+            force = new Vector3(0,0,0),
+            procChainMask = default,
+            procCoefficient = 0,
+            damageType = DamageType.Generic,
+            damageColorIndex = DamageColorIndex.DeathMark
+        };
+
         public class IsJammed : MonoBehaviour
         {
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
@@ -114,9 +137,46 @@ namespace RiskOfBulletstorm.Items
                 {
                     characterBody.AddBuff(Jammed);
                 }
+                contactDamageInfo.inflictor = ContactDamageGameObject; //how
+                contactDamageInfo.attacker = characterBody.gameObject; //who
+            } //setup
+
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
+            void OnTriggerEnter(Collider other)
+            {
+                GameObject gameObject = other.gameObject;
+                HealthComponent healthComponent = gameObject.GetComponent<HealthComponent>();
+                if (healthComponent)
+                {
+                    if (!healthComponents.Contains(healthComponent))
+                    {
+                        contactDamageInfo.position = gameObject.transform.position;
+                        contactDamageInfo.damage = characterBody.damage * 3f;
+                        healthComponent.TakeDamage(contactDamageInfo);
+
+                        healthComponents.Add(healthComponent);
+                        ContactDamageCooldown = ContactDamageCooldownFull;
+                    }
+                }
             }
 
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
+            void FixedUpdate()
+            {
+                ContactDamageCooldown -= Time.fixedDeltaTime;
+                if (ContactDamageCooldown < 0)
+                {
+                    healthComponents.Clear();
+                }
+            } //clears list at end of cooldown
+
+            public static readonly float ContactDamageCooldownFull = 2f;
+            public float ContactDamageCooldown = ContactDamageCooldownFull;
             public CharacterBody characterBody;
+            public DamageInfo contactDamageInfo = JammedContactDamageInfo;
+            public static GameObject ContactDamageGameObject;
+            public float damageCoefficient = 3f;
+            public List<HealthComponent> healthComponents;
         }
     }
 }
