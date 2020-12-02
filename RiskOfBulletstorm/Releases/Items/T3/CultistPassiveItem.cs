@@ -80,7 +80,7 @@ namespace RiskOfBulletstorm.Items
         private void CultistPassiveItem_GetStatCoefficients(CharacterBody sender, StatHookEventArgs args)
         {
             var component = sender.GetComponent<CultistPassiveComponent>();
-            if (component)
+            if (component) //Add inventory check
             {
                 var deadAmt = component.deadProtagonists;
                 args.baseDamageAdd += statboost * deadAmt;
