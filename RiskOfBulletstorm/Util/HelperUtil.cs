@@ -16,6 +16,25 @@ namespace RiskOfBulletstorm.Utils
             return PlayerCharacterMasterController.instances.Count;
         }
 
+        public static CharacterBody GetPlayerWithMostItemIndex(ItemIndex itemIndex)
+        {
+            var instances = PlayerCharacterMasterController.instances;
+            var largestStack = 0;
+            CharacterBody chosenBody = null;
+            foreach (PlayerCharacterMasterController playerCharacterMaster in instances)
+            {
+                var master = playerCharacterMaster.master;
+                var body = master.GetBody();
+                var invcount = body.inventory.GetItemCount(itemIndex);
+                if (invcount > largestStack)
+                {
+                    largestStack = invcount;
+                    chosenBody = body;
+                }
+            }
+            return chosenBody;
+        }
+
         public static int GetPlayersItemCount(ItemIndex itemIndex)
         {
             var instances = PlayerCharacterMasterController.instances;
