@@ -127,7 +127,9 @@ namespace RiskOfBulletstorm.Items
                         CharacterBody body = teamComponent.body;
                         if (body)
                         {
-                            body.GetComponent<SkillLocator>()?.ApplyAmmoPack();
+                            var skillLocator = body.GetComponent<SkillLocator>();
+                            if (skillLocator)
+                                skillLocator.ApplyAmmoPack();
                             var inventory = body.inventory;
                             if (inventory)
                             {
