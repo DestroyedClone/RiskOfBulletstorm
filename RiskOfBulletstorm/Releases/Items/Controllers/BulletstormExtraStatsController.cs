@@ -15,7 +15,6 @@ using static R2API.DirectorAPI;
 using static RiskOfBulletstorm.Utils.HelperUtil;
 using RiskOfBulletstorm.Utils;
 using RoR2.Projectile;
-using EntityStates;
 using RiskOfBulletstorm.Items;
 
 namespace RiskOfBulletstorm.Items
@@ -33,9 +32,10 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "";
 
-        private static readonly GameObject REXPrefab = EntityStates.Treebot.Weapon.FireSyringe.projectilePrefab;
-        private static readonly GameObject SawPrefab = Resources.Load<GameObject>("Prefabs/Projectiles/Sawmerang");
+        //private static readonly GameObject REXPrefab = EntityStates.Treebot.Weapon.FireSyringe.projectilePrefab;
+        //private static readonly GameObject SawPrefab = Resources.Load<GameObject>("Prefabs/Projectiles/Sawmerang");
         private static readonly GameObject DisposableMissileLauncherPrefab = Resources.Load<GameObject>("Prefabs/Projectiles/MissileProjectile");
+        //private static readonly GameObject BeetleSpitPrefab = Resources.Load<GameObject>("prefabs/projectiles/BeetleQueenSpit.prefab");
 
         private float Scope_SpreadReduction;
         private float Scope_SpreadReductionStack;
@@ -49,9 +49,31 @@ namespace RiskOfBulletstorm.Items
 
         public static List<GameObject> WhitelistedProjectiles = new List<GameObject>
         {
-            REXPrefab,
-            SawPrefab,
-            DisposableMissileLauncherPrefab
+            Resources.Load<GameObject>("Prefabs/Projectiles/Sawmerang"), //Saw
+            EntityStates.BeetleQueenMonster.FireSpit.projectilePrefab, // Beetle Spit
+            EntityStates.BrotherMonster.Weapon.FireLunarShards.projectilePrefab,
+            EntityStates.Captain.Weapon.FireTazer.projectilePrefab,
+            EntityStates.ClayBoss.FireTarball.projectilePrefab,
+            EntityStates.ClayBoss.ClayBossWeapon.FireBombardment.projectilePrefab,
+            Resources.Load<GameObject>("prefabs/projectiles/CommandoGrenadeProjectile"),
+            EntityStates.Engi.EngiMissilePainter.Fire.projectilePrefab,
+            EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.projectilePrefab,
+            EntityStates.GravekeeperBoss.FireHook.projectilePrefab,
+            EntityStates.GravekeeperMonster.Weapon.GravekeeperBarrage.projectilePrefab,
+            EntityStates.ImpBossMonster.FireVoidspikes.projectilePrefab,
+            EntityStates.ImpMonster.FireSpines.projectilePrefab,
+            EntityStates.LemurianBruiserMonster.FireMegaFireball.projectilePrefab,
+            EntityStates.NullifierMonster.FirePortalBomb.portalBombProjectileEffect,
+            Resources.Load<GameObject>("prefabs/projectiles/RoboBallProjectile"),
+            Resources.Load<GameObject>("prefabs/projectiles/SuperRoboBallProjectile"), //idk??
+            EntityStates.ScavMonster.FireEnergyCannon.projectilePrefab,
+            EntityStates.Treebot.Weapon.FireSyringe.projectilePrefab, //REX
+            EntityStates.UrchinTurret.Weapon.MinigunFire.projectilePrefab,
+            EntityStates.VagrantMonster.Weapon.JellyBarrage.projectilePrefab,
+            EntityStates.Vulture.Weapon.FireWindblade.projectilePrefab,
+
+            // Toggleables
+            DisposableMissileLauncherPrefab,
         };
 
         public override void SetupBehavior()
@@ -80,6 +102,23 @@ namespace RiskOfBulletstorm.Items
             // SPICE //
             SpiceBonuses = Spice.SpiceBonuses;
             SpiceBonusesConstantMaxed = Spice.SpiceBonusesConstantMaxed;
+
+            // MODDED //
+            // MINER DIRESEEKER //
+            var direSeekerFireballPrefab = ProjectileCatalog.FindProjectileIndex("DireseekerFireball");
+            if (direSeekerFireballPrefab > 0) WhitelistedProjectiles.Add(ProjectileCatalog.GetProjectilePrefab(direSeekerFireballPrefab));
+
+            var direSeekerFireballGroundPrefab = ProjectileCatalog.FindProjectileIndex("DireseekerGroundFireball");
+            if (direSeekerFireballGroundPrefab > 0) WhitelistedProjectiles.Add(ProjectileCatalog.GetProjectilePrefab(direSeekerFireballGroundPrefab));
+
+            // ENFORCER ? //
+
+            // TRISTANA (NO GITHUB) //
+
+            // TRACER (NO GITHUB) //
+
+
+
         }
 
         public override void SetupConfig()
