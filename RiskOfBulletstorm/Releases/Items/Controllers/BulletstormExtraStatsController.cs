@@ -77,6 +77,16 @@ namespace RiskOfBulletstorm.Items
             DisposableMissileLauncherPrefab,
         };
 
+        public static List<string> WhitelistedProjectilesString = new List<string>
+        {
+            "Sawmerang",
+            "BeetleQueenSpit",
+            "LunarShardProjectile",
+            "LunarNeedleProjectile",
+            EntityStates.Captain.Weapon.FireTazer.projectilePrefab.name,
+        };
+
+
         public override void SetupBehavior()
         {
             base.SetupBehavior();
@@ -86,6 +96,13 @@ namespace RiskOfBulletstorm.Items
             base.SetupAttributes();
             if (!Scope_EnableDML)
                 WhitelistedProjectiles.Remove(DisposableMissileLauncherPrefab);
+
+            foreach (string projectileString in WhitelistedProjectilesString)
+            {
+                var projectileIndex = ProjectileCatalog.FindProjectileIndex(projectileString);
+                if (projectileIndex > 0) WhitelistedProjectiles.Add(ProjectileCatalog.GetProjectilePrefab(projectileIndex));
+            }
+
         }
         public override void SetupLate()
         {
