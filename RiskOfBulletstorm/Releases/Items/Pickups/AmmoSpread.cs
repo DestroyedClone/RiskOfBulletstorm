@@ -120,7 +120,7 @@ namespace RiskOfBulletstorm.Items
                     SkillLocator skillLocatorOther = other.GetComponent<SkillLocator>();
                     if (skillLocatorOther)
                     {
-                        Debug.Log("Ammo Spread: ");
+                        Debug.Log("Ammo Spread: OTher's skill locator detected");
 
                         alive = false;
 
@@ -142,6 +142,7 @@ namespace RiskOfBulletstorm.Items
                                 EffectManager.SimpleEffect(pickupEffect, transform.position, Quaternion.identity, true);
                             }
                         }
+                        Debug.Log("Ammo Spread: Attempting to destroy object");
                         Destroy(gameObject);
                     }
                 }
