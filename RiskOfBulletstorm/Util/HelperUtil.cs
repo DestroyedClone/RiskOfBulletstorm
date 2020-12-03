@@ -139,35 +139,35 @@ namespace RiskOfBulletstorm.Utils
         {
             string words = NumberToWords(number);
             words = words.TrimEnd('\\');
-            if (words.EndsWith("One"))
+            if (words.EndsWith("one"))
             {
-                words = words.Remove(words.LastIndexOf("One") + 0).Trim();
-                words += "First";
+                words = words.Remove(words.LastIndexOf("one") + 0).Trim();
+                words += "first";
             }
-            else if (words.EndsWith("Two"))
+            else if (words.EndsWith("two"))
             {
-                words = words.Remove(words.LastIndexOf("Two") + 0).Trim();
-                words += "Second";
+                words = words.Remove(words.LastIndexOf("two") + 0).Trim();
+                words += "second";
             }
-            else if (words.EndsWith("Three"))
+            else if (words.EndsWith("three"))
             {
-                words = words.Remove(words.LastIndexOf("Three") + 0).Trim();
-                words += "Third";
+                words = words.Remove(words.LastIndexOf("three") + 0).Trim();
+                words += "third";
             }
-            else if (words.EndsWith("Five"))
+            else if (words.EndsWith("five"))
             {
-                words = words.Remove(words.LastIndexOf("Five") + 0).Trim();
-                words += "Fifth";
+                words = words.Remove(words.LastIndexOf("five") + 0).Trim();
+                words += "fifth";
             }
-            else if (words.EndsWith("Eight"))
+            else if (words.EndsWith("eight"))
             {
-                words = words.Remove(words.LastIndexOf("Eight") + 0).Trim();
-                words += "Eighth";
+                words = words.Remove(words.LastIndexOf("eight") + 0).Trim();
+                words += "eighth";
             }
-            else if (words.EndsWith("Nine"))
+            else if (words.EndsWith("nine"))
             {
-                words = words.Remove(words.LastIndexOf("Nine") + 0).Trim();
-                words += "Ninth";
+                words = words.Remove(words.LastIndexOf("nine") + 0).Trim();
+                words += "ninth";
             }
             else
             {
