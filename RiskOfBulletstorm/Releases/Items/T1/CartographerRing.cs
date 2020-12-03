@@ -75,8 +75,8 @@ namespace RiskOfBulletstorm.Items
 
             if (CartographerRing_KeepScanningPastStart)
             {
-                UnityEngine.Object.Destroy(destroyOnTimer);
-                //destroyOnTimer.duration = 99999;
+                //UnityEngine.Object.Destroy(destroyOnTimer);
+                destroyOnTimer.duration = 99999;
             }
             else
             {
