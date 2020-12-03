@@ -33,9 +33,9 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("Damage Multiplier. Default: 2%", AutoConfigFlags.PreventNetMismatch)]
         public static float Metronome_DmgCoeff { get; private set; } = 0.02f;
 
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Show stacks of metronome as a buff on screen? Default: true", AutoConfigFlags.PreventNetMismatch)]
-        public static bool Metronome_ShowAsBuff { get; private set; } = true;
+        //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+       // [AutoConfig("Show stacks of metronome as a buff on screen? Default: true", AutoConfigFlags.PreventNetMismatch)]
+        //public static bool Metronome_ShowAsBuff { get; private set; } = true;
 
         public override string displayName => "Metronome";
         public override ItemTier itemTier => ItemTier.Lunar;
@@ -141,6 +141,8 @@ namespace RiskOfBulletstorm.Items
             {
                 if (!MetronomeTrackKills) { MetronomeTrackKills = self.gameObject.AddComponent<MetronomeTrackKills>(); }
                 MetronomeTrackKills.maxkills = Metronome_MaxKills + Metronome_MaxKillsStack * InventoryCount;
+
+                MetronomeTrackKills.UpdateKills();
             } else
             {
                 if (MetronomeTrackKills) { UnityEngine.Object.Destroy(MetronomeTrackKills); }
@@ -196,6 +198,7 @@ namespace RiskOfBulletstorm.Items
                 var InventoryCount = characterBody.inventory.GetItemCount(Metronome.instance.catalogIndex);
                 maxkills = Metronome_MaxKills + Metronome_MaxKillsStack * InventoryCount;
                 if (kills > maxkills) kills = maxkills; //this resets it if you have less metronomes from like cleansing
+                UpdateBuffStack();
             }
             public bool IsKillsLessThanMax()
             {
