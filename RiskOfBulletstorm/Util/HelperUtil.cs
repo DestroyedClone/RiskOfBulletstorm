@@ -11,6 +11,23 @@ namespace RiskOfBulletstorm.Utils
 {
     public static class HelperUtil
     {
+        public static void ClearBuffStacks(CharacterBody characterBody, BuffIndex buffIndex, int stacks = -1)
+        {
+            var buffcount = characterBody.GetBuffCount(buffIndex);
+            int iterate = buffcount;
+            if (stacks > 0) iterate = stacks;
+
+            for (int i = 0; i < iterate; i++)
+            {
+                characterBody.RemoveBuff(buffIndex);
+            }
+        }
+        public static void AddBuffStacks(CharacterBody characterBody, BuffIndex buffIndex, int stacks = 1)
+        {
+            for (int i = 0; i < stacks; i++)
+                characterBody.AddBuff(buffIndex);
+        }
+
         public static int GetPlayerCount()
         {
             return PlayerCharacterMasterController.instances.Count;

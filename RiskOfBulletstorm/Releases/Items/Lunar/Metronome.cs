@@ -19,19 +19,23 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Max kills? Default: 75", AutoConfigFlags.PreventNetMismatch)]
-        public int Metronome_MaxKills { get; private set; } = 75;
+        public static int Metronome_MaxKills { get; private set; } = 75;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Additional max kills per stack? Default: 25", AutoConfigFlags.PreventNetMismatch)]
-        public int Metronome_MaxKillsStack { get; private set; } = 25;
+        public static int Metronome_MaxKillsStack { get; private set; } = 25;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Kills lost upon using a different ability, Default: 25", AutoConfigFlags.PreventNetMismatch)]
-        public int Metronome_KillsLost { get; private set; } = 25;
+        public static int Metronome_KillsLost { get; private set; } = 25;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Damage Multiplier. Default: 2%", AutoConfigFlags.PreventNetMismatch)]
-        public float Metronome_DmgCoeff { get; private set; } = 0.02f;
+        public static float Metronome_DmgCoeff { get; private set; } = 0.02f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Show stacks of metronome as a buff on screen? Default: true", AutoConfigFlags.PreventNetMismatch)]
+        public static bool Metronome_ShowAsBuff { get; private set; } = true;
 
         public override string displayName => "Metronome";
         public override ItemTier itemTier => ItemTier.Lunar;
@@ -53,6 +57,8 @@ namespace RiskOfBulletstorm.Items
             "\n And it only took one strike to end him." +
             "\n Tick, Tick, tick, tick";
 
+        public static BuffIndex MetronomeBuffTally { get; private set; }
+
         public Metronome()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Metronome.prefab";
@@ -66,6 +72,15 @@ namespace RiskOfBulletstorm.Items
         public override void SetupAttributes()
         {
             base.SetupAttributes();
+            var metronomeBuffTallyDef = new CustomBuff(
+            new BuffDef
+            {
+                buffColor = Color.cyan,
+                canStack = true,
+                isDebuff = false,
+                name = "Metronome Stacks",
+            });
+            MetronomeBuffTally = BuffAPI.Add(metronomeBuffTallyDef);
 
         }
         public override void SetupConfig()
@@ -102,24 +117,14 @@ namespace RiskOfBulletstorm.Items
                     MetronomeTrackKills MetronomeTrackKills = self.gameObject.GetComponent<MetronomeTrackKills>();
                     if (MetronomeTrackKills)
                     {
-                        void SetLastSkillSlot(int SlotNumber)
-                        {
-                            if (MetronomeTrackKills.LastSkillSlotUsed != SlotNumber)
-                            {
-                                MetronomeTrackKills.LastSkillSlotUsed = SlotNumber;
-                                MetronomeTrackKills.kills = Math.Max(0, MetronomeTrackKills.kills - Metronome_KillsLost);
-                                //Debug.Log("Metronome: Kills reset due to change to slot " + LastSkillSlotUsed.ToString(), self);
-                            }
-                        }
-
                         if (skillLocation.FindSkill(self.skillName)) //Updates last skill slot used
                         {
                             if (invCount > 0)
                             {
-                                if (skillLocation.primary.Equals(self)) { SetLastSkillSlot(0); }
-                                else if (skillLocation.secondary.Equals(self)) { SetLastSkillSlot(1); }
-                                else if (skillLocation.utility.Equals(self)) { SetLastSkillSlot(2); }
-                                else if (skillLocation.special.Equals(self)) { SetLastSkillSlot(3); }
+                                if (skillLocation.primary.Equals(self)) { MetronomeTrackKills.SetLastSkillSlot(0); }
+                                else if (skillLocation.secondary.Equals(self)) { MetronomeTrackKills.SetLastSkillSlot(1); }
+                                else if (skillLocation.utility.Equals(self)) { MetronomeTrackKills.SetLastSkillSlot(2); }
+                                else if (skillLocation.special.Equals(self)) { MetronomeTrackKills.SetLastSkillSlot(3); }
                                 //else { Debug.LogError("Metronome: Invalid Skill Slot accessed!", self); }
                             }
                         }
@@ -136,9 +141,6 @@ namespace RiskOfBulletstorm.Items
             {
                 if (!MetronomeTrackKills) { MetronomeTrackKills = self.gameObject.AddComponent<MetronomeTrackKills>(); }
                 MetronomeTrackKills.maxkills = Metronome_MaxKills + Metronome_MaxKillsStack * InventoryCount;
-
-                var compMaxKills = MetronomeTrackKills.maxkills;
-                if (MetronomeTrackKills.kills > compMaxKills) MetronomeTrackKills.kills = compMaxKills; //this resets it if you have less metronomes from like cleansing
             } else
             {
                 if (MetronomeTrackKills) { UnityEngine.Object.Destroy(MetronomeTrackKills); }
@@ -155,10 +157,9 @@ namespace RiskOfBulletstorm.Items
                 if (inventoryCount > 0)
                 {
                     var componentExists = attackerBody.GetComponent<MetronomeTrackKills>();
-                    if (componentExists?.kills < componentExists?.maxkills)
+                    if (componentExists.IsKillsLessThanMax())
                     {
-                        componentExists.kills ++;
-                        //Debug.Log("Metronome: Kill Added to slot "+ LastSkillSlotUsed.ToString(), self);
+                        componentExists.IncrementKills();
                     }
                 }
             }
@@ -176,9 +177,52 @@ namespace RiskOfBulletstorm.Items
 
         public class MetronomeTrackKills : MonoBehaviour
         {
-            public int kills;
-            public int maxkills;
+            public int kills = 0;
+            public int maxkills = 16;
             public int LastSkillSlotUsed = 0;
+            public CharacterBody characterBody;
+
+            public void OnEnable()
+            {
+                var cb = gameObject.GetComponent<CharacterBody>();
+                if (cb)
+                    characterBody = cb;
+                else
+                    Destroy(gameObject.GetComponent<MetronomeTrackKills>());
+            }
+
+            public void UpdateKills()
+            {
+                var InventoryCount = characterBody.inventory.GetItemCount(Metronome.instance.catalogIndex);
+                maxkills = Metronome_MaxKills + Metronome_MaxKillsStack * InventoryCount;
+                if (kills > maxkills) kills = maxkills; //this resets it if you have less metronomes from like cleansing
+            }
+            public bool IsKillsLessThanMax()
+            {
+                return kills < maxkills;
+            }
+            public void UpdateBuffStack()
+            {
+                HelperUtil.ClearBuffStacks(characterBody, MetronomeBuffTally);
+                HelperUtil.AddBuffStacks(characterBody, MetronomeBuffTally, kills);
+            }
+            public void SetLastSkillSlot(int SlotNumber)
+            {
+                if (LastSkillSlotUsed != SlotNumber)
+                {
+                    LastSkillSlotUsed = SlotNumber;
+                    ReduceStacks();
+                }
+            }
+            public void ReduceStacks()
+            {
+                kills = Math.Max(0, kills - Metronome_KillsLost);
+            }
+            public void IncrementKills()
+            {
+                kills++;
+            }
+
         }
     }
 }
