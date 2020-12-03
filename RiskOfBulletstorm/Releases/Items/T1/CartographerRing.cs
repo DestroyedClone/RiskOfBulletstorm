@@ -42,8 +42,8 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetNameString(string langID = null) => displayName;
         protected override string GetPickupString(string langID = null) => "Some Floors Are Familiar\nSometimes reveals the floor.";
-        protected override string GetDescString(string langid = null) => $"<style=cIsUtility>{Pct(CartographerRing_ScanChance)} chance of revealing all interactables upon stage start.</style>" +
-            $"\n <style=cStack>(+{Pct(CartographerRing_ScanChanceStack)} per stack)</style>." +
+        protected override string GetDescString(string langid = null) => $"<style=cIsUtility>{CartographerRing_ScanChance}% chance of revealing all interactables upon stage start.</style>" +
+            $"\n <style=cStack>(+{CartographerRing_ScanChanceStack}% per stack)</style>." +
             $"\n <style=cSub>Chance is shared amongst players.</style>";
 
         protected override string GetLoreString(string langID = null) => "The Gungeon is unmappable, but it was not always so. It is said that in his youth, the great cartographer Woban has created four great maps, one for each floor of the Gungeon. While working on the fifth and final map, the walls suddenly began to shift strangely; they continue to do so to this day.";
