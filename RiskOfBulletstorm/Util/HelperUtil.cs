@@ -42,11 +42,14 @@ namespace RiskOfBulletstorm.Utils
             {
                 var master = playerCharacterMaster.master;
                 var body = master.GetBody();
-                var invcount = body.inventory.GetItemCount(itemIndex);
-                if (invcount > largestStack)
+                if (body)
                 {
-                    largestStack = invcount;
-                    chosenBody = body;
+                    var invcount = body.inventory.GetItemCount(itemIndex);
+                    if (invcount > largestStack)
+                    {
+                        largestStack = invcount;
+                        chosenBody = body;
+                    }
                 }
             }
             return chosenBody;
