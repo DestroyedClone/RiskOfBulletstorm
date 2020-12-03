@@ -60,9 +60,9 @@ namespace RiskOfBulletstorm.Items
         {
             orig(self);
             int InventoryCount = GetCount(self);
-            CultistPassiveComponent passiveComponent = self.gameObject.GetComponent<CultistPassiveComponent>();
             if (InventoryCount > 0)
             {
+                CultistPassiveComponent passiveComponent = self.gameObject.GetComponent<CultistPassiveComponent>();
                 if (!passiveComponent) { passiveComponent = self.gameObject.AddComponent<CultistPassiveComponent>(); }
                 UpdateComponentForEveryone();
             }
