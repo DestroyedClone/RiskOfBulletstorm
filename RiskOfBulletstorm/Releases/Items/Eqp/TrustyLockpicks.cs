@@ -187,7 +187,12 @@ namespace RiskOfBulletstorm.Items
             if (!highlight) return orig(self, activator);
 
             TrustyLockpickFailed attempted = self.gameObject.GetComponent<TrustyLockpickFailed>();
-            if (attempted) return orig(self, activator);
+            //if (attempted) return orig(self, activator);
+            if (attempted)
+            {
+                highlight.highlightColor = Highlight.HighlightColor.unavailable;
+                return orig(self, activator);
+            }
 
             CharacterBody characterBody = activator.GetComponent<CharacterBody>();
             if (characterBody)
@@ -200,12 +205,13 @@ namespace RiskOfBulletstorm.Items
                         EquipmentIndex equipmentIndex = inventory.GetEquipmentIndex();
                         if (equipmentIndex == catalogIndex)
                         {
+                            highlight.highlightColor = Highlight.HighlightColor.teleporter;
                             return Interactability.Available;
                         }
                     }
                 }
             }
-            highlight.pickupIndex = SyringePickupIndex;
+            highlight.highlightColor = Highlight.HighlightColor.interactive;
             return orig(self, activator);
         }
 
