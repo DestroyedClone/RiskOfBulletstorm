@@ -35,7 +35,6 @@ namespace RiskOfBulletstorm.Items
 
         private static readonly GameObject REXPrefab = EntityStates.Treebot.Weapon.FireSyringe.projectilePrefab;
         private static readonly GameObject SawPrefab = Resources.Load<GameObject>("Prefabs/Projectiles/Sawmerang");
-        private static readonly GameObject BFGPrefab = Resources.Load<GameObject>("Prefabs/Projectiles/BeamSphere");
         private static readonly GameObject DisposableMissileLauncherPrefab = Resources.Load<GameObject>("Prefabs/Projectiles/MissileProjectile");
 
         private float Scope_SpreadReduction;
@@ -52,7 +51,6 @@ namespace RiskOfBulletstorm.Items
         {
             REXPrefab,
             SawPrefab,
-            BFGPrefab,
             DisposableMissileLauncherPrefab
         };
 
@@ -69,14 +67,17 @@ namespace RiskOfBulletstorm.Items
         public override void SetupLate()
         {
             base.SetupLate();
+            // SCOPE //
             Scope_SpreadReduction = Scope.Scope_SpreadReduction;
             Scope_SpreadReductionStack = Scope.Scope_SpreadReductionStack;
             Scope_EnableDML = Scope.Scope_EnableDML;
             Scope_WhitelistProjectiles = Scope.Scope_WhitelistProjectiles;
 
+            // ITEM COUNTS //
             ItemIndex_Scope = Scope.instance.catalogIndex;
             ItemIndex_SpiceTally = Spice.SpiceTally;
 
+            // SPICE //
             SpiceBonuses = Spice.SpiceBonuses;
             SpiceBonusesConstantMaxed = Spice.SpiceBonusesConstantMaxed;
         }

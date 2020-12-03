@@ -52,7 +52,7 @@ namespace RiskOfBulletstorm.Items
 
         private ItemIndex SpiceTally;
 
-        private float[,] SpiceBonusesAdditive;
+        private float[] SpiceBonusesAdditive;
         private float[,] SpiceBonuses;
         private float[] SpiceBonusesConstantMaxed;
 
@@ -117,11 +117,11 @@ namespace RiskOfBulletstorm.Items
         private void AddRewards(CharacterBody sender, StatHookEventArgs args)
         {
             /*
-            Health: Handled Here
-            Attack Speed: Handled Here
-            Accuracy: BulletstormExtraStatsController
-            Enemy Bullet Speed: BulletstormExtraStatsController
-            Damage: HealthComponent_TakeDamage
+            [0] Health: Handled Here
+            [1] Attack Speed: Handled Here
+            [2] Accuracy: BulletstormExtraStatsController
+            [3] Enemy Bullet Speed: BulletstormExtraStatsController
+            [4] Damage: HealthComponent_TakeDamage
             */
             if (sender.HasBuff(Anger)) { args.damageMultAdd += EnragingPhoto.instance.EnragingPhoto_DmgBoost; }
             if (sender.HasBuff(Jammed))
@@ -150,7 +150,7 @@ namespace RiskOfBulletstorm.Items
                 default:
                     Debug.Log("Gungeon Buffs: Entered case default with " + SpiceTallyCount);
                     Debug.Log("Gbuffs: attempting to add health mult with spice value: " + SpiceTallyCount);
-                    var healthMultAdd = HeartValue * SpiceBonusesAdditive[4, 0] * (SpiceTallyCount - 4);
+                    var healthMultAdd = HeartValue * SpiceBonusesAdditive[0] * (SpiceTallyCount - 4);
                     var attackSpeedAdd = SpiceBonusesConstantMaxed[1];
                     //health, attack speed, shot accuracy, enemy bullet speed, damage
                     args.healthMultAdd += healthMultAdd;
@@ -161,6 +161,8 @@ namespace RiskOfBulletstorm.Items
                     break;
             }
         }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0059:Unnecessary assignment of a value", Justification = "Used Values")]
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
             var attacker = damageInfo.attacker;
@@ -173,14 +175,23 @@ namespace RiskOfBulletstorm.Items
                     if (inventory)
                     {
                         var SpiceTallyCount = inventory.GetItemCount(SpiceTally);
-                        if (SpiceTallyCount > 0)
+                        var DamageMult = 0f;
+                        var SpiceMult = 0f;
+                        switch (SpiceTallyCount)
                         {
-                            var DamageMult = 0f;
-
-
-
-                            damageInfo.damage *= 1 + DamageMult;
+                            case 0: //
+                            case 1:
+                            case 2:
+                            case 3:
+                            case 4:
+                                SpiceMult = SpiceBonuses[SpiceTallyCount, 4];
+                                break;
+                            default: //also 5
+                                SpiceMult = SpiceBonuses[4, 4] + SpiceBonusesAdditive[4] * (SpiceTallyCount - 4);
+                                break;
                         }
+                        DamageMult = SpiceMult;
+                        damageInfo.damage *= 1 + DamageMult;
                     }
                 }
             }

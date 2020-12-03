@@ -31,7 +31,7 @@ namespace RiskOfBulletstorm.Items
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("If enabled, Scope will only tighten the spread of specific projectiles." +
             "\nNote that disabling MIGHT cause some projectiles to behave differently, but will affect every projectile.." +
-            "\nWhitelisted Projectiles: REX syringe, Sawmerang, Preon Accumulator", AutoConfigFlags.PreventNetMismatch)]
+            "\nWhitelisted Projectiles: REX syringe, Sawmerang", AutoConfigFlags.PreventNetMismatch)]
         public static bool Scope_WhitelistProjectiles { get; private set; } = true;
         public override string displayName => "Scope";
         public override ItemTier itemTier => ItemTier.Tier2;

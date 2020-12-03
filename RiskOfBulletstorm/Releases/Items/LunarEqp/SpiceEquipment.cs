@@ -38,15 +38,18 @@ namespace RiskOfBulletstorm.Items
             "MORE"
         };
 
+        /*
         //health, attack speed, shot accuracy, enemy bullet speed, damage
         public static readonly float[,] SpiceBonusesAdditive = new float[,]
         {
-            { 0f, 0f, 0f, 0f, 0f },
-            { +1f, +0.2f, +0.25f, 0f, 0f },
-            { +1f, +0.2f, 0f, -0.1f, 0f },
-            { -1f, 0f, 0f, -0.05f, +0.2f },
-            { -1f, 0f, -0.1f, 0f, +0.15f },
+            { 0f,   0f,      0f,    0f,     0f },
+            { +1f,  +0.2f,  +0.25f, 0f,     0f },
+            { +1f,  +0.2f,  0f,     -0.1f,  0f }, 
+            { -1f,  0f,     0f,     -0.05f, +0.2f }, 
+            { -1f,  0f,     -0.1f,  0f,     +0.15f }, 
         };
+        */ //documentation purposes
+        public static readonly float[] SpiceBonusesAdditive = new float[] { -1f, 0f, -0.1f, 0f, +0.15f };
 
         public static readonly float[,] SpiceBonuses = new float[,]
         {
