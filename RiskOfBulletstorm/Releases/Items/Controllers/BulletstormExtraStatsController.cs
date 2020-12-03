@@ -164,8 +164,12 @@ namespace RiskOfBulletstorm.Items
             int ItemCount_Scope = inventory.GetItemCount(ItemIndex_Scope);
             int ItemCount_Spice = inventory.GetItemCount(ItemIndex_SpiceTally);
             float SpiceMult = 0f;
+            float ScopeMult = 0f;
 
-            float ScopeMult = (Scope_SpreadReduction + Scope_SpreadReductionStack * (ItemCount_Scope - 1));
+            if (ItemCount_Spice > 0)
+                ScopeMult = (Scope_SpreadReduction + Scope_SpreadReductionStack * (ItemCount_Scope - 1));
+
+
             if (ItemCount_Spice > 0)
             {
                 if (ItemCount_Spice > 4)
