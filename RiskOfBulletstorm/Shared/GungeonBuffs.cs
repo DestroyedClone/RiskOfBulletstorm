@@ -236,12 +236,16 @@ namespace RiskOfBulletstorm.Items
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
             void OnEnable()
             {
+                Debug.Log("JammedOnEnable: 0");
                 if (!characterBody.HasBuff(Jammed))
                 {
                     characterBody.AddBuff(Jammed);
                 }
+                Debug.Log("JammedOnEnable: 1");
                 contactDamageInfo.inflictor = ContactDamageGameObject; //how
-                contactDamageInfo.attacker = characterBody.gameObject; //who
+                Debug.Log("JammedOnEnable: 2");
+                contactDamageInfo.attacker = gameObject; //who
+                Debug.Log("JammedOnEnable: 3");
             } //setup
 
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
