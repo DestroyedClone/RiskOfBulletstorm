@@ -15,7 +15,7 @@ using RiskOfBulletstorm.Utils;
 
 namespace RiskOfBulletstorm.Items
 {
-    public class Curse : Item_V2<Curse>
+    public class CurseController : Item_V2<CurseController>
     {
         //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         //[AutoConfig("How many curse is needed before Lord of the Jammed spawns? Set it to -1 to disable. (Default: 10)", AutoConfigFlags.PreventNetMismatch)]
