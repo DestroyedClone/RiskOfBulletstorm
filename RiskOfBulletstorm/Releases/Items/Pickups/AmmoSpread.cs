@@ -112,14 +112,14 @@ namespace RiskOfBulletstorm.Items
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
             private void OnTriggerStay(Collider other)
             {
-                if (NetworkServer.active && this.alive && TeamComponent.GetObjectTeam(other.gameObject) == this.teamFilter.teamIndex)
+                if (NetworkServer.active && alive && TeamComponent.GetObjectTeam(other.gameObject) == teamFilter.teamIndex)
                 {
-                    ReadOnlyCollection<TeamComponent> teamComponents = TeamComponent.GetTeamMembers(this.teamFilter.teamIndex);
+                    ReadOnlyCollection<TeamComponent> teamComponents = TeamComponent.GetTeamMembers(teamFilter.teamIndex);
 
                     SkillLocator component = other.GetComponent<SkillLocator>();
                     if (!component) return;
 
-                    this.alive = false;
+                    alive = false;
 
                     foreach (TeamComponent teamComponent in teamComponents)
                     {
@@ -136,7 +136,7 @@ namespace RiskOfBulletstorm.Items
                                 if (inventory.GetEquipmentSlotCount() > 1) inventory.RestockEquipmentCharges(1, 1); //MULT
                             }
                             Chat.AddMessage("AmmoSpread: " + body.GetUserName() + " applied!");
-                            EffectManager.SimpleEffect(this.pickupEffect, this.transform.position, Quaternion.identity, true);
+                            EffectManager.SimpleEffect(pickupEffect, transform.position, Quaternion.identity, true);
                         }
                     }
                     Destroy(gameObject);
