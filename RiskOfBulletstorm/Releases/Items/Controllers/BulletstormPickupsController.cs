@@ -18,14 +18,14 @@ namespace RiskOfBulletstorm.Items
 {
     public class BulletstormPickupsController : Item_V2<BulletstormPickupsController>
     {
-        //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        //[AutoConfig("Enable Pickups?", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Enable Pickups?", AutoConfigFlags.PreventNetMismatch)]
         public bool BUP_Enable { get; private set; } = true;
-        //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        //[AutoConfig("RequiredKills = 10", AutoConfigFlags.PreventNetMismatch)]
-        public int BUP_RequiredKills { get; private set; } = 10;
-        //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        //[AutoConfig("Multiplier per stage count = 2.00x", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("RequiredKills = 35", AutoConfigFlags.PreventNetMismatch)]
+        public int BUP_RequiredKills { get; private set; } = 35;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Multiplier per stage count = 2.00x", AutoConfigFlags.PreventNetMismatch)]
         public float BUP_StageMultiplier { get; private set; } = 2f;
         public override string displayName => "BulletstormPickupsController";
         public override ItemTier itemTier => ItemTier.NoTier;
