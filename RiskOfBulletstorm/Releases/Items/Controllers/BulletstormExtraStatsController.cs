@@ -51,23 +51,24 @@ namespace RiskOfBulletstorm.Items
         public static List<GameObject> WhitelistedProjectiles = new List<GameObject>
         {
             Resources.Load<GameObject>("Prefabs/Projectiles/Sawmerang"), //Saw
-            EntityStates.BeetleQueenMonster.FireSpit.projectilePrefab, // Beetle Spit
-            EntityStates.BrotherMonster.Weapon.FireLunarShards.projectilePrefab,
-            EntityStates.Captain.Weapon.FireTazer.projectilePrefab,
-            EntityStates.ClayBoss.FireTarball.projectilePrefab,
-            EntityStates.ClayBoss.ClayBossWeapon.FireBombardment.projectilePrefab,
+            Resources.Load<GameObject>("prefabs/projectiles/BeetleQueenSpit"), // Beetle Spit
+            Resources.Load<GameObject>("prefabs/projectiles/LunarShardProjectile"),
+            Resources.Load<GameObject>("Prefabs/Projectiles/CaptainTazer"),
+            Resources.Load<GameObject>("Prefabs/Projectiles/Tarball"),
+            EntityStates.ClayBoss.ClayBossWeapon.FireBombardment.projectilePrefab, //
             Resources.Load<GameObject>("prefabs/projectiles/CommandoGrenadeProjectile"),
-            EntityStates.Engi.EngiMissilePainter.Fire.projectilePrefab,
-            EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.projectilePrefab,
-            EntityStates.GravekeeperBoss.FireHook.projectilePrefab,
-            EntityStates.GravekeeperMonster.Weapon.GravekeeperBarrage.projectilePrefab,
+            Resources.Load<GameObject>("Prefabs/Projectiles/EngiHarpoon"),
+            Resources.Load<GameObject>("Prefabs/Projectiles/LunarNeedleProjectile"),
+            Resources.Load<GameObject>("prefabs/projectiles/GravekeeperHookProjectile"),
+            Resources.Load<GameObject>("prefabs/projectiles/GravekeeperHookProjectileSimple"), //????
+            Resources.Load<GameObject>("GravekeeperTrackingFireball"),
             EntityStates.ImpBossMonster.FireVoidspikes.projectilePrefab,
             EntityStates.ImpMonster.FireSpines.projectilePrefab,
             EntityStates.LemurianBruiserMonster.FireMegaFireball.projectilePrefab,
             EntityStates.NullifierMonster.FirePortalBomb.portalBombProjectileEffect,
             Resources.Load<GameObject>("prefabs/projectiles/RoboBallProjectile"),
             Resources.Load<GameObject>("prefabs/projectiles/SuperRoboBallProjectile"), //idk??
-            EntityStates.ScavMonster.FireEnergyCannon.projectilePrefab,
+            Resources.Load<GameObject>("prefabs/projectiles/ScavEnergyCannonProjectile"),
             EntityStates.Treebot.Weapon.FireSyringe.projectilePrefab, //REX
             EntityStates.UrchinTurret.Weapon.MinigunFire.projectilePrefab,
             EntityStates.VagrantMonster.Weapon.JellyBarrage.projectilePrefab,
