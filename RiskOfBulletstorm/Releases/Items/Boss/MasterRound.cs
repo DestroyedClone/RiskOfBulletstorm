@@ -181,11 +181,8 @@ namespace RiskOfBulletstorm.Items
             var StageCount = Mathf.Max(Run.instance.stageClearCount + 1, 1);
             //if (StageCount > adjustedPickup.Length) StageCount = adjustedPickup.Length-1;
 
-            Debug.Log("Master Round: Attempting number to ordinal with " + StageCount);
             string numberString = NumbertoOrdinal(StageCount);
-            Debug.Log("Master Round: Attempting numbercapitalized");
             string numberCapitalized = char.ToUpper(numberString[0]) + numberString.Substring(1);
-            Debug.Log("Master Round: Attempting desc");
             string descString = adjustedDesc[Mathf.Clamp(StageCount, 0, adjustedDesc.Length)];
 
             //https://www.dotnetperls.com/uppercase-first-letter
