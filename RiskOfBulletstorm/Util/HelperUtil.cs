@@ -136,21 +136,22 @@ namespace RiskOfBulletstorm.Utils
             var self = characterMaster.inventory;
             var list = NotificationQueue.instancesList;
             var pickupIndex = PickupCatalog.FindPickupIndex(itemIndex);
-            //var pickupDef = PickupCatalog.GetPickupDef(pickupIndex);
-            //var nameToken = pickupDef.nameToken;
-            //var color = pickupDef.baseColor;
-            //var body = characterMaster.GetBody();
+            var pickupDef = PickupCatalog.GetPickupDef(pickupIndex);
+            var nameToken = pickupDef.nameToken;
+            var color = pickupDef.baseColor;
+            var body = characterMaster.GetBody();
 
-            GenericPickupController.SendPickupMessage(characterMaster, pickupIndex);
+            //GenericPickupController.SendPickupMessage(characterMaster, pickupIndex);
 
-            //Chat.AddPickupMessage(body, nameToken, color, (uint)amount);
+            Chat.AddPickupMessage(body, nameToken, color, (uint)amount);
             Util.PlaySound("Play_UI_item_pickup", characterMaster.GetBodyObject());
 
             self.GiveItem(itemIndex, amount);
+            /*
             for (int i = 0; i < list.Count; i++)
             {
                 list[i].OnPickup(characterMaster, pickupIndex);
-            }
+            }*/
 
         }
 
