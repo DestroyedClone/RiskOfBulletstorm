@@ -242,17 +242,14 @@ namespace RiskOfBulletstorm.Items
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
             void OnEnable()
             {
+                ContactDamageCooldown = ContactDamageCooldownFull;
                 characterBody = gameObject.GetComponent<CharacterBody>();
-                Debug.Log("JammedOnEnable: 0");
                 if (!characterBody.HasBuff(Jammed))
                 {
                     characterBody.AddBuff(Jammed);
                 }
-                Debug.Log("JammedOnEnable: 1");
                 contactDamageInfo.inflictor = ContactDamageGameObject; //how
-                Debug.Log("JammedOnEnable: 2");
                 contactDamageInfo.attacker = gameObject; //who
-                Debug.Log("JammedOnEnable: 3");
             } //setup
 
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
@@ -280,20 +277,29 @@ namespace RiskOfBulletstorm.Items
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
             void FixedUpdate()
             {
-                ContactDamageCooldown -= Time.fixedDeltaTime;
-                if (ContactDamageCooldown < 0)
+                if (ContactDamageCooldown >= 0)
                 {
+                    ContactDamageCooldown -= Time.fixedDeltaTime;
+                }
+                else
+                {
+                    activateOnce = true;
+                }
+                if (activateOnce)
+                {
+                    activateOnce = false;
                     healthComponents.Clear();
                 }
             } //clears list at end of cooldown
 
             public static readonly float ContactDamageCooldownFull = 2f;
-            public float ContactDamageCooldown = ContactDamageCooldownFull;
+            public float ContactDamageCooldown;
             public CharacterBody characterBody;
             public DamageInfo contactDamageInfo = JammedContactDamageInfo;
             public static GameObject ContactDamageGameObject;
             public float damageCoefficient = 3f;
             public List<HealthComponent> healthComponents;
+            bool activateOnce = false;
         }
     }
 }
