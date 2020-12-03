@@ -196,7 +196,7 @@ namespace RiskOfBulletstorm.Items
             public void UpdateKills()
             {
                 var InventoryCount = characterBody.inventory.GetItemCount(Metronome.instance.catalogIndex);
-                maxkills = Metronome_MaxKills + Metronome_MaxKillsStack * InventoryCount;
+                maxkills = Metronome_MaxKills + Metronome_MaxKillsStack * (InventoryCount - 1);
                 if (kills > maxkills) kills = maxkills; //this resets it if you have less metronomes from like cleansing
                 UpdateBuffStack();
             }
