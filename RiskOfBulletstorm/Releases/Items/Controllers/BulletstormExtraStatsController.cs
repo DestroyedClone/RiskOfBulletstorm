@@ -207,20 +207,21 @@ namespace RiskOfBulletstorm.Items
             float SpiceMult = 0f;
             float ScopeMult = 0f;
 
-            if (ItemCount_Spice > 0)
+            if (ItemCount_Scope > 0)
                 ScopeMult = (Scope_SpreadReduction + Scope_SpreadReductionStack * (ItemCount_Scope - 1));
 
 
             if (ItemCount_Spice > 0)
             {
-                if (ItemCount_Spice > 4)
+                if (ItemCount_Spice > 2 && ItemCount_Spice <= 4)
+                {
+                    SpiceMult = SpiceBonuses[ItemCount_Spice, 2];
+                    // -0.15 + 
+                }
+                else if (ItemCount_Spice > 4)
                 {
                     SpiceMult = SpiceBonusesConstantMaxed[2] + SpiceBonusesAdditive[2] + SpiceBonusesAdditive[2] * (ItemCount_Spice - 4);
                     // +0.15 (+) -0.10 (+) -0.10*additionalstacks
-                } else
-                {
-                    SpiceMult = SpiceBonuses[ItemCount_Spice,2];
-                    // -0.15 + 
                 }
             }
             var ResultMult = ScopeMult + SpiceMult;
