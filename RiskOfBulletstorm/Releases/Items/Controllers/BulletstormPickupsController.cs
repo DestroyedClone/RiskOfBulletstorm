@@ -63,9 +63,9 @@ namespace RiskOfBulletstorm.Items
         {
             base.SetupLate();
             //needs to setup late so the indicies can be setup
-            weightedSelection.AddChoice(Key.instance.pickupIndex, 0.5f);
-            weightedSelection.AddChoice(Blank.instance.pickupIndex, 0.3f);
-            weightedSelection.AddChoice(Armor.instance.pickupIndex, 0.1f);
+            weightedSelection.AddChoice(Key.instance.pickupIndex, 0.25f);
+            weightedSelection.AddChoice(Blank.instance.pickupIndex, 0.25f);
+            weightedSelection.AddChoice(Armor.instance.pickupIndex, 0.2f);
             weightedSelection.AddChoice(PickupAmmoSpread.instance.pickupIndex, 0.1f);
         }
 
