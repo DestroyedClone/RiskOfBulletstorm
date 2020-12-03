@@ -193,6 +193,11 @@ namespace RiskOfBulletstorm.Items
                     Destroy(gameObject.GetComponent<MetronomeTrackKills>());
             }
 
+            public void OnDisable()
+            {
+                HelperUtil.ClearBuffStacks(characterBody, MetronomeBuffTally);
+            }
+
             public void UpdateKills()
             {
                 var InventoryCount = characterBody.inventory.GetItemCount(Metronome.instance.catalogIndex);
