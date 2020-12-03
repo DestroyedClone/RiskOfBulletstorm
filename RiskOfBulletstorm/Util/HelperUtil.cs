@@ -62,7 +62,7 @@ namespace RiskOfBulletstorm.Utils
 
                         if (inventory)
                         {
-                            var result = GiveItemIfLess(master, itemIndex, showInChat, body, amount, max);
+                            GiveItemIfLess(master, itemIndex, showInChat, body, amount, max);
                         }
                     }
                 }
@@ -116,10 +116,10 @@ namespace RiskOfBulletstorm.Utils
             var self = characterMaster.inventory;
             var list = NotificationQueue.instancesList;
             var pickupIndex = PickupCatalog.FindPickupIndex(itemIndex);
-            var pickupDef = PickupCatalog.GetPickupDef(pickupIndex);
-            var nameToken = pickupDef.nameToken;
-            var color = pickupDef.baseColor;
-            var body = characterMaster.GetBody();
+            //var pickupDef = PickupCatalog.GetPickupDef(pickupIndex);
+            //var nameToken = pickupDef.nameToken;
+            //var color = pickupDef.baseColor;
+            //var body = characterMaster.GetBody();
 
             GenericPickupController.SendPickupMessage(characterMaster, pickupIndex);
 
@@ -247,7 +247,7 @@ namespace RiskOfBulletstorm.Utils
 
         public static float GetCurseCount(CharacterBody characterBody = null)
         {
-            var curseIndex = Items.Curse.curseTally;
+            var curseIndex = Items.CurseController.curseTally;
             if (!characterBody)
                 return HelperUtil.GetPlayersItemCount(curseIndex);
             return characterBody.inventory.GetItemCount(curseIndex);

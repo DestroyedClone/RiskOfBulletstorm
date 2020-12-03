@@ -104,7 +104,7 @@ namespace RiskOfBulletstorm.Items
             var teamComponent = obj.teamComponent;
             if (!teamComponent) return;
 
-            int PlayerItemCount = HelperUtil.GetPlayersItemCount(catalogIndex);
+            int PlayerItemCount = HelperUtil.GetPlayersItemCount(curseTally);
             float RollValue = 0f;
             float RollValueBosses = 0f;
 
@@ -147,23 +147,26 @@ namespace RiskOfBulletstorm.Items
                 //BOSS CHECK
                 if (obj.isBoss)
                 {
-                    // UMBRA CHECK START //
-                    if (Curse_AllowUmbra)
+                    var inventory = obj.inventory;
+
+                    if (inventory)
                     {
-                        var inventory = obj.inventory;
-                        if (inventory)
+                        if (inventory.GetItemCount(umbraItemIndex) > 0)
                         {
-                            if (inventory.GetItemCount(umbraItemIndex) > 0)
+                            // UMBRA CHECK START //
+                            if (Curse_AllowUmbra)
                             {
                                 CurseUtil.JamEnemy(obj, RollValueBosses);
                             }
                         }
-                    }
-                    //UMBRA CHECK END //
-
-                    if (Curse_AllowBosses)
-                    {
-                        CurseUtil.JamEnemy(obj, RollValueBosses);
+                        //UMBRA CHECK END //
+                        else
+                        {
+                            if (Curse_AllowBosses)
+                            {
+                                CurseUtil.JamEnemy(obj, RollValueBosses);
+                            }
+                        }
                     }
                 }
                 else

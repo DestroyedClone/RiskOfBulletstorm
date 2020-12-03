@@ -126,7 +126,7 @@ namespace RiskOfBulletstorm.Items
             if (sender.HasBuff(Anger)) { args.damageMultAdd += EnragingPhoto.instance.EnragingPhoto_DmgBoost; }
             if (sender.HasBuff(Jammed))
             {
-                args.damageMultAdd += Items.Curse.instance.Curse_DamageBoost;
+                args.damageMultAdd += Items.CurseController.instance.Curse_DamageBoost;
                 args.attackSpeedMultAdd += 0.2f;
                 args.moveSpeedMultAdd += 0.2f;
                 //Contact damage is handled by the component
