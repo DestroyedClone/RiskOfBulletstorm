@@ -123,12 +123,10 @@ namespace RiskOfBulletstorm.Items
                 var SpiceReplaceChance = characterBody.inventory.GetItemCount(SpiceTally);
                 if (Util.CheckRoll(SpiceReplaceChance))
                 {
-
                     if (pickupIndex != PickupCatalog.FindPickupIndex(ItemIndex.ArtifactKey)) //safety to prevent softlocks
                         pickupIndex = PickupCatalog.FindPickupIndex(catalogIndex);
                 }
             }
-
             orig(pickupIndex, position, velocity);
         }
 
