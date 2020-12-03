@@ -85,7 +85,6 @@ namespace RiskOfBulletstorm.Items
         private void Stage_onStageStartGlobal(RoR2.Stage obj)
         {
             var gameObj = obj.gameObject;
-            Debug.Log("on stage start entered");
             BulletstormPickupsComponent pickupsComponent = gameObj.GetComponent<BulletstormPickupsComponent>();
             if (!pickupsComponent) pickupsComponent = gameObj.AddComponent<BulletstormPickupsComponent>();
 
@@ -123,14 +122,12 @@ namespace RiskOfBulletstorm.Items
                 orig(self, damageReport);
                 return;
             }
-            Debug.Log("initial pickups checks passed");
             //var kills = pickupsComponent.globalDeaths;
             var requiredKills = pickupsComponent.requiredKills;
             CharacterBody VictimBody = damageReport.victimBody;
 
             if (VictimBody)
             {
-                Chat.AddMessage("Body found"+VictimBody);
                 Vector3 PickupPosition = VictimBody.transform.position + Vector3.up *2f;
 
                 //int DiffMultAdd = Run.instance.selectedDifficulty;
