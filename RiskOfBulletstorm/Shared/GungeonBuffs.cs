@@ -153,8 +153,11 @@ namespace RiskOfBulletstorm.Items
                     if (healthComponent)
                     {
                         var oldMaxHealth = healthComponent.fullHealth;
-                        if (healthComponent.fullHealth - baseHealthAdd < 1)
+                        var resultant = oldMaxHealth + args.baseHealthAdd + baseHealthAdd;
+                        Debug.Log(resultant);
+                        if (resultant < 1)
                         {
+                            Debug.Log("value was too low");
                             baseHealthAdd = oldMaxHealth - 1;
                         }
                     }
