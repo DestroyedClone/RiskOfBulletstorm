@@ -27,6 +27,9 @@ namespace RiskOfBulletstorm.Items
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Multiplier per stage count = 2.00x", AutoConfigFlags.PreventNetMismatch)]
         public float BUP_StageMultiplier { get; private set; } = 2f;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Chance to create a pickup upon stage start. Default: 30%", AutoConfigFlags.PreventNetMismatch)]
+        public float BUP_RollChance { get; private set; } = 30f;
         public override string displayName => "BulletstormPickupsController";
         public override ItemTier itemTier => ItemTier.NoTier;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.WorldUnique, ItemTag.AIBlacklist });
@@ -37,14 +40,6 @@ namespace RiskOfBulletstorm.Items
         protected override string GetDescString(string langid = null) => $"";
 
         protected override string GetLoreString(string langID = null) => "";
-
-        //private readonly int StageMultiplier = 2;
-        //private readonly int DifficultyMultiplier = 1;
-
-
-        private readonly float PickupRollChance = 30f;
-
-        //WeightedSelection<PickupIndex> weightedSelection = new WeightedSelection<PickupIndex>();
 
         public WeightedSelection<PickupIndex> weightedSelection = new WeightedSelection<PickupIndex>(4);
 
@@ -109,7 +104,8 @@ namespace RiskOfBulletstorm.Items
         {
             if (!dmginfo.inflictor && dmginfo.procCoefficient == 1 && dmginfo.damageColorIndex == DamageColorIndex.Item && dmginfo.force == Vector3.zero && dmginfo.damageType == DamageType.Generic)
             {
-                Debug.Log("Doll Detected!");
+                Debug.Log("Doll Detected: ");
+                Debug.Log(dmginfo);
                 return true;
             }
             else
@@ -143,7 +139,7 @@ namespace RiskOfBulletstorm.Items
                 Chat.AddMessage("kills: "+ pickupsComponent.globalDeaths + " / "+ requiredKills);
                 if (pickupsComponent.globalDeaths % requiredKills == 0)
                 {
-                    if (Util.CheckRoll(PickupRollChance)) //Roll to spawn pickups
+                    if (Util.CheckRoll(BUP_RollChance)) //Roll to spawn pickups
                     {
                         Chat.AddMessage("Pickups: Rolled success.");
 
