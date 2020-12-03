@@ -118,7 +118,7 @@ namespace RiskOfBulletstorm.Items
         {
             //var body = PlayerCharacterMasterController.instances[0].master.GetBody();
             var characterBody = GetPlayerWithMostItemIndex(SpiceTally);
-            if (characterBody)
+            if (characterBody != null)
             {
                 var SpiceReplaceChance = characterBody.inventory.GetItemCount(SpiceTally);
                 if (Util.CheckRoll(SpiceReplaceChance))
