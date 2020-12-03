@@ -123,13 +123,14 @@ namespace RiskOfBulletstorm.Items
             switch (SpiceTallyCount)
             {
                 case 0:
+                    break;
                 case 1:
                 case 2:
                 case 3:
                 case 4:
                     //health, attack speed, shot accuracy, enemy bullet speed, damage
-                    args.baseHealthAdd += HeartValue * SpiceBonuses[SpiceTallyCount, 0];
-                    args.attackSpeedMultAdd += SpiceBonuses[SpiceTallyCount, 1];
+                    args.baseHealthAdd = HeartValue * SpiceBonuses[SpiceTallyCount, 0];
+                    args.attackSpeedMultAdd = SpiceBonuses[SpiceTallyCount, 1];
                     //accuracy 
                     //enemy bullet speed
                     //damage
@@ -142,17 +143,16 @@ namespace RiskOfBulletstorm.Items
                     {
                         var oldMaxHealth = healthComponent.fullHealth;
                         var resultant = oldMaxHealth + args.baseHealthAdd + baseHealthAdd;
-                        Debug.Log(resultant);
+                        Chat.AddMessage("health"+ oldMaxHealth+"args"+ args.baseHealthAdd+"basehealthadd"+ baseHealthAdd);
                         if (resultant < 1)
                         {
                             Debug.Log("value was too low");
                             baseHealthAdd = oldMaxHealth - 1;
                         }
                     }
-                    var attackSpeedAdd = SpiceBonusesConstantMaxed[1];
-                    args.baseHealthAdd += baseHealthAdd;
+                    args.baseHealthAdd = baseHealthAdd;
                     //health, attack speed, shot accuracy, enemy bullet speed, damage
-                    args.attackSpeedMultAdd += attackSpeedAdd;
+                    args.attackSpeedMultAdd = SpiceBonusesConstantMaxed[1];
                     //accuracy
                     //enemy
                     //damage

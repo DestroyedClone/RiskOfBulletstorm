@@ -115,11 +115,11 @@ namespace RiskOfBulletstorm.Items
                 if (NetworkServer.active && alive && TeamComponent.GetObjectTeam(other.gameObject) == teamFilter.teamIndex)
                 {
                     Debug.Log("Ammo Spread: First check passed");
-                    ReadOnlyCollection<TeamComponent> teamComponents = TeamComponent.GetTeamMembers(teamFilter.teamIndex);
 
                     SkillLocator skillLocatorOther = other.GetComponent<SkillLocator>();
                     if (skillLocatorOther)
                     {
+                        ReadOnlyCollection<TeamComponent> teamComponents = TeamComponent.GetTeamMembers(teamFilter.teamIndex);
                         Debug.Log("Ammo Spread: OTher's skill locator detected");
 
                         alive = false;

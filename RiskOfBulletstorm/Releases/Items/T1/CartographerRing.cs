@@ -26,7 +26,7 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("Stack chance for stage to scan? (Default: 10%)", AutoConfigFlags.PreventNetMismatch)]
         public float CartographerRing_ScanChanceStack { get; private set; } = 10f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Duration of scanner in seconds (Default: 0-Infinite.)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Duration of scanner in seconds (Default: 0- Practically Infinite.)", AutoConfigFlags.PreventNetMismatch)]
         public float CartographerRing_ScanDuration { get; private set; } = 0f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Continue to pulse scans after the stage starts? (Default: false)", AutoConfigFlags.PreventNetMismatch)]
@@ -62,7 +62,7 @@ namespace RiskOfBulletstorm.Items
             chestRevealer.pulseEffectScale = 0;
             chestRevealer.pulseEffectPrefab = null; //light mode users
 
-            if (CartographerRing_ScanDuration < 0)
+            if (CartographerRing_ScanDuration <= 0)
             {
                 chestRevealer.revealDuration = 99999; //~27 hours
             }
