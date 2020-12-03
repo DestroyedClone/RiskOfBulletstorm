@@ -26,12 +26,12 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("Bullet Spread Reduction Stack (Default: 5%)", AutoConfigFlags.PreventNetMismatch)]
         public static float Scope_SpreadReductionStack { get; private set; } = 0.05f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("If enabled, Scope will affect the Disposable Missile Launcher", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("If enabled, Scope will affect the Disposable Missile Launcher." +
+            "\nThis tends to make it fire forwards rather than vertically, but shouldn't affect its homing.", AutoConfigFlags.PreventNetMismatch)]
         public static bool Scope_EnableDML { get; private set; } = true;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("If enabled, Scope will only tighten the spread of specific projectiles." +
-            "\nNote that disabling MIGHT cause some projectiles to behave differently, but will affect every projectile.." +
-            "\nWhitelisted Projectiles: REX syringe, Sawmerang", AutoConfigFlags.PreventNetMismatch)]
+            "\nIt is HIGHLY recommended not to disable, because alot of projectiles will break otherwise.", AutoConfigFlags.PreventNetMismatch)]
         public static bool Scope_WhitelistProjectiles { get; private set; } = true;
         public override string displayName => "Scope";
         public override ItemTier itemTier => ItemTier.Tier2;
@@ -40,7 +40,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetNameString(string langID = null) => displayName;
         protected override string GetPickupString(string langID = null) => "Steady Aim\nA standard scope. Increases accuracy!";
 
-        protected override string GetDescString(string langid = null) => $"<style=cIsUtility>Decreases bullet spread by {Pct(Scope_SpreadReduction)}</style>" +
+        protected override string GetDescString(string langid = null) => $"<style=cIsUtility>Decreases firing spread by {Pct(Scope_SpreadReduction)}</style>" +
             $"\n<style=cStack>(+{Pct(Scope_SpreadReductionStack)} per stack)</style>";
 
         protected override string GetLoreString(string langID = null) => "4:44 - [Kate] Found this scope in a chest, reporting back." +

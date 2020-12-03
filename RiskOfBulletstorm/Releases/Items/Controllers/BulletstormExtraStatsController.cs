@@ -45,6 +45,7 @@ namespace RiskOfBulletstorm.Items
         private ItemIndex ItemIndex_SpiceTally;
 
         private float[,] SpiceBonuses;
+        private float[] SpiceBonusesAdditive;
         private float[] SpiceBonusesConstantMaxed;
 
         public static List<GameObject> WhitelistedProjectiles = new List<GameObject>
@@ -101,24 +102,25 @@ namespace RiskOfBulletstorm.Items
 
             // SPICE //
             SpiceBonuses = Spice.SpiceBonuses;
+            SpiceBonusesAdditive = Spice.SpiceBonusesAdditive;
             SpiceBonusesConstantMaxed = Spice.SpiceBonusesConstantMaxed;
 
             // MODDED //
-            // MINER DIRESEEKER //
-            var direSeekerFireballPrefab = ProjectileCatalog.FindProjectileIndex("DireseekerFireball");
-            if (direSeekerFireballPrefab > 0) WhitelistedProjectiles.Add(ProjectileCatalog.GetProjectilePrefab(direSeekerFireballPrefab));
+            string[] moddedProjectileStrings =
+            {
+                // MINER - DIRESEEKER //
+                "DireseekerFireball",
+                "DireseekerGroundFireball",
 
-            var direSeekerFireballGroundPrefab = ProjectileCatalog.FindProjectileIndex("DireseekerGroundFireball");
-            if (direSeekerFireballGroundPrefab > 0) WhitelistedProjectiles.Add(ProjectileCatalog.GetProjectilePrefab(direSeekerFireballGroundPrefab));
-
-            // ENFORCER ? //
-
-            // TRISTANA (NO GITHUB) //
-
-            // TRACER (NO GITHUB) //
-
-
-
+                // AETHERIUM //
+                "JarOfReshapingProjectile",
+                "SplinteringProjectile",
+            };
+            foreach (string projectileString in moddedProjectileStrings)
+            {
+                var projectileIndex = ProjectileCatalog.FindProjectileIndex(projectileString);
+                if (projectileIndex > 0) WhitelistedProjectiles.Add(ProjectileCatalog.GetProjectilePrefab(projectileIndex));
+            }
         }
 
         public override void SetupConfig()
@@ -213,10 +215,12 @@ namespace RiskOfBulletstorm.Items
             {
                 if (ItemCount_Spice > 4)
                 {
-                    SpiceMult = SpiceBonusesConstantMaxed[2];
+                    SpiceMult = SpiceBonusesConstantMaxed[2] + SpiceBonusesAdditive[2] + SpiceBonusesAdditive[2] * (ItemCount_Spice - 4);
+                    // +0.15 (+) -0.10 (+) -0.10*additionalstacks
                 } else
                 {
-                    SpiceMult = SpiceBonuses[ItemCount_Spice, 2];
+                    SpiceMult = SpiceBonuses[ItemCount_Spice,2];
+                    // -0.15 + 
                 }
             }
             var ResultMult = ScopeMult + SpiceMult;
