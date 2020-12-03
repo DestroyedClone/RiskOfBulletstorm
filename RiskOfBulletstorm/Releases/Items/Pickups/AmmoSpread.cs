@@ -112,6 +112,12 @@ namespace RiskOfBulletstorm.Items
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
             private void OnTriggerStay(Collider other)
             {
+                if (!other)
+                {
+                    Debug.Log(other+"doesnt exist");
+                    return;
+                }
+
                 if (NetworkServer.active && alive && TeamComponent.GetObjectTeam(other.gameObject) == teamFilter.teamIndex)
                 {
                     Debug.Log("Ammo Spread: First check passed");
