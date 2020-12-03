@@ -93,24 +93,24 @@ namespace RiskOfBulletstorm.Utils
         {
             var self = characterMaster.inventory;
             var InventoryCount = self.GetItemCount(itemIndex);
-            var result = 0;
             //var pickupindex = PickupCatalog.FindPickupIndex(itemIndex);
             //var pickupDef = PickupCatalog.GetPickupDef(pickupindex);
             if (InventoryCount < max)
             {
                 if (InventoryCount + amount > max) amount = max - InventoryCount;
+
                 if (!showInChat)
+                {
+                    Debug.Log("Showinchat false, gave it");
                     self.GiveItem(itemIndex, amount);
+                }
                 else
                 {
-                    if (result > 0)
-                    {
-                        SimulatePickup(characterMaster, itemIndex, amount);
-                    }
+                    Debug.Log("Showinchat true, continuing");
+                    SimulatePickup(characterMaster, itemIndex, amount);
                 }
-                result = amount;
             }
-            return result;
+            return amount;
         }
         public static void SimulatePickup(CharacterMaster characterMaster, ItemIndex itemIndex, int amount = 1)
         {
@@ -123,7 +123,7 @@ namespace RiskOfBulletstorm.Utils
             var body = characterMaster.GetBody();
 
             GenericPickupController.SendPickupMessage(characterMaster, pickupIndex);
-            
+
             Chat.AddPickupMessage(body, nameToken, color, (uint)amount);
             Util.PlaySound("Play_UI_item_pickup", characterMaster.GetBodyObject());
 
