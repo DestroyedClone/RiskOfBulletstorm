@@ -137,16 +137,19 @@ namespace RiskOfBulletstorm.Items
         //ty Ghor for the hook
         private void Stage_onStageStartGlobal(Stage obj)
         {
-            int InventoryCount = GetPlayersItemCount(catalogIndex);
-
-            if (InventoryCount > 0)
+            if (NetworkServer.active)
             {
-                var ResultChance = CartographerRing_ScanChance + CartographerRing_ScanChanceStack * (InventoryCount - 1);
-                if (Util.CheckRoll(ResultChance))
+                int InventoryCount = GetPlayersItemCount(catalogIndex);
+
+                if (InventoryCount > 0)
                 {
-                    var clone = UnityEngine.Object.Instantiate(PermanentScannerPrefab);
-                    //NetworkServer.Spawn(UnityEngine.Object.Instantiate(PermanentScannerPrefab));
-                    NetworkServer.Spawn(clone);
+                    var ResultChance = CartographerRing_ScanChance + CartographerRing_ScanChanceStack * (InventoryCount - 1);
+                    if (Util.CheckRoll(ResultChance))
+                    {
+                        var clone = UnityEngine.Object.Instantiate(PermanentScannerPrefab);
+                        //NetworkServer.Spawn(UnityEngine.Object.Instantiate(PermanentScannerPrefab));
+                        NetworkServer.Spawn(clone);
+                    }
                 }
             }
         }
