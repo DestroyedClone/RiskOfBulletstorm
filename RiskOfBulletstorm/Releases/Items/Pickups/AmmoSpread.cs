@@ -106,7 +106,7 @@ namespace RiskOfBulletstorm.Items
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
             private void OnEnable()
             {
-                teamFilter.teamIndex = TeamIndex.Player;
+                teamFilter.SetTeamServer("Player");
             }
 
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
@@ -114,6 +114,7 @@ namespace RiskOfBulletstorm.Items
             {
                 if (alive)
                 {
+                    Debug.Log(other);
                     Debug.Log("worked so we removin");
                     alive = false;
                     Destroy(gameObject);

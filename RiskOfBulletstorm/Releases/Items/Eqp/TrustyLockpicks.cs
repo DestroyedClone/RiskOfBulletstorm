@@ -53,7 +53,7 @@ namespace RiskOfBulletstorm.Items
         private readonly GameObject Fail_DestroyEffect = Resources.Load<GameObject>("prefabs/effects/ShieldBreakEffect");
         private readonly GameObject Fail_LockEffect = Resources.Load<GameObject>("prefabs/effects/prefabs/effects/WarCryEffect");
         private readonly string prefix = "TRUSTYLOCKPICKS_";
-        private readonly string suffix = " (Broken Lock)";
+        private readonly string suffixBroken = " (Broken Lock)";
         public TrustyLockpicks()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/TrustyLockpicks.prefab";
@@ -68,10 +68,10 @@ namespace RiskOfBulletstorm.Items
         {
             base.SetupAttributes();
 
-            LanguageAPI.Add(prefix + "CHEST1_NAME", "Chest"+suffix);
-            LanguageAPI.Add(prefix + "CHEST2_NAME", "Large Chest" + suffix);
-            LanguageAPI.Add(prefix + "GOLDCHEST_NAME", "Legendary Chest" + suffix);
-            LanguageAPI.Add(prefix + "EQUIPMENTBARREL_NAME", "Equipment Barrel" + suffix);
+            LanguageAPI.Add(prefix + "CHEST1_NAME", "Chest"+ suffixBroken);
+            LanguageAPI.Add(prefix + "CHEST2_NAME", "Large Chest" + suffixBroken);
+            LanguageAPI.Add(prefix + "GOLDCHEST_NAME", "Legendary Chest" + suffixBroken);
+            LanguageAPI.Add(prefix + "EQUIPMENTBARREL_NAME", "Equipment Barrel" + suffixBroken);
         }
         public override void SetupConfig()
         {
@@ -106,7 +106,6 @@ namespace RiskOfBulletstorm.Items
 
             if (AttemptUnlock(BestInteractableObject, interactionDriver, newUnlockChance)) 
             {
-                
                 return true;
             } else
             {
@@ -119,7 +118,6 @@ namespace RiskOfBulletstorm.Items
             Highlight highlight = chestObject.GetComponent<Highlight>();
             PurchaseInteraction purchaseInteraction = chestObject.GetComponent<PurchaseInteraction>();
             if (!highlight) return false;
-            //if (highlight.pickupIndex != BFGPickupIndex) return false;
             if (!purchaseInteraction) return false;
             TrustyLockpickFailed attempted = chestObject.GetComponent<TrustyLockpickFailed>();
             if (attempted) return false;
@@ -154,8 +152,6 @@ namespace RiskOfBulletstorm.Items
                     if (displaynamecomponent) displaynamecomponent.displayToken = prefix + displaynamecomponent.displayToken;
                     if (TrustyLockpicks_KillChest)
                     {
-
-                        purchaseInteraction.displayNameToken = (prefix + purchaseInteraction.displayNameToken);
                         purchaseInteraction.costType = CostTypeIndex.None;
                         purchaseInteraction.SetAvailable(false);
 
@@ -170,6 +166,7 @@ namespace RiskOfBulletstorm.Items
                         purchaseInteraction.Networkcost = purchaseInteraction.cost;
                         selectedEffect = Fail_LockEffect;
                     }
+                    purchaseInteraction.displayNameToken = (prefix + purchaseInteraction.displayNameToken);
                     chestObject.AddComponent<TrustyLockpickFailed>();
                     EffectManager.SimpleEffect(selectedEffect, chestObject.transform.position + offset, Quaternion.identity, true);
                 }
@@ -190,7 +187,7 @@ namespace RiskOfBulletstorm.Items
             //if (attempted) return orig(self, activator);
             if (attempted)
             {
-                highlight.highlightColor = Highlight.HighlightColor.unavailable;
+                highlight.highlightColor = Highlight.HighlightColor.teleporter;
                 return orig(self, activator);
             }
 
@@ -205,7 +202,7 @@ namespace RiskOfBulletstorm.Items
                         EquipmentIndex equipmentIndex = inventory.GetEquipmentIndex();
                         if (equipmentIndex == catalogIndex)
                         {
-                            highlight.highlightColor = Highlight.HighlightColor.teleporter;
+                            highlight.highlightColor = Highlight.HighlightColor.pickup;
                             return Interactability.Available;
                         }
                     }
