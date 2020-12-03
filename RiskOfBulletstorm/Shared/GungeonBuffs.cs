@@ -105,6 +105,7 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             GetStatCoefficients += AddRewards;
+            GetStatCoefficients += AddSpiceRewards;
             On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
         }
 
@@ -112,25 +113,12 @@ namespace RiskOfBulletstorm.Items
         {
             base.Uninstall();
             GetStatCoefficients -= AddRewards;
+            GetStatCoefficients -= AddSpiceRewards;
             On.RoR2.HealthComponent.TakeDamage -= HealthComponent_TakeDamage;
         }
-        private void AddRewards(CharacterBody sender, StatHookEventArgs args)
+
+        private void AddSpiceRewards(CharacterBody sender, StatHookEventArgs args)
         {
-            /*
-            [0] Health: Handled Here
-            [1] Attack Speed: Handled Here
-            [2] Accuracy: BulletstormExtraStatsController
-            [3] Enemy Bullet Speed: BulletstormExtraStatsController
-            [4] Damage: HealthComponent_TakeDamage
-            */
-            if (sender.HasBuff(Anger)) { args.damageMultAdd += EnragingPhoto.instance.EnragingPhoto_DmgBoost; }
-            if (sender.HasBuff(Jammed))
-            {
-                args.damageMultAdd += Items.CurseController.instance.Curse_DamageBoost;
-                args.attackSpeedMultAdd += 0.2f;
-                args.moveSpeedMultAdd += 0.2f;
-                //Contact damage is handled by the component
-            }
             var SpiceTallyCount = sender.inventory.GetItemCount(SpiceTally);
             switch (SpiceTallyCount)
             {
@@ -140,7 +128,7 @@ namespace RiskOfBulletstorm.Items
                 case 3:
                 case 4:
                     //health, attack speed, shot accuracy, enemy bullet speed, damage
-                    args.baseHealthAdd += HeartValue * SpiceBonuses[SpiceTallyCount,0];
+                    args.baseHealthAdd += HeartValue * SpiceBonuses[SpiceTallyCount, 0];
                     args.attackSpeedMultAdd += SpiceBonuses[SpiceTallyCount, 1];
                     //accuracy 
                     //enemy bullet speed
@@ -169,6 +157,24 @@ namespace RiskOfBulletstorm.Items
                     //enemy
                     //damage
                     break;
+            }
+        }
+        private void AddRewards(CharacterBody sender, StatHookEventArgs args)
+        {
+            /*
+            [0] Health: Handled Here
+            [1] Attack Speed: Handled Here
+            [2] Accuracy: BulletstormExtraStatsController
+            [3] Enemy Bullet Speed: BulletstormExtraStatsController
+            [4] Damage: HealthComponent_TakeDamage
+            */
+            if (sender.HasBuff(Anger)) { args.damageMultAdd += EnragingPhoto.instance.EnragingPhoto_DmgBoost; }
+            if (sender.HasBuff(Jammed))
+            {
+                args.damageMultAdd += Items.CurseController.instance.Curse_DamageBoost;
+                args.attackSpeedMultAdd += 0.2f;
+                args.moveSpeedMultAdd += 0.2f;
+                //Contact damage is handled by the component
             }
         }
 
