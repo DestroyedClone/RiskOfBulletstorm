@@ -42,7 +42,7 @@ namespace RiskOfBulletstorm.Items
         //private readonly int DifficultyMultiplier = 1;
 
 
-        private readonly float PickupRollChance = 20f;
+        private readonly float PickupRollChance = 30f;
 
         //WeightedSelection<PickupIndex> weightedSelection = new WeightedSelection<PickupIndex>();
 
@@ -118,6 +118,7 @@ namespace RiskOfBulletstorm.Items
 
         private void GlobalEventManager_OnCharacterDeath(On.RoR2.GlobalEventManager.orig_OnCharacterDeath orig, GlobalEventManager self, DamageReport damageReport)
         {
+            if (!NetworkServer.active) return;
             var dmginfo = damageReport.damageInfo;
             BulletstormPickupsComponent pickupsComponent = currentStage?.GetComponent<BulletstormPickupsComponent>();
             if (!currentStage || CheckIfDoll(dmginfo) || damageReport.victimTeamIndex == TeamIndex.Player || !pickupsComponent)
