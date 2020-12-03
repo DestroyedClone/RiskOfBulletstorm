@@ -114,32 +114,36 @@ namespace RiskOfBulletstorm.Items
             {
                 if (NetworkServer.active && alive && TeamComponent.GetObjectTeam(other.gameObject) == teamFilter.teamIndex)
                 {
+                    Debug.Log("Ammo Spread: First check passed");
                     ReadOnlyCollection<TeamComponent> teamComponents = TeamComponent.GetTeamMembers(teamFilter.teamIndex);
 
-                    SkillLocator component = other.GetComponent<SkillLocator>();
-                    if (!component) return;
-
-                    alive = false;
-
-                    foreach (TeamComponent teamComponent in teamComponents)
+                    SkillLocator skillLocatorOther = other.GetComponent<SkillLocator>();
+                    if (skillLocatorOther)
                     {
-                        CharacterBody body = teamComponent.body;
-                        if (body)
+                        Debug.Log("Ammo Spread: ");
+
+                        alive = false;
+
+                        foreach (TeamComponent teamComponent in teamComponents)
                         {
-                            var skillLocator = body.GetComponent<SkillLocator>();
-                            if (skillLocator)
-                                skillLocator.ApplyAmmoPack();
-                            var inventory = body.inventory;
-                            if (inventory)
+                            CharacterBody body = teamComponent.body;
+                            if (body)
                             {
-                                inventory.RestockEquipmentCharges(0, 1);
-                                if (inventory.GetEquipmentSlotCount() > 1) inventory.RestockEquipmentCharges(1, 1); //MULT
+                                var skillLocator = body.GetComponent<SkillLocator>();
+                                if (skillLocator)
+                                    skillLocator.ApplyAmmoPack();
+                                var inventory = body.inventory;
+                                if (inventory)
+                                {
+                                    inventory.RestockEquipmentCharges(0, 1);
+                                    if (inventory.GetEquipmentSlotCount() > 1) inventory.RestockEquipmentCharges(1, 1); //MULT
+                                }
+                                Chat.AddMessage("AmmoSpread: " + body.GetUserName() + " applied!");
+                                EffectManager.SimpleEffect(pickupEffect, transform.position, Quaternion.identity, true);
                             }
-                            Chat.AddMessage("AmmoSpread: " + body.GetUserName() + " applied!");
-                            EffectManager.SimpleEffect(pickupEffect, transform.position, Quaternion.identity, true);
                         }
+                        Destroy(gameObject);
                     }
-                    Destroy(gameObject);
                 }
             }
 
