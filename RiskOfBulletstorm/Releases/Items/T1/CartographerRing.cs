@@ -144,8 +144,9 @@ namespace RiskOfBulletstorm.Items
                 var ResultChance = CartographerRing_ScanChance + CartographerRing_ScanChanceStack * (InventoryCount - 1);
                 if (Util.CheckRoll(ResultChance))
                 {
+                    var clone = UnityEngine.Object.Instantiate(PermanentScannerPrefab);
                     //NetworkServer.Spawn(UnityEngine.Object.Instantiate(PermanentScannerPrefab));
-                    NetworkServer.Spawn(PermanentScannerPrefab);
+                    NetworkServer.Spawn(clone);
                 }
             }
         }
