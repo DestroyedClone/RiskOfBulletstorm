@@ -83,7 +83,7 @@ namespace RiskOfBulletstorm.Items
             "BeetleQueenSpit",
             "LunarShardProjectile",
             "LunarNeedleProjectile",
-            EntityStates.Captain.Weapon.FireTazer.projectilePrefab.name,
+            //EntityStates.Captain.Weapon.FireTazer.projectilePrefab.name,
         };
 
 
@@ -97,11 +97,11 @@ namespace RiskOfBulletstorm.Items
             if (!Scope_EnableDML)
                 WhitelistedProjectiles.Remove(DisposableMissileLauncherPrefab);
 
-            foreach (string projectileString in WhitelistedProjectilesString)
+            /*foreach (string projectileString in WhitelistedProjectilesString)
             {
-                var projectileIndex = ProjectileCatalog.FindProjectileIndex(projectileString);
+                var projectileIndex = ProjectileCatalog.FindProjectileIndex("Prefabs/Projectiles/"+projectileString);
                 if (projectileIndex > 0) WhitelistedProjectiles.Add(ProjectileCatalog.GetProjectilePrefab(projectileIndex));
-            }
+            }*/
 
         }
         public override void SetupLate()
@@ -272,6 +272,7 @@ namespace RiskOfBulletstorm.Items
                             {
                                 if (WhitelistedProjectiles.Contains(projectilePrefab))
                                 {
+                                    Debug.Log("Projectile Fired: "+ projectilePrefab.name);
                                     fireProjectileInfo.rotation = UpdatedAngle;
                                 }
                                 //Chat.AddMessage("Scope Lerp: " + aimDir + " and " + rotation + " resulting " + UpdatedAngle);

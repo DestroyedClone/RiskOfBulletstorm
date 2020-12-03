@@ -242,6 +242,7 @@ namespace RiskOfBulletstorm.Items
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
             void OnEnable()
             {
+                characterBody = gameObject.GetComponent<CharacterBody>();
                 Debug.Log("JammedOnEnable: 0");
                 if (!characterBody.HasBuff(Jammed))
                 {
