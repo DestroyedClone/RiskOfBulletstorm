@@ -37,7 +37,7 @@ namespace RiskOfBulletstorm.Items
         public bool Curse_AllowBosses { get; private set; } = true;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Allow umbra to become Jammed? Default: true", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Allow umbrae to become Jammed? Default: true", AutoConfigFlags.PreventNetMismatch)]
         public bool Curse_AllowUmbra { get; private set; } = true;
 
         /*[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]

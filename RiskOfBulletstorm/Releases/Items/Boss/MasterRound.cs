@@ -37,7 +37,7 @@ namespace RiskOfBulletstorm.Items
         public bool MasterRound_AnnounceMax { get; private set; } = true;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Show who gets hit in chat? Default: false", AutoConfigFlags.PreventNetMismatch)]
-        public bool MasterRound_ShowHitInChat { get; private set; } = true;
+        public bool MasterRound_ShowHitInChat { get; private set; } = false;
 
         public override string displayName => "Master Round";
         public override ItemTier itemTier => ItemTier.Boss;
