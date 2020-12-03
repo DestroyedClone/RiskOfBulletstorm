@@ -59,7 +59,7 @@ namespace RiskOfBulletstorm.Items
             //Object.Destroy(BombPrefab.GetComponent<ApplyTorqueOnStart>());
 
             var model = Resources.Load<GameObject>(ProjectileModelPath);
-            var modelScale = 0.25f;
+            var modelScale = 0.20f;
             model.transform.localScale = new Vector3(modelScale, modelScale, modelScale);
             model.AddComponent<NetworkIdentity>();
             model.AddComponent<ProjectileGhostController>();
