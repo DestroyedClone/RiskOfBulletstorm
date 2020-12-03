@@ -219,13 +219,10 @@ namespace RiskOfBulletstorm.Items
                     var rotvalue = 360 / i;
 
                     PickupIndex pickupIndex = PickupCatalog.FindPickupIndex(catalogIndex);
-                    Vector3 pickupVelocity = new Vector3(rotvalue, 20, rotvalue);
-                    PickupDropletController.CreatePickupDroplet(pickupIndex, teleporterInteraction.transform.position, pickupVelocity);
+                    Vector3 pickupVelocity = new Vector3(rotvalue, 45, rotvalue);
+                    var offset = Vector3.up * 2f;
+                    PickupDropletController.CreatePickupDroplet(pickupIndex, teleporterInteraction.transform.position + offset, pickupVelocity);
                 }
-            }
-            else
-            {
-                Chat.AddMessage("Players didn't survive the hits");
             }
         }
 
