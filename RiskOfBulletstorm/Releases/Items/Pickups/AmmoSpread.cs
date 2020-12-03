@@ -46,12 +46,11 @@ namespace RiskOfBulletstorm.Items
             Pickup_AmmoSpread.GetComponent<BeginRapidlyActivatingAndDeactivating>().delayBeforeBeginningBlinking = Math.Min(AmmoSpread_LifetimeBlinking, AmmoSpread_Lifetime);
             Pickup_AmmoSpread.GetComponent<TeamFilter>().teamIndex = TeamIndex.Player;
 
-            Debug.Log("Attempting to add pickupspread");
             Pickup_AmmoSpread.AddComponent<AmmoPickupSpread>();
-            Debug.Log("PickupSpread added");
 
             UnityEngine.Object.Destroy(Pickup_AmmoSpread.GetComponent<VelocityRandomOnStart>());
             UnityEngine.Object.Destroy(Pickup_AmmoSpread.GetComponent<AmmoPickup>());
+
 
             //ProjectileCatalog.getAdditionalEntries += list => list.Add(ammoPickupPrefab);
             //if (Pickup_AmmoSpread) PrefabAPI.RegisterNetworkPrefab(Pickup_AmmoSpread);
