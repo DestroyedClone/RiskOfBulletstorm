@@ -147,11 +147,20 @@ namespace RiskOfBulletstorm.Items
                     //damage
                     break;
                 default:
-                    Debug.Log("Gbuffs: attempting to add health mult with spice value: " + SpiceTallyCount);
                     var baseHealthAdd = HeartValue * SpiceBonusesAdditive[0] * (SpiceTallyCount - 4);
+
+                    var healthComponent = sender.healthComponent;
+                    if (healthComponent)
+                    {
+                        var oldMaxHealth = healthComponent.fullHealth;
+                        if (healthComponent.fullHealth - baseHealthAdd < 1)
+                        {
+                            baseHealthAdd = oldMaxHealth - 1;
+                        }
+                    }
                     var attackSpeedAdd = SpiceBonusesConstantMaxed[1];
-                    //health, attack speed, shot accuracy, enemy bullet speed, damage
                     args.baseHealthAdd += baseHealthAdd;
+                    //health, attack speed, shot accuracy, enemy bullet speed, damage
                     args.attackSpeedMultAdd += attackSpeedAdd;
                     //accuracy
                     //enemy
