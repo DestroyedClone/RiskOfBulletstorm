@@ -63,7 +63,6 @@ namespace RiskOfBulletstorm.Utils
                         if (inventory)
                         {
                             var result = GiveItemIfLess(master, itemIndex, showInChat, body, amount, max);
-                            Debug.Log("Item result: " + result);
                         }
                     }
                 }

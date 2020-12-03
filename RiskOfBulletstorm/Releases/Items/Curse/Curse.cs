@@ -17,13 +17,13 @@ namespace RiskOfBulletstorm.Items
 {
     public class Curse : Item_V2<Curse>
     {
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How many curse is needed before Lord of the Jammed spawns? Set it to -1 to disable. (Default: 10)", AutoConfigFlags.PreventNetMismatch)]
-        public float Curse_LOTJAmount { get; private set; } = 10f;
+        //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        //[AutoConfig("How many curse is needed before Lord of the Jammed spawns? Set it to -1 to disable. (Default: 10)", AutoConfigFlags.PreventNetMismatch)]
+        //public float Curse_LOTJAmount { get; private set; } = 10f;
 
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Enable Jammed enemies?", AutoConfigFlags.PreventNetMismatch)]
-        public bool Curse_Enable { get; private set; } = true;
+        //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        //[AutoConfig("Enable Jammed enemies?", AutoConfigFlags.PreventNetMismatch)]
+        //public bool Curse_Enable { get; private set; } = true;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How much additional damage should a Jammed enemy deal? (Default: 1 (+100%))", AutoConfigFlags.PreventNetMismatch)]
