@@ -129,8 +129,8 @@ namespace RiskOfBulletstorm.Items
                 case 3:
                 case 4:
                     //health, attack speed, shot accuracy, enemy bullet speed, damage
-                    args.baseHealthAdd = HeartValue * SpiceBonuses[SpiceTallyCount, 0];
-                    args.attackSpeedMultAdd = SpiceBonuses[SpiceTallyCount, 1];
+                    args.baseHealthAdd += HeartValue * SpiceBonuses[SpiceTallyCount, 0];
+                    args.attackSpeedMultAdd += SpiceBonuses[SpiceTallyCount, 1];
                     //accuracy 
                     //enemy bullet speed
                     //damage
@@ -142,17 +142,16 @@ namespace RiskOfBulletstorm.Items
                     if (healthComponent)
                     {
                         var oldMaxHealth = healthComponent.fullHealth;
-                        var resultant = oldMaxHealth + args.baseHealthAdd + baseHealthAdd;
-                        Chat.AddMessage("health"+ oldMaxHealth+"args"+ args.baseHealthAdd+"basehealthadd"+ baseHealthAdd);
+                        var resultant = oldMaxHealth + baseHealthAdd;
                         if (resultant < 1)
                         {
                             Debug.Log("value was too low");
                             baseHealthAdd = oldMaxHealth - 1;
                         }
                     }
-                    args.baseHealthAdd = baseHealthAdd;
+                    args.baseHealthAdd += baseHealthAdd;
                     //health, attack speed, shot accuracy, enemy bullet speed, damage
-                    args.attackSpeedMultAdd = SpiceBonusesConstantMaxed[1];
+                    args.attackSpeedMultAdd += SpiceBonusesConstantMaxed[1];
                     //accuracy
                     //enemy
                     //damage
@@ -239,19 +238,21 @@ namespace RiskOfBulletstorm.Items
 
         public class IsJammed : MonoBehaviour
         {
+            public CharacterBody characterBody;
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
             void OnEnable()
             {
-                ContactDamageCooldown = ContactDamageCooldownFull;
+                //ContactDamageCooldown = ContactDamageCooldownFull;
                 characterBody = gameObject.GetComponent<CharacterBody>();
                 if (!characterBody.HasBuff(Jammed))
                 {
                     characterBody.AddBuff(Jammed);
                 }
-                contactDamageInfo.inflictor = ContactDamageGameObject; //how
-                contactDamageInfo.attacker = gameObject; //who
+                //contactDamageInfo.inflictor = ContactDamageGameObject; //how
+                //contactDamageInfo.attacker = gameObject; //who
             } //setup
 
+            /*
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
             void OnTriggerEnter(Collider other)
             {
@@ -294,12 +295,11 @@ namespace RiskOfBulletstorm.Items
 
             public static readonly float ContactDamageCooldownFull = 2f;
             public float ContactDamageCooldown;
-            public CharacterBody characterBody;
             public DamageInfo contactDamageInfo = JammedContactDamageInfo;
             public static GameObject ContactDamageGameObject;
             public float damageCoefficient = 3f;
             public List<HealthComponent> healthComponents;
-            bool activateOnce = false;
+            bool activateOnce = false;*/
         }
     }
 }
