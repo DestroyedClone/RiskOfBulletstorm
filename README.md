@@ -1,4 +1,5 @@
 
+
 # Risk of Bulletstorm
 A mod for Risk of Rain 2 that plans to add custom content, modified from Enter The Gungeon. Currently Multiplayer Untested.
 
@@ -78,6 +79,18 @@ Every 50 kills, the game will have a 20% chance to *spawn a random weighted pick
 	 - *BEmbryo: Heals twice.*
  - **Trusty Lockpicks**: 50% chance to unlock a chest. If it fails, doubles its price and prevents further picklocking or using Keys.
 	 - *BEmbryo: Adds 30% of your base chance to unlock. By default, raises your unlock chance to 65%.*
+## Lunar
+ - **Spice**: Increases and decreases stats per consumed Spice. Bonuses:
+ - 
+| Spice Consumed | Health | Attack Speed | Accuracy | Enemy Bullet Speed | Damage
+|--|--|--|--|--|--|
+| 1 | +50 | +20% |  |  |  |
+| 2 | +50 | +20% | +25% |  |  |
+| 3 | -50 |  |  | -10% |  |
+| 4 | -50 |  |  | -5% | +20% |
+| 5+ | -50 |  | -10% |  | +15% |
+Consuming beyond 5 will continue to add the same as the bonuses from 5.
+- *BEmbryo:* No support due to its volatility.
 
 # Special
  - **Curse** - Certain items have apply curse. The chance of encountering a Jammed enemy increases as you gain more Curse. This is independent of elite affixes.
@@ -97,8 +110,9 @@ Every 50 kills, the game will have a 20% chance to *spawn a random weighted pick
 	 - Lunars: Ring of Miserly Protection
 	 - Boss: Master Round
 	 - Equipment: Friendsip Cookie, Meatbun, Medkit, Molotov, Orange, Portable ~~Table~~ Barrel Device, Ration, Trusty Lockpicks
+	 - Lunar Equipment: Spice
  - *Mustache---* Added config for interaction with Blood Shrines.
- - *Scope---* now affects REX syringes, Sawmerang, Preon Accumulator, and (config) Disposable Missile Launcher. Added experimental config for applying it to all projectiles (may break some projectiles).
+ - *Scope---* now affects REX syringes, Sawmerang, and (config) Disposable Missile Launcher. Added experimental config for applying it to all projectiles (may break some projectiles).
  - *Metronome---* Added config for stack loss.
  - *Bomb---* Added assets, increased cooldown
  - *EliteSpawningOverhaul---* Temporarily removed dependency. Deciding whether to keep or not.
