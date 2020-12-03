@@ -24,11 +24,17 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("Permitted Hits: 3", AutoConfigFlags.PreventNetMismatch)]
         public static int MasterRound_AllowedHits { get; private set; } = 3;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Permitted Hits added to Max per stage: 1", AutoConfigFlags.PreventNetMismatch)]
+        public static int MasterRound_AllowedHitsPerStage { get; private set; } = 1;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Minimum damage required before counting as a hit (Default: 5)", AutoConfigFlags.PreventNetMismatch)]
         public int MasterRound_MinimumDamage { get; private set; } = 5;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Allow the player's own damage to count as a hit? Default: false", AutoConfigFlags.PreventNetMismatch)]
         public bool MasterRound_AllowSelfDamage { get; private set; } = false;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Show in chat the amount of hits allowed? Default: true", AutoConfigFlags.PreventNetMismatch)]
+        public bool MasterRound_AnnounceMax { get; private set; } = true;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Show who gets hit in chat? Default: false", AutoConfigFlags.PreventNetMismatch)]
         public bool MasterRound_ShowHitInChat { get; private set; } = false;
@@ -152,6 +158,7 @@ namespace RiskOfBulletstorm.Items
         {
             var playerList = PlayerCharacterMasterController.instances;
             var StageCount = Run.instance.stageClearCount;
+            var maxHits = MasterRound_AllowedHits + StageCount * MasterRound_AllowedHitsPerStage;
             foreach (var player in playerList)
             {
                 var body = player.master.GetBody();
@@ -159,10 +166,12 @@ namespace RiskOfBulletstorm.Items
                 {
                     var MasterRoundComponent = body.gameObject.GetComponent<MasterRoundComponent>();
                     if (!MasterRoundComponent) MasterRoundComponent = body.gameObject.AddComponent<MasterRoundComponent>();
-                    MasterRoundComponent.allowedHits = MasterRound_AllowedHits + StageCount;
+                    MasterRoundComponent.allowedHits = maxHits;
                     MasterRoundComponent.teleporterCharging = true;
                 }
             }
+            if (MasterRound_AnnounceMax)
+                Chat.AddMessage("MASTER ROUND: Max Hits: "+ maxHits);
         }
         private void GenericNotification_SetItem(On.RoR2.UI.GenericNotification.orig_SetItem orig, GenericNotification self, ItemDef itemDef)
         {
