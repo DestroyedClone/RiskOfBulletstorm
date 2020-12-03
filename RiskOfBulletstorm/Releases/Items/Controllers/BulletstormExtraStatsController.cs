@@ -124,7 +124,7 @@ namespace RiskOfBulletstorm.Items
                                     //var oldSpeed = projectileSimple.velocity;
                                     var speedMult = CalculateEnemyProjectileSpeedMultiplier();
 
-                                    projectileSimple.velocity *= speedMult;
+                                    projectileSimple.velocity *= 1f + speedMult;
                                 }
                             }
                         }
@@ -137,11 +137,11 @@ namespace RiskOfBulletstorm.Items
 
         private float CalculateEnemyProjectileSpeedMultiplier()
         {
-            var characterBody = GetPlayerWithMostItemIndex(ItemIndex_SpiceTally);
+            var characterBodyWithMostSpice = GetPlayerWithMostItemIndex(ItemIndex_SpiceTally);
             float SpiceMult = 0f;
-            if (characterBody)
+            if (characterBodyWithMostSpice)
             {
-                int ItemCount_Spice = characterBody.inventory.GetItemCount(ItemIndex_SpiceTally);
+                int ItemCount_Spice = characterBodyWithMostSpice.inventory.GetItemCount(ItemIndex_SpiceTally);
 
                 if (ItemCount_Spice > 0)
                 {
@@ -154,7 +154,6 @@ namespace RiskOfBulletstorm.Items
                         SpiceMult = SpiceBonuses[ItemCount_Spice, 3];
                     }
                 }
-                Debug.Log("Speed Mult = " + SpiceMult);
             }
             return SpiceMult;
         }

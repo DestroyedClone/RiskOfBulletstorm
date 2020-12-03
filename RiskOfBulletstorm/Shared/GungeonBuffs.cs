@@ -139,6 +139,7 @@ namespace RiskOfBulletstorm.Items
                 case 2:
                 case 3:
                 case 4:
+                    Debug.Log("Gungeon Buffs: Entered case "+SpiceTallyCount);
                     //health, attack speed, shot accuracy, enemy bullet speed, damage
                     args.healthMultAdd += HeartValue * SpiceBonuses[SpiceTallyCount,0];
                     args.attackSpeedMultAdd += SpiceBonuses[SpiceTallyCount, 1];
@@ -147,7 +148,9 @@ namespace RiskOfBulletstorm.Items
                     //damage
                     break;
                 default:
-                    var healthMultAdd = HeartValue * SpiceBonusesAdditive[5, 0] * (SpiceTallyCount - 4);
+                    Debug.Log("Gungeon Buffs: Entered case default with " + SpiceTallyCount);
+                    Debug.Log("Gbuffs: attempting to add health mult with spice value: " + SpiceTallyCount);
+                    var healthMultAdd = HeartValue * SpiceBonusesAdditive[4, 0] * (SpiceTallyCount - 4);
                     var attackSpeedAdd = SpiceBonusesConstantMaxed[1];
                     //health, attack speed, shot accuracy, enemy bullet speed, damage
                     args.healthMultAdd += healthMultAdd;
