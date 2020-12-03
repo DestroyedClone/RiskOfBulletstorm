@@ -77,14 +77,32 @@ namespace RiskOfBulletstorm.Items
             DisposableMissileLauncherPrefab,
         };
 
-        public static List<string> WhitelistedProjectilesString = new List<string>
+        /*public static List<string> WhitelistedProjectilesString = new List<string>
         {
             "Sawmerang",
             "BeetleQueenSpit",
             "LunarShardProjectile",
             "LunarNeedleProjectile",
-            //EntityStates.Captain.Weapon.FireTazer.projectilePrefab.name,
-        };
+            EntityStates.Captain.Weapon.FireTazer.projectilePrefab.name,
+            EntityStates.ClayBoss.FireTarball.projectilePrefab.name,
+            EntityStates.ClayBoss.ClayBossWeapon.FireBombardment.projectilePrefab.name,
+            "prefabs/projectiles/CommandoGrenadeProjectile",
+            EntityStates.Engi.EngiMissilePainter.Fire.projectilePrefab.name,
+            EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.projectilePrefab.name,
+            EntityStates.GravekeeperBoss.FireHook.projectilePrefab.name,
+            EntityStates.GravekeeperMonster.Weapon.GravekeeperBarrage.projectilePrefab.name,
+            EntityStates.ImpBossMonster.FireVoidspikes.projectilePrefab.name,
+            EntityStates.ImpMonster.FireSpines.projectilePrefab.name,
+            EntityStates.LemurianBruiserMonster.FireMegaFireball.projectilePrefab.name,
+            EntityStates.NullifierMonster.FirePortalBomb.portalBombProjectileEffect.name,
+            "prefabs/projectiles/RoboBallProjectile",
+            "prefabs/projectiles/SuperRoboBallProjectile", //idk??
+            EntityStates.ScavMonster.FireEnergyCannon.projectilePrefab.name,
+            EntityStates.Treebot.Weapon.FireSyringe.projectilePrefab.name, //REX
+            EntityStates.UrchinTurret.Weapon.MinigunFire.projectilePrefab.name,
+            EntityStates.VagrantMonster.Weapon.JellyBarrage.projectilePrefab.name,
+            EntityStates.Vulture.Weapon.FireWindblade.projectilePrefab.name,
+        };*/
 
 
         public override void SetupBehavior()
@@ -96,12 +114,6 @@ namespace RiskOfBulletstorm.Items
             base.SetupAttributes();
             if (!Scope_EnableDML)
                 WhitelistedProjectiles.Remove(DisposableMissileLauncherPrefab);
-
-            /*foreach (string projectileString in WhitelistedProjectilesString)
-            {
-                var projectileIndex = ProjectileCatalog.FindProjectileIndex("Prefabs/Projectiles/"+projectileString);
-                if (projectileIndex > 0) WhitelistedProjectiles.Add(ProjectileCatalog.GetProjectilePrefab(projectileIndex));
-            }*/
 
         }
         public override void SetupLate()
@@ -133,9 +145,20 @@ namespace RiskOfBulletstorm.Items
                 "JarOfReshapingProjectile",
                 "SplinteringProjectile",
             };
+
+            // VANILLA //
+            //game doesnt like this RIP
+            /*foreach (string projectileString in WhitelistedProjectilesString)
+            {
+                var projectileIndex = ProjectileCatalog.FindProjectileIndex("Prefabs/Projectiles/"+projectileString);
+                if (projectileIndex > 0) WhitelistedProjectiles.Add(ProjectileCatalog.GetProjectilePrefab(projectileIndex));
+            }*/
+            // MODDED //
+            Debug.Log("Adding modded projectiles");
             foreach (string projectileString in moddedProjectileStrings)
             {
                 var projectileIndex = ProjectileCatalog.FindProjectileIndex(projectileString);
+                //failures to find defaults to -1
                 if (projectileIndex > 0) WhitelistedProjectiles.Add(ProjectileCatalog.GetProjectilePrefab(projectileIndex));
             }
         }
