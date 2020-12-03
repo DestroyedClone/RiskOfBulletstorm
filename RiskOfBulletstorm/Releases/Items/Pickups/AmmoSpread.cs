@@ -128,8 +128,12 @@ namespace RiskOfBulletstorm.Items
                         if (body)
                         {
                             body.GetComponent<SkillLocator>()?.ApplyAmmoPack();
-                            body.inventory?.RestockEquipmentCharges(0, 1);
-                            if (body.inventory?.GetEquipmentSlotCount() > 1) body.inventory?.RestockEquipmentCharges(1, 1); //MULT
+                            var inventory = body.inventory;
+                            if (inventory)
+                            {
+                                inventory.RestockEquipmentCharges(0, 1);
+                                if (inventory.GetEquipmentSlotCount() > 1) inventory.RestockEquipmentCharges(1, 1); //MULT
+                            }
                             Chat.AddMessage("AmmoSpread: " + body.GetUserName() + " applied!");
                             EffectManager.SimpleEffect(this.pickupEffect, this.transform.position, Quaternion.identity, true);
                         }

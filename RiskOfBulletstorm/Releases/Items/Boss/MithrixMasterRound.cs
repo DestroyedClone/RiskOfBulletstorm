@@ -55,6 +55,9 @@ namespace RiskOfBulletstorm.Items
             if (NetworkServer.active)
             {
                 HelperUtil.GiveItemToPlayers(catalogIndex);
+            } else
+            {
+                Debug.Log("Network server called on da client");
             }
         }
 
