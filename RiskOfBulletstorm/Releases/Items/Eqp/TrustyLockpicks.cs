@@ -22,7 +22,7 @@ namespace RiskOfBulletstorm.Items
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Lock the chest instead? Takes priority over increasing the price. Default: false", AutoConfigFlags.PreventNetMismatch)]
-        public bool TrustyLockpicks_KillChest { get; private set; } = true;
+        public bool TrustyLockpicks_KillChest { get; private set; } = false;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Cooldown? (Default: 60 seconds)", AutoConfigFlags.PreventNetMismatch)]
