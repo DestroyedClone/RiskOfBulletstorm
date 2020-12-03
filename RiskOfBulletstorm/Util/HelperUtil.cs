@@ -247,7 +247,7 @@ namespace RiskOfBulletstorm.Utils
 
         public static float GetCurseCount(CharacterBody characterBody = null)
         {
-            var curseIndex = Items.Curse.instance.catalogIndex;
+            var curseIndex = Items.Curse.curseTally;
             if (!characterBody)
                 return HelperUtil.GetPlayersItemCount(curseIndex);
             return characterBody.inventory.GetItemCount(curseIndex);

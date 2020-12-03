@@ -33,8 +33,12 @@ namespace RiskOfBulletstorm.Items
         public float Curse_CritBoost { get; private set; } = 1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Allow bosses to become Jammed?", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Allow bosses to become Jammed? Default: true", AutoConfigFlags.PreventNetMismatch)]
         public bool Curse_AllowBosses { get; private set; } = true;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Allow umbra to become Jammed? Default: true", AutoConfigFlags.PreventNetMismatch)]
+        public bool Curse_AllowUmbra { get; private set; } = true;
 
         /*[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Allow Happiest Mask ghosts to retain their Jammed status?", AutoConfigFlags.PreventNetMismatch)]
@@ -56,7 +60,10 @@ namespace RiskOfBulletstorm.Items
         protected override string GetLoreString(string langID = null) => "";
 
         public GameObject curseEffect;
-        
+
+        public static ItemIndex curseTally;
+
+        public static readonly ItemIndex umbraItemIndex = ItemIndex.InvadingDoppelganger;
 
         public override void SetupBehavior()
         {
@@ -66,6 +73,15 @@ namespace RiskOfBulletstorm.Items
         {
             base.SetupAttributes();
             curseEffect = (GameObject)Resources.Load("prefabs/effects/DeathMarkAfflictionEffect.prefab");
+
+            var curseTallyDef = new CustomItem(new ItemDef
+            {
+                hidden = true,
+                name = "ROBInternalCurseTally",
+                tier = ItemTier.NoTier,
+                canRemove = false
+            }, new ItemDisplayRuleDict(null));
+            curseTally = ItemAPI.Add(curseTallyDef);
         }
         public override void SetupConfig()
         {
@@ -131,6 +147,20 @@ namespace RiskOfBulletstorm.Items
                 //BOSS CHECK
                 if (obj.isBoss)
                 {
+                    // UMBRA CHECK START //
+                    if (Curse_AllowUmbra)
+                    {
+                        var inventory = obj.inventory;
+                        if (inventory)
+                        {
+                            if (inventory.GetItemCount(umbraItemIndex) > 0)
+                            {
+                                CurseUtil.JamEnemy(obj, RollValueBosses);
+                            }
+                        }
+                    }
+                    //UMBRA CHECK END //
+
                     if (Curse_AllowBosses)
                     {
                         CurseUtil.JamEnemy(obj, RollValueBosses);

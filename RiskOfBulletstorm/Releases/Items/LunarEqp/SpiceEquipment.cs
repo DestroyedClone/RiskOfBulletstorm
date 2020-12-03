@@ -78,7 +78,7 @@ namespace RiskOfBulletstorm.Items
             var spiceTallyDef = new CustomItem(new ItemDef
             {
                 hidden = true,
-                name = "InternalSpiceTally",
+                name = "ROBInternalSpiceTally",
                 tier = ItemTier.NoTier,
                 canRemove = false
             }, new ItemDisplayRuleDict(null));
