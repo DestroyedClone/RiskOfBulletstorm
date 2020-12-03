@@ -49,6 +49,7 @@ namespace RiskOfBulletstorm.Utils
         }
         public static void GiveItemToPlayers(ItemIndex itemIndex, bool showInChat = true, int amount = 1, int max = 1)
         {
+            Debug.Log("Give Item To Players entered");
             var instances = PlayerCharacterMasterController.instances;
             foreach (PlayerCharacterMasterController playerCharacterMaster in instances)
             {
@@ -58,7 +59,9 @@ namespace RiskOfBulletstorm.Utils
 
                 if (inventory)
                 {
-                    GiveItemIfLess(master, itemIndex, showInChat, body, amount, max);
+                    Debug.Log("GiveItemToPlayers: Entered inventory");
+                    var result = GiveItemIfLess(master, itemIndex, showInChat, body, amount, max);
+                    Debug.Log("Item result: "+result);
                 }
             }
         }
