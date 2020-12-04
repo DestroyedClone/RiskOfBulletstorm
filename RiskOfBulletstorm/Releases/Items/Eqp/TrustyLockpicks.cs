@@ -50,7 +50,7 @@ namespace RiskOfBulletstorm.Items
         private readonly string unlockSound = EntityStates.Engi.EngiWeapon.FireMines.throwMineSoundString;
         private readonly GameObject UnlockEffect = Resources.Load<GameObject>("prefabs/effects/LevelUpEffect");
         private readonly GameObject Fail_DestroyEffect = Resources.Load<GameObject>("prefabs/effects/ShieldBreakEffect");
-        private readonly GameObject Fail_LockEffect = Resources.Load<GameObject>("prefabs/effects/ImpBossBlink");
+        private readonly GameObject Fail_LockEffect = Resources.Load<GameObject>("prefabs/effects/LevelUpEffectEnemy");
         //prefabs/effects/WarCryEffect
         private readonly string prefix = "TRUSTYLOCKPICKS_";
         private readonly string suffixBroken = " (Broken Lock)";
