@@ -17,7 +17,6 @@ Feel free to message me in the Risk of Rain 2 Modding discord for any broken jun
 # Planned
  * (Boss) Dog: Chance to find pickups
  * (Green) Military Training: Improves firing
- * (Red) Number 2: Boosts stats while alone
  * (Green) Live Ammo: Immunity to contact damage, hitbox to utility
  * (Green) Battery Bullets: Electrifies bullets
 ***
@@ -27,11 +26,11 @@ Feel free to message me in the Risk of Rain 2 Modding discord for any broken jun
 ***
 # Items
 ## Pickups
-Every 50 kills, the game will have a 20% chance to *spawn a random weighted pickup*.
- - **Armor**: Destroys itself to block one hit of damage dealing more than 20% health or fatal, and fires a Blank. (TODO: SFX)
- - **Blank**: Press T to activate, destroying all projectiles, stunning and knocking nearby enemies back. Consumed on use. (TODO: SFX, Visual effect)
- - **Key**: Opens a locked chest for free. Consumed on use.
- - **Spread Ammo**: Spawns a bandolier pack that restores *all* players' cooldowns and restores one equipment charge to all equipment.
+Every 50 kills, the game will have a 30% chance to *spawn a random weighted pickup*.
+ - **Armor**: [10% chance] Destroys itself to block one hit of damage dealing more than 20% health or fatal, and fires a Blank. (TODO: SFX)
+ - **Blank**: [25% chance] Press T to activate, destroying all projectiles, stunning and knocking nearby enemies back. Consumed on use. (TODO: SFX, Visual effect)
+ - **Key**: [15% chance] Opens a locked chest for free. Consumed on use.
+ - **Spread Ammo**: [30% chance] Spawns a bandolier pack that restores *all* players' cooldowns and restores one equipment charge to all equipment.
 
 ## White
  - **Cartographer's Ring**: Upon starting the next stage, 20% chance (+10% chance per stack) of automatically revealing all chests.
@@ -42,8 +41,8 @@ Every 50 kills, the game will have a 20% chance to *spawn a random weighted pick
  - **Enraging Photo**: Gain a temporary +100% damage boost upon taking 11% of your health in damage for 1 (+0.25 per stack) seconds.
  - **Roll Bomb**: After using your Utility, drop 1 bomb(s) (+1 per stack) for 80% damage.
 - **Scope**: Reduces bullet spread by -10% (-5% per stack). 
-	- Projectile Whitelist: Sawmerangs, REX's syringes, and Preon Accumulators. (config) Disposable Missile Launcher.
-	- You can disable the whitelist to affect all projectiles, but note this may break some functionality with other projectiles.
+	- Projectile Whitelist: Sawmerangs, REX's syringes, (config) Disposable Missile Launcher.
+	- You can disable the whitelist to affect all projectiles, but note this may break some functionality with other projectiles. Feel free to recommend me other projectiles to add to the whitelist.
 
 ## Red
  - **Unity**: +0.1 (+0.01 per stack) base damage per unique item in inventory
@@ -51,11 +50,11 @@ Every 50 kills, the game will have a 20% chance to *spawn a random weighted pick
 
 ## Lunar
  - **Metronome**: Gain a 2% damage bonus for every enemy you kill with the same skill, up to 150%. Gain 50 extra stacks per pickup. Lose 25 stacks upon using a different skill.
- - **Ring of Miserly Protection**: Grants +100%(+50% per stack) increased maximum health, ...but one shatters upon using a shrine (does not include combat).
+ - **Ring of Miserly Protection**: Grants +100%(+50% per stack) increased maximum health ...but one shatters upon using a shrine (does not include combat).
 
 ## Boss
  - **Beetle**: Spawns 1 beetle that have a 5% (+5% per stack) chance to dig up a pickup upon completing a room.
- - **Master Round**: Granted upon clearing a teleporter boss, as long as no player took more than 3 hits each. Adds 150 max health per stack.
+ - **Master Round**: Granted upon clearing a teleporter boss, as long as no player took more than 3 hits (scales with stages cleared) each. Adds 150 max health per stack.
 
 # Equipment
 ## Normal
@@ -64,7 +63,7 @@ Every 50 kills, the game will have a 20% chance to *spawn a random weighted pick
  - **Bomb**: Throws a bomb for 100% damage. CD: 14s
 	 - *BEmbryo: Throws an extra bomb.*
  - **Friendship Cookie**: Revives all players. If in singleplayer, gives an Infusion instead. Consumed on use. 
-	 - *BEmbryo: Fills the barrier of revives players. Singleplayer: Gives one more Infusion.*
+	 - *BEmbryo: Fills the barrier of revived players. Singleplayer: Gives one more Infusion.*
 - **Meatbun**: Heals the player for 33% health. Grants +45% damage until the player takes more than 5% damage. Buff stacks up to 5. CD: 90s
 	 - *BEmbryo: Heals again for an additional 33% health.*
 - **Medkit**: Fully heals the player and maxes out barrier. CD: 145s
@@ -80,21 +79,21 @@ Every 50 kills, the game will have a 20% chance to *spawn a random weighted pick
  - **Trusty Lockpicks**: 50% chance to unlock a chest. If it fails, doubles its price and prevents further picklocking or using Keys.
 	 - *BEmbryo: Adds 30% of your base chance to unlock. By default, raises your unlock chance to 65%.*
 ## Lunar
- - **Spice**: Increases and decreases stats per consumed Spice. Bonuses:
+ - **Spice**: Increases and decreases stats per consumed Spice.  It's been slightly adjusted from normal. Bonuses:
  - 
-| Spice Consumed | Health | Attack Speed | Accuracy | Enemy Bullet Speed | Damage
-|--|--|--|--|--|--|
-| 1 | +50 | +20% |  |  |  |
-| 2 | +50 | +20% | +25% |  |  |
-| 3 | -50 |  |  | -10% |  |
-| 4 | -50 |  |  | -5% | +20% |
-| 5+ | -50 |  | -10% |  | +15% |
-Consuming beyond 5 will continue to add the same as the bonuses from 5.
-- *BEmbryo:* No support due to its volatility.
+| Spice Consumed | Health Multiplier | Attack Speed | Accuracy | Enemy Bullet Speed | Damage | Curse
+|--|--|--|--|--|--|--|
+| 1 | +25% | +20% |  |  |  |
+| 2 | +25% | +20% | +25% |  |  |
+| 3 | -25% |  |  | -10% |  |
+| 4 | -25% |  |  | -5% | +20% |
+| 5+ | -5% |  | -10% |  | +15% |
+Consuming beyond 5 will continue to add the same as the bonuses from 5. I hardcapped the health multiplier minimum at -99%.
+- *BEmbryo:* Chance to not add curse.
 
 # Special
- - **Curse** - Certain items have apply curse. The chance of encountering a Jammed enemy increases as you gain more Curse. This is independent of elite affixes.
- - **[Jammed]**: +100% damage, +20% attack speed, +20% movement speed.
+ - **Curse** - Certain items apply curse. The chance of encountering a Jammed enemy increases as you gain more Curse. This is independent of elite affixes.
+ - **[Jammed]**: +100% damage, +20% attack speed, +20% movement speed. Deals contact damage.
 
 # Current Issues:
 * (?) Trusty Lockpicks unlocks don't trigger Mustache.
@@ -112,10 +111,10 @@ Consuming beyond 5 will continue to add the same as the bonuses from 5.
 	 - Equipment: Friendsip Cookie, Meatbun, Medkit, Molotov, Orange, Portable ~~Table~~ Barrel Device, Ration, Trusty Lockpicks
 	 - Lunar Equipment: Spice
  - *Mustache---* Added config for interaction with Blood Shrines.
- - *Scope---* now affects REX syringes, Sawmerang, and (config) Disposable Missile Launcher. Added experimental config for applying it to all projectiles (may break some projectiles).
- - *Metronome---* Added config for stack loss.
+ - *Scope---* now affects ALOT of projectiles but not all. Can affect all projectiles via confi (strongly discouraged).
+ - *Metronome---* Added config for stack loss. Added stack display via buff count.
  - *Bomb---* Added assets, increased cooldown
- - *EliteSpawningOverhaul---* Temporarily removed dependency. Deciding whether to keep or not.
+ - *EliteSpawningOverhaul---* Temporarily removed dependency due to changing how Jammed is applied. Deciding whether to keep or not.
 
 1.0.1 - Reverted dependency of R2API. Adjusted item descriptions.
 

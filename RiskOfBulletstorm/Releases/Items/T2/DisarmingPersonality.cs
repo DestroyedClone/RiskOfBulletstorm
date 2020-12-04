@@ -91,7 +91,7 @@ namespace RiskOfBulletstorm.Items
                     var ResultAmt = (int)Mathf.Ceil(self.cost * ResultMult);
                     Debug.Log("Cost of chest reduced from" + self.cost + " to " + ResultAmt + " with multiplier "+ResultMult);
                     self.cost = ResultAmt;
-                    self.Networkcost = self.cost;
+                    self.Networkcost = ResultAmt;
                 }
             }
         }

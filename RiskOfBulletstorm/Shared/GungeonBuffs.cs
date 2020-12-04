@@ -129,27 +129,17 @@ namespace RiskOfBulletstorm.Items
                 case 3:
                 case 4:
                     //health, attack speed, shot accuracy, enemy bullet speed, damage
-                    args.baseHealthAdd += HeartValue * SpiceBonuses[SpiceTallyCount, 0];
+                    //args.baseHealthAdd += HeartValue * SpiceBonuses[SpiceTallyCount, 0];
+                    args.healthMultAdd *= 1 + SpiceBonuses[SpiceTallyCount, 0];
                     args.attackSpeedMultAdd += SpiceBonuses[SpiceTallyCount, 1];
                     //accuracy 
                     //enemy bullet speed
                     //damage
                     break;
                 default:
-                    var baseHealthAdd = HeartValue * SpiceBonusesAdditive[0] * (SpiceTallyCount - 4);
-
-                    var healthComponent = sender.healthComponent;
-                    if (healthComponent)
-                    {
-                        var oldMaxHealth = healthComponent.fullHealth;
-                        var resultant = oldMaxHealth + baseHealthAdd;
-                        if (resultant < 1)
-                        {
-                            Debug.Log("value was too low");
-                            baseHealthAdd = oldMaxHealth - 1;
-                        }
-                    }
-                    args.baseHealthAdd += baseHealthAdd;
+                    //var baseHealthAdd = HeartValue * SpiceBonusesAdditive[0] * (SpiceTallyCount - 4);
+                    //args.baseHealthAdd += baseHealthAdd;
+                    args.healthMultAdd *= Math.Min(0.1f,1 + SpiceBonusesAdditive[0] * (SpiceTallyCount - 4));
                     //health, attack speed, shot accuracy, enemy bullet speed, damage
                     args.attackSpeedMultAdd += SpiceBonusesConstantMaxed[1];
                     //accuracy
@@ -248,11 +238,10 @@ namespace RiskOfBulletstorm.Items
                 {
                     characterBody.AddBuff(Jammed);
                 }
-                //contactDamageInfo.inflictor = ContactDamageGameObject; //how
-                //contactDamageInfo.attacker = gameObject; //who
+                contactDamageInfo.inflictor = ContactDamageGameObject; //how
+                contactDamageInfo.attacker = gameObject; //who
             } //setup
-
-            /*
+            
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
             void OnTriggerEnter(Collider other)
             {
@@ -260,46 +249,19 @@ namespace RiskOfBulletstorm.Items
                 HealthComponent healthComponent = gameObject.GetComponent<HealthComponent>();
                 if (healthComponent)
                 {
-                    if (!healthComponents.Contains(healthComponent))
-                    {
-                        contactDamageInfo.position = gameObject.transform.position;
-                        contactDamageInfo.damage = characterBody.damage * 3f;
-                        healthComponent.TakeDamage(contactDamageInfo);
-
-                        healthComponents.Add(healthComponent);
-                        ContactDamageCooldown = ContactDamageCooldownFull;
-                    }
-                } else
-                {
-                    Destroy(this); //no point in running if there's no healthcomponent
+                    contactDamageInfo.position = gameObject.transform.position;
+                    contactDamageInfo.damage = characterBody.damage;
+                    healthComponent.TakeDamage(contactDamageInfo);
                 }
             }
 
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
-            void FixedUpdate()
-            {
-                if (ContactDamageCooldown >= 0)
-                {
-                    ContactDamageCooldown -= Time.fixedDeltaTime;
-                }
-                else
-                {
-                    activateOnce = true;
-                }
-                if (activateOnce)
-                {
-                    activateOnce = false;
-                    healthComponents.Clear();
-                }
-            } //clears list at end of cooldown
-
-            public static readonly float ContactDamageCooldownFull = 2f;
-            public float ContactDamageCooldown;
+            //public static readonly float ContactDamageCooldownFull = 2f;
+            //public float ContactDamageCooldown;
             public DamageInfo contactDamageInfo = JammedContactDamageInfo;
             public static GameObject ContactDamageGameObject;
-            public float damageCoefficient = 3f;
-            public List<HealthComponent> healthComponents;
-            bool activateOnce = false;*/
+            //public float damageCoefficient = 3f;
+            //public List<HealthComponent> healthComponents;
+            //bool activateOnce = false;
         }
     }
 }

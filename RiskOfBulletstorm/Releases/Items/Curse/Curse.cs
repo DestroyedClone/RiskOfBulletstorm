@@ -117,7 +117,8 @@ namespace RiskOfBulletstorm.Items
             var teamComponent = obj.teamComponent;
             if (!teamComponent) return;
 
-            int PlayerItemCount = HelperUtil.GetPlayersItemCount(curseTally);
+            CharacterBody mostCursedPlayer = HelperUtil.GetPlayerWithMostItemIndex(curseTally);
+            int PlayerItemCount = mostCursedPlayer.inventory.GetItemCount(curseTally);
             float RollValue = 0f;
             float RollValueBosses = 0f;
 

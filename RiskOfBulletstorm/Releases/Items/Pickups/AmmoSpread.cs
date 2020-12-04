@@ -107,31 +107,21 @@ namespace RiskOfBulletstorm.Items
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
             private void OnEnable()
             {
-                //teamFilter.SetTeamServer("Player");
-                Debug.Log(teamIndex + "|");
+                
             }
 
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
             private void OnTriggerStay(Collider other)
             {
-                if (alive)
-                {
-                    Debug.Log(other);
-                    Debug.Log("worked so we removin");
-                    alive = false;
-                    Destroy(gameObject);
-                }
-
-                /*
-                if (NetworkServer.active && alive && TeamComponent.GetObjectTeam(other.gameObject) == teamFilter.teamIndex)
+                if (NetworkServer.active && alive && TeamComponent.GetObjectTeam(other.gameObject) == teamIndex)
                 {
                     Debug.Log("Ammo Spread: First check passed");
 
                     SkillLocator skillLocatorOther = other.GetComponent<SkillLocator>();
                     if (skillLocatorOther)
                     {
-                        ReadOnlyCollection<TeamComponent> teamComponents = TeamComponent.GetTeamMembers(teamFilter.teamIndex);
-                        Debug.Log("Ammo Spread: OTher's skill locator detected");
+                        ReadOnlyCollection<TeamComponent> teamComponents = TeamComponent.GetTeamMembers(teamIndex);
+                        Debug.Log("Ammo Spread: Other's skill locator detected");
 
                         alive = false;
 
@@ -157,7 +147,6 @@ namespace RiskOfBulletstorm.Items
                         Destroy(gameObject);
                     }
                 }
-                */
             }
 
             // Token: 0x04000744 RID: 1860

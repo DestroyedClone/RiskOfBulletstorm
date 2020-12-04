@@ -50,14 +50,14 @@ namespace RiskOfBulletstorm.Items
             { -1f,  0f,     -0.1f,  0f,     +0.15f }, 
         };
         */ //documentation purposes
-        public static readonly float[] SpiceBonusesAdditive = new float[] { -1f, 0f, -0.1f, 0f, +0.15f };
+        public static readonly float[] SpiceBonusesAdditive = new float[] { -0.05f, 0f, -0.1f, 0f, +0.15f };
 
         public static readonly float[,] SpiceBonuses = new float[,]
         {
             { 0f, 0f, 0f, 0f, 0f }, //0
-            { +1f, +0.2f, +0.25f, 0f, 0f }, //1
-            { +2f, +0.4f, +0.25f, -0.1f, 0f }, //2
-            { +1f, +0.4f, +0.25f, -0.15f, +0.2f }, //3
+            { +0.25f, +0.2f, +0.25f, 0f, 0f }, //1
+            { +0.50f, +0.4f, +0.25f, -0.1f, 0f }, //2
+            { +0.25f, +0.4f, +0.25f, -0.15f, +0.2f }, //3
             { 0f, +0.4f, +0.15f, -0.15f, +0.35f }, //4
         };
 
