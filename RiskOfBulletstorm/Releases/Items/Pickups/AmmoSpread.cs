@@ -54,7 +54,7 @@ namespace RiskOfBulletstorm.Items
 
 
             //ProjectileCatalog.getAdditionalEntries += list => list.Add(ammoPickupPrefab);
-            //if (Pickup_AmmoSpread) PrefabAPI.RegisterNetworkPrefab(Pickup_AmmoSpread);
+            if (Pickup_AmmoSpread) PrefabAPI.RegisterNetworkPrefab(Pickup_AmmoSpread);
         }
         public override void SetupLate()
         {
