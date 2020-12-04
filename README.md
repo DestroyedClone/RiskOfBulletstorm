@@ -88,8 +88,9 @@ Every 50 kills, the game will have a 30% chance to *spawn a random weighted pick
 | 3 | -25% |  |  | -10% |  | +1
 | 4 | -25% |  |  | -5% | +20% | +1 
 | 5+ | -5% |  | -10% |  | +15% | +1
+
 Consuming beyond 5 will continue to add the same as the bonuses from 5. I hardcapped the health multiplier minimum at -99%.
-- *BEmbryo:* Chance to not add curse.
+- *BEmbryo:* No support at the moment.
 
 # Special
  - **Curse** - Certain items apply curse. The chance of encountering a Jammed enemy increases as you gain more Curse. This is independent of elite affixes.
