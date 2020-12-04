@@ -53,9 +53,11 @@
     <None Include="lib\BepInEx.Harmony.dll" />
     <None Include="lib\BepInEx.MonoMod.Loader.dll" />
     <None Include="lib\BepInEx.Preloader.dll" />
+    <None Include="lib\BetterUI.dll" />
     <None Include="lib\ClassicItems.dll" />
     <None Include="lib\EnemyItemDisplays.dll" />
     <None Include="lib\HGCSharpUtils.dll" />
+    <None Include="lib\ItemStats.dll" />
     <None Include="lib\MMHOOK_Assembly-CSharp.dll" />
     <None Include="lib\Mono.Cecil.dll" />
     <None Include="lib\Mono.Cecil.Mdb.dll" />
@@ -94,6 +96,9 @@
     <Reference Include="BepInEx.Preloader">
       <HintPath>lib\BepInEx.Preloader.dll</HintPath>
     </Reference>
+    <Reference Include="BetterUI">
+      <HintPath>lib\BetterUI.dll</HintPath>
+    </Reference>
     <Reference Include="ClassicItems">
       <HintPath>lib\ClassicItems.dll</HintPath>
     </Reference>
@@ -105,6 +110,9 @@
     </Reference>
     <Reference Include="HGCSharpUtils">
       <HintPath>lib\HGCSharpUtils.dll</HintPath>
+    </Reference>
+    <Reference Include="ItemStats">
+      <HintPath>lib\ItemStats.dll</HintPath>
     </Reference>
     <Reference Include="MMHOOK_Assembly-CSharp">
       <HintPath>lib\MMHOOK_Assembly-CSharp.dll</HintPath>
