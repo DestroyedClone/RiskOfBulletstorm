@@ -202,6 +202,7 @@ namespace RiskOfBulletstorm.Items
                         EquipmentIndex equipmentIndex = inventory.GetEquipmentIndex();
                         if (equipmentIndex == catalogIndex)
                         {
+                            if (inventory.GetEquipmentRestockableChargeCount(0) > 0)
                             highlight.highlightColor = Highlight.HighlightColor.pickup;
                             return Interactability.Available;
                         }
