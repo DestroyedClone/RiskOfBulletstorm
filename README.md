@@ -83,11 +83,11 @@ Every 50 kills, the game will have a 30% chance to *spawn a random weighted pick
  - 
 | Spice Consumed | Health Multiplier | Attack Speed | Accuracy | Enemy Bullet Speed | Damage | Curse
 |--|--|--|--|--|--|--|
-| 1 | +25% | +20% |  |  |  |
-| 2 | +25% | +20% | +25% |  |  |
-| 3 | -25% |  |  | -10% |  |
-| 4 | -25% |  |  | -5% | +20% |
-| 5+ | -5% |  | -10% |  | +15% |
+| 1 | +25% | +20% |  |  |  | +0.5
+| 2 | +25% | +20% | +25% |  |  | +1
+| 3 | -25% |  |  | -10% |  | +1
+| 4 | -25% |  |  | -5% | +20% | +1 
+| 5+ | -5% |  | -10% |  | +15% | +1
 Consuming beyond 5 will continue to add the same as the bonuses from 5. I hardcapped the health multiplier minimum at -99%.
 - *BEmbryo:* Chance to not add curse.
 
