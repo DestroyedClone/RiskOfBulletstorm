@@ -47,7 +47,6 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "These lockpicks have never let the Pilot down, except for the many times they did.";
 
-        private readonly PickupIndex SyringePickupIndex = PickupCatalog.FindPickupIndex(ItemIndex.Syringe);
         private readonly string unlockSound = EntityStates.Engi.EngiWeapon.FireMines.throwMineSoundString;
         private readonly GameObject UnlockEffect = Resources.Load<GameObject>("prefabs/effects/LevelUpEffect");
         private readonly GameObject Fail_DestroyEffect = Resources.Load<GameObject>("prefabs/effects/ShieldBreakEffect");

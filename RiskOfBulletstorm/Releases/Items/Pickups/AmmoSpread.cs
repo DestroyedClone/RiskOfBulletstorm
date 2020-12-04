@@ -46,7 +46,8 @@ namespace RiskOfBulletstorm.Items
             Pickup_AmmoSpread.GetComponent<BeginRapidlyActivatingAndDeactivating>().delayBeforeBeginningBlinking = Math.Min(AmmoSpread_LifetimeBlinking, AmmoSpread_Lifetime);
             Pickup_AmmoSpread.GetComponent<TeamFilter>().teamIndex = TeamIndex.Player;
 
-            Pickup_AmmoSpread.AddComponent<AmmoPickupSpread>();
+            AmmoPickupSpread ammoPickupSpread = Pickup_AmmoSpread.AddComponent<AmmoPickupSpread>();
+            ammoPickupSpread.teamIndex = TeamIndex.Player;
 
             UnityEngine.Object.Destroy(Pickup_AmmoSpread.GetComponent<VelocityRandomOnStart>());
             UnityEngine.Object.Destroy(Pickup_AmmoSpread.GetComponent<AmmoPickup>());
@@ -106,7 +107,8 @@ namespace RiskOfBulletstorm.Items
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
             private void OnEnable()
             {
-                teamFilter.SetTeamServer("Player");
+                //teamFilter.SetTeamServer("Player");
+                Debug.Log(teamIndex + "|");
             }
 
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
@@ -159,8 +161,7 @@ namespace RiskOfBulletstorm.Items
             }
 
             // Token: 0x04000744 RID: 1860
-            [Tooltip("The team filter object which determines who can pick up this pack.")]
-            public TeamFilter teamFilter;
+            public TeamIndex teamIndex;
 
             // Token: 0x04000745 RID: 1861
             public GameObject pickupEffect = (GameObject)Resources.Load("prefabs/effects/AmmoPackPickupEffect");
