@@ -114,14 +114,13 @@ namespace RiskOfBulletstorm.Items
 
         private void JamEnemy(CharacterBody obj)
         {
-            if (!obj) return;
-            if (!obj.inventory) return;
-            if (!obj.master) return;
+            if (!obj || !obj.inventory || !obj.master) return;
 
             var teamComponent = obj.teamComponent;
             if (!teamComponent) return;
 
             CharacterBody mostCursedPlayer = HelperUtil.GetPlayerWithMostItemIndex(curseTally);
+            if (!mostCursedPlayer) return;
             int PlayerItemCount = mostCursedPlayer.inventory.GetItemCount(curseTally);
             float RollValue = 0f;
             float RollValueBosses = 0f;
