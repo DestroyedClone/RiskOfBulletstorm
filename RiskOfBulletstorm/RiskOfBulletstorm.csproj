@@ -54,6 +54,7 @@
     <None Include="lib\BepInEx.MonoMod.Loader.dll" />
     <None Include="lib\BepInEx.Preloader.dll" />
     <None Include="lib\ClassicItems.dll" />
+    <None Include="lib\EnemyItemDisplays.dll" />
     <None Include="lib\HGCSharpUtils.dll" />
     <None Include="lib\MMHOOK_Assembly-CSharp.dll" />
     <None Include="lib\Mono.Cecil.dll" />
@@ -98,6 +99,9 @@
     </Reference>
     <Reference Include="EliteSpawningOverhaul">
       <HintPath>lib\EliteSpawningOverhaul.dll</HintPath>
+    </Reference>
+    <Reference Include="EnemyItemDisplays">
+      <HintPath>lib\EnemyItemDisplays.dll</HintPath>
     </Reference>
     <Reference Include="HGCSharpUtils">
       <HintPath>lib\HGCSharpUtils.dll</HintPath>

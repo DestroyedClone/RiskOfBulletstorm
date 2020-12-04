@@ -18,6 +18,7 @@ namespace DestroyedClone
     [BepInDependency(TILER2Plugin.ModGuid, TILER2Plugin.ModVer)]
     //[BepInDependency(EliteSpawningOverhaul.EsoPlugin.PluginGuid)]
     [BepInDependency(ClassicItemsPlugin.ModGuid, BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency(EnemyItemDisplays.EnemyItemDisplaysPlugin.MODUID, BepInDependency.DependencyFlags.SoftDependency)] //because chen's mod has it
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.EveryoneNeedSameModVersion)]
     [R2APISubmoduleDependency(
         nameof(ItemAPI),
