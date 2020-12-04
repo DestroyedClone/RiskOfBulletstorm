@@ -114,6 +114,10 @@ namespace RiskOfBulletstorm.Items
 
         private void JamEnemy(CharacterBody obj)
         {
+            if (!obj) return;
+            if (!obj.inventory) return;
+            if (!obj.master) return;
+
             var teamComponent = obj.teamComponent;
             if (!teamComponent) return;
 
@@ -205,7 +209,6 @@ namespace RiskOfBulletstorm.Items
                 bool AetheriumCheck = obj.master.bodyPrefab.name.Contains("Aetherium");
                 if (AetheriumCheck)
                 {
-                    Chat.AddMessage("Chimera Success!");
                     CurseUtil.JamEnemy(obj, RollValue);
                 }
             }

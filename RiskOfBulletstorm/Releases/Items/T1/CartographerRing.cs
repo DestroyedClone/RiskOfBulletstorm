@@ -84,21 +84,11 @@ namespace RiskOfBulletstorm.Items
             }
 
             if (PermanentScannerPrefab) PrefabAPI.RegisterNetworkPrefab(PermanentScannerPrefab);
-
+            /*
             if (Compat_BetterUI.enabled)
             {
                 Compat_BetterUI.AddEffect(catalogIndex, CartographerRing_ScanChance, CartographerRing_ScanChanceStack, Compat_BetterUI.ChanceFormatter, Compat_BetterUI.LinearStacking, Compat_BetterUI.LinearCap);
-            }
-
-            if (Compat_ItemStats.enabled)
-            {
-                Compat_ItemStats.CreateItemStatDef(itemDef,
-                (
-                    (count, inv, master) => { return $"Regen Bonus: {value.ToString("N1")} HP/s"; },
-                    (value, inv, master) => { return $"Regen Bonus: {value.ToString("N1")} HP/s"; }
-                )
-                );
-            }
+            };*/
         }
         public override void SetupAttributes()
         {

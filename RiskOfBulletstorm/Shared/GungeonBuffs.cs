@@ -48,7 +48,7 @@ namespace RiskOfBulletstorm.Items
         public static BuffIndex Glittered { get; private set; }
         public static BuffIndex Bloody { get; private set; }
 
-        private static readonly float HeartValue = 50f;
+        //private static readonly float HeartValue = 50f;
 
         private ItemIndex SpiceTally;
 
