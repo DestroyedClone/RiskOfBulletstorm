@@ -24,11 +24,12 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "<style=cIsUtility>Increases combat prowess</style>, <style=cDeath>with absolutely no downside!</style>";
 
-        protected override string GetDescString(string langid = null) => $"Progressively gives stat bonuses and downsides.";
+        protected override string GetDescString(string langid = null) => $"Progressively gives stat bonuses and downsides. Consumed on use.";
 
         protected override string GetLoreString(string langID = null) => "A potent gun-enhancing drug from the far reaches of the galaxy. It is known to be extremely addictive, and extremely expensive.";
 
         public static ItemIndex SpiceTally { get; private set; }
+        public static ItemIndex CurseIndex;
 
         public string[] SpiceDescArray =
         {
@@ -88,6 +89,12 @@ namespace RiskOfBulletstorm.Items
         {
             base.SetupConfig();
         }
+
+        public override void SetupLate()
+        {
+            base.SetupLate();
+            CurseIndex = CurseController.curseTally;
+        }
         public override void Install()
         {
             base.Install();
@@ -140,6 +147,8 @@ namespace RiskOfBulletstorm.Items
             if (!inventory) return false;
             //var spiceCount = inventory.GetItemCount(SpiceTally);
 
+            if (inventory.GetItemCount(SpiceTally) == 0) inventory.GiveItem(CurseIndex);
+            else inventory.GiveItem(CurseIndex, 2);
             inventory.GiveItem(SpiceTally);
             inventory.SetEquipmentIndex(EquipmentIndex.None); //credit to : Rico
 

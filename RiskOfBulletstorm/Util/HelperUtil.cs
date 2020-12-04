@@ -276,7 +276,7 @@ namespace RiskOfBulletstorm.Utils
 
         public static void JamEnemy(CharacterBody body, float curseChance = 100f)
         {
-            var curseEffect = (GameObject)Resources.Load("prefabs/effects/DeathMarkAfflictionEffect.prefab");
+            var curseEffect = Resources.Load<GameObject>("prefabs/effects/ImpSwipeEffect");
             if (Util.CheckRoll(curseChance))
             {
                 EffectManager.SpawnEffect(curseEffect, new EffectData

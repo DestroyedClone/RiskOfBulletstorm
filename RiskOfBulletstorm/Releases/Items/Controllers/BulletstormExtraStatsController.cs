@@ -62,9 +62,9 @@ namespace RiskOfBulletstorm.Items
             Resources.Load<GameObject>("prefabs/projectiles/GravekeeperHookProjectile"), //not used?
             Resources.Load<GameObject>("prefabs/projectiles/GravekeeperHookProjectileSimple"), //????
             Resources.Load<GameObject>("GravekeeperTrackingFireball"),
-            EntityStates.ImpBossMonster.FireVoidspikes.projectilePrefab,
-            EntityStates.ImpMonster.FireSpines.projectilePrefab,
-            EntityStates.LemurianBruiserMonster.FireMegaFireball.projectilePrefab,
+            Resources.Load<GameObject>("prefabs/projectiles/ImpVoidspikeProjectile"),
+            EntityStates.ImpMonster.FireSpines.projectilePrefab, 
+            Resources.Load<GameObject>("prefabs/projectiles/LemurianBigFireball"), 
             Resources.Load<GameObject>("prefabs/projectiles/NullifierBombProjectile"),
             Resources.Load<GameObject>("prefabs/projectiles/RoboBallProjectile"),
             Resources.Load<GameObject>("prefabs/projectiles/SuperRoboBallProjectile"), //idk??
@@ -267,7 +267,7 @@ namespace RiskOfBulletstorm.Items
                 }
             }
             var ResultMult = Mathf.Clamp(ScopeMult + SpiceMult,0,1);
-            Debug.Log("ScopeMult: " + ScopeMult + " + SpiceMUlt: " + SpiceMult + " = " + ResultMult);
+            //Debug.Log("ScopeMult: " + ScopeMult + " + SpiceMUlt: " + SpiceMult + " = " + ResultMult);
 
             return ResultMult;
         }

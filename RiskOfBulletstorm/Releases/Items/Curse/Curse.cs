@@ -48,6 +48,10 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("[Aetherium Support] Allow Unstable Design spawns to become jammed?", AutoConfigFlags.PreventNetMismatch)]
         public bool Curse_AllowUnstableDesign { get; private set; } = true;
 
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Allow Lord of the Jammed to spawn at Max curse? Default: true", AutoConfigFlags.PreventNetMismatch)]
+        public bool Curse_SpawnLOTJ { get; private set; } = true;
+
         public override string displayName => "CurseMasterItem";
         public override ItemTier itemTier => ItemTier.NoTier;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.AIBlacklist, ItemTag.WorldUnique });
@@ -59,9 +63,10 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "";
 
-        public GameObject curseEffect;
+        //public GameObject curseEffect = Resources.Load<GameObject>("prefabs/effects/ImpSwipeEffect");
 
         public static ItemIndex curseTally;
+        public static ItemIndex curseMax;
 
         public static readonly ItemIndex umbraItemIndex = ItemIndex.InvadingDoppelganger;
 
@@ -72,7 +77,6 @@ namespace RiskOfBulletstorm.Items
         public override void SetupAttributes()
         {
             base.SetupAttributes();
-            curseEffect = (GameObject)Resources.Load("prefabs/effects/DeathMarkAfflictionEffect.prefab");
 
             var curseTallyDef = new CustomItem(new ItemDef
             {
@@ -82,6 +86,15 @@ namespace RiskOfBulletstorm.Items
                 canRemove = false
             }, new ItemDisplayRuleDict(null));
             curseTally = ItemAPI.Add(curseTallyDef);
+
+            var curseMaxDef = new CustomItem(new ItemDef
+            {
+                hidden = true,
+                name = "ROBInternalCurseSpawnLOTJ",
+                tier = ItemTier.NoTier,
+                canRemove = false
+            }, new ItemDisplayRuleDict(null));
+            curseMax = ItemAPI.Add(curseMaxDef);
         }
         public override void SetupConfig()
         {
@@ -113,29 +126,40 @@ namespace RiskOfBulletstorm.Items
             switch (PlayerItemCount)
             {
                 case 0:
+                    RollValue = 0f;
                     break;
-                case 1:
-                case 2:
+                case 1:             //0.5
+                case 2:             //1
+                case 3:             //1.5
+                case 4:             //2
                     RollValue = 1f;
                     break;
-                case 3:
-                case 4:
+                case 5:             //2.5
+                case 6:             //3
+                case 7:             //3.5
+                case 8:             //4
                     RollValue = 2f;
                     break;
-                case 5:
-                case 6:
+                case 9:              //4.5
+                case 10:             //5
+                case 11:             //5.5
+                case 12:             //6
                     RollValue = 5f;
                     break;
-                case 7:
-                case 8:
+                case 13:             //6.5
+                case 14:             //7
+                case 15:             //7.5
+                case 16:             //8
                     RollValue = 10f;
                     RollValueBosses = 20f;
                     break;
-                case 9:
+                case 17:             //8.5
+                case 18:             //9
+                case 19:             //9.5
                     RollValue = 25f;
                     RollValueBosses = 30f;
                     break;
-                default: //10 and default
+                default:             //10 and default
                     RollValue = 50f;
                     RollValueBosses = 50f;
                     break;
