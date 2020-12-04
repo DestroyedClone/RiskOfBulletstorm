@@ -59,20 +59,21 @@ namespace RiskOfBulletstorm.Items
             Resources.Load<GameObject>("prefabs/projectiles/CommandoGrenadeProjectile"),
             Resources.Load<GameObject>("Prefabs/Projectiles/EngiHarpoon"),
             Resources.Load<GameObject>("Prefabs/Projectiles/LunarNeedleProjectile"),
-            Resources.Load<GameObject>("prefabs/projectiles/GravekeeperHookProjectile"),
+            Resources.Load<GameObject>("prefabs/projectiles/GravekeeperHookProjectile"), //not used?
             Resources.Load<GameObject>("prefabs/projectiles/GravekeeperHookProjectileSimple"), //????
             Resources.Load<GameObject>("GravekeeperTrackingFireball"),
             EntityStates.ImpBossMonster.FireVoidspikes.projectilePrefab,
             EntityStates.ImpMonster.FireSpines.projectilePrefab,
             EntityStates.LemurianBruiserMonster.FireMegaFireball.projectilePrefab,
-            EntityStates.NullifierMonster.FirePortalBomb.portalBombProjectileEffect,
+            Resources.Load<GameObject>("prefabs/projectiles/NullifierBombProjectile"),
             Resources.Load<GameObject>("prefabs/projectiles/RoboBallProjectile"),
             Resources.Load<GameObject>("prefabs/projectiles/SuperRoboBallProjectile"), //idk??
             Resources.Load<GameObject>("prefabs/projectiles/ScavEnergyCannonProjectile"),
-            EntityStates.Treebot.Weapon.FireSyringe.projectilePrefab, //REX
-            EntityStates.UrchinTurret.Weapon.MinigunFire.projectilePrefab,
+            Resources.Load<GameObject>("prefabs/projectiles/SyringeProjectile"),
+            Resources.Load<GameObject>("prefabs/projectiles/SyringeProjectileHealing"),
+            Resources.Load<GameObject>("prefabs/projectiles/UrchinSeekingProjectile"),
             EntityStates.VagrantMonster.Weapon.JellyBarrage.projectilePrefab,
-            EntityStates.Vulture.Weapon.FireWindblade.projectilePrefab,
+            Resources.Load<GameObject>("prefabs/projectiles/WindbladeProjectile"),
 
             // Toggleables
             DisposableMissileLauncherPrefab,
