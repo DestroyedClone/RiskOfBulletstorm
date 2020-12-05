@@ -105,23 +105,15 @@ namespace RiskOfBulletstorm.Items
         public class AmmoPickupSpread : MonoBehaviour
         {
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
-            private void OnEnable()
-            {
-                
-            }
-
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
             private void OnTriggerStay(Collider other)
             {
                 if (NetworkServer.active && alive && TeamComponent.GetObjectTeam(other.gameObject) == teamIndex)
                 {
-                    Debug.Log("Ammo Spread: First check passed");
 
                     SkillLocator skillLocatorOther = other.GetComponent<SkillLocator>();
                     if (skillLocatorOther)
                     {
                         ReadOnlyCollection<TeamComponent> teamComponents = TeamComponent.GetTeamMembers(teamIndex);
-                        Debug.Log("Ammo Spread: Other's skill locator detected");
 
                         alive = false;
 
@@ -139,11 +131,9 @@ namespace RiskOfBulletstorm.Items
                                     inventory.RestockEquipmentCharges(0, 1);
                                     if (inventory.GetEquipmentSlotCount() > 1) inventory.RestockEquipmentCharges(1, 1); //MULT
                                 }
-                                Chat.AddMessage("AmmoSpread: " + body.GetUserName() + " applied!");
                                 EffectManager.SimpleEffect(pickupEffect, transform.position, Quaternion.identity, true);
                             }
                         }
-                        Debug.Log("Ammo Spread: Attempting to destroy object");
                         Destroy(gameObject);
                     }
                 }
