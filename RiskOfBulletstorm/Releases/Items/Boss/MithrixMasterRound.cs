@@ -1,16 +1,10 @@
 ﻿//using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-//using System.Text;
-using R2API;
 using RoR2;
-using RoR2.UI;
-using UnityEngine;
 using UnityEngine.Networking;
 using TILER2;
 using static TILER2.StatHooks;
-using static TILER2.MiscUtil;
-using System;
 using RiskOfBulletstorm.Utils;
 
 namespace RiskOfBulletstorm.Items
@@ -38,15 +32,19 @@ namespace RiskOfBulletstorm.Items
             base.SetupAttributes();
 
         }
-        public override void SetupConfig()
-        {
-            base.SetupConfig();
-        }
         public override void Install()
         {
             base.Install();
-            //On.EntityStates.BrotherHaunt.FireRandomProjectiles.OnEnter += FireRandomProjectiles_OnEnter;
             On.EntityStates.Missions.BrotherEncounter.EncounterFinished.OnEnter += EncounterFinished_OnEnter;
+            GetStatCoefficients += MithrixMasterRound_GetStatCoefficients;
+
+        }
+
+        public override void Uninstall()
+        {
+            base.Uninstall();
+            On.EntityStates.Missions.BrotherEncounter.EncounterFinished.OnEnter -= EncounterFinished_OnEnter;
+            GetStatCoefficients -= MithrixMasterRound_GetStatCoefficients;
         }
 
         private void EncounterFinished_OnEnter(On.EntityStates.Missions.BrotherEncounter.EncounterFinished.orig_OnEnter orig, EntityStates.Missions.BrotherEncounter.EncounterFinished self)
@@ -57,12 +55,9 @@ namespace RiskOfBulletstorm.Items
                 HelperUtil.GiveItemToPlayers(catalogIndex);
             }
         }
-
-        public override void Uninstall()
+        private void MithrixMasterRound_GetStatCoefficients(CharacterBody sender, StatHookEventArgs args)
         {
-            base.Uninstall();
-            //On.EntityStates.BrotherHaunt.FireRandomProjectiles.OnEnter -= FireRandomProjectiles_OnEnter;
-            On.EntityStates.Missions.BrotherEncounter.EncounterFinished.OnEnter -= EncounterFinished_OnEnter;
+            args.baseHealthAdd += MasterRoundNth.instance.MasterRound_MaxHealthAdd * GetCount(sender);
         }
     }
 }
