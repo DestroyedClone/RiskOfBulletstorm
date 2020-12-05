@@ -35,7 +35,6 @@ namespace RiskOfBulletstorm.Items
         protected override string GetLoreString(string langID = null) => "";
 
         public static GameObject Pickup_AmmoSpread { get; private set; }
-        //public static GameObject PickupEffect = (GameObject)Resources.Load("prefabs/effects/AmmoPackPickupEffect");
 
         public override void SetupBehavior()
         {
@@ -82,11 +81,8 @@ namespace RiskOfBulletstorm.Items
 
         private void CreatePickup(On.RoR2.PickupDropletController.orig_CreatePickupDroplet orig, PickupIndex pickupIndex, Vector3 position, Vector3 velocity)
         {
-            //var body = PlayerCharacterMasterController.instances[0].master.GetBody();
-
             if (pickupIndex == PickupCatalog.FindPickupIndex(catalogIndex)) //safety to prevent softlocks
             {
-                //SpawnAmmoPickup(body.gameObject.transform.position);
                 SpawnAmmoPickup(position);
             }
             else
@@ -97,7 +93,6 @@ namespace RiskOfBulletstorm.Items
 
         private void SpawnAmmoPickup(Vector3 sapPosition)
         {
-            //Pickup_AmmoSpread.GetComponent<TeamFilter>().teamIndex = TeamIndex.Player;
             GameObject gameObject7 = UnityEngine.Object.Instantiate(Pickup_AmmoSpread, sapPosition, new Quaternion(0f, 0f, 0f, 0f));
             NetworkServer.Spawn(gameObject7);
         }
@@ -139,13 +134,10 @@ namespace RiskOfBulletstorm.Items
                 }
             }
 
-            // Token: 0x04000744 RID: 1860
             public TeamIndex teamIndex;
 
-            // Token: 0x04000745 RID: 1861
             public GameObject pickupEffect = (GameObject)Resources.Load("prefabs/effects/AmmoPackPickupEffect");
 
-            // Token: 0x04000746 RID: 1862
             private bool alive = true;
         }
     }

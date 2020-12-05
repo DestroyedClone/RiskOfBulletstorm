@@ -189,7 +189,6 @@ namespace RiskOfBulletstorm.Items
 
             string output = numberCapitalized + " Chamber" +
                 "\nThis " + descString + " artifact indicates mastery of the " + numberString + " chamber.";
-            Chat.AddMessage(SceneCatalog.mostRecentSceneDef.baseSceneName);
             if (bannedStages.Contains(SceneCatalog.mostRecentSceneDef.baseSceneName))
             {
                 output = "huh? how did you...";
