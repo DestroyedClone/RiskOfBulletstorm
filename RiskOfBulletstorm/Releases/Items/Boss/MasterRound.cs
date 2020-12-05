@@ -3,9 +3,10 @@ using System.Linq;
 using RoR2;
 using RoR2.UI;
 using UnityEngine;
+using UnityEngine.Networking;
 using TILER2;
 using static TILER2.StatHooks;
-using static RiskOfBulletstorm.Utils.HelperUtil;
+using RiskOfBulletstorm.Utils;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -129,12 +130,15 @@ namespace RiskOfBulletstorm.Items
 
         private void TeleporterInteraction_onTeleporterChargedGlobal(TeleporterInteraction obj)
         {
-            var comps = UnityEngine.Object.FindObjectsOfType<MasterRoundComponent>();
-            foreach (var component in comps)
+            if (NetworkServer.active)
             {
-                component.teleporterCharging = false;
+                var comps = UnityEngine.Object.FindObjectsOfType<MasterRoundComponent>();
+                foreach (var component in comps)
+                {
+                    component.teleporterCharging = false;
+                }
+                Check();
             }
-            Check(obj);
         }
 
         private void TeleporterInteraction_onTeleporterBeginChargingGlobal(TeleporterInteraction obj)
@@ -162,7 +166,7 @@ namespace RiskOfBulletstorm.Items
             if (itemDef.itemIndex != catalogIndex) return;
             var StageCount = Mathf.Max(Run.instance.stageClearCount + 1, 1);
 
-            string numberString = NumbertoOrdinal(StageCount);
+            string numberString = HelperUtil.NumbertoOrdinal(StageCount);
             string numberCapitalized = char.ToUpper(numberString[0]) + numberString.Substring(1);
             string descString = adjustedDesc[Mathf.Clamp(StageCount, 0, adjustedDesc.Length)];
 
@@ -177,12 +181,11 @@ namespace RiskOfBulletstorm.Items
             self.descriptionText.token = output;
         }
 
-        private void Check(TeleporterInteraction teleporterInteraction)
+        private void Check()
         {
             bool success = true;
 
             var comps = UnityEngine.Object.FindObjectsOfType<MasterRoundComponent>();
-            var rotvalue = 360 / comps.Length;
             foreach (var component in comps)
             {
                 if (component.currentHits > component.allowedHits)
@@ -193,15 +196,7 @@ namespace RiskOfBulletstorm.Items
             }
             if (success)
             {
-                for (int i = 1; i <= comps.Length; i++)
-                {
-                    var rotvaluemult = rotvalue * i;
-
-                    PickupIndex pickupIndex = PickupCatalog.FindPickupIndex(catalogIndex);
-                    Vector3 pickupVelocity = new Vector3(rotvaluemult, 45, rotvaluemult);
-                    var offset = Vector3.up * 2f;
-                    PickupDropletController.CreatePickupDroplet(pickupIndex, teleporterInteraction.transform.position + offset, pickupVelocity);
-                }
+                HelperUtil.GiveItemToPlayers(catalogIndex);
             }
         }
 
