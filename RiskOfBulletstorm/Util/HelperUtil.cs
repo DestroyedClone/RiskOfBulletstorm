@@ -234,6 +234,7 @@ namespace RiskOfBulletstorm.Utils
     }
     public static class CurseUtil
     {
+        /*
         public static string GetCleanseShrineText(float CurseCount)
         {
             string[] cleanseShrineText =
@@ -272,7 +273,7 @@ namespace RiskOfBulletstorm.Utils
                 return HelperUtil.GetPlayersItemCount(curseIndex);
             return characterBody.inventory.GetItemCount(curseIndex);
         }
-
+        */
         public static void JamEnemy(CharacterBody body, float curseChance = 100f)
         {
             var curseEffect = Resources.Load<GameObject>("prefabs/effects/ImpSwipeEffect");
