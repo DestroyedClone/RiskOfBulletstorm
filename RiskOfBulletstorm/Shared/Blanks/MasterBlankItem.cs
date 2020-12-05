@@ -135,7 +135,8 @@ namespace RiskOfBulletstorm.Shared.Blanks
 
             if (projectileClearRadius != 0)
             {
-                if (projectileClearRadius == -1) { projectileClearRadius = 999; }
+                bool noRange = (projectileClearRadius == -1);
+                //if (projectileClearRadius == -1) { projectileClearRadius = 999; }
                 float blankRadiusSquared = projectileClearRadius * projectileClearRadius;
                 List<ProjectileController> instancesList = InstanceTracker.GetInstancesList<ProjectileController>();
                 List<ProjectileController> list = new List<ProjectileController>();
@@ -144,9 +145,12 @@ namespace RiskOfBulletstorm.Shared.Blanks
                 while (i < count)
                 {
                     ProjectileController projectileController = instancesList[i];
-                    if (projectileController.teamFilter.teamIndex != TeamIndex.Player && (projectileController.transform.position - corePosition).sqrMagnitude < blankRadiusSquared)
+                    if (projectileController.teamFilter.teamIndex != TeamIndex.Player)
                     {
-                        list.Add(projectileController);
+                        if (noRange)
+                            list.Add(projectileController);
+                        else if ((projectileController.transform.position - corePosition).sqrMagnitude < blankRadiusSquared)
+                            list.Add(projectileController);
                     }
                     i++;
                 }
