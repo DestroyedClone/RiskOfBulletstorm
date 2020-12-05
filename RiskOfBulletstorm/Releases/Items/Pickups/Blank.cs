@@ -45,8 +45,21 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "Banish Bullets\n"+descText;
 
-        protected override string GetDescString(string langid = null) => $"<style=cIsUtility>{descText}</style> in the stage. <style=cIsUtility>Pushes enemies back</style>, and <style=cIsDamage>deals {Pct(Blank_DamageDealt)} damage.</style>\n" +
-            $"Consumed on use.";
+        protected override string GetDescString(string langid = null)
+        {
+            var desc = $"";
+            if (BlankClearRadius != 0)
+            desc = $"<style=cIsUtility>{descText}</style>";
+            if (BlankClearRadius == -1) desc += $" in the stage.";
+            else desc += $"within a radius of {BlankClearRadius} meters";
+            desc += $" <style=cIsUtility>Pushes enemies back</style>, and <style=cIsDamage>deals {Pct(Blank_DamageDealt)} damage</style>";
+            if (BlankRadius == BlankClearRadius) desc += $".";
+            else desc += $"within {BlankRadius}";
+            desc += $"\nConsumed on use." +
+                $"\nCooldown: {ConfigBlankCooldown} seconds" +
+                $"\nPress "+BlankButton.ToString()+" to activate";
+            return desc;
+        }
 
         protected override string GetLoreString(string langID = null) => "12:01 PM - [Kyle] I've gathered about 7 or so of these bullets. They're a light-blue with a blue cap. Not sure of the usage.\n\n" +
             "12:42 PM - [Kyle] I tried finding one of my guns that I could load it into, but oddly it refuses to fit inside.\n\n" +
