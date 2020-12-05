@@ -1,9 +1,6 @@
-﻿using EntityStates.Treebot.Weapon;
-using R2API;
+﻿using R2API;
 using RoR2;
-using RoR2.Projectile;
 using UnityEngine;
-using UnityEngine.Networking;
 using TILER2;
 using static TILER2.MiscUtil;
 using ThinkInvisible.ClassicItems;

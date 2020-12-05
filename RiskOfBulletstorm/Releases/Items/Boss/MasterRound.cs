@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-//using System.Text;
-using R2API;
 using RoR2;
 using RoR2.UI;
 using UnityEngine;
-using UnityEngine.Networking;
 using TILER2;
 using static TILER2.StatHooks;
-using static TILER2.MiscUtil;
 using static RiskOfBulletstorm.Utils.HelperUtil;
 
 namespace RiskOfBulletstorm.Items
