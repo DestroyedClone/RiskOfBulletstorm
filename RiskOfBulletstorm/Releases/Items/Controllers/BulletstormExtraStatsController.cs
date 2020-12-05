@@ -21,10 +21,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "";
 
-        //private static readonly GameObject REXPrefab = EntityStates.Treebot.Weapon.FireSyringe.projectilePrefab;
-        //private static readonly GameObject SawPrefab = Resources.Load<GameObject>("Prefabs/Projectiles/Sawmerang");
         private static readonly GameObject DisposableMissileLauncherPrefab = Resources.Load<GameObject>("Prefabs/Projectiles/MissileProjectile");
-        //private static readonly GameObject BeetleSpitPrefab = Resources.Load<GameObject>("prefabs/projectiles/BeetleQueenSpit.prefab");
 
         private float Scope_SpreadReduction;
         private float Scope_SpreadReductionStack;
@@ -67,33 +64,6 @@ namespace RiskOfBulletstorm.Items
             // Toggleables
             DisposableMissileLauncherPrefab,
         };
-
-        /*public static List<string> WhitelistedProjectilesString = new List<string>
-        {
-            "Sawmerang",
-            "BeetleQueenSpit",
-            "LunarShardProjectile",
-            "LunarNeedleProjectile",
-            EntityStates.Captain.Weapon.FireTazer.projectilePrefab.name,
-            EntityStates.ClayBoss.FireTarball.projectilePrefab.name,
-            EntityStates.ClayBoss.ClayBossWeapon.FireBombardment.projectilePrefab.name,
-            "prefabs/projectiles/CommandoGrenadeProjectile",
-            EntityStates.Engi.EngiMissilePainter.Fire.projectilePrefab.name,
-            EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.projectilePrefab.name,
-            EntityStates.GravekeeperBoss.FireHook.projectilePrefab.name,
-            EntityStates.GravekeeperMonster.Weapon.GravekeeperBarrage.projectilePrefab.name,
-            EntityStates.ImpBossMonster.FireVoidspikes.projectilePrefab.name,
-            EntityStates.ImpMonster.FireSpines.projectilePrefab.name,
-            EntityStates.LemurianBruiserMonster.FireMegaFireball.projectilePrefab.name,
-            EntityStates.NullifierMonster.FirePortalBomb.portalBombProjectileEffect.name,
-            "prefabs/projectiles/RoboBallProjectile",
-            "prefabs/projectiles/SuperRoboBallProjectile", //idk??
-            EntityStates.ScavMonster.FireEnergyCannon.projectilePrefab.name,
-            EntityStates.Treebot.Weapon.FireSyringe.projectilePrefab.name, //REX
-            EntityStates.UrchinTurret.Weapon.MinigunFire.projectilePrefab.name,
-            EntityStates.VagrantMonster.Weapon.JellyBarrage.projectilePrefab.name,
-            EntityStates.Vulture.Weapon.FireWindblade.projectilePrefab.name,
-        };*/
 
 
         public override void SetupBehavior()
