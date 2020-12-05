@@ -53,16 +53,6 @@ namespace RiskOfBulletstorm.Items
             "\nFew return from the deadly route that leads to the Forge. Yet fewer survive that venture into less-explored territory." +
             "\nA monument to the legendary hero greets all who challenge the Gungeon, though their identity has been lost to the ages." +
             "\nThe legendary hero felled the beast at the heart of the Gungeon with five rounds. According to the myth, the sixth remains unfired.";
-        
-        /*readonly string[] adjustedPickup =
-        {
-            "first",
-            "second",
-            "third",
-            "fourth",
-            "fifth",
-            "endless"
-        };*/
 
         readonly string[] adjustedDesc =
         {
@@ -150,7 +140,6 @@ namespace RiskOfBulletstorm.Items
             {
                 component.teleporterCharging = false;
             }
-
             Check(obj);
         }
 
@@ -177,9 +166,7 @@ namespace RiskOfBulletstorm.Items
         {
             orig(self, itemDef);
             if (itemDef.itemIndex != catalogIndex) return;
-            //if (bannedStages.Contains(SceneCatalog.mostRecentSceneDef.baseSceneName)) return;
             var StageCount = Mathf.Max(Run.instance.stageClearCount + 1, 1);
-            //if (StageCount > adjustedPickup.Length) StageCount = adjustedPickup.Length-1;
 
             string numberString = NumbertoOrdinal(StageCount);
             string numberCapitalized = char.ToUpper(numberString[0]) + numberString.Substring(1);
@@ -193,7 +180,6 @@ namespace RiskOfBulletstorm.Items
             {
                 output = "huh? how did you...";
             }
-
             self.descriptionText.token = output;
         }
 
@@ -202,6 +188,7 @@ namespace RiskOfBulletstorm.Items
             bool success = true;
 
             var comps = UnityEngine.Object.FindObjectsOfType<MasterRoundComponent>();
+            var rotvalue = 360 / comps.Length;
             foreach (var component in comps)
             {
                 if (component.currentHits > component.allowedHits)
@@ -214,11 +201,10 @@ namespace RiskOfBulletstorm.Items
             {
                 for (int i = 1; i <= comps.Length; i++)
                 {
-                    //var rotvalue = (360 / playercount) * i;
-                    var rotvalue = 360 / i;
+                    var rotvaluemult = rotvalue * i;
 
                     PickupIndex pickupIndex = PickupCatalog.FindPickupIndex(catalogIndex);
-                    Vector3 pickupVelocity = new Vector3(rotvalue, 45, rotvalue);
+                    Vector3 pickupVelocity = new Vector3(rotvaluemult, 45, rotvaluemult);
                     var offset = Vector3.up * 2f;
                     PickupDropletController.CreatePickupDroplet(pickupIndex, teleporterInteraction.transform.position + offset, pickupVelocity);
                 }

@@ -27,7 +27,6 @@ namespace RiskOfBulletstorm.Utils
             for (int i = 0; i < stacks; i++)
                 characterBody.AddBuff(buffIndex);
         }
-
         public static int GetPlayerCount()
         {
             return PlayerCharacterMasterController.instances.Count;
@@ -292,6 +291,7 @@ namespace RiskOfBulletstorm.Utils
             }
         }
     }
+    /*
     public static class SpawnUtil
     {
         public static float GetMimicSpawnChance()
@@ -304,5 +304,5 @@ namespace RiskOfBulletstorm.Utils
             mimicChance += curseCount * 2.1f;
             return Mathf.Clamp(mimicChance,0,100);
         }
-    }
+    }*/ //Currently unimplemented
 }
