@@ -18,7 +18,7 @@ namespace RiskOfBulletstorm.Items
         public float TrustyLockpicks_PriceHike { get; private set; } = 2.0f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Lock the chest instead? Takes priority over increasing the price. Default: false", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Lock the chest instead? Prevents it from opening.. Default: false", AutoConfigFlags.PreventNetMismatch)]
         public bool TrustyLockpicks_KillChest { get; private set; } = false;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
