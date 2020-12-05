@@ -105,11 +105,7 @@ namespace RiskOfBulletstorm.Items
 
         private void MasterRoundNth_GetStatCoefficients(CharacterBody sender, StatHookEventArgs args)
         {
-            var InventoryCount = GetCount(sender);
-            if (InventoryCount > 0)
-            {
-                args.baseHealthAdd += MasterRound_MaxHealthAdd;
-            }
+            args.baseHealthAdd += MasterRound_MaxHealthAdd * GetCount(sender);
         }
 
         private void GlobalEventManager_OnHitEnemy(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim)
