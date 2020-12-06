@@ -8,7 +8,8 @@ namespace RiskOfBulletstorm.Items
     public class Orange : Equipment_V2<Orange>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Rarity? (Default: 80.00% chance to spawn)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the chance modifier for the Orange to spawn? (Default: 80.00% chance to spawn)" +
+            "\nWhen it is chosen by the game, it does a roll. By default, it has a 80% not to get rerolled.", AutoConfigFlags.PreventNetMismatch)]
         public float Orange_Rarity { get; private set; } = 80.00f;
 
         public override string displayName => "Orange";
@@ -16,12 +17,18 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "You're Not Alexander\nWith this orange, your style... it's impetuous. Your defense, impregnable.";
+        protected override string GetPickupString(string langID = null) => "You're Not Alexander\nPermanently increases stats upon consumption.";
 
-        protected override string GetDescString(string langid = null) => $"<style=cIsHealing>100% heal.</style> <style=cIsHealth>Permanently increases health by 10%</style> and <style=cIsUtility>reduces equipment recharge rate by 10%</style>" +
-            $"\n<style=cDeath>One-time Use.</style> <style=cWorldEvent>{Orange_Rarity}% rarer.</style> ";
+        protected override string GetDescString(string langid = null)
+        {
+            var desc = $"<style=cIsHealing>Heals for 100% health.</style> <style=cIsHealth>Permanently increases max health by 10%</style> and <style=cIsUtility>reduces equipment recharge rate by 10%</style>"+
+              $"\n<style=cDeath>One-time Use.</style>";
+            if (Orange_Rarity < 100f)
+                desc += $"<style=cWorldEvent>{Orange_Rarity}% chance to spawn.</style>";
+            return desc;
+        }
 
-        protected override string GetLoreString(string langID = null) => "";
+        protected override string GetLoreString(string langID = null) => "With this orange, your style... it's impetuous. Your defense, impregnable.";
         public Orange()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Orange.prefab";

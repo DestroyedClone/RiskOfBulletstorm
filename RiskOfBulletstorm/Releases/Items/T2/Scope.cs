@@ -11,10 +11,10 @@ namespace RiskOfBulletstorm.Items
     public class Scope : Item_V2<Scope> 
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Bullet Spread Reduction (Default: 10%)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How much should one Scope reduce spread? (Default: 10%)", AutoConfigFlags.PreventNetMismatch)]
         public static float Scope_SpreadReduction { get; private set; } = 0.10f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Bullet Spread Reduction Stack (Default: 5%)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How much should each Scope reduce spread by per stack? (Default: 5%)", AutoConfigFlags.PreventNetMismatch)]
         public static float Scope_SpreadReductionStack { get; private set; } = 0.05f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("If enabled, Scope will affect the Disposable Missile Launcher." +

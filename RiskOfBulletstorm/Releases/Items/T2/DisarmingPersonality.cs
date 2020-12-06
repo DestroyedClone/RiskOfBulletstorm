@@ -9,15 +9,15 @@ namespace RiskOfBulletstorm.Items
 {
     public class DisarmingPersonality : Item_V2<DisarmingPersonality>
     {
-        [AutoConfig("Base cost reduction? Default 0.1 10%", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the base cost reduction of one Disarming Personality? (Default 0.1 = 10%)", AutoConfigFlags.PreventNetMismatch)]
         public float DisarmingPersonality_CostReductionAmount { get; private set; } = 0.1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Stack cost reduction? Default 0.05 5%", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the cost reduction per stack? (Default 0.05 = 5%)", AutoConfigFlags.PreventNetMismatch)]
         public float DisarmingPersonality_CostReductionAmountStack { get; private set; } = 0.05f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Max cost reduction?? Default 0.6 60%", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the maximum cost reduction? This limit is hyperbolic. (Default 0.6 = 60%)", AutoConfigFlags.PreventNetMismatch)]
         public float DisarmingPersonality_CostReductionAmountLimit { get; private set; } = 0.6f;
 
         public override string displayName => "Disarming Personality";
@@ -29,7 +29,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetPickupString(string langID = null) => "For You?\n"+descText;
 
         protected override string GetDescString(string langid = null) => $"<style=cIsUtility>{descText} by {Pct(DisarmingPersonality_CostReductionAmount)}</style>" +
-            $"\n<style=cStack>(+{Pct(DisarmingPersonality_CostReductionAmount)} per stack) up to {Pct(DisarmingPersonality_CostReductionAmountLimit )}</stack>" +
+            $"\n<style=cStack>(+{Pct(DisarmingPersonality_CostReductionAmount)} hyperbolically per stack) up to {Pct(DisarmingPersonality_CostReductionAmountLimit )}</stack>" +
             $"\n <style=cSub>Chance is shared amongst players.</style>";
 
         protected override string GetLoreString(string langID = null) => "The Pilot is able to talk his way into almost anything, usually gunfights.";

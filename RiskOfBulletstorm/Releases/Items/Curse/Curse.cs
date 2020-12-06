@@ -17,18 +17,18 @@ namespace RiskOfBulletstorm.Items
         //public bool Curse_Enable { get; private set; } = true;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How much additional damage should a Jammed enemy deal? (Default: 1 (+100%))", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How much additional damage should a Jammed enemy deal? (Default: 1 = +100% damage)", AutoConfigFlags.PreventNetMismatch)]
         public float Curse_DamageBoost { get; private set; } = 1.00f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How much additional crit should a Jammed enemy have? (Default: 1 (+100%))", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How much additional crit should a Jammed enemy have? (Default: 1 +100% crit chance)", AutoConfigFlags.PreventNetMismatch)]
         public float Curse_CritBoost { get; private set; } = 1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Allow bosses to become Jammed? Default: true", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Allow bosses to become Jammed? (Default: true)", AutoConfigFlags.PreventNetMismatch)]
         public bool Curse_AllowBosses { get; private set; } = true;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Allow umbrae to become Jammed? Default: true", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Allow umbra(e) to become Jammed? (Default: true)", AutoConfigFlags.PreventNetMismatch)]
         public bool Curse_AllowUmbra { get; private set; } = true;
 
         /*[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
@@ -36,12 +36,13 @@ namespace RiskOfBulletstorm.Items
         public bool Curse_AllowGhosts { get; private set; } = true;*/
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("[Aetherium Support] Allow Unstable Design spawns to become jammed?", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("[Aetherium Support] Allow Unstable Design summons to become Jammed? (Default: true)", AutoConfigFlags.PreventNetMismatch)]
         public bool Curse_AllowUnstableDesign { get; private set; } = true;
 
+        /*
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Allow Lord of the Jammed to spawn at Max curse? Default: true", AutoConfigFlags.PreventNetMismatch)]
-        public bool Curse_SpawnLOTJ { get; private set; } = true;
+        [AutoConfig("Allow Lord of the Jammed to spawn at Max curse? (Default: true)", AutoConfigFlags.PreventNetMismatch)]
+        public bool Curse_SpawnLOTJ { get; private set; } = true;*/
 
         public override string displayName => "CurseMasterItem";
         public override ItemTier itemTier => ItemTier.NoTier;
@@ -57,7 +58,7 @@ namespace RiskOfBulletstorm.Items
         //public GameObject curseEffect = Resources.Load<GameObject>("prefabs/effects/ImpSwipeEffect");
 
         public static ItemIndex curseTally;
-        public static ItemIndex curseMax;
+        //public static ItemIndex curseMax;
 
         public static readonly ItemIndex umbraItemIndex = ItemIndex.InvadingDoppelganger;
 
@@ -69,6 +70,7 @@ namespace RiskOfBulletstorm.Items
         {
             base.SetupAttributes();
 
+            // Used to keep track of the player's curse per player //
             var curseTallyDef = new CustomItem(new ItemDef
             {
                 hidden = true,
@@ -78,6 +80,9 @@ namespace RiskOfBulletstorm.Items
             }, new ItemDisplayRuleDict(null));
             curseTally = ItemAPI.Add(curseTallyDef);
 
+            // Used to track who to spawn the Lord of the Jammed on //
+            // Currently unused //
+            /*
             var curseMaxDef = new CustomItem(new ItemDef
             {
                 hidden = true,
@@ -85,7 +90,7 @@ namespace RiskOfBulletstorm.Items
                 tier = ItemTier.NoTier,
                 canRemove = false
             }, new ItemDisplayRuleDict(null));
-            curseMax = ItemAPI.Add(curseMaxDef);
+            curseMax = ItemAPI.Add(curseMaxDef);*/
         }
         public override void SetupConfig()
         {
@@ -103,6 +108,7 @@ namespace RiskOfBulletstorm.Items
             CharacterBody.onBodyStartGlobal -= JamEnemy;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0059:Unnecessary assignment of a value", Justification = "RollValue is used.")]
         private void JamEnemy(CharacterBody obj)
         {
             if (!obj || !obj.inventory || !obj.master) return;

@@ -10,13 +10,13 @@ namespace RiskOfBulletstorm.Items
     public class Armor : Item_V2<Armor>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Activate a blank when armor is depleted? (Default: true)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Should Armor activate a blank when broken? (Default: true)", AutoConfigFlags.PreventNetMismatch)]
         public bool Armor_ActivateBlank { get; private set; } = true;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Health Threshold for blocking damage. ", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the minimum amount of damage that Armor should be consumed for? (Default: 20% max health) ", AutoConfigFlags.PreventNetMismatch)]
         public float Armor_HealthThreshold { get; private set; } = 0.20f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Protects from death?")]
+        [AutoConfig("Should Armor protect against fatal damage? This takes priority over the required minimum amount of damage. (Default: false)")]
         public bool Armor_ProtectDeath { get; private set; } = false;
 
         public override string displayName => "Armor";

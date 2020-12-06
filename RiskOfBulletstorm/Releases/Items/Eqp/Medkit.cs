@@ -8,28 +8,48 @@ namespace RiskOfBulletstorm.Items
     public class Medkit : Equipment_V2<Medkit>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Heal%? (Default: 1.0 = 100% heal)", AutoConfigFlags.PreventNetMismatch)]
-        public float Medkit_HealAmount { get; private set; } = 1f;
+        [AutoConfig("What percent of maximum health should the Medkit heal? (Default: 75% of max health)", AutoConfigFlags.PreventNetMismatch)]
+        public float Medkit_HealAmount { get; private set; } = 0.75f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Barrier%? (Default: 0.5 = 50%% barrier)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What percent of barrier should the Meatbun give? (Default: 50% of max health)", AutoConfigFlags.PreventNetMismatch)]
         public float Medkit_BarrierAmount { get; private set; } = 0.5f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Cooldown (Default: 100 seconds)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the cooldown in seconds? (Default: 100 seconds)", AutoConfigFlags.PreventNetMismatch)]
         public override float cooldown { get; protected set; } = 100f;
 
         public override string displayName => "Medkit";
-        public string descText = "Heals";
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => descText + "\nMedkits provides substantial healing when used.";
+        protected override string GetPickupString(string langID = null)
+        {
+            if (Medkit_HealAmount > 0 && Medkit_BarrierAmount > 0) return "Heals\nMedkits provides substantial healing when used.";
+            else return "There's nothing inside?";
+        }
 
-        protected override string GetDescString(string langid = null) => $"{descText} for <style=cIsHealing>{Pct(Medkit_HealAmount)} health</style> and gives a <style=cIsHealing>temporary barrier for {Pct(Medkit_BarrierAmount)} of your health</style>.";
+        protected override string GetDescString(string langid = null)
+        {
+            var canHeal = Medkit_HealAmount > 0;
+            var canBarrier = Medkit_BarrierAmount > 0;
+            if (!canHeal && !canBarrier) return $"Everything inside was emptied, it does nothing.";
+            var desc = $"";
+            if (canHeal) desc += $"Heals for <style=cIsHealing>{Pct(Medkit_HealAmount)} health</style>. ";
+            if (canBarrier) desc += $"Gives a <style=cIsHealing>temporary barrier for {Pct(Medkit_BarrierAmount)} of your max health.</style>.";
+            return desc;
+        }
 
-        protected override string GetLoreString(string langID = null) => "Contains a small piece of fairy." +
-            "\nSeeking a place that would provide a near constant flow of the desperate and injured, Médecins Sans Diplôme recognized the Gungeon as the perfect place to found their practice.";
+        protected override string GetLoreString(string langID = null)
+        {
+            var desc = "";
+            if (Medkit_HealAmount > 0)
+                desc += "Contains";
+            else desc += "Used to contain";
+            desc += " a small piece of fairy." +
+                "\nSeeking a place that would provide a near constant flow of the desperate and injured, Médecins Sans Diplôme recognized the Gungeon as the perfect place to found their practice.";
+            return desc;
+        }
 
         public Medkit()
         {

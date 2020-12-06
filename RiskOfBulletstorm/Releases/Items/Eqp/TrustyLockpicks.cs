@@ -10,39 +10,78 @@ namespace RiskOfBulletstorm.Items
     public class TrustyLockpicks : Equipment_V2<TrustyLockpicks>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Unlock chance: 50%", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the chance that Trusty Lockpicks will unlock the chest? (Default: 50% chance)", AutoConfigFlags.PreventNetMismatch)]
         public float TrustyLockpicks_UnlockChance { get; private set; } = 50f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Price increase on fail: 200%", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How much will the price by multiplied by if you fail the unlock? (Default: 200% multiplier)", AutoConfigFlags.PreventNetMismatch)]
         public float TrustyLockpicks_PriceHike { get; private set; } = 2.0f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Lock the chest instead? Prevents it from opening.. Default: false", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Should the Trusty Lockpicks break the lock instead? This prevents it from opening. (Default: false)", AutoConfigFlags.PreventNetMismatch)]
         public bool TrustyLockpicks_KillChest { get; private set; } = false;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Cooldown? (Default: 60 seconds)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the cooldown in seconds? (Default: 60 seconds)", AutoConfigFlags.PreventNetMismatch)]
         public override float cooldown { get; protected set; } = 60f;
 
         public override string displayName => "Trusty Lockpicks";
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "Who Needs Keys?\nChance to pick locks. Can only be used once per lock.";
+        protected override string GetPickupString(string langID = null)
+        {
+            var desc = "Who Needs Keys?\n";
+            if (TrustyLockpicks_UnlockChance > 0)
+                desc += "Chance to pick chest locks.";
+            else desc += "Guaranteed chance to fail to pick a chest's lock.";
+            desc += "Can only be used once per lock.";
+            return desc;
+        }
 
         protected override string GetDescString(string langid = null)
         {
-            string desc = $"<style=cIsUtility>{TrustyLockpicks_UnlockChance}% chance</style> to <style=cIsUtility>unlock a chest</style>. <style=cDeath>On fail,</style> it ";
+            var desc = $"";
+            // pick chance //
+            if (TrustyLockpicks_UnlockChance <= 0) desc += $"<style=cDeath>Guaranteed to fail";
+            else desc += $"<style=cIsUtility>{TrustyLockpicks_UnlockChance}% chance";
+
+            // break effect //
+            desc += $"</style> to <style=cIsUtility>unlock a chest</style>. <style=cDeath>On fail,</style> it ";
             if (TrustyLockpicks_KillChest)
                 desc += $"breaks the chest.";
+            // price hike effect //
             else
-                desc += $"increases the price by {Pct(TrustyLockpicks_PriceHike)}";
+            {
+                // is it equal to 1? //
+                if (TrustyLockpicks_PriceHike == 1)
+                    desc += $"prevents another attempt.";
+                else
+                {
+                    //  Is it greater than 1? //
+                    if (TrustyLockpicks_PriceHike > 1) desc += $"increases";
+
+                    // Is it less than 0? //
+                    else if (TrustyLockpicks_PriceHike < 0)
+                        desc += $"makes it free";
+                    // Is it less than 1? //
+                    else 
+                        desc += $"decreases";
+                    desc += $" the price by {Pct(TrustyLockpicks_PriceHike)}";
+                }
+            }
             desc += $"</style>";
             return desc;
         }
 
-        protected override string GetLoreString(string langID = null) => "These lockpicks have never let the Pilot down, except for the many times they did.";
+        protected override string GetLoreString(string langID = null)
+        {
+            var desc = "These lockpicks have never let the Pilot down, except for";
+            if (TrustyLockpicks_UnlockChance <= 0) desc += "every time";
+                else desc += "the many times";
+            desc += " they did.";
+            return desc;
+        }
 
         private readonly string unlockSound = EntityStates.Engi.EngiWeapon.FireMines.throwMineSoundString;
         private readonly GameObject UnlockEffect = Resources.Load<GameObject>("prefabs/effects/LevelUpEffect");
@@ -50,7 +89,7 @@ namespace RiskOfBulletstorm.Items
         private readonly GameObject Fail_LockEffect = Resources.Load<GameObject>("prefabs/effects/LevelUpEffectEnemy");
         //prefabs/effects/WarCryEffect
         private readonly string prefix = "TRUSTYLOCKPICKS_";
-        private readonly string suffixBroken = " (Broken Lock)";
+        private readonly string suffixBroken = " (Failed Unlock)";
         public TrustyLockpicks()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/TrustyLockpicks.prefab";

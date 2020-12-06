@@ -11,8 +11,8 @@ namespace RiskOfBulletstorm.Items
 	public class RollBomb : Item_V2<RollBomb>
 	{
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How many damage should Roll Bomb deal? (Default: 0.8 = 80% damage)", AutoConfigFlags.PreventNetMismatch)]
-        public float RollBomb_Damage { get; private set; } = 0.8f;
+        [AutoConfig("How many damage should Roll Bomb deal? (Default: 1.0 = 100% damage)", AutoConfigFlags.PreventNetMismatch)]
+        public float RollBomb_Damage { get; private set; } = 1.0f;
 
         public override string displayName => "Roll Bomb";
         public override ItemTier itemTier => ItemTier.Tier2;
@@ -23,7 +23,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetPickupString(string langID = null) => "Power Charge\nDrop bomb(s) after using your utility skill.";
 
         protected override string GetDescString(string langid = null) => $"Using your utility <style=cIsUtility>drops 1 bombs</style> for <style=cIsDamage>{Pct(RollBomb_Damage)} damage </style>." +
-            $"\n<style=cStack>(+1 bomb dropped per stack</style>";
+            $"\n<style=cStack>(+1 bomb dropped per stack)</style>";
 
         protected override string GetLoreString(string langID = null) => "Produces a bomb when dodge rolling.\nThis strange mechanism dispenses explosives when spun.";
 

@@ -10,13 +10,13 @@ namespace RiskOfBulletstorm.Items
     public class Unity : Item_V2<Unity>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Damage increase on single stack? (Default: 0.1)" +
+        [AutoConfig("By how much will your base damage increase with a single Unity? (Default: +0.1)" +
             "\nKeep in mind that this number is MULTIPLIED by the amount of TOTAL items.",
             AutoConfigFlags.PreventNetMismatch)]
         public float RingUnity_DamageBonus { get; private set; } = 0.1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Damage increase on subsequent stacks (Default: 0.01)" +
+        [AutoConfig("By how much will your base damage increase on subsequent stacks (Default: +0.01)" +
             "\nKeep in mind that this number is MULTIPLIED by the amount of TOTAL items.", AutoConfigFlags.PreventNetMismatch)]
         public float RingUnity_DamageBonusStack { get; private set; } = 0.01f;
         public override string displayName => "Unity";
@@ -27,8 +27,8 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "Our Powers Combined\nIncreased combat effectiveness per item.";
 
-        protected override string GetDescString(string langid = null) => $"<style=cIsDamage>+{RingUnity_DamageBonus}base damage</style> per unique item in inventory" +
-            $"\n<style=cStack>(+{RingUnity_DamageBonusStack}base per stack)</style>";
+        protected override string GetDescString(string langid = null) => $"<style=cIsDamage>+{RingUnity_DamageBonus} base damage</style> per unique item in inventory." +
+            $"\n<style=cStack>(+{RingUnity_DamageBonusStack} base damage per stack)</style>";
 
         protected override string GetLoreString(string langID = null) => "This ring takes a small amount of power from each gun carried and adds it to the currently equipped gun.";
 
@@ -42,7 +42,7 @@ namespace RiskOfBulletstorm.Items
 
         public override void SetupBehavior()
         {
-
+            base.SetupBehavior();
         }
         public override void SetupAttributes()
         {
@@ -85,7 +85,6 @@ namespace RiskOfBulletstorm.Items
             }
             return num;
         }
-
 
         private void BoostDamage(CharacterBody sender, StatHookEventArgs args)
         {

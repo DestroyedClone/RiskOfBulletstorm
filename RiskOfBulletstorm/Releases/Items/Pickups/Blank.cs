@@ -11,28 +11,28 @@ namespace RiskOfBulletstorm.Items
     public class Blank : Item_V2<Blank>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Button to blank (Default: T)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What Keyboard button should activate the Blank? (Default: T)", AutoConfigFlags.None)]
         public KeyCode BlankButton { get; private set; } = KeyCode.T;
         //https://docs.unity3d.com/ScriptReference/KeyCode.html
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Gamepad Button to blank (Default: T)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What Gamepad button should activate the Blank? (Default: T)", AutoConfigFlags.None)]
         public string BlankButtonGamepad { get; private set; } = "T";
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Blank Cooldown (Default: 3 second)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the cooldown for activating a Blank? (Default: 3 seconds)", AutoConfigFlags.PreventNetMismatch)]
         public float ConfigBlankCooldown { get; private set; } = 3f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Damage dealt to enemies on use (Default: 1 = 100% damage)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How much damage should Blanks deal to nearby enemies? (Default: 1 = 100% damage)", AutoConfigFlags.PreventNetMismatch)]
         public float Blank_DamageDealt { get; private set; } = 1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Radius the projectile deals damage (Default: 10f)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the radius that Blanks deal damage when activated? (Default: 10.0 meters)", AutoConfigFlags.PreventNetMismatch)]
         public float BlankRadius { get; private set; } = 10f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Radius of projectiles the Blank clears. Set to '0' to disable, or '-1' for infinite range (Default: -1 = Infinite)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the radius that Blanks will clear projectiles? Set to '0' to disable, or '-1' for infinite range (Default: -1)", AutoConfigFlags.PreventNetMismatch)]
         public float BlankClearRadius { get; private set; } = -1f;
 
 
@@ -57,7 +57,7 @@ namespace RiskOfBulletstorm.Items
             else desc += $"within {BlankRadius}";
             desc += $"\nConsumed on use." +
                 $"\nCooldown: {ConfigBlankCooldown} seconds" +
-                $"\nPress "+BlankButton.ToString()+" to activate";
+                $"\nPress "+BlankButton.ToString()+"/"+BlankButtonGamepad.ToString()+ " to activate";
             return desc;
         }
 

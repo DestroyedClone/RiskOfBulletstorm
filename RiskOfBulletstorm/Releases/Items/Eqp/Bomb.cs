@@ -3,7 +3,6 @@ using EntityStates.Engi.EngiWeapon;
 using R2API;
 using RoR2;
 using RoR2.Projectile;
-using ThinkInvisible.ClassicItems;
 using UnityEngine;
 using UnityEngine.Networking;
 using TILER2;
@@ -14,11 +13,11 @@ namespace RiskOfBulletstorm.Items
     public class Bomb : Equipment_V2<Bomb>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Damage (Default: 100% damage)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How much damage should the Bomb deal upon explosion? (Default: 1.0 = 100% damage)", AutoConfigFlags.PreventNetMismatch)]
         public float Bomb_DamageDealt { get; private set; } = 1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Cooldown (Default: 14.00 seconds)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the cooldown in seconds? (Default: 14.00 seconds)", AutoConfigFlags.PreventNetMismatch)]
         public override float cooldown { get; protected set; } = 14.00f;
 
         public override string displayName => "Bomb";
@@ -28,7 +27,15 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "Use For Boom\n"+descText;
 
-        protected override string GetDescString(string langid = null) => $"{descText}, dealing <style=cIsDamage>{Pct(Bomb_DamageDealt)} damage</style>.";
+        protected override string GetDescString(string langid = null)
+        {
+            var desc = $"{descText}, dealing <style=cIsDamage>";
+            // damage dealt //
+            if (Bomb_DamageDealt > 0) desc += $"{Pct(Bomb_DamageDealt)}";
+            else desc += $"no ";
+            desc += $" damage</style>.";
+            return desc;
+        }
 
         protected override string GetLoreString(string langID = null) => "Countless experienced adventurers have brought Bombs to the Gungeon seeking secret doors, only to be foiled by the existence of Blanks. Still, explosives have their place.";
 
@@ -72,7 +79,8 @@ namespace RiskOfBulletstorm.Items
 
             if (BombPrefab) PrefabAPI.RegisterNetworkPrefab(BombPrefab);
 
-            Embryo_V2.instance.Compat_Register(catalogIndex);
+            if (ClassicItemsCompat.enabled)
+                ClassicItemsCompat.RegisterEmbryo(catalogIndex);
         }
         public override void SetupAttributes()
         {
@@ -290,11 +298,10 @@ namespace RiskOfBulletstorm.Items
             GameObject gameObject = slot.gameObject;
             if (!gameObject || !body) return false;
 
-            //int DeployCount = instance.CheckEmbryoProc(body) ? 2 : 1; //Embryo Check
-
             Util.PlaySound(FireMines.throwMineSoundString, gameObject);
             FireBomb(body, gameObject);
-            if (instance.CheckEmbryoProc(body)) FireBomb(body, gameObject, 1f);
+            if (ClassicItemsCompat.enabled && ClassicItemsCompat.CheckEmbryoProc(instance, body))
+                FireBomb(body, gameObject, 1f);
             return true;
         }
 

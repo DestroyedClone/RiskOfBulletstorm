@@ -12,11 +12,11 @@ namespace RiskOfBulletstorm.Items
     public class RingMiserlyProtection : Item_V2<RingMiserlyProtection> //switch to a buff system due to broken
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Health Increase. Default: +100%", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How much maximum health is multiplied by per Ring of Miserly Protection? (Default: +100%)", AutoConfigFlags.PreventNetMismatch)]
         public float RingMiserlyProtection_HealthBonus { get; private set; } = 1.0f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Health Increase Stack. Default: +50%", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How much additional maximum health is multiplied by per subsequent stacks of Ring of Miserly Protection? (Default: +50%)", AutoConfigFlags.PreventNetMismatch)]
         public float RingMiserlyProtection_HealthBonusStack { get; private set; } = 0.5f;
         public override string displayName => "Ring of Miserly Protection";
         public override ItemTier itemTier => ItemTier.Lunar;
@@ -26,8 +26,21 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "Aids The Fiscally Responsible\n<style=cHealth>Increases health substantially.</style> <style=cDeath>Any shrine purchases will shatter a ring.</style>";
 
-        protected override string GetDescString(string langid = null) => $"Grants <style=cHealth>+{Pct(RingMiserlyProtection_HealthBonus)}</style> <style=cStack>(+{Pct(RingMiserlyProtection_HealthBonusStack)} per stack)</style> health." +
-            $"\n <style=cDeath>...but breaks a ring completely upon using a shrine.</style> ";
+        protected override string GetDescString(string langid = null)
+        {
+            var desc = $"";
+            var incHealth = RingMiserlyProtection_HealthBonus > 0;
+            var incStack = RingMiserlyProtection_HealthBonusStack > 0;
+            if (!incHealth && !incStack)
+                desc += $"It does nothing.";
+            if (incHealth)
+                desc += $"Grants <style=cHealth>+{Pct(RingMiserlyProtection_HealthBonus)}</style> health.";
+            if (incStack)
+                desc += $"<style=cStack>(+{Pct(RingMiserlyProtection_HealthBonusStack)} per stack)</style>";
+            desc += $"\n <style=cDeath>...but breaks a stack completely upon using a shrine.</style> ";
+
+            return desc;
+        }
 
         protected override string GetLoreString(string langID = null) => "Before the Shopkeep opened his shop, he was an avaricious and miserly man. He remains careful about any expenditures, but through capitalism he has purged himself of negative emotion.";
 

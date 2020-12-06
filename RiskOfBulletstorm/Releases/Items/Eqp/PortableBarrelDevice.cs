@@ -9,28 +9,63 @@ namespace RiskOfBulletstorm.Items
     public class PortableBarrelDevice : Equipment_V2<PortableBarrelDevice>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How long should the barrel stick around after being spawned? Default: 16 seconds", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How long should the barrel stay around after being spawned? (Default: 16 seconds)", AutoConfigFlags.PreventNetMismatch)]
         public static float PortableTableDevice_Lifetime { get; private set; } = 16;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How long should the barrel stick around after being interacted with? Default: 4 seconds", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How long should the barrel stay around after being opened? (Default: 4 seconds)", AutoConfigFlags.PreventNetMismatch)]
         public static float PortableTableDevice_UseLifetime { get; private set; } = 4f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How many barrels should be allowed to spawn within the world? Default: 30, Set to -1 for infinite", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How many barrels should be allowed to spawn within the world? (Default: 30, Set to -1 for infinite)", AutoConfigFlags.PreventNetMismatch)]
         public static int PortableTableDevice_MaxBarrels { get; private set; } = 30;
 
         public override string displayName => "Portable Barrel Device";
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Cooldown (Default: 30 seconds)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the cooldown in seconds? (Default: 30 seconds)", AutoConfigFlags.PreventNetMismatch)]
         public override float cooldown { get; protected set; } = 30f;
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "Know When To Fold 'Em\nPlaces a barrel.";
+        protected override string GetPickupString(string langID = null)
+        {
+            var desc = "Know When To Fold 'Em\n";
+            if (PortableTableDevice_MaxBarrels > 0 && PortableTableDevice_Lifetime > 0)
+                desc += "Places a barrel.";
+            else desc += "Faulty user input prevents this device from functioning.";
+            return desc;
+        }
 
-        protected override string GetDescString(string langid = null) => $"Places a <style=cIsUtility>barrel</style> nearby.";
+        protected override string GetDescString(string langid = null)
+        {
+            var canBarrel = PortableTableDevice_MaxBarrels > 0;
+            var isInfiniteBarrel = PortableTableDevice_MaxBarrels == -1;
+            var canLive = PortableTableDevice_Lifetime > 0;
+            var isLifeLongerThanOne = PortableTableDevice_Lifetime > 1;
+            var desc = $"";
+            if (canBarrel && canLive)
+            {
+                // duration //
+                desc += $"Places a <style=cIsUtility>barrel</style> at your feet." +
+                    $"\nEach barrel lasts for ";
+                if (isLifeLongerThanOne) desc += $"{PortableTableDevice_Lifetime} seconds.";
+                else desc += $"a second.";
+
+                // barrel count //
+                if (isInfiniteBarrel)
+                    desc += $"There is no limit on the amount of barrels that";
+                else
+                {
+                    desc += $"At most, ";
+                    if (PortableTableDevice_MaxBarrels == 1) desc += $"a single barrel";
+                    else if (PortableTableDevice_MaxBarrels > 1) desc += $"{PortableTableDevice_MaxBarrels} barrels";
+                }
+                desc += $" can be placed in the world.";
+            }
+            else return $"Unsuccesfully attempts to place a barrel.";
+            return desc;
+        }
 
         protected override string GetLoreString(string langID = null) => "Advanced polymers reinforce this state-of-the-art ballistic bin.";
 

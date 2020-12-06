@@ -13,25 +13,25 @@ namespace RiskOfBulletstorm.Items
     public class MasterRoundNth : Item_V2<MasterRoundNth>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Max Health Increase? (Default: 150)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How much maximum health is increased per Master Round? (Default: +150)", AutoConfigFlags.PreventNetMismatch)]
         public int MasterRound_MaxHealthAdd { get; private set; } = 150;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Permitted Hits: 3", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How many hits are allowed to be taken per player before invalidating the spawn? (Default: 3 hits)", AutoConfigFlags.PreventNetMismatch)]
         public static int MasterRound_AllowedHits { get; private set; } = 3;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Permitted Hits added to Max per stage: 1", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How many hits will your allowed hits increase by per stage? (Default: +1 max hit per stage)", AutoConfigFlags.PreventNetMismatch)]
         public static int MasterRound_AllowedHitsPerStage { get; private set; } = 1;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Minimum damage required before counting as a hit (Default: 5)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the minimum damage required from a hit before counting? (Default: 5 damage)", AutoConfigFlags.PreventNetMismatch)]
         public int MasterRound_MinimumDamage { get; private set; } = 5;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Allow the player's own damage to count as a hit? Default: false", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Should the player's own damage count as a hit? (Default: false)", AutoConfigFlags.PreventNetMismatch)]
         public bool MasterRound_AllowSelfDamage { get; private set; } = false;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Show in chat the amount of hits allowed? Default: true", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Should the maximum amount of hits allowed be printed in chat on teleporter start? (Default: true)", AutoConfigFlags.PreventNetMismatch)]
         public bool MasterRound_AnnounceMax { get; private set; } = true;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Show who gets hit in chat? Default: false", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Should the chat say who gets hit in chat? (Default: false)", AutoConfigFlags.PreventNetMismatch)]
         public bool MasterRound_ShowHitInChat { get; private set; } = false;
 
         public override string displayName => "Master Round";
@@ -39,9 +39,10 @@ namespace RiskOfBulletstorm.Items
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Healing, ItemTag.WorldUnique });
 
         protected override string GetNameString(string langID = null) => displayName;
-        protected override string GetPickupString(string langID = null) => "Given to those who survive the boss fight without exceeding a certain amount of hits";
+        protected override string GetPickupString(string langID = null) => "Increases maximum health." +
+            "\nGiven to those who survive the teleporter event without exceeding a certain amount of hits";
 
-        protected override string GetDescString(string langid = null) => $"Increases maximum health by <style=cIsHealing>{MasterRound_MaxHealthAdd} health</style> <style=cStack>(+{MasterRound_MaxHealthAdd} per stack)</style>";
+        protected override string GetDescString(string langid = null) => $"Increases maximum health by <style=cIsHealing>{MasterRound_MaxHealthAdd} health</style> <style=cStack>(+{MasterRound_MaxHealthAdd} max health per stack)</style>";
 
         protected override string GetLoreString(string langID = null) => "Apocryphal texts recovered from cultists of the Order indicate that the Gun and the Bullet are linked somehow." +
             "\nAny who enter the Gungeon are doomed to remain, living countless lives in an effort to break the cycle." +
@@ -72,7 +73,7 @@ namespace RiskOfBulletstorm.Items
 
         public override void SetupBehavior()
         {
-
+            base.SetupBehavior();
         }
         public override void SetupAttributes()
         {
@@ -120,7 +121,7 @@ namespace RiskOfBulletstorm.Items
             component.currentHits++;
             if (MasterRound_ShowHitInChat)
             {
-                Chat.AddMessage("MasterRound: " + victim.name + " has " + component.currentHits + "/" + component.allowedHits);
+                Chat.AddMessage("[MASTER_ROUND] " + victim.name + " has " + component.currentHits + "/" + component.allowedHits);
             }
         }
 
@@ -154,7 +155,7 @@ namespace RiskOfBulletstorm.Items
                 }
             }
             if (MasterRound_AnnounceMax)
-                Chat.AddMessage("MASTER ROUND: Max Hits: "+ maxHits);
+                Chat.AddMessage("[MASTER_ROUND] Max Hits: "+ maxHits);
         }
         private void GenericNotification_SetItem(On.RoR2.UI.GenericNotification.orig_SetItem orig, GenericNotification self, ItemDef itemDef)
         {

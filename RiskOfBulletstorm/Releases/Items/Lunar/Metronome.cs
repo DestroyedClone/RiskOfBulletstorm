@@ -13,19 +13,19 @@ namespace RiskOfBulletstorm.Items
     public class Metronome : Item_V2<Metronome>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Max kills? Default: 75", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What are the maximum amount of kills that can be counted by the Metronome? (Default: 75 kills)", AutoConfigFlags.PreventNetMismatch)]
         public static int Metronome_MaxKills { get; private set; } = 75;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Additional max kills per stack? Default: 25", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How many additional kills can be counted by the Metronome per stack? (Default: 25)", AutoConfigFlags.PreventNetMismatch)]
         public static int Metronome_MaxKillsStack { get; private set; } = 25;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Kills lost upon using a different ability, Default: 25", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How many kills are lost upon using a different ability? (Default: 25)", AutoConfigFlags.PreventNetMismatch)]
         public static int Metronome_KillsLost { get; private set; } = 25;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Damage Multiplier. Default: 2%", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the damage multiplier per kill for the metronome? (Default: 0.02 = 2% damage multiplier)", AutoConfigFlags.PreventNetMismatch)]
         public static float Metronome_DmgCoeff { get; private set; } = 0.02f;
 
         //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
@@ -37,11 +37,43 @@ namespace RiskOfBulletstorm.Items
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage, ItemTag.AIBlacklist });
 
         protected override string GetNameString(string langID = null) => displayName;
-        protected override string GetPickupString(string langID = null) => "Better And Better\nImproves your damage with sequential kills, <style=cDeath>but loses some upon another skill.</style>";
+        protected override string GetPickupString(string langID = null)
+        {
+            var desc = "Better And Better\n";
+            if (Metronome_DmgCoeff == 0 && Metronome_MaxKillsStack <= 0)
+                return desc + "Does nothing.";
 
-        protected override string GetDescString(string langid = null) => $"Improves your damage by <style=cIsDamage>{Pct(Metronome_DmgCoeff)} per kill</style> with the same skill." +
-            $"\n <style=cStack>Max Kills: {Metronome_MaxKills} + {Metronome_MaxKillsStack} per stack.</style>" +
-            $"\n <style=cDeath>Using a different skill will reset your bonus by {Metronome_MaxKillsStack}</style>";
+            if (Metronome_DmgCoeff != 0)
+            {
+                if (Metronome_DmgCoeff > 0) desc += "<style=cIsDamage>Improves";
+                else if (Metronome_DmgCoeff < 0) desc += "<style=cDeath>Worsens";
+                desc += " your damage with ";
+
+                // I'm losing my mind IDK WHATS GOING ON AAAAAAAAAAAAAAAAAAAAAAAAAAAA
+                if (Metronome_MaxKills > 1 || Metronome_MaxKillsStack > 0)
+                    desc += "sequential kills";
+                else desc += "one kill";
+                desc += "</style>";
+
+                if (Metronome_KillsLost > 0)
+                    desc += ", <style=cDeath>but loses some upon another skill.</style>";
+            }
+            return desc;
+        }
+
+        protected override string GetDescString(string langid = null)
+        {
+            var desc = $"";
+            // Nothing Check //
+            if (Metronome_DmgCoeff == 0 && Metronome_MaxKillsStack <= 0)
+                return desc + "Does nothing.";
+
+            desc += $"Multiplies your damage by <style=cIsDamage>{Pct(Metronome_DmgCoeff)} per kill</style> with the same skill." +
+            $"\n <style=cStack>Max Kills: {Metronome_MaxKills} {(Metronome_MaxKillsStack > 0 ? Metronome_MaxKillsStack +"per stack." : "")}</style>" +
+            $"\n {(Metronome_KillsLost > 0 ? "<style=cDeath>Using a different skill will reset your bonus by {Metronome_KillsLost}</style>" : "" )}";
+
+            return desc;
+        }
 
         protected override string GetLoreString(string langID = null) => "Tick, tick, tick, tick...." +
             "\n The metronome struck back and forth, and with every strike, a bullet ended a life." +
@@ -52,7 +84,7 @@ namespace RiskOfBulletstorm.Items
             "\n And it only took one strike to end him." +
             "\n Tick, Tick, tick, tick";
 
-        public static BuffIndex MetronomeBuffTally { get; private set; }
+        //public static BuffIndex MetronomeBuffTally { get; private set; }
 
         public Metronome()
         {
@@ -67,6 +99,7 @@ namespace RiskOfBulletstorm.Items
         public override void SetupAttributes()
         {
             base.SetupAttributes();
+            /*
             var metronomeBuffTallyDef = new CustomBuff(
             new BuffDef
             {
@@ -75,7 +108,7 @@ namespace RiskOfBulletstorm.Items
                 isDebuff = false,
                 name = "Metronome Stacks",
             });
-            MetronomeBuffTally = BuffAPI.Add(metronomeBuffTallyDef);
+            MetronomeBuffTally = BuffAPI.Add(metronomeBuffTallyDef);*/
 
         }
         public override void SetupConfig()
@@ -188,27 +221,27 @@ namespace RiskOfBulletstorm.Items
                     Destroy(gameObject.GetComponent<MetronomeTrackKills>());
             }
 
-            public void OnDisable()
+            /*public void OnDisable()
             {
                 HelperUtil.ClearBuffStacks(characterBody, MetronomeBuffTally);
-            }
+            }*/
 
             public void UpdateKills()
             {
                 var InventoryCount = characterBody.inventory.GetItemCount(Metronome.instance.catalogIndex);
                 maxkills = Metronome_MaxKills + Metronome_MaxKillsStack * (InventoryCount - 1);
                 if (kills > maxkills) kills = maxkills; //this resets it if you have less metronomes from like cleansing
-                UpdateBuffStack();
+                //UpdateBuffStack();
             }
             public bool IsKillsLessThanMax()
             {
                 return kills < maxkills;
             }
-            public void UpdateBuffStack()
+            /*public void UpdateBuffStack()
             {
-                HelperUtil.ClearBuffStacks(characterBody, MetronomeBuffTally);
-                HelperUtil.AddBuffStacks(characterBody, MetronomeBuffTally, kills);
-            }
+                //HelperUtil.ClearBuffStacks(characterBody, MetronomeBuffTally);
+                //HelperUtil.AddBuffStacks(characterBody, MetronomeBuffTally, kills);
+            }*/
             public void SetLastSkillSlot(int SlotNumber)
             {
                 if (LastSkillSlotUsed != SlotNumber)

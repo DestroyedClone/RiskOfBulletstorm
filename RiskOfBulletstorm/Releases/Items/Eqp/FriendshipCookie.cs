@@ -11,10 +11,10 @@ namespace RiskOfBulletstorm.Items
         public override float cooldown { get; protected set; } = 0f;
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "It's Delicious!\nBaked fresh every morning by Mom! It's to die for! Or, just maybe, to live for.";
+        protected override string GetPickupString(string langID = null) => "It's Delicious!\nRevives all players.";
 
         protected override string GetDescString(string langid = null) => $"Upon use, <style=cIsHealing>revives all players</style>." +
-            $"\nSINGLEPLAYER: <style=cIsHealing>Gives an infusion.</style>" +
+            $"\nSINGLEPLAYER: <style=cIsHealing>Gives an infusion instead.</style>" +
             $"\n<style=cDeath>Consumed on use.</style>";
 
         protected override string GetLoreString(string langID = null) => "Baked fresh every morning by Mom! It's to die for! Or, just maybe, to live for.";
