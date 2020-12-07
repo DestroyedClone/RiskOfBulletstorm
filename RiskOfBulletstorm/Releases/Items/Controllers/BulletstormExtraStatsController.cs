@@ -131,16 +131,24 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
+            // ACCURACY //
             On.RoR2.BulletAttack.Fire += AdjustSpreadBullets;
+            On.EntityStates.BaseNailgunState.FireBullet += AdjustSpreadBullets_Nailgun;
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += AdjustSpreadProjectiles;
+
+            // SPEED //
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += AdjustSpeedEnemyProjectile;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
+            // ACCURACY //
             On.RoR2.BulletAttack.Fire -= AdjustSpreadBullets;
+            On.EntityStates.BaseNailgunState.FireBullet += AdjustSpreadBullets_Nailgun;
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo -= AdjustSpreadProjectiles;
+
+            // SPEED //
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo -= AdjustSpeedEnemyProjectile;
         }
 
@@ -272,6 +280,33 @@ namespace RiskOfBulletstorm.Items
             orig(self, fireProjectileInfo);
         }
 
+        private void AdjustSpreadBullets_Nailgun(On.EntityStates.BaseNailgunState.orig_FireBullet orig, EntityStates.BaseNailgunState self, Ray aimRay, int bulletCount, float spreadPitchScale, float spreadYawScale)
+        {
+            //MULT you upset me
+            var characterBody = self.characterBody;
+            var updateBloom = false;
+            float ResultMult = -1f;
+            if (characterBody)
+            {
+                var inventory = characterBody.inventory;
+                if (inventory)
+                {
+                    int InventoryCount = characterBody.inventory.GetItemCount(catalogIndex);
+                    if (InventoryCount > 0)
+                    {
+                        ResultMult = CalculateSpreadMultiplier(inventory);
+                        updateBloom = true;
+
+                        spreadPitchScale = Mathf.Min(0, spreadPitchScale * ResultMult);
+                        spreadYawScale = Mathf.Min(0, spreadYawScale * ResultMult);
+                    }
+                }
+            }
+            orig(self, aimRay, bulletCount, spreadPitchScale, spreadYawScale);
+            if (updateBloom)
+                characterBody.SetSpreadBloom(Mathf.Min(0, characterBody.spreadBloomAngle * ResultMult), false);
+        }
+
         private void AdjustSpreadBullets(On.RoR2.BulletAttack.orig_Fire orig, BulletAttack self)
         {
             //doesn't work on MULT?????
@@ -286,7 +321,7 @@ namespace RiskOfBulletstorm.Items
                     {
                         float ResultMult = CalculateSpreadMultiplier(inventory);
 
-                        characterBody.SetSpreadBloom(Mathf.Min(0, characterBody.spreadBloomAngle * ResultMult), false); //should affect MULT
+                        characterBody.SetSpreadBloom(Mathf.Min(0, characterBody.spreadBloomAngle * ResultMult), false);
 
                         self.maxSpread = Mathf.Max(self.maxSpread * ResultMult, 0);
 
