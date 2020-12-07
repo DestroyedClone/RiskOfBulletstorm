@@ -96,7 +96,8 @@ namespace RiskOfBulletstorm.Items
             barrelDestroyOnInteraction.uselifetime = PortableTableDevice_UseLifetime;
             iscBarrelNew.prefab = BarrelPrefab;
 
-            
+            if (BarrelPrefab) PrefabAPI.RegisterNetworkPrefab(BarrelPrefab);
+
         }
         public override void SetupAttributes()
         {
