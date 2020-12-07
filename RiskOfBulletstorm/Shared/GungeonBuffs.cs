@@ -201,6 +201,7 @@ namespace RiskOfBulletstorm.Items
             orig(self, damageInfo);
         }
 
+        /*
         public static BlastAttack JammedContactDamage = new BlastAttack
         {
             losType = BlastAttack.LoSType.NearestHit,
@@ -222,7 +223,7 @@ namespace RiskOfBulletstorm.Items
             procCoefficient = 0,
             damageType = DamageType.Generic,
             damageColorIndex = DamageColorIndex.DeathMark
-        };
+        };*/ //unused contact damage stuff
 
         public class IsJammed : MonoBehaviour
         {
@@ -236,12 +237,14 @@ namespace RiskOfBulletstorm.Items
                 {
                     characterBody.AddBuff(Jammed);
                 }
-                contactDamageInfo.inflictor = ContactDamageGameObject; //how
-                contactDamageInfo.attacker = gameObject; //who
+                //contactDamageInfo.inflictor = ContactDamageGameObject; //how
+                //contactDamageInfo.attacker = gameObject; //who
+                //contactDamageInfo.damage = characterBody.damage * damageCoefficient;
+
             } //setup
             
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
-            void OnTriggerEnter(Collider other)
+            //[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
+            /*void OnTriggerEnter(Collider other)
             {
                 GameObject gameObject = other.gameObject;
                 HealthComponent healthComponent = gameObject.GetComponent<HealthComponent>();
@@ -251,15 +254,20 @@ namespace RiskOfBulletstorm.Items
                     contactDamageInfo.damage = characterBody.damage;
                     healthComponent.TakeDamage(contactDamageInfo);
                 }
-            }
+            }*/
 
             //public static readonly float ContactDamageCooldownFull = 2f;
             //public float ContactDamageCooldown;
-            public DamageInfo contactDamageInfo = JammedContactDamageInfo;
-            public static GameObject ContactDamageGameObject;
+
+            //public DamageInfo contactDamageInfo = JammedContactDamageInfo;
+
+            //public static GameObject ContactDamageGameObject;
+
             //public float damageCoefficient = 3f;
-            //public List<HealthComponent> healthComponents;
-            //bool activateOnce = false;
+
+            //public float recheckTime = 0.75f;
+
+            //private float currentTime = 0f;
         }
     }
 }
