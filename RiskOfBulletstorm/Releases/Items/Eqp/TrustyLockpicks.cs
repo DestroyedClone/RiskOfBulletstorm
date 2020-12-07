@@ -217,13 +217,13 @@ namespace RiskOfBulletstorm.Items
         private Interactability PurchaseInteraction_GetInteractability(On.RoR2.PurchaseInteraction.orig_GetInteractability orig, PurchaseInteraction self, Interactor activator)
         {
             Highlight highlight = self.gameObject.GetComponent<Highlight>();
-            if (!highlight) return orig(self, activator);
+            //if (!highlight) return orig(self, activator);
 
             TrustyLockpickFailed attempted = self.gameObject.GetComponent<TrustyLockpickFailed>();
             //if (attempted) return orig(self, activator);
             if (attempted)
             {
-                highlight.highlightColor = Highlight.HighlightColor.teleporter;
+                if (highlight) highlight.highlightColor = Highlight.HighlightColor.teleporter;
                 return orig(self, activator);
             }
 
@@ -239,13 +239,13 @@ namespace RiskOfBulletstorm.Items
                         if (equipmentIndex == catalogIndex)
                         {
                             if (inventory.GetEquipmentRestockableChargeCount(0) > 0)
-                            highlight.highlightColor = Highlight.HighlightColor.pickup;
+                            if (highlight) highlight.highlightColor = Highlight.HighlightColor.pickup;
                             return Interactability.Available;
                         }
                     }
                 }
             }
-            highlight.highlightColor = Highlight.HighlightColor.interactive;
+            if (highlight) highlight.highlightColor = Highlight.HighlightColor.interactive;
             return orig(self, activator);
         }
 

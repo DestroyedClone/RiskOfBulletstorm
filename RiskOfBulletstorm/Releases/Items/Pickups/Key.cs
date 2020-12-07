@@ -47,6 +47,7 @@ namespace RiskOfBulletstorm.Items
         private Interactability PurchaseInteraction_GetInteractability(On.RoR2.PurchaseInteraction.orig_GetInteractability orig, PurchaseInteraction self, Interactor activator)
         {
             TrustyLockpicks.TrustyLockpickFailed attempted = self.gameObject.GetComponent<TrustyLockpicks.TrustyLockpickFailed>();
+            Highlight highlight = self.gameObject.GetComponent<Highlight>();
 
             if (!attempted)
             {
@@ -61,12 +62,14 @@ namespace RiskOfBulletstorm.Items
                             int InventoryCount = characterBody.inventory.GetItemCount(catalogIndex);
                             if (InventoryCount > 0)
                             {
+                                if (highlight) highlight.highlightColor = Highlight.HighlightColor.pickup;
                                 return Interactability.Available;
                             }
                         }
                     }
                 }
             }
+            if (highlight) highlight.highlightColor = Highlight.HighlightColor.interactive;
             return orig(self, activator);
         }
 
