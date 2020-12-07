@@ -10,44 +10,20 @@ namespace RiskOfBulletstorm.Items
 {
     public class PickupAmmoSpread : Item_V2<PickupAmmoSpread>
     {
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Lifetime of Ammo Spread. Default: 30 seconds", AutoConfigFlags.PreventNetMismatch)]
-        public float AmmoSpread_Lifetime { get; private set; } = 30f;
-
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("At how many seconds should it start blinking? Default: 25 seconds", AutoConfigFlags.PreventNetMismatch)]
-        public float AmmoSpread_LifetimeBlinking { get; private set; } = 25f;
         public override string displayName => "Spread Ammo";
         public override ItemTier itemTier => ItemTier.NoTier;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility, ItemTag.WorldUnique });
 
         protected override string GetNameString(string langID = null) => displayName;
-        protected override string GetPickupString(string langID = null) => "Restores everyone's cooldowns";
+        protected override string GetPickupString(string langID = null) => "Restores all players' cooldowns on pickup.";
 
         protected override string GetDescString(string langid = null) => $"";
 
         protected override string GetLoreString(string langID = null) => "";
 
-        public static GameObject Pickup_AmmoSpread { get; private set; }
-
         public override void SetupBehavior()
         {
             base.SetupBehavior();
-            GameObject ammoPickupPrefab = Resources.Load<GameObject>("Prefabs/NetworkedObjects/AmmoPack");
-            Pickup_AmmoSpread = ammoPickupPrefab.InstantiateClone("Bulletstorm_AmmoSpread");
-            Pickup_AmmoSpread.GetComponent<DestroyOnTimer>().duration = 30f;
-            Pickup_AmmoSpread.GetComponent<BeginRapidlyActivatingAndDeactivating>().delayBeforeBeginningBlinking = Math.Min(AmmoSpread_LifetimeBlinking, AmmoSpread_Lifetime);
-            Pickup_AmmoSpread.GetComponent<TeamFilter>().teamIndex = TeamIndex.Player;
-
-            AmmoPickupSpread ammoPickupSpread = Pickup_AmmoSpread.AddComponent<AmmoPickupSpread>();
-            ammoPickupSpread.teamIndex = TeamIndex.Player;
-
-            UnityEngine.Object.Destroy(Pickup_AmmoSpread.GetComponent<VelocityRandomOnStart>());
-            UnityEngine.Object.Destroy(Pickup_AmmoSpread.GetComponent<AmmoPickup>());
-
-
-            //ProjectileCatalog.getAdditionalEntries += list => list.Add(ammoPickupPrefab);
-            if (Pickup_AmmoSpread) PrefabAPI.RegisterNetworkPrefab(Pickup_AmmoSpread);
         }
         public override void SetupLate()
         {
@@ -64,75 +40,57 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            On.RoR2.PickupDropletController.CreatePickupDroplet += CreatePickup;
+            On.RoR2.CharacterBody.OnInventoryChanged += CharacterBody_OnInventoryChanged;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
-            On.RoR2.PickupDropletController.CreatePickupDroplet -= CreatePickup;
+            On.RoR2.CharacterBody.OnInventoryChanged -= CharacterBody_OnInventoryChanged;
         }
-
-        private void CreatePickup(On.RoR2.PickupDropletController.orig_CreatePickupDroplet orig, PickupIndex pickupIndex, Vector3 position, Vector3 velocity)
+        private void CharacterBody_OnInventoryChanged(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self)
         {
-            if (pickupIndex == PickupCatalog.FindPickupIndex(catalogIndex)) //safety to prevent softlocks
+            orig(self);
+            var inventoryCount = GetCount(self);
+            for (int i = 0; i < inventoryCount; i++)
             {
-                SpawnAmmoPickup(position);
-            }
-            else
-            {
-                orig(pickupIndex, position, velocity);
+                ApplyAmmoPackToTeam(self.teamComponent.teamIndex);
+                self.inventory.RemoveItem(catalogIndex);
             }
         }
 
-        private void SpawnAmmoPickup(Vector3 sapPosition)
+        public void ApplyAmmoPackToTeam(TeamIndex teamIndex = TeamIndex.Player, bool restoreEquipmentCharges = true, bool restoreOffhandEquipmentCharges = true)
         {
-            GameObject gameObject7 = UnityEngine.Object.Instantiate(Pickup_AmmoSpread, sapPosition, new Quaternion(0f, 0f, 0f, 0f));
-            NetworkServer.Spawn(gameObject7);
-        }
-
-        public class AmmoPickupSpread : MonoBehaviour
-        {
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
-            private void OnTriggerStay(Collider other)
+            if (NetworkServer.active)
             {
-                if (NetworkServer.active && alive && TeamComponent.GetObjectTeam(other.gameObject) == teamIndex)
+                var pickupEffect = (GameObject)Resources.Load("prefabs/effects/AmmoPackPickupEffect");
+                ReadOnlyCollection<TeamComponent> teamComponents = TeamComponent.GetTeamMembers(teamIndex);
+                foreach (TeamComponent teamComponent in teamComponents)
                 {
-
-                    SkillLocator skillLocatorOther = other.GetComponent<SkillLocator>();
-                    if (skillLocatorOther)
+                    CharacterBody body = teamComponent.body;
+                    if (body)
                     {
-                        ReadOnlyCollection<TeamComponent> teamComponents = TeamComponent.GetTeamMembers(teamIndex);
+                        body.GetComponent<SkillLocator>()?.ApplyAmmoPack();
 
-                        alive = false;
-
-                        foreach (TeamComponent teamComponent in teamComponents)
+                        var inventory = body.inventory;
+                        if (inventory)
                         {
-                            CharacterBody body = teamComponent.body;
-                            if (body)
+                            if (restoreEquipmentCharges) inventory.RestockEquipmentCharges(0, 1);
+                            //if (inventory.GetEquipmentSlotCount() > 1 && restoreOffhandEquipmentCharges) inventory.RestockEquipmentCharges(1, 1); //MULT
+
+                            //in case some maniac uses more than two equipment slots
+                            if (restoreOffhandEquipmentCharges)
                             {
-                                var skillLocator = body.GetComponent<SkillLocator>();
-                                if (skillLocator)
-                                    skillLocator.ApplyAmmoPack();
-                                var inventory = body.inventory;
-                                if (inventory)
+                                for (int i = 0; i < inventory.GetEquipmentSlotCount(); i++)
                                 {
-                                    inventory.RestockEquipmentCharges(0, 1);
-                                    if (inventory.GetEquipmentSlotCount() > 1) inventory.RestockEquipmentCharges(1, 1); //MULT
+                                    inventory.RestockEquipmentCharges((byte)Math.Min(i, 255), 1);
                                 }
-                                EffectManager.SimpleEffect(pickupEffect, transform.position, Quaternion.identity, true);
                             }
                         }
-                        Destroy(gameObject);
+                        EffectManager.SimpleEffect(pickupEffect, body.transform.position, Quaternion.identity, true);
                     }
                 }
             }
-
-            public TeamIndex teamIndex;
-
-            public GameObject pickupEffect = (GameObject)Resources.Load("prefabs/effects/AmmoPackPickupEffect");
-
-            private bool alive = true;
         }
     }
 }
