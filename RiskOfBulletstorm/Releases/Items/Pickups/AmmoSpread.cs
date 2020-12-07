@@ -61,36 +61,33 @@ namespace RiskOfBulletstorm.Items
 
         public void ApplyAmmoPackToTeam(TeamIndex teamIndex = TeamIndex.Player, bool restoreEquipmentCharges = true, bool restoreOffhandEquipmentCharges = true)
         {
-            if (NetworkServer.active)
+            var pickupEffect = (GameObject)Resources.Load("prefabs/effects/AmmoPackPickupEffect");
+            ReadOnlyCollection<TeamComponent> teamComponents = TeamComponent.GetTeamMembers(teamIndex);
+            foreach (TeamComponent teamComponent in teamComponents)
             {
-                var pickupEffect = (GameObject)Resources.Load("prefabs/effects/AmmoPackPickupEffect");
-                ReadOnlyCollection<TeamComponent> teamComponents = TeamComponent.GetTeamMembers(teamIndex);
-                foreach (TeamComponent teamComponent in teamComponents)
+                CharacterBody body = teamComponent.body;
+                if (body)
                 {
-                    CharacterBody body = teamComponent.body;
-                    if (body)
+                    body.GetComponent<SkillLocator>()?.ApplyAmmoPack();
+
+                    var inventory = body.inventory;
+                    if (inventory)
                     {
-                        body.GetComponent<SkillLocator>()?.ApplyAmmoPack();
+                        if (restoreEquipmentCharges) inventory.RestockEquipmentCharges(0, 1);
 
-                        var inventory = body.inventory;
-                        if (inventory)
+                        //in case some maniac uses more than two equipment slots
+                        if (restoreOffhandEquipmentCharges)
                         {
-                            if (restoreEquipmentCharges) inventory.RestockEquipmentCharges(0, 1);
-                            //if (inventory.GetEquipmentSlotCount() > 1 && restoreOffhandEquipmentCharges) inventory.RestockEquipmentCharges(1, 1); //MULT
-
-                            //in case some maniac uses more than two equipment slots
-                            if (restoreOffhandEquipmentCharges)
+                            for (int i = 0; i < inventory.GetEquipmentSlotCount(); i++)
                             {
-                                for (int i = 0; i < inventory.GetEquipmentSlotCount(); i++)
-                                {
-                                    inventory.RestockEquipmentCharges((byte)Math.Min(i, 255), 1);
-                                }
+                                inventory.RestockEquipmentCharges((byte)Math.Min(i, 255), 1);
                             }
                         }
-                        EffectManager.SimpleEffect(pickupEffect, body.transform.position, Quaternion.identity, true);
                     }
+                    EffectManager.SimpleEffect(pickupEffect, body.transform.position, Quaternion.identity, true);
                 }
             }
+            
         }
     }
 }
