@@ -1,4 +1,6 @@
-﻿using R2API;
+﻿using System.Collections;
+using System.Collections.Generic;
+using R2API;
 using RoR2;
 using UnityEngine;
 using TILER2;
@@ -16,8 +18,8 @@ namespace RiskOfBulletstorm.Items
         public static float PortableTableDevice_UseLifetime { get; private set; } = 4f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How many barrels should be allowed to spawn within the world? (Default: 30, Set to -1 for infinite)", AutoConfigFlags.PreventNetMismatch)]
-        public static int PortableTableDevice_MaxBarrels { get; private set; } = 30;
+        [AutoConfig("How many barrels should be allowed to spawn per person? (Default: 15, set to -1 for infinite)", AutoConfigFlags.PreventNetMismatch)]
+        public static int PortableTableDevice_MaxBarrels { get; private set; } = 15;
 
         public override string displayName => "Portable Barrel Device";
 
@@ -60,7 +62,7 @@ namespace RiskOfBulletstorm.Items
                     if (PortableTableDevice_MaxBarrels == 1) desc += $"a single barrel";
                     else if (PortableTableDevice_MaxBarrels > 1) desc += $"{PortableTableDevice_MaxBarrels} barrels";
                 }
-                desc += $" can be placed in the world.";
+                desc += $" can be placed by each person.";
             }
             else return $"Unsuccesfully attempts to place a barrel.";
             return desc;
@@ -84,7 +86,7 @@ namespace RiskOfBulletstorm.Items
             base.SetupBehavior();
 
             iscBarrel = (InteractableSpawnCard)Resources.Load<SpawnCard>("SpawnCards/InteractableSpawnCard/iscBarrel1");
-            iscBarrelNew = Object.Instantiate(iscBarrel);
+            iscBarrelNew = UnityEngine.Object.Instantiate(iscBarrel);
             BarrelPrefab = iscBarrelNew.prefab;
             BarrelPrefab = BarrelPrefab.InstantiateClone($"Bulletstorm_Barrel");
             BarrelInteraction barrelInteraction = BarrelPrefab.GetComponent<BarrelInteraction>();
@@ -136,10 +138,18 @@ namespace RiskOfBulletstorm.Items
                 component.used = true;
             }
         }
+
+        private void GiveComponent(GameObject gameObject)
+        {
+            if (!gameObject.GetComponent<BulletstormBarrelTracker>())
+                gameObject.AddComponent<BulletstormBarrelTracker>();
+        }
+
         protected override bool PerformEquipmentAction(EquipmentSlot slot)
         {
             CharacterBody body = slot.characterBody;
             if (!body) return false;
+            GiveComponent(body.gameObject);
 
             if (PlaceTable(body))
             {
@@ -156,32 +166,45 @@ namespace RiskOfBulletstorm.Items
 
         private bool PlaceTable(CharacterBody characterBody)
         {
+            var tracker = characterBody.GetComponent<BulletstormBarrelTracker>();
+            if (!tracker) return false;
+            var trackerbarrels = tracker.barrels;
+            var barrelAmt = trackerbarrels.Count;
             var maxBarrels = PortableTableDevice_MaxBarrels;
-            var barrelAmt = Object.FindObjectsOfType<BarrelDestroyOnInteraction>().Length;
-            var offset = characterBody.characterMotor.capsuleCollider.height / 2;
-            var position = characterBody.corePosition;
-            var resultpos = position + Vector3.down * offset;
 
-            if (barrelAmt < maxBarrels || maxBarrels == -1)
+            bool success = false;
+
+            if (barrelAmt < maxBarrels || maxBarrels == -1 )
             {
-                iscBarrelNew.DoSpawn(resultpos, characterBody.transform.rotation, new DirectorSpawnRequest(
+                var yOffset = characterBody.characterMotor.capsuleCollider.height / 2;
+                var random = UnityEngine.Random.Range(-3f, 3f);
+                var randomoffset = new Vector3(random, 0f, random);
+                var position = characterBody.corePosition;
+                var resultpos = position + Vector3.down * yOffset + randomoffset;
+
+                var spawnBarrel = iscBarrelNew.DoSpawn(resultpos, characterBody.transform.rotation, new DirectorSpawnRequest(
                     iscBarrelNew, placementRule, RoR2Application.rng));
-                return true;
+                success = spawnBarrel.success;
+
+                if (spawnBarrel.success)
+                {
+                    var spawnedInstance = spawnBarrel.spawnedInstance;
+                    var postComponent = spawnedInstance.GetComponent<BarrelDestroyOnInteraction>();
+                    postComponent.owner = characterBody;
+
+                    trackerbarrels.Add(spawnedInstance);
+                }
             }
-            return false;
+            return success;
         }
+
 
         private class BarrelDestroyOnInteraction : MonoBehaviour
         {
             public float lifetime = 16;
             public float uselifetime = 4;
             public bool used = false;
-
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
-            private void OnEnable()
-            {
-                //gameObject.transform.position
-            }
+            public CharacterBody owner;
 
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
             private void FixedUpdate()
@@ -196,9 +219,20 @@ namespace RiskOfBulletstorm.Items
                 lifetime -= Time.fixedDeltaTime;
                 if (lifetime <= 0f)
                 {
+                    if (owner)
+                    {
+                        var tracker = owner.GetComponent<BulletstormBarrelTracker>();
+                        if (tracker)
+                            tracker.barrels.Remove(gameObject);
+                    }
                     Destroy(gameObject);
                 }
             }
+        }
+
+        private class BulletstormBarrelTracker : MonoBehaviour
+        {
+            public List<GameObject> barrels;
         }
     }
 }
