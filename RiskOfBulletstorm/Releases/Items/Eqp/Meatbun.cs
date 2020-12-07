@@ -3,7 +3,6 @@ using RoR2;
 using UnityEngine;
 using TILER2;
 using static TILER2.MiscUtil;
-using ThinkInvisible.ClassicItems;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -84,7 +83,9 @@ namespace RiskOfBulletstorm.Items
         public override void SetupBehavior()
         {
             base.SetupBehavior();
-            Embryo_V2.instance.Compat_Register(catalogIndex);
+
+            if (ClassicItemsCompat.enabled)
+                ClassicItemsCompat.RegisterEmbryo(catalogIndex);
         }
         public override void SetupAttributes()
         {
@@ -168,7 +169,7 @@ namespace RiskOfBulletstorm.Items
             if (Meatbun_HealAmount > 0)
             {
                 health.HealFraction(Meatbun_HealAmount, default);
-                if (instance.CheckEmbryoProc(body)) health.HealFraction(Meatbun_HealAmount, default);
+                if (ClassicItemsCompat.enabled && ClassicItemsCompat.CheckEmbryoProc(instance, body)) health.HealFraction(Meatbun_HealAmount, default);
             }
             return true;
         }

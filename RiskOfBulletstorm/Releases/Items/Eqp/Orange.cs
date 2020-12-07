@@ -1,7 +1,6 @@
 ﻿using RoR2;
 using UnityEngine;
 using TILER2;
-using ThinkInvisible.ClassicItems;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -37,7 +36,9 @@ namespace RiskOfBulletstorm.Items
         public override void SetupBehavior()
         {
             base.SetupBehavior();
-            Embryo_V2.instance.Compat_Register(catalogIndex);
+
+            if (ClassicItemsCompat.enabled)
+                ClassicItemsCompat.RegisterEmbryo(catalogIndex);
         }
         public override void SetupAttributes()
         {
@@ -83,7 +84,7 @@ namespace RiskOfBulletstorm.Items
             Inventory inventory = body.inventory;
             if (!inventory) return false;
 
-            int DeployCount = instance.CheckEmbryoProc(body) ? 2 : 1; //Embryo Check
+            int DeployCount = ClassicItemsCompat.enabled && ClassicItemsCompat.CheckEmbryoProc(instance, body) ? 2 : 1; //Embryo Check
 
             for (int i = 0; i < DeployCount; i++)
             {

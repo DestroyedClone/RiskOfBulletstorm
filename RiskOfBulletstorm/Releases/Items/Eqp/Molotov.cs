@@ -3,7 +3,6 @@ using EntityStates.Engi.EngiWeapon;
 using R2API;
 using RoR2;
 using RoR2.Projectile;
-using ThinkInvisible.ClassicItems;
 using UnityEngine;
 using UnityEngine.Networking;
 using TILER2;
@@ -143,7 +142,8 @@ namespace RiskOfBulletstorm.Items
             if (MolotovPrefab) PrefabAPI.RegisterNetworkPrefab(MolotovPrefab);
             if (MolotovDotZonePrefab) PrefabAPI.RegisterNetworkPrefab(MolotovDotZonePrefab);
 
-            Embryo_V2.instance.Compat_Register(catalogIndex);
+            if (ClassicItemsCompat.enabled)
+                ClassicItemsCompat.RegisterEmbryo(catalogIndex);
         }
         public override void SetupAttributes()
         {
@@ -364,7 +364,7 @@ namespace RiskOfBulletstorm.Items
 
             Util.PlaySound(FireMines.throwMineSoundString, gameObject);
             var damageMult = 1f;
-            if (instance.CheckEmbryoProc(body)) damageMult = Molotov_BeatingEmbryo;
+            if (ClassicItemsCompat.enabled && ClassicItemsCompat.CheckEmbryoProc(instance, body)) damageMult = Molotov_BeatingEmbryo;
             FireMolotov(body, gameObject, damageMult);
             return true;
         }

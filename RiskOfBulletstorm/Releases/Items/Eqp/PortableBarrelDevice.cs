@@ -2,7 +2,6 @@
 using RoR2;
 using UnityEngine;
 using TILER2;
-using ThinkInvisible.ClassicItems;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -83,7 +82,7 @@ namespace RiskOfBulletstorm.Items
         public override void SetupBehavior()
         {
             base.SetupBehavior();
-            Embryo_V2.instance.Compat_Register(catalogIndex);
+
             iscBarrel = (InteractableSpawnCard)Resources.Load<SpawnCard>("SpawnCards/InteractableSpawnCard/iscBarrel1");
             iscBarrelNew = Object.Instantiate(iscBarrel);
             BarrelPrefab = iscBarrelNew.prefab;
@@ -98,6 +97,8 @@ namespace RiskOfBulletstorm.Items
 
             if (BarrelPrefab) PrefabAPI.RegisterNetworkPrefab(BarrelPrefab);
 
+            if (ClassicItemsCompat.enabled)
+                ClassicItemsCompat.RegisterEmbryo(catalogIndex);
         }
         public override void SetupAttributes()
         {
@@ -142,7 +143,7 @@ namespace RiskOfBulletstorm.Items
 
             if (PlaceTable(body))
             {
-                if (instance.CheckEmbryoProc(body))
+                if (ClassicItemsCompat.enabled && ClassicItemsCompat.CheckEmbryoProc(instance, body))
                 {
                     PlaceTable(body);
                 }

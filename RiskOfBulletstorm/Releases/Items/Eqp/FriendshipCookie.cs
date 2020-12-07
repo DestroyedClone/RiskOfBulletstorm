@@ -1,7 +1,6 @@
 ﻿using RoR2;
 using UnityEngine.Networking;
 using TILER2;
-using ThinkInvisible.ClassicItems;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -28,7 +27,9 @@ namespace RiskOfBulletstorm.Items
         public override void SetupBehavior()
         {
             base.SetupBehavior();
-            Embryo_V2.instance.Compat_Register(catalogIndex);
+
+            if (ClassicItemsCompat.enabled)
+                ClassicItemsCompat.RegisterEmbryo(catalogIndex);
         }
         public override void SetupAttributes()
         {
@@ -61,7 +62,7 @@ namespace RiskOfBulletstorm.Items
             //var playerList = CharacterMaster.readOnlyInstancesList;
             int playerAmt = playerList.Count;
 
-            bool EmbryoProc = instance.CheckEmbryoProc(body);
+            bool EmbryoProc = ClassicItemsCompat.CheckEmbryoProc(instance, body) && ClassicItemsCompat.enabled;
 
             if (playerAmt > 1)
             {

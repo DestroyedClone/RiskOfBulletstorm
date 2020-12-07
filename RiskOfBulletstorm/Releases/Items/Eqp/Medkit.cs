@@ -1,7 +1,6 @@
 ﻿using RoR2;
 using TILER2;
 using static TILER2.MiscUtil;
-using ThinkInvisible.ClassicItems;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -59,7 +58,9 @@ namespace RiskOfBulletstorm.Items
         public override void SetupBehavior()
         {
             base.SetupBehavior();
-            Embryo_V2.instance.Compat_Register(catalogIndex);
+
+            if (ClassicItemsCompat.enabled)
+                ClassicItemsCompat.RegisterEmbryo(catalogIndex);
         }
         public override void SetupAttributes()
         {
@@ -89,7 +90,7 @@ namespace RiskOfBulletstorm.Items
 
             health.HealFraction(Medkit_HealAmount, default);
             health.AddBarrier(BarrierAmt);
-            if (instance.CheckEmbryoProc(body))
+            if (ClassicItemsCompat.enabled && ClassicItemsCompat.CheckEmbryoProc(instance, body))
             {
                 health.HealFraction(Medkit_HealAmount, default);
                 health.AddBarrier(BarrierAmt);

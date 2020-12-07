@@ -3,7 +3,6 @@ using RoR2;
 using UnityEngine;
 using TILER2;
 using static TILER2.MiscUtil;
-using ThinkInvisible.ClassicItems;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -98,7 +97,9 @@ namespace RiskOfBulletstorm.Items
         public override void SetupBehavior()
         {
             base.SetupBehavior();
-            Embryo_V2.instance.Compat_Register(catalogIndex);
+
+            if (ClassicItemsCompat.enabled)
+                ClassicItemsCompat.RegisterEmbryo(catalogIndex);
         }
         public override void SetupAttributes()
         {
@@ -136,7 +137,7 @@ namespace RiskOfBulletstorm.Items
             if (!purchaseInteraction) return false;
 
             float newUnlockChance = TrustyLockpicks_UnlockChance;
-            if (instance.CheckEmbryoProc(body)) newUnlockChance *= 1.3f;
+            if (ClassicItemsCompat.enabled && ClassicItemsCompat.CheckEmbryoProc(instance, body)) newUnlockChance *= 1.3f;
 
             //interactionDriver.interactor.interactableCooldown = 0.25f;
 
