@@ -233,7 +233,7 @@ namespace RiskOfBulletstorm.Items
                     // +0.15 (+) -0.10 (+) -0.10*additionalstacks
                 }
             }
-            var ResultMult = Mathf.Clamp(ScopeMult + SpiceMult,0,1);
+            var ResultMult = Mathf.Min(ScopeMult + SpiceMult,0);
             //Debug.Log("ScopeMult: " + ScopeMult + " + SpiceMUlt: " + SpiceMult + " = " + ResultMult);
 
             return ResultMult;
