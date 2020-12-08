@@ -37,12 +37,25 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "There are strange inconsistencies in the behavior of the Gundead. Originally thought to be heartless killing machines, they have been known to capture certain invaders for unknown purposes. Furthermore, evidence of a crude religion has been discovered. Perhaps, one day, they could be reasoned with?";
 
-        public static GameObject BombPrefab { get; private set; }
+        public static GameObject CharmWardPrefab { get; private set; }
         public readonly BuffIndex charmIndex = GungeonBuffController.Charm;
 
         public override void SetupBehavior()
         {
             base.SetupBehavior();
+
+            GameObject warbannerPrefab = Resources.Load<GameObject>("Prefabs/NetworkedObjects/WarbannerWard");
+            CharmWardPrefab = warbannerPrefab.InstantiateClone("Bulletstorm_CharmHornWard");
+
+            BuffWard buffWard = CharmWardPrefab.GetComponent<BuffWard>();
+            buffWard.Networkradius = CharmHorn_Radius;
+            buffWard.expires = true;
+            buffWard.expireDuration = 3f;
+            buffWard.buffType = charmIndex;
+            buffWard.floorWard = false;
+            buffWard.invertTeamFilter = true;
+
+            if (CharmWardPrefab) PrefabAPI.RegisterNetworkPrefab(CharmWardPrefab);
 
             if (ClassicItemsCompat.enabled)
                 ClassicItemsCompat.RegisterEmbryo(catalogIndex);
@@ -82,7 +95,10 @@ namespace RiskOfBulletstorm.Items
         {
             if (NetworkServer.active)
             {
-
+                GameObject gameObject = UnityEngine.Object.Instantiate(CharmWardPrefab, body.transform.position, Quaternion.identity);
+                gameObject.GetComponent<TeamFilter>().teamIndex = body.teamComponent.teamIndex;
+                gameObject.GetComponent<BuffWard>().Networkradius *= radius;
+                NetworkServer.Spawn(gameObject);
 
             }
         }
