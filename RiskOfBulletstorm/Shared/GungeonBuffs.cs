@@ -54,6 +54,8 @@ namespace RiskOfBulletstorm.Items
         private float[,] SpiceBonuses;
         private float[] SpiceBonusesConstantMaxed;
 
+        private readonly CurseController curse = Items.CurseController.instance;
+
         public override void SetupBehavior()
         {
             base.SetupBehavior();
@@ -155,9 +157,11 @@ namespace RiskOfBulletstorm.Items
             if (sender.HasBuff(Anger)) { args.damageMultAdd += EnragingPhoto.instance.EnragingPhoto_DmgBoost; }
             if (sender.HasBuff(Jammed))
             {
-                args.damageMultAdd += Items.CurseController.instance.Curse_DamageBoost;
-                args.attackSpeedMultAdd += 0.2f;
-                args.moveSpeedMultAdd += 0.2f;
+                args.damageMultAdd += curse.Curse_DamageBoost;
+                args.critAdd += curse.Curse_CritBoost;
+                args.attackSpeedMultAdd += curse.Curse_AttackSpeedBoost;
+                args.moveSpeedMultAdd += curse.Curse_MoveSpeedBoost;
+                args.baseHealthAdd += curse.Curse_HealthBoost;
             }
         }
 
