@@ -25,7 +25,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetDescString(string langid = null)
         {
-            var desc = $"Electrifies water for 3 seconds (+1 per stack)";
+            var desc = $"Electrifies water for 3 seconds (+1s per stack)";
             desc += "Decreases shot spread by 5%";
 
             return desc;

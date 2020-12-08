@@ -113,8 +113,8 @@ namespace RiskOfBulletstorm.Items
 
             for (int i = 0; i < names.Length; i++)
             {
-                LanguageAPI.Add("DOG_NAME_"+i.ToString() , names[i]);
-                Debug.Log("Added Token: "+ "DOG_NAME_" + i.ToString()+" : "+names[i]);
+                LanguageAPI.Add("DOG_NAME_" + i.ToString(), names[i]);
+                Debug.Log("Added Token: " + "DOG_NAME_" + i.ToString() + " : " + names[i]);
             }
             LanguageAPI.Add("DOG_NAME", "Junior");
             LanguageAPI.Add("DOG_SUBTITLE", "The Petted");

@@ -27,6 +27,9 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "Who needs bullets when you ARE a bullet?";
 
+        private readonly BlastAttack blastAttack;
+        private readonly GameObject LiveAmmoObject;
+
         public override void SetupBehavior()
         {
             base.SetupBehavior();
@@ -34,7 +37,6 @@ namespace RiskOfBulletstorm.Items
         public override void SetupAttributes()
         {
             base.SetupAttributes();
-
         }
         public override void SetupConfig()
         {
@@ -43,11 +45,40 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
+            On.RoR2.GenericSkill.OnExecute += GenericSkill_OnExecute;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
+            On.RoR2.GenericSkill.OnExecute -= GenericSkill_OnExecute;
+        }
+
+        private void GenericSkill_OnExecute(On.RoR2.GenericSkill.orig_OnExecute orig, GenericSkill self)
+        {
+            var invCount = GetCount(self.characterBody);
+            CharacterBody vBody = self.characterBody;
+            //Vector3 corePos = Util.GetCorePosition(vBody);
+            GameObject vGameObject = self.gameObject;
+
+            if (vBody.skillLocator.FindSkill(self.skillName))
+            {
+                if (invCount > 0)
+                {
+                    if (self.characterBody.skillLocator.utility.Equals(self))
+                    {
+                        blastAttack.attacker = vGameObject;
+                        blastAttack.baseDamage = vBody.baseDamage;
+                        blastAttack.crit = vBody.RollCrit();
+                        blastAttack.damageColorIndex = DamageColorIndex.Default;
+                        blastAttack.inflictor = LiveAmmoObject;
+                        blastAttack.teamIndex = vBody.teamComponent.teamIndex;
+                        blastAttack.radius = 6f;
+                        blastAttack.Fire();
+                    }
+                }
+            }
+            orig(self);
         }
     }
 }
