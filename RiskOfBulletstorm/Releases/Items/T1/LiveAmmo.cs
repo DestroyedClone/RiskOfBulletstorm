@@ -51,8 +51,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "Who needs bullets when can BECOME a bullet?";
 
-        private readonly BlastAttack blastAttack;
-        private readonly GameObject LiveAmmoObject;
+        private readonly BlastAttack blastAttack = new BlastAttack { };
 
         public override void SetupBehavior()
         {
@@ -61,7 +60,6 @@ namespace RiskOfBulletstorm.Items
         public override void SetupAttributes()
         {
             base.SetupAttributes();
-            blastAttack.inflictor = LiveAmmoObject;
         }
         public override void SetupConfig()
         {

@@ -87,7 +87,7 @@ namespace RiskOfBulletstorm.Items
             Util.PlaySound(FireMines.throwMineSoundString, gameObject);
             if (ClassicItemsCompat.enabled && ClassicItemsCompat.CheckEmbryoProc(instance, body))
                 multiplier += 0.5f;
-            CharmNearby(body, CharmHorn_Radius * multiplier, CharmHorn_Duration * CharmHorn_Radius);
+            CharmNearby(body, CharmHorn_Radius * multiplier);
             return true;
         }
 
