@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 //using System.Text;
 using R2API;
 using RoR2;
+using RoR2.Projectile;
 using RoR2.UI;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -25,7 +26,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetDescString(string langid = null)
         {
-            var desc = $"Electrifies water for 3 seconds (+1s per stack)";
+            var desc = $"Electrifies bulletstorm-specific water for 3 seconds (+1s per stack)";
             desc += "Decreases shot spread by 5%";
 
             return desc;
@@ -59,7 +60,23 @@ namespace RiskOfBulletstorm.Items
         }
         private void ProjectileManager_FireProjectile_FireProjectileInfo(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_FireProjectileInfo orig, RoR2.Projectile.ProjectileManager self, RoR2.Projectile.FireProjectileInfo fireProjectileInfo)
         {
+            if (fireProjectileInfo.owner && fireProjectileInfo.owner.GetComponent<CharacterBody>() && fireProjectileInfo.owner.GetComponent<CharacterBody>().inventory)
+            {
+                var electric = fireProjectileInfo.projectilePrefab.AddComponent<Bulletstorm_Electrify>();
+                var proj = fireProjectileInfo.projectilePrefab;
+                var projdmg = proj.gameObject.GetComponent<ProjectileDamage>();
+                var invcount = fireProjectileInfo.owner.GetComponent<CharacterBody>().inventory.GetItemCount(catalogIndex);
+                if (projdmg && invcount > 0)
+                {
+                    if (Util.CheckRoll(5f * invcount))
+                        projdmg.damageType = DamageType
+                }
+            }
             orig(self, fireProjectileInfo);
+        }
+        private class Bulletstorm_Electrify : MonoBehaviour
+        {
+
         }
     }
 }
