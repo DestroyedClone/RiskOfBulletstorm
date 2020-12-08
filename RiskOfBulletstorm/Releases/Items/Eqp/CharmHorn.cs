@@ -91,7 +91,7 @@ namespace RiskOfBulletstorm.Items
             return true;
         }
 
-        public void CharmNearby(CharacterBody body, float radius, float duration)
+        public void CharmNearby(CharacterBody body, float radius)
         {
             if (NetworkServer.active)
             {
