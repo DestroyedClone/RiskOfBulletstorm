@@ -115,7 +115,7 @@ namespace RiskOfBulletstorm.Items
                 if (projectileIndex > 0) WhitelistedProjectiles.Add(ProjectileCatalog.GetProjectilePrefab(projectileIndex));
             }*/
             // MODDED //
-            Debug.Log("Adding modded projectiles");
+            //Debug.Log("Adding modded projectiles");
             foreach (string projectileString in moddedProjectileStrings)
             {
                 var projectileIndex = ProjectileCatalog.FindProjectileIndex(projectileString);

@@ -16,16 +16,40 @@ namespace RiskOfBulletstorm.Items
 {
     public class LiveAmmo : Item_V2<LiveAmmo>
     {
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("How much damage should the explosion deal? (Default: 1.0 = +100% damage)", AutoConfigFlags.PreventNetMismatch)]
+        public float LiveAmmo_DamageDealt { get; private set; } = 1f;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("How much damage should the explosion deal per item stack? (Default: 0.5 = +50% damage)", AutoConfigFlags.PreventNetMismatch)]
+        public float LiveAmmo_DamageDealtStack { get; private set; } = 0.5f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("How much force should the explosion propel? (Default: 2.0 = 200% velocity)", AutoConfigFlags.PreventNetMismatch)]
+        public float LiveAmmo_ForceCoefficient { get; private set; } = 2f;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("How much force should the explosion propel per item stack? (Default: 0.5 = 50% velocity)", AutoConfigFlags.PreventNetMismatch)]
+        public float LiveAmmo_ForceCoefficientStack { get; private set; } = 0.5f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("What is the radius of the explosion? (Default: 8m)", AutoConfigFlags.PreventNetMismatch)]
+        public float LiveAmmo_Radius { get; private set; } = 8f;
         public override string displayName => "Live Ammo";
-        public override ItemTier itemTier => ItemTier.Tier1;
+        public override ItemTier itemTier => ItemTier.Tier2;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage, ItemTag.Utility });
 
         protected override string GetNameString(string langID = null) => displayName;
-        protected override string GetPickupString(string langID = null) => "I'm A Bullet Too!\nReduced contact damage and explodes after Utility use.";
+        protected override string GetPickupString(string langID = null) => "I'm A Bullet Too!\nCreates an explosion that launches you on utility use.";
 
-        protected override string GetDescString(string langid = null) => $"";
+        protected override string GetDescString(string langid = null)
+        {
+            var desc = $"Using your utility <style=cIsDamage>explodes</style> with a radius of <style=cIsUtility>{LiveAmmo_Radius}</style> for <style=cIsDamage>{Pct(LiveAmmo_DamageDealt)} damage </style>" +
+                $"<style=cStack>(+{Pct(LiveAmmo_DamageDealtStack)} damage per stack </style> that propels you towards your aim with {Pct(LiveAmmo_ForceCoefficient)} force " +
+                $"<style=cStack>(+{Pct(LiveAmmo_ForceCoefficientStack)} force per stack</style>.";
 
-        protected override string GetLoreString(string langID = null) => "Who needs bullets when you ARE a bullet?";
+            return desc;
+        }
+
+        protected override string GetLoreString(string langID = null) => "Who needs bullets when can BECOME a bullet?";
 
         private readonly BlastAttack blastAttack;
         private readonly GameObject LiveAmmoObject;
@@ -37,6 +61,7 @@ namespace RiskOfBulletstorm.Items
         public override void SetupAttributes()
         {
             base.SetupAttributes();
+            blastAttack.inflictor = LiveAmmoObject;
         }
         public override void SetupConfig()
         {
@@ -68,13 +93,15 @@ namespace RiskOfBulletstorm.Items
                     if (self.characterBody.skillLocator.utility.Equals(self))
                     {
                         blastAttack.attacker = vGameObject;
-                        blastAttack.baseDamage = vBody.baseDamage;
+                        blastAttack.baseDamage = vBody.baseDamage * (LiveAmmo_DamageDealt + LiveAmmo_DamageDealtStack * (invCount - 1));
                         blastAttack.crit = vBody.RollCrit();
                         blastAttack.damageColorIndex = DamageColorIndex.Default;
-                        blastAttack.inflictor = LiveAmmoObject;
                         blastAttack.teamIndex = vBody.teamComponent.teamIndex;
-                        blastAttack.radius = 6f;
+                        blastAttack.radius = LiveAmmo_Radius;
                         blastAttack.Fire();
+
+                        if (vBody.inputBank)
+                            vBody.characterMotor.moveDirection = vBody.inputBank.aimDirection * (LiveAmmo_ForceCoefficient + LiveAmmo_ForceCoefficientStack * (invCount - 1));
                     }
                 }
             }
