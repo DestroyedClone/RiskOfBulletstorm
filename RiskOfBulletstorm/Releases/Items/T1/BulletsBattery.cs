@@ -1,17 +1,9 @@
-﻿//using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-//using System.Text;
-using R2API;
 using RoR2;
 using RoR2.Projectile;
-using RoR2.UI;
 using UnityEngine;
-using UnityEngine.Networking;
 using TILER2;
-using static TILER2.StatHooks;
-using static TILER2.MiscUtil;
-using System;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -26,8 +18,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetDescString(string langid = null)
         {
-            var desc = $"Electrifies bulletstorm-specific water for 3 seconds (+1s per stack)";
-            desc += "Decreases shot spread by 5%";
+            var desc = $"5% chance per stack to add Shock5s to your attacks.";
 
             return desc;
         }
@@ -51,32 +42,63 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += ProjectileManager_FireProjectile_FireProjectileInfo;
+            On.RoR2.BulletAttack.Fire += BulletAttack_Fire;
+            On.RoR2.OverlapAttack.Fire += OverlapAttack_Fire;
+            On.RoR2.BlastAttack.Fire += BlastAttack_Fire;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo -= ProjectileManager_FireProjectile_FireProjectileInfo;
+            On.RoR2.BulletAttack.Fire -= BulletAttack_Fire;
+            On.RoR2.OverlapAttack.Fire -= OverlapAttack_Fire;
+            On.RoR2.BlastAttack.Fire -= BlastAttack_Fire;
         }
+
+        private BlastAttack.Result BlastAttack_Fire(On.RoR2.BlastAttack.orig_Fire orig, BlastAttack self)
+        {
+            self.damageType = ShockRoll(self.attacker, self.damageType);
+            return orig(self);
+        }
+
+        private DamageType ShockRoll(GameObject owner, DamageType baseDamageType)
+        {
+            if (owner && owner.GetComponent<CharacterBody>() && owner.GetComponent<CharacterBody>().inventory)
+            {
+                var invcount = owner.GetComponent<CharacterBody>().inventory.GetItemCount(catalogIndex);
+                if (invcount > 0)
+                    if (Util.CheckRoll(5f * invcount))
+                        return baseDamageType |= DamageType.Shock5s;
+            }
+            return baseDamageType;
+        }
+
+        private bool OverlapAttack_Fire(On.RoR2.OverlapAttack.orig_Fire orig, OverlapAttack self, List<HealthComponent> hitResults)
+        {
+            self.damageType = ShockRoll(self.attacker, self.damageType);
+            return orig(self, hitResults);
+        }
+
+        private void BulletAttack_Fire(On.RoR2.BulletAttack.orig_Fire orig, BulletAttack self)
+        {
+            self.damageType = ShockRoll(self.owner, self.damageType);
+            orig(self);
+        }
+
         private void ProjectileManager_FireProjectile_FireProjectileInfo(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_FireProjectileInfo orig, RoR2.Projectile.ProjectileManager self, RoR2.Projectile.FireProjectileInfo fireProjectileInfo)
         {
-            if (fireProjectileInfo.owner && fireProjectileInfo.owner.GetComponent<CharacterBody>() && fireProjectileInfo.owner.GetComponent<CharacterBody>().inventory)
-            {
-                var electric = fireProjectileInfo.projectilePrefab.AddComponent<Bulletstorm_Electrify>();
-                var proj = fireProjectileInfo.projectilePrefab;
-                var projdmg = proj.gameObject.GetComponent<ProjectileDamage>();
-                var invcount = fireProjectileInfo.owner.GetComponent<CharacterBody>().inventory.GetItemCount(catalogIndex);
-                if (projdmg && invcount > 0)
-                {
-                    if (Util.CheckRoll(5f * invcount))
-                        projdmg.damageType = DamageType
-                }
-            }
+            var component = fireProjectileInfo.projectilePrefab.GetComponent<ProjectileDamage>();
+            component.damageType = ShockRoll(fireProjectileInfo.owner, component.damageType);
             orig(self, fireProjectileInfo);
         }
-        private class Bulletstorm_Electrify : MonoBehaviour
+        private class BulletstormShockEffect : MonoBehaviour
         {
-
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
+            void OnDisable()
+            {
+                EffectManager.SimpleEffect(Resources.Load<GameObject>("Prefabs/TemporaryVisualEffects/TeslaFieldBuffEffect"), gameObject.transform.position, gameObject.transform.rotation, true);
+            }
         }
     }
 }
