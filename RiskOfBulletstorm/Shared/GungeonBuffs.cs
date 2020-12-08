@@ -10,6 +10,8 @@ using static TILER2.StatHooks;
 using static TILER2.MiscUtil;
 using System;
 
+using System.Linq;
+
 namespace RiskOfBulletstorm.Items
 {
     public class GungeonBuffController : Item_V2<GungeonBuffController>
@@ -33,7 +35,7 @@ namespace RiskOfBulletstorm.Items
         //public static BuffIndex Buffed { get; private set; }
         //public static BuffIndex BurnEnemy { get; private set; }
         //public static BuffIndex PoisonEnemy { get; private set; }
-        //public static BuffIndex Charm { get; private set; }
+        public static BuffIndex Charm { get; private set; }
         //public static BuffIndex Encheesed { get; private set; }
         //public static BuffIndex Fear { get; private set; }
         public static BuffIndex Jammed { get; private set; } //
@@ -74,6 +76,17 @@ namespace RiskOfBulletstorm.Items
             });
             Anger = BuffAPI.Add(angerBuff);
 
+            var charmedBuff = new CustomBuff(
+            new BuffDef
+            {
+                name = "Charmed",
+                buffColor = new Color32(201, 42, 193, 255),
+                canStack = false,
+                isDebuff = true,
+                iconPath = "",
+            });
+            Charm = BuffAPI.Add(charmedBuff);
+
             var jammedBuff = new CustomBuff(
             new BuffDef
             {
@@ -103,6 +116,20 @@ namespace RiskOfBulletstorm.Items
             GetStatCoefficients += AddRewards;
             GetStatCoefficients += AddSpiceRewards;
             On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+            // CHARM //
+            On.RoR2.CharacterAI.BaseAI.FindEnemyHurtBox += BaseAI_FindEnemyHurtBox;
+            On.RoR2.CharacterBody.RemoveBuff += Charmed_DisableComponent;
+        }
+
+        private void Charmed_DisableComponent(On.RoR2.CharacterBody.orig_RemoveBuff orig, CharacterBody self, BuffIndex buffType)
+        {
+            if (buffType == Charm)
+            {
+                var isCharmed = self.gameObject.GetComponent<IsCharmed>();
+                if (isCharmed && isCharmed.enabled)
+                    self.gameObject.GetComponent<IsCharmed>().enabled = false;
+            }
+            orig(self, buffType);
         }
 
         public override void Uninstall()
@@ -111,6 +138,20 @@ namespace RiskOfBulletstorm.Items
             GetStatCoefficients -= AddRewards;
             GetStatCoefficients -= AddSpiceRewards;
             On.RoR2.HealthComponent.TakeDamage -= HealthComponent_TakeDamage;
+
+            On.RoR2.CharacterAI.BaseAI.FindEnemyHurtBox -= BaseAI_FindEnemyHurtBox;
+            On.RoR2.CharacterBody.RemoveBuff -= Charmed_DisableComponent;
+        }
+        private HurtBox BaseAI_FindEnemyHurtBox(On.RoR2.CharacterAI.BaseAI.orig_FindEnemyHurtBox orig, RoR2.CharacterAI.BaseAI self, float maxDistance, bool full360Vision, bool filterByLoS)
+        {
+            var isCharmed = self.body.gameObject.GetComponent<IsCharmed>();
+            if (isCharmed && isCharmed.enabled)
+            {
+                isCharmed.FlipTeamSpecial();
+                orig(self, maxDistance, full360Vision, filterByLoS);
+                isCharmed.FlipTeamSpecial();
+            }
+            return orig(self, maxDistance, full360Vision, filterByLoS);
         }
 
         private void AddSpiceRewards(CharacterBody sender, StatHookEventArgs args)
@@ -178,7 +219,7 @@ namespace RiskOfBulletstorm.Items
                     if (inventory)
                     {
                         var SpiceTallyCount = inventory.GetItemCount(SpiceTally);
-                        var DamageMult = 0f;
+                        //var DamageMult = 0f;
                         var SpiceMult = 0f;
                         switch (SpiceTallyCount)
                         {
@@ -193,8 +234,8 @@ namespace RiskOfBulletstorm.Items
                                 SpiceMult = SpiceBonuses[4, 4] + SpiceBonusesAdditive[4] * (SpiceTallyCount - 4);
                                 break;
                         }
-                        DamageMult = SpiceMult;
-                        damageInfo.damage *= 1 + DamageMult;
+                        //DamageMult = SpiceMult;
+                        damageInfo.damage *= 1 + SpiceMult;
                     }
                 }
             }
@@ -268,6 +309,64 @@ namespace RiskOfBulletstorm.Items
             //public float recheckTime = 0.75f;
 
             //private float currentTime = 0f;
+        }
+
+        public class IsCharmed : MonoBehaviour
+        {
+            public float duration = 8f;
+            private float lifetime = 9f;
+            public CharacterBody characterBody;
+            private TeamComponent teamComponent;
+            private TeamIndex oldTeamIndex = TeamIndex.Monster;
+
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
+            void OnEnable()
+            {
+                characterBody = gameObject.GetComponent<CharacterBody>();
+                teamComponent = characterBody.teamComponent;
+
+                if (characterBody.GetBuffCount(Charm) <= 0)
+                    characterBody.AddBuff(Charm);
+                oldTeamIndex = teamComponent.teamIndex;
+                ResetDuration();
+                FlipTeam();
+            }
+
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
+            void FixedUpdate()
+            {
+                lifetime -= Time.fixedDeltaTime;
+                if (lifetime <= 0 || characterBody.GetBuffCount(Charm) <= 0)
+                {
+                    enabled = false;
+                }
+            }
+
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
+            void OnDisable()
+            {
+                if (characterBody.GetBuffCount(Charm) > 0)
+                    for (int i = 0; i < characterBody.GetBuffCount(Charm); i++)
+                        characterBody.RemoveBuff(Charm);
+                characterBody.teamComponent.teamIndex = oldTeamIndex;
+            }
+
+            public void FlipTeam()
+            {
+                teamComponent.teamIndex = teamComponent.teamIndex == TeamIndex.Neutral ? oldTeamIndex : TeamIndex.Neutral;
+            }
+            public void FlipTeamSpecial()
+            {
+                var targetTeam = TeamIndex.None;
+                if (oldTeamIndex == TeamIndex.Player) targetTeam = TeamIndex.Monster;
+                else if (oldTeamIndex == TeamIndex.Monster) targetTeam = TeamIndex.Player;
+                teamComponent.teamIndex = teamComponent.teamIndex == TeamIndex.Neutral ? targetTeam : TeamIndex.Neutral;
+            }
+
+            public void ResetDuration()
+            {
+                lifetime = duration;
+            }
         }
     }
 }
