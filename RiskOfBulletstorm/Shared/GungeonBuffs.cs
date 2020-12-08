@@ -119,6 +119,22 @@ namespace RiskOfBulletstorm.Items
             // CHARM //
             On.RoR2.CharacterAI.BaseAI.FindEnemyHurtBox += BaseAI_FindEnemyHurtBox;
             On.RoR2.CharacterBody.RemoveBuff += Charmed_DisableComponent;
+            On.RoR2.CharacterBody.AddBuff += Charmed_AddComponent;
+        }
+
+        private void Charmed_AddComponent(On.RoR2.CharacterBody.orig_AddBuff orig, CharacterBody self, BuffIndex buffType)
+        {
+            if (buffType == Charm)
+            {
+                var isCharmed = self.gameObject.GetComponent<IsCharmed>();
+                if (!isCharmed) isCharmed = self.gameObject.AddComponent<IsCharmed>();
+                if (isCharmed)
+                {
+                    if (!isCharmed.enabled) isCharmed.enabled = true;
+                    else isCharmed.ResetDuration();
+                }
+            }
+            orig(self, buffType);
         }
 
         private void Charmed_DisableComponent(On.RoR2.CharacterBody.orig_RemoveBuff orig, CharacterBody self, BuffIndex buffType)
@@ -127,7 +143,7 @@ namespace RiskOfBulletstorm.Items
             {
                 var isCharmed = self.gameObject.GetComponent<IsCharmed>();
                 if (isCharmed && isCharmed.enabled)
-                    self.gameObject.GetComponent<IsCharmed>().enabled = false;
+                    isCharmed.enabled = false;
             }
             orig(self, buffType);
         }
@@ -141,15 +157,16 @@ namespace RiskOfBulletstorm.Items
 
             On.RoR2.CharacterAI.BaseAI.FindEnemyHurtBox -= BaseAI_FindEnemyHurtBox;
             On.RoR2.CharacterBody.RemoveBuff -= Charmed_DisableComponent;
+            On.RoR2.CharacterBody.AddBuff -= Charmed_AddComponent;
         }
         private HurtBox BaseAI_FindEnemyHurtBox(On.RoR2.CharacterAI.BaseAI.orig_FindEnemyHurtBox orig, RoR2.CharacterAI.BaseAI self, float maxDistance, bool full360Vision, bool filterByLoS)
         {
             var isCharmed = self.body.gameObject.GetComponent<IsCharmed>();
             if (isCharmed && isCharmed.enabled)
             {
-                isCharmed.FlipTeamSpecial();
+                isCharmed.FlipTeam();
                 orig(self, maxDistance, full360Vision, filterByLoS);
-                isCharmed.FlipTeamSpecial();
+                isCharmed.FlipTeam();
             }
             return orig(self, maxDistance, full360Vision, filterByLoS);
         }
@@ -350,12 +367,7 @@ namespace RiskOfBulletstorm.Items
                         characterBody.RemoveBuff(Charm);
                 characterBody.teamComponent.teamIndex = oldTeamIndex;
             }
-
             public void FlipTeam()
-            {
-                teamComponent.teamIndex = teamComponent.teamIndex == TeamIndex.Neutral ? oldTeamIndex : TeamIndex.Neutral;
-            }
-            public void FlipTeamSpecial()
             {
                 var targetTeam = TeamIndex.None;
                 if (oldTeamIndex == TeamIndex.Player) targetTeam = TeamIndex.Monster;
@@ -363,9 +375,9 @@ namespace RiskOfBulletstorm.Items
                 teamComponent.teamIndex = teamComponent.teamIndex == TeamIndex.Neutral ? targetTeam : TeamIndex.Neutral;
             }
 
-            public void ResetDuration()
+            public void ResetDuration() //add value later
             {
-                lifetime = duration;
+                if (lifetime < duration) lifetime = duration;
             }
         }
     }
