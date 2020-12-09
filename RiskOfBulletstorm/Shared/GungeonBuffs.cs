@@ -287,7 +287,7 @@ namespace RiskOfBulletstorm.Items
 
         public class IsCharmed : MonoBehaviour
         {
-            public float duration = 8f;
+            public float duration = CharmHorn.instance.CharmHorn_Duration;
             private float lifetime = 9f;
             public CharacterBody characterBody;
             private TeamComponent teamComponent;
@@ -307,7 +307,6 @@ namespace RiskOfBulletstorm.Items
                 ResetDuration();
                 //FlipTeam();
                 Debug.Log("Charm: Flipped to team "+ FlipTeam());
-
                 var teamComponentEnemy = baseAI.currentEnemy.characterBody.teamComponent;
                 if (teamComponentEnemy.teamIndex == GetOppositeTeamIndex(oldTeamIndex))
                 {
