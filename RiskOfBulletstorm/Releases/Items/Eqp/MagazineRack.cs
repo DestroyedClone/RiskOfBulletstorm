@@ -47,6 +47,7 @@ namespace RiskOfBulletstorm.Items
 
             BuffWard buffWard = MagazinePrefab.GetComponent<BuffWard>();
             buffWard.Networkradius = MagazineRack_Radius;
+            buffWard.radius = MagazineRack_Radius;
             if (MagazineRack_Duration > 0)
             {
                 buffWard.expires = true;
