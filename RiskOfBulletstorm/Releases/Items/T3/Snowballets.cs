@@ -98,7 +98,7 @@ namespace RiskOfBulletstorm.Items
             private ProjectileDamage projectileDamage;
             private ProjectileController projectileController;
 
-            private int maxStacks = 10;
+            private readonly int maxStacks = 10;
             private int currentStacks = 0;
 
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Engine")]

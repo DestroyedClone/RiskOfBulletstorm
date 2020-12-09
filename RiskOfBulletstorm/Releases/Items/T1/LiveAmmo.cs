@@ -90,7 +90,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     if (self.characterBody.skillLocator.utility.Equals(self))
                     {
-                        var blastAttack = new BlastAttack
+                        new BlastAttack
                         {
                             attacker = vGameObject,
                             baseDamage = vBody.baseDamage * (LiveAmmo_DamageDealt + LiveAmmo_DamageDealtStack * (invCount - 1)),
