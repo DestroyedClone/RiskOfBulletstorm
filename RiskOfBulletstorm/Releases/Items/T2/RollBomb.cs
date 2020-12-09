@@ -75,7 +75,7 @@ namespace RiskOfBulletstorm.Items
             {
                 if (invCount > 0)
                 {
-                    if (self.characterBody.skillLocator.utility.Equals(self))
+                    if (self.characterBody.skillLocator.utility && self.characterBody.skillLocator.utility.Equals(self))
                     {
                         for (int i = 0; i < invCount; i++)
                         {

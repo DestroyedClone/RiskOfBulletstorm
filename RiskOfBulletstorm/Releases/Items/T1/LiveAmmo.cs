@@ -124,7 +124,7 @@ namespace RiskOfBulletstorm.Items
 
             if (self.characterBody.baseNameToken != "MAGE_BODY_NAME")
             {
-                if (vBody.skillLocator.FindSkill(self.skillName))
+                if (self.characterBody.skillLocator.utility && vBody.skillLocator.FindSkill(self.skillName))
                 {
                     if (invCount > 0)
                     {
