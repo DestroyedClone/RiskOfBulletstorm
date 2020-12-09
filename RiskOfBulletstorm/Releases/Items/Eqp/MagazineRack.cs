@@ -86,7 +86,7 @@ namespace RiskOfBulletstorm.Items
             if (!gameObject || !body) return false;
 
             bool EmbryoProc = ClassicItemsCompat.enabled && ClassicItemsCompat.CheckEmbryoProc(instance, body);
-            Debug.Log("results: "+ ClassicItemsCompat.enabled+" and "+ ClassicItemsCompat.CheckEmbryoProc(instance, body));
+            Debug.Log("MagazineRack: ClassicItems Enabled="+ ClassicItemsCompat.enabled+" and EmbryoProc="+ ClassicItemsCompat.CheckEmbryoProc(instance, body));
             return PlaceWard(body, MagazinePrefab, EmbryoProc);
         }
 
