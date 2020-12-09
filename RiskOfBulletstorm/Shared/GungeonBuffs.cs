@@ -172,9 +172,18 @@ namespace RiskOfBulletstorm.Items
             var isCharmed = self.body.gameObject.GetComponent<IsCharmed>();
             if (isCharmed && isCharmed.enabled)
             {
-                isCharmed.FlipTeam();
-                orig(self, maxDistance, full360Vision, filterByLoS);
-                isCharmed.FlipTeam();
+                self.enemySearch.viewer = self.body;
+                self.enemySearch.teamMaskFilter = TeamMask.allButNeutral;
+                self.enemySearch.teamMaskFilter.RemoveTeam(isCharmed.GetOppositeTeamIndex(isCharmed.GetOldTeam()));
+                self.enemySearch.sortMode = BullseyeSearch.SortMode.Distance;
+                self.enemySearch.minDistanceFilter = 0f;
+                self.enemySearch.maxDistanceFilter = maxDistance;
+                self.enemySearch.searchOrigin = self.bodyInputBank.aimOrigin;
+                self.enemySearch.searchDirection = self.bodyInputBank.aimDirection;
+                self.enemySearch.maxAngleFilter = (full360Vision ? 180f : 90f);
+                self.enemySearch.filterByLoS = filterByLoS;
+                self.enemySearch.RefreshCandidates();
+                return self.enemySearch.GetResults().FirstOrDefault<HurtBox>();
             }
             return orig(self, maxDistance, full360Vision, filterByLoS);
         }
@@ -306,16 +315,22 @@ namespace RiskOfBulletstorm.Items
                 oldTeamIndex = teamComponent.teamIndex;
                 ResetDuration();
                 //FlipTeam();
-                Debug.Log("Charm: Flipped to team "+ FlipTeam());
                 var teamComponentEnemy = baseAI.currentEnemy.characterBody.teamComponent;
+                Debug.Log("Charm: OnEnable, last target was "+ baseAI.currentEnemy.characterBody.name);
                 if (teamComponentEnemy.teamIndex == GetOppositeTeamIndex(oldTeamIndex))
                 {
-                    baseAI.currentEnemy.Reset();
-                    baseAI.ForceAcquireNearestEnemyIfNoCurrentEnemy();
+                    ResetTarget();
                 }
             }
 
-            TeamIndex GetOppositeTeamIndex(TeamIndex teamIndex)
+            public void ResetTarget()
+            {
+                baseAI.currentEnemy.Reset();
+                baseAI.ForceAcquireNearestEnemyIfNoCurrentEnemy();
+                Debug.Log("Charm: Changed Target to " + baseAI.currentEnemy.characterBody.name);
+            }
+
+            public TeamIndex GetOppositeTeamIndex(TeamIndex teamIndex)
             {
                 if (teamIndex == TeamIndex.Player) return TeamIndex.Monster;
                 else if (teamIndex == TeamIndex.Monster) return TeamIndex.Player;
@@ -340,6 +355,7 @@ namespace RiskOfBulletstorm.Items
                         characterBody.RemoveBuff(Charm);
                 characterBody.teamComponent.teamIndex = oldTeamIndex;
             }
+            /*
             public TeamIndex FlipTeam()
             {
                 var targetTeam = TeamIndex.None;
@@ -347,11 +363,15 @@ namespace RiskOfBulletstorm.Items
                 else if (oldTeamIndex == TeamIndex.Monster) targetTeam = TeamIndex.Player;
                 teamComponent.teamIndex = teamComponent.teamIndex == TeamIndex.Neutral ? targetTeam : TeamIndex.Neutral;
                 return teamComponent.teamIndex;
-            }
+            }*/
 
             public void ResetDuration() //add value later
             {
                 if (lifetime < duration) lifetime = duration;
+            }
+            public TeamIndex GetOldTeam()
+            {
+                return oldTeamIndex;
             }
         }
     }
