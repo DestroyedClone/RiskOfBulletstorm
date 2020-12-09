@@ -11,6 +11,7 @@ using TILER2;
 using static TILER2.StatHooks;
 using static TILER2.MiscUtil;
 using System;
+using EntityStates.Mage.Weapon;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -51,6 +52,8 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "Who needs bullets when can BECOME a bullet?";
 
+        readonly GameObject iceWall = PrepWall.projectilePrefab;
+
 
         public override void SetupBehavior()
         {
@@ -68,12 +71,49 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             On.RoR2.GenericSkill.OnExecute += GenericSkill_OnExecute;
+            On.RoR2.Projectile.ProjectileManager.FireProjectile_GameObject_Vector3_Quaternion_GameObject_float_float_bool_DamageColorIndex_GameObject_float += Longassname;
+        }
+
+        private void Longassname(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_GameObject_Vector3_Quaternion_GameObject_float_float_bool_DamageColorIndex_GameObject_float orig, RoR2.Projectile.ProjectileManager self, GameObject prefab, Vector3 position, Quaternion rotation, GameObject owner, float damage, float force, bool crit, DamageColorIndex damageColorIndex, GameObject target, float speedOverride)
+        {
+            var characterBody = owner.GetComponent<CharacterBody>();
+            if (prefab == iceWall && characterBody)
+            {
+                FireAmmo(characterBody, true);
+                Chat.AddMessage("Fired");
+            }
+            orig(self, prefab, position, rotation, owner, damage, force, crit, damageColorIndex, target, speedOverride);
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
             On.RoR2.GenericSkill.OnExecute -= GenericSkill_OnExecute;
+            On.RoR2.Projectile.ProjectileManager.FireProjectile_GameObject_Vector3_Quaternion_GameObject_float_float_bool_DamageColorIndex_GameObject_float -= Longassname;
+        }
+
+        private void FireAmmo(CharacterBody characterBody, bool halve = false)
+        {
+            var invCount = characterBody.inventory.GetItemCount(catalogIndex);
+            Vector3 corePos = Util.GetCorePosition(characterBody);
+            new BlastAttack
+            {
+                attacker = characterBody.gameObject,
+                baseDamage = characterBody.baseDamage * (LiveAmmo_DamageDealt + LiveAmmo_DamageDealtStack * (invCount - 1)) * (halve ? 0.5f : 1f),
+                crit = characterBody.RollCrit(),
+                damageColorIndex = DamageColorIndex.Default,
+                teamIndex = characterBody.teamComponent.teamIndex,
+                radius = LiveAmmo_Radius,
+                position = corePos,
+                procCoefficient = 0f
+            }.Fire();
+
+            if (characterBody.inputBank)
+            {
+                var vector = characterBody.inputBank.aimDirection * (LiveAmmo_ForceCoefficient + LiveAmmo_ForceCoefficientStack * (invCount - 1));
+                vector *= halve ? 0.5f : 1f;
+                characterBody.characterMotor.velocity += vector;
+            }
         }
 
         private void GenericSkill_OnExecute(On.RoR2.GenericSkill.orig_OnExecute orig, GenericSkill self)
@@ -81,29 +121,16 @@ namespace RiskOfBulletstorm.Items
             var invCount = GetCount(self.characterBody);
             CharacterBody vBody = self.characterBody;
             if (!vBody || !vBody.skillLocator) return; //null check
-            Vector3 corePos = Util.GetCorePosition(vBody);
-            GameObject vGameObject = self.gameObject;
 
-            if (vBody.skillLocator.FindSkill(self.skillName))
+            if (self.characterBody.baseNameToken != "MAGE_BODY_NAME")
             {
-                if (invCount > 0)
+                if (vBody.skillLocator.FindSkill(self.skillName))
                 {
-                    if (self.characterBody.skillLocator.utility.Equals(self))
+                    if (invCount > 0)
                     {
-                        new BlastAttack
+                        if (self.characterBody.skillLocator.utility.Equals(self))
                         {
-                            attacker = vGameObject,
-                            baseDamage = vBody.baseDamage * (LiveAmmo_DamageDealt + LiveAmmo_DamageDealtStack * (invCount - 1)),
-                            crit = vBody.RollCrit(),
-                            damageColorIndex = DamageColorIndex.Default,
-                            teamIndex = vBody.teamComponent.teamIndex,
-                            radius = LiveAmmo_Radius,
-                            position = corePos
-                        }.Fire();
-
-                        if (vBody.inputBank)
-                        {
-                            vBody.characterMotor.velocity += vBody.inputBank.aimDirection * (LiveAmmo_ForceCoefficient + LiveAmmo_ForceCoefficientStack * (invCount - 1));
+                            FireAmmo(vBody);
                         }
                     }
                 }
