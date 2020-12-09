@@ -98,6 +98,9 @@ namespace RiskOfBulletstorm.Items
             private ProjectileDamage projectileDamage;
             private ProjectileController projectileController;
 
+            private int maxStacks = 20;
+            private int currentStacks = 0;
+
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Engine")]
             void OnEnable()
             {
@@ -110,13 +113,17 @@ namespace RiskOfBulletstorm.Items
             void FixedUpdate()
             {
                 var currentPosition = gameObject.transform.position;
-                var distance = Vector3.Distance(lastPosition, currentPosition);
-                if (distance >= meterAmount)
+                if (currentStacks < maxStacks)
                 {
-                    lastPosition = currentPosition;
+                    var distance = Vector3.Distance(lastPosition, currentPosition);
+                    if (distance >= meterAmount)
+                    {
+                        lastPosition = currentPosition;
+                        currentStacks++;
 
-                    if (projectileDamage) projectileDamage.damage *= 1 + damageMultiplier;
-                    if (projectileController) ResizeProjectile(sizeMultiplier);
+                        if (projectileDamage) projectileDamage.damage *= 1 + damageMultiplier;
+                        if (projectileController) ResizeProjectile(sizeMultiplier);
+                    }
                 }
             }
 
