@@ -48,19 +48,18 @@ namespace RiskOfBulletstorm.Items
             BuffWard buffWard = MagazinePrefab.GetComponent<BuffWard>();
             buffWard.Networkradius = MagazineRack_Radius;
             buffWard.radius = MagazineRack_Radius;
-            if (MagazineRack_Duration > 0)
-            {
-                buffWard.expires = true;
-                buffWard.expireDuration = MagazineRack_Duration;
-            }
+            buffWard.expires = true;
+            buffWard.expireDuration = MagazineRack_Duration;
             buffWard.buffType = BuffIndex.NoCooldowns;
 
-            MagazinePrefab.AddComponent<Bulletstorm_MagazineKiller>();
 
             if (MagazinePrefab) PrefabAPI.RegisterNetworkPrefab(MagazinePrefab);
 
             if (ClassicItemsCompat.enabled)
+            {
+                Debug.Log("MagazineRack: Classicitemscompat added");
                 ClassicItemsCompat.RegisterEmbryo(catalogIndex);
+            }
         }
         public override void SetupAttributes()
         {
@@ -87,6 +86,7 @@ namespace RiskOfBulletstorm.Items
             if (!gameObject || !body) return false;
 
             bool EmbryoProc = ClassicItemsCompat.enabled && ClassicItemsCompat.CheckEmbryoProc(instance, body);
+            Debug.Log("results: "+ ClassicItemsCompat.enabled+" and "+ ClassicItemsCompat.CheckEmbryoProc(instance, body));
             return PlaceWard(body, MagazinePrefab, EmbryoProc);
         }
 
@@ -98,28 +98,10 @@ namespace RiskOfBulletstorm.Items
                 gameObject.GetComponent<TeamFilter>().teamIndex = body.teamComponent.teamIndex;
                 gameObject.GetComponent<BuffWard>().Networkradius *= embryoProc ? 1.5f : 1f;
                 gameObject.GetComponent<BuffWard>().expireDuration *= embryoProc ? 1.2f : 1f;
-                gameObject.GetComponent<Bulletstorm_MagazineKiller>().characterBody = body;
                 NetworkServer.Spawn(gameObject);
                 return true;
             }
             return false;
-        }
-
-        public class Bulletstorm_MagazineTracker : MonoBehaviour
-        {
-            public List<GameObject> instances;
-        }
-
-        public class Bulletstorm_MagazineKiller : MonoBehaviour
-        {
-            public CharacterBody characterBody;
-
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
-            void OnDisable()
-            {
-                if (characterBody && characterBody.gameObject.GetComponent<Bulletstorm_MagazineTracker>())
-                    characterBody.gameObject.GetComponent<Bulletstorm_MagazineTracker>().instances.Remove(gameObject);
-            }
         }
     }
 }
