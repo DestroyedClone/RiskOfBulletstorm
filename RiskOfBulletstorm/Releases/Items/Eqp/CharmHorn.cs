@@ -54,7 +54,7 @@ namespace RiskOfBulletstorm.Items
             BuffWard buffWard = CharmWardPrefab.GetComponent<BuffWard>();
             buffWard.expires = true;
             buffWard.expireDuration = 0.6f;
-            //buffWard.invertTeamFilter = true;
+            buffWard.invertTeamFilter = true;
 
             //CharmWard charmWard = CharmWardPrefab.AddComponent<CharmWard>();
             //charmWard.expires = true;
