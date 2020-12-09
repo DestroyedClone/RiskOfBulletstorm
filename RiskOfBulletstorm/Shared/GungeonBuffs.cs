@@ -270,30 +270,6 @@ namespace RiskOfBulletstorm.Items
             orig(self, damageInfo);
         }
 
-        /*
-        public static BlastAttack JammedContactDamage = new BlastAttack
-        {
-            losType = BlastAttack.LoSType.NearestHit,
-            damageColorIndex = DamageColorIndex.Default,
-            damageType = DamageType.Generic,
-            procCoefficient = 0f,
-            procChainMask = default,
-            baseForce = 0,
-            falloffModel = BlastAttack.FalloffModel.None,
-
-        };
-
-        public static DamageInfo JammedContactDamageInfo = new DamageInfo
-        {
-            damage = 0, //gets set by component
-            crit = false,
-            force = new Vector3(0,0,0),
-            procChainMask = default,
-            procCoefficient = 0,
-            damageType = DamageType.Generic,
-            damageColorIndex = DamageColorIndex.DeathMark
-        };*/ //unused contact damage stuff
-
         public class IsJammed : MonoBehaviour
         {
             public CharacterBody characterBody;
