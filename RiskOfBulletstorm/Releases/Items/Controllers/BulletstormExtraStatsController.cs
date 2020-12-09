@@ -233,9 +233,17 @@ namespace RiskOfBulletstorm.Items
                     // +0.15 (+) -0.10 (+) -0.10*additionalstacks
                 }
             }
+
+            float Clamp(float value, float min = 0f, float max = 1f)
+            {
+                if (value <= min) return min;
+                else if (value > max) return max;
+                else return value;
+            }
+
             var ResultMult = ScopeMult + SpiceMult;
-            if (ResultMult <= 0f) ResultMult = 0f;
-            else ResultMult = 1f;
+
+            ResultMult = Clamp(ResultMult);
             Debug.Log("ScopeMult: " + ScopeMult + " + SpiceMUlt: " + SpiceMult + " = " + ResultMult);
             return ResultMult;
         }
@@ -284,15 +292,16 @@ namespace RiskOfBulletstorm.Items
         private void AdjustSpreadBullets_Nailgun(On.EntityStates.BaseNailgunState.orig_FireBullet orig, EntityStates.BaseNailgunState self, Ray aimRay, int bulletCount, float spreadPitchScale, float spreadYawScale)
         {
             //MULT you upset me
-            Debug.Log("Entered nailgun");
             var characterBody = self.characterBody;
             var updateBloom = false;
             float ResultMult = -1f;
             if (characterBody)
             {
+                Debug.Log("Entered nailgun charbody");
                 var inventory = characterBody.inventory;
                 if (inventory)
                 {
+                    Debug.Log("Entered nailgun inventory");
                     int InventoryCount = characterBody.inventory.GetItemCount(catalogIndex);
                     if (InventoryCount > 0)
                     {

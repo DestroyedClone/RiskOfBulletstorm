@@ -41,8 +41,8 @@ namespace RiskOfBulletstorm.Items
         protected override string GetLoreString(string langID = null) => "There are strange inconsistencies in the behavior of the Gundead. Originally thought to be heartless killing machines, they have been known to capture certain invaders for unknown purposes. Furthermore, evidence of a crude religion has been discovered. Perhaps, one day, they could be reasoned with?";
 
         public static GameObject CharmWardPrefab { get; private set; }
-        public static readonly BuffIndex CharmBuff = GungeonBuffController.Charm;
-        public static readonly BuffIndex AngerBuff = GungeonBuffController.Anger;
+        //public static readonly BuffIndex CharmBuff = GungeonBuffController.Charm;
+        //public static readonly BuffIndex AngerBuff = GungeonBuffController.Anger;
 
         public override void SetupBehavior()
         {
@@ -125,7 +125,8 @@ namespace RiskOfBulletstorm.Items
                 GameObject gameObject = UnityEngine.Object.Instantiate(CharmWardPrefab, body.transform.position, Quaternion.identity);
                 gameObject.GetComponent<TeamFilter>().teamIndex = body.teamComponent.teamIndex;
                 BuffWard buffWard = gameObject.GetComponent<BuffWard>();
-                buffWard.buffType = CharmBuff;
+                Debug.Log(GungeonBuffController.Charm);
+                buffWard.buffType = GungeonBuffController.Charm;
                 buffWard.GetComponent<BuffWard>().Networkradius *= radius;
                 NetworkServer.Spawn(gameObject);
             }
