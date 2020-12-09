@@ -293,8 +293,8 @@ namespace RiskOfBulletstorm.Items
         {
             //MULT you upset me
             var characterBody = self.characterBody;
-            var updateBloom = false;
-            float ResultMult = -1f;
+            //var updateBloom = false;
+            //float ResultMult = 1f;
             if (characterBody)
             {
                 Debug.Log("Entered nailgun charbody");
@@ -305,8 +305,9 @@ namespace RiskOfBulletstorm.Items
                     int InventoryCount = characterBody.inventory.GetItemCount(catalogIndex);
                     if (InventoryCount > 0)
                     {
-                        ResultMult = CalculateSpreadMultiplier(inventory);
-                        updateBloom = true;
+                        var ResultMult = CalculateSpreadMultiplier(inventory);
+                        characterBody.SetSpreadBloom(Mathf.Min(0, characterBody.spreadBloomAngle * ResultMult), false);
+                        //updateBloom = true;
 
                         spreadPitchScale = Mathf.Min(0, spreadPitchScale * ResultMult);
                         spreadYawScale = Mathf.Min(0, spreadYawScale * ResultMult);
@@ -315,8 +316,8 @@ namespace RiskOfBulletstorm.Items
                 }
             }
             orig(self, aimRay, bulletCount, spreadPitchScale, spreadYawScale);
-            if (updateBloom)
-                characterBody.SetSpreadBloom(Mathf.Min(0, characterBody.spreadBloomAngle * ResultMult), false);
+            //if (updateBloom)
+                //characterBody.SetSpreadBloom(Mathf.Min(0, characterBody.spreadBloomAngle * ResultMult), false);
         }
 
         private void AdjustSpreadBullets(On.RoR2.BulletAttack.orig_Fire orig, BulletAttack self)
