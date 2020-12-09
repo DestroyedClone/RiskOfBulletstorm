@@ -143,7 +143,7 @@ namespace RiskOfBulletstorm.Items
                 if (skillLocation)
                 {
                     MetronomeTrackKills MetronomeTrackKills = self.gameObject.GetComponent<MetronomeTrackKills>();
-                    if (MetronomeTrackKills)
+                    if (MetronomeTrackKills && MetronomeTrackKills.enabled)
                     {
                         if (skillLocation.FindSkill(self.skillName)) //Updates last skill slot used
                         {
@@ -164,13 +164,17 @@ namespace RiskOfBulletstorm.Items
         private void CharacterBody_OnInventoryChanged(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self) //Update Max Kills
         {
             var InventoryCount = GetCount(self);
-            MetronomeTrackKills MetronomeTrackKills = self.gameObject.GetComponent<MetronomeTrackKills>();
+            MetronomeTrackKills metronomeTrackKills = self.gameObject.GetComponent<MetronomeTrackKills>();
+            if (!metronomeTrackKills) { metronomeTrackKills = self.gameObject.AddComponent<MetronomeTrackKills>(); }
             if (InventoryCount > 0)
             {
-                if (!MetronomeTrackKills) { MetronomeTrackKills = self.gameObject.AddComponent<MetronomeTrackKills>(); }
-                MetronomeTrackKills.maxkills = Metronome_MaxKills + Metronome_MaxKillsStack * InventoryCount;
+                metronomeTrackKills.enabled = true;
+                metronomeTrackKills.maxkills = Metronome_MaxKills + Metronome_MaxKillsStack * InventoryCount;
 
-                MetronomeTrackKills.UpdateKills();
+                metronomeTrackKills.UpdateKills();
+            } else
+            {
+                metronomeTrackKills.enabled = false;
             }
             orig(self);
         }
@@ -178,15 +182,16 @@ namespace RiskOfBulletstorm.Items
         private void GlobalEventManager_OnCharacterDeath(On.RoR2.GlobalEventManager.orig_OnCharacterDeath orig, GlobalEventManager self, DamageReport damageReport)
         {
             var attackerBody = damageReport?.attackerBody;
-            int inventoryCount = GetCount(attackerBody);
             if (attackerBody)
             {
+                int inventoryCount = GetCount(attackerBody);
                 if (inventoryCount > 0)
                 {
                     var componentExists = attackerBody.GetComponent<MetronomeTrackKills>();
-                    if (componentExists.IsKillsLessThanMax())
+                    if (componentExists && componentExists.enabled)
                     {
                         componentExists.IncrementKills();
+
                     }
                 }
             }
@@ -215,7 +220,7 @@ namespace RiskOfBulletstorm.Items
                 if (cb)
                     characterBody = cb;
                 else
-                    Destroy(gameObject.GetComponent<MetronomeTrackKills>());
+                    enabled = false;
             }
 
             public void OnDisable()
@@ -229,10 +234,7 @@ namespace RiskOfBulletstorm.Items
                 maxkills = Metronome_MaxKills + Metronome_MaxKillsStack * (InventoryCount - 1);
                 kills = Mathf.Min(kills, maxkills);//this resets it if you have less metronomes from like cleansing
                 UpdateBuffStack();
-            }
-            public bool IsKillsLessThanMax()
-            {
-                return kills < maxkills;
+                characterBody.RecalculateStats();
             }
 
             public void UpdateBuffStack()
@@ -246,18 +248,15 @@ namespace RiskOfBulletstorm.Items
                 if (LastSkillSlotUsed != SlotNumber)
                 {
                     LastSkillSlotUsed = SlotNumber;
-                    ReduceKillsOnLoss();
+                    kills = Math.Max(0, kills - Metronome_KillsLost);
+                    UpdateKills();
                 }
-            }
-            public void ReduceKillsOnLoss()
-            {
-                kills = Math.Max(0, kills - Metronome_KillsLost);
             }
             public void IncrementKills()
             {
-                kills++;
+                if (kills < maxkills)
+                    kills++;
             }
-
         }
     }
 }
