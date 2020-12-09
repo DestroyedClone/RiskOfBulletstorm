@@ -24,11 +24,11 @@ namespace RiskOfBulletstorm.Items
         public float LiveAmmo_DamageDealtStack { get; private set; } = 0.5f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How much force should the explosion propel? (Default: 2.0 = 200% velocity)", AutoConfigFlags.PreventNetMismatch)]
-        public float LiveAmmo_ForceCoefficient { get; private set; } = 2f;
+        [AutoConfig("How much force should the explosion propel? (Default: 50.0)", AutoConfigFlags.PreventNetMismatch)]
+        public float LiveAmmo_ForceCoefficient { get; private set; } = 50f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How much force should the explosion propel per item stack? (Default: 0.5 = 50% velocity)", AutoConfigFlags.PreventNetMismatch)]
-        public float LiveAmmo_ForceCoefficientStack { get; private set; } = 0.5f;
+        [AutoConfig("How much force should the explosion propel per item stack? (Default: 25)", AutoConfigFlags.PreventNetMismatch)]
+        public float LiveAmmo_ForceCoefficientStack { get; private set; } = 25f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the radius of the explosion? (Default: 8m)", AutoConfigFlags.PreventNetMismatch)]
@@ -85,13 +85,10 @@ namespace RiskOfBulletstorm.Items
 
             if (vBody.skillLocator.FindSkill(self.skillName))
             {
-                Debug.Log("LiveAmmo: Found Skill");
                 if (invCount > 0)
                 {
-                    Debug.Log("LiveAmmo: Invcount okay");
                     if (self.characterBody.skillLocator.utility.Equals(self))
                     {
-                        Debug.Log("LiveAmmo: Found Skill");
                         var blastAttack = new BlastAttack
                         {
                             attacker = vGameObject,
@@ -101,13 +98,11 @@ namespace RiskOfBulletstorm.Items
                             teamIndex = vBody.teamComponent.teamIndex,
                             radius = LiveAmmo_Radius
                         }.Fire();
-                        Debug.Log("Live Ammo: Result of BlastAttack: " + blastAttack);
+                        Debug.Log("Live Ammo: Result of BlastAttack: " + blastAttack.hitCount);
 
                         if (vBody.inputBank)
                         {
-                            Debug.Log("Live Ammo: old velocity = "+ vBody.characterMotor.velocity);
                             vBody.characterMotor.velocity += vBody.inputBank.aimDirection * (LiveAmmo_ForceCoefficient + LiveAmmo_ForceCoefficientStack * (invCount - 1));
-                            Debug.Log("Live Ammo: new velocity = " + vBody.characterMotor.velocity);
                         }
                     }
                 }
