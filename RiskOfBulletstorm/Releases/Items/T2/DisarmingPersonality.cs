@@ -81,7 +81,7 @@ namespace RiskOfBulletstorm.Items
 
                     var ResultMult = (DisarmingPersonality_CostReductionAmount + (1 - DisarmingPersonality_CostReductionAmount) * (1 - (DisarmingPersonality_CostReductionAmountLimit / Mathf.Pow(InventoryCount + DisarmingPersonality_CostReductionAmountLimit, DisarmingPersonality_CostReductionAmountStack))));
                     var ResultAmt = (int)Mathf.Ceil(self.cost * ResultMult);
-                    Debug.Log("Cost of chest reduced from" + self.cost + " to " + ResultAmt + " with multiplier "+ResultMult);
+                    Chat.AddMessage("Cost of chest reduced from" + self.cost + " to " + ResultAmt + " with multiplier "+ResultMult);
                     self.cost = ResultAmt;
                     self.Networkcost = ResultAmt;
                 }
