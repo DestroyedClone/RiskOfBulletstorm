@@ -118,9 +118,9 @@ namespace RiskOfBulletstorm.Items
 
         private void GenericSkill_OnExecute(On.RoR2.GenericSkill.orig_OnExecute orig, GenericSkill self)
         {
-            var invCount = GetCount(self.characterBody);
             CharacterBody vBody = self.characterBody;
             if (!vBody || !vBody.skillLocator) return; //null check
+            var invCount = GetCount(self.characterBody);
 
             if (self.characterBody.baseNameToken != "MAGE_BODY_NAME")
             {
