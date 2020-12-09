@@ -12,8 +12,8 @@ namespace RiskOfBulletstorm.Items
     public class CharmHorn : Equipment_V2<CharmHorn>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the radius of charmed enemies? (Default: 20m)", AutoConfigFlags.PreventNetMismatch)]
-        public float CharmHorn_Radius { get; private set; } = 20f;
+        [AutoConfig("What is the radius of charmed enemies? (Default: 100m)", AutoConfigFlags.PreventNetMismatch)]
+        public float CharmHorn_Radius { get; private set; } = 100f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the duration of charmed enemies? (Default: 10 seconds)", AutoConfigFlags.PreventNetMismatch)]
