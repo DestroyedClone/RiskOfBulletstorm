@@ -18,7 +18,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetDescString(string langid = null)
         {
-            var desc = $"5% chance per stack to add Shock5s to your attacks.";
+            var desc = $"1% chance per stack to add Stun1s to your attacks, max of 15%";
 
             return desc;
         }
@@ -68,8 +68,8 @@ namespace RiskOfBulletstorm.Items
             {
                 var invcount = owner.GetComponent<CharacterBody>().inventory.GetItemCount(catalogIndex);
                 if (invcount > 0)
-                    if (Util.CheckRoll(Mathf.Min(5f * invcount),60f))
-                        return baseDamageType |= DamageType.Shock5s;
+                    if (Util.CheckRoll(Mathf.Min(1f * invcount), 15f))
+                        return baseDamageType |= DamageType.Stun1s;
             }
             return baseDamageType;
         }
