@@ -1,10 +1,12 @@
 ﻿using System.Collections.ObjectModel;
 using R2API;
 using RoR2;
+using RoR2.UI;
 using UnityEngine;
 using UnityEngine.Networking;
 using TILER2;
 using System;
+using GenericNotification = On.RoR2.UI.GenericNotification;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -41,13 +43,26 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             On.RoR2.CharacterBody.OnInventoryChanged += CharacterBody_OnInventoryChanged;
+            GenericNotification.SetItem += GenericNotification_SetItem;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
             On.RoR2.CharacterBody.OnInventoryChanged -= CharacterBody_OnInventoryChanged;
+            GenericNotification.SetItem -= GenericNotification_SetItem;
         }
+        private void GenericNotification_SetItem(GenericNotification.orig_SetItem orig, RoR2.UI.GenericNotification self, ItemDef itemDef)
+        {
+            if (itemDef.itemIndex == catalogIndex)
+            {
+                orig(self, null);
+                return;
+            }
+
+            orig(self, itemDef);
+        }
+
         private void CharacterBody_OnInventoryChanged(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self)
         {
             orig(self);
