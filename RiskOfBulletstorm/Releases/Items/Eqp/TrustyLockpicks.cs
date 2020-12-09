@@ -89,7 +89,7 @@ namespace RiskOfBulletstorm.Items
         //prefabs/effects/WarCryEffect
         private readonly string prefix = "BULLETSTORM_";
         private readonly string suffixBroken = " (Failed Unlock)";
-        private readonly string contextUnlock = "[EQP] Unlock with Trusty Lockpicks\n";
+        private readonly string contextUnlock = "[EQP] Unlock with Trusty Lockpicks?\n";
         public TrustyLockpicks()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/TrustyLockpicks.prefab";
@@ -231,16 +231,22 @@ namespace RiskOfBulletstorm.Items
 
         private Interactability PurchaseInteraction_GetInteractability(On.RoR2.PurchaseInteraction.orig_GetInteractability orig, PurchaseInteraction self, Interactor activator)
         {
-            Highlight highlight = self.gameObject.GetComponent<Highlight>();
+            var gameObject = self.gameObject;
+            Highlight highlight = gameObject.GetComponent<Highlight>();
             //if (!highlight) return orig(self, activator);
 
-            TrustyLockpickFailed attempted = self.gameObject.GetComponent<TrustyLockpickFailed>();
+            TrustyLockpickFailed attempted = gameObject.GetComponent<TrustyLockpickFailed>();
             //if (attempted) return orig(self, activator);
             if (attempted)
             {
                 if (highlight) highlight.highlightColor = Highlight.HighlightColor.teleporter;
                 return orig(self, activator);
             }
+
+            PurchaseInteraction purchaseInteraction = gameObject.GetComponent<PurchaseInteraction>();
+
+            var nameComponent = gameObject.GetComponent<TrustyLockpickRememberedName>();
+            if (!nameComponent) nameComponent = gameObject.AddComponent<TrustyLockpickRememberedName>();
 
             CharacterBody characterBody = activator.GetComponent<CharacterBody>();
             if (characterBody)
@@ -255,18 +261,30 @@ namespace RiskOfBulletstorm.Items
                         {
                             if (inventory.GetEquipmentRestockableChargeCount(0) > 0)
                             if (highlight) highlight.highlightColor = Highlight.HighlightColor.pickup;
+                            if (purchaseInteraction)
+                            {
+                                var resultContext = (prefix + purchaseInteraction.contextToken);
+                                if (nameComponent.oldContext == "") nameComponent.oldContext = purchaseInteraction.contextToken;
+
+                                purchaseInteraction.contextToken = resultContext;
+                            }
                             return Interactability.Available;
                         }
                     }
                 }
             }
             if (highlight) highlight.highlightColor = Highlight.HighlightColor.interactive;
+            if (nameComponent && nameComponent.oldContext != "") purchaseInteraction.contextToken = nameComponent.oldContext;
             return orig(self, activator);
         }
 
         public class TrustyLockpickFailed : MonoBehaviour
         {
 
+        }
+        public class TrustyLockpickRememberedName : MonoBehaviour
+        {
+            public string oldContext = "";
         }
     }
 }
