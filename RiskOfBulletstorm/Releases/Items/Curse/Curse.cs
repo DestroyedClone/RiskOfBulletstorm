@@ -17,27 +17,27 @@ namespace RiskOfBulletstorm.Items
         //public bool Curse_Enable { get; private set; } = true;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How much additional damage should a Jammed enemy deal? (Default: 1 = +100% damage)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How much additional damage should a Jammed enemy deal? (Value: Additive Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float Curse_DamageBoost { get; private set; } = 1.00f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How much additional crit should a Jammed enemy have? (Default: 100 = +100% crit chance)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How much additional crit should a Jammed enemy have? (Value: Additive)", AutoConfigFlags.PreventNetMismatch)]
         public float Curse_CritBoost { get; private set; } = 100f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How much additional attack speed should a Jammed enemy have? (Default: 0.2 = +20% attack speed)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How much additional attack speed should a Jammed enemy have? (Value: Additive Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float Curse_AttackSpeedBoost { get; private set; } = 0.2f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How much additional move speed should a Jammed enemy have? (Default: 0.2 = +20% move speed)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How much additional move speed should a Jammed enemy have? (Value: Additive Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float Curse_MoveSpeedBoost { get; private set; } = 0.2f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How much additional health should a Jammed enemy have? (Default: 0.5 = +50% max health)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How much additional health should a Jammed enemy have? (Value: Additive Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float Curse_HealthBoost { get; private set; } = 0.5f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Allow bosses to become Jammed? (Default: true)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Allow bosses to become Jammed?", AutoConfigFlags.PreventNetMismatch)]
         public bool Curse_AllowBosses { get; private set; } = true;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Allow umbra(e) to become Jammed? (Default: true)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Allow umbra(e) to become Jammed?", AutoConfigFlags.PreventNetMismatch)]
         public bool Curse_AllowUmbra { get; private set; } = true;
 
         /*[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
@@ -45,7 +45,7 @@ namespace RiskOfBulletstorm.Items
         public bool Curse_AllowGhosts { get; private set; } = true;*/
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("[Aetherium Support] Allow Unstable Design summons to become Jammed? (Default: true)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("[Aetherium Support] Allow Unstable Design summons to become Jammed?", AutoConfigFlags.PreventNetMismatch)]
         public bool Curse_AllowUnstableDesign { get; private set; } = true;
 
         /*

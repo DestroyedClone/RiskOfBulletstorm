@@ -12,20 +12,20 @@ namespace RiskOfBulletstorm.Items
     public class CartographerRing : Item_V2<CartographerRing>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the base chance for the stage to be scanned with one Cartographer's Ring? (Default: 20%)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the base chance for the stage to be scanned with one Cartographer's Ring? (Value: Direct Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float CartographerRing_ScanChance { get; private set; } = 20f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is that chance for additional Cartographer's Ring for stage to scan? (Default: +10% per stack)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is that chance for additional Cartographer's Ring for stage to scan? (Value: Direct Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float CartographerRing_ScanChanceStack { get; private set; } = 10f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How long should the scan last in seconds? (Default: 0- Practically Infinite.)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How long should the scan last in seconds? (Setting it to zero automatically sets it to 27 hours)", AutoConfigFlags.PreventNetMismatch)]
         public float CartographerRing_ScanDuration { get; private set; } = 0f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Should the Cartographer's Ring continue to pulse scans after the stage starts? (Default: false)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Should the Cartographer's Ring continue to pulse scans after the stage starts?", AutoConfigFlags.PreventNetMismatch)]
         public bool CartographerRing_KeepScanningPastStart { get; private set; } = false;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Should the scanners be destroyed upon starting the teleporter? (Default: false)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Should the scanners be destroyed upon starting the teleporter?", AutoConfigFlags.PreventNetMismatch)]
         public bool CartographerRing_DestroyOnTeleporterStart { get; private set; } = false;
 
         public override string displayName => "Cartographer's Ring";

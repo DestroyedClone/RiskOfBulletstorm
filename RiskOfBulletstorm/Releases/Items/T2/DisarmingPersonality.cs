@@ -9,15 +9,15 @@ namespace RiskOfBulletstorm.Items
 {
     public class DisarmingPersonality : Item_V2<DisarmingPersonality>
     {
-        [AutoConfig("What is the base cost reduction of one Disarming Personality? (Default 0.1 = 10%)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the base cost reduction of one Disarming Personality? (Value: Subtractive Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float DisarmingPersonality_CostReductionAmount { get; private set; } = 0.1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the cost reduction per stack? (Default 0.05 = 5%)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the cost reduction per stack? (Value: Subtractive Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float DisarmingPersonality_CostReductionAmountStack { get; private set; } = 0.05f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the maximum cost reduction? This limit is hyperbolic. (Default 0.6 = 60%)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the maximum cost reduction? This limit is hyperbolic. (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float DisarmingPersonality_CostReductionAmountLimit { get; private set; } = 0.6f;
 
         public override string displayName => "Disarming Personality";

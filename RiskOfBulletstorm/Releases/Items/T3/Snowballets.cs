@@ -18,19 +18,19 @@ namespace RiskOfBulletstorm.Items
     public class Snowballets : Item_V2<Snowballets>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Per how many meters should Snowballets affect the projectile? (Default: 20m)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Per how many meters should Snowballets affect the projectile?", AutoConfigFlags.PreventNetMismatch)]
         public static float Snowballets_BaseMeters { get; private set; } = 20f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How many meters is the requirement reduced by per item stack? (Default: 1m reduction)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How many meters is the requirement reduced by per item stack?", AutoConfigFlags.PreventNetMismatch)]
         public static float Snowballets_StackMeters { get; private set; } = 1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How much should the projectile resize per meter amount? (Default: +0.1 = 10% size)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How much should the projectile resize per meter amount? (Value: Additive Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public static float Snowballets_SizeMultiplier { get; private set; } = 0.1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How much damage should the projectile deal per meter amount? (Default: 0.1 = 10% damage)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How much damage should the projectile deal per meter amount? (Value: Additive Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public static float Snowballets_DamageMultiplier { get; private set; } = 0.1f;
         public override string displayName => "Snowballets";
         public override ItemTier itemTier => ItemTier.Tier3;

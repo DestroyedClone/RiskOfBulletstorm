@@ -11,10 +11,10 @@ namespace RiskOfBulletstorm.Items
     public class Scope : Item_V2<Scope> 
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How much should one Scope reduce spread? (Default: 10%)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How much should one Scope reduce spread? (Value: Subtractive Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public static float Scope_SpreadReduction { get; private set; } = 0.10f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How much should each Scope reduce spread by per stack? (Default: 5%)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How much should each Scope reduce spread by per stack? (Value: Subtractive Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public static float Scope_SpreadReductionStack { get; private set; } = 0.05f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("If enabled, Scope will affect the Disposable Missile Launcher." +
@@ -22,7 +22,7 @@ namespace RiskOfBulletstorm.Items
         public static bool Scope_EnableDML { get; private set; } = true;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("If enabled, Scope will only tighten the spread of specific projectiles." +
-            "\nIt is HIGHLY recommended not to disable, because alot of projectiles will break otherwise.", AutoConfigFlags.PreventNetMismatch)]
+            "\nIt is HIGHLY recommended not to disable, because alot of projectiles could break otherwise.", AutoConfigFlags.PreventNetMismatch)]
         public static bool Scope_WhitelistProjectiles { get; private set; } = true;
         public override string displayName => "Scope";
         public override ItemTier itemTier => ItemTier.Tier2;

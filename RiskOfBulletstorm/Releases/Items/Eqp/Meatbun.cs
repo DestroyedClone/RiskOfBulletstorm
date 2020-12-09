@@ -9,22 +9,22 @@ namespace RiskOfBulletstorm.Items
     public class Meatbun : Equipment_V2<Meatbun>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What percent of maximum health should the Meatbun heal? (Default: 33% of max health)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What percent of maximum health should the Meatbun heal? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float Meatbun_HealAmount { get; private set; } = 0.33f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How much should the damage be increased by after using the Meatbun? (Default: 0.1 = +10% damage)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How much should the damage be increased by after using the Meatbun? (Value: Additive Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float Meatbun_DamageBonus { get; private set; } = 0.1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the max amount of buffs that Meatbun can give? (Default: 5 stack)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the max amount of buffs that Meatbun can give?", AutoConfigFlags.PreventNetMismatch)]
         public int Meatbun_BuffLimit { get; private set; } = 5;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the minimum percentage of health lost from a single hit to remove the buffs? (Default: 0.05 = 5% health loss)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the minimum percentage of health lost from a single hit to remove the buffs? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float Meatbun_HealthThreshold { get; private set; } = 0.05f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the cooldown in seconds? (Default: 90 seconds)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the cooldown in seconds?", AutoConfigFlags.PreventNetMismatch)]
         public override float cooldown { get; protected set; } = 90f;
 
         public override string displayName => "Meatbun";

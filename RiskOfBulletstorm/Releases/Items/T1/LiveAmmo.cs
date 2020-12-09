@@ -18,21 +18,21 @@ namespace RiskOfBulletstorm.Items
     public class LiveAmmo : Item_V2<LiveAmmo>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How much damage should the explosion deal? (Default: 1.0 = +100% damage)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How much damage should the explosion deal? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float LiveAmmo_DamageDealt { get; private set; } = 1f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How much damage should the explosion deal per item stack? (Default: 0.5 = +50% damage)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How much damage should the explosion deal per item stack? (Value: Additive Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float LiveAmmo_DamageDealtStack { get; private set; } = 0.5f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How much force should the explosion propel? (Default: 50.0)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How much force should the explosion propel?", AutoConfigFlags.PreventNetMismatch)]
         public float LiveAmmo_ForceCoefficient { get; private set; } = 50f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How much force should the explosion propel per item stack? (Default: 25)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How much force should the explosion propel per item stack?", AutoConfigFlags.PreventNetMismatch)]
         public float LiveAmmo_ForceCoefficientStack { get; private set; } = 25f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the radius of the explosion? (Default: 8m)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the radius of the explosion in meters?", AutoConfigFlags.PreventNetMismatch)]
         public float LiveAmmo_Radius { get; private set; } = 8f;
         public override string displayName => "Live Ammo";
         public override ItemTier itemTier => ItemTier.Tier2;

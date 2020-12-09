@@ -9,19 +9,19 @@ namespace RiskOfBulletstorm.Items
     public class TrustyLockpicks : Equipment_V2<TrustyLockpicks>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the chance that Trusty Lockpicks will unlock the chest? (Default: 50% chance)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the chance that Trusty Lockpicks will unlock the chest? (Value: Direct Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float TrustyLockpicks_UnlockChance { get; private set; } = 50f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How much will the price by multiplied by if you fail the unlock? (Default: 200% multiplier)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How much will the price by multiplied by if you fail the unlock? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float TrustyLockpicks_PriceHike { get; private set; } = 2.0f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Should the Trusty Lockpicks break the lock instead? This prevents it from opening. (Default: false)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Should the Trusty Lockpicks break the lock instead? This prevents it from opening.", AutoConfigFlags.PreventNetMismatch)]
         public bool TrustyLockpicks_KillChest { get; private set; } = false;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the cooldown in seconds? (Default: 60 seconds)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the cooldown in seconds?", AutoConfigFlags.PreventNetMismatch)]
         public override float cooldown { get; protected set; } = 60f;
 
         public override string displayName => "Trusty Lockpicks";

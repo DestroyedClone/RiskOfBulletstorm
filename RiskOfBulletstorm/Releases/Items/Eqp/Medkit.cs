@@ -7,15 +7,15 @@ namespace RiskOfBulletstorm.Items
     public class Medkit : Equipment_V2<Medkit>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What percent of maximum health should the Medkit heal? (Default: 75% of max health)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What percent of maximum health should the Medkit heal? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float Medkit_HealAmount { get; private set; } = 0.75f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What percent of barrier should the Meatbun give? (Default: 50% of max health)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What percent of barrier should the Meatbun give? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float Medkit_BarrierAmount { get; private set; } = 0.5f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the cooldown in seconds? (Default: 100 seconds)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the cooldown in seconds?", AutoConfigFlags.PreventNetMismatch)]
         public override float cooldown { get; protected set; } = 100f;
 
         public override string displayName => "Medkit";

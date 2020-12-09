@@ -11,11 +11,11 @@ namespace RiskOfBulletstorm.Items
     public class Mustache : Item_V2<Mustache>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the percentage of max health to heal per stack? (Default: 0.10 = 10%)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the percentage of max health to heal per stack? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float Mustache_HealAmount { get; private set; } = 0.10f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Should it heal upon using a bloodshrine? (Default: false)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Should it heal upon using a bloodshrine?", AutoConfigFlags.PreventNetMismatch)]
         public bool Mustache_BloodShrine { get; private set; } = false;
 
         public override string displayName => "Mustache";

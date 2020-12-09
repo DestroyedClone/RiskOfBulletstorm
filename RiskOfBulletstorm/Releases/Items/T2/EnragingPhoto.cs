@@ -11,19 +11,19 @@ namespace RiskOfBulletstorm.Items
     public class EnragingPhoto : Item_V2<EnragingPhoto>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How many seconds should Enraging Photo's buff last with a single stack? (Default: 1 (seconds))", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How many seconds should Enraging Photo's buff last with a single stack?", AutoConfigFlags.PreventNetMismatch)]
         public float EnragingPhoto_BaseDuration { get; private set; } = 1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How many additional seconds of buff should each Enraging Photo after the first give? (Default: 0.25 (seconds))", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How many additional seconds of buff should each Enraging Photo after the first give? ", AutoConfigFlags.PreventNetMismatch)]
         public float EnragingPhoto_StackDuration { get; private set; } = 0.25f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What percent of health lost should activate the Enraging Photo's damage bonus? (Default: 0.11 = 11%)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What percent of health lost should activate the Enraging Photo's damage bonus? (Value: Percentage", AutoConfigFlags.PreventNetMismatch)]
         public float EnragingPhoto_HealthThreshold { get; private set; } = 0.11f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How much should your damage be increased when Enraging Photo activates? (Default: 1.00 (+100% damage))", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How much should your damage be increased when Enraging Photo activates? (Value: Additive Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float EnragingPhoto_DmgBoost { get; private set; } = 1.00f;
         
         //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]

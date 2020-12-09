@@ -13,11 +13,11 @@ namespace RiskOfBulletstorm.Items
     public class Bomb : Equipment_V2<Bomb>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How much damage should the Bomb deal upon explosion? (Default: 1.0 = 100% damage)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How much damage should the Bomb deal upon explosion? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float Bomb_DamageDealt { get; private set; } = 1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the cooldown in seconds? (Default: 14.00 seconds)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the cooldown in seconds?", AutoConfigFlags.PreventNetMismatch)]
         public override float cooldown { get; protected set; } = 14.00f;
 
         public override string displayName => "Bomb";

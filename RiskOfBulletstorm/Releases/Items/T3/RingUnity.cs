@@ -10,13 +10,13 @@ namespace RiskOfBulletstorm.Items
     public class Unity : Item_V2<Unity>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("By how much will your base damage increase with a single Unity? (Default: +0.1)" +
+        [AutoConfig("By how much will your base damage increase with a single Unity?" +
             "\nKeep in mind that this number is MULTIPLIED by the amount of TOTAL items.",
             AutoConfigFlags.PreventNetMismatch)]
         public float RingUnity_DamageBonus { get; private set; } = 0.1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("By how much will your base damage increase on subsequent stacks (Default: +0.01)" +
+        [AutoConfig("By how much will your base damage increase on subsequent stacks?" +
             "\nKeep in mind that this number is MULTIPLIED by the amount of TOTAL items.", AutoConfigFlags.PreventNetMismatch)]
         public float RingUnity_DamageBonusStack { get; private set; } = 0.01f;
         public override string displayName => "Unity";

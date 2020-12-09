@@ -13,7 +13,7 @@ namespace RiskOfBulletstorm.Items
     public class Molotov : Equipment_V2<Molotov>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How much damage should the Molotov's area of effect deal? (Default: 0.1 = 10% damage)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How much damage should the Molotov's area of effect deal? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public static float Molotov_Damage { get; private set; } = 0.1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
@@ -22,15 +22,15 @@ namespace RiskOfBulletstorm.Items
         public static float Molotov_Frequency { get; private set; } = 60f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How long should the Molotov's area of effect last?? (Default: 8 seconds)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How long should the Molotov's area of effect last?", AutoConfigFlags.PreventNetMismatch)]
         public float Molotov_Duration { get; private set; } = 8f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("[ClassicItems Support] Beating Embryo: What is the damage multiplier if it procs? (Default: 200% damage multiplier)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("[ClassicItems Support] Beating Embryo: What is the damage multiplier if it procs? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float Molotov_BeatingEmbryo { get; private set; } = 2.0f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the cooldown in seconds? (Default: 35 seconds)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the cooldown in seconds?", AutoConfigFlags.PreventNetMismatch)]
         public override float cooldown { get; protected set; } = 35f;
 
         public override string displayName => "Molotov";

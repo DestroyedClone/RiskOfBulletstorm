@@ -18,7 +18,7 @@ namespace RiskOfBulletstorm.Items
     public class GungeonBuffController : Item_V2<GungeonBuffController>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("CHARM: Should Bosses (including Umbras) get charmed? (Default: false)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("CHARM: Should Bosses (including Umbras) get charmed?", AutoConfigFlags.PreventNetMismatch)]
         public bool Config_Charm_Boss { get; private set; } = false;
 
         public override string displayName => "GungeonBuffController";

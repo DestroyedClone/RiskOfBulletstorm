@@ -11,7 +11,7 @@ namespace RiskOfBulletstorm.Items
 	public class RollBomb : Item_V2<RollBomb>
 	{
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How many damage should Roll Bomb deal? (Default: 1.0 = 100% damage)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How many damage should Roll Bomb deal? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float RollBomb_Damage { get; private set; } = 1.0f;
 
         public override string displayName => "Roll Bomb";

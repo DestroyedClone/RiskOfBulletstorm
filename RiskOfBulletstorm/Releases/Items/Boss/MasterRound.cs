@@ -13,25 +13,25 @@ namespace RiskOfBulletstorm.Items
     public class MasterRoundNth : Item_V2<MasterRoundNth>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How much maximum health is increased per Master Round? (Default: +150)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How much maximum health is increased per Master Round?", AutoConfigFlags.PreventNetMismatch)]
         public int MasterRound_MaxHealthAdd { get; private set; } = 150;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How many hits are allowed to be taken per player before invalidating the spawn? (Default: 3 hits)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How many hits are allowed to be taken per player before invalidating the spawn? (Value: Max Hits)", AutoConfigFlags.PreventNetMismatch)]
         public static int MasterRound_AllowedHits { get; private set; } = 3;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How many hits will your allowed hits increase by per stage? (Default: +1 max hit per stage)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How many hits will your allowed hits increase by per stage? (Value: Max Hits * Stage)", AutoConfigFlags.PreventNetMismatch)]
         public static int MasterRound_AllowedHitsPerStage { get; private set; } = 1;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the minimum damage required from a hit before counting? (Default: 5 damage)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the minimum damage required from a hit before counting?", AutoConfigFlags.PreventNetMismatch)]
         public int MasterRound_MinimumDamage { get; private set; } = 5;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Should the player's own damage count as a hit? (Default: false)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Should the player's own damage count as a hit?", AutoConfigFlags.PreventNetMismatch)]
         public bool MasterRound_AllowSelfDamage { get; private set; } = false;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Should the maximum amount of hits allowed be printed in chat on teleporter start? (Default: true)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Should the maximum amount of hits allowed be printed in chat on teleporter start?", AutoConfigFlags.PreventNetMismatch)]
         public bool MasterRound_AnnounceMax { get; private set; } = true;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Should the chat say who gets hit in chat? (Default: false)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Should the chat say who gets hit in chat?", AutoConfigFlags.PreventNetMismatch)]
         public bool MasterRound_ShowHitInChat { get; private set; } = false;
 
         public override string displayName => "Master Round";

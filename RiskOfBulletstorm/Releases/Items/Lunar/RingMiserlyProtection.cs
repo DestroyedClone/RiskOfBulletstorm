@@ -12,11 +12,11 @@ namespace RiskOfBulletstorm.Items
     public class RingMiserlyProtection : Item_V2<RingMiserlyProtection> //switch to a buff system due to broken
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How much maximum health is multiplied by per Ring of Miserly Protection? (Default: +100%)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How much maximum health is multiplied by per Ring of Miserly Protection? (Value: Additive Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float RingMiserlyProtection_HealthBonus { get; private set; } = 1.0f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How much additional maximum health is multiplied by per subsequent stacks of Ring of Miserly Protection? (Default: +50%)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How much additional maximum health is multiplied by per subsequent stacks of Ring of Miserly Protection? (Value: Additive Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float RingMiserlyProtection_HealthBonusStack { get; private set; } = 0.5f;
         public override string displayName => "Ring of Miserly Protection";
         public override ItemTier itemTier => ItemTier.Lunar;

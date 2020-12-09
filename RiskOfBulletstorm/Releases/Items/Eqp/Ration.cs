@@ -7,11 +7,11 @@ namespace RiskOfBulletstorm.Items
     public class Ration : Equipment_V2<Ration>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What percent of maximum health should the Ration heal? ? (Default: 0.4 = 40% of max health)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What percent of maximum health should the Ration heal? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float Ration_HealAmount { get; private set; } = 0.4f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Should the Ration be consumed to save the holder from death? (Default: true)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Should the Ration be consumed to save the holder from death?", AutoConfigFlags.PreventNetMismatch)]
         public bool Ration_SaveFromDeath { get; private set; } = true;
 
         public override float cooldown { get; protected set; } = 0f;

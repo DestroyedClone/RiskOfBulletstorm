@@ -10,15 +10,15 @@ namespace RiskOfBulletstorm.Items
     public class CharmHorn : Equipment_V2<CharmHorn>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the radius to charm enemies? (Default: 20m)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the radius to charm enemies? (Value: Meters)", AutoConfigFlags.PreventNetMismatch)]
         public float CharmHorn_Radius { get; private set; } = 20f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the duration of charmed enemies? (Default: 10 seconds)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the duration enemies are charmed?", AutoConfigFlags.PreventNetMismatch)]
         public float CharmHorn_Duration { get; private set; } = 10f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the cooldown in seconds? (Default: 85.00 seconds)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the cooldown in seconds?", AutoConfigFlags.PreventNetMismatch)]
         public override float cooldown { get; protected set; } = 85.00f;
 
         public override string displayName => "Charm Horn";

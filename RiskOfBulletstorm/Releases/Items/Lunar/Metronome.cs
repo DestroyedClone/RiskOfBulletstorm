@@ -13,19 +13,19 @@ namespace RiskOfBulletstorm.Items
     public class Metronome : Item_V2<Metronome>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What are the maximum amount of kills that can be counted by the Metronome? (Default: 75 kills)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What are the maximum amount of kills that can be counted by the Metronome?", AutoConfigFlags.PreventNetMismatch)]
         public static int Metronome_MaxKills { get; private set; } = 75;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How many additional kills can be counted by the Metronome per stack? (Default: 25)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How many additional max kills can be counted by the Metronome per stack?", AutoConfigFlags.PreventNetMismatch)]
         public static int Metronome_MaxKillsStack { get; private set; } = 25;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How many kills are lost upon using a different ability? (Default: 25)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How many kills are lost upon using a different ability?", AutoConfigFlags.PreventNetMismatch)]
         public static int Metronome_KillsLost { get; private set; } = 25;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the damage multiplier per kill for the metronome? (Default: 0.02 = 2% damage multiplier)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the damage multiplier per kill for the metronome? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public static float Metronome_DmgCoeff { get; private set; } = 0.02f;
 
         //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]

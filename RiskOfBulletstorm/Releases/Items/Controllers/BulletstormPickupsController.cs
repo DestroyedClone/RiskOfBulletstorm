@@ -9,16 +9,13 @@ namespace RiskOfBulletstorm.Items
     public class BulletstormPickupsController : Item_V2<BulletstormPickupsController>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Enable Pickups?", AutoConfigFlags.PreventNetMismatch)]
-        public bool BUP_Enable { get; private set; } = true;
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("RequiredKills = 35", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the base amount of kills required to roll a pickup spawn?", AutoConfigFlags.PreventNetMismatch)]
         public int BUP_RequiredKills { get; private set; } = 35;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Multiplier per stage count = 2.00x", AutoConfigFlags.PreventNetMismatch)]
-        public float BUP_StageMultiplier { get; private set; } = 2f;
+        [AutoConfig("What value should the required kills be multiplied by per stage?", AutoConfigFlags.PreventNetMismatch)]
+        public float BUP_StageMultiplier { get; private set; } = 1.5f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Chance to create a pickup upon stage start. Default: 30%", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the chance to create a pickup after reaching the required amount? (Value: Direct Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float BUP_RollChance { get; private set; } = 30f;
         public override string displayName => "BulletstormPickupsController";
         public override ItemTier itemTier => ItemTier.NoTier;
@@ -80,7 +77,7 @@ namespace RiskOfBulletstorm.Items
 
 
             var stageCount = Run.instance.stageClearCount;
-            var StageMult = BUP_StageMultiplier * stageCount;
+            var StageMult = (int)(BUP_StageMultiplier * stageCount);
             if (stageCount < 1) StageMult = 1;
             var requiredKills = BUP_RequiredKills * StageMult;
 

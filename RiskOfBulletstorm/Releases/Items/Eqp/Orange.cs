@@ -7,8 +7,8 @@ namespace RiskOfBulletstorm.Items
     public class Orange : Equipment_V2<Orange>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the chance modifier for the Orange to spawn? (Default: 80.00% chance to spawn)" +
-            "\nWhen it is chosen by the game, it does a roll. By default, it has a 80% not to get rerolled.", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the chance for the Orange to spawn? (Default: 80.00% chance to spawn)" +
+            "\n((When it is chosen by the game, it does a roll. By default, it has a 80% not to get rerolled.))", AutoConfigFlags.PreventNetMismatch)]
         public float Orange_Rarity { get; private set; } = 80.00f;
 
         public override string displayName => "Orange";

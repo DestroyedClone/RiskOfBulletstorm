@@ -11,7 +11,7 @@ namespace RiskOfBulletstorm.Items
     public class Blank : Item_V2<Blank>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What Keyboard button should activate the Blank? (Default: T)", AutoConfigFlags.None)]
+        [AutoConfig("What Keyboard button should activate the Blank?", AutoConfigFlags.None)]
         public KeyCode BlankButton { get; private set; } = KeyCode.T;
         //https://docs.unity3d.com/ScriptReference/KeyCode.html
 
@@ -20,19 +20,19 @@ namespace RiskOfBulletstorm.Items
         public string BlankButtonGamepad { get; private set; } = "T";
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the cooldown for activating a Blank? (Default: 3 seconds)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the cooldown for activating a Blank?", AutoConfigFlags.PreventNetMismatch)]
         public float ConfigBlankCooldown { get; private set; } = 3f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How much damage should Blanks deal to nearby enemies? (Default: 1 = 100% damage)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How much damage should Blanks deal to nearby enemies? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float Blank_DamageDealt { get; private set; } = 1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the radius that Blanks deal damage when activated? (Default: 10.0 meters)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the radius in meters that Blanks deal damage when activated?", AutoConfigFlags.PreventNetMismatch)]
         public float BlankRadius { get; private set; } = 10f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the radius that Blanks will clear projectiles? Set to '0' to disable, or '-1' for infinite range (Default: -1)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the radius in meters that Blanks will clear projectiles? (Set to '0' to disable, or '-1' for infinite range)", AutoConfigFlags.PreventNetMismatch)]
         public float BlankClearRadius { get; private set; } = -1f;
 
 
