@@ -38,7 +38,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetPickupString(string langID = null) => "Items == Guns\nSummons bullets on active item use.";
 
         protected override string GetDescString(string langid = null) => $"Using your <style=cIsDamage>equipment</style> fires your firstmost combat skill " +
-            $"{RingTriggers_FireAmount} times within {RingTriggers_Radius} degrees for ";
+            $"{RingTriggers_FireAmount} times within {RingTriggers_Radius} degrees for {RingTriggers_Duration} seconds +{RingTriggers_DurationStack} per stack";
 
         protected override string GetLoreString(string langID = null) => "This ring bestows upon its bearer the now obvious knowledge that within the walls of the Gungeon all items are actually guns in strange, distorted form. An artifact of the Order's belief in transgunstantiation.";
 
@@ -70,18 +70,22 @@ namespace RiskOfBulletstorm.Items
         {
             if (NetworkServer.active)
             {
+                Debug.Log("Ring of Triggers: Entered execute");
                 var characterBody = self.characterBody;
                 if (characterBody)
                 {
+                    Debug.Log("Ring of Triggers: Entered cb");
                     var inputBank = characterBody.inputBank;
                     if (inputBank)
                     {
+                        Debug.Log("Ring of Triggers: Entered bank");
                         var skill1 = inputBank.skill1;
                         var wasPressed = skill1.down;
                         var lastDirection = inputBank.aimDirection;
                         var segment = RingTriggers_Radius / Mathf.Max(RingTriggers_FireAmount,1);
                         for (int i = 0; i < RingTriggers_FireAmount; i++)
                         {
+                            Debug.Log("Ring of Triggers: fire");
                             skill1.PushState(true);
                             inputBank.aimDirection = new Vector3(inputBank.aimDirection.x, segment*(i+1), inputBank.aimDirection.y);
                         }
