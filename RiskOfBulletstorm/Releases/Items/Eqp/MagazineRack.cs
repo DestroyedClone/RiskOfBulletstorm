@@ -90,7 +90,10 @@ namespace RiskOfBulletstorm.Items
             {
                 var gameObject = obj.gameObject;
                 if (gameObject)
+                {
                     gameObject.AddComponent<Bulletstorm_MagazineTracker>();
+                    Debug.Log("gave tracker");
+                }
             }
         }
 
@@ -111,12 +114,19 @@ namespace RiskOfBulletstorm.Items
                 var MagazineTracker = body.GetComponent<Bulletstorm_MagazineTracker>();
                 if (MagazineTracker && MagazineTracker.instances.Count < MagazineRack_MaxObjectsPerPerson)
                 {
+                    Debug.Log("1");
                     GameObject gameObject = UnityEngine.Object.Instantiate(wardObject, body.transform.position, Quaternion.identity);
+                    Debug.Log("2");
                     gameObject.GetComponent<TeamFilter>().teamIndex = body.teamComponent.teamIndex;
+                    Debug.Log("3");
                     gameObject.GetComponent<BuffWard>().Networkradius *= embryoProc ? 1.5f : 1f;
+                    Debug.Log("4");
                     gameObject.GetComponent<BuffWard>().expireDuration *= embryoProc ? 1.2f: 1f;
+                    Debug.Log("5");
                     body.GetComponent<Bulletstorm_MagazineTracker>().instances.Add(gameObject);
+                    Debug.Log("6");
                     gameObject.GetComponent<Bulletstorm_MagazineKiller>().characterBody = body;
+                    Debug.Log("7");
                     NetworkServer.Spawn(gameObject);
                     return true;
                 }
