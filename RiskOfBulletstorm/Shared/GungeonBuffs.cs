@@ -176,7 +176,7 @@ namespace RiskOfBulletstorm.Items
                 self.enemySearch.teamMaskFilter = TeamMask.allButNeutral;
                 self.enemySearch.teamMaskFilter.RemoveTeam(isCharmed.GetOppositeTeamIndex(isCharmed.GetOldTeam()));
                 self.enemySearch.sortMode = BullseyeSearch.SortMode.Distance;
-                self.enemySearch.minDistanceFilter = 0f;
+                self.enemySearch.minDistanceFilter = self.body.radius;
                 self.enemySearch.maxDistanceFilter = maxDistance;
                 self.enemySearch.searchOrigin = self.bodyInputBank.aimOrigin;
                 self.enemySearch.searchDirection = self.bodyInputBank.aimDirection;
@@ -307,8 +307,18 @@ namespace RiskOfBulletstorm.Items
             void OnEnable()
             {
                 characterBody = gameObject.GetComponent<CharacterBody>();
+                if (!characterBody)
+                {
+                    enabled = false;
+                    return;
+                }
                 teamComponent = characterBody.teamComponent;
                 baseAI = characterBody.master.GetComponent<BaseAI>();
+                if (!baseAI || characterBody.isPlayerControlled)
+                {
+                    enabled = false;
+                    return;
+                }
 
                 if (characterBody.GetBuffCount(Charm) <= 0)
                     characterBody.AddBuff(Charm);
