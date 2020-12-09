@@ -180,13 +180,23 @@ namespace RiskOfBulletstorm.Items
         }
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Engine")]
         private class BarrelDestroyOnInteraction : MonoBehaviour
         {
             public float lifetime = 16;
             public float uselifetime = 4;
             public bool used = false;
 
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
+            private void OnEnable()
+            {
+                RaycastHit raycastHit;
+                if (Physics.Raycast(base.transform.position, Vector3.down, out raycastHit, 500f, LayerIndex.world.mask))
+                {
+                    base.transform.position = raycastHit.point;
+                    base.transform.up = raycastHit.normal;
+                }
+            }
+
             private void FixedUpdate()
             {
                 if (used) //shorten the lifetime to the use time.
