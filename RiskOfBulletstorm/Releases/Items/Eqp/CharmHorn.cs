@@ -1,14 +1,9 @@
-﻿
-using EntityStates.Engi.EngiWeapon;
+﻿using EntityStates.Engi.EngiWeapon;
 using R2API;
 using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
 using TILER2;
-using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using UnityEngine.Events;
 
 namespace RiskOfBulletstorm.Items
 {
