@@ -57,13 +57,8 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             On.RoR2.PurchaseInteraction.Awake += LowerCosts;
-            //On.RoR2.ChestBehavior.Awake += LowerChestCosts;
         }
 
-        //private void LowerChestCosts(On.RoR2.ChestBehavior.orig_Awake orig, ChestBehavior self)
-        //{
-        //    throw new System.NotImplementedException();
-        //}
 
         public override void Uninstall()
         {
@@ -78,12 +73,12 @@ namespace RiskOfBulletstorm.Items
 
             if (chest)
             {
+                Debug.Log("Disarm: Invcount = "+InventoryCount);
                 if (InventoryCount > 0)
                 {
                     //var ResultMultUnclamp = 1 - DisarmingPersonality_CostReductionAmount + DisarmingPersonality_CostReductionAmountStack * (InventoryCount - 1);
                     //var ResultMult = Mathf.Max(ResultMultUnclamp, 0);
                         //credit to harb
-
                     var ResultMult = (DisarmingPersonality_CostReductionAmount + (1 - DisarmingPersonality_CostReductionAmount) * (1 - (DisarmingPersonality_CostReductionAmountLimit / Mathf.Pow(InventoryCount + DisarmingPersonality_CostReductionAmountLimit, DisarmingPersonality_CostReductionAmountStack))));
                     var ResultAmt = (int)Mathf.Ceil(self.cost * ResultMult);
                     Chat.AddMessage("Cost of chest reduced from" + self.cost + " to " + ResultAmt + " with multiplier "+ResultMult);
