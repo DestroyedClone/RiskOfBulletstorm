@@ -62,7 +62,7 @@ namespace RiskOfBulletstorm.Items
             return orig(self);
         }
 
-        private DamageType ShockRoll(GameObject owner, DamageType baseDamageType)
+        private DamageType ShockRoll(GameObject owner, DamageType baseDamageType, float procCoefficient = 1)
         {
             if (owner && owner.GetComponent<CharacterBody>() && owner.GetComponent<CharacterBody>().inventory)
             {
