@@ -51,7 +51,6 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "Who needs bullets when can BECOME a bullet?";
 
-        private readonly BlastAttack blastAttack = new BlastAttack { };
 
         public override void SetupBehavior()
         {
@@ -90,16 +89,18 @@ namespace RiskOfBulletstorm.Items
                 {
                     if (self.characterBody.skillLocator.utility.Equals(self))
                     {
-                        blastAttack.attacker = vGameObject;
-                        blastAttack.baseDamage = vBody.baseDamage * (LiveAmmo_DamageDealt + LiveAmmo_DamageDealtStack * (invCount - 1));
-                        blastAttack.crit = vBody.RollCrit();
-                        blastAttack.damageColorIndex = DamageColorIndex.Default;
-                        blastAttack.teamIndex = vBody.teamComponent.teamIndex;
-                        blastAttack.radius = LiveAmmo_Radius;
-                        blastAttack.Fire();
+                        new BlastAttack
+                        {
+                            attacker = vGameObject,
+                            baseDamage = vBody.baseDamage * (LiveAmmo_DamageDealt + LiveAmmo_DamageDealtStack * (invCount - 1)),
+                            crit = vBody.RollCrit(),
+                            damageColorIndex = DamageColorIndex.Default,
+                            teamIndex = vBody.teamComponent.teamIndex,
+                            radius = LiveAmmo_Radius
+                        }.Fire();
 
                         if (vBody.inputBank)
-                            vBody.characterMotor.moveDirection = vBody.inputBank.aimDirection * (LiveAmmo_ForceCoefficient + LiveAmmo_ForceCoefficientStack * (invCount - 1));
+                            vBody.characterMotor.velocity += vBody.inputBank.aimDirection * (LiveAmmo_ForceCoefficient + LiveAmmo_ForceCoefficientStack * (invCount - 1));
                     }
                 }
             }
