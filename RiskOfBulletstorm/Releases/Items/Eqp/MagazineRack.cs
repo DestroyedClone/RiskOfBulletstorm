@@ -10,16 +10,12 @@ namespace RiskOfBulletstorm.Items
     public class MagazineRack : Equipment_V2<MagazineRack>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the radius of the Magazine Rack's zone? (Default: 10.0 meters)", AutoConfigFlags.PreventNetMismatch)]
-        public float MagazineRack_Radius { get; private set; } = 10f;
+        [AutoConfig("What is the radius of the Magazine Rack's zone? (Default: 5.0 meters)", AutoConfigFlags.PreventNetMismatch)]
+        public float MagazineRack_Radius { get; private set; } = 5f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the duration of the Magazine Rack's zone? (Default: 7.00 seconds)", AutoConfigFlags.PreventNetMismatch)]
-        public float MagazineRack_Duration { get; private set; } = 7.00f;
-
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the max amount of Magazine Racks that can be spawned per person? (Default: 1 per person)", AutoConfigFlags.PreventNetMismatch)]
-        public int MagazineRack_MaxObjectsPerPerson { get; private set; } = 1;
+        [AutoConfig("What is the duration of the Magazine Rack's zone? (Default: 5.00 seconds)", AutoConfigFlags.PreventNetMismatch)]
+        public float MagazineRack_Duration { get; private set; } = 5.00f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the cooldown in seconds? (Default: 90 seconds)", AutoConfigFlags.PreventNetMismatch)]
@@ -34,7 +30,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetDescString(string langid = null)
         {
             var desc = $"Place to create a zone of infinite ammo within a radius of {MagazineRack_Radius} meters";
-            desc += $"that lasts {MagazineRack_Duration} seconds. Up to {MagazineRack_MaxObjectsPerPerson} racks out per person.";
+            desc += $"that lasts {MagazineRack_Duration} seconds.";
             return desc;
         }
 

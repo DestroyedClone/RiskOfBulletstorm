@@ -52,8 +52,6 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "Who needs bullets when can BECOME a bullet?";
 
-        readonly GameObject iceWall = PrepWall.projectilePrefab;
-
 
         public override void SetupBehavior()
         {
@@ -80,7 +78,6 @@ namespace RiskOfBulletstorm.Items
             if (prefab.name == PrepWall.projectilePrefab.name && characterBody)
             {
                 FireAmmo(characterBody, true);
-                Chat.AddMessage("Fired");
             }
             orig(self, prefab, position, rotation, owner, damage, force, crit, damageColorIndex, target, speedOverride);
         }

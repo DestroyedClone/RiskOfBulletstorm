@@ -18,8 +18,8 @@ namespace RiskOfBulletstorm.Items
         public static float PortableTableDevice_UseLifetime { get; private set; } = 4f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How many barrels should be allowed to spawn per person? (Default: 15, set to -1 for infinite)", AutoConfigFlags.PreventNetMismatch)]
-        public static int PortableTableDevice_MaxBarrels { get; private set; } = 15;
+        [AutoConfig("How many barrels should be allowed in the world? (Default: 100, set to -1 for infinite)", AutoConfigFlags.PreventNetMismatch)]
+        public static int PortableTableDevice_MaxBarrels { get; private set; } = 100;
 
         public override string displayName => "Portable Barrel Device";
 
@@ -62,7 +62,7 @@ namespace RiskOfBulletstorm.Items
                     if (PortableTableDevice_MaxBarrels == 1) desc += $"a single barrel";
                     else if (PortableTableDevice_MaxBarrels > 1) desc += $"{PortableTableDevice_MaxBarrels} barrels";
                 }
-                desc += $" can be placed by each person.";
+                desc += $" can be placed in the world.";
             }
             else return $"Unsuccesfully attempts to place a barrel.";
             return desc;
@@ -139,17 +139,10 @@ namespace RiskOfBulletstorm.Items
             }
         }
 
-        private void GiveComponent(GameObject gameObject)
-        {
-            if (!gameObject.GetComponent<BulletstormBarrelTracker>())
-                gameObject.AddComponent<BulletstormBarrelTracker>();
-        }
-
         protected override bool PerformEquipmentAction(EquipmentSlot slot)
         {
             CharacterBody body = slot.characterBody;
             if (!body) return false;
-            GiveComponent(body.gameObject);
 
             if (PlaceTable(body))
             {
@@ -166,10 +159,8 @@ namespace RiskOfBulletstorm.Items
 
         private bool PlaceTable(CharacterBody characterBody)
         {
-            var tracker = characterBody.gameObject.GetComponent<BulletstormBarrelTracker>();
-            if (!tracker) return false;
-            var trackerbarrels = tracker.barrels;
-            var barrelAmt = trackerbarrels.Count;
+            var barrels = UnityEngine.Object.FindObjectsOfType<BarrelDestroyOnInteraction>();
+            var barrelAmt = barrels.Length;
             var maxBarrels = PortableTableDevice_MaxBarrels;
 
             bool success = false;
@@ -186,14 +177,6 @@ namespace RiskOfBulletstorm.Items
                     iscBarrelNew, placementRule, RoR2Application.rng));
                 success = spawnBarrel.success;
 
-                if (spawnBarrel.success)
-                {
-                    var spawnedInstance = spawnBarrel.spawnedInstance;
-                    var postComponent = spawnedInstance.GetComponent<BarrelDestroyOnInteraction>();
-                    postComponent.owner = characterBody;
-
-                    trackerbarrels.Add(spawnedInstance);
-                }
             }
             return success;
         }
@@ -204,7 +187,6 @@ namespace RiskOfBulletstorm.Items
             public float lifetime = 16;
             public float uselifetime = 4;
             public bool used = false;
-            public CharacterBody owner;
 
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
             private void FixedUpdate()
@@ -219,20 +201,9 @@ namespace RiskOfBulletstorm.Items
                 lifetime -= Time.fixedDeltaTime;
                 if (lifetime <= 0f)
                 {
-                    if (owner)
-                    {
-                        var tracker = owner.gameObject.GetComponent<BulletstormBarrelTracker>();
-                        if (tracker)
-                            tracker.barrels.Remove(gameObject);
-                    }
                     Destroy(gameObject);
                 }
             }
-        }
-
-        private class BulletstormBarrelTracker : MonoBehaviour
-        {
-            public List<GameObject> barrels;
         }
     }
 }
