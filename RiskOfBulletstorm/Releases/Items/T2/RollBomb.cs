@@ -65,6 +65,8 @@ namespace RiskOfBulletstorm.Items
         {
             var invCount = GetCount(self.characterBody);
             CharacterBody vBody = self.characterBody;
+            if (!vBody || !vBody.skillLocator) return; //null check
+
             Vector3 corePos = Util.GetCorePosition(vBody);
             GameObject vGameObject = self.gameObject;
 

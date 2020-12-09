@@ -80,7 +80,8 @@ namespace RiskOfBulletstorm.Items
         {
             var invCount = GetCount(self.characterBody);
             CharacterBody vBody = self.characterBody;
-            //Vector3 corePos = Util.GetCorePosition(vBody);
+            if (!vBody || !vBody.skillLocator) return; //null check
+            Vector3 corePos = Util.GetCorePosition(vBody);
             GameObject vGameObject = self.gameObject;
 
             if (vBody.skillLocator.FindSkill(self.skillName))
@@ -96,9 +97,9 @@ namespace RiskOfBulletstorm.Items
                             crit = vBody.RollCrit(),
                             damageColorIndex = DamageColorIndex.Default,
                             teamIndex = vBody.teamComponent.teamIndex,
-                            radius = LiveAmmo_Radius
+                            radius = LiveAmmo_Radius,
+                            position = corePos
                         }.Fire();
-                        Debug.Log("Live Ammo: Result of BlastAttack: " + blastAttack.hitCount);
 
                         if (vBody.inputBank)
                         {
