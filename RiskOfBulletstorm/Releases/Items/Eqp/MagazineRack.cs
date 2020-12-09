@@ -123,7 +123,7 @@ namespace RiskOfBulletstorm.Items
                     Debug.Log("4");
                     gameObject.GetComponent<BuffWard>().expireDuration *= embryoProc ? 1.2f: 1f;
                     Debug.Log("5");
-                    body.GetComponent<Bulletstorm_MagazineTracker>().instances.Add(gameObject);
+                    MagazineTracker.instances.Add(gameObject);
                     Debug.Log("6");
                     gameObject.GetComponent<Bulletstorm_MagazineKiller>().characterBody = body;
                     Debug.Log("7");
