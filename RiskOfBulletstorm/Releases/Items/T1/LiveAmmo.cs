@@ -77,7 +77,7 @@ namespace RiskOfBulletstorm.Items
         private void Longassname(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_GameObject_Vector3_Quaternion_GameObject_float_float_bool_DamageColorIndex_GameObject_float orig, RoR2.Projectile.ProjectileManager self, GameObject prefab, Vector3 position, Quaternion rotation, GameObject owner, float damage, float force, bool crit, DamageColorIndex damageColorIndex, GameObject target, float speedOverride)
         {
             var characterBody = owner.GetComponent<CharacterBody>();
-            if (prefab == iceWall && characterBody)
+            if (prefab.name == PrepWall.projectilePrefab.name && characterBody)
             {
                 FireAmmo(characterBody, true);
                 Chat.AddMessage("Fired");
