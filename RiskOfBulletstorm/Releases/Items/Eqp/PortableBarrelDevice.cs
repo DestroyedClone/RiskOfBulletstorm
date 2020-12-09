@@ -168,15 +168,14 @@ namespace RiskOfBulletstorm.Items
             if (barrelAmt < maxBarrels || maxBarrels == -1 )
             {
                 var yOffset = characterBody.characterMotor.capsuleCollider.height / 2;
-                var random = UnityEngine.Random.Range(-3f, 3f);
-                var randomoffset = new Vector3(random, 0f, random);
+                var randomValue = 2f;
+                var randomoffset = new Vector3(Random.Range(-randomValue, randomValue), 0f, Random.Range(-randomValue, randomValue));
                 var position = characterBody.corePosition;
                 var resultpos = position + Vector3.down * yOffset + randomoffset;
 
                 var spawnBarrel = iscBarrelNew.DoSpawn(resultpos, characterBody.transform.rotation, new DirectorSpawnRequest(
                     iscBarrelNew, placementRule, RoR2Application.rng));
                 success = spawnBarrel.success;
-
             }
             return success;
         }
