@@ -96,7 +96,7 @@ namespace RiskOfBulletstorm.Items
         {
             var invCount = characterBody.inventory.GetItemCount(catalogIndex);
             Vector3 corePos = Util.GetCorePosition(characterBody);
-            var prcf = 150;
+            var prcf = 15;
             var mass = characterBody.characterMotor?.mass ?? (characterBody.rigidbody?.mass ?? 1f);
 
             new BlastAttack
