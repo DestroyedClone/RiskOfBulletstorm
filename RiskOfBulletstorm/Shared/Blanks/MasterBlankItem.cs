@@ -109,9 +109,9 @@ namespace RiskOfBulletstorm.Shared.Blanks
             // EFFECT HERE
             EffectManager.SpawnEffect(BlankEffect, new EffectData
             {
-                origin = attacker.transform.position + Vector3.up * 2,
+                origin = attacker.transform.position,
                 rotation = Util.QuaternionSafeLookRotation(Vector3.up),
-                scale = 4f
+                scale = 20f
             }, false) ;
 
             // BLAST ATTACK //
