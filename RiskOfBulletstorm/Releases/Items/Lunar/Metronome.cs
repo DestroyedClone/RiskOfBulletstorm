@@ -171,9 +171,6 @@ namespace RiskOfBulletstorm.Items
                 MetronomeTrackKills.maxkills = Metronome_MaxKills + Metronome_MaxKillsStack * InventoryCount;
 
                 MetronomeTrackKills.UpdateKills();
-            } else
-            {
-                if (MetronomeTrackKills) { UnityEngine.Object.Destroy(MetronomeTrackKills); }
             }
             orig(self);
         }
