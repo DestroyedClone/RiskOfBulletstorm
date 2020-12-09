@@ -206,9 +206,6 @@ namespace RiskOfBulletstorm.Items
                         purchaseInteraction.costType = CostTypeIndex.None;
                         purchaseInteraction.SetAvailable(false);
 
-                        //Object.Destroy(purchaseInteraction);
-                        //Object.Destroy(highlight);
-
                         selectedEffect = Fail_DestroyEffect;
                     }
                     else

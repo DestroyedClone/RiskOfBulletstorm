@@ -104,7 +104,7 @@ namespace RiskOfBulletstorm.Items
         private void CharacterBody_FixedUpdate(On.RoR2.CharacterBody.orig_FixedUpdate orig, CharacterBody self)
         {
             orig(self);
-            if (NetworkServer.active && self.master)
+            if (NetworkServer.active && self.master) //will this make clients unable to use it?
             {
                 var LocalUserList = LocalUserManager.readOnlyLocalUsersList;
 
