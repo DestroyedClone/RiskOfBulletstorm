@@ -255,7 +255,10 @@ namespace RiskOfBulletstorm.Items
             public void IncrementKills()
             {
                 if (kills < maxkills)
+                {
                     kills++;
+                    UpdateKills();
+                }
             }
         }
     }
