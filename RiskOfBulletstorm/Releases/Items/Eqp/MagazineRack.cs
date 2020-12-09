@@ -113,7 +113,7 @@ namespace RiskOfBulletstorm.Items
             if (NetworkServer.active)
             {
                 Debug.Log("get da spahgetetei");
-                var MagazineTracker = body.GetComponent<Bulletstorm_MagazineTracker>();
+                var MagazineTracker = body.gameObject.GetComponent<Bulletstorm_MagazineTracker>();
                 Debug.Log("did we get it");
                 if (!MagazineTracker) return false;
                 if (MagazineTracker.instances.Count < MagazineRack_MaxObjectsPerPerson)
@@ -151,8 +151,8 @@ namespace RiskOfBulletstorm.Items
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
             void OnDisable()
             {
-                if (characterBody && characterBody.GetComponent<Bulletstorm_MagazineTracker>())
-                    characterBody.GetComponent<Bulletstorm_MagazineTracker>().instances.Remove(gameObject);
+                if (characterBody && characterBody.gameObject.GetComponent<Bulletstorm_MagazineTracker>())
+                    characterBody.gameObject.GetComponent<Bulletstorm_MagazineTracker>().instances.Remove(gameObject);
             }
         }
     }
