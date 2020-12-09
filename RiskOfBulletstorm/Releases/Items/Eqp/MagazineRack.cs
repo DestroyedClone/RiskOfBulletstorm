@@ -115,7 +115,8 @@ namespace RiskOfBulletstorm.Items
                 Debug.Log("get da spahgetetei");
                 var MagazineTracker = body.GetComponent<Bulletstorm_MagazineTracker>();
                 Debug.Log("did we get it");
-                if (MagazineTracker && MagazineTracker.instances.Count < MagazineRack_MaxObjectsPerPerson)
+                if (!MagazineTracker) return false;
+                if (MagazineTracker.instances.Count < MagazineRack_MaxObjectsPerPerson)
                 {
                     Debug.Log("1");
                     GameObject gameObject = UnityEngine.Object.Instantiate(wardObject, body.transform.position, Quaternion.identity);
