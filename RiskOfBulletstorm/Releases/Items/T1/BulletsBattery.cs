@@ -68,7 +68,7 @@ namespace RiskOfBulletstorm.Items
             {
                 var invcount = owner.GetComponent<CharacterBody>().inventory.GetItemCount(catalogIndex);
                 if (invcount > 0)
-                    if (Util.CheckRoll(5f * invcount))
+                    if (Util.CheckRoll(Mathf.Min(5f * invcount),60f))
                         return baseDamageType |= DamageType.Shock5s;
             }
             return baseDamageType;
