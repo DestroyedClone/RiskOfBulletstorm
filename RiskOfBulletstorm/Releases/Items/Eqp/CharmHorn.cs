@@ -122,7 +122,8 @@ namespace RiskOfBulletstorm.Items
                 gameObject.GetComponent<TeamFilter>().teamIndex = body.teamComponent.teamIndex;
                 BuffWard buffWard = gameObject.GetComponent<BuffWard>();
                 buffWard.buffType = GungeonBuffController.Charm;
-                buffWard.GetComponent<BuffWard>().Networkradius *= radius;
+                buffWard.GetComponent<BuffWard>().Networkradius = radius;
+                buffWard.GetComponent<BuffWard>().radius = radius;
                 NetworkServer.Spawn(gameObject);
             }
         }
