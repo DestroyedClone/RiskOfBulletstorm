@@ -65,29 +65,34 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += ApplyComponent;
+            On.RoR2.Projectile.ProjectileController.OnEnable += ProjectileController_OnEnable;
         }
 
-        public override void Uninstall()
+        private void ProjectileController_OnEnable(On.RoR2.Projectile.ProjectileController.orig_OnEnable orig, ProjectileController self)
         {
-            base.Uninstall();
-            On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo -= ApplyComponent;
-        }
-        private void ApplyComponent(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_FireProjectileInfo orig, ProjectileManager self, FireProjectileInfo fireProjectileInfo)
-        {
-            var owner = fireProjectileInfo.owner;
+            var owner = self.owner;
             if (owner && owner.GetComponent<CharacterBody>() && owner.GetComponent<CharacterBody>().inventory)
             {
                 var inventoryCount = owner.GetComponent<CharacterBody>().inventory.GetItemCount(catalogIndex);
                 if (inventoryCount > 0)
                 {
-                    var component = fireProjectileInfo.projectilePrefab.AddComponent<Bulletstorm_SnowballetsComponent>();
-                    component.meterAmount = Mathf.Min(Snowballets_BaseMeters - Snowballets_StackMeters * (inventoryCount - 1),1);
-                    component.sizeMultiplier = 1 + Snowballets_SizeMultiplier;
-                    component.damageMultiplier = 1 + Snowballets_DamageMultiplier;
+                    var component = self.gameObject.GetComponent<Bulletstorm_SnowballetsComponent>();
+                    if (!component)
+                    {
+                        component = self.gameObject.AddComponent<Bulletstorm_SnowballetsComponent>();
+                        component.meterAmount = Mathf.Min(Snowballets_BaseMeters - Snowballets_StackMeters * (inventoryCount - 1), 1);
+                        component.sizeMultiplier = 1 + Snowballets_SizeMultiplier;
+                        component.damageMultiplier = 1 + Snowballets_DamageMultiplier;
+                    }
                 }
             }
-            orig(self, fireProjectileInfo);
+            orig(self);
+        }
+
+        public override void Uninstall()
+        {
+            base.Uninstall();
+            On.RoR2.Projectile.ProjectileController.OnEnable -= ProjectileController_OnEnable;
         }
         private class Bulletstorm_SnowballetsComponent : MonoBehaviour
         {

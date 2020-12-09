@@ -234,8 +234,7 @@ namespace RiskOfBulletstorm.Items
                 }
             }
             var ResultMult = Mathf.Min(ScopeMult + SpiceMult,0);
-            //Debug.Log("ScopeMult: " + ScopeMult + " + SpiceMUlt: " + SpiceMult + " = " + ResultMult);
-
+            Debug.Log("ScopeMult: " + ScopeMult + " + SpiceMUlt: " + SpiceMult + " = " + ResultMult);
             return ResultMult;
         }
 
@@ -299,6 +298,7 @@ namespace RiskOfBulletstorm.Items
 
                         spreadPitchScale = Mathf.Min(0, spreadPitchScale * ResultMult);
                         spreadYawScale = Mathf.Min(0, spreadYawScale * ResultMult);
+                        Debug.Log("ScopeNailgun");
                     }
                 }
             }
