@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using R2API;
 using RoR2;
+using RoR2.CharacterAI;
 using RoR2.UI;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -16,6 +17,10 @@ namespace RiskOfBulletstorm.Items
 {
     public class GungeonBuffController : Item_V2<GungeonBuffController>
     {
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("CHARM: Should Bosses (including Umbras) get charmed? (Default: false)", AutoConfigFlags.PreventNetMismatch)]
+        public bool Config_Charm_Boss { get; private set; } = false;
+
         public override string displayName => "GungeonBuffController";
         public override ItemTier itemTier => ItemTier.NoTier;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.WorldUnique, ItemTag.AIBlacklist });
@@ -126,11 +131,14 @@ namespace RiskOfBulletstorm.Items
         {
             if (buffType == Charm)
             {
+                if (!Config_Charm_Boss && self.isBoss)
+                    return;
+
                 var isCharmed = self.gameObject.GetComponent<IsCharmed>();
                 if (!isCharmed) isCharmed = self.gameObject.AddComponent<IsCharmed>();
                 if (isCharmed)
                 {
-                    if (!isCharmed.enabled) isCharmed.enabled = true;
+                    if (!isCharmed.enabled) isCharmed.enabled = true; //if statement so it doesn't pulse twice
                     else isCharmed.ResetDuration();
                 }
             }
@@ -154,7 +162,7 @@ namespace RiskOfBulletstorm.Items
             GetStatCoefficients -= AddRewards;
             GetStatCoefficients -= AddSpiceRewards;
             On.RoR2.HealthComponent.TakeDamage -= HealthComponent_TakeDamage;
-
+            // CHARM //
             On.RoR2.CharacterAI.BaseAI.FindEnemyHurtBox -= BaseAI_FindEnemyHurtBox;
             On.RoR2.CharacterBody.RemoveBuff -= Charmed_DisableComponent;
             On.RoR2.CharacterBody.AddBuff -= Charmed_AddComponent;
@@ -298,37 +306,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     characterBody.AddBuff(Jammed);
                 }
-                //contactDamageInfo.inflictor = ContactDamageGameObject; //how
-                //contactDamageInfo.attacker = gameObject; //who
-                //contactDamageInfo.damage = characterBody.damage * damageCoefficient;
-
-            } //setup
-            
-            //[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
-            /*void OnTriggerEnter(Collider other)
-            {
-                GameObject gameObject = other.gameObject;
-                HealthComponent healthComponent = gameObject.GetComponent<HealthComponent>();
-                if (healthComponent)
-                {
-                    contactDamageInfo.position = gameObject.transform.position;
-                    contactDamageInfo.damage = characterBody.damage;
-                    healthComponent.TakeDamage(contactDamageInfo);
-                }
-            }*/
-
-            //public static readonly float ContactDamageCooldownFull = 2f;
-            //public float ContactDamageCooldown;
-
-            //public DamageInfo contactDamageInfo = JammedContactDamageInfo;
-
-            //public static GameObject ContactDamageGameObject;
-
-            //public float damageCoefficient = 3f;
-
-            //public float recheckTime = 0.75f;
-
-            //private float currentTime = 0f;
+            }
         }
 
         public class IsCharmed : MonoBehaviour
@@ -338,18 +316,35 @@ namespace RiskOfBulletstorm.Items
             public CharacterBody characterBody;
             private TeamComponent teamComponent;
             private TeamIndex oldTeamIndex = TeamIndex.Monster;
+            private BaseAI baseAI;
 
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
             void OnEnable()
             {
                 characterBody = gameObject.GetComponent<CharacterBody>();
                 teamComponent = characterBody.teamComponent;
+                baseAI = characterBody.master.GetComponent<BaseAI>();
 
                 if (characterBody.GetBuffCount(Charm) <= 0)
                     characterBody.AddBuff(Charm);
                 oldTeamIndex = teamComponent.teamIndex;
                 ResetDuration();
-                FlipTeam();
+                //FlipTeam();
+                Debug.Log("Charm: Flipped to team "+ FlipTeam());
+
+                var teamComponentEnemy = baseAI.currentEnemy.characterBody.teamComponent;
+                if (teamComponentEnemy.teamIndex == GetOppositeTeamIndex(oldTeamIndex))
+                {
+                    baseAI.currentEnemy.Reset();
+                    baseAI.ForceAcquireNearestEnemyIfNoCurrentEnemy();
+                }
+            }
+
+            TeamIndex GetOppositeTeamIndex(TeamIndex teamIndex)
+            {
+                if (teamIndex == TeamIndex.Player) return TeamIndex.Monster;
+                else if (teamIndex == TeamIndex.Monster) return TeamIndex.Player;
+                else return teamIndex;
             }
 
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
@@ -370,12 +365,13 @@ namespace RiskOfBulletstorm.Items
                         characterBody.RemoveBuff(Charm);
                 characterBody.teamComponent.teamIndex = oldTeamIndex;
             }
-            public void FlipTeam()
+            public TeamIndex FlipTeam()
             {
                 var targetTeam = TeamIndex.None;
                 if (oldTeamIndex == TeamIndex.Player) targetTeam = TeamIndex.Monster;
                 else if (oldTeamIndex == TeamIndex.Monster) targetTeam = TeamIndex.Player;
                 teamComponent.teamIndex = teamComponent.teamIndex == TeamIndex.Neutral ? targetTeam : TeamIndex.Neutral;
+                return teamComponent.teamIndex;
             }
 
             public void ResetDuration() //add value later

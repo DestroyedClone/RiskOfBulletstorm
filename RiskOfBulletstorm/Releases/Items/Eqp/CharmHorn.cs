@@ -15,7 +15,7 @@ namespace RiskOfBulletstorm.Items
     public class CharmHorn : Equipment_V2<CharmHorn>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the radius of charmed enemies? (Default: 20m)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the radius to charm enemies? (Default: 20m)", AutoConfigFlags.PreventNetMismatch)]
         public float CharmHorn_Radius { get; private set; } = 20f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
@@ -54,6 +54,7 @@ namespace RiskOfBulletstorm.Items
             BuffWard buffWard = CharmWardPrefab.GetComponent<BuffWard>();
             buffWard.expires = true;
             buffWard.expireDuration = 0.6f;
+            buffWard.buffDuration = CharmHorn_Duration;
             buffWard.invertTeamFilter = true;
 
             //CharmWard charmWard = CharmWardPrefab.AddComponent<CharmWard>();
