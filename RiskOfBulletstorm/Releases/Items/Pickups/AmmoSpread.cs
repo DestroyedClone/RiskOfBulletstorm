@@ -43,24 +43,22 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             On.RoR2.CharacterBody.OnInventoryChanged += CharacterBody_OnInventoryChanged;
-            GenericNotification.SetItem += GenericNotification_SetItem;
+            On.RoR2.UI.NotificationQueue.OnItemPickup += NotificationQueue_OnItemPickup;
+        }
+
+        private void NotificationQueue_OnItemPickup(On.RoR2.UI.NotificationQueue.orig_OnItemPickup orig, NotificationQueue self, CharacterMaster characterMaster, ItemIndex itemIndex)
+        {
+            if (itemIndex == catalogIndex)
+                return;
+
+            orig(self, characterMaster, itemIndex);
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
             On.RoR2.CharacterBody.OnInventoryChanged -= CharacterBody_OnInventoryChanged;
-            GenericNotification.SetItem -= GenericNotification_SetItem;
-        }
-        private void GenericNotification_SetItem(GenericNotification.orig_SetItem orig, RoR2.UI.GenericNotification self, ItemDef itemDef)
-        {
-            if (itemDef.itemIndex == catalogIndex)
-            {
-                orig(self, null);
-                return;
-            }
-
-            orig(self, itemDef);
+            On.RoR2.UI.NotificationQueue.OnItemPickup -= NotificationQueue_OnItemPickup;
         }
 
         private void CharacterBody_OnInventoryChanged(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self)
