@@ -53,7 +53,7 @@ namespace RiskOfBulletstorm.Items
 
             BuffWard buffWard = CharmWardPrefab.GetComponent<BuffWard>();
             buffWard.expires = true;
-            buffWard.expireDuration = 3f;
+            buffWard.expireDuration = 0.6f;
             //buffWard.invertTeamFilter = true;
 
             //CharmWard charmWard = CharmWardPrefab.AddComponent<CharmWard>();
@@ -125,14 +125,13 @@ namespace RiskOfBulletstorm.Items
                 GameObject gameObject = UnityEngine.Object.Instantiate(CharmWardPrefab, body.transform.position, Quaternion.identity);
                 gameObject.GetComponent<TeamFilter>().teamIndex = body.teamComponent.teamIndex;
                 BuffWard buffWard = gameObject.GetComponent<BuffWard>();
-                Debug.Log(GungeonBuffController.Charm);
                 buffWard.buffType = GungeonBuffController.Charm;
                 buffWard.GetComponent<BuffWard>().Networkradius *= radius;
                 NetworkServer.Spawn(gameObject);
             }
         }
 
-        public class CharmWard : BuffWard
+        /*public class CharmWard : BuffWard
         {
             // Token: 0x06000839 RID: 2105 RVA: 0x00020118 File Offset: 0x0001E318
 #pragma warning disable CS0108 // Member hides inherited member; missing new keyword
@@ -156,6 +155,6 @@ namespace RiskOfBulletstorm.Items
                     }
                 }
             }
-        }
+        }*/
     }
 }

@@ -87,7 +87,7 @@ namespace RiskOfBulletstorm.Items
         private readonly GameObject Fail_DestroyEffect = Resources.Load<GameObject>("prefabs/effects/ShieldBreakEffect");
         private readonly GameObject Fail_LockEffect = Resources.Load<GameObject>("prefabs/effects/LevelUpEffectEnemy");
         //prefabs/effects/WarCryEffect
-        private readonly string prefix = "TRUSTYLOCKPICKS_";
+        private readonly string prefix = "BULLETSTORM_";
         private readonly string suffixBroken = " (Failed Unlock)";
         public TrustyLockpicks()
         {
@@ -105,10 +105,19 @@ namespace RiskOfBulletstorm.Items
         {
             base.SetupAttributes();
 
+            LanguageAPI.Add(prefix + "CHEST1_STEALTHED_NAME", "Stealthed Chest" + suffixBroken);
             LanguageAPI.Add(prefix + "CHEST1_NAME", "Chest"+ suffixBroken);
+            LanguageAPI.Add(prefix + "CATEGORYCHEST_HEALING_NAME", "Chest - Healing" + suffixBroken);
+            LanguageAPI.Add(prefix + "CATEGORYCHEST_DAMAGE", "Chest - Damage" + suffixBroken);
+            LanguageAPI.Add(prefix + "CATEGORYCHEST_UTILITY_NAME", "Chest - Utility" + suffixBroken);
             LanguageAPI.Add(prefix + "CHEST2_NAME", "Large Chest" + suffixBroken);
             LanguageAPI.Add(prefix + "GOLDCHEST_NAME", "Legendary Chest" + suffixBroken);
             LanguageAPI.Add(prefix + "EQUIPMENTBARREL_NAME", "Equipment Barrel" + suffixBroken);
+
+            LanguageAPI.Add(prefix + "CHEST1_CONTEXT", "Chest" + suffixBroken);
+            LanguageAPI.Add(prefix + "CHEST2_CONTEXT", "Large Chest" + suffixBroken);
+            LanguageAPI.Add(prefix + "GOLDCHEST_CONTEXT", "Legendary Chest" + suffixBroken);
+            LanguageAPI.Add(prefix + "EQUIPMENTBARREL_CONTEXT", "Open equipment barrel" + suffixBroken);
         }
         public override void SetupConfig()
         {
