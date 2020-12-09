@@ -284,6 +284,7 @@ namespace RiskOfBulletstorm.Items
         private void AdjustSpreadBullets_Nailgun(On.EntityStates.BaseNailgunState.orig_FireBullet orig, EntityStates.BaseNailgunState self, Ray aimRay, int bulletCount, float spreadPitchScale, float spreadYawScale)
         {
             //MULT you upset me
+            Debug.Log("Entered nailgun");
             var characterBody = self.characterBody;
             var updateBloom = false;
             float ResultMult = -1f;

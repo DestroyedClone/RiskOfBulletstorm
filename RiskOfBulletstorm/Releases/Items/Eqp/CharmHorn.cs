@@ -48,7 +48,7 @@ namespace RiskOfBulletstorm.Items
             CharmWardPrefab = warbannerPrefab.InstantiateClone("Bulletstorm_CharmHornWard");
 
             BuffWard buffWard = CharmWardPrefab.GetComponent<BuffWard>();
-            buffWard.Networkradius = CharmHorn_Radius;
+            //buffWard.Networkradius = CharmHorn_Radius;
             buffWard.expires = true;
             buffWard.expireDuration = 3f;
             buffWard.buffType = charmIndex;
@@ -104,7 +104,7 @@ namespace RiskOfBulletstorm.Items
             {
                 GameObject gameObject = UnityEngine.Object.Instantiate(CharmWardPrefab, body.transform.position, Quaternion.identity);
                 gameObject.GetComponent<TeamFilter>().teamIndex = body.teamComponent.teamIndex;
-                gameObject.GetComponent<BuffWard>().Networkradius *= radius;
+                //gameObject.GetComponent<BuffWard>().Networkradius *= radius;
                 NetworkServer.Spawn(gameObject);
 
             }
