@@ -115,14 +115,14 @@ namespace RiskOfBulletstorm.Items
             LanguageAPI.Add(prefix + "GOLDCHEST_NAME", "Legendary Chest" + suffixBroken);
             LanguageAPI.Add(prefix + "EQUIPMENTBARREL_NAME", "Equipment Barrel" + suffixBroken);
 
-            LanguageAPI.Add(prefix + "CHEST1_STEALTHED_NAME", contextUnlock+"Open cloaked chest");
-            LanguageAPI.Add(prefix + "CHEST1_NAME", contextUnlock + "Open chest");
-            LanguageAPI.Add(prefix + "CATEGORYCHEST_HEALING_NAME", contextUnlock + "Open Chest - Healing");
-            LanguageAPI.Add(prefix + "CATEGORYCHEST_DAMAGE", contextUnlock + "Open Chest - Damage");
-            LanguageAPI.Add(prefix + "CATEGORYCHEST_UTILITY_NAME", contextUnlock + "Open Chest - Utility");
-            LanguageAPI.Add(prefix + "CHEST2_NAME", contextUnlock + "Open large chest");
-            LanguageAPI.Add(prefix + "GOLDCHEST_NAME", contextUnlock + "Open Legendary Chest");
-            LanguageAPI.Add(prefix + "EQUIPMENTBARREL_NAME", contextUnlock + "Open equipment barrel");
+            LanguageAPI.Add(prefix + "CHEST1_STEALTHED_CONTEXT", contextUnlock+"Open cloaked chest");
+            LanguageAPI.Add(prefix + "CHEST1_CONTEXT", contextUnlock + "Open chest");
+            LanguageAPI.Add(prefix + "CATEGORYCHEST_HEALING_CONTEXT", contextUnlock + "Open Chest - Healing");
+            LanguageAPI.Add(prefix + "CATEGORYCHEST_DAMAGE_CONTEXT", contextUnlock + "Open Chest - Damage");
+            LanguageAPI.Add(prefix + "CATEGORYCHEST_UTILITY_CONTEXT", contextUnlock + "Open Chest - Utility");
+            LanguageAPI.Add(prefix + "CHEST2_CONTEXT", contextUnlock + "Open large chest");
+            LanguageAPI.Add(prefix + "GOLDCHEST_CONTEXT", contextUnlock + "Open Legendary Chest");
+            LanguageAPI.Add(prefix + "EQUIPMENTBARREL_CONTEXT", contextUnlock + "Open equipment barrel");
         }
         public override void SetupConfig()
         {
@@ -199,8 +199,8 @@ namespace RiskOfBulletstorm.Items
 
                 } else
                 {
-                    var displaynamecomponent = chestObject.GetComponent<GenericDisplayNameProvider>();
-                    if (displaynamecomponent) displaynamecomponent.displayToken = prefix + displaynamecomponent.displayToken;
+                    //var displaynamecomponent = chestObject.GetComponent<GenericDisplayNameProvider>();
+                    //if (displaynamecomponent) displaynamecomponent.displayToken = prefix + displaynamecomponent.displayToken;
                     if (TrustyLockpicks_KillChest)
                     {
                         purchaseInteraction.costType = CostTypeIndex.None;
