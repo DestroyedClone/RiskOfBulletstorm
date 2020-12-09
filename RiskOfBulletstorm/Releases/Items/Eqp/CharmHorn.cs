@@ -13,7 +13,7 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the radius of charmed enemies? (Default: 20m)", AutoConfigFlags.PreventNetMismatch)]
-        public float CharmHorn_Radius { get; private set; } = 1f;
+        public float CharmHorn_Radius { get; private set; } = 20f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the duration of charmed enemies? (Default: 10 seconds)", AutoConfigFlags.PreventNetMismatch)]
@@ -55,8 +55,6 @@ namespace RiskOfBulletstorm.Items
             buffWard.floorWard = false;
             buffWard.invertTeamFilter = true;
 
-            if (CharmWardPrefab) PrefabAPI.RegisterNetworkPrefab(CharmWardPrefab);
-
             if (ClassicItemsCompat.enabled)
                 ClassicItemsCompat.RegisterEmbryo(catalogIndex);
         }
@@ -76,6 +74,15 @@ namespace RiskOfBulletstorm.Items
         public override void Uninstall()
         {
             base.Uninstall();
+        }
+        public override void SetupLate()
+        {
+            base.SetupLate();
+
+            BuffWard buffWard = CharmWardPrefab.GetComponent<BuffWard>();
+            buffWard.buffType = charmIndex;
+
+            if (CharmWardPrefab) PrefabAPI.RegisterNetworkPrefab(CharmWardPrefab);
         }
         protected override bool PerformEquipmentAction(EquipmentSlot slot)
         {

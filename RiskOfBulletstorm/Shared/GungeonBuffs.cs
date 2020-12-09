@@ -173,33 +173,36 @@ namespace RiskOfBulletstorm.Items
 
         private void AddSpiceRewards(CharacterBody sender, StatHookEventArgs args)
         {
-            var SpiceTallyCount = sender.inventory.GetItemCount(SpiceTally);
-            switch (SpiceTallyCount)
+            if (sender && sender.inventory)
             {
-                case 0:
-                    break;
-                case 1:
-                case 2:
-                case 3:
-                case 4:
-                    //health, attack speed, shot accuracy, enemy bullet speed, damage
-                    //args.baseHealthAdd += HeartValue * SpiceBonuses[SpiceTallyCount, 0];
-                    args.healthMultAdd *= 1 + SpiceBonuses[SpiceTallyCount, 0];
-                    args.attackSpeedMultAdd += SpiceBonuses[SpiceTallyCount, 1];
-                    //accuracy 
-                    //enemy bullet speed
-                    //damage
-                    break;
-                default:
-                    //var baseHealthAdd = HeartValue * SpiceBonusesAdditive[0] * (SpiceTallyCount - 4);
-                    //args.baseHealthAdd += baseHealthAdd;
-                    args.healthMultAdd *= Math.Min(0.1f,1 + SpiceBonusesAdditive[0] * (SpiceTallyCount - 4));
-                    //health, attack speed, shot accuracy, enemy bullet speed, damage
-                    args.attackSpeedMultAdd += SpiceBonusesConstantMaxed[1];
-                    //accuracy
-                    //enemy
-                    //damage
-                    break;
+                var SpiceTallyCount = sender.inventory.GetItemCount(SpiceTally);
+                switch (SpiceTallyCount)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                        //health, attack speed, shot accuracy, enemy bullet speed, damage
+                        //args.baseHealthAdd += HeartValue * SpiceBonuses[SpiceTallyCount, 0];
+                        args.healthMultAdd *= 1 + SpiceBonuses[SpiceTallyCount, 0];
+                        args.attackSpeedMultAdd += SpiceBonuses[SpiceTallyCount, 1];
+                        //accuracy 
+                        //enemy bullet speed
+                        //damage
+                        break;
+                    default:
+                        //var baseHealthAdd = HeartValue * SpiceBonusesAdditive[0] * (SpiceTallyCount - 4);
+                        //args.baseHealthAdd += baseHealthAdd;
+                        args.healthMultAdd *= Math.Min(0.1f, 1 + SpiceBonusesAdditive[0] * (SpiceTallyCount - 4));
+                        //health, attack speed, shot accuracy, enemy bullet speed, damage
+                        args.attackSpeedMultAdd += SpiceBonusesConstantMaxed[1];
+                        //accuracy
+                        //enemy
+                        //damage
+                        break;
+                }
             }
         }
         private void AddRewards(CharacterBody sender, StatHookEventArgs args)
