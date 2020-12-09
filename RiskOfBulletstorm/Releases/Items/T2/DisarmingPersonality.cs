@@ -57,7 +57,13 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             On.RoR2.PurchaseInteraction.Awake += LowerCosts;
+            //On.RoR2.ChestBehavior.Awake += LowerChestCosts;
         }
+
+        //private void LowerChestCosts(On.RoR2.ChestBehavior.orig_Awake orig, ChestBehavior self)
+        //{
+        //    throw new System.NotImplementedException();
+        //}
 
         public override void Uninstall()
         {
@@ -67,7 +73,6 @@ namespace RiskOfBulletstorm.Items
 
         private void LowerCosts(On.RoR2.PurchaseInteraction.orig_Awake orig, PurchaseInteraction self)
         {
-            orig(self);
             var chest = self.GetComponent<ChestBehavior>();
             int InventoryCount = GetPlayersItemCount(catalogIndex);
 
@@ -86,6 +91,7 @@ namespace RiskOfBulletstorm.Items
                     self.Networkcost = ResultAmt;
                 }
             }
+            orig(self);
         }
     }
 }
