@@ -103,7 +103,7 @@ namespace RiskOfBulletstorm.Items
         private class BulletstormShockEffect : MonoBehaviour
         {
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
-            void OnDisable()
+            void OnDestroy()
             {
                 EffectManager.SimpleEffect(Resources.Load<GameObject>("Prefabs/TemporaryVisualEffects/TeslaFieldBuffEffect"), gameObject.transform.position, gameObject.transform.rotation, true);
             }

@@ -80,10 +80,10 @@ namespace RiskOfBulletstorm.Items
                     if (!component)
                     {
                         component = self.gameObject.AddComponent<Bulletstorm_SnowballetsComponent>();
-                        component.meterAmount = Mathf.Min(Snowballets_BaseMeters - Snowballets_StackMeters * (inventoryCount - 1), 1);
-                        component.sizeMultiplier = 1 + Snowballets_SizeMultiplier;
-                        component.damageMultiplier = 1 + Snowballets_DamageMultiplier;
                     }
+                    component.meterAmount = Mathf.Min(Snowballets_BaseMeters - Snowballets_StackMeters * (inventoryCount - 1), 1);
+                    component.sizeMultiplier = 1 + Snowballets_SizeMultiplier;
+                    component.damageMultiplier = 1 + Snowballets_DamageMultiplier;
                 }
             }
             orig(self);
@@ -134,7 +134,7 @@ namespace RiskOfBulletstorm.Items
             }
 
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Engine")]
-            private void OnDisable()
+            private void OnDestroy()
             {
                 Debug.Log(gameObject.transform.localScale);
                 Debug.Log(projectileController.transform.localScale);
