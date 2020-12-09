@@ -58,7 +58,7 @@ namespace RiskOfBulletstorm.Items
 
         private BlastAttack.Result BlastAttack_Fire(On.RoR2.BlastAttack.orig_Fire orig, BlastAttack self)
         {
-            self.damageType = ShockRoll(self.attacker, self.damageType);
+            self.damageType = ShockRoll(self.attacker, self.damageType, self.procCoefficient);
             return orig(self);
         }
 
@@ -68,28 +68,36 @@ namespace RiskOfBulletstorm.Items
             {
                 var invcount = owner.GetComponent<CharacterBody>().inventory.GetItemCount(catalogIndex);
                 if (invcount > 0)
-                    if (Util.CheckRoll(Mathf.Min(1f * invcount), 15f))
+                {
+                    var min = Mathf.Min(1f * invcount * procCoefficient, 15f);
+                    if (Util.CheckRoll(min))
                         return baseDamageType |= DamageType.Stun1s;
+                }
             }
             return baseDamageType;
         }
 
         private bool OverlapAttack_Fire(On.RoR2.OverlapAttack.orig_Fire orig, OverlapAttack self, List<HealthComponent> hitResults)
         {
-            self.damageType = ShockRoll(self.attacker, self.damageType);
+            self.damageType = ShockRoll(self.attacker, self.damageType, self.procCoefficient);
             return orig(self, hitResults);
         }
 
         private void BulletAttack_Fire(On.RoR2.BulletAttack.orig_Fire orig, BulletAttack self)
         {
-            self.damageType = ShockRoll(self.owner, self.damageType);
+            self.damageType = ShockRoll(self.owner, self.damageType, self.procCoefficient);
             orig(self);
         }
 
         private void ProjectileManager_FireProjectile_FireProjectileInfo(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_FireProjectileInfo orig, RoR2.Projectile.ProjectileManager self, RoR2.Projectile.FireProjectileInfo fireProjectileInfo)
         {
             var component = fireProjectileInfo.projectilePrefab.GetComponent<ProjectileDamage>();
-            component.damageType = ShockRoll(fireProjectileInfo.owner, component.damageType);
+            if (component)
+            {
+                var component2 = fireProjectileInfo.projectilePrefab.GetComponent<ProjectileController>();
+                var value1 = component2 ? component2.procCoefficient : 1;
+                component.damageType = ShockRoll(fireProjectileInfo.owner, component.damageType, value1);
+            }
             orig(self, fireProjectileInfo);
         }
         private class BulletstormShockEffect : MonoBehaviour
