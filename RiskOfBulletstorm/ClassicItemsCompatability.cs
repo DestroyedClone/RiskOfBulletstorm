@@ -1,6 +1,7 @@
 ﻿using ThinkInvisible.ClassicItems;
 using TILER2;
 using RoR2;
+using UnityEngine;
 
 //credit to chen for the base stuff
 namespace RiskOfBulletstorm
@@ -19,6 +20,7 @@ namespace RiskOfBulletstorm
         public static void RegisterEmbryo(EquipmentIndex equipmentIndex)
         {
             Embryo_V2.instance.Compat_Register(equipmentIndex);
+            Debug.Log("Embryo_V2Compat_: Registed equipment "+equipmentIndex);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "dont want to")]
