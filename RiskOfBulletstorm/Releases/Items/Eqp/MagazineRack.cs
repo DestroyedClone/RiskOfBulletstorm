@@ -10,12 +10,12 @@ namespace RiskOfBulletstorm.Items
     public class MagazineRack : Equipment_V2<MagazineRack>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the radius of the Magazine Rack's zone? (Default: 5.0 meters)", AutoConfigFlags.PreventNetMismatch)]
-        public float MagazineRack_Radius { get; private set; } = 5f;
+        [AutoConfig("What is the radius of the Magazine Rack's zone? (Default: 4.0 meters)", AutoConfigFlags.PreventNetMismatch)]
+        public float MagazineRack_Radius { get; private set; } = 4f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the duration of the Magazine Rack's zone? (Default: 5.00 seconds)", AutoConfigFlags.PreventNetMismatch)]
-        public float MagazineRack_Duration { get; private set; } = 5.00f;
+        [AutoConfig("What is the duration of the Magazine Rack's zone? (Default: 3.50 seconds)", AutoConfigFlags.PreventNetMismatch)]
+        public float MagazineRack_Duration { get; private set; } = 3.50f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the cooldown in seconds? (Default: 90 seconds)", AutoConfigFlags.PreventNetMismatch)]
