@@ -73,19 +73,22 @@ namespace RiskOfBulletstorm.Utils
             {
                 var master = CharacterMaster.readOnlyInstancesList[i];
                 var body = master.GetBody();
-                var teamComponent = body.teamComponent;
-                if (teamComponent)
+                if (body)
                 {
-                    if ((onlyPlayers && body.isPlayerControlled) || (!onlyPlayers))
+                    var teamComponent = body.teamComponent;
+                    if (teamComponent)
                     {
-                        if (teamIndex == TeamIndex.None) //can probably optimize this section
+                        if ((onlyPlayers && body.isPlayerControlled) || (!onlyPlayers))
                         {
-                            if (body && body.inventory) 
-                                InventoryCount += body.inventory.GetItemCount(itemIndex);
-                        }
-                        else
-                        {
-                            if (teamIndex == body.teamComponent.teamIndex) if (body && body.inventory) InventoryCount += body.inventory.GetItemCount(itemIndex);
+                            if (teamIndex == TeamIndex.None) //can probably optimize this section
+                            {
+                                if (body.inventory)
+                                    InventoryCount += body.inventory.GetItemCount(itemIndex);
+                            }
+                            else
+                            {
+                                if (teamIndex == body.teamComponent.teamIndex) if (body && body.inventory) InventoryCount += body.inventory.GetItemCount(itemIndex);
+                            }
                         }
                     }
                 }
