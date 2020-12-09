@@ -84,7 +84,7 @@ namespace RiskOfBulletstorm.Items
             "\n And it only took one strike to end him." +
             "\n Tick, Tick, tick, tick";
 
-        //public static BuffIndex MetronomeBuffTally { get; private set; }
+        public static BuffIndex MetronomeBuffTally { get; private set; }
 
         public Metronome()
         {
@@ -99,16 +99,16 @@ namespace RiskOfBulletstorm.Items
         public override void SetupAttributes()
         {
             base.SetupAttributes();
-            /*
+            
             var metronomeBuffTallyDef = new CustomBuff(
             new BuffDef
             {
                 buffColor = Color.cyan,
                 canStack = true,
                 isDebuff = false,
-                name = "Metronome Stacks",
+                name = "Metronome Stacks (Display)",
             });
-            MetronomeBuffTally = BuffAPI.Add(metronomeBuffTallyDef);*/
+            MetronomeBuffTally = BuffAPI.Add(metronomeBuffTallyDef);
 
         }
         public override void SetupConfig()
@@ -221,36 +221,38 @@ namespace RiskOfBulletstorm.Items
                     Destroy(gameObject.GetComponent<MetronomeTrackKills>());
             }
 
-            /*public void OnDisable()
+            public void OnDisable()
             {
                 HelperUtil.ClearBuffStacks(characterBody, MetronomeBuffTally);
-            }*/
+            }
 
             public void UpdateKills()
             {
-                var InventoryCount = characterBody.inventory.GetItemCount(Metronome.instance.catalogIndex);
+                var InventoryCount = characterBody.inventory.GetItemCount(instance.catalogIndex);
                 maxkills = Metronome_MaxKills + Metronome_MaxKillsStack * (InventoryCount - 1);
-                if (kills > maxkills) kills = maxkills; //this resets it if you have less metronomes from like cleansing
-                //UpdateBuffStack();
+                kills = Mathf.Min(kills, maxkills);//this resets it if you have less metronomes from like cleansing
+                UpdateBuffStack();
             }
             public bool IsKillsLessThanMax()
             {
                 return kills < maxkills;
             }
-            /*public void UpdateBuffStack()
+
+            public void UpdateBuffStack()
             {
+                characterBody.SetBuffCount(MetronomeBuffTally, kills);
                 //HelperUtil.ClearBuffStacks(characterBody, MetronomeBuffTally);
                 //HelperUtil.AddBuffStacks(characterBody, MetronomeBuffTally, kills);
-            }*/
+            }
             public void SetLastSkillSlot(int SlotNumber)
             {
                 if (LastSkillSlotUsed != SlotNumber)
                 {
                     LastSkillSlotUsed = SlotNumber;
-                    ReduceStacks();
+                    ReduceKillsOnLoss();
                 }
             }
-            public void ReduceStacks()
+            public void ReduceKillsOnLoss()
             {
                 kills = Math.Max(0, kills - Metronome_KillsLost);
             }
