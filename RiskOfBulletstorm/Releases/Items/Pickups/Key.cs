@@ -49,7 +49,7 @@ namespace RiskOfBulletstorm.Items
             TrustyLockpicks.TrustyLockpickFailed attempted = self.gameObject.GetComponent<TrustyLockpicks.TrustyLockpickFailed>();
             Highlight highlight = self.gameObject.GetComponent<Highlight>();
 
-            if (!attempted)
+            if (!attempted) //else is handled by the Trusty Lockpicks
             {
                 CharacterBody characterBody = activator.GetComponent<CharacterBody>();
                 if (characterBody)
