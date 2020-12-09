@@ -98,7 +98,7 @@ namespace RiskOfBulletstorm.Items
             private ProjectileDamage projectileDamage;
             private ProjectileController projectileController;
 
-            private int maxStacks = 20;
+            private int maxStacks = 10;
             private int currentStacks = 0;
 
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Engine")]
@@ -112,10 +112,11 @@ namespace RiskOfBulletstorm.Items
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Engine")]
             void FixedUpdate()
             {
-                var currentPosition = gameObject.transform.position;
                 if (currentStacks < maxStacks)
                 {
+                    var currentPosition = gameObject.transform.position;
                     var distance = Vector3.Distance(lastPosition, currentPosition);
+                    Debug.Log("Snowballets: Distance " + distance);
                     if (distance >= meterAmount)
                     {
                         lastPosition = currentPosition;

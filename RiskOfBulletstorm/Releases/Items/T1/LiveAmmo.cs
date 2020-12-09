@@ -85,11 +85,14 @@ namespace RiskOfBulletstorm.Items
 
             if (vBody.skillLocator.FindSkill(self.skillName))
             {
+                Debug.Log("LiveAmmo: Found Skill");
                 if (invCount > 0)
                 {
+                    Debug.Log("LiveAmmo: Invcount okay");
                     if (self.characterBody.skillLocator.utility.Equals(self))
                     {
-                        new BlastAttack
+                        Debug.Log("LiveAmmo: Found Skill");
+                        var blastAttack = new BlastAttack
                         {
                             attacker = vGameObject,
                             baseDamage = vBody.baseDamage * (LiveAmmo_DamageDealt + LiveAmmo_DamageDealtStack * (invCount - 1)),
@@ -98,9 +101,14 @@ namespace RiskOfBulletstorm.Items
                             teamIndex = vBody.teamComponent.teamIndex,
                             radius = LiveAmmo_Radius
                         }.Fire();
+                        Debug.Log("Live Ammo: Result of BlastAttack: " + blastAttack);
 
                         if (vBody.inputBank)
+                        {
+                            Debug.Log("Live Ammo: old velocity = "+ vBody.characterMotor.velocity);
                             vBody.characterMotor.velocity += vBody.inputBank.aimDirection * (LiveAmmo_ForceCoefficient + LiveAmmo_ForceCoefficientStack * (invCount - 1));
+                            Debug.Log("Live Ammo: new velocity = " + vBody.characterMotor.velocity);
+                        }
                     }
                 }
             }
