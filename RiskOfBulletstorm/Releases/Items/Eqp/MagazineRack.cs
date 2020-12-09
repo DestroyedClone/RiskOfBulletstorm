@@ -109,9 +109,12 @@ namespace RiskOfBulletstorm.Items
 
         public bool PlaceWard(CharacterBody body, GameObject wardObject, bool embryoProc)
         {
+            Debug.Log("before network server");
             if (NetworkServer.active)
             {
+                Debug.Log("get da spahgetetei");
                 var MagazineTracker = body.GetComponent<Bulletstorm_MagazineTracker>();
+                Debug.Log("did we get it");
                 if (MagazineTracker && MagazineTracker.instances.Count < MagazineRack_MaxObjectsPerPerson)
                 {
                     Debug.Log("1");
@@ -128,6 +131,7 @@ namespace RiskOfBulletstorm.Items
                     gameObject.GetComponent<Bulletstorm_MagazineKiller>().characterBody = body;
                     Debug.Log("7");
                     NetworkServer.Spawn(gameObject);
+                    Debug.Log("8");
                     return true;
                 }
             }
