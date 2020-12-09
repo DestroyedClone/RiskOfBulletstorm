@@ -15,7 +15,7 @@ namespace RiskOfBulletstorm.Items
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the duration of the Magazine Rack's zone?", AutoConfigFlags.PreventNetMismatch)]
-        public float MagazineRack_Duration { get; private set; } = 3.50f;
+        public float MagazineRack_Duration { get; private set; } = 2.50f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the cooldown in seconds?", AutoConfigFlags.PreventNetMismatch)]
