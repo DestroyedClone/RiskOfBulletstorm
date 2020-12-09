@@ -133,6 +133,14 @@ namespace RiskOfBulletstorm.Items
                 }
             }
 
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity Engine")]
+            private void OnDisable()
+            {
+                Debug.Log(gameObject.transform.localScale);
+                Debug.Log(projectileController.transform.localScale);
+                Debug.Log(projectileController.ghostPrefab.transform.localScale);
+            }
+
             private void ResizeProjectile(float scale)
             {
                 gameObject.transform.localScale *= scale;

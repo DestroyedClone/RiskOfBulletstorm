@@ -99,7 +99,7 @@ namespace RiskOfBulletstorm.Items
             new BlastAttack
             {
                 attacker = characterBody.gameObject,
-                baseDamage = characterBody.baseDamage * (LiveAmmo_DamageDealt + LiveAmmo_DamageDealtStack * (invCount - 1)) * (halve ? 0.5f : 1f),
+                baseDamage = characterBody.baseDamage * (LiveAmmo_DamageDealt + LiveAmmo_DamageDealtStack * (invCount - 1)) * (halve ? 0.45f : 1f),
                 crit = characterBody.RollCrit(),
                 damageColorIndex = DamageColorIndex.Default,
                 teamIndex = characterBody.teamComponent.teamIndex,
@@ -107,11 +107,11 @@ namespace RiskOfBulletstorm.Items
                 position = corePos,
                 procCoefficient = 0f
             }.Fire();
-
+            /*
             Vector3 ZeroYVector3(Vector3 vector3)
             {
                 return new Vector3(vector3.x, 0, vector3.z);
-            }
+            }*/
 
             if (characterBody.inputBank)
             {
