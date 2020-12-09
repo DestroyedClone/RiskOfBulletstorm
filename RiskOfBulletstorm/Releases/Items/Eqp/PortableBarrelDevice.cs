@@ -189,8 +189,7 @@ namespace RiskOfBulletstorm.Items
 
             private void OnEnable()
             {
-                RaycastHit raycastHit;
-                if (Physics.Raycast(base.transform.position, Vector3.down, out raycastHit, 500f, LayerIndex.world.mask))
+                if (Physics.Raycast(base.transform.position, Vector3.down, out RaycastHit raycastHit, 500f, LayerIndex.world.mask))
                 {
                     base.transform.position = raycastHit.point;
                     base.transform.up = raycastHit.normal;
