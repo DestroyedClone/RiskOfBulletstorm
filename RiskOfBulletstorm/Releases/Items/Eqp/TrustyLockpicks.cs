@@ -89,7 +89,7 @@ namespace RiskOfBulletstorm.Items
         //prefabs/effects/WarCryEffect
         private readonly string prefix = "BULLETSTORM_";
         private readonly string suffixBroken = " (Failed Unlock)";
-        private readonly string contextUnlock = "[EQP] Unlock with Trusty Lockpicks?\n";
+        private readonly string contextUnlock = "<color=#146dc7>[EQP] Unlock with Trusty Lockpicks?</style>\n";
         public TrustyLockpicks()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/TrustyLockpicks.prefab";
