@@ -5,15 +5,18 @@ using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
 using TILER2;
-using static TILER2.MiscUtil;
+using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using UnityEngine.Events;
 
 namespace RiskOfBulletstorm.Items
 {
     public class CharmHorn : Equipment_V2<CharmHorn>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the radius of charmed enemies? (Default: 100m)", AutoConfigFlags.PreventNetMismatch)]
-        public float CharmHorn_Radius { get; private set; } = 100f;
+        [AutoConfig("What is the radius of charmed enemies? (Default: 20m)", AutoConfigFlags.PreventNetMismatch)]
+        public float CharmHorn_Radius { get; private set; } = 20f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the duration of charmed enemies? (Default: 10 seconds)", AutoConfigFlags.PreventNetMismatch)]
@@ -38,7 +41,6 @@ namespace RiskOfBulletstorm.Items
         protected override string GetLoreString(string langID = null) => "There are strange inconsistencies in the behavior of the Gundead. Originally thought to be heartless killing machines, they have been known to capture certain invaders for unknown purposes. Furthermore, evidence of a crude religion has been discovered. Perhaps, one day, they could be reasoned with?";
 
         public static GameObject CharmWardPrefab { get; private set; }
-        public readonly BuffIndex charmIndex = GungeonBuffController.Charm;
 
         public override void SetupBehavior()
         {
@@ -48,12 +50,26 @@ namespace RiskOfBulletstorm.Items
             CharmWardPrefab = warbannerPrefab.InstantiateClone("Bulletstorm_CharmHornWard");
 
             BuffWard buffWard = CharmWardPrefab.GetComponent<BuffWard>();
-            //buffWard.Networkradius = CharmHorn_Radius;
-            buffWard.expires = true;
-            buffWard.expireDuration = 3f;
-            buffWard.buffType = charmIndex;
-            buffWard.floorWard = false;
-            buffWard.invertTeamFilter = true;
+
+            CharmWard charmWard = CharmWardPrefab.AddComponent<CharmWard>();
+            charmWard.expires = true;
+            charmWard.expireDuration = 3f;
+            charmWard.floorWard = false;
+            charmWard.invertTeamFilter = true;
+            buffWard.Networkradius = CharmHorn_Radius;
+            charmWard.animateRadius = buffWard.animateRadius;
+            charmWard.calculatedRadius = buffWard.calculatedRadius;
+            charmWard.interval = buffWard.interval;
+            charmWard.needsRemovalTime = buffWard.needsRemovalTime;
+            charmWard.onRemoval = buffWard.onRemoval;
+            charmWard.radiusCoefficientCurve = buffWard.radiusCoefficientCurve;
+            charmWard.rangeIndicator = buffWard.rangeIndicator;
+            charmWard.rangeIndicatorScaleVelocity = buffWard.rangeIndicatorScaleVelocity;
+            charmWard.removalTime = buffWard.removalTime;
+            charmWard.stopwatch = buffWard.stopwatch;
+            charmWard.teamFilter = buffWard.teamFilter;
+
+            UnityEngine.Object.Destroy(buffWard);
 
             if (ClassicItemsCompat.enabled)
                 ClassicItemsCompat.RegisterEmbryo(catalogIndex);
@@ -79,8 +95,8 @@ namespace RiskOfBulletstorm.Items
         {
             base.SetupLate();
 
-            BuffWard buffWard = CharmWardPrefab.GetComponent<BuffWard>();
-            buffWard.buffType = charmIndex;
+            CharmWard buffWard = CharmWardPrefab.GetComponent<CharmWard>();
+            buffWard.buffType = GungeonBuffController.Charm;
 
             if (CharmWardPrefab) PrefabAPI.RegisterNetworkPrefab(CharmWardPrefab);
         }
@@ -107,6 +123,32 @@ namespace RiskOfBulletstorm.Items
                 //gameObject.GetComponent<BuffWard>().Networkradius *= radius;
                 NetworkServer.Spawn(gameObject);
 
+            }
+        }
+
+        public class CharmWard : BuffWard
+        {
+            // Token: 0x06000839 RID: 2105 RVA: 0x00020118 File Offset: 0x0001E318
+#pragma warning disable CS0108 // Member hides inherited member; missing new keyword
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "overrides method")]
+            private void BuffTeam(IEnumerable<TeamComponent> recipients, float radiusSqr, Vector3 currentPosition)
+#pragma warning restore CS0108 // Member hides inherited member; missing new keyword
+            {
+                if (!NetworkServer.active)
+                {
+                    return;
+                }
+                foreach (TeamComponent teamComponent in recipients)
+                {
+                    if ((teamComponent.transform.position - currentPosition).sqrMagnitude <= radiusSqr)
+                    {
+                        CharacterBody component = teamComponent.GetComponent<CharacterBody>();
+                        if (component)
+                        {
+                            component.AddBuff(buffType);
+                        }
+                    }
+                }
             }
         }
     }
