@@ -96,8 +96,8 @@ namespace RiskOfBulletstorm.Items
         {
             var invCount = characterBody.inventory.GetItemCount(catalogIndex);
             Vector3 corePos = Util.GetCorePosition(characterBody);
-            var prcf = 15;
-            var mass = characterBody.characterMotor?.mass ?? (characterBody.rigidbody?.mass ?? 1f);
+            //var prcf = 15;
+            //var mass = characterBody.characterMotor?.mass ?? (characterBody.rigidbody?.mass ?? 1f);
 
             new BlastAttack
             {
@@ -120,8 +120,8 @@ namespace RiskOfBulletstorm.Items
             {
                 var vector = characterBody.inputBank.aimDirection * (LiveAmmo_ForceCoefficient + LiveAmmo_ForceCoefficientStack * (invCount - 1));
                 vector *= halve ? 0.5f : 1f;
-                var vector2 = Vector3.Normalize(ZeroYVector3(vector)) * prcf * mass;
-                characterBody.characterMotor.velocity += vector2;
+                //var vector2 = Vector3.Normalize(ZeroYVector3(vector));
+                characterBody.characterMotor.velocity += vector;
             }
         }
 

@@ -166,7 +166,7 @@ namespace RiskOfBulletstorm.Items
 
         private bool PlaceTable(CharacterBody characterBody)
         {
-            var tracker = characterBody.GetComponent<BulletstormBarrelTracker>();
+            var tracker = characterBody.gameObject.GetComponent<BulletstormBarrelTracker>();
             if (!tracker) return false;
             var trackerbarrels = tracker.barrels;
             var barrelAmt = trackerbarrels.Count;
@@ -221,7 +221,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     if (owner)
                     {
-                        var tracker = owner.GetComponent<BulletstormBarrelTracker>();
+                        var tracker = owner.gameObject.GetComponent<BulletstormBarrelTracker>();
                         if (tracker)
                             tracker.barrels.Remove(gameObject);
                     }

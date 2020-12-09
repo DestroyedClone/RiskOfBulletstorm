@@ -41,6 +41,8 @@ namespace RiskOfBulletstorm.Items
         protected override string GetLoreString(string langID = null) => "There are strange inconsistencies in the behavior of the Gundead. Originally thought to be heartless killing machines, they have been known to capture certain invaders for unknown purposes. Furthermore, evidence of a crude religion has been discovered. Perhaps, one day, they could be reasoned with?";
 
         public static GameObject CharmWardPrefab { get; private set; }
+        public static readonly BuffIndex CharmBuff = GungeonBuffController.Charm;
+        public static readonly BuffIndex AngerBuff = GungeonBuffController.Anger;
 
         public override void SetupBehavior()
         {
@@ -50,13 +52,17 @@ namespace RiskOfBulletstorm.Items
             CharmWardPrefab = warbannerPrefab.InstantiateClone("Bulletstorm_CharmHornWard");
 
             BuffWard buffWard = CharmWardPrefab.GetComponent<BuffWard>();
+            buffWard.expires = true;
+            buffWard.expireDuration = 3f;
+            buffWard.invertTeamFilter = true;
 
-            CharmWard charmWard = CharmWardPrefab.AddComponent<CharmWard>();
-            charmWard.expires = true;
-            charmWard.expireDuration = 3f;
-            charmWard.floorWard = false;
-            charmWard.invertTeamFilter = true;
-            buffWard.Networkradius = CharmHorn_Radius;
+            //CharmWard charmWard = CharmWardPrefab.AddComponent<CharmWard>();
+            //charmWard.expires = true;
+            //charmWard.expireDuration = 3f;
+            //charmWard.floorWard = false;
+
+            //charmWard.invertTeamFilter = true;
+            /*buffWard.Networkradius = CharmHorn_Radius;
             charmWard.animateRadius = buffWard.animateRadius;
             charmWard.calculatedRadius = buffWard.calculatedRadius;
             charmWard.interval = buffWard.interval;
@@ -67,12 +73,13 @@ namespace RiskOfBulletstorm.Items
             charmWard.rangeIndicatorScaleVelocity = buffWard.rangeIndicatorScaleVelocity;
             charmWard.removalTime = buffWard.removalTime;
             charmWard.stopwatch = buffWard.stopwatch;
-            charmWard.teamFilter = buffWard.teamFilter;
+            charmWard.teamFilter = buffWard.teamFilter;*/
 
-            UnityEngine.Object.Destroy(buffWard);
+            //UnityEngine.Object.Destroy(buffWard);
 
             if (ClassicItemsCompat.enabled)
                 ClassicItemsCompat.RegisterEmbryo(catalogIndex);
+            if (CharmWardPrefab) PrefabAPI.RegisterNetworkPrefab(CharmWardPrefab);
         }
         public override void SetupAttributes()
         {
@@ -95,10 +102,7 @@ namespace RiskOfBulletstorm.Items
         {
             base.SetupLate();
 
-            CharmWard buffWard = CharmWardPrefab.GetComponent<CharmWard>();
-            buffWard.buffType = GungeonBuffController.Charm;
 
-            if (CharmWardPrefab) PrefabAPI.RegisterNetworkPrefab(CharmWardPrefab);
         }
         protected override bool PerformEquipmentAction(EquipmentSlot slot)
         {
@@ -120,7 +124,9 @@ namespace RiskOfBulletstorm.Items
             {
                 GameObject gameObject = UnityEngine.Object.Instantiate(CharmWardPrefab, body.transform.position, Quaternion.identity);
                 gameObject.GetComponent<TeamFilter>().teamIndex = body.teamComponent.teamIndex;
-                //gameObject.GetComponent<BuffWard>().Networkradius *= radius;
+                BuffWard buffWard = gameObject.GetComponent<BuffWard>();
+                buffWard.buffType = CharmBuff;
+                buffWard.GetComponent<BuffWard>().Networkradius *= radius;
                 NetworkServer.Spawn(gameObject);
 
             }

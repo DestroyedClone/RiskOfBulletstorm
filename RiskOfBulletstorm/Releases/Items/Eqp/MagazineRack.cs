@@ -76,25 +76,11 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            CharacterBody.onBodyStartGlobal += GiveTracker;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
-            CharacterBody.onBodyStartGlobal -= GiveTracker;
-        }
-        private void GiveTracker(CharacterBody obj)
-        {
-            if (NetworkServer.active)
-            {
-                var gameObject = obj.gameObject;
-                if (gameObject)
-                {
-                    gameObject.AddComponent<Bulletstorm_MagazineTracker>();
-                    Debug.Log("gave tracker");
-                }
-            }
         }
 
         protected override bool PerformEquipmentAction(EquipmentSlot slot)
@@ -109,33 +95,15 @@ namespace RiskOfBulletstorm.Items
 
         public bool PlaceWard(CharacterBody body, GameObject wardObject, bool embryoProc)
         {
-            Debug.Log("before network server");
             if (NetworkServer.active)
             {
-                Debug.Log("get da spahgetetei");
-                var MagazineTracker = body.gameObject.GetComponent<Bulletstorm_MagazineTracker>();
-                Debug.Log("did we get it");
-                if (!MagazineTracker) return false;
-                var instances = MagazineTracker.instances;
-                if (instances.Count < MagazineRack_MaxObjectsPerPerson )
-                {
-                    Debug.Log("1");
-                    GameObject gameObject = UnityEngine.Object.Instantiate(wardObject, body.transform.position, Quaternion.identity);
-                    Debug.Log("2");
-                    gameObject.GetComponent<TeamFilter>().teamIndex = body.teamComponent.teamIndex;
-                    Debug.Log("3");
-                    gameObject.GetComponent<BuffWard>().Networkradius *= embryoProc ? 1.5f : 1f;
-                    Debug.Log("4");
-                    gameObject.GetComponent<BuffWard>().expireDuration *= embryoProc ? 1.2f: 1f;
-                    Debug.Log("5");
-                    MagazineTracker.instances.Add(gameObject);
-                    Debug.Log("6");
-                    gameObject.GetComponent<Bulletstorm_MagazineKiller>().characterBody = body;
-                    Debug.Log("7");
-                    NetworkServer.Spawn(gameObject);
-                    Debug.Log("8");
-                    return true;
-                }
+                GameObject gameObject = UnityEngine.Object.Instantiate(wardObject, body.transform.position, Quaternion.identity);
+                gameObject.GetComponent<TeamFilter>().teamIndex = body.teamComponent.teamIndex;
+                gameObject.GetComponent<BuffWard>().Networkradius *= embryoProc ? 1.5f : 1f;
+                gameObject.GetComponent<BuffWard>().expireDuration *= embryoProc ? 1.2f : 1f;
+                gameObject.GetComponent<Bulletstorm_MagazineKiller>().characterBody = body;
+                NetworkServer.Spawn(gameObject);
+                return true;
             }
             return false;
         }
