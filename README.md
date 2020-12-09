@@ -58,11 +58,12 @@ Every 25 kills (+25 per stage), the game will have a 30% chance to *spawn a rand
 
 # Equipment
 ## Normal
-*Beating Embryo from ThinkInvis's Classic Items has support, listed as BEmbryo:*
+*Beating Embryo from ThinkInvis's Classic Items has support, listed as BEmbryo. If you don't have it you can just ignore the line.*
 
  - **Bomb**: Throws a bomb for 100% damage. CD: 14s
 	 - *BEmbryo: Throws an extra bomb.*
  - **Charm Horn**: Blowing this horn [Charms] all enemies within a radius of 20 meters for 10 seconds
+	 - *BEmbryo: Increases radius by 50%*
  - **Friendship Cookie**: Revives all players and gives 3 seconds of immunity. If in singleplayer, gives an Infusion instead. Consumed on use. 
 	 - *BEmbryo: Extends immunity duration to 9 seconds. Singleplayer: Gives one more Infusion.*
  - **Magazine Rack**: Place to create a zone of no cooldowns within a radius of 4m for 3.5 seconds. CD: 90s
@@ -99,6 +100,7 @@ Every 25 kills (+25 per stage), the game will have a 30% chance to *spawn a rand
  - **Curse** - Certain items apply curse. The chance of encountering a Jammed enemy increases as you gain more Curse. This is independent of elite affixes.
 ## Buffs
  - **[Enraged]**: +100% damage.
+
 ---AI Specific:---
  - **[Charmed]**: Switches to the opposite team and fights the former team. Can be damaged by both sides.
  - **[Jammed]**: +100% damage, +100% crit chance, +20% attack speed, +20% movement speed. 
