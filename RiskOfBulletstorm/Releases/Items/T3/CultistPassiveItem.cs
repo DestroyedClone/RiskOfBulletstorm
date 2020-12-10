@@ -115,19 +115,17 @@ namespace RiskOfBulletstorm.Items
         private void UpdateComponentForEveryone()
         {
             int AmountDead = GetDeadAmount();
-            if (AmountDead > 0)
+            var list = PlayerCharacterMasterController.instances;
+            foreach (var player in list)
             {
-                var list = PlayerCharacterMasterController.instances;
-                foreach (var player in list)
+                var body = player.master?.GetBody();
+                if (body)
                 {
-                    var body = player.master?.GetBody();
-                    if (body)
-                    {
-                        var passiveComponent = body.GetComponent<CultistPassiveComponent>();
-                        if (passiveComponent) passiveComponent.deadProtagonists = AmountDead;
-                    }
+                    var passiveComponent = body.GetComponent<CultistPassiveComponent>();
+                    if (passiveComponent) passiveComponent.deadProtagonists = AmountDead;
                 }
             }
+            
         }
 
         public class CultistPassiveComponent : MonoBehaviour
