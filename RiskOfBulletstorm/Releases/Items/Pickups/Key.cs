@@ -1,7 +1,10 @@
 ﻿using System.Collections.ObjectModel;
+using R2API;
 using RoR2;
 using UnityEngine;
 using TILER2;
+using static RiskOfBulletstorm.Items.TrustyLockpicks;
+using static RoR2.Highlight;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -19,6 +22,15 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "";
 
+        private readonly HighlightColor yellow = HighlightColor.interactive;
+        private readonly HighlightColor white = HighlightColor.pickup;
+        private readonly HighlightColor red = HighlightColor.teleporter;
+        //private readonly HighlightColor purple = HighlightColor.unavailable;
+        private readonly string prefix = "BLTSTRM_";
+        private readonly string suffixBroken = " (Failed Unlock)";
+        private readonly string contextKey = "<color=#95ccbd>[Interact] Unlock with Key?</color>\n";
+        private readonly string contextLockpicks = "<color=#146dc7>[Equipment] Unlock with Trusty Lockpicks?</color>\n";
+
         public Key()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Key.prefab";
@@ -28,9 +40,52 @@ namespace RiskOfBulletstorm.Items
         {
 
         }
+
+        private readonly string[,] chestKeys =
+        {
+            { "CHEST1_STEALTHED", "Cloaked Chest" },
+            { "CHEST1", "Chest" },
+            { "CATEGORYCHEST_HEALING", "Chest - Healing" },
+            { "CATEGORYCHEST_DAMAGE", "Chest - Damage" },
+            { "CATEGORYCHEST_UTILITY", "Chest - Utility" },
+            { "CHEST2", "Large Chest" },
+            { "GOLDCHEST", "Legendary Chest" },
+            { "EQUIPMENTBARREL", "Equipment Barrel" },
+        };
+
+        private readonly string[] chestContexts =
+        {
+            "cloaked chest",
+            "chest",
+            "Chest - Healing",
+            "Chest - Damage",
+            "Chest - Utility",
+            "large chest",
+            "Legendary Chest",
+            "equipment barrel"
+        };
+        private void AddLanguageTokens()
+        {
+            for (int i = 0; i < chestKeys.Length; i++)
+            {
+                var contextString = "Open " + chestContexts[i];
+                // broken lock //
+                LanguageAPI.Add(prefix + chestKeys[i, 0] + "_NAME", chestKeys[i, 1] + suffixBroken);
+                // context strings //
+                // key //
+                LanguageAPI.Add(prefix + chestKeys[i, 0] + "_CONTEXT_KEY", contextKey + contextString);
+                // lockpick //
+                LanguageAPI.Add(prefix + chestKeys[i, 0] + "_CONTEXT_LOCKPICK", contextLockpicks + contextString);
+                // both //
+                LanguageAPI.Add(prefix + chestKeys[i, 0] + "_CONTEXT_BOTH", contextKey + contextLockpicks + contextString);
+            }
+        }
+
         public override void SetupAttributes()
         {
             base.SetupAttributes();
+
+            AddLanguageTokens();
 
         }
         public override void SetupConfig()
@@ -46,30 +101,76 @@ namespace RiskOfBulletstorm.Items
 
         private Interactability PurchaseInteraction_GetInteractability(On.RoR2.PurchaseInteraction.orig_GetInteractability orig, PurchaseInteraction self, Interactor activator)
         {
-            TrustyLockpicks.TrustyLockpickFailed attempted = self.gameObject.GetComponent<TrustyLockpicks.TrustyLockpickFailed>();
-            Highlight highlight = self.gameObject.GetComponent<Highlight>();
-
-            if (!attempted) //else is handled by the Trusty Lockpicks
+            var gameObject = self.gameObject;
+            TrustyLockpicksComponent component = gameObject.GetComponent<TrustyLockpicksComponent>();
+            if (!component) component = gameObject.AddComponent<TrustyLockpicksComponent>();
+            Highlight highlight = gameObject.GetComponent<Highlight>();
+            PurchaseInteraction purchaseInteraction = gameObject.GetComponent<PurchaseInteraction>();
+            CharacterBody characterBody = activator.GetComponent<CharacterBody>();
+            Interactability Result(HighlightColor highlightColor, string contextTokenType = "", Interactability interactability = Interactability.Available)
             {
-                CharacterBody characterBody = activator.GetComponent<CharacterBody>();
-                if (characterBody)
+                //var resultContext = (prefix + purchaseInteraction.contextToken);
+                if (highlight) highlight.highlightColor = highlightColor;
+                if (purchaseInteraction)
                 {
-                    Inventory inventory = characterBody.inventory;
-                    if (inventory)
+                    string context = "";
+                    switch (contextTokenType)
                     {
-                        if (self.isShrine == false && self.available && self.costType == CostTypeIndex.Money) //if not shrine, is available, and is not a lunar pod
+                        case "key":
+                            context = prefix + purchaseInteraction.contextToken + "_KEY";
+                            break;
+                        case "lockpick":
+                            context = prefix + purchaseInteraction.contextToken + "_LOCKPICK";
+                            break;
+                        case "both":
+                            context = prefix + purchaseInteraction.contextToken + "_BOTH";
+                            break;
+                        default:
+                            context = component.oldContext;
+                            break;
+                    }
+
+                    if (purchaseInteraction.contextToken == component.oldContext) purchaseInteraction.contextToken = context;
+                }
+                return interactability;
+            }
+
+            // If it's been picked and failed before //
+            if (component && component.failed)
+            {
+                Result(red);
+                return orig(self, activator);
+            }
+            if (characterBody)
+            {
+                Inventory inventory = characterBody.inventory;
+                if (inventory)
+                {
+                    if (self.isShrine == false && self.available && self.costType == CostTypeIndex.Money) //if not shrine, is available, and is not a lunar pod
+                    {
+                        bool HasKey = characterBody.inventory.GetItemCount(catalogIndex) > 0;
+                        bool LockpicksActive = inventory.GetEquipmentIndex() == TrustyLockpicks.instance.catalogIndex;
+                        bool EquipmentReady = inventory.GetEquipmentRestockableChargeCount(0) > 0;
+                        bool LockpicksReady = LockpicksActive && EquipmentReady;
+                        if (component.oldContext == "") component.oldContext = purchaseInteraction.contextToken;
+
+                        if (HasKey) //a
                         {
-                            int InventoryCount = characterBody.inventory.GetItemCount(catalogIndex);
-                            if (InventoryCount > 0)
-                            {
-                                if (highlight) highlight.highlightColor = Highlight.HighlightColor.pickup;
-                                return Interactability.Available;
-                            }
+                            if (LockpicksReady) return Result(yellow, "both"); //a b : has both
+                            else return Result(white, "key");  //a !b : only has key
+                        }
+                        else //!a
+                        {
+                            if (LockpicksReady) return Result(yellow, "lockpick"); //!a b : only lockpicks
+                            if (component && component.oldContext != "") purchaseInteraction.contextToken = component.oldContext;
+                            Result(yellow); //!a !b :has neither
+                            return orig(self, activator);
                         }
                     }
                 }
             }
-            if (highlight) highlight.highlightColor = Highlight.HighlightColor.interactive;
+            if (component && component.oldContext != "") purchaseInteraction.contextToken = component.oldContext;
+            Result(yellow);
             return orig(self, activator);
         }
 
@@ -85,8 +186,8 @@ namespace RiskOfBulletstorm.Items
             PurchaseInteraction purchaseInteraction = interactableObject.GetComponent<PurchaseInteraction>();
             if (purchaseInteraction)
             {
-                TrustyLockpicks.TrustyLockpickFailed attempted = interactableObject.GetComponent<TrustyLockpicks.TrustyLockpickFailed>();
-                if (!attempted)
+                TrustyLockpicksComponent component = interactableObject.GetComponent<TrustyLockpicksComponent>();
+                if (!component || (component && !component.failed))
                 {
                     CharacterBody characterBody = self.GetComponent<CharacterBody>();
                     if (characterBody)

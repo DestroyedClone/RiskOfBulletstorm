@@ -88,8 +88,8 @@ namespace RiskOfBulletstorm.Items
         private readonly GameObject Fail_LockEffect = Resources.Load<GameObject>("prefabs/effects/LevelUpEffectEnemy");
         //prefabs/effects/WarCryEffect
         private readonly string prefix = "BULLETSTORM_";
-        private readonly string suffixBroken = " (Failed Unlock)";
-        private readonly string contextUnlock = "<color=#146dc7>[Equipment] Unlock with Trusty Lockpicks?</style>\n";
+        //private readonly string suffixBroken = " (Failed Unlock)";
+        //private readonly string contextUnlock = "<color=#146dc7>[Equipment] Unlock with Trusty Lockpicks?</style>\n";
         public TrustyLockpicks()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/TrustyLockpicks.prefab";
@@ -105,7 +105,7 @@ namespace RiskOfBulletstorm.Items
         public override void SetupAttributes()
         {
             base.SetupAttributes();
-
+            /*
             LanguageAPI.Add(prefix + "CHEST1_STEALTHED_NAME", "Cloaked Chest" + suffixBroken);
             LanguageAPI.Add(prefix + "CHEST1_NAME", "Chest"+ suffixBroken);
             LanguageAPI.Add(prefix + "CATEGORYCHEST_HEALING_NAME", "Chest - Healing" + suffixBroken);
@@ -122,7 +122,7 @@ namespace RiskOfBulletstorm.Items
             LanguageAPI.Add(prefix + "CATEGORYCHEST_UTILITY_CONTEXT", contextUnlock + "Open Chest - Utility");
             LanguageAPI.Add(prefix + "CHEST2_CONTEXT", contextUnlock + "Open large chest");
             LanguageAPI.Add(prefix + "GOLDCHEST_CONTEXT", contextUnlock + "Open Legendary Chest");
-            LanguageAPI.Add(prefix + "EQUIPMENTBARREL_CONTEXT", contextUnlock + "Open equipment barrel");
+            LanguageAPI.Add(prefix + "EQUIPMENTBARREL_CONTEXT", contextUnlock + "Open equipment barrel");*/
         }
         public override void SetupConfig()
         {
@@ -131,13 +131,13 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            On.RoR2.PurchaseInteraction.GetInteractability += PurchaseInteraction_GetInteractability;
+            //On.RoR2.PurchaseInteraction.GetInteractability += PurchaseInteraction_GetInteractability;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
-            On.RoR2.PurchaseInteraction.GetInteractability -= PurchaseInteraction_GetInteractability;
+            //On.RoR2.PurchaseInteraction.GetInteractability -= PurchaseInteraction_GetInteractability;
         }
         protected override bool PerformEquipmentAction(EquipmentSlot slot)
         {
@@ -170,8 +170,8 @@ namespace RiskOfBulletstorm.Items
             PurchaseInteraction purchaseInteraction = chestObject.GetComponent<PurchaseInteraction>();
             if (!highlight) return false;
             if (!purchaseInteraction) return false;
-            TrustyLockpickFailed attempted = chestObject.GetComponent<TrustyLockpickFailed>();
-            if (attempted) return false;
+            TrustyLockpicksComponent component = chestObject.GetComponent<TrustyLockpicksComponent>();
+            if (component & component.failed) return false;
             if (!interactionDriver) return false;
 
             GameObject selectedEffect;
@@ -215,7 +215,7 @@ namespace RiskOfBulletstorm.Items
                         selectedEffect = Fail_LockEffect;
                     }
                     purchaseInteraction.displayNameToken = (prefix + purchaseInteraction.displayNameToken);
-                    chestObject.AddComponent<TrustyLockpickFailed>();
+                    chestObject.AddComponent<TrustyLockpicksComponent>();
                     EffectManager.SimpleEffect(selectedEffect, chestObject.transform.position + offset, Quaternion.identity, true);
                 }
                 return true;
@@ -232,9 +232,9 @@ namespace RiskOfBulletstorm.Items
             Highlight highlight = gameObject.GetComponent<Highlight>();
             //if (!highlight) return orig(self, activator);
 
-            TrustyLockpickFailed attempted = gameObject.GetComponent<TrustyLockpickFailed>();
+            TrustyLockpicksComponent component = gameObject.GetComponent<TrustyLockpicksComponent>();
             //if (attempted) return orig(self, activator);
-            if (attempted)
+            if (component && component.failed)
             {
                 if (highlight) highlight.highlightColor = Highlight.HighlightColor.teleporter;
                 return orig(self, activator);
@@ -242,8 +242,7 @@ namespace RiskOfBulletstorm.Items
 
             PurchaseInteraction purchaseInteraction = gameObject.GetComponent<PurchaseInteraction>();
 
-            var nameComponent = gameObject.GetComponent<TrustyLockpickRememberedName>();
-            if (!nameComponent) nameComponent = gameObject.AddComponent<TrustyLockpickRememberedName>();
+            if (!component) component = gameObject.AddComponent<TrustyLockpicksComponent>();
 
             CharacterBody characterBody = activator.GetComponent<CharacterBody>();
             if (characterBody)
@@ -261,9 +260,9 @@ namespace RiskOfBulletstorm.Items
                             if (purchaseInteraction)
                             {
                                 var resultContext = (prefix + purchaseInteraction.contextToken);
-                                if (nameComponent.oldContext == "") nameComponent.oldContext = purchaseInteraction.contextToken;
+                                if (component.oldContext == "") component.oldContext = purchaseInteraction.contextToken;
 
-                                if (purchaseInteraction.contextToken == nameComponent.oldContext) purchaseInteraction.contextToken = resultContext;
+                                if (purchaseInteraction.contextToken == component.oldContext) purchaseInteraction.contextToken = resultContext;
                             }
                             return Interactability.Available;
                         }
@@ -271,17 +270,14 @@ namespace RiskOfBulletstorm.Items
                 }
             }
             if (highlight) highlight.highlightColor = Highlight.HighlightColor.interactive;
-            if (nameComponent && nameComponent.oldContext != "") purchaseInteraction.contextToken = nameComponent.oldContext;
+            if (component && component.oldContext != "") purchaseInteraction.contextToken = component.oldContext;
             return orig(self, activator);
         }
 
-        public class TrustyLockpickFailed : MonoBehaviour
-        {
-
-        }
-        public class TrustyLockpickRememberedName : MonoBehaviour
+        public class TrustyLockpicksComponent : MonoBehaviour
         {
             public string oldContext = "";
+            public bool failed = false;
         }
     }
 }
