@@ -302,8 +302,8 @@ namespace RiskOfBulletstorm.Items
                 var inventory = characterBody.inventory;
                 if (inventory)
                 {
-                    Debug.Log("Entered nailgun inventory");
                     int InventoryCount = characterBody.inventory.GetItemCount(catalogIndex);
+                    Debug.Log("Entered nailgun inventory with "+ InventoryCount);
                     if (InventoryCount > 0)
                     {
                         var ResultMult = CalculateSpreadMultiplier(inventory);
