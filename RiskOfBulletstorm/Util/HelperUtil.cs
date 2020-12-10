@@ -54,19 +54,6 @@ namespace RiskOfBulletstorm.Utils
             return chosenBody;
         }
 
-        /*public static int GetPlayersItemCount(ItemIndex itemIndex) //usually for alive players
-        {
-            var instances = PlayerCharacterMasterController.instances;
-            int InventoryCount = 0;
-            foreach (PlayerCharacterMasterController playerCharacterMaster in instances)
-            {
-                var master = playerCharacterMaster.master;
-                var body = master.GetBody();
-                if (body) InventoryCount += body.inventory.GetItemCount(itemIndex);
-            }
-            return InventoryCount;
-        }*/
-
         public static void GiveItemToPlayers(ItemIndex itemIndex, bool showInChat = true, int amount = 1, int max = 1)
         {
             var instances = PlayerCharacterMasterController.instances;
