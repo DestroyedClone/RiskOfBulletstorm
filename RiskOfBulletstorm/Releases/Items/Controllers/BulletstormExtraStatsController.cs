@@ -213,8 +213,8 @@ namespace RiskOfBulletstorm.Items
         {
             int ItemCount_Scope = inventory.GetItemCount(ItemIndex_Scope);
             int ItemCount_Spice = inventory.GetItemCount(ItemIndex_SpiceTally);
-            float SpiceMult = 1f;
-            float ScopeMult = 1f;
+            float SpiceMult = 0f;
+            float ScopeMult = 0f;
 
             if (ItemCount_Scope > 0)
                 ScopeMult -= (Scope_SpreadReduction + Scope_SpreadReductionStack * (ItemCount_Scope - 1));
@@ -241,9 +241,10 @@ namespace RiskOfBulletstorm.Items
                 else return value;
             }
 
-            var ResultMult = ScopeMult + SpiceMult;
+            var ResultMult = 1 + ScopeMult + SpiceMult;
 
             ResultMult = Clamp(ResultMult);
+            Debug.Log("Scope: "+ ResultMult);
             //Debug.Log("ScopeMult: " + ScopeMult + " + SpiceMUlt: " + SpiceMult + " = " + ResultMult);
             return ResultMult;
         }

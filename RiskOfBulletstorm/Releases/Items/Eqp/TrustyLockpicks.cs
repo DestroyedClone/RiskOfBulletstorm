@@ -263,7 +263,7 @@ namespace RiskOfBulletstorm.Items
                                 var resultContext = (prefix + purchaseInteraction.contextToken);
                                 if (nameComponent.oldContext == "") nameComponent.oldContext = purchaseInteraction.contextToken;
 
-                                if (purchaseInteraction.contextToken != resultContext) purchaseInteraction.contextToken = resultContext;
+                                if (purchaseInteraction.contextToken == nameComponent.oldContext) purchaseInteraction.contextToken = resultContext;
                             }
                             return Interactability.Available;
                         }

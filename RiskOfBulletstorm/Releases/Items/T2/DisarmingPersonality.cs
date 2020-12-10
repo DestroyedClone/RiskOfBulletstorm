@@ -69,7 +69,7 @@ namespace RiskOfBulletstorm.Items
         private void LowerCosts(On.RoR2.PurchaseInteraction.orig_Awake orig, PurchaseInteraction self)
         {
             var chest = self.GetComponent<ChestBehavior>();
-            int InventoryCount = GetBodiesItemCount(catalogIndex, true);
+            int InventoryCount = Util.GetItemCountForTeam(TeamIndex.Player, catalogIndex, false, true);
 
             if (chest)
             {
