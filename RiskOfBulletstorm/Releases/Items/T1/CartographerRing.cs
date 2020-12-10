@@ -136,7 +136,7 @@ namespace RiskOfBulletstorm.Items
         {
             if (NetworkServer.active)
             {
-                int InventoryCount = GetPlayersItemCount(catalogIndex);
+                int InventoryCount = Util.GetItemCountForTeam(TeamIndex.Player, catalogIndex, true, true);
 
                 if (InventoryCount > 0)
                 {

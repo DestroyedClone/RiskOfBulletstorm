@@ -54,7 +54,7 @@ namespace RiskOfBulletstorm.Utils
             return chosenBody;
         }
 
-        public static int GetPlayersItemCount(ItemIndex itemIndex) //usually for alive players
+        /*public static int GetPlayersItemCount(ItemIndex itemIndex) //usually for alive players
         {
             var instances = PlayerCharacterMasterController.instances;
             int InventoryCount = 0;
@@ -65,36 +65,7 @@ namespace RiskOfBulletstorm.Utils
                 if (body) InventoryCount += body.inventory.GetItemCount(itemIndex);
             }
             return InventoryCount;
-        }
-        public static int GetBodiesItemCount(ItemIndex itemIndex, bool onlyPlayers = false, TeamIndex teamIndex = TeamIndex.Player)
-        {
-            int InventoryCount = 0;
-            for (int i = 0; i < CharacterMaster.readOnlyInstancesList.Count; i++)
-            {
-                var master = CharacterMaster.readOnlyInstancesList[i];
-                var body = master.GetBody();
-                if (body)
-                {
-                    var teamComponent = body.teamComponent;
-                    if (teamComponent)
-                    {
-                        if ((onlyPlayers && body.isPlayerControlled) || (!onlyPlayers))
-                        {
-                            if (teamIndex == TeamIndex.None) //can probably optimize this section
-                            {
-                                if (body.inventory)
-                                    InventoryCount += body.inventory.GetItemCount(itemIndex);
-                            }
-                            else
-                            {
-                                if (teamIndex == body.teamComponent.teamIndex) if (body && body.inventory) InventoryCount += body.inventory.GetItemCount(itemIndex);
-                            }
-                        }
-                    }
-                }
-            }
-            return InventoryCount;
-        }
+        }*/
 
         public static void GiveItemToPlayers(ItemIndex itemIndex, bool showInChat = true, int amount = 1, int max = 1)
         {
