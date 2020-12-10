@@ -123,8 +123,43 @@ namespace RiskOfBulletstorm.Items
             On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
             // CHARM //
             On.RoR2.CharacterAI.BaseAI.FindEnemyHurtBox += BaseAI_FindEnemyHurtBox;
+            On.RoR2.CharacterAI.BaseAI.OnBodyDamaged += BaseAI_OnBodyDamaged;
             On.RoR2.CharacterBody.RemoveBuff += Charmed_DisableComponent;
             On.RoR2.CharacterBody.AddBuff += Charmed_AddComponent;
+        }
+
+        public override void Uninstall()
+        {
+            base.Uninstall();
+            GetStatCoefficients -= AddRewards;
+            GetStatCoefficients -= AddSpiceRewards;
+            On.RoR2.HealthComponent.TakeDamage -= HealthComponent_TakeDamage;
+            // CHARM //
+            On.RoR2.CharacterAI.BaseAI.FindEnemyHurtBox -= BaseAI_FindEnemyHurtBox;
+            On.RoR2.CharacterAI.BaseAI.OnBodyDamaged -= BaseAI_OnBodyDamaged;
+            On.RoR2.CharacterBody.RemoveBuff -= Charmed_DisableComponent;
+            On.RoR2.CharacterBody.AddBuff -= Charmed_AddComponent;
+        }
+
+        private void BaseAI_OnBodyDamaged(On.RoR2.CharacterAI.BaseAI.orig_OnBodyDamaged orig, BaseAI self, DamageReport damageReport)
+        {
+            var isCharmed = self.body.gameObject.GetComponent<IsCharmed>();
+            if (isCharmed && isCharmed.enabled)
+            {
+                DamageInfo damageInfo = damageReport.damageInfo;
+                var noTarget = (!self.currentEnemy.gameObject || self.enemyAttention <= 0f);
+                var attackerNotSelf = damageInfo.attacker != self.body.gameObject;
+                var retaliate = (!self.neverRetaliateFriendlies || !damageReport.isFriendlyFire);
+                var attackerIsCharmerTeam = damageReport.attackerTeamIndex == isCharmed.GetOppositeTeamIndex(isCharmed.GetOldTeam());
+                if (attackerIsCharmerTeam)
+                {
+                    if (noTarget && attackerNotSelf && retaliate)
+                    {
+                        return;
+                    }
+                }
+            }
+            orig(self, damageReport);
         }
 
         private void Charmed_AddComponent(On.RoR2.CharacterBody.orig_AddBuff orig, CharacterBody self, BuffIndex buffType)
@@ -155,18 +190,6 @@ namespace RiskOfBulletstorm.Items
             }
             orig(self, buffType);
         }
-
-        public override void Uninstall()
-        {
-            base.Uninstall();
-            GetStatCoefficients -= AddRewards;
-            GetStatCoefficients -= AddSpiceRewards;
-            On.RoR2.HealthComponent.TakeDamage -= HealthComponent_TakeDamage;
-            // CHARM //
-            On.RoR2.CharacterAI.BaseAI.FindEnemyHurtBox -= BaseAI_FindEnemyHurtBox;
-            On.RoR2.CharacterBody.RemoveBuff -= Charmed_DisableComponent;
-            On.RoR2.CharacterBody.AddBuff -= Charmed_AddComponent;
-        }
         private HurtBox BaseAI_FindEnemyHurtBox(On.RoR2.CharacterAI.BaseAI.orig_FindEnemyHurtBox orig, RoR2.CharacterAI.BaseAI self, float maxDistance, bool full360Vision, bool filterByLoS)
         {
             var isCharmed = self.body.gameObject.GetComponent<IsCharmed>();
@@ -183,7 +206,9 @@ namespace RiskOfBulletstorm.Items
                 self.enemySearch.maxAngleFilter = (full360Vision ? 180f : 90f);
                 self.enemySearch.filterByLoS = filterByLoS;
                 self.enemySearch.RefreshCandidates();
-                return self.enemySearch.GetResults().FirstOrDefault<HurtBox>();
+                var list = self.enemySearch.GetResults().ToList(); //removes self from target
+                list.RemoveAt(0);
+                return list.FirstOrDefault<HurtBox>();
             }
             return orig(self, maxDistance, full360Vision, filterByLoS);
         }
