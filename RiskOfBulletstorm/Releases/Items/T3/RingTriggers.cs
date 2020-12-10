@@ -271,7 +271,6 @@ namespace RiskOfBulletstorm.Items
 
                                 break;
                             case "projectile":
-
                                 for (int i = 0; i < RingTriggers_FireAmount; i++)
                                 {
                                     fireProjectileInfo.position = characterBody.characterMotor.capsuleCollider.center;
@@ -283,7 +282,6 @@ namespace RiskOfBulletstorm.Items
                             default:
                                 break;
                         }
-
                     }
                 }
             }
