@@ -51,6 +51,7 @@ namespace RiskOfBulletstorm.Items
             buffWard.expireDuration = 0.6f;
             buffWard.buffDuration = CharmHorn_Duration;
             buffWard.invertTeamFilter = true;
+            buffWard.animateRadius = false;
 
             //CharmWard charmWard = CharmWardPrefab.AddComponent<CharmWard>();
             //charmWard.expires = true;
@@ -110,7 +111,7 @@ namespace RiskOfBulletstorm.Items
             Util.PlaySound(FireMines.throwMineSoundString, gameObject);
             if (ClassicItemsCompat.enabled && ClassicItemsCompat.CheckEmbryoProc(instance, body))
                 multiplier += 0.5f;
-            CharmNearby(body, CharmHorn_Radius * multiplier);
+            CharmNearby(body, multiplier);
             return true;
         }
 
@@ -122,8 +123,8 @@ namespace RiskOfBulletstorm.Items
                 gameObject.GetComponent<TeamFilter>().teamIndex = body.teamComponent.teamIndex;
                 BuffWard buffWard = gameObject.GetComponent<BuffWard>();
                 buffWard.buffType = GungeonBuffController.Charm;
-                buffWard.GetComponent<BuffWard>().Networkradius = radius;
-                buffWard.GetComponent<BuffWard>().radius = radius;
+                buffWard.GetComponent<BuffWard>().Networkradius *= radius;
+                buffWard.GetComponent<BuffWard>().radius *= radius;
                 NetworkServer.Spawn(gameObject);
             }
         }
