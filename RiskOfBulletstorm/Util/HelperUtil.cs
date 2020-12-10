@@ -54,6 +54,15 @@ namespace RiskOfBulletstorm.Utils
             return chosenBody;
         }
 
+        public static bool HasItem(CharacterBody characterBody, ItemIndex itemIndex)
+        {
+            if (characterBody == null || characterBody.inventory == null || itemIndex == ItemIndex.None)
+                return false;
+            if (characterBody.inventory.GetItemCount(itemIndex) > 0)
+                return true;
+            else return false;
+        }
+
         public static void GiveItemToPlayers(ItemIndex itemIndex, bool showInChat = true, int amount = 1, int max = 1)
         {
             var instances = PlayerCharacterMasterController.instances;
