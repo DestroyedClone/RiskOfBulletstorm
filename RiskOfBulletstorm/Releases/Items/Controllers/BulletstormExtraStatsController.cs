@@ -244,7 +244,7 @@ namespace RiskOfBulletstorm.Items
             var ResultMult = ScopeMult + SpiceMult;
 
             ResultMult = Clamp(ResultMult);
-            Debug.Log("ScopeMult: " + ScopeMult + " + SpiceMUlt: " + SpiceMult + " = " + ResultMult);
+            //Debug.Log("ScopeMult: " + ScopeMult + " + SpiceMUlt: " + SpiceMult + " = " + ResultMult);
             return ResultMult;
         }
 
@@ -276,7 +276,7 @@ namespace RiskOfBulletstorm.Items
                                     //Debug.Log("Projectile Fired: " + projectilePrefab.name + " at angle "+ fireProjectileInfo.rotation+" => "+ UpdatedAngle) ;
                                     fireProjectileInfo.rotation = UpdatedAngle;
                                 }
-                                Chat.AddMessage("Scope Lerp: " + aimDir + " and " + rotation + " resulting " + UpdatedAngle);
+                                //Chat.AddMessage("Scope Lerp: " + aimDir + " and " + rotation + " resulting " + UpdatedAngle);
                             }
                             else
                             {
