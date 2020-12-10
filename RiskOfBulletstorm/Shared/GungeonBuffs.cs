@@ -153,6 +153,7 @@ namespace RiskOfBulletstorm.Items
                 var attackerIsCharmerTeam = damageReport.attackerTeamIndex == isCharmed.GetOppositeTeamIndex(isCharmed.GetOldTeam());
                 if (attackerIsCharmerTeam)
                 {
+                    Debug.Log("BaseAI: Target was from the charmer's team.");
                     if (noTarget && attackerNotSelf && retaliate)
                     {
                         return;
@@ -208,6 +209,7 @@ namespace RiskOfBulletstorm.Items
                 self.enemySearch.RefreshCandidates();
                 var list = self.enemySearch.GetResults().ToList(); //removes self from target
                 list.RemoveAt(0);
+                Debug.Log("findennemyhurtbox: "+ list.FirstOrDefault<HurtBox>());
                 return list.FirstOrDefault<HurtBox>();
             }
             return orig(self, maxDistance, full360Vision, filterByLoS);
