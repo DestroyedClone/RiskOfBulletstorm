@@ -11,7 +11,7 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the radius in meters of the Magazine Rack's zone?", AutoConfigFlags.PreventNetMismatch)]
-        public float MagazineRack_Radius { get; private set; } = 4f;
+        public float MagazineRack_Radius { get; private set; } = 3.5f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the duration of the Magazine Rack's zone?", AutoConfigFlags.PreventNetMismatch)]
