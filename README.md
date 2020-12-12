@@ -15,10 +15,8 @@ Feel free to message me in the Risk of Rain 2 Modding discord for any broken jun
  3. **HAND** : Item Displays
 
 # Planned
- * (Boss) Dog: Chance to find pickups
-***
 1. BetterUI, ItemStatsMod Support
-2. Multiplayer Testing
+2. Multiplayer Support
 
 ***
 # Items
@@ -74,7 +72,7 @@ Every 30 kills *(+50% per stage)*, the game will have a 30% chance to *spawn a r
 	 - *BEmbryo: Heals again for an additional 33% health.*
 - **Medkit**: Heals the player for 75% max health and restores 50% barrier. CD: 100s
 	 - *BEmbryo: Activates twice.*
-- **Molotov**: Throw to cover an area in flames for 10% damage per second for 8 seconds. 
+- **Molotov**: Throw to cover an area in flames for 10% damage per second for 8 seconds. CD: 55s
 	 - *BEmbryo: Molotov deals 2x more damage.*
  - **Orange**: -20% chance to spawn. Consuming permanently reduces equipment recharge rate by 10%, increases health by 10%, fully heals the player, but is removed from the inventory.
 	 - *BEmbryo: Activates twice.*
