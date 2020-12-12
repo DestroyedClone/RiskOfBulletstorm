@@ -10,7 +10,7 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the base amount of kills required to roll a pickup spawn?", AutoConfigFlags.PreventNetMismatch)]
-        public int BUP_RequiredKills { get; private set; } = 35;
+        public int BUP_RequiredKills { get; private set; } = 30;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What value should the required kills be multiplied by per stage?", AutoConfigFlags.PreventNetMismatch)]
         public float BUP_StageMultiplier { get; private set; } = 1.5f;
@@ -105,11 +105,10 @@ namespace RiskOfBulletstorm.Items
             BulletstormPickupsComponent pickupsComponent = currentStage?.GetComponent<BulletstormPickupsComponent>();
             if (!currentStage || CheckIfDoll(dmginfo) || damageReport.victimTeamIndex == TeamIndex.Player || !pickupsComponent)
             {
-                Debug.Log("current stage"+currentStage+"| Doll?"+CheckIfDoll(dmginfo)+"| teamindex"+damageReport.victimTeamIndex+" pickups component"+pickupsComponent);
+                Debug.Log("current stage: "+currentStage+"| Doll? "+CheckIfDoll(dmginfo)+"| teamindex: "+damageReport.victimTeamIndex+" pickups component: "+pickupsComponent);
                 orig(self, damageReport);
                 return;
             }
-            //var kills = pickupsComponent.globalDeaths;
             var requiredKills = pickupsComponent.requiredKills;
             CharacterBody VictimBody = damageReport.victimBody;
 
@@ -120,19 +119,19 @@ namespace RiskOfBulletstorm.Items
                 //int DiffMultAdd = Run.instance.selectedDifficulty;
 
                 pickupsComponent.globalDeaths++;
-                Chat.AddMessage("kills: "+ pickupsComponent.globalDeaths + " / "+ requiredKills);
+                //Chat.AddMessage("kills: "+ pickupsComponent.globalDeaths + " / "+ requiredKills);
                 if (pickupsComponent.globalDeaths % requiredKills == 0)
                 {
                     if (Util.CheckRoll(BUP_RollChance)) //Roll to spawn pickups
                     {
-                        Chat.AddMessage("Pickups: Rolled success.");
+                        //Chat.AddMessage("Pickups: Rolled success.");
 
                         var randfloat = UnityEngine.Random.Range(0f, 1f);
                         PickupIndex dropList = weightedSelection.Evaluate(randfloat);
                         PickupDropletController.CreatePickupDroplet(dropList, PickupPosition, Vector3.up * 5);
                     } else
                     {
-                        Chat.AddMessage("Roll failed");
+                        //Chat.AddMessage("Roll failed");
                     }
                     //Okay, there's no way we'll hit the integer limit, so no need to set it to zero again.
                 }
