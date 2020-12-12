@@ -31,7 +31,7 @@ namespace RiskOfBulletstorm.Items
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the cooldown in seconds?", AutoConfigFlags.PreventNetMismatch)]
-        public override float cooldown { get; protected set; } = 35f;
+        public override float cooldown { get; protected set; } = 55f;
 
         public override string displayName => "Molotov";
         public string descText = "Upon use, throws a Molotov that ";
