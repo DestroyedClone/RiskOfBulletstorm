@@ -459,7 +459,7 @@ namespace RiskOfBulletstorm.Items
                 ResetDuration();
                 //FlipTeam();
                 var teamComponentEnemy = baseAI.currentEnemy.characterBody.teamComponent;
-                Debug.Log("Charm: OnEnable, last target was "+ baseAI.currentEnemy.characterBody.name);
+                //Debug.Log("Charm: OnEnable, last target was "+ baseAI.currentEnemy.characterBody.name);
                 if (teamComponentEnemy.teamIndex == GetOppositeTeamIndex(oldTeamIndex))
                 {
                     ResetTarget();
@@ -470,7 +470,7 @@ namespace RiskOfBulletstorm.Items
             {
                 baseAI.currentEnemy.Reset();
                 baseAI.ForceAcquireNearestEnemyIfNoCurrentEnemy();
-                Debug.Log("Charm: Changed Target to " + baseAI.currentEnemy.characterBody.name);
+                //Debug.Log("Charm: Changed Target to " + baseAI.currentEnemy.characterBody.name);
             }
 
             public TeamIndex GetOppositeTeamIndex(TeamIndex teamIndex)
