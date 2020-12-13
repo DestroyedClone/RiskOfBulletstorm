@@ -73,7 +73,7 @@ namespace RiskOfBulletstorm.Items
 
             if (chest)
             {
-                Debug.Log("Disarm: Invcount = "+InventoryCount);
+                //Debug.Log("Disarm: Invcount = "+InventoryCount);
                 if (InventoryCount > 0)
                 {
                     //var ResultMultUnclamp = 1 - DisarmingPersonality_CostReductionAmount + DisarmingPersonality_CostReductionAmountStack * (InventoryCount - 1);
@@ -81,7 +81,7 @@ namespace RiskOfBulletstorm.Items
                         //credit to harb
                     var ResultMult = (DisarmingPersonality_CostReductionAmount + (1 - DisarmingPersonality_CostReductionAmount) * (1 - (DisarmingPersonality_CostReductionAmountLimit / Mathf.Pow(InventoryCount + DisarmingPersonality_CostReductionAmountLimit, DisarmingPersonality_CostReductionAmountStack))));
                     var ResultAmt = (int)Mathf.Ceil(self.cost * ResultMult);
-                    Chat.AddMessage("Cost of chest reduced from" + self.cost + " to " + ResultAmt + " with multiplier "+ResultMult);
+                    //Chat.AddMessage("Cost of chest reduced from" + self.cost + " to " + ResultAmt + " with multiplier "+ResultMult);
                     self.cost = ResultAmt;
                     self.Networkcost = ResultAmt;
                 }
