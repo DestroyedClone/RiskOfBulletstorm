@@ -30,7 +30,8 @@ namespace RiskOfBulletstorm.Items
 
         public WeightedSelection<PickupIndex> weightedSelection = new WeightedSelection<PickupIndex>(4);
 
-        private GameObject currentStage; 
+        private GameObject currentStage;
+        private readonly GameObject SpawnedPickupEffect = Resources.Load<GameObject>("prefabs/effects/LevelUpEffect");
 
         public override void SetupBehavior()
         {
@@ -90,8 +91,8 @@ namespace RiskOfBulletstorm.Items
         {
             if (!dmginfo.inflictor && dmginfo.procCoefficient == 1 && dmginfo.damageColorIndex == DamageColorIndex.Item && dmginfo.force == Vector3.zero && dmginfo.damageType == DamageType.Generic)
             {
-                Debug.Log("Doll Detected: ");
-                Debug.Log(dmginfo);
+                //Debug.Log("Doll Detected: ");
+                //Debug.Log(dmginfo);
                 return true;
             }
             else
@@ -103,9 +104,9 @@ namespace RiskOfBulletstorm.Items
             if (!NetworkServer.active) return;
             var dmginfo = damageReport.damageInfo;
             BulletstormPickupsComponent pickupsComponent = currentStage?.GetComponent<BulletstormPickupsComponent>();
-            if (!currentStage || CheckIfDoll(dmginfo) || damageReport.victimTeamIndex == TeamIndex.Player || !pickupsComponent)
+            if (!currentStage || CheckIfDoll(dmginfo) || damageReport.victimTeamIndex == TeamIndex.Player || damageReport.victimTeamIndex == TeamIndex.None || !pickupsComponent)
             {
-                Debug.Log("current stage: "+currentStage+"| Doll? "+CheckIfDoll(dmginfo)+"| teamindex: "+damageReport.victimTeamIndex+" pickups component: "+pickupsComponent);
+                //Debug.Log("current stage: "+currentStage+"| Doll? "+CheckIfDoll(dmginfo)+"| teamindex: "+damageReport.victimTeamIndex+" pickups component: "+pickupsComponent);
                 orig(self, damageReport);
                 return;
             }
@@ -129,10 +130,11 @@ namespace RiskOfBulletstorm.Items
                         var randfloat = UnityEngine.Random.Range(0f, 1f);
                         PickupIndex dropList = weightedSelection.Evaluate(randfloat);
                         PickupDropletController.CreatePickupDroplet(dropList, PickupPosition, Vector3.up * 5);
-                    } else
+                        EffectManager.SimpleEffect(SpawnedPickupEffect, PickupPosition, Quaternion.identity, true);
+                    }/* else
                     {
                         //Chat.AddMessage("Roll failed");
-                    }
+                    }*/
                     //Okay, there's no way we'll hit the integer limit, so no need to set it to zero again.
                 }
             }
