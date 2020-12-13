@@ -215,7 +215,7 @@ namespace RiskOfBulletstorm.Items
                         selectedEffect = Fail_LockEffect;
                     }
                     purchaseInteraction.displayNameToken = (prefix + purchaseInteraction.displayNameToken);
-                    chestObject.AddComponent<TrustyLockpicksComponent>();
+                    chestObject.AddComponent<TrustyLockpicksComponent>().failed = true; //does this even work? lol
                     EffectManager.SimpleEffect(selectedEffect, chestObject.transform.position + offset, Quaternion.identity, true);
                 }
                 return true;
