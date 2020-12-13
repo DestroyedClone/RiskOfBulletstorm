@@ -171,7 +171,7 @@ namespace RiskOfBulletstorm.Items
             if (!highlight) return false;
             if (!purchaseInteraction) return false;
             TrustyLockpicksComponent component = chestObject.GetComponent<TrustyLockpicksComponent>();
-            if (component & component.failed) return false;
+            if (component && component.failed) return false;
             if (!interactionDriver) return false;
 
             GameObject selectedEffect;
