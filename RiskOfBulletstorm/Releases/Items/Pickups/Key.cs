@@ -113,6 +113,7 @@ namespace RiskOfBulletstorm.Items
             Highlight highlight = gameObject.GetComponent<Highlight>();
             PurchaseInteraction purchaseInteraction = gameObject.GetComponent<PurchaseInteraction>();
             CharacterBody characterBody = activator.GetComponent<CharacterBody>();
+
             Interactability Result(HighlightColor highlightColor, string contextTokenType = "", Interactability interactability = Interactability.Available)
             {
                 //var resultContext = (prefix + purchaseInteraction.contextToken);
@@ -120,7 +121,7 @@ namespace RiskOfBulletstorm.Items
                 if (purchaseInteraction)
                 {
                     string context;
-                    switch (contextTokenType)
+                    switch (contextTokenType.ToLower())
                     {
                         case "key":
                             context = prefix + purchaseInteraction.contextToken + "_KEY";
@@ -135,8 +136,8 @@ namespace RiskOfBulletstorm.Items
                             context = component.oldContext;
                             break;
                     }
-
                     if (purchaseInteraction.contextToken == component.oldContext) purchaseInteraction.contextToken = context;
+                    Debug.Log("Context + " + context + "");
                 }
                 return interactability;
             }
@@ -156,9 +157,9 @@ namespace RiskOfBulletstorm.Items
                     {
                         bool HasKey = characterBody.inventory.GetItemCount(catalogIndex) > 0;
                         bool LockpicksActive = inventory.GetEquipmentIndex() == TrustyLockpicks.instance.catalogIndex;
-                        bool EquipmentReady = inventory.GetEquipmentRestockableChargeCount(0) > 0;
-                        bool LockpicksReady = LockpicksActive && EquipmentReady;
-                        if (component.oldContext == "") component.oldContext = purchaseInteraction.contextToken;
+                        //bool EquipmentReady = inventory.GetEquipmentRestockableChargeCount(0) > 0;
+                        bool LockpicksReady = LockpicksActive;
+                        if (component.oldContext == "") component.oldContext = purchaseInteraction.contextToken; //Stores the default context once
 
                         if (HasKey) //a
                         {
