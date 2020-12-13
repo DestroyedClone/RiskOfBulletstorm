@@ -66,12 +66,18 @@ namespace RiskOfBulletstorm.Items
         };
         private void AddLanguageTokens()
         {
-            for (int i = 0; i < chestKeys.Length; i++)
+            for (int i = 0; i < chestKeys.GetLength(0)-1; i++)
             {
-                var contextString = "Open " + chestContexts[i];
+                //Debug.Log("Language API: Currently on index "+i);
                 // broken lock //
+                var outputA = prefix + chestKeys[i, 0] + "_NAME";
+                var outputB = chestKeys[i, 1] + suffixBroken;
+                //Debug.Log("Language API: Using index ["+i+"] attempting to add key "+outputA+" with string "+outputB+"");
                 LanguageAPI.Add(prefix + chestKeys[i, 0] + "_NAME", chestKeys[i, 1] + suffixBroken);
+                //Debug.Log("Language API: Success!");
+
                 // context strings //
+                var contextString = "Open " + chestContexts[i];
                 // key //
                 LanguageAPI.Add(prefix + chestKeys[i, 0] + "_CONTEXT_KEY", contextKey + contextString);
                 // lockpick //
