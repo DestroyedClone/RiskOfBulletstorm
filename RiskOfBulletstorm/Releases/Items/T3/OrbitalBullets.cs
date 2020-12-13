@@ -66,6 +66,7 @@ namespace RiskOfBulletstorm.Items
                     {
                         var component = self.gameObject.GetComponent<OrbitalBulletsComponent>();
                         if (!component) component = self.gameObject.AddComponent<OrbitalBulletsComponent>();
+                        component.enabled = true;
                         component.target = owner;
                         component.projectileImpactExplosion = self.gameObject.GetComponent<ProjectileImpactExplosion>();
                         component.projectileSimple = self.gameObject.GetComponent<ProjectileSimple>();
