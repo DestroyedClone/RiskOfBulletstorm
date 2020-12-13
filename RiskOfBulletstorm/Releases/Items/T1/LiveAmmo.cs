@@ -99,7 +99,7 @@ namespace RiskOfBulletstorm.Items
             new BlastAttack
             {
                 attacker = characterBody.gameObject,
-                baseDamage = characterBody.baseDamage * (LiveAmmo_DamageDealt + LiveAmmo_DamageDealtStack * (invCount - 1)) * (halve ? 0.45f : 1f),
+                baseDamage = characterBody.baseDamage * (LiveAmmo_DamageDealt + LiveAmmo_DamageDealtStack * (invCount - 1)) * (halve ? 0.25f : 1f),
                 crit = characterBody.RollCrit(),
                 damageColorIndex = DamageColorIndex.Default,
                 teamIndex = characterBody.teamComponent.teamIndex,
