@@ -10,8 +10,9 @@ using TILER2;
 using static TILER2.StatHooks;
 using static TILER2.MiscUtil;
 using System;
-
+using RoR2.Artifacts;
 using System.Linq;
+using RoR2.Networking;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -126,6 +127,7 @@ namespace RiskOfBulletstorm.Items
             On.RoR2.CharacterAI.BaseAI.OnBodyDamaged += BaseAI_OnBodyDamaged;
             On.RoR2.CharacterBody.RemoveBuff += Charmed_DisableComponent;
             On.RoR2.CharacterBody.AddBuff += Charmed_AddComponent;
+            On.RoR2.BulletAttack.DefaultHitCallback += BulletAttack_DefaultHitCallback;
         }
 
         public override void Uninstall()
@@ -139,6 +141,105 @@ namespace RiskOfBulletstorm.Items
             On.RoR2.CharacterAI.BaseAI.OnBodyDamaged -= BaseAI_OnBodyDamaged;
             On.RoR2.CharacterBody.RemoveBuff -= Charmed_DisableComponent;
             On.RoR2.CharacterBody.AddBuff -= Charmed_AddComponent;
+            On.RoR2.BulletAttack.DefaultHitCallback -= BulletAttack_DefaultHitCallback;
+        }
+
+        private bool BulletAttack_DefaultHitCallback(On.RoR2.BulletAttack.orig_DefaultHitCallback orig, BulletAttack self, ref BulletAttack.BulletHit hitInfo)
+        {
+            var owner = self.owner;
+            if (owner) //is there an owner
+            {
+                var component = owner.gameObject.GetComponent<IsCharmed>();
+                if (component && component.enabled) //are they charmed?
+                {
+                    bool result = false;
+                    if (hitInfo.collider)
+                    {
+                        result = ((1 << hitInfo.collider.gameObject.layer & self.stopperMask) == 0);
+                    }
+                    if (self.hitEffectPrefab)
+                    {
+                        EffectManager.SimpleImpactEffect(self.hitEffectPrefab, hitInfo.point, self.HitEffectNormal ? hitInfo.surfaceNormal : (-hitInfo.direction), true);
+                    }
+                    if (hitInfo.collider)
+                    {
+                        SurfaceDef objectSurfaceDef = SurfaceDefProvider.GetObjectSurfaceDef(hitInfo.collider, hitInfo.point);
+                        if (objectSurfaceDef && objectSurfaceDef.impactEffectPrefab)
+                        {
+                            EffectData effectData = new EffectData
+                            {
+                                origin = hitInfo.point,
+                                rotation = Quaternion.LookRotation(hitInfo.surfaceNormal),
+                                color = objectSurfaceDef.approximateColor,
+                                surfaceDefIndex = objectSurfaceDef.surfaceDefIndex
+                            };
+                            EffectManager.SpawnEffect(objectSurfaceDef.impactEffectPrefab, effectData, true);
+                        }
+                    }
+                    if (self.isCrit)
+                    {
+                        EffectManager.SimpleImpactEffect(Resources.Load<GameObject>("Prefabs/Effects/ImpactEffects/Critspark"), hitInfo.point, self.HitEffectNormal ? hitInfo.surfaceNormal : (-hitInfo.direction), true);
+                    }
+                    GameObject entityObject = hitInfo.entityObject;
+                    if (entityObject)
+                    {
+                        float num = 1f;
+                        switch (self.falloffModel)
+                        {
+                            case BulletAttack.FalloffModel.None:
+                                num = 1f;
+                                break;
+                            case BulletAttack.FalloffModel.DefaultBullet:
+                                num = 0.5f + Mathf.Clamp01(Mathf.InverseLerp(60f, 25f, hitInfo.distance)) * 0.5f;
+                                break;
+                            case BulletAttack.FalloffModel.Buckshot:
+                                num = 0.25f + Mathf.Clamp01(Mathf.InverseLerp(25f, 7f, hitInfo.distance)) * 0.75f;
+                                break;
+                        }
+                        DamageInfo damageInfo = new DamageInfo
+                        {
+                            damage = self.damage * num,
+                            crit = self.isCrit,
+                            attacker = self.owner,
+                            inflictor = self.weapon,
+                            position = hitInfo.point,
+                            force = hitInfo.direction * (self.force * num),
+                            procChainMask = self.procChainMask,
+                            procCoefficient = self.procCoefficient,
+                            damageType = self.damageType,
+                            damageColorIndex = self.damageColorIndex
+                        };
+                        damageInfo.ModifyDamageInfo(hitInfo.damageModifier);
+                        HealthComponent healthComponent = null;
+                        if (hitInfo.hitHurtBox)
+                        {
+                            healthComponent = hitInfo.hitHurtBox.healthComponent;
+                        }
+                        bool flag = healthComponent;
+                        if (NetworkServer.active)
+                        {
+                            if (flag)
+                            {
+                                healthComponent.TakeDamage(damageInfo);
+                                GlobalEventManager.instance.OnHitEnemy(damageInfo, hitInfo.entityObject);
+                            }
+                            GlobalEventManager.instance.OnHitAll(damageInfo, hitInfo.entityObject);
+                        }
+                        else if (ClientScene.ready)
+                        {
+                            BulletAttack.messageWriter.StartMessage(53);
+                            BulletAttack.messageWriter.Write(entityObject);
+                            BulletAttack.messageWriter.Write(damageInfo);
+                            BulletAttack.messageWriter.Write(flag);
+                            BulletAttack.messageWriter.FinishMessage();
+                            ClientScene.readyConnection.SendWriter(BulletAttack.messageWriter, QosChannelIndex.defaultReliable.intVal);
+                        }
+                    }
+                    return result;
+                }
+            }
+
+            return orig(self, ref hitInfo);
         }
 
         private void BaseAI_OnBodyDamaged(On.RoR2.CharacterAI.BaseAI.orig_OnBodyDamaged orig, BaseAI self, DamageReport damageReport)
