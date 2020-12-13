@@ -497,6 +497,7 @@ namespace RiskOfBulletstorm.Items
                     for (int i = 0; i < characterBody.GetBuffCount(Charm); i++)
                         characterBody.RemoveBuff(Charm);
                 characterBody.teamComponent.teamIndex = oldTeamIndex;
+                ResetTarget();
             }
             /*
             public TeamIndex FlipTeam()
