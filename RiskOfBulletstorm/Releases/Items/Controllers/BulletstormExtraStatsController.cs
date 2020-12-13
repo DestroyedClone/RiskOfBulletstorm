@@ -209,7 +209,7 @@ namespace RiskOfBulletstorm.Items
             return SpiceMult;
         }
 
-        private float CalculateSpreadMultiplier(Inventory inventory)
+        private float CalculateSpreadMultiplier(Inventory inventory, bool invert)
         {
             int ItemCount_Scope = inventory.GetItemCount(ItemIndex_Scope);
             int ItemCount_Spice = inventory.GetItemCount(ItemIndex_SpiceTally);
@@ -241,10 +241,12 @@ namespace RiskOfBulletstorm.Items
                 else return value;
             }
 
-            var ResultMult = 1 + ScopeMult + SpiceMult;
+            var ResultMult = ScopeMult + SpiceMult;
 
             ResultMult = Clamp(ResultMult);
-            Debug.Log("Scope: "+ ResultMult);
+            ResultMult = (invert ? -1 : 1) - ResultMult;
+
+            //Debug.Log("Scope: "+ ResultMult);
             //Debug.Log("ScopeMult: " + ScopeMult + " + SpiceMUlt: " + SpiceMult + " = " + ResultMult);
             return ResultMult;
         }
@@ -263,12 +265,14 @@ namespace RiskOfBulletstorm.Items
                         InputBankTest input = cb.inputBank;
                         if (input)
                         {
-                            float ResultMult = CalculateSpreadMultiplier(inventory);
+                            float ResultMult = CalculateSpreadMultiplier(inventory, true);
                             GameObject projectilePrefab = fireProjectileInfo.projectilePrefab;
                             Quaternion aimDir = Util.QuaternionSafeLookRotation(input.aimDirection);
                             Quaternion rotation = fireProjectileInfo.rotation;
 
                             Quaternion UpdatedAngle = Quaternion.Lerp(rotation, aimDir, ResultMult);
+
+                            //bool whitelistEnabled = Scope_WhitelistProjectiles && WhitelistedProjectiles.Contains(projectilePrefab);
 
                             if (Scope_WhitelistProjectiles)
                             {
@@ -306,7 +310,7 @@ namespace RiskOfBulletstorm.Items
                     Debug.Log("Entered nailgun inventory with "+ InventoryCount);
                     if (InventoryCount > 0)
                     {
-                        var ResultMult = CalculateSpreadMultiplier(inventory);
+                        var ResultMult = CalculateSpreadMultiplier(inventory, false);
                         characterBody.SetSpreadBloom(Mathf.Min(0, characterBody.spreadBloomAngle * ResultMult), false);
                         //updateBloom = true;
 
@@ -333,7 +337,7 @@ namespace RiskOfBulletstorm.Items
                     int InventoryCount = characterBody.inventory.GetItemCount(catalogIndex);
                     if (InventoryCount > 0)
                     {
-                        float ResultMult = CalculateSpreadMultiplier(inventory);
+                        float ResultMult = CalculateSpreadMultiplier(inventory, false);
 
                         characterBody.SetSpreadBloom(Mathf.Min(0, characterBody.spreadBloomAngle * ResultMult), false);
 

@@ -70,8 +70,8 @@ namespace RiskOfBulletstorm.Items
             {
                 //Debug.Log("Language API: Currently on index "+i);
                 // broken lock //
-                var outputA = prefix + chestKeys[i, 0] + "_NAME";
-                var outputB = chestKeys[i, 1] + suffixBroken;
+                //var outputA = prefix + chestKeys[i, 0] + "_NAME";
+                //var outputB = chestKeys[i, 1] + suffixBroken;
                 //Debug.Log("Language API: Using index ["+i+"] attempting to add key "+outputA+" with string "+outputB+"");
                 LanguageAPI.Add(prefix + chestKeys[i, 0] + "_NAME", chestKeys[i, 1] + suffixBroken);
                 //Debug.Log("Language API: Success!");
@@ -119,7 +119,7 @@ namespace RiskOfBulletstorm.Items
                 if (highlight) highlight.highlightColor = highlightColor;
                 if (purchaseInteraction)
                 {
-                    string context = "";
+                    string context;
                     switch (contextTokenType)
                     {
                         case "key":

@@ -166,7 +166,7 @@ namespace RiskOfBulletstorm.Items
 
             if (barrelAmt < maxBarrels || maxBarrels == -1 )
             {
-                var yOffset = characterBody.characterMotor.capsuleCollider.height / 2;
+                //var yOffset = characterBody.characterMotor.capsuleCollider.height / 2;
                 //var randomoffset = new Vector3(Random.Range(-randomValue, randomValue), 0f, Random.Range(-randomValue, randomValue));
                 var position = characterBody.corePosition;
 
