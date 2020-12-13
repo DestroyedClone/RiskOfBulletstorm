@@ -99,7 +99,7 @@ namespace RiskOfBulletstorm.Items
             new BlastAttack
             {
                 attacker = characterBody.gameObject,
-                baseDamage = characterBody.baseDamage * (LiveAmmo_DamageDealt + LiveAmmo_DamageDealtStack * (invCount - 1)) * (halve ? 0.25f : 1f),
+                baseDamage = characterBody.baseDamage * (LiveAmmo_DamageDealt + LiveAmmo_DamageDealtStack * (invCount - 1)) * (halve ? 0.45f : 1f),
                 crit = characterBody.RollCrit(),
                 damageColorIndex = DamageColorIndex.Default,
                 teamIndex = characterBody.teamComponent.teamIndex,
@@ -116,7 +116,7 @@ namespace RiskOfBulletstorm.Items
             if (characterBody.inputBank)
             {
                 var vector = characterBody.inputBank.aimDirection * (LiveAmmo_ForceCoefficient + LiveAmmo_ForceCoefficientStack * (invCount - 1));
-                vector *= halve ? 0.5f : 1f;
+                vector *= halve ? 0.35f : 1f;
                 //var vector2 = Vector3.Normalize(ZeroYVector3(vector));
                 characterBody.characterMotor.velocity += vector;
             }
@@ -128,11 +128,11 @@ namespace RiskOfBulletstorm.Items
             if (!vBody || !vBody.skillLocator) return; //null check
             var invCount = GetCount(self.characterBody);
 
-            if (self.characterBody.baseNameToken != "MAGE_BODY_NAME")
+            if (invCount > 0)
             {
-                if (self.characterBody.skillLocator.utility && vBody.skillLocator.FindSkill(self.skillName))
+                if (self.characterBody.baseNameToken != "MAGE_BODY_NAME")
                 {
-                    if (invCount > 0)
+                    if (self.characterBody.skillLocator.utility && vBody.skillLocator.FindSkill(self.skillName))
                     {
                         if (self.characterBody.skillLocator.utility.Equals(self))
                         {
