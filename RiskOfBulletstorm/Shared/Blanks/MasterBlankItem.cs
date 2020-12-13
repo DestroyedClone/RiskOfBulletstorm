@@ -106,10 +106,17 @@ namespace RiskOfBulletstorm.Shared.Blanks
                 return false;
             }
             Util.PlayScaledSound(BlankSound, attacker.gameObject, 0.75f);
+
+            var teamIndex = attacker.teamComponent ? attacker.teamComponent.teamIndex : TeamIndex.Player;
+
             // EFFECT HERE
+            var characterBody = attacker.GetComponent<CharacterBody>();
+            var yOffset = 0f;
+            if (characterBody && characterBody.characterMotor)
+                yOffset = characterBody.characterMotor.capsuleHeight / 2;
             EffectManager.SpawnEffect(BlankEffect, new EffectData
             {
-                origin = attacker.transform.position,
+                origin = attacker.transform.position + Vector3.up*yOffset,
                 rotation = Util.QuaternionSafeLookRotation(Vector3.up),
                 scale = 20f
             }, false) ;
@@ -127,7 +134,7 @@ namespace RiskOfBulletstorm.Shared.Blanks
                 damageType = DamageType.Stun1s,
                 //crit = self.RollCrit(),
                 radius = blankRadius,
-                teamIndex = TeamIndex.Player,
+                teamIndex = teamIndex,
                 baseForce = 900,
                 //baseForce = 2000f,
                 //bonusForce = new Vector3(0, 1600, 0)
@@ -145,7 +152,7 @@ namespace RiskOfBulletstorm.Shared.Blanks
                 while (i < count)
                 {
                     ProjectileController projectileController = instancesList[i];
-                    if (projectileController.teamFilter.teamIndex != TeamIndex.Player)
+                    if (projectileController.teamFilter.teamIndex != teamIndex)
                     {
                         if (noRange)
                             list.Add(projectileController);
