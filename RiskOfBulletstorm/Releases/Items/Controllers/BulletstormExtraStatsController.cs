@@ -209,7 +209,7 @@ namespace RiskOfBulletstorm.Items
             return SpiceMult;
         }
 
-        private float CalculateSpreadMultiplier(Inventory inventory, bool invert)
+        private float CalculateSpreadMultiplier(Inventory inventory, bool isProjectile)
         {
             int ItemCount_Scope = inventory.GetItemCount(ItemIndex_Scope);
             int ItemCount_Spice = inventory.GetItemCount(ItemIndex_SpiceTally);
@@ -234,20 +234,28 @@ namespace RiskOfBulletstorm.Items
                 }
             }
 
-            float Clamp(float value, float min = 0f, float max = 1f)
+            /*float Clamp(float value, float min = 0f, float max = 1f)
             {
                 if (value <= min) return min;
                 else if (value > max) return max;
                 else return value;
+            }*/
+
+            float ResultMult = ScopeMult + SpiceMult;
+
+            if (isProjectile)
+            {
+                ResultMult = 1f - ResultMult;
+            } else
+            {
+                ResultMult = ResultMult < 0 ? 0 : ResultMult;
             }
 
-            var ResultMult = ScopeMult + SpiceMult;
-
-            ResultMult = Clamp(ResultMult);
-            ResultMult = (invert ? -1 : 1) - ResultMult;
+            //ResultMult = Clamp(ResultMult);
+            //ResultMult = ResultMult;
 
             //Debug.Log("Scope: "+ ResultMult);
-            //Debug.Log("ScopeMult: " + ScopeMult + " + SpiceMUlt: " + SpiceMult + " = " + ResultMult);
+            Debug.Log("ScopeMult: " + ScopeMult + " + SpiceMUlt: " + SpiceMult + " = " + ResultMult);
             return ResultMult;
         }
 
