@@ -128,6 +128,94 @@ namespace RiskOfBulletstorm.Items
             On.RoR2.CharacterBody.RemoveBuff += Charmed_DisableComponent;
             On.RoR2.CharacterBody.AddBuff += Charmed_AddComponent;
             On.RoR2.BulletAttack.DefaultHitCallback += BulletAttack_DefaultHitCallback;
+            On.RoR2.DamageTrail.DoDamage += DamageTrail_DoDamage;
+            On.RoR2.OverlapAttack.HurtBoxPassesFilter += OverlapAttack_HurtBoxPassesFilter;
+            On.RoR2.Projectile.ProjectileSingleTargetImpact.OnProjectileImpact += ProjectileSingleTargetImpact_OnProjectileImpact;
+        }
+
+        private void ProjectileSingleTargetImpact_OnProjectileImpact(On.RoR2.Projectile.ProjectileSingleTargetImpact.orig_OnProjectileImpact orig, RoR2.Projectile.ProjectileSingleTargetImpact self, RoR2.Projectile.ProjectileImpactInfo impactInfo)
+        {
+
+            orig(self, impactInfo);
+        }
+
+        private bool OverlapAttack_HurtBoxPassesFilter(On.RoR2.OverlapAttack.orig_HurtBoxPassesFilter orig, OverlapAttack self, HurtBox hurtBox)
+        {
+            var owner = self.attacker;
+            if (owner)
+            {
+                var charm = owner.gameObject.GetComponent<IsCharmed>();
+                if (charm && charm.enabled)
+                { //removed friendlyfire check
+                    return !hurtBox.healthComponent || ((!(hurtBox.healthComponent.gameObject == self.attacker) || self.attackerFiltering != AttackerFiltering.NeverHit) && (!(self.attacker == null) || !(hurtBox.healthComponent.gameObject.GetComponent<MaulingRock>() != null)) && !self.ignoredHealthComponentList.Contains(hurtBox.healthComponent));
+                }
+            }
+
+            return orig(self, hurtBox);
+        }
+
+        private void DamageTrail_DoDamage(On.RoR2.DamageTrail.orig_DoDamage orig, DamageTrail self)
+        {
+            var owner = self.owner;
+            if (self.owner)
+            {
+                var component = owner.gameObject.GetComponent<IsCharmed>();
+                if (component && component.enabled)
+                {
+                    if (self.pointsList.Count == 0)
+                    {
+                        return;
+                    }
+                    float damage = self.damagePerSecond * self.updateInterval;
+                    Vector3 vector = self.pointsList[self.pointsList.Count - 1].position;
+                    HashSet<GameObject> hashSet = new HashSet<GameObject>();
+                    if (self.owner)
+                    {
+                        hashSet.Add(self.owner);
+                    }
+                    for (int i = self.pointsList.Count - 2; i >= 0; i--)
+                    {
+                        Vector3 position = self.pointsList[i].position;
+                        Vector3 direction = position - vector;
+                        RaycastHit[] array = Physics.SphereCastAll(new Ray(vector, direction), self.radius, direction.magnitude, LayerIndex.entityPrecise.mask, QueryTriggerInteraction.UseGlobal);
+                        for (int j = 0; j < array.Length; j++)
+                        {
+                            Collider collider = array[j].collider;
+                            if (collider.gameObject)
+                            {
+                                HurtBox component1 = collider.GetComponent<HurtBox>();
+                                if (component1)
+                                {
+                                    HealthComponent healthComponent = component1.healthComponent;
+                                    if (healthComponent)
+                                    {
+                                        GameObject gameObject = healthComponent.gameObject;
+                                        if (!hashSet.Contains(gameObject))
+                                        {
+                                            hashSet.Add(gameObject); //friendlyfire normally here
+                                                healthComponent.TakeDamage(new DamageInfo
+                                                {
+                                                    position = array[j].point,
+                                                    attacker = self.owner,
+                                                    inflictor = self.gameObject,
+                                                    crit = false,
+                                                    damage = damage,
+                                                    damageColorIndex = DamageColorIndex.Item,
+                                                    damageType = DamageType.Generic,
+                                                    force = Vector3.zero,
+                                                    procCoefficient = 0f
+                                                });
+                                            return;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        vector = position;
+                    }
+                }
+            }
+            orig(self);
         }
 
         public override void Uninstall()
@@ -142,6 +230,8 @@ namespace RiskOfBulletstorm.Items
             On.RoR2.CharacterBody.RemoveBuff -= Charmed_DisableComponent;
             On.RoR2.CharacterBody.AddBuff -= Charmed_AddComponent;
             On.RoR2.BulletAttack.DefaultHitCallback -= BulletAttack_DefaultHitCallback;
+            On.RoR2.DamageTrail.DoDamage -= DamageTrail_DoDamage;
+            On.RoR2.OverlapAttack.HurtBoxPassesFilter -= OverlapAttack_HurtBoxPassesFilter;
         }
 
         private bool BulletAttack_DefaultHitCallback(On.RoR2.BulletAttack.orig_DefaultHitCallback orig, BulletAttack self, ref BulletAttack.BulletHit hitInfo)
