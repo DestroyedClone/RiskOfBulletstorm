@@ -36,22 +36,22 @@ namespace RiskOfBulletstorm.Items
         protected override string GetDescString(string langid = null) => $"";
 
         protected override string GetLoreString(string langID = null) => "";
-        //public static BuffIndex Burn { get; private set; }
+        //public static BuffIndex Burn { get; private set; } 
         //public static BuffIndex Poison { get; private set; }
         //public static BuffIndex Curse { get; private set; }
         //public static BuffIndex Stealth { get; private set; }
         //public static BuffIndex Petrification { get; private set; }
-        public static BuffIndex Anger { get; private set; } //
+        public static BuffIndex Anger { get; private set; } // done
         //public static BuffIndex Buffed { get; private set; }
-        //public static BuffIndex BurnEnemy { get; private set; }
-        //public static BuffIndex PoisonEnemy { get; private set; }
-        public static BuffIndex Charm { get; private set; }
+        //public static BuffIndex BurnEnemy { get; private set; } //burn without heal negation
+        //public static BuffIndex PoisonEnemy { get; private set; } //blight
+        public static BuffIndex Charm { get; private set; } // done
         //public static BuffIndex Encheesed { get; private set; }
-        //public static BuffIndex Fear { get; private set; }
-        public static BuffIndex Jammed { get; private set; } //
-        //public static BuffIndex Slow { get; private set; }
-        //public static BuffIndex Freeze { get; private set; }
-        //public static BuffIndex Stun { get; private set; }
+        //public static BuffIndex Fear { get; private set; } //classic items' fear
+        public static BuffIndex Jammed { get; private set; } // done
+        //public static BuffIndex Slow { get; private set; } // slow
+        //public static BuffIndex Freeze { get; private set; } 
+        //public static BuffIndex Stun { get; private set; } // existing status from damagetype
         //public static BuffIndex Weakened { get; private set; }
         //public static BuffIndex Tangled { get; private set; }
         //public static BuffIndex Encircled { get; private set; }
