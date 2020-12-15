@@ -180,16 +180,14 @@ namespace RiskOfBulletstorm.Items
                                 {
                                     return;
                                 }
-                                if (FriendlyFireManager.ShouldDirectHitProceed(healthComponent, self.projectileController.teamFilter.teamIndex))
+                                Util.PlaySound(self.enemyHitSoundString, self.gameObject);
+                                if (NetworkServer.active)
                                 {
-                                    Util.PlaySound(self.enemyHitSoundString, self.gameObject);
-                                    if (NetworkServer.active)
-                                    {
-                                        damageInfo.ModifyDamageInfo(component.damageModifier);
-                                        healthComponent.TakeDamage(damageInfo);
-                                        GlobalEventManager.instance.OnHitEnemy(damageInfo, component.healthComponent.gameObject);
-                                    }
+                                    damageInfo.ModifyDamageInfo(component.damageModifier);
+                                    healthComponent.TakeDamage(damageInfo);
+                                    GlobalEventManager.instance.OnHitEnemy(damageInfo, component.healthComponent.gameObject);
                                 }
+                                
                                 self.alive = false;
                             }
                         }
