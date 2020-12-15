@@ -114,10 +114,12 @@ namespace RiskOfBulletstorm.Items
         {
             base.SetupLate();
             //so we dont crash
-            SpiceTally = Spice.SpiceTally;
-            SpiceBonusesAdditive = Spice.SpiceBonusesAdditive;
-            SpiceBonuses = Spice.SpiceBonuses;
-            SpiceBonusesConstantMaxed = Spice.SpiceBonusesConstantMaxed;
+            {
+                SpiceTally = Spice.SpiceTally;
+                SpiceBonusesAdditive = Spice.SpiceBonusesAdditive;
+                SpiceBonuses = Spice.SpiceBonuses;
+                SpiceBonusesConstantMaxed = Spice.SpiceBonusesConstantMaxed;
+            } //Spice Setup
 
         }
         public override void Install()
@@ -125,177 +127,18 @@ namespace RiskOfBulletstorm.Items
             base.Install();
             GetStatCoefficients += AddRewards;
             GetStatCoefficients += AddSpiceRewards;
-            On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+            On.RoR2.HealthComponent.TakeDamage += SPICE_HealthComponent_TakeDamage;
             // CHARM //
-            On.RoR2.CharacterAI.BaseAI.FindEnemyHurtBox += BaseAI_FindEnemyHurtBox;
-            On.RoR2.CharacterAI.BaseAI.OnBodyDamaged += BaseAI_OnBodyDamaged;
-            On.RoR2.CharacterBody.RemoveBuff += Charmed_DisableComponent;
-            On.RoR2.CharacterBody.AddBuff += Charmed_AddComponent;
-            On.RoR2.BulletAttack.DefaultHitCallback += BulletAttack_DefaultHitCallback;
-            On.RoR2.DamageTrail.DoDamage += DamageTrail_DoDamage;
-            On.RoR2.OverlapAttack.HurtBoxPassesFilter += OverlapAttack_HurtBoxPassesFilter;
-            On.RoR2.Projectile.ProjectileSingleTargetImpact.OnProjectileImpact += ProjectileSingleTargetImpact_OnProjectileImpact;
-        }
-
-        private void ProjectileSingleTargetImpact_OnProjectileImpact(On.RoR2.Projectile.ProjectileSingleTargetImpact.orig_OnProjectileImpact orig, RoR2.Projectile.ProjectileSingleTargetImpact self, RoR2.Projectile.ProjectileImpactInfo impactInfo)
-        {
-            if (!self.alive)
             {
-                return;
-            }
-            var owner = self.projectileController.owner;
-            if (owner)
-            {
-                var isCharmed = owner.gameObject.GetComponent<IsCharmed>();
-                if (isCharmed && isCharmed.enabled)
-                {
-                    Collider collider = impactInfo.collider;
-                    if (collider)
-                    {
-                        DamageInfo damageInfo = new DamageInfo();
-                        if (self.projectileDamage)
-                        {
-                            damageInfo.damage = self.projectileDamage.damage;
-                            damageInfo.crit = self.projectileDamage.crit;
-                            damageInfo.attacker = self.projectileController.owner;
-                            damageInfo.inflictor = self.gameObject;
-                            damageInfo.position = impactInfo.estimatedPointOfImpact;
-                            damageInfo.force = self.projectileDamage.force * self.transform.forward;
-                            damageInfo.procChainMask = self.projectileController.procChainMask;
-                            damageInfo.procCoefficient = self.projectileController.procCoefficient;
-                            damageInfo.damageColorIndex = self.projectileDamage.damageColorIndex;
-                            damageInfo.damageType = self.projectileDamage.damageType;
-                        }
-                        else
-                        {
-                            Debug.Log("No projectile damage component!");
-                        }
-                        HurtBox component = collider.GetComponent<HurtBox>();
-                        if (component)
-                        {
-                            HealthComponent healthComponent = component.healthComponent;
-                            if (healthComponent)
-                            {
-                                if (healthComponent.gameObject == self.projectileController.owner)
-                                {
-                                    return;
-                                }
-                                Util.PlaySound(self.enemyHitSoundString, self.gameObject);
-                                if (NetworkServer.active)
-                                {
-                                    damageInfo.ModifyDamageInfo(component.damageModifier);
-                                    healthComponent.TakeDamage(damageInfo);
-                                    GlobalEventManager.instance.OnHitEnemy(damageInfo, component.healthComponent.gameObject);
-                                }
-                                
-                                self.alive = false;
-                            }
-                        }
-                        else if (self.destroyOnWorld)
-                        {
-                            self.alive = false;
-                        }
-                        damageInfo.position = self.transform.position;
-                        if (NetworkServer.active)
-                        {
-                            GlobalEventManager.instance.OnHitAll(damageInfo, collider.gameObject);
-                        }
-                    }
-                    if (!self.alive)
-                    {
-                        if (NetworkServer.active && self.impactEffect)
-                        {
-                            EffectManager.SimpleImpactEffect(self.impactEffect, impactInfo.estimatedPointOfImpact, -self.transform.forward, !self.projectileController.isPrediction);
-                        }
-                        Util.PlaySound(self.hitSoundString, self.gameObject);
-                        if (self.destroyWhenNotAlive)
-                        {
-                            UnityEngine.Object.Destroy(self.gameObject);
-                        }
-                    }
-                    return;
-                }
-            }
-
-            orig(self, impactInfo);
-        }
-
-        private bool OverlapAttack_HurtBoxPassesFilter(On.RoR2.OverlapAttack.orig_HurtBoxPassesFilter orig, OverlapAttack self, HurtBox hurtBox)
-        {
-            var owner = self.attacker;
-            if (owner)
-            {
-                var charm = owner.gameObject.GetComponent<IsCharmed>();
-                if (charm && charm.enabled)
-                { //removed friendlyfire check
-                    return !hurtBox.healthComponent || ((!(hurtBox.healthComponent.gameObject == self.attacker) || self.attackerFiltering != AttackerFiltering.NeverHit) && (!(self.attacker == null) || !(hurtBox.healthComponent.gameObject.GetComponent<MaulingRock>() != null)) && !self.ignoredHealthComponentList.Contains(hurtBox.healthComponent));
-                }
-            }
-
-            return orig(self, hurtBox);
-        }
-
-        private void DamageTrail_DoDamage(On.RoR2.DamageTrail.orig_DoDamage orig, DamageTrail self)
-        {
-            var owner = self.owner;
-            if (self.owner)
-            {
-                var component = owner.gameObject.GetComponent<IsCharmed>();
-                if (component && component.enabled)
-                {
-                    if (self.pointsList.Count == 0)
-                    {
-                        return;
-                    }
-                    float damage = self.damagePerSecond * self.updateInterval;
-                    Vector3 vector = self.pointsList[self.pointsList.Count - 1].position;
-                    HashSet<GameObject> hashSet = new HashSet<GameObject>
-                    {
-                        owner
-                    };
-                    for (int i = self.pointsList.Count - 2; i >= 0; i--)
-                    {
-                        Vector3 position = self.pointsList[i].position;
-                        Vector3 direction = position - vector;
-                        RaycastHit[] array = Physics.SphereCastAll(new Ray(vector, direction), self.radius, direction.magnitude, LayerIndex.entityPrecise.mask, QueryTriggerInteraction.UseGlobal);
-                        for (int j = 0; j < array.Length; j++)
-                        {
-                            Collider collider = array[j].collider;
-                            if (collider.gameObject)
-                            {
-                                HurtBox component1 = collider.GetComponent<HurtBox>();
-                                if (component1)
-                                {
-                                    HealthComponent healthComponent = component1.healthComponent;
-                                    if (healthComponent)
-                                    {
-                                        GameObject gameObject = healthComponent.gameObject;
-                                        if (!hashSet.Contains(gameObject))
-                                        {
-                                            hashSet.Add(gameObject); //friendlyfire normally here
-                                                healthComponent.TakeDamage(new DamageInfo
-                                                {
-                                                    position = array[j].point,
-                                                    attacker = self.owner,
-                                                    inflictor = self.gameObject,
-                                                    crit = false,
-                                                    damage = damage,
-                                                    damageColorIndex = DamageColorIndex.Item,
-                                                    damageType = DamageType.Generic,
-                                                    force = Vector3.zero,
-                                                    procCoefficient = 0f
-                                                });
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        vector = position;
-                    }
-                    return;
-                }
-            }
-            orig(self);
+                On.RoR2.CharacterAI.BaseAI.FindEnemyHurtBox += BaseAI_FindEnemyHurtBox;
+                On.RoR2.CharacterAI.BaseAI.OnBodyDamaged += BaseAI_OnBodyDamaged;
+                On.RoR2.CharacterBody.RemoveBuff += Charmed_DisableComponent;
+                On.RoR2.CharacterBody.AddBuff += Charmed_AddComponent;
+                On.RoR2.BulletAttack.DefaultHitCallback += BulletAttack_DefaultHitCallback;
+                On.RoR2.DamageTrail.DoDamage += DamageTrail_DoDamage;
+                On.RoR2.OverlapAttack.HurtBoxPassesFilter += OverlapAttack_HurtBoxPassesFilter;
+                On.RoR2.Projectile.ProjectileSingleTargetImpact.OnProjectileImpact += ProjectileSingleTargetImpact_OnProjectileImpact;
+            } // Charm Hooks
         }
 
         public override void Uninstall()
@@ -303,18 +146,115 @@ namespace RiskOfBulletstorm.Items
             base.Uninstall();
             GetStatCoefficients -= AddRewards;
             GetStatCoefficients -= AddSpiceRewards;
-            On.RoR2.HealthComponent.TakeDamage -= HealthComponent_TakeDamage;
+            On.RoR2.HealthComponent.TakeDamage -= SPICE_HealthComponent_TakeDamage;
             // CHARM //
-            On.RoR2.CharacterAI.BaseAI.FindEnemyHurtBox -= BaseAI_FindEnemyHurtBox;
-            On.RoR2.CharacterAI.BaseAI.OnBodyDamaged -= BaseAI_OnBodyDamaged;
-            On.RoR2.CharacterBody.RemoveBuff -= Charmed_DisableComponent;
-            On.RoR2.CharacterBody.AddBuff -= Charmed_AddComponent;
-            On.RoR2.BulletAttack.DefaultHitCallback -= BulletAttack_DefaultHitCallback;
-            On.RoR2.DamageTrail.DoDamage -= DamageTrail_DoDamage;
-            On.RoR2.OverlapAttack.HurtBoxPassesFilter -= OverlapAttack_HurtBoxPassesFilter;
-            On.RoR2.Projectile.ProjectileSingleTargetImpact.OnProjectileImpact -= ProjectileSingleTargetImpact_OnProjectileImpact;
+            {
+                On.RoR2.CharacterAI.BaseAI.FindEnemyHurtBox -= BaseAI_FindEnemyHurtBox;
+                On.RoR2.CharacterAI.BaseAI.OnBodyDamaged -= BaseAI_OnBodyDamaged;
+                On.RoR2.CharacterBody.RemoveBuff -= Charmed_DisableComponent;
+                On.RoR2.CharacterBody.AddBuff -= Charmed_AddComponent;
+                On.RoR2.BulletAttack.DefaultHitCallback -= BulletAttack_DefaultHitCallback;
+                On.RoR2.DamageTrail.DoDamage -= DamageTrail_DoDamage;
+                On.RoR2.OverlapAttack.HurtBoxPassesFilter -= OverlapAttack_HurtBoxPassesFilter;
+                On.RoR2.Projectile.ProjectileSingleTargetImpact.OnProjectileImpact -= ProjectileSingleTargetImpact_OnProjectileImpact;
+            } // Charm Hooks
         }
 
+        private void AddSpiceRewards(CharacterBody sender, StatHookEventArgs args)
+        {
+            if (sender && sender.inventory)
+            {
+                var SpiceTallyCount = sender.inventory.GetItemCount(SpiceTally);
+                switch (SpiceTallyCount)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                        //health, attack speed, shot accuracy, enemy bullet speed, damage
+                        //args.baseHealthAdd += HeartValue * SpiceBonuses[SpiceTallyCount, 0];
+                        args.healthMultAdd *= 1 + SpiceBonuses[SpiceTallyCount, 0];
+                        args.attackSpeedMultAdd += SpiceBonuses[SpiceTallyCount, 1];
+                        //accuracy 
+                        //enemy bullet speed
+                        //damage
+                        break;
+                    default:
+                        //var baseHealthAdd = HeartValue * SpiceBonusesAdditive[0] * (SpiceTallyCount - 4);
+                        //args.baseHealthAdd += baseHealthAdd;
+                        args.healthMultAdd *= Math.Min(0.1f, 1 + SpiceBonusesAdditive[0] * (SpiceTallyCount - 4));
+                        //health, attack speed, shot accuracy, enemy bullet speed, damage
+                        args.attackSpeedMultAdd += SpiceBonusesConstantMaxed[1];
+                        //accuracy
+                        //enemy
+                        //damage
+                        break;
+                }
+            }
+        }
+        private void AddRewards(CharacterBody sender, StatHookEventArgs args)
+        {
+            /*
+             * JAMMED
+            [0] Health: Handled Here
+            [1] Attack Speed: Handled Here
+            [2] Accuracy: BulletstormExtraStatsController
+            [3] Enemy Bullet Speed: BulletstormExtraStatsController
+            [4] Damage: HealthComponent_TakeDamage
+            */
+            if (sender.HasBuff(Anger)) { args.damageMultAdd += EnragingPhoto.instance.EnragingPhoto_DmgBoost; }
+            if (sender.HasBuff(Jammed))
+            {
+                args.damageMultAdd += curse.Curse_DamageBoost;
+                args.critAdd += curse.Curse_CritBoost;
+                args.attackSpeedMultAdd += curse.Curse_AttackSpeedBoost;
+                args.moveSpeedMultAdd += curse.Curse_MoveSpeedBoost;
+                args.baseHealthAdd += curse.Curse_HealthBoost;
+            }
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0059:Unnecessary assignment of a value", Justification = "Used Values")]
+        private void SPICE_HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
+        {
+            var attacker = damageInfo.attacker;
+            if (attacker)
+            {
+                CharacterBody body = attacker.GetComponent<CharacterBody>();
+                if (body)
+                {
+                    var inventory = body.inventory;
+                    if (inventory)
+                    {
+                        var SpiceTallyCount = inventory.GetItemCount(SpiceTally);
+                        //var DamageMult = 0f;
+                        var SpiceMult = 0f;
+                        switch (SpiceTallyCount)
+                        {
+                            case 0: //
+                            case 1:
+                            case 2:
+                            case 3:
+                            case 4:
+                                SpiceMult = SpiceBonuses[SpiceTallyCount, 4];
+                                break;
+                            default: //also 5
+                                SpiceMult = SpiceBonuses[4, 4] + SpiceBonusesAdditive[4] * (SpiceTallyCount - 4);
+                                break;
+                        }
+                        //DamageMult = SpiceMult;
+                        damageInfo.damage *= 1 + SpiceMult;
+                    }
+                }
+            }
+            orig(self, damageInfo);
+        }
+
+        /*
+        *   CHARM
+        *   CHARM
+        */
         private bool BulletAttack_DefaultHitCallback(On.RoR2.BulletAttack.orig_DefaultHitCallback orig, BulletAttack self, ref BulletAttack.BulletHit hitInfo)
         {
             var owner = self.owner;
@@ -434,6 +374,34 @@ namespace RiskOfBulletstorm.Items
             }
             orig(self, damageReport);
         }
+        private HurtBox BaseAI_FindEnemyHurtBox(On.RoR2.CharacterAI.BaseAI.orig_FindEnemyHurtBox orig, RoR2.CharacterAI.BaseAI self, float maxDistance, bool full360Vision, bool filterByLoS)
+        {
+            var isCharmed = self.body.gameObject.GetComponent<IsCharmed>();
+            if (isCharmed && isCharmed.enabled)
+            {
+                self.enemySearch.viewer = self.body;
+                self.enemySearch.teamMaskFilter = TeamMask.allButNeutral;
+                self.enemySearch.teamMaskFilter.RemoveTeam(isCharmed.GetOppositeTeamIndex(isCharmed.GetOldTeam()));
+                self.enemySearch.sortMode = BullseyeSearch.SortMode.Distance;
+                self.enemySearch.minDistanceFilter = self.body.radius;
+                self.enemySearch.maxDistanceFilter = maxDistance;
+                self.enemySearch.searchOrigin = self.bodyInputBank.aimOrigin;
+                self.enemySearch.searchDirection = self.bodyInputBank.aimDirection;
+                self.enemySearch.maxAngleFilter = (full360Vision ? 180f : 90f);
+                self.enemySearch.filterByLoS = filterByLoS;
+                self.enemySearch.RefreshCandidates();
+                var list = self.enemySearch.GetResults().ToList();
+                //Debug.Log("findennemyhurtbox: "+ list.FirstOrDefault<HurtBox>());
+                if (list.Count > 1) //If there are targets
+                    list.RemoveAt(0); //remove the first one because its usually themself
+
+                if (list.Count > 0) //now list doesn't include self
+                    return list.FirstOrDefault<HurtBox>(); //if there's still a target
+                else
+                    return null;
+            }
+            return orig(self, maxDistance, full360Vision, filterByLoS);
+        }
 
         private void Charmed_AddComponent(On.RoR2.CharacterBody.orig_AddBuff orig, CharacterBody self, BuffIndex buffType)
         {
@@ -463,125 +431,170 @@ namespace RiskOfBulletstorm.Items
             }
             orig(self, buffType);
         }
-        private HurtBox BaseAI_FindEnemyHurtBox(On.RoR2.CharacterAI.BaseAI.orig_FindEnemyHurtBox orig, RoR2.CharacterAI.BaseAI self, float maxDistance, bool full360Vision, bool filterByLoS)
-        {
-            var isCharmed = self.body.gameObject.GetComponent<IsCharmed>();
-            if (isCharmed && isCharmed.enabled)
-            {
-                self.enemySearch.viewer = self.body;
-                self.enemySearch.teamMaskFilter = TeamMask.allButNeutral;
-                self.enemySearch.teamMaskFilter.RemoveTeam(isCharmed.GetOppositeTeamIndex(isCharmed.GetOldTeam()));
-                self.enemySearch.sortMode = BullseyeSearch.SortMode.Distance;
-                self.enemySearch.minDistanceFilter = self.body.radius;
-                self.enemySearch.maxDistanceFilter = maxDistance;
-                self.enemySearch.searchOrigin = self.bodyInputBank.aimOrigin;
-                self.enemySearch.searchDirection = self.bodyInputBank.aimDirection;
-                self.enemySearch.maxAngleFilter = (full360Vision ? 180f : 90f);
-                self.enemySearch.filterByLoS = filterByLoS;
-                self.enemySearch.RefreshCandidates();
-                var list = self.enemySearch.GetResults().ToList();
-                //Debug.Log("findennemyhurtbox: "+ list.FirstOrDefault<HurtBox>());
-                if (list.Count > 1) //If there are targets
-                    list.RemoveAt(0); //remove the first one because its usually themself
 
-                if (list.Count > 0) //now list doesn't include self
-                    return list.FirstOrDefault<HurtBox>(); //if there's still a target
-                else
-                    return null; 
+        private void ProjectileSingleTargetImpact_OnProjectileImpact(On.RoR2.Projectile.ProjectileSingleTargetImpact.orig_OnProjectileImpact orig, RoR2.Projectile.ProjectileSingleTargetImpact self, RoR2.Projectile.ProjectileImpactInfo impactInfo)
+        {
+            if (!self.alive)
+            {
+                return;
             }
-            return orig(self, maxDistance, full360Vision, filterByLoS);
-        }
-
-        private void AddSpiceRewards(CharacterBody sender, StatHookEventArgs args)
-        {
-            if (sender && sender.inventory)
+            var owner = self.projectileController.owner;
+            if (owner)
             {
-                var SpiceTallyCount = sender.inventory.GetItemCount(SpiceTally);
-                switch (SpiceTallyCount)
+                var isCharmed = owner.gameObject.GetComponent<IsCharmed>();
+                if (isCharmed && isCharmed.enabled)
                 {
-                    case 0:
-                        break;
-                    case 1:
-                    case 2:
-                    case 3:
-                    case 4:
-                        //health, attack speed, shot accuracy, enemy bullet speed, damage
-                        //args.baseHealthAdd += HeartValue * SpiceBonuses[SpiceTallyCount, 0];
-                        args.healthMultAdd *= 1 + SpiceBonuses[SpiceTallyCount, 0];
-                        args.attackSpeedMultAdd += SpiceBonuses[SpiceTallyCount, 1];
-                        //accuracy 
-                        //enemy bullet speed
-                        //damage
-                        break;
-                    default:
-                        //var baseHealthAdd = HeartValue * SpiceBonusesAdditive[0] * (SpiceTallyCount - 4);
-                        //args.baseHealthAdd += baseHealthAdd;
-                        args.healthMultAdd *= Math.Min(0.1f, 1 + SpiceBonusesAdditive[0] * (SpiceTallyCount - 4));
-                        //health, attack speed, shot accuracy, enemy bullet speed, damage
-                        args.attackSpeedMultAdd += SpiceBonusesConstantMaxed[1];
-                        //accuracy
-                        //enemy
-                        //damage
-                        break;
-                }
-            }
-        }
-        private void AddRewards(CharacterBody sender, StatHookEventArgs args)
-        {
-            /*
-             * JAMMED
-            [0] Health: Handled Here
-            [1] Attack Speed: Handled Here
-            [2] Accuracy: BulletstormExtraStatsController
-            [3] Enemy Bullet Speed: BulletstormExtraStatsController
-            [4] Damage: HealthComponent_TakeDamage
-            */
-            if (sender.HasBuff(Anger)) { args.damageMultAdd += EnragingPhoto.instance.EnragingPhoto_DmgBoost; }
-            if (sender.HasBuff(Jammed))
-            {
-                args.damageMultAdd += curse.Curse_DamageBoost;
-                args.critAdd += curse.Curse_CritBoost;
-                args.attackSpeedMultAdd += curse.Curse_AttackSpeedBoost;
-                args.moveSpeedMultAdd += curse.Curse_MoveSpeedBoost;
-                args.baseHealthAdd += curse.Curse_HealthBoost;
-            }
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0059:Unnecessary assignment of a value", Justification = "Used Values")]
-        private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
-        {
-            var attacker = damageInfo.attacker;
-            if (attacker)
-            {
-                CharacterBody body = attacker.GetComponent<CharacterBody>();
-                if (body)
-                {
-                    var inventory = body.inventory;
-                    if (inventory)
+                    Collider collider = impactInfo.collider;
+                    if (collider)
                     {
-                        var SpiceTallyCount = inventory.GetItemCount(SpiceTally);
-                        //var DamageMult = 0f;
-                        var SpiceMult = 0f;
-                        switch (SpiceTallyCount)
+                        DamageInfo damageInfo = new DamageInfo();
+                        if (self.projectileDamage)
                         {
-                            case 0: //
-                            case 1:
-                            case 2:
-                            case 3:
-                            case 4:
-                                SpiceMult = SpiceBonuses[SpiceTallyCount, 4];
-                                break;
-                            default: //also 5
-                                SpiceMult = SpiceBonuses[4, 4] + SpiceBonusesAdditive[4] * (SpiceTallyCount - 4);
-                                break;
+                            damageInfo.damage = self.projectileDamage.damage;
+                            damageInfo.crit = self.projectileDamage.crit;
+                            damageInfo.attacker = self.projectileController.owner;
+                            damageInfo.inflictor = self.gameObject;
+                            damageInfo.position = impactInfo.estimatedPointOfImpact;
+                            damageInfo.force = self.projectileDamage.force * self.transform.forward;
+                            damageInfo.procChainMask = self.projectileController.procChainMask;
+                            damageInfo.procCoefficient = self.projectileController.procCoefficient;
+                            damageInfo.damageColorIndex = self.projectileDamage.damageColorIndex;
+                            damageInfo.damageType = self.projectileDamage.damageType;
                         }
-                        //DamageMult = SpiceMult;
-                        damageInfo.damage *= 1 + SpiceMult;
+                        else
+                        {
+                            Debug.Log("No projectile damage component!");
+                        }
+                        HurtBox component = collider.GetComponent<HurtBox>();
+                        if (component)
+                        {
+                            HealthComponent healthComponent = component.healthComponent;
+                            if (healthComponent)
+                            {
+                                if (healthComponent.gameObject == self.projectileController.owner)
+                                {
+                                    return;
+                                }
+                                Util.PlaySound(self.enemyHitSoundString, self.gameObject);
+                                if (NetworkServer.active)
+                                {
+                                    damageInfo.ModifyDamageInfo(component.damageModifier);
+                                    healthComponent.TakeDamage(damageInfo);
+                                    GlobalEventManager.instance.OnHitEnemy(damageInfo, component.healthComponent.gameObject);
+                                }
+
+                                self.alive = false;
+                            }
+                        }
+                        else if (self.destroyOnWorld)
+                        {
+                            self.alive = false;
+                        }
+                        damageInfo.position = self.transform.position;
+                        if (NetworkServer.active)
+                        {
+                            GlobalEventManager.instance.OnHitAll(damageInfo, collider.gameObject);
+                        }
                     }
+                    if (!self.alive)
+                    {
+                        if (NetworkServer.active && self.impactEffect)
+                        {
+                            EffectManager.SimpleImpactEffect(self.impactEffect, impactInfo.estimatedPointOfImpact, -self.transform.forward, !self.projectileController.isPrediction);
+                        }
+                        Util.PlaySound(self.hitSoundString, self.gameObject);
+                        if (self.destroyWhenNotAlive)
+                        {
+                            UnityEngine.Object.Destroy(self.gameObject);
+                        }
+                    }
+                    return;
                 }
             }
-            orig(self, damageInfo);
+
+            orig(self, impactInfo);
         }
+
+        private bool OverlapAttack_HurtBoxPassesFilter(On.RoR2.OverlapAttack.orig_HurtBoxPassesFilter orig, OverlapAttack self, HurtBox hurtBox)
+        {
+            var owner = self.attacker;
+            if (owner)
+            {
+                var charm = owner.gameObject.GetComponent<IsCharmed>();
+                if (charm && charm.enabled)
+                { //removed friendlyfire check
+                    return !hurtBox.healthComponent || ((!(hurtBox.healthComponent.gameObject == self.attacker) || self.attackerFiltering != AttackerFiltering.NeverHit) && (!(self.attacker == null) || !(hurtBox.healthComponent.gameObject.GetComponent<MaulingRock>() != null)) && !self.ignoredHealthComponentList.Contains(hurtBox.healthComponent));
+                }
+            }
+
+            return orig(self, hurtBox);
+        }
+
+        private void DamageTrail_DoDamage(On.RoR2.DamageTrail.orig_DoDamage orig, DamageTrail self)
+        {
+            var owner = self.owner;
+            if (self.owner)
+            {
+                var component = owner.gameObject.GetComponent<IsCharmed>();
+                if (component && component.enabled)
+                {
+                    if (self.pointsList.Count == 0)
+                    {
+                        return;
+                    }
+                    float damage = self.damagePerSecond * self.updateInterval;
+                    Vector3 vector = self.pointsList[self.pointsList.Count - 1].position;
+                    HashSet<GameObject> hashSet = new HashSet<GameObject>
+                    {
+                        owner
+                    };
+                    for (int i = self.pointsList.Count - 2; i >= 0; i--)
+                    {
+                        Vector3 position = self.pointsList[i].position;
+                        Vector3 direction = position - vector;
+                        RaycastHit[] array = Physics.SphereCastAll(new Ray(vector, direction), self.radius, direction.magnitude, LayerIndex.entityPrecise.mask, QueryTriggerInteraction.UseGlobal);
+                        for (int j = 0; j < array.Length; j++)
+                        {
+                            Collider collider = array[j].collider;
+                            if (collider.gameObject)
+                            {
+                                HurtBox component1 = collider.GetComponent<HurtBox>();
+                                if (component1)
+                                {
+                                    HealthComponent healthComponent = component1.healthComponent;
+                                    if (healthComponent)
+                                    {
+                                        GameObject gameObject = healthComponent.gameObject;
+                                        if (!hashSet.Contains(gameObject))
+                                        {
+                                            hashSet.Add(gameObject); //friendlyfire normally here
+                                            healthComponent.TakeDamage(new DamageInfo
+                                            {
+                                                position = array[j].point,
+                                                attacker = self.owner,
+                                                inflictor = self.gameObject,
+                                                crit = false,
+                                                damage = damage,
+                                                damageColorIndex = DamageColorIndex.Item,
+                                                damageType = DamageType.Generic,
+                                                force = Vector3.zero,
+                                                procCoefficient = 0f
+                                            });
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        vector = position;
+                    }
+                    return;
+                }
+            }
+            orig(self);
+        }
+
+
+
 
         public class IsJammed : MonoBehaviour
         {
