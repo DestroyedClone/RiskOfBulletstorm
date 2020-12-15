@@ -13,6 +13,10 @@ using System;
 using RoR2.Artifacts;
 using System.Linq;
 using RoR2.Networking;
+using System.Runtime.CompilerServices;
+using Unity.Collections;
+using Unity.Jobs;
+
 
 namespace RiskOfBulletstorm.Items
 {
@@ -135,6 +139,85 @@ namespace RiskOfBulletstorm.Items
 
         private void ProjectileSingleTargetImpact_OnProjectileImpact(On.RoR2.Projectile.ProjectileSingleTargetImpact.orig_OnProjectileImpact orig, RoR2.Projectile.ProjectileSingleTargetImpact self, RoR2.Projectile.ProjectileImpactInfo impactInfo)
         {
+            if (!self.alive)
+            {
+                return;
+            }
+            var owner = self.projectileController.owner;
+            if (owner)
+            {
+                var isCharmed = owner.gameObject.GetComponent<IsCharmed>();
+                if (isCharmed && isCharmed.enabled)
+                {
+                    Collider collider = impactInfo.collider;
+                    if (collider)
+                    {
+                        DamageInfo damageInfo = new DamageInfo();
+                        if (self.projectileDamage)
+                        {
+                            damageInfo.damage = self.projectileDamage.damage;
+                            damageInfo.crit = self.projectileDamage.crit;
+                            damageInfo.attacker = self.projectileController.owner;
+                            damageInfo.inflictor = self.gameObject;
+                            damageInfo.position = impactInfo.estimatedPointOfImpact;
+                            damageInfo.force = self.projectileDamage.force * self.transform.forward;
+                            damageInfo.procChainMask = self.projectileController.procChainMask;
+                            damageInfo.procCoefficient = self.projectileController.procCoefficient;
+                            damageInfo.damageColorIndex = self.projectileDamage.damageColorIndex;
+                            damageInfo.damageType = self.projectileDamage.damageType;
+                        }
+                        else
+                        {
+                            Debug.Log("No projectile damage component!");
+                        }
+                        HurtBox component = collider.GetComponent<HurtBox>();
+                        if (component)
+                        {
+                            HealthComponent healthComponent = component.healthComponent;
+                            if (healthComponent)
+                            {
+                                if (healthComponent.gameObject == self.projectileController.owner)
+                                {
+                                    return;
+                                }
+                                if (FriendlyFireManager.ShouldDirectHitProceed(healthComponent, self.projectileController.teamFilter.teamIndex))
+                                {
+                                    Util.PlaySound(self.enemyHitSoundString, self.gameObject);
+                                    if (NetworkServer.active)
+                                    {
+                                        damageInfo.ModifyDamageInfo(component.damageModifier);
+                                        healthComponent.TakeDamage(damageInfo);
+                                        GlobalEventManager.instance.OnHitEnemy(damageInfo, component.healthComponent.gameObject);
+                                    }
+                                }
+                                self.alive = false;
+                            }
+                        }
+                        else if (self.destroyOnWorld)
+                        {
+                            self.alive = false;
+                        }
+                        damageInfo.position = self.transform.position;
+                        if (NetworkServer.active)
+                        {
+                            GlobalEventManager.instance.OnHitAll(damageInfo, collider.gameObject);
+                        }
+                    }
+                    if (!self.alive)
+                    {
+                        if (NetworkServer.active && self.impactEffect)
+                        {
+                            EffectManager.SimpleImpactEffect(self.impactEffect, impactInfo.estimatedPointOfImpact, -self.transform.forward, !self.projectileController.isPrediction);
+                        }
+                        Util.PlaySound(self.hitSoundString, self.gameObject);
+                        if (self.destroyWhenNotAlive)
+                        {
+                            UnityEngine.Object.Destroy(self.gameObject);
+                        }
+                    }
+                    return;
+                }
+            }
 
             orig(self, impactInfo);
         }
@@ -168,11 +251,10 @@ namespace RiskOfBulletstorm.Items
                     }
                     float damage = self.damagePerSecond * self.updateInterval;
                     Vector3 vector = self.pointsList[self.pointsList.Count - 1].position;
-                    HashSet<GameObject> hashSet = new HashSet<GameObject>();
-                    if (self.owner)
+                    HashSet<GameObject> hashSet = new HashSet<GameObject>
                     {
-                        hashSet.Add(self.owner);
-                    }
+                        owner
+                    };
                     for (int i = self.pointsList.Count - 2; i >= 0; i--)
                     {
                         Vector3 position = self.pointsList[i].position;
@@ -205,7 +287,6 @@ namespace RiskOfBulletstorm.Items
                                                     force = Vector3.zero,
                                                     procCoefficient = 0f
                                                 });
-                                            return;
                                         }
                                     }
                                 }
@@ -213,6 +294,7 @@ namespace RiskOfBulletstorm.Items
                         }
                         vector = position;
                     }
+                    return;
                 }
             }
             orig(self);
@@ -232,6 +314,7 @@ namespace RiskOfBulletstorm.Items
             On.RoR2.BulletAttack.DefaultHitCallback -= BulletAttack_DefaultHitCallback;
             On.RoR2.DamageTrail.DoDamage -= DamageTrail_DoDamage;
             On.RoR2.OverlapAttack.HurtBoxPassesFilter -= OverlapAttack_HurtBoxPassesFilter;
+            On.RoR2.Projectile.ProjectileSingleTargetImpact.OnProjectileImpact -= ProjectileSingleTargetImpact_OnProjectileImpact;
         }
 
         private bool BulletAttack_DefaultHitCallback(On.RoR2.BulletAttack.orig_DefaultHitCallback orig, BulletAttack self, ref BulletAttack.BulletHit hitInfo)

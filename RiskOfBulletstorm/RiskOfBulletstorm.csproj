@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="ProperSaveCompatability.cs" />
     <Compile Remove="Releases\Items\Boss\Beetle.cs" />
     <Compile Remove="Releases\Items\Boss\BeetleNew.cs" />
     <Compile Remove="Releases\Items\Boss\Dog.cs" />
