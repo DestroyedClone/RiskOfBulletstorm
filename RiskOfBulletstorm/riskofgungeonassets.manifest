@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1895149857
+CRC: 2177287112
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: f86aca01a241537b224b96e3702d2b74
+    Hash: 6d07c5f3bde5a58aecf22a32d11d6d00
   TypeTreeHash:
     serializedVersion: 2
     Hash: 21747e4ee48f36c7a65f9afbfd77f392
@@ -30,11 +30,13 @@ ClassTypes:
 Assets:
 - Assets/Textures/Materials/EnragingPhotoTexture.png
 - Assets/Models/Raw Models/Number 2 Worn.fbx
-- Assets/Textures/Icons/Ration.png
+- Assets/Textures/Icons/RationIcon.png
+- Assets/Textures/Materials/Materials/MagazineRackTexture.mat
 - Assets/Models/Prefabs/Armor.prefab
-- Assets/Models/Prefabs/Number 2 Worn.prefab
+- Assets/Models/Prefabs/CultistPassiveWorn.prefab
 - Assets/Textures/Materials/2IFNLod_10x.png
 - Assets/Models/Raw Models/Enraging Photo.fbx
+- Assets/Textures/Icons/MagazineRackIcon.png
 - Assets/Textures/Materials/Materials/OrangeTexture.mat
 - Assets/Models/Raw Models/battery bullets.fbx
 - Assets/Models/Raw Models/Spice.fbx
@@ -52,28 +54,33 @@ Assets:
 - Assets/Textures/Icons/MeatbunIcon.png
 - Assets/Models/Prefabs/DisarmingPersonality.prefab
 - Assets/Models/Prefabs/Orange.prefab
+- Assets/Models/Prefabs/Molotov_projectile.prefab
 - Assets/Models/Raw Models/RingMiserlyProtection.fbx
+- Assets/Textures/Materials/New Material.mat
 - Assets/Models/Prefabs/Bomb.prefab
 - Assets/Textures/Icons/MolotovIcon.png
+- Assets/Textures/Materials/SpreadAmmoTex.png
 - Assets/Models/Raw Models/Scope.fbx
 - Assets/Textures/Materials/MetalGold.mat
+- Assets/Models/Raw Models/MagazineRack.fbx
 - Assets/Textures/Icons/Mithrix Master Round.png
 - Assets/Models/Prefabs/Medkit.prefab
 - Assets/Models/Prefabs/Ration.prefab
 - Assets/Models/Raw Models/Ration.fbx
-- Assets/Models/Prefabs/BatteryBullets.prefab
+- Assets/Models/Prefabs/BulletsBattery.prefab
 - Assets/Textures/Materials/UnityTex.png
 - Assets/Models/Prefabs/EnragingPhoto.prefab
 - Assets/Textures/Materials/EmissionRed.mat
 - Assets/Textures/Materials/Magenta.mat
-- Assets/Textures/Icons/RollBombIcon.png
+- Assets/Textures/Icons/RollbombIcon.png
+- Assets/Textures/Icons/MasterRoundV.png
 - Assets/Models/Raw Models/Barrel.fbx
 - Assets/Textures/Icons/RingCartographerIcon.png
 - Assets/Textures/Materials/Brown.mat
 - Assets/Textures/Materials/Materials/tsExLQu_10x.mat
 - Assets/Textures/Materials/Materials/2IFNLod_10x.mat
-- Assets/Textures/Icons/BatteryBulletsIcon.png
-- Assets/Textures/Icons/Spice.png
+- Assets/Textures/Icons/BulletsBatteryIcon.png
+- Assets/Textures/Icons/SpiceIcon.png
 - Assets/Textures/Materials/White.mat
 - Assets/Models/Prefabs/Bomb_projectile.prefab
 - Assets/Textures/Materials/Green.mat
@@ -89,6 +96,7 @@ Assets:
 - Assets/Models/Raw Models/Molotov.fbx
 - Assets/Models/Prefabs/FriendshipCookie.prefab
 - Assets/Textures/Icons/BombIcon.png
+- Assets/Textures/Icons/MasterRoundIV.png
 - Assets/Textures/Materials/Glass.mat
 - Assets/Models/Prefabs/Meatbun.prefab
 - Assets/Models/Prefabs/Metronome.prefab
@@ -99,6 +107,7 @@ Assets:
 - Assets/Textures/Materials/Materials/EnragingPhotoTexture.mat
 - Assets/Models/Raw Models/Metronome.fbx
 - Assets/Models/Raw Models/Number 2 Item.fbx
+- Assets/Textures/Icons/MasterRoundI.png
 - Assets/Textures/Icons/MetronomeIcon.png
 - Assets/Textures/Icons/MedkitIcon.png
 - Assets/Textures/Materials/Materials/shitty map.mat
@@ -106,6 +115,8 @@ Assets:
 - Assets/Models/Raw Models/Blank.fbx
 - Assets/Models/Raw Models/Medkit.fbx
 - Assets/Models/Raw Models/RingUnity.fbx
+- Assets/Models/Prefabs/MagazineRack.prefab
+- Assets/Textures/Icons/MasterRoundXVII.png
 - Assets/Models/Prefabs/RingMiserlyProtection.prefab
 - Assets/Textures/Materials/FlatWhite.mat
 - Assets/Textures/Icons/CultistPassiveIcon.png
@@ -113,28 +124,35 @@ Assets:
 - Assets/Textures/Materials/MetalD.Grey.mat
 - Assets/Textures/Materials/AkgUi2q_10x.png
 - Assets/Models/Raw Models/Friendship Cookie.fbx
-- Assets/Models/Prefabs/Charm Horn.prefab
+- Assets/Models/Prefabs/CharmHorn.prefab
 - Assets/Textures/Materials/Materials/UnityTex.mat
 - Assets/Textures/Materials/shitty map.png
+- Assets/Models/Prefabs/SpreadAmmo.prefab
 - Assets/Models/Raw Models/Rollbomb.fbx
 - Assets/Models/Raw Models/Bomb.fbx
+- Assets/Models/Raw Models/SpreadAmmo.fbx
+- Assets/Textures/Icons/MasterRoundIII.png
+- Assets/Textures/Icons/MasterRoundII.png
+- Assets/Textures/Materials/Materials/SpreadAmmoTex.mat
+- Assets/Textures/Materials/MagazineRackTexture.png
 - Assets/Textures/Materials/Materials/CharmHornUV.mat
 - Assets/Textures/Materials/OrangeTexture.png
 - Assets/Models/Prefabs/RingCartographer.prefab
 - Assets/Textures/Icons/ScopeIcon.png
 - Assets/Textures/Materials/EmissionMagenta.mat
+- Assets/Textures/Icons/SpreadAmmoIcon.png
 - Assets/Models/Prefabs/Blank.prefab
 - Assets/Textures/Materials/MetalGrey.mat
 - Assets/Models/Raw Models/Charm Horn.fbx
 - Assets/Textures/Materials/CharmHornUV.png
 - Assets/Textures/Materials/Materials/AkgUi2q_10x.mat
 - Assets/Textures/Icons/RingUnityIcon.png
-- Assets/Models/Prefabs/Number 2 Item.prefab
+- Assets/Models/Prefabs/CultistPassiveItem.prefab
 - Assets/Textures/Icons/CharmHornIcon.png
 - Assets/Textures/Materials/tsExLQu_10x.png
 - Assets/Models/Raw Models/Meatbun.fbx
 - Assets/Models/Raw Models/DisarmingPersonality.fbx
-- Assets/Models/Prefabs/Barrel.prefab
+- Assets/Models/Prefabs/PortableBarrel.prefab
 - Assets/Models/Prefabs/Spice.prefab
 - Assets/Models/Raw Models/Mustache.fbx
 - Assets/Textures/Icons/DisarmingPersonalityIcon.png

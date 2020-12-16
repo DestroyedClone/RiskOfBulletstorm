@@ -71,6 +71,16 @@ namespace RiskOfBulletstorm.Items
             "arena"
         };
 
+        readonly string[] filePaths = 
+        {
+            "@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundI.png",
+            "@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundII.png",
+            "@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundIII.png",
+            "@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundIV.png",
+            "@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundV.png",
+            "@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundMoon.png",
+        };
+
         public override void SetupBehavior()
         {
             base.SetupBehavior();
@@ -176,6 +186,7 @@ namespace RiskOfBulletstorm.Items
                 output = "huh? how did you...";
             }
             self.descriptionText.token = output;
+            //self.iconImage = 
         }
 
         private void Check()
