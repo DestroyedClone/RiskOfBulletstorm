@@ -1,7 +1,6 @@
 ﻿using RiskOfBulletstorm.Utils;
 using R2API;
 using RoR2;
-using R2API;
 using UnityEngine;
 using TILER2;
 using static TILER2.MiscUtil;

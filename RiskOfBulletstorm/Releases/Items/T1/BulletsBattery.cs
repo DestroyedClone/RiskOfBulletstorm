@@ -300,7 +300,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     var min = Mathf.Min(1f * invcount * procCoefficient, 15f);
                     if (Util.CheckRoll(min))
-                        return baseDamageType |= DamageType.Stun1s;
+                        return baseDamageType |= DamageType.Shock5s;
                 }
             }
             return baseDamageType;

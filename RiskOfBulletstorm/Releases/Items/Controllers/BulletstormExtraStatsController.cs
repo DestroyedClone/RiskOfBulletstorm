@@ -10,7 +10,7 @@ namespace RiskOfBulletstorm.Items
 {
     public class BulletstormExtraStatsController : Item_V2<BulletstormExtraStatsController>
     {
-        public override string displayName => "BulletstormAccuracyController";
+        public override string displayName => "BulletstormExtraStatsController";
         public override ItemTier itemTier => ItemTier.NoTier;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.WorldUnique, ItemTag.AIBlacklist });
 

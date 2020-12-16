@@ -187,7 +187,6 @@ namespace RiskOfBulletstorm.Items
                 output = "huh? how did you...";
             }
             self.descriptionText.token = output;
-            //self.iconImage = 
         }
 
         private void Check()

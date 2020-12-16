@@ -23,6 +23,12 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "";
 
+        public PickupAmmoSpread()
+        {
+            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/SpreadAmmo.prefab";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/SpreadAmmoIcon.png"; //For evolution somehow
+        }
+
         public override void SetupBehavior()
         {
             base.SetupBehavior();

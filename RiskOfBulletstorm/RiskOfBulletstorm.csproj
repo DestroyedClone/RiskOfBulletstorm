@@ -80,6 +80,7 @@
     <None Include="lib\UnityEngine.dll" />
     <None Include="lib\UnityEngine.Networking.dll" />
     <None Include="lib\UnityEngine.PhysicsModule.dll" />
+    <None Include="lib\UnityEngine.UI.dll" />
   </ItemGroup>
 
   <ItemGroup>

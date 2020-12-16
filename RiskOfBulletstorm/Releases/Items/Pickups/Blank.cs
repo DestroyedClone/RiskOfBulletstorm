@@ -73,7 +73,6 @@ namespace RiskOfBulletstorm.Items
 
         public static GameObject ItemBodyModelPrefab;
 
-
         public Blank()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Blank.prefab";
@@ -81,231 +80,11 @@ namespace RiskOfBulletstorm.Items
         }
         public override void SetupBehavior()
         {
-
+            base.SetupBehavior();
         }
         public override void SetupAttributes()
         {
-            if (ItemBodyModelPrefab == null)
-            {
-                ItemBodyModelPrefab = Resources.Load<GameObject>(modelResourcePath);
-                displayRules = GenerateItemDisplayRules();
-            }
-
             base.SetupAttributes();
-
-        }
-        private static ItemDisplayRuleDict GenerateItemDisplayRules()
-        {
-            ItemBodyModelPrefab.AddComponent<ItemDisplay>();
-            ItemBodyModelPrefab.GetComponent<ItemDisplay>().rendererInfos = ItemHelpers.ItemDisplaySetup(ItemBodyModelPrefab);
-
-            Vector3 generalScale = new Vector3(0.05f, 0.05f, 0.05f);
-            ItemDisplayRuleDict rules = new ItemDisplayRuleDict(new ItemDisplayRule[]
-            {
-                new ItemDisplayRule
-                {
-                    ruleType = ItemDisplayRuleType.ParentedPrefab,
-                    followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
-                    localPos = new Vector3(0f, 0.2f, 0.22f),
-                    localAngles = new Vector3(0, 0, 0),
-                    localScale = new Vector3(0.1f, 0.1f, 0.1f)
-                }
-            });
-            rules.Add("mdlHuntress", new ItemDisplayRule[]
-            {
-                new ItemDisplayRule
-                {
-                    ruleType = ItemDisplayRuleType.ParentedPrefab,
-                    followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
-                    localPos = new Vector3(0.1f, 0.2f, 0.13f),
-                    localAngles = new Vector3(0f, 0f, 90f),
-                    localScale = new Vector3(0.08f, 0.08f, 0.08f)
-                }
-            });
-            rules.Add("mdlToolbot", new ItemDisplayRule[]
-            {
-                new ItemDisplayRule
-                {
-                    ruleType = ItemDisplayRuleType.ParentedPrefab,
-                    followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
-                    localPos = new Vector3(0f, 3.4f, -1.3f),
-                    localAngles = new Vector3(60f, 0f, 0f),
-                    localScale = generalScale * 16f
-                }
-            });
-            rules.Add("mdlEngi", new ItemDisplayRule[]
-            {
-                new ItemDisplayRule
-                {
-                    ruleType = ItemDisplayRuleType.ParentedPrefab,
-                    followerPrefab = ItemBodyModelPrefab,
-                    childName = "Chest",
-                    localPos = new Vector3(0f, 0.5f, 0.22f),
-                    localAngles = new Vector3(0f, 1f, -0.06f),
-                    localScale = generalScale
-                }
-            });
-
-            rules.Add("mdlEngiTurret", new ItemDisplayRule[] //NOPE
-            {
-                new ItemDisplayRule
-                {
-                    ruleType = ItemDisplayRuleType.ParentedPrefab,
-                    followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
-                    localPos = new Vector3(0f, 0f, 0.25f),
-                    localAngles = new Vector3(0f, 1f, -0.06f),
-                    localScale = generalScale * 5f
-                }
-            });
-            rules.Add("mdlMage", new ItemDisplayRule[]
-            {
-                new ItemDisplayRule
-                {
-                    ruleType = ItemDisplayRuleType.ParentedPrefab,
-                    followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
-                    localPos = new Vector3(0f, 0f, 0.13f),
-                    localAngles = new Vector3(0f, 0f, 0f),
-                    localScale = generalScale
-                }
-            });
-            rules.Add("mdlMerc", new ItemDisplayRule[]
-            {
-                new ItemDisplayRule
-                {
-                    ruleType = ItemDisplayRuleType.ParentedPrefab,
-                    followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
-                    localPos = new Vector3(0f, 0.1f, 0.2f),
-                    localAngles = new Vector3(0f, 0f, 0f),
-                    localScale = generalScale
-                }
-            });
-            rules.Add("mdlTreebot", new ItemDisplayRule[]
-            {
-                new ItemDisplayRule
-                {
-                    ruleType = ItemDisplayRuleType.ParentedPrefab,
-                    followerPrefab = ItemBodyModelPrefab,
-                    childName = "Base",
-                    localPos = new Vector3(0f, 1.2f, 0.2f),
-                    localAngles = new Vector3(-90f, 0f, 0f),
-                    localScale = generalScale * 8f
-                }
-            });
-            rules.Add("mdlLoader", new ItemDisplayRule[]
-            {
-                new ItemDisplayRule
-                {
-                    ruleType = ItemDisplayRuleType.ParentedPrefab,
-                    followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
-                    localPos = new Vector3(0f, 0.05f, 0.15f),
-                    localAngles = new Vector3(0f, 0f, 0f),
-                    localScale = generalScale
-                }
-            });
-            rules.Add("mdlCroco", new ItemDisplayRule[]
-            {
-                new ItemDisplayRule
-                {
-                    ruleType = ItemDisplayRuleType.ParentedPrefab,
-                    followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
-                    localPos = new Vector3(0f, 5.2f, 0.3f),
-                    localAngles = new Vector3(90f, 0f, 0f),
-                    localScale = generalScale * 8
-                }
-            });
-            rules.Add("mdlCaptain", new ItemDisplayRule[]
-            {
-                new ItemDisplayRule
-                {
-                    ruleType = ItemDisplayRuleType.ParentedPrefab,
-                    followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
-                    localPos = new Vector3(0f, 0.04f, 0.18f),
-                    localAngles = new Vector3(0f, 0f, 0f),
-                    localScale = generalScale
-                }
-            });
-            rules.Add("mdlBrother", new ItemDisplayRule[]
-            {
-                new ItemDisplayRule
-                {
-                    ruleType = ItemDisplayRuleType.ParentedPrefab,
-                    followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
-                    localPos = new Vector3(0f, 0f, 0.18f),
-                    localAngles = new Vector3(0, 0, 0),
-                    localScale = generalScale
-                }
-            });
-            rules.Add("mdlBandit", new ItemDisplayRule[]
-            {
-                new ItemDisplayRule
-                {
-                    ruleType = ItemDisplayRuleType.ParentedPrefab,
-                    followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
-                    localPos = new Vector3(0f, 0.15f, 0.12f),
-                    localAngles = new Vector3(-20f, 0f, 0f),
-                    localScale = generalScale
-                }
-            });
-            rules.Add("mdlClayBruiser", new ItemDisplayRule[]
-            {
-                new ItemDisplayRule
-                {
-                    ruleType = ItemDisplayRuleType.ParentedPrefab,
-                    followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
-                    localPos = new Vector3(0f, 0.1f, 0.4f),
-                    localAngles = new Vector3(0f, 0f, 0f),
-                    localScale = generalScale * 2f
-                }
-            });
-            rules.Add("mdlHAND", new ItemDisplayRule[]
-            {
-                new ItemDisplayRule
-                {
-                    ruleType = ItemDisplayRuleType.ParentedPrefab,
-                    followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
-                    localPos = new Vector3(0f, 0f, 2.4f),
-                    localAngles = new Vector3(0f, 0f, 0f),
-                    localScale = generalScale * 10f
-                }
-            });
-            rules.Add("mdlScav", new ItemDisplayRule[]
-            {
-                new ItemDisplayRule
-                {
-                    ruleType = ItemDisplayRuleType.ParentedPrefab,
-                    followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
-                    localPos = new Vector3(0f, 5f, 0f),
-                    localAngles = new Vector3(-90f, 0f, 0f),
-                    localScale = generalScale * 20f
-                }
-            });
-            //rules.Add("mdlSniper", new ItemDisplayRule[]
-            //{
-            //    new ItemDisplayRule
-            //    {
-            //        ruleType = ItemDisplayRuleType.ParentedPrefab,
-            //        followerPrefab = ItemBodyModelPrefab,
-            //        childName = "Head",
-            //        localPos = new Vector3(0f, -0.14f, 0.1f),
-            //        localAngles = new Vector3(-90f, 0f, 0f),
-            //        localScale = generalScale
-            //    }
-            //});
-            return rules;
         }
         public override void SetupConfig()
         {
@@ -315,54 +94,59 @@ namespace RiskOfBulletstorm.Items
         public override void Install() 
         {
             base.Install();
-            On.RoR2.CharacterBody.FixedUpdate += CharacterBody_FixedUpdate;
+            On.RoR2.CharacterBody.Start += CharacterBody_Start;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
-            On.RoR2.CharacterBody.FixedUpdate -= CharacterBody_FixedUpdate;
+            On.RoR2.CharacterBody.Start -= CharacterBody_Start;
         }
-
-        private void CharacterBody_FixedUpdate(On.RoR2.CharacterBody.orig_FixedUpdate orig, CharacterBody self)
+        private void CharacterBody_Start(On.RoR2.CharacterBody.orig_Start orig, CharacterBody self)
         {
             orig(self);
-            if (NetworkServer.active && self.master) //will this make clients unable to use it?
+            if (NetworkServer.active && self.isPlayerControlled)
             {
-                var LocalUserList = LocalUserManager.readOnlyLocalUsersList;
-
-                // var BlankComponent = self.master.AddComponent<BlankComponent>();
-                BlankComponent BlankComponent = self.master.GetComponent<BlankComponent>();
-                if (!BlankComponent) { BlankComponent = self.masterObject.AddComponent<BlankComponent>(); }
-
-                var InventoryCount = GetCount(self);
-                if (InventoryCount > 0)
-                {
-                    BlankComponent.BlankCooldown -= Time.fixedDeltaTime;
-                    if (self.isPlayerControlled)
-                    {
-                        if (!LocalUserList[0].isUIFocused) //TY KingEnderBrine for the help
-                        {
-                            if (BlankComponent.BlankCooldown <= 0)
-                            {
-                                BlankComponent.BlankUsed = false;
-                                if (Input.GetKeyDown(BlankButton) && !BlankComponent.BlankUsed)
-                                {
-                                    BlankComponent.BlankUsed = true;
-                                    FireBlank(self, self.corePosition, BlankRadius, Blank_DamageDealt, BlankClearRadius, true);
-                                    BlankComponent.BlankCooldown = ConfigBlankCooldown;
-                                }
-                            }
-                        }
-                    }
-                }
+                var masterObj = self.masterObject;
+                BlankComponent BlankComponent = masterObj.GetComponent<BlankComponent>();
+                if (!BlankComponent) { BlankComponent = masterObj.AddComponent<BlankComponent>(); }
+                BlankComponent.master = self.master;
             }
         }
 
         public class BlankComponent : MonoBehaviour
         {
             public float BlankCooldown = instance.ConfigBlankCooldown;
-            public bool BlankUsed = false;
+            public float BlankCooldownTime = 0;
+            public bool isReady = false;
+            LocalUser localUser;
+            public CharacterMaster master;
+
+            public void OnEnable()
+            {
+                localUser = LocalUserManager.readOnlyLocalUsersList[0];
+            }
+
+            public void Update()
+            {
+                BlankCooldownTime -= Time.fixedDeltaTime;
+
+                if (BlankCooldownTime <= 0)
+                {
+                    isReady = true;
+                }
+                var characterBody = master.GetBody();
+
+                if (!localUser.isUIFocused && characterBody.inventory.GetItemCount(instance.catalogIndex) > 0) //TY KingEnderBrine for the help
+                {
+                    if (Input.GetKeyDown(instance.BlankButton) && isReady)
+                    {
+                        isReady = false;
+                        FireBlank(characterBody, characterBody.corePosition, instance.BlankRadius, instance.Blank_DamageDealt, instance.BlankClearRadius, true);
+                        BlankCooldownTime = BlankCooldown;
+                    }
+                }
+            }
         }
     }
 }
