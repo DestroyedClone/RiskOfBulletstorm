@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using RiskOfBulletstorm.Utils;
+using System.Collections.ObjectModel;
 using R2API;
 using RoR2;
 using UnityEngine;
@@ -47,9 +48,20 @@ namespace RiskOfBulletstorm.Items
 
         public static GameObject ItemBodyModelPrefab;
         public static readonly BuffIndex AngerBuff = GungeonBuffController.Anger;
+        public EnragingPhoto()
+        {
+            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/EnragingPhoto.prefab";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/EnragingPhotoIcon.png";
+        }
 
         public override void SetupBehavior()
         {
+            if (ItemBodyModelPrefab == null)
+            {
+                ItemBodyModelPrefab = Resources.Load<GameObject>(modelResourcePath);
+                displayRules = GenerateItemDisplayRules();
+            }
+
             base.SetupBehavior();
         }
         public override void SetupAttributes()

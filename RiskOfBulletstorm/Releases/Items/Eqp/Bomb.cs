@@ -43,7 +43,7 @@ namespace RiskOfBulletstorm.Items
 
         public static GameObject ItemBodyModelPrefab;
 
-        public static string ProjectileModelPath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Bomb.prefab";
+        public static string ProjectileModelPath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Bomb_projectile.prefab";
 
         public Bomb()
         {
