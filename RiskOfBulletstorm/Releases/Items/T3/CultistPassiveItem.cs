@@ -38,7 +38,7 @@ namespace RiskOfBulletstorm.Items
         {
             if (ItemBodyModelPrefab == null)
             {
-                ItemBodyModelPrefab = Resources.Load<GameObject>(modelResourcePath);
+                ItemBodyModelPrefab = Resources.Load<GameObject>("@RiskOfBulletstorm:Assets/Models/Prefabs/CultistPassiveWorn.prefab");
                 displayRules = GenerateItemDisplayRules();
             }
 
@@ -244,18 +244,6 @@ namespace RiskOfBulletstorm.Items
                     localScale = generalScale * 20f
                 }
             });
-            //rules.Add("mdlSniper", new ItemDisplayRule[]
-            //{
-            //    new ItemDisplayRule
-            //    {
-            //        ruleType = ItemDisplayRuleType.ParentedPrefab,
-            //        followerPrefab = ItemBodyModelPrefab,
-            //        childName = "Head",
-            //        localPos = new Vector3(0f, -0.14f, 0.1f),
-            //        localAngles = new Vector3(-90f, 0f, 0f),
-            //        localScale = generalScale
-            //    }
-            //});
             return rules;
         }
         public override void SetupConfig()

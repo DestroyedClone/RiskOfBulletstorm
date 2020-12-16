@@ -98,6 +98,7 @@ namespace RiskOfBulletstorm.Items
         public static GameObject ItemBodyModelPrefab;
 
         public static GameObject GlassBreakEffect = Resources.Load<GameObject>("prefabs/effects/ShieldBreakEffect");
+        public static string ProjectileModelPath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Molotov_projectile.prefab";
 
 
 
@@ -128,7 +129,7 @@ namespace RiskOfBulletstorm.Items
             applyTorque.randomize = true;
             applyTorque.localTorque = new Vector3(400f, 10f, 400f);
 
-            var model = Resources.Load<GameObject>(modelResourcePath);
+            var model = Resources.Load<GameObject>(ProjectileModelPath);
             model.AddComponent<NetworkIdentity>();
             model.AddComponent<ProjectileGhostController>();
             model.transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);

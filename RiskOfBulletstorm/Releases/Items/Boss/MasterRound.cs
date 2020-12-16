@@ -81,6 +81,7 @@ namespace RiskOfBulletstorm.Items
             "@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundMoon.png",
         };
 
+
         public override void SetupBehavior()
         {
             base.SetupBehavior();
