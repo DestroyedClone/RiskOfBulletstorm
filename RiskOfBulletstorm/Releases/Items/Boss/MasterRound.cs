@@ -81,6 +81,15 @@ namespace RiskOfBulletstorm.Items
             "@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundMoon.png",
         };
 
+        public MasterRoundNth()
+        {
+            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/SpreadAmmo.prefab";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundI.png"; //For evolution somehow
+        }
+
+        UnityEngine.UI.RawImage rawImage;
+
+
 
         public override void SetupBehavior()
         {
@@ -187,6 +196,9 @@ namespace RiskOfBulletstorm.Items
                 output = "huh? how did you...";
             }
             self.descriptionText.token = output;
+
+
+            self.iconImage = Resources.Load<UnityEngine.UI.RawImage>("@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundI.png");
         }
 
         private void Check()

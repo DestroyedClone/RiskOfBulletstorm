@@ -245,10 +245,18 @@ namespace RiskOfBulletstorm.Items
 
             if (isProjectile)
             {
-                ResultMult = 1f - ResultMult;
+                // Bullets get better the closer they are to zero starting at a multiplier of 1.0 (multiplying spread)
+                // Projectiles get better the closer they are to 1 (due to LERP) starting at a multiplier of 0.0
+                // When we get max scope amount, it's a value of ~-1.1
+                // Here with projectiles we get a resulting value of 1.1 rounded to 1.
+                ResultMult = -ResultMult > 1 ? 1 : -ResultMult;
             } else
             {
-                ResultMult = ResultMult < 0 ? 0 : ResultMult;
+                // With bullets we have to add 1 to start the base off properly
+                // Then we evaluate it (1 - ~1.1 = -0.1)
+                // We clamp it at zero because a negative multiplier might result in a weird inverse increase in spread.
+                ResultMult++;
+                ResultMult = ResultMult < 0 ? 0 : 1 + ResultMult;
             }
 
             //ResultMult = Clamp(ResultMult);

@@ -110,7 +110,7 @@ namespace RiskOfBulletstorm.Items
                 var masterObj = self.masterObject;
                 BlankComponent BlankComponent = masterObj.GetComponent<BlankComponent>();
                 if (!BlankComponent) { BlankComponent = masterObj.AddComponent<BlankComponent>(); }
-                BlankComponent.master = self.master;
+                BlankComponent.characterBody = self;
             }
         }
 
@@ -120,7 +120,7 @@ namespace RiskOfBulletstorm.Items
             public float BlankCooldownTime = 0;
             public bool isReady = false;
             LocalUser localUser;
-            public CharacterMaster master;
+            public CharacterBody characterBody;
 
             public void OnEnable()
             {
@@ -135,7 +135,6 @@ namespace RiskOfBulletstorm.Items
                 {
                     isReady = true;
                 }
-                var characterBody = master.GetBody();
 
                 if (!localUser.isUIFocused && characterBody.inventory.GetItemCount(instance.catalogIndex) > 0) //TY KingEnderBrine for the help
                 {
