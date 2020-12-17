@@ -56,7 +56,7 @@ namespace RiskOfBulletstorm.Items
                 desc += "</style>";
 
                 if (Metronome_KillsLost > 0)
-                    desc += ", <style=cDeath>but loses some upon another skill.</style>";
+                    desc += ", <style=cDeath>but loses "+ Metronome_KillsLost +" upon another skill.</style>";
             }
             return desc;
         }
@@ -94,7 +94,24 @@ namespace RiskOfBulletstorm.Items
 
         public override void SetupBehavior()
         {
+            base.SetupBehavior();
 
+            if (Compat_ItemStats.enabled)
+            {
+                Compat_ItemStats.CreateItemStatDef(itemDef,
+                (
+                    (count, inv, master) => { return Metronome_MaxKills + Metronome_MaxKillsStack*count; },
+                    (value, inv, master) => { return $"Max kills: {Pct(value, 0, 1)}"; }
+                ));
+            }
+            if (Compat_BetterUI.enabled)
+            {
+                Compat_BetterUI.AddEffect(catalogIndex, Metronome_MaxKills, Metronome_MaxKills, null, Compat_BetterUI.LinearStacking,
+                    (value, extraStackValue, stacks) =>
+                    {
+                        return (int)(value + extraStackValue * stacks);
+                    });
+            }
         }
         public override void SetupAttributes()
         {

@@ -296,21 +296,21 @@ namespace RiskOfBulletstorm.Items
                         //Debug.Log("Mustache: " + activator.ToString() + "|" + activator.gameObject.ToString() + " bought from " + self.ToString());
                         if (InventoryCount > 0)
                         {
-                            CharacterBody component = activator.GetComponent<CharacterBody>();
+                            var component = activator.GetComponent<CharacterBody>()?.healthComponent;
 
-                            var ResultHeal = Mustache_HealAmount * InventoryCount;
                             if (component)
                             {
-                                if (self.costType == CostTypeIndex.PercentHealth) //messy for now because head is slow
+                                var ResultHeal = Mustache_HealAmount * InventoryCount;
+                                if (self.costType == CostTypeIndex.PercentHealth)
                                 {
                                     if (Mustache_BloodShrine)
                                     {
-                                        component.healthComponent.HealFraction(ResultHeal, default);
+                                        component.HealFraction(ResultHeal, default);
                                     }
                                 }
                                 else
                                 {
-                                    component.healthComponent.HealFraction(ResultHeal, default);
+                                    component.HealFraction(ResultHeal, default);
                                 }
                             }
                         }
