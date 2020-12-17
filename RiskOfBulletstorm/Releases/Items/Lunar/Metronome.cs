@@ -184,8 +184,8 @@ namespace RiskOfBulletstorm.Items
         {
             var InventoryCount = GetCount(self);
             MetronomeTrackKills metronomeTrackKills = self.gameObject.GetComponent<MetronomeTrackKills>();
-            metronomeTrackKills.characterBody = self;
             if (!metronomeTrackKills) { metronomeTrackKills = self.gameObject.AddComponent<MetronomeTrackKills>(); }
+            metronomeTrackKills.characterBody = self;
             if (InventoryCount > 0)
             {
                 metronomeTrackKills.enabled = true;

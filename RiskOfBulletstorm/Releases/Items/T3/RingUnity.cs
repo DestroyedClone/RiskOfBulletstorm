@@ -89,7 +89,7 @@ namespace RiskOfBulletstorm.Items
                     localScale = new Vector3(0.08f, 0.08f, 0.08f)
                 }
             });
-            rules.Add("mdlToolbot", new ItemDisplayRule[]
+            rules.Add("mdlToolbot", new ItemDisplayRule[] //
             {
                 new ItemDisplayRule
                 {
@@ -216,7 +216,7 @@ namespace RiskOfBulletstorm.Items
                     localScale = generalScale
                 }
             });
-            rules.Add("mdlBrother", new ItemDisplayRule[]
+            rules.Add("mdlBrother", new ItemDisplayRule[] //todo
             {
                 new ItemDisplayRule
                 {
@@ -264,7 +264,7 @@ namespace RiskOfBulletstorm.Items
                     localScale = generalScale * 10f
                 }
             });
-            rules.Add("mdlScav", new ItemDisplayRule[]
+            rules.Add("mdlScav", new ItemDisplayRule[] //swap fingers
             {
                 new ItemDisplayRule
                 {

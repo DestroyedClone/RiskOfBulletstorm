@@ -75,6 +75,7 @@
     <None Include="lib\MonoMod.Utils.dll" />
     <None Include="lib\R2API.dll" />
     <None Include="lib\TILER2.dll" />
+    <None Include="lib\Unity.TextMeshPro.dll" />
     <None Include="lib\UnityEngine.AssetBundleModule.dll" />
     <None Include="lib\UnityEngine.CoreModule.dll" />
     <None Include="lib\UnityEngine.dll" />
@@ -149,6 +150,9 @@
     </Reference>
     <Reference Include="TILER2">
       <HintPath>lib\TILER2.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>lib\Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
       <HintPath>lib\UnityEngine.dll</HintPath>

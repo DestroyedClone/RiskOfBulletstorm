@@ -4,6 +4,7 @@ using RoR2;
 using RoR2.UI;
 using UnityEngine;
 using UnityEngine.Networking;
+using TMPro;
 using TILER2;
 using static TILER2.StatHooks;
 using RiskOfBulletstorm.Utils;
@@ -87,7 +88,7 @@ namespace RiskOfBulletstorm.Items
             iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundI.png"; //For evolution somehow
         }
 
-        private Texture MoonMansTexture = Resources.Load<Texture>("@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundMoon.png");
+       // private Texture MoonMansTexture = Resources.Load<Texture>("@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundMoon.png");
 
 
 
@@ -178,8 +179,11 @@ namespace RiskOfBulletstorm.Items
         }
         private void GenericNotification_SetItem(On.RoR2.UI.GenericNotification.orig_SetItem orig, GenericNotification self, ItemDef itemDef)
         {
-            orig(self, itemDef);
-            if (itemDef.itemIndex != catalogIndex) return;
+            if (itemDef.itemIndex != catalogIndex)
+            {
+                orig(self, itemDef);
+                return;
+            }
             var StageCount = Mathf.Max(Run.instance.stageClearCount + 1, 1);
 
             string numberString = HelperUtil.NumbertoOrdinal(StageCount);
@@ -194,10 +198,17 @@ namespace RiskOfBulletstorm.Items
             {
                 output = "huh? how did you...";
             }
+
+            self.titleText.token = itemDef.nameToken;
+            self.titleTMP.color = ColorCatalog.GetColor(itemDef.colorIndex);
             self.descriptionText.token = output;
 
+            if (itemDef.pickupIconPath != null)
+            {
+                //self.iconImage.texture = Resources.Load<Texture>(itemDef.pickupIconPath);
+                self.iconImage.texture = Resources.Load<Texture>("@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundMoon.png");
+            }
 
-            self.iconImage.texture = MoonMansTexture;
         }
 
         private void Check()

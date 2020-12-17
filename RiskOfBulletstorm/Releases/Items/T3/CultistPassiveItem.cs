@@ -184,7 +184,7 @@ namespace RiskOfBulletstorm.Items
                     localScale = generalScale
                 }
             });
-            rules.Add("mdlBrother", new ItemDisplayRule[]
+            rules.Add("mdlBrother", new ItemDisplayRule[] //todo
             {
                 new ItemDisplayRule
                 {
