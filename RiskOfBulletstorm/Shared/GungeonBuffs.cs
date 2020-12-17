@@ -338,31 +338,28 @@ namespace RiskOfBulletstorm.Items
         }
         private HurtBox BaseAI_FindEnemyHurtBox(On.RoR2.CharacterAI.BaseAI.orig_FindEnemyHurtBox orig, RoR2.CharacterAI.BaseAI self, float maxDistance, bool full360Vision, bool filterByLoS)
         {
-            var isCharmed = self.body.gameObject.GetComponent<IsCharmed>();
+            var gameObject = self.body.gameObject;
+            var isCharmed = gameObject.GetComponent<IsCharmed>();
             if (isCharmed && isCharmed.enabled)
             {
                 self.enemySearch.viewer = self.body;
                 self.enemySearch.teamMaskFilter = TeamMask.allButNeutral;
                 self.enemySearch.teamMaskFilter.RemoveTeam(isCharmed.GetOppositeTeamIndex(isCharmed.GetOldTeam()));
                 self.enemySearch.sortMode = BullseyeSearch.SortMode.Distance;
-                self.enemySearch.minDistanceFilter = self.body.radius;
+                self.enemySearch.minDistanceFilter = 0;
                 self.enemySearch.maxDistanceFilter = maxDistance;
                 self.enemySearch.searchOrigin = self.bodyInputBank.aimOrigin;
                 self.enemySearch.searchDirection = self.bodyInputBank.aimDirection;
                 self.enemySearch.maxAngleFilter = (full360Vision ? 180f : 90f);
                 self.enemySearch.filterByLoS = filterByLoS;
                 self.enemySearch.RefreshCandidates();
+                self.enemySearch.FilterOutGameObject(gameObject);
                 var list = self.enemySearch.GetResults().ToList();
                 //Debug.Log("findennemyhurtbox: "+ list.FirstOrDefault<HurtBox>());
-                if (list.Count > 1) //If there are targets
-                    list.RemoveAt(0); //remove the first one because its usually themself
+                //if (list.Count > 1) //If there are targets
+                    //list.RemoveAt(0); //remove the first one because its usually themself
 
-                if (list.Count > 0) //now list doesn't include self
                     return list.FirstOrDefault<HurtBox>(); //if there's still a target
-                else
-                {
-                    return null;
-                }
             }
             return orig(self, maxDistance, full360Vision, filterByLoS);
         }
@@ -637,6 +634,8 @@ namespace RiskOfBulletstorm.Items
                 //if (characterBody.GetBuffCount(Charm) <= 0)
                 //characterBody.AddTimedBuff(Charm, duration);
                 //Debug.Log("Charm: OnEnable, last target was "+ baseAI.currentEnemy.characterBody.name);
+
+                // If the current target is was an enemy of the previous team
                 if (baseAI.currentEnemy.characterBody.teamComponent.teamIndex == GetOppositeTeamIndex(oldTeamIndex))
                 {
                     ResetTarget();

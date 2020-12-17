@@ -87,7 +87,7 @@ namespace RiskOfBulletstorm.Items
             iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundI.png"; //For evolution somehow
         }
 
-        UnityEngine.UI.RawImage rawImage;
+        private Texture MoonMansTexture = Resources.Load<Texture>("@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundMoon.png");
 
 
 
@@ -98,7 +98,6 @@ namespace RiskOfBulletstorm.Items
         public override void SetupAttributes()
         {
             base.SetupAttributes();
-
         }
         public override void SetupConfig()
         {
@@ -198,7 +197,7 @@ namespace RiskOfBulletstorm.Items
             self.descriptionText.token = output;
 
 
-            self.iconImage = Resources.Load<UnityEngine.UI.RawImage>("@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundI.png");
+            self.iconImage.texture = MoonMansTexture;
         }
 
         private void Check()

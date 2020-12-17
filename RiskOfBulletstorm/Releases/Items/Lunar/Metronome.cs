@@ -70,7 +70,7 @@ namespace RiskOfBulletstorm.Items
 
             desc += $"Multiplies your damage by <style=cIsDamage>{Pct(Metronome_DmgCoeff)} per kill</style> with the same skill." +
             $"\n <style=cStack>Max Kills: {Metronome_MaxKills} {(Metronome_MaxKillsStack > 0 ? Metronome_MaxKillsStack +"per stack." : "")}</style>" +
-            $"\n {(Metronome_KillsLost > 0 ? "<style=cDeath>Using a different skill will reset your bonus by {Metronome_KillsLost}</style>" : "" )}";
+            $"\n {(Metronome_KillsLost > 0 ? "<style=cDeath>Using a different skill will reset your bonus by "+Metronome_KillsLost+"</style>" : "" )}";
 
             return desc;
         }
@@ -99,15 +99,16 @@ namespace RiskOfBulletstorm.Items
         public override void SetupAttributes()
         {
             base.SetupAttributes();
-            
+
             var metronomeBuffTallyDef = new CustomBuff(
             new BuffDef
             {
-                buffColor = Color.cyan,
+                buffColor = Color.blue,
                 canStack = true,
                 isDebuff = false,
                 name = "Metronome Stacks (Display)",
-            });
+                iconPath = iconResourcePath
+            }) ;
             MetronomeBuffTally = BuffAPI.Add(metronomeBuffTallyDef);
 
         }
