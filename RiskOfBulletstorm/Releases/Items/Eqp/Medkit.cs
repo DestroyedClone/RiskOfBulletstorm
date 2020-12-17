@@ -64,8 +64,8 @@ namespace RiskOfBulletstorm.Items
         {
             base.SetupBehavior();
 
-            if (ClassicItemsCompat.enabled)
-                ClassicItemsCompat.RegisterEmbryo(catalogIndex);
+            if (HelperPlugin.ClassicItemsCompat.enabled)
+                HelperPlugin.ClassicItemsCompat.RegisterEmbryo(catalogIndex);
         }
         public override void SetupAttributes()
         {
@@ -314,7 +314,7 @@ namespace RiskOfBulletstorm.Items
 
             health.HealFraction(Medkit_HealAmount, default);
             health.AddBarrier(BarrierAmt);
-            if (ClassicItemsCompat.enabled && ClassicItemsCompat.CheckEmbryoProc(instance, body))
+            if (HelperPlugin.ClassicItemsCompat.enabled && HelperPlugin.ClassicItemsCompat.CheckEmbryoProc(instance, body))
             {
                 health.HealFraction(Medkit_HealAmount, default);
                 health.AddBarrier(BarrierAmt);

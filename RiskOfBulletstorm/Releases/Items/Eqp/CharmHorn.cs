@@ -83,8 +83,8 @@ namespace RiskOfBulletstorm.Items
 
             //UnityEngine.Object.Destroy(buffWard);
 
-            if (ClassicItemsCompat.enabled)
-                ClassicItemsCompat.RegisterEmbryo(catalogIndex);
+            if (HelperPlugin.ClassicItemsCompat.enabled)
+                HelperPlugin.ClassicItemsCompat.RegisterEmbryo(catalogIndex);
             if (CharmWardPrefab) PrefabAPI.RegisterNetworkPrefab(CharmWardPrefab);
         }
         public override void SetupAttributes()
@@ -324,7 +324,7 @@ namespace RiskOfBulletstorm.Items
             float multiplier = 1.0f;
 
             //Util.PlaySound(FireMines.throwMineSoundString, gameObject);
-            if (ClassicItemsCompat.enabled && ClassicItemsCompat.CheckEmbryoProc(instance, body))
+            if (HelperPlugin.ClassicItemsCompat.enabled && HelperPlugin.ClassicItemsCompat.CheckEmbryoProc(instance, body))
                 multiplier += 0.5f;
             CharmNearby(body, multiplier);
             return true;

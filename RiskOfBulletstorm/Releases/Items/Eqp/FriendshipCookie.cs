@@ -55,8 +55,8 @@ namespace RiskOfBulletstorm.Items
         {
             base.SetupBehavior();
 
-            if (ClassicItemsCompat.enabled)
-                ClassicItemsCompat.RegisterEmbryo(catalogIndex);
+            if (HelperPlugin.ClassicItemsCompat.enabled)
+                HelperPlugin.ClassicItemsCompat.RegisterEmbryo(catalogIndex);
         }
         public override void SetupAttributes()
         {
@@ -308,7 +308,7 @@ namespace RiskOfBulletstorm.Items
             //var playerList = CharacterMaster.readOnlyInstancesList;
             int playerAmt = playerList.Count;
 
-            bool EmbryoProc = ClassicItemsCompat.CheckEmbryoProc(instance, body) && ClassicItemsCompat.enabled;
+            bool EmbryoProc = HelperPlugin.ClassicItemsCompat.CheckEmbryoProc(instance, body) && HelperPlugin.ClassicItemsCompat.enabled;
 
             if (playerAmt > 1)
             {

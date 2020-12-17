@@ -131,7 +131,7 @@ namespace RiskOfBulletstorm.Items
             // CHARM //
             {
                 // Spawn //
-                On.RoR2.CharacterBody.Awake += Charmed_AddComponent;
+                On.RoR2.CharacterBody.Start += Charmed_AddComponent;
                 // Buff //
                 On.RoR2.CharacterBody.AddBuff += Charmed_EnableComponent;
                 On.RoR2.CharacterBody.RemoveBuff += Charmed_DisableComponent;
@@ -155,7 +155,7 @@ namespace RiskOfBulletstorm.Items
             // CHARM //
             {
                 // Spawn //
-                On.RoR2.CharacterBody.Awake -= Charmed_AddComponent;
+                On.RoR2.CharacterBody.Start -= Charmed_AddComponent;
                 // Buff //
                 On.RoR2.CharacterBody.AddBuff -= Charmed_EnableComponent;
                 On.RoR2.CharacterBody.RemoveBuff -= Charmed_DisableComponent;
@@ -267,8 +267,11 @@ namespace RiskOfBulletstorm.Items
         */
 
         // Spawn //
-        private void Charmed_AddComponent(On.RoR2.CharacterBody.orig_Awake orig, CharacterBody self)
+
+        private void Charmed_AddComponent(On.RoR2.CharacterBody.orig_Start orig, CharacterBody self)
         {
+            orig(self);
+
             if (!self.isPlayerControlled)
             {
                 var baseAI = self.masterObject.GetComponent<BaseAI>();
@@ -283,8 +286,8 @@ namespace RiskOfBulletstorm.Items
                     isCharmed.oldTeamIndex = self.teamComponent.teamIndex;
                 }
             }
-            orig(self);
         }
+
         // Buff //
         private void Charmed_EnableComponent(On.RoR2.CharacterBody.orig_AddBuff orig, CharacterBody self, BuffIndex buffType)
         {

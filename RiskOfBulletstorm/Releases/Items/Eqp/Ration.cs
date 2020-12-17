@@ -61,8 +61,8 @@ namespace RiskOfBulletstorm.Items
         public override void SetupBehavior()
         {
             base.SetupBehavior();
-            if (ClassicItemsCompat.enabled)
-                ClassicItemsCompat.RegisterEmbryo(catalogIndex);
+            if (HelperPlugin.ClassicItemsCompat.enabled)
+                HelperPlugin.ClassicItemsCompat.RegisterEmbryo(catalogIndex);
         }
         public override void SetupAttributes()
         {
@@ -333,7 +333,7 @@ namespace RiskOfBulletstorm.Items
             if (Ration_HealAmount > 0)
             {
                 health.HealFraction(Ration_HealAmount, default);
-                if (ClassicItemsCompat.enabled && ClassicItemsCompat.CheckEmbryoProc(instance, health.body)) health.HealFraction(Ration_HealAmount, default);
+                if (HelperPlugin.ClassicItemsCompat.enabled && HelperPlugin.ClassicItemsCompat.CheckEmbryoProc(instance, health.body)) health.HealFraction(Ration_HealAmount, default);
             }
             inventory.SetEquipmentIndex(EquipmentIndex.None); //credit to : Rico
         }

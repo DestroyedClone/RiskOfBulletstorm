@@ -57,7 +57,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
+                    childName = "HeadCenter",
                     localPos = new Vector3(0f, 0.2f, 0.22f),
                     localAngles = new Vector3(0, 0, 0),
                     localScale = new Vector3(0.1f, 0.1f, 0.1f)
@@ -69,7 +69,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
+                    childName = "HeadCenter",
                     localPos = new Vector3(0.1f, 0.2f, 0.13f),
                     localAngles = new Vector3(0f, 0f, 90f),
                     localScale = new Vector3(0.08f, 0.08f, 0.08f)
@@ -93,7 +93,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Chest",
+                    childName = "HeadCenter",
                     localPos = new Vector3(0f, 0.5f, 0.22f),
                     localAngles = new Vector3(0f, 1f, -0.06f),
                     localScale = generalScale
@@ -118,7 +118,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
+                    childName = "HeadCenter",
                     localPos = new Vector3(0f, 0f, 0.13f),
                     localAngles = new Vector3(0f, 0f, 0f),
                     localScale = generalScale
@@ -130,7 +130,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
+                    childName = "HeadCenter",
                     localPos = new Vector3(0f, 0.1f, 0.2f),
                     localAngles = new Vector3(0f, 0f, 0f),
                     localScale = generalScale
@@ -142,7 +142,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Base",
+                    childName = "HeadCenter",
                     localPos = new Vector3(0f, 1.2f, 0.2f),
                     localAngles = new Vector3(-90f, 0f, 0f),
                     localScale = generalScale * 8f
@@ -154,7 +154,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
+                    childName = "HeadCenter",
                     localPos = new Vector3(0f, 0.05f, 0.15f),
                     localAngles = new Vector3(0f, 0f, 0f),
                     localScale = generalScale
@@ -166,7 +166,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
+                    childName = "HeadCenter",
                     localPos = new Vector3(0f, 5.2f, 0.3f),
                     localAngles = new Vector3(90f, 0f, 0f),
                     localScale = generalScale * 8
@@ -190,7 +190,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
+                    childName = "HeadCenter",
                     localPos = new Vector3(0f, 0f, 0.18f),
                     localAngles = new Vector3(0, 0, 0),
                     localScale = generalScale

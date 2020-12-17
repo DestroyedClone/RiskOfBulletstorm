@@ -41,8 +41,8 @@ namespace RiskOfBulletstorm.Items
         {
             base.SetupBehavior();
 
-            if (ClassicItemsCompat.enabled)
-                ClassicItemsCompat.RegisterEmbryo(catalogIndex);
+            if (HelperPlugin.ClassicItemsCompat.enabled)
+                HelperPlugin.ClassicItemsCompat.RegisterEmbryo(catalogIndex);
         }
         public override void SetupAttributes()
         {
@@ -307,7 +307,7 @@ namespace RiskOfBulletstorm.Items
             Inventory inventory = body.inventory;
             if (!inventory) return false;
 
-            int DeployCount = ClassicItemsCompat.enabled && ClassicItemsCompat.CheckEmbryoProc(instance, body) ? 2 : 1; //Embryo Check
+            int DeployCount = HelperPlugin.ClassicItemsCompat.enabled && HelperPlugin.ClassicItemsCompat.CheckEmbryoProc(instance, body) ? 2 : 1; //Embryo Check
 
             for (int i = 0; i < DeployCount; i++)
             {
