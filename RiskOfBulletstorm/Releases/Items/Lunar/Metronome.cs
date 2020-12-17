@@ -137,18 +137,19 @@ namespace RiskOfBulletstorm.Items
         private void GenericSkill_OnExecute(On.RoR2.GenericSkill.orig_OnExecute orig, GenericSkill self)
         {
             CharacterBody vBody = self.characterBody;
-            if (vBody)
+            if (vBody && vBody.inventory)
             {
                 int invCount = vBody.inventory.GetItemCount(catalogIndex);
-                SkillLocator skillLocation = vBody.skillLocator;
-                if (skillLocation)
+
+                if (invCount > 0)
                 {
-                    MetronomeTrackKills MetronomeTrackKills = self.gameObject.GetComponent<MetronomeTrackKills>();
-                    if (MetronomeTrackKills && MetronomeTrackKills.enabled)
+                    SkillLocator skillLocation = vBody.skillLocator;
+                    if (skillLocation)
                     {
-                        if (skillLocation.FindSkill(self.skillName)) //Updates last skill slot used
+                        MetronomeTrackKills MetronomeTrackKills = self.gameObject.GetComponent<MetronomeTrackKills>();
+                        if (MetronomeTrackKills && MetronomeTrackKills.enabled)
                         {
-                            if (invCount > 0)
+                            if (skillLocation.FindSkill(self.skillName)) //Updates last skill slot used
                             {
                                 if (skillLocation.primary.Equals(self)) { MetronomeTrackKills.SetLastSkillSlot(0); }
                                 else if (skillLocation.secondary.Equals(self)) { MetronomeTrackKills.SetLastSkillSlot(1); }
@@ -166,6 +167,7 @@ namespace RiskOfBulletstorm.Items
         {
             var InventoryCount = GetCount(self);
             MetronomeTrackKills metronomeTrackKills = self.gameObject.GetComponent<MetronomeTrackKills>();
+            metronomeTrackKills.characterBody = self;
             if (!metronomeTrackKills) { metronomeTrackKills = self.gameObject.AddComponent<MetronomeTrackKills>(); }
             if (InventoryCount > 0)
             {
@@ -183,7 +185,7 @@ namespace RiskOfBulletstorm.Items
         private void GlobalEventManager_OnCharacterDeath(On.RoR2.GlobalEventManager.orig_OnCharacterDeath orig, GlobalEventManager self, DamageReport damageReport)
         {
             var attackerBody = damageReport?.attackerBody;
-            if (attackerBody)
+            if (attackerBody) //if not world
             {
                 int inventoryCount = GetCount(attackerBody);
                 if (inventoryCount > 0)
@@ -192,7 +194,6 @@ namespace RiskOfBulletstorm.Items
                     if (componentExists && componentExists.enabled)
                     {
                         componentExists.IncrementKills();
-
                     }
                 }
             }
@@ -214,15 +215,6 @@ namespace RiskOfBulletstorm.Items
             public int maxkills = 16;
             public int LastSkillSlotUsed = 0;
             public CharacterBody characterBody;
-
-            public void OnEnable()
-            {
-                var cb = gameObject.GetComponent<CharacterBody>();
-                if (cb)
-                    characterBody = cb;
-                else
-                    enabled = false;
-            }
 
             public void OnDisable()
             {
