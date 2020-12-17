@@ -3,7 +3,6 @@ using R2API;
 using RoR2;
 using UnityEngine;
 using TILER2;
-using ThinkInvisible.ClassicItems;
 using static RiskOfBulletstorm.Utils.HelperUtil;
 using GenericNotification = On.RoR2.UI.GenericNotification;
 
@@ -69,7 +68,9 @@ namespace RiskOfBulletstorm.Items
         public override void SetupBehavior()
         {
             base.SetupBehavior();
-            Embryo_V2.instance.Compat_Register(catalogIndex);
+
+            if (HelperPlugin.ClassicItemsCompat.enabled)
+                HelperPlugin.ClassicItemsCompat.RegisterEmbryo(catalogIndex);
         }
         public override void SetupAttributes()
         {
