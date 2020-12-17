@@ -130,10 +130,15 @@ namespace RiskOfBulletstorm.Items
             On.RoR2.HealthComponent.TakeDamage += SPICE_HealthComponent_TakeDamage;
             // CHARM //
             {
+                // Spawn //
+                On.RoR2.CharacterBody.Awake += Charmed_AddComponent;
+                // Buff //
+                On.RoR2.CharacterBody.AddBuff += Charmed_EnableComponent;
+                On.RoR2.CharacterBody.RemoveBuff += Charmed_DisableComponent;
+                // AI //
                 On.RoR2.CharacterAI.BaseAI.FindEnemyHurtBox += BaseAI_FindEnemyHurtBox;
                 On.RoR2.CharacterAI.BaseAI.OnBodyDamaged += BaseAI_OnBodyDamaged;
-                On.RoR2.CharacterBody.RemoveBuff += Charmed_DisableComponent;
-                On.RoR2.CharacterBody.AddBuff += Charmed_AddComponent;
+                // FriendlyFire Bypass //
                 On.RoR2.BulletAttack.DefaultHitCallback += BulletAttack_DefaultHitCallback;
                 On.RoR2.DamageTrail.DoDamage += DamageTrail_DoDamage;
                 On.RoR2.OverlapAttack.HurtBoxPassesFilter += OverlapAttack_HurtBoxPassesFilter;
@@ -149,17 +154,21 @@ namespace RiskOfBulletstorm.Items
             On.RoR2.HealthComponent.TakeDamage -= SPICE_HealthComponent_TakeDamage;
             // CHARM //
             {
+                // Spawn //
+                On.RoR2.CharacterBody.Awake -= Charmed_AddComponent;
+                // Buff //
+                On.RoR2.CharacterBody.AddBuff -= Charmed_EnableComponent;
+                On.RoR2.CharacterBody.RemoveBuff -= Charmed_DisableComponent;
+                // AI //
                 On.RoR2.CharacterAI.BaseAI.FindEnemyHurtBox -= BaseAI_FindEnemyHurtBox;
                 On.RoR2.CharacterAI.BaseAI.OnBodyDamaged -= BaseAI_OnBodyDamaged;
-                On.RoR2.CharacterBody.RemoveBuff -= Charmed_DisableComponent;
-                On.RoR2.CharacterBody.AddBuff -= Charmed_AddComponent;
+                // FriendlyFire Bypass //
                 On.RoR2.BulletAttack.DefaultHitCallback -= BulletAttack_DefaultHitCallback;
                 On.RoR2.DamageTrail.DoDamage -= DamageTrail_DoDamage;
                 On.RoR2.OverlapAttack.HurtBoxPassesFilter -= OverlapAttack_HurtBoxPassesFilter;
                 On.RoR2.Projectile.ProjectileSingleTargetImpact.OnProjectileImpact -= ProjectileSingleTargetImpact_OnProjectileImpact;
             } // Charm Hooks
         }
-
         private void AddSpiceRewards(CharacterBody sender, StatHookEventArgs args)
         {
             if (sender && sender.inventory)
@@ -215,6 +224,7 @@ namespace RiskOfBulletstorm.Items
             }
         }
 
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0059:Unnecessary assignment of a value", Justification = "Used Values")]
         private void SPICE_HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
@@ -255,6 +265,105 @@ namespace RiskOfBulletstorm.Items
         *   CHARM
         *   CHARM
         */
+
+        // Spawn //
+        private void Charmed_AddComponent(On.RoR2.CharacterBody.orig_Awake orig, CharacterBody self)
+        {
+            if (!self.isPlayerControlled)
+            {
+                var baseAI = self.masterObject.GetComponent<BaseAI>();
+                if (baseAI)
+                {
+                    var isCharmed = self.gameObject.GetComponent<IsCharmed>();
+                    if (!isCharmed) isCharmed = self.gameObject.AddComponent<IsCharmed>();
+
+                    isCharmed.characterBody = self;
+                    isCharmed.teamComponent = self.teamComponent;
+                    isCharmed.baseAI = baseAI;
+                    isCharmed.oldTeamIndex = self.teamComponent.teamIndex;
+                }
+            }
+            orig(self);
+        }
+        // Buff //
+        private void Charmed_EnableComponent(On.RoR2.CharacterBody.orig_AddBuff orig, CharacterBody self, BuffIndex buffType)
+        {
+            if (buffType == Charm)
+            {
+                if (!Config_Charm_Boss && self.isBoss) //prevents adding the buff if it's a boss and the config is disabled
+                    return;
+
+                var isCharmed = self.gameObject.GetComponent<IsCharmed>();
+                if (isCharmed && !isCharmed.enabled)
+                {
+                    isCharmed.enabled = true;
+                }
+            }
+            orig(self, buffType);
+        }
+        private void Charmed_DisableComponent(On.RoR2.CharacterBody.orig_RemoveBuff orig, CharacterBody self, BuffIndex buffType)
+        {
+            if (buffType == Charm)
+            {
+                var isCharmed = self.gameObject.GetComponent<IsCharmed>();
+                if (isCharmed && isCharmed.enabled)
+                    isCharmed.enabled = false;
+            }
+            orig(self, buffType);
+        }
+        // AI //
+        private void BaseAI_OnBodyDamaged(On.RoR2.CharacterAI.BaseAI.orig_OnBodyDamaged orig, BaseAI self, DamageReport damageReport)
+        {
+            var isCharmed = self.body.gameObject.GetComponent<IsCharmed>();
+            if (isCharmed && isCharmed.enabled)
+            {
+                DamageInfo damageInfo = damageReport.damageInfo;
+                var noTarget = (!self.currentEnemy.gameObject || self.enemyAttention <= 0f);
+                var attackerNotSelf = damageInfo.attacker != self.body.gameObject;
+                var retaliate = (!self.neverRetaliateFriendlies || !damageReport.isFriendlyFire);
+                var attackerIsCharmerTeam = damageReport.attackerTeamIndex == isCharmed.GetOppositeTeamIndex(isCharmed.GetOldTeam());
+                if (attackerIsCharmerTeam)
+                {
+                    //Debug.Log("BaseAI: Target was from the charmer's team.");
+                    if (noTarget && attackerNotSelf && retaliate)
+                    {
+                        return;
+                    }
+                }
+            }
+            orig(self, damageReport);
+        }
+        private HurtBox BaseAI_FindEnemyHurtBox(On.RoR2.CharacterAI.BaseAI.orig_FindEnemyHurtBox orig, RoR2.CharacterAI.BaseAI self, float maxDistance, bool full360Vision, bool filterByLoS)
+        {
+            var isCharmed = self.body.gameObject.GetComponent<IsCharmed>();
+            if (isCharmed && isCharmed.enabled)
+            {
+                self.enemySearch.viewer = self.body;
+                self.enemySearch.teamMaskFilter = TeamMask.allButNeutral;
+                self.enemySearch.teamMaskFilter.RemoveTeam(isCharmed.GetOppositeTeamIndex(isCharmed.GetOldTeam()));
+                self.enemySearch.sortMode = BullseyeSearch.SortMode.Distance;
+                self.enemySearch.minDistanceFilter = self.body.radius;
+                self.enemySearch.maxDistanceFilter = maxDistance;
+                self.enemySearch.searchOrigin = self.bodyInputBank.aimOrigin;
+                self.enemySearch.searchDirection = self.bodyInputBank.aimDirection;
+                self.enemySearch.maxAngleFilter = (full360Vision ? 180f : 90f);
+                self.enemySearch.filterByLoS = filterByLoS;
+                self.enemySearch.RefreshCandidates();
+                var list = self.enemySearch.GetResults().ToList();
+                //Debug.Log("findennemyhurtbox: "+ list.FirstOrDefault<HurtBox>());
+                if (list.Count > 1) //If there are targets
+                    list.RemoveAt(0); //remove the first one because its usually themself
+
+                if (list.Count > 0) //now list doesn't include self
+                    return list.FirstOrDefault<HurtBox>(); //if there's still a target
+                else
+                {
+                    return null;
+                }
+            }
+            return orig(self, maxDistance, full360Vision, filterByLoS);
+        }
+        // FriendlyFire Bypass //
         private bool BulletAttack_DefaultHitCallback(On.RoR2.BulletAttack.orig_DefaultHitCallback orig, BulletAttack self, ref BulletAttack.BulletHit hitInfo)
         {
             var owner = self.owner;
@@ -352,86 +461,6 @@ namespace RiskOfBulletstorm.Items
 
             return orig(self, ref hitInfo);
         }
-
-        private void BaseAI_OnBodyDamaged(On.RoR2.CharacterAI.BaseAI.orig_OnBodyDamaged orig, BaseAI self, DamageReport damageReport)
-        {
-            var isCharmed = self.body.gameObject.GetComponent<IsCharmed>();
-            if (isCharmed && isCharmed.enabled)
-            {
-                DamageInfo damageInfo = damageReport.damageInfo;
-                var noTarget = (!self.currentEnemy.gameObject || self.enemyAttention <= 0f);
-                var attackerNotSelf = damageInfo.attacker != self.body.gameObject;
-                var retaliate = (!self.neverRetaliateFriendlies || !damageReport.isFriendlyFire);
-                var attackerIsCharmerTeam = damageReport.attackerTeamIndex == isCharmed.GetOppositeTeamIndex(isCharmed.GetOldTeam());
-                if (attackerIsCharmerTeam)
-                {
-                    //Debug.Log("BaseAI: Target was from the charmer's team.");
-                    if (noTarget && attackerNotSelf && retaliate)
-                    {
-                        return;
-                    }
-                }
-            }
-            orig(self, damageReport);
-        }
-        private HurtBox BaseAI_FindEnemyHurtBox(On.RoR2.CharacterAI.BaseAI.orig_FindEnemyHurtBox orig, RoR2.CharacterAI.BaseAI self, float maxDistance, bool full360Vision, bool filterByLoS)
-        {
-            var isCharmed = self.body.gameObject.GetComponent<IsCharmed>();
-            if (isCharmed && isCharmed.enabled)
-            {
-                self.enemySearch.viewer = self.body;
-                self.enemySearch.teamMaskFilter = TeamMask.allButNeutral;
-                self.enemySearch.teamMaskFilter.RemoveTeam(isCharmed.GetOppositeTeamIndex(isCharmed.GetOldTeam()));
-                self.enemySearch.sortMode = BullseyeSearch.SortMode.Distance;
-                self.enemySearch.minDistanceFilter = self.body.radius;
-                self.enemySearch.maxDistanceFilter = maxDistance;
-                self.enemySearch.searchOrigin = self.bodyInputBank.aimOrigin;
-                self.enemySearch.searchDirection = self.bodyInputBank.aimDirection;
-                self.enemySearch.maxAngleFilter = (full360Vision ? 180f : 90f);
-                self.enemySearch.filterByLoS = filterByLoS;
-                self.enemySearch.RefreshCandidates();
-                var list = self.enemySearch.GetResults().ToList();
-                //Debug.Log("findennemyhurtbox: "+ list.FirstOrDefault<HurtBox>());
-                if (list.Count > 1) //If there are targets
-                    list.RemoveAt(0); //remove the first one because its usually themself
-
-                if (list.Count > 0) //now list doesn't include self
-                    return list.FirstOrDefault<HurtBox>(); //if there's still a target
-                else
-                    return null;
-            }
-            return orig(self, maxDistance, full360Vision, filterByLoS);
-        }
-
-        private void Charmed_AddComponent(On.RoR2.CharacterBody.orig_AddBuff orig, CharacterBody self, BuffIndex buffType)
-        {
-            if (buffType == Charm)
-            {
-                if (!Config_Charm_Boss && self.isBoss)
-                    return;
-
-                var isCharmed = self.gameObject.GetComponent<IsCharmed>();
-                if (!isCharmed) isCharmed = self.gameObject.AddComponent<IsCharmed>();
-                if (isCharmed)
-                {
-                    if (!isCharmed.enabled) isCharmed.enabled = true; //if statement so it doesn't pulse twice
-                    else isCharmed.ResetDuration();
-                }
-            }
-            orig(self, buffType);
-        }
-
-        private void Charmed_DisableComponent(On.RoR2.CharacterBody.orig_RemoveBuff orig, CharacterBody self, BuffIndex buffType)
-        {
-            if (buffType == Charm)
-            {
-                var isCharmed = self.gameObject.GetComponent<IsCharmed>();
-                if (isCharmed && isCharmed.enabled)
-                    isCharmed.enabled = false;
-            }
-            orig(self, buffType);
-        }
-
         private void ProjectileSingleTargetImpact_OnProjectileImpact(On.RoR2.Projectile.ProjectileSingleTargetImpact.orig_OnProjectileImpact orig, RoR2.Projectile.ProjectileSingleTargetImpact self, RoR2.Projectile.ProjectileImpactInfo impactInfo)
         {
             if (!self.alive)
@@ -514,7 +543,6 @@ namespace RiskOfBulletstorm.Items
 
             orig(self, impactInfo);
         }
-
         private bool OverlapAttack_HurtBoxPassesFilter(On.RoR2.OverlapAttack.orig_HurtBoxPassesFilter orig, OverlapAttack self, HurtBox hurtBox)
         {
             var owner = self.attacker;
@@ -529,7 +557,6 @@ namespace RiskOfBulletstorm.Items
 
             return orig(self, hurtBox);
         }
-
         private void DamageTrail_DoDamage(On.RoR2.DamageTrail.orig_DoDamage orig, DamageTrail self)
         {
             var owner = self.owner;
@@ -593,58 +620,21 @@ namespace RiskOfBulletstorm.Items
             orig(self);
         }
 
-
-
-
-        public class IsJammed : MonoBehaviour
-        {
-            public CharacterBody characterBody;
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
-            void OnEnable()
-            {
-                //ContactDamageCooldown = ContactDamageCooldownFull;
-                characterBody = gameObject.GetComponent<CharacterBody>();
-                if (!characterBody.HasBuff(Jammed))
-                {
-                    characterBody.AddBuff(Jammed);
-                }
-            }
-        }
-
         public class IsCharmed : MonoBehaviour
         {
-            public float duration = CharmHorn.instance.CharmHorn_Duration;
-            private float lifetime = 9f;
+            //public float duration = CharmHorn.instance.CharmHorn_Duration;
             public CharacterBody characterBody;
-            private TeamComponent teamComponent;
-            private TeamIndex oldTeamIndex = TeamIndex.Monster;
-            private BaseAI baseAI;
+            public TeamComponent teamComponent;
+            public TeamIndex oldTeamIndex;
+            public BaseAI baseAI;
 
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
             void OnEnable()
             {
-                characterBody = gameObject.GetComponent<CharacterBody>();
-                if (!characterBody)
-                {
-                    enabled = false;
-                    return;
-                }
-                teamComponent = characterBody.teamComponent;
-                baseAI = characterBody.master.GetComponent<BaseAI>();
-                if (!baseAI || characterBody.isPlayerControlled)
-                {
-                    enabled = false;
-                    return;
-                }
-
-                if (characterBody.GetBuffCount(Charm) <= 0)
-                    characterBody.AddBuff(Charm);
-                oldTeamIndex = teamComponent.teamIndex;
-                ResetDuration();
-                //FlipTeam();
-                var teamComponentEnemy = baseAI.currentEnemy.characterBody.teamComponent;
+                //if (characterBody.GetBuffCount(Charm) <= 0)
+                //characterBody.AddTimedBuff(Charm, duration);
                 //Debug.Log("Charm: OnEnable, last target was "+ baseAI.currentEnemy.characterBody.name);
-                if (teamComponentEnemy.teamIndex == GetOppositeTeamIndex(oldTeamIndex))
+                if (baseAI.currentEnemy.characterBody.teamComponent.teamIndex == GetOppositeTeamIndex(oldTeamIndex))
                 {
                     ResetTarget();
                 }
@@ -667,8 +657,7 @@ namespace RiskOfBulletstorm.Items
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
             void FixedUpdate()
             {
-                lifetime -= Time.fixedDeltaTime;
-                if (lifetime <= 0 || characterBody.GetBuffCount(Charm) <= 0)
+                if (!characterBody.HasBuff(Charm))
                 {
                     enabled = false;
                 }
@@ -677,30 +666,35 @@ namespace RiskOfBulletstorm.Items
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
             void OnDisable()
             {
-                if (characterBody.GetBuffCount(Charm) > 0)
-                    for (int i = 0; i < characterBody.GetBuffCount(Charm); i++)
-                        characterBody.RemoveBuff(Charm);
+                if (characterBody.HasBuff(Charm))
+                    characterBody.RemoveBuff(Charm);
                 characterBody.teamComponent.teamIndex = oldTeamIndex;
                 ResetTarget();
             }
-            /*
-            public TeamIndex FlipTeam()
-            {
-                var targetTeam = TeamIndex.None;
-                if (oldTeamIndex == TeamIndex.Player) targetTeam = TeamIndex.Monster;
-                else if (oldTeamIndex == TeamIndex.Monster) targetTeam = TeamIndex.Player;
-                teamComponent.teamIndex = teamComponent.teamIndex == TeamIndex.Neutral ? targetTeam : TeamIndex.Neutral;
-                return teamComponent.teamIndex;
-            }*/
 
-            public void ResetDuration() //add value later
-            {
-                if (lifetime < duration) lifetime = duration;
-            }
             public TeamIndex GetOldTeam()
             {
                 return oldTeamIndex;
             }
         }
+
+        // END CHARM //
+
+
+        public class IsJammed : MonoBehaviour
+        {
+            public CharacterBody characterBody;
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
+            void OnEnable()
+            {
+                //ContactDamageCooldown = ContactDamageCooldownFull;
+                characterBody = gameObject.GetComponent<CharacterBody>();
+                if (!characterBody.HasBuff(Jammed))
+                {
+                    characterBody.AddBuff(Jammed);
+                }
+            }
+        }
+
     }
 }
