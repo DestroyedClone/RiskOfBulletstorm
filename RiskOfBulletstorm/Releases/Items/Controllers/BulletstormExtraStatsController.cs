@@ -344,7 +344,7 @@ namespace RiskOfBulletstorm.Items
         private void AdjustSpreadBullets(On.RoR2.BulletAttack.orig_Fire orig, BulletAttack self)
         {
             //doesn't work on MULT?????
-            CharacterBody characterBody = self.owner.GetComponent<CharacterBody>();
+            CharacterBody characterBody = self.owner.gameObject.GetComponent<CharacterBody>();
             if (characterBody)
             {
                 var inventory = characterBody.inventory;

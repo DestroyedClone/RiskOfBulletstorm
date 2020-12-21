@@ -184,7 +184,8 @@ namespace RiskOfBulletstorm.Items
                 orig(self, itemDef);
                 return;
             }
-            var StageCount = Mathf.Max(Run.instance.stageClearCount + 1, 1);
+            var clearCount = Run.instance.stageClearCount;
+            var StageCount = Mathf.Max(clearCount + 1, 1);
 
             string numberString = HelperUtil.NumbertoOrdinal(StageCount);
             string numberCapitalized = char.ToUpper(numberString[0]) + numberString.Substring(1);
@@ -206,6 +207,8 @@ namespace RiskOfBulletstorm.Items
             if (itemDef.pickupIconPath != null)
             {
                 //self.iconImage.texture = Resources.Load<Texture>(itemDef.pickupIconPath);
+                var index = Mathf.Max(clearCount, filePaths.Length-1);
+                //self.iconImage.texture = Resources.Load<Texture>(filePaths[index]);
                 self.iconImage.texture = Resources.Load<Texture>("@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundMoon.png");
             }
 
