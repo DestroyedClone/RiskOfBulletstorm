@@ -71,6 +71,7 @@ namespace RiskOfBulletstorm.Items
                 backpackComponent.characterBody = self;
                 backpackComponent.localUser = LocalUserManager.readOnlyLocalUsersList[0];
                 backpackComponent.inventory = self.inventory;
+                backpackComponent.UpdateDefault();
             }
         }
 
@@ -82,7 +83,12 @@ namespace RiskOfBulletstorm.Items
             public Inventory inventory;
             public byte maxAvailableSlot = 0;
             //private bool isToolbot = false;
-            //private byte defaultMax = 0;
+            private byte defaultMax = 0;
+
+            public void UpdateDefault()
+            {
+                defaultMax = (byte)(characterBody.baseNameToken.ToUpper().Contains("TOOLBOT") ? 1 : 0);
+            }
 
             public void OnEnable()
             {
@@ -94,18 +100,17 @@ namespace RiskOfBulletstorm.Items
 
             private void CharacterBody_onInventoryChanged()
             {
-                var invcount = Math.Min(inventory.GetItemCount(instance.catalogIndex), 0); ;
+                var invcount = inventory.GetItemCount(instance.catalogIndex) + defaultMax;
                 
-                if (maxAvailableSlot < invcount)
+                if (maxAvailableSlot > invcount)
                 {
                     var difference = invcount - maxAvailableSlot;
-                    for (int i = 0; i < difference; i++)
+                    for (int i = 0; i < difference-1; i++)
                     {
-                        DropEquipSlot((byte)(maxAvailableSlot + i));
+                        DropEquipSlot((byte)(maxAvailableSlot - difference));
                     }
                 }
-                maxAvailableSlot = (byte)invcount;
-
+                maxAvailableSlot = (byte)(invcount + defaultMax);
             }
 
             public void OnDisable()
@@ -122,20 +127,20 @@ namespace RiskOfBulletstorm.Items
                     {
                         if (Input.GetKey(instance.Backpack_ModifierButton))
                         {
-                            if (Input.GetKeyDown(KeyCode.Alpha1)) SetEquipmentSlot(inventory, 0);
-                            else if (Input.GetKeyDown(KeyCode.Alpha2)) SetEquipmentSlot(inventory, 1);
-                            else if (Input.GetKeyDown(KeyCode.Alpha3)) SetEquipmentSlot(inventory, 2);
-                            else if (Input.GetKeyDown(KeyCode.Alpha4)) SetEquipmentSlot(inventory, 3);
-                            else if (Input.GetKeyDown(KeyCode.Alpha5)) SetEquipmentSlot(inventory, 4);
-                            else if (Input.GetKeyDown(KeyCode.Alpha6)) SetEquipmentSlot(inventory, 5);
-                            else if (Input.GetKeyDown(KeyCode.Alpha7)) SetEquipmentSlot(inventory, 6);
-                            else if (Input.GetKeyDown(KeyCode.Alpha8)) SetEquipmentSlot(inventory, 7);
-                            else if (Input.GetKeyDown(KeyCode.Alpha9)) SetEquipmentSlot(inventory, 8);
-                            else if (Input.GetKeyDown(KeyCode.Alpha0)) SetEquipmentSlot(inventory, 9);
+                            if (Input.GetKeyDown(KeyCode.Alpha1)) SetEquipmentSlot(0);
+                            else if (Input.GetKeyDown(KeyCode.Alpha2)) SetEquipmentSlot(1);
+                            else if (Input.GetKeyDown(KeyCode.Alpha3)) SetEquipmentSlot(2);
+                            else if (Input.GetKeyDown(KeyCode.Alpha4)) SetEquipmentSlot(3);
+                            else if (Input.GetKeyDown(KeyCode.Alpha5)) SetEquipmentSlot(4);
+                            else if (Input.GetKeyDown(KeyCode.Alpha6)) SetEquipmentSlot(5);
+                            else if (Input.GetKeyDown(KeyCode.Alpha7)) SetEquipmentSlot(6);
+                            else if (Input.GetKeyDown(KeyCode.Alpha8)) SetEquipmentSlot(7);
+                            else if (Input.GetKeyDown(KeyCode.Alpha9)) SetEquipmentSlot(8);
+                            else if (Input.GetKeyDown(KeyCode.Alpha0)) SetEquipmentSlot(9);
                             else if (Input.GetKeyDown(KeyCode.Underscore))
                             {
                                 var equipmentStateSlots = inventory.equipmentStateSlots;
-                                for (int i = 0; i < equipmentStateSlots.Length - 1; i++)
+                                for (int i = 0; i < maxAvailableSlot; i++)
                                 {
                                     var eqp = equipmentStateSlots[i];
                                     Chat.AddMessage("[" + i+1 + "] : "+eqp.equipmentDef.name);
@@ -146,13 +151,14 @@ namespace RiskOfBulletstorm.Items
                 }
             }
 
-            private void SetEquipmentSlot(Inventory inventory, byte i)
+            private void SetEquipmentSlot(byte i)
             {
-                var equipmentCount = inventory.GetEquipmentSlotCount();
+                //var equipmentCount = inventory.GetEquipmentSlotCount() + defaultMax;
                 //var value = (byte)Mathf.Min(i, equipmentCount);
-                if (i > equipmentCount || i > maxAvailableSlot)
+                if (i > maxAvailableSlot)
                 {
-                    Chat.AddMessage("Backpack: Selected slot "+i+" is greater than "+ equipmentCount);
+                    //Chat.AddMessage("Backpack: Selected slot "+i+" is greater than "+ equipmentCount);
+                    Chat.AddMessage("Failed to select slot");
                     return;
                 }
                 Chat.AddMessage("Backpack: Set equipment slot to " + i);
