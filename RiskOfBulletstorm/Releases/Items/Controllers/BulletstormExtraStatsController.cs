@@ -263,7 +263,7 @@ namespace RiskOfBulletstorm.Items
             //ResultMult = ResultMult;
 
             //Debug.Log("Scope: "+ ResultMult);
-            Debug.Log("ScopeMult: " + ScopeMult + " + SpiceMUlt: " + SpiceMult + " = " + ResultMult);
+            Debug.Log("Scope: [isProjectile"+ isProjectile+ "] Scope: "+ ScopeMult + " + SpiceMult: " + SpiceMult + " = " + ResultMult);
             return ResultMult;
         }
 
@@ -318,22 +318,16 @@ namespace RiskOfBulletstorm.Items
             //float ResultMult = 1f;
             if (characterBody)
             {
-                Debug.Log("Entered nailgun charbody");
                 var inventory = characterBody.inventory;
                 if (inventory)
                 {
-                    int InventoryCount = characterBody.inventory.GetItemCount(catalogIndex);
-                    Debug.Log("Entered nailgun inventory with "+ InventoryCount);
-                    if (InventoryCount > 0)
-                    {
-                        var ResultMult = CalculateSpreadMultiplier(inventory, false);
-                        characterBody.SetSpreadBloom(Mathf.Min(0, characterBody.spreadBloomAngle * ResultMult), false);
-                        //updateBloom = true;
+                    var ResultMult = CalculateSpreadMultiplier(inventory, false);
+                    characterBody.SetSpreadBloom(Mathf.Min(0, characterBody.spreadBloomAngle * ResultMult), false);
+                    //updateBloom = true;
 
-                        spreadPitchScale = Mathf.Min(0, spreadPitchScale * ResultMult);
-                        spreadYawScale = Mathf.Min(0, spreadYawScale * ResultMult);
-                        Debug.Log("ScopeNailgun");
-                    }
+                    spreadPitchScale = Mathf.Min(0, spreadPitchScale * ResultMult);
+                    spreadYawScale = Mathf.Min(0, spreadYawScale * ResultMult);
+
                 }
             }
             orig(self, aimRay, bulletCount, spreadPitchScale, spreadYawScale);
@@ -350,22 +344,19 @@ namespace RiskOfBulletstorm.Items
                 var inventory = characterBody.inventory;
                 if (inventory)
                 {
-                    int InventoryCount = characterBody.inventory.GetItemCount(catalogIndex);
-                    if (InventoryCount > 0)
-                    {
-                        float ResultMult = CalculateSpreadMultiplier(inventory, false);
+                    float ResultMult = CalculateSpreadMultiplier(inventory, false);
 
-                        characterBody.SetSpreadBloom(Mathf.Min(0, characterBody.spreadBloomAngle * ResultMult), false);
+                    characterBody.SetSpreadBloom(Mathf.Min(0, characterBody.spreadBloomAngle * ResultMult), false);
 
-                        self.maxSpread = Mathf.Max(self.maxSpread * ResultMult, 0);
+                    self.maxSpread = Mathf.Max(self.maxSpread * ResultMult, 0);
 
-                        self.minSpread = Mathf.Min(0, self.minSpread * ResultMult);
+                    self.minSpread = Mathf.Min(0, self.minSpread * ResultMult);
 
-                        self.spreadPitchScale = Mathf.Min(0, self.spreadPitchScale * ResultMult);
-                        self.spreadYawScale = Mathf.Min(0, self.spreadYawScale * ResultMult);
+                    self.spreadPitchScale = Mathf.Min(0, self.spreadPitchScale * ResultMult);
+                    self.spreadYawScale = Mathf.Min(0, self.spreadYawScale * ResultMult);
 
-                        //self.owner.GetComponent<CharacterBody>().SetSpreadBloom(ResultMult, false);
-                    }
+                    //self.owner.GetComponent<CharacterBody>().SetSpreadBloom(ResultMult, false);
+
                 }
             }
             orig(self);
