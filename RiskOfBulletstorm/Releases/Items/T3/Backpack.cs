@@ -71,7 +71,8 @@ namespace RiskOfBulletstorm.Items
                 backpackComponent.characterBody = self;
                 backpackComponent.localUser = LocalUserManager.readOnlyLocalUsersList[0];
                 backpackComponent.inventory = self.inventory;
-                backpackComponent.UpdateDefault();
+                //backpackComponent.UpdateDefault();
+                backpackComponent.Subscribe();
             }
         }
 
@@ -83,24 +84,21 @@ namespace RiskOfBulletstorm.Items
             public Inventory inventory;
             public byte maxAvailableSlot = 0;
             //private bool isToolbot = false;
-            private byte defaultMax = 0;
+            //private byte defaultMax = 0;
 
             public void UpdateDefault()
             {
-                defaultMax = (byte)(characterBody.baseNameToken.ToUpper().Contains("TOOLBOT") ? 1 : 0);
+                //defaultMax = (byte)(characterBody.baseNameToken.ToUpper().Contains("TOOLBOT") ? 1 : 0);
             }
 
-            public void OnEnable()
+            public void Subscribe()
             {
-                //isToolbot = characterBody.baseNameToken == "TOOLBOT_BODY_NAME";
-                //if (isToolbot) defaultMax++;
-                //inventory = characterBody.inventory;
                 characterBody.onInventoryChanged += CharacterBody_onInventoryChanged;
             }
 
             private void CharacterBody_onInventoryChanged()
             {
-                var invcount = inventory.GetItemCount(instance.catalogIndex) + defaultMax;
+                var invcount = inventory.GetItemCount(instance.catalogIndex);
                 
                 if (maxAvailableSlot > invcount)
                 {
@@ -110,12 +108,14 @@ namespace RiskOfBulletstorm.Items
                         DropEquipSlot((byte)(maxAvailableSlot - difference));
                     }
                 }
-                maxAvailableSlot = (byte)(invcount + defaultMax);
+                maxAvailableSlot = (byte)(invcount);
+                Chat.AddMessage("Updated allowed slots to "+maxAvailableSlot);
             }
 
             public void OnDisable()
             {
-                characterBody.onInventoryChanged -= CharacterBody_onInventoryChanged;
+                if (characterBody)
+                    characterBody.onInventoryChanged -= CharacterBody_onInventoryChanged;
             }
 
             public void Update()
@@ -137,7 +137,7 @@ namespace RiskOfBulletstorm.Items
                             else if (Input.GetKeyDown(KeyCode.Alpha8)) SetEquipmentSlot(7);
                             else if (Input.GetKeyDown(KeyCode.Alpha9)) SetEquipmentSlot(8);
                             else if (Input.GetKeyDown(KeyCode.Alpha0)) SetEquipmentSlot(9);
-                            else if (Input.GetKeyDown(KeyCode.Underscore))
+                            else if (Input.GetKeyDown(KeyCode.Equals))
                             {
                                 var equipmentStateSlots = inventory.equipmentStateSlots;
                                 for (int i = 0; i < maxAvailableSlot; i++)
@@ -158,7 +158,7 @@ namespace RiskOfBulletstorm.Items
                 if (i > maxAvailableSlot)
                 {
                     //Chat.AddMessage("Backpack: Selected slot "+i+" is greater than "+ equipmentCount);
-                    Chat.AddMessage("Failed to select slot");
+                    //Chat.AddMessage("Failed to select slot");
                     return;
                 }
                 Chat.AddMessage("Backpack: Set equipment slot to " + i);
