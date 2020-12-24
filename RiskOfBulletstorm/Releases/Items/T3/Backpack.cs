@@ -98,17 +98,22 @@ namespace RiskOfBulletstorm.Items
 
             private void CharacterBody_onInventoryChanged()
             {
-                var invcount = inventory.GetItemCount(instance.catalogIndex);
+                var invcount = (byte)inventory.GetItemCount(instance.catalogIndex);
                 
                 if (maxAvailableSlot > invcount)
                 {
                     var difference = invcount - maxAvailableSlot;
-                    for (int i = 0; i < difference-1; i++)
+                    for (int i = 1; i < difference+1; i++)
                     {
-                        DropEquipSlot((byte)(maxAvailableSlot - difference));
+                        var slot = (byte)(maxAvailableSlot + i);
+                        Chat.AddMessage("Dropping Slot "+ slot);
+                        DropEquipSlot(slot);
                     }
+                    if (inventory.activeEquipmentSlot > invcount)
+                        inventory.SetActiveEquipmentSlot(invcount);
                 }
-                maxAvailableSlot = (byte)(invcount);
+
+                maxAvailableSlot = invcount;
                 Chat.AddMessage("Updated allowed slots to "+maxAvailableSlot);
             }
 
