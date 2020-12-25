@@ -103,18 +103,23 @@ namespace RiskOfBulletstorm.Items
                 if (maxAvailableSlot > invcount)
                 {
                     var difference = invcount - maxAvailableSlot;
+                    Chat.AddMessage("Backpack: Difference is "+difference);
                     for (int i = 1; i <= difference+1; i++)
                     {
                         var slot = (byte)(maxAvailableSlot + i);
-                        Chat.AddMessage("Dropping Slot "+ slot);
+                        Chat.AddMessage("Backpack: Dropping Slot " + slot);
                         DropEquipSlot(slot);
                     }
+
+                    // Check here so if they're under it doesn't force them, only if they're above
                     if (inventory.activeEquipmentSlot > invcount)
                         inventory.SetActiveEquipmentSlot(invcount);
                 }
-
-                maxAvailableSlot = invcount;
-                Chat.AddMessage("Updated allowed slots to "+maxAvailableSlot);
+                if (maxAvailableSlot != invcount)
+                {
+                    maxAvailableSlot = invcount;
+                    Chat.AddMessage("Backpack: Updated allowed slots to " + maxAvailableSlot);
+                }
             }
 
             public void OnDisable()
