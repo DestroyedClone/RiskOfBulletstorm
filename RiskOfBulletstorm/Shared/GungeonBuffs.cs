@@ -26,6 +26,10 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("CHARM: Should Bosses (including Umbras) get charmed?", AutoConfigFlags.PreventNetMismatch)]
         public bool Config_Charm_Boss { get; private set; } = false;
 
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("CHARM: A player shouldn't get charmed. What buff should be granted instead?", AutoConfigFlags.PreventNetMismatch)]
+        public BuffIndex Config_Charm_PlayerBuff { get; private set; } = BuffIndex.PowerBuff;
+
         public override string displayName => "GungeonBuffController";
         public override ItemTier itemTier => ItemTier.NoTier;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.WorldUnique, ItemTag.AIBlacklist });
@@ -296,10 +300,15 @@ namespace RiskOfBulletstorm.Items
                 if (!Config_Charm_Boss && self.isBoss) //prevents adding the buff if it's a boss and the config is disabled
                     return;
 
-                var isCharmed = self.gameObject.GetComponent<IsCharmed>();
-                if (isCharmed && !isCharmed.enabled)
+                if (self.isPlayerControlled)
+                    buffType = Config_Charm_PlayerBuff;
+                else
                 {
-                    isCharmed.enabled = true;
+                    var isCharmed = self.gameObject.GetComponent<IsCharmed>();
+                    if (isCharmed && !isCharmed.enabled)
+                    {
+                        isCharmed.enabled = true;
+                    }
                 }
             }
             orig(self, buffType);
