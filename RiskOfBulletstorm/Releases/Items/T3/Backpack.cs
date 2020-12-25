@@ -155,13 +155,25 @@ namespace RiskOfBulletstorm.Items
                                     for (int i = 0; i <= maxAvailableSlot; i++)
                                     {
                                         var eqpName = "None";
-                                        if (i < equipmentStateSlots.Length - 1)
+                                        var charges = -6;
+                                        var cooldown = -7;
+                                        if (i < equipmentStateSlots.Length - 1) //prevents out of bounds error from unset slots
                                         {
                                             var eqp = equipmentStateSlots[i];
                                             if (eqp.equipmentIndex != EquipmentIndex.None)
+                                            {
                                                 eqpName = eqp.equipmentDef.nameToken;
+                                            }
+                                            charges = eqp.charges;
+                                            cooldown = eqp.isPerfomingRecharge ? (int)eqp.chargeFinishTime.timeUntil : cooldown;
                                         }
-                                        Chat.AddMessage("[" + (i+1) + "] : " + eqpName);
+                                        // Slot 0: "[1] Bomb 5x CD:10"
+                                        Chat.AddMessage(
+                                            "[" + (i+1) + "] " +
+                                            eqpName +
+                                            (charges == -6 ? "" : " "+ charges+"x") +
+                                            (cooldown == -7 ? "" : " CD:"+ cooldown + " ")
+                                            );
                                     }
                                 }
                             }
@@ -176,8 +188,6 @@ namespace RiskOfBulletstorm.Items
                 //var value = (byte)Mathf.Min(i, equipmentCount);
                 if (i > maxAvailableSlot)
                 {
-                    //Chat.AddMessage("Backpack: Selected slot "+i+" is greater than "+ equipmentCount);
-                    //Chat.AddMessage("Failed to select slot");
                     return;
                 }
                 Chat.AddMessage("Backpack: Set equipment slot to " + i);
