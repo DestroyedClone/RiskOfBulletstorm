@@ -220,7 +220,7 @@ namespace RiskOfBulletstorm.Items
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
             MetronomeTrackKills MetronomeTrackKills = damageInfo.attacker.gameObject.GetComponent<MetronomeTrackKills>();
-            if (MetronomeTrackKills)
+            if (MetronomeTrackKills && MetronomeTrackKills.enabled)
             {
                 damageInfo.damage *= 1+(Metronome_DmgCoeff * MetronomeTrackKills.kills);
             }
