@@ -638,7 +638,7 @@ namespace RiskOfBulletstorm.Items
             public BaseAI baseAI;
 
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
-            void OnEnable()
+            void Start()
             {
                 //if (characterBody.GetBuffCount(Charm) <= 0)
                 //characterBody.AddTimedBuff(Charm, duration);
