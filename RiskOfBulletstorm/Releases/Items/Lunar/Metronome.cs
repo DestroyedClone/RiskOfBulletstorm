@@ -246,7 +246,6 @@ namespace RiskOfBulletstorm.Items
                 maxkills = Metronome_MaxKills + Metronome_MaxKillsStack * (InventoryCount - 1);
                 kills = Mathf.Min(kills, maxkills);//this resets it if you have less metronomes from like cleansing
                 UpdateBuffStack();
-                characterBody.RecalculateStats();
             }
 
             public void UpdateBuffStack()
