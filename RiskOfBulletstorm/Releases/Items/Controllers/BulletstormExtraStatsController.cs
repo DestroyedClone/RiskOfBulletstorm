@@ -287,12 +287,12 @@ namespace RiskOfBulletstorm.Items
             {
                 if (ItemCount_Spice > 2 && ItemCount_Spice <= 4)
                 {
-                    SpiceMult = SpiceBonuses[ItemCount_Spice, 2];
+                    SpiceMult -= SpiceBonuses[ItemCount_Spice, 2];
                     // -0.15 + 
                 }
                 else if (ItemCount_Spice > 4)
                 {
-                    SpiceMult = SpiceBonusesConstantMaxed[2] + SpiceBonusesAdditive[2] + SpiceBonusesAdditive[2] * (ItemCount_Spice - 4);
+                    SpiceMult -= SpiceBonusesConstantMaxed[2] + SpiceBonusesAdditive[2] + SpiceBonusesAdditive[2] * (ItemCount_Spice - 4);
                     // +0.15 (+) -0.10 (+) -0.10*additionalstacks
                 }
             }
