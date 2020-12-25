@@ -166,6 +166,16 @@ namespace RiskOfBulletstorm.Items
                 "BombardierFireRocketProjectile",
                 "BombardierSeekerRocketProjectile",
 
+                // THINKINVIS - CLASSICITEMS //
+                "CIScepCommandoGrenade",
+                "CIScepLoaderThundercrash",
+
+                // CHEN - CLASSICITEMS //
+                //"InstantMine", drops at feet
+                //"PanicMine",
+                //"FootMine",
+                "MortarProjectile",
+
             };
             // MODDED //
             //Debug.Log("Adding modded projectiles");
