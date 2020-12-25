@@ -22,7 +22,7 @@ namespace RiskOfBulletstorm.Items
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How many kills are lost upon using a different ability?", AutoConfigFlags.PreventNetMismatch)]
-        public static int Metronome_KillsLost { get; private set; } = 25;
+        public static int Metronome_KillsLost { get; private set; } = 50;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the damage multiplier per kill for the metronome? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
@@ -138,8 +138,8 @@ namespace RiskOfBulletstorm.Items
             base.Install();
             On.RoR2.CharacterBody.OnInventoryChanged += CharacterBody_OnInventoryChanged;
             On.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
-            GetStatCoefficients += Metronome_GetStatCoefficients;
             On.RoR2.GenericSkill.OnExecute += GenericSkill_OnExecute;
+            On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
         }
 
         public override void Uninstall()
@@ -147,8 +147,8 @@ namespace RiskOfBulletstorm.Items
             base.Uninstall();
             On.RoR2.CharacterBody.OnInventoryChanged -= CharacterBody_OnInventoryChanged;
             On.RoR2.GlobalEventManager.OnCharacterDeath -= GlobalEventManager_OnCharacterDeath;
-            GetStatCoefficients -= Metronome_GetStatCoefficients;
             On.RoR2.GenericSkill.OnExecute -= GenericSkill_OnExecute;
+            On.RoR2.HealthComponent.TakeDamage -= HealthComponent_TakeDamage;
         }
 
         private void GenericSkill_OnExecute(On.RoR2.GenericSkill.orig_OnExecute orig, GenericSkill self)
@@ -217,13 +217,15 @@ namespace RiskOfBulletstorm.Items
             orig(self, damageReport);
         }
 
-        private void Metronome_GetStatCoefficients(CharacterBody sender, StatHookEventArgs args)
+        private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
-            MetronomeTrackKills MetronomeTrackKills = sender.gameObject.GetComponent<MetronomeTrackKills>();
+            MetronomeTrackKills MetronomeTrackKills = damageInfo.attacker.gameObject.GetComponent<MetronomeTrackKills>();
             if (MetronomeTrackKills)
             {
-                args.damageMultAdd += Metronome_DmgCoeff * MetronomeTrackKills.kills;
+                damageInfo.damage *= 1+(Metronome_DmgCoeff * MetronomeTrackKills.kills);
             }
+
+            orig(self, damageInfo);
         }
 
         public class MetronomeTrackKills : MonoBehaviour
