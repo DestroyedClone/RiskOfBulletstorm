@@ -103,7 +103,7 @@ namespace RiskOfBulletstorm.Items
                 if (maxAvailableSlot > invcount)
                 {
                     var difference = invcount - maxAvailableSlot;
-                    for (int i = 1; i < difference+1; i++)
+                    for (int i = 1; i <= difference+1; i++)
                     {
                         var slot = (byte)(maxAvailableSlot + i);
                         Chat.AddMessage("Dropping Slot "+ slot);
@@ -145,10 +145,16 @@ namespace RiskOfBulletstorm.Items
                             else if (Input.GetKeyDown(KeyCode.Equals))
                             {
                                 var equipmentStateSlots = inventory.equipmentStateSlots;
-                                for (int i = 0; i < maxAvailableSlot; i++)
+                                if (equipmentStateSlots.Length > 0)
                                 {
-                                    var eqp = equipmentStateSlots[i];
-                                    Chat.AddMessage("[" + i+1 + "] : "+eqp.equipmentDef.name);
+                                    for (int i = 0; i <= maxAvailableSlot; i++)
+                                    {
+                                        var eqp = equipmentStateSlots[i];
+                                        var eqpName = "None";
+                                        if (eqp.equipmentIndex != EquipmentIndex.None)
+                                            eqpName = eqp.equipmentDef.nameToken;
+                                        Chat.AddMessage("[" + (i+1) + "] : " + eqpName);
+                                    }
                                 }
                             }
                         }
