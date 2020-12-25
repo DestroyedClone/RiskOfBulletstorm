@@ -318,7 +318,7 @@ namespace RiskOfBulletstorm.Items
                 // With bullets we have to start at 1
                 // Then we evaluate it (1 - ~1.1 = -0.1)
                 // We clamp it at zero because a negative multiplier might result in a weird inverse increase in spread.
-                ResultMult = 1 + ResultMult < 0 ? 0 : 1 + ResultMult;
+                ResultMult = 1 + ResultMult <= 0 ? 0 : 1 + ResultMult;
             }
 
             //ResultMult = Clamp(ResultMult);
