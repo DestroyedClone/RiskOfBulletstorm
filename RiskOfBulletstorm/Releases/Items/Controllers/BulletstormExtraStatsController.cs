@@ -406,16 +406,17 @@ namespace RiskOfBulletstorm.Items
                 var inventory = characterBody.inventory;
                 if (inventory)
                 {
-                    float ResultMult = CalculateSpreadMultiplier(inventory, false);
+                    var ResultMult = CalculateSpreadMultiplier(inventory, false);
 
                     characterBody.SetSpreadBloom(Mathf.Min(0, characterBody.spreadBloomAngle * ResultMult), false);
 
-                    self.maxSpread = Mathf.Max(self.maxSpread * ResultMult, 0);
+                    Debug.Log("Bulletscope: maxspread: "+self.maxSpread+" multiplier: "+ResultMult+" result: "+ Mathf.Max(self.maxSpread * ResultMult, 0));
+                    self.maxSpread = self.maxSpread * ResultMult;
 
-                    self.minSpread = Mathf.Min(0, self.minSpread * ResultMult);
+                    self.minSpread = self.minSpread * ResultMult;
 
-                    self.spreadPitchScale = Mathf.Min(0, self.spreadPitchScale * ResultMult);
-                    self.spreadYawScale = Mathf.Min(0, self.spreadYawScale * ResultMult);
+                    self.spreadPitchScale = self.spreadPitchScale * ResultMult;
+                    self.spreadYawScale = self.spreadYawScale * ResultMult;
 
                     //self.owner.GetComponent<CharacterBody>().SetSpreadBloom(ResultMult, false);
 

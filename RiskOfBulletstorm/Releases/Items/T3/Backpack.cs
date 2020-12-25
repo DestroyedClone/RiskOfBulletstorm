@@ -104,10 +104,10 @@ namespace RiskOfBulletstorm.Items
                 {
                     var difference = maxAvailableSlot - invcount;
                     Chat.AddMessage("Backpack: Difference is "+difference);
-                    for (int i = 1; i <= difference+1; i++)
+                    for (int i = 1; i <= difference; i++)
                     {
-                        var slot = (byte)(maxAvailableSlot + i);
-                        Chat.AddMessage("Backpack: Dropping Slot " + slot);
+                        var slot = (byte)(maxAvailableSlot+i);
+                        Chat.AddMessage("Backpack: Dropping Slot " + (slot));
                         DropEquipSlot(slot);
                     }
 
@@ -157,7 +157,7 @@ namespace RiskOfBulletstorm.Items
                                         var eqpName = "None";
                                         var charges = -6;
                                         var cooldown = -7;
-                                        if (i < equipmentStateSlots.Length - 1) //prevents out of bounds error from unset slots
+                                        if (i < equipmentStateSlots.Length) //prevents out of bounds error from unset slots
                                         {
                                             var eqp = equipmentStateSlots[i];
                                             if (eqp.equipmentIndex != EquipmentIndex.None)
@@ -169,7 +169,7 @@ namespace RiskOfBulletstorm.Items
                                         }
                                         // Slot 0: "[1] Bomb 5x CD:10"
                                         Chat.AddMessage(
-                                            "[" + (i+1) + "] " +
+                                            "[" + (i) + "] " +
                                             eqpName +
                                             (charges == -6 ? "" : " "+ charges+"x") +
                                             (cooldown == -7 ? "" : " CD:"+ cooldown + " ")

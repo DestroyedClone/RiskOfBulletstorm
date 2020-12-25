@@ -646,7 +646,9 @@ namespace RiskOfBulletstorm.Items
 
                 // If the current target is was an enemy of the previous team
                 if (!baseAI)
-                    baseAI = gameObject.GetComponent<BaseAI>();
+                    baseAI = characterBody.masterObject.GetComponent<BaseAI>();
+                if (!baseAI)
+                    enabled = false;
 
                 if (baseAI.currentEnemy.characterBody.teamComponent.teamIndex == GetOppositeTeamIndex(oldTeamIndex))
                 {
