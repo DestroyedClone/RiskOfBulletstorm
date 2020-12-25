@@ -251,8 +251,6 @@ namespace RiskOfBulletstorm.Items
             public void UpdateBuffStack()
             {
                 characterBody.SetBuffCount(MetronomeBuffTally, kills);
-                //HelperUtil.ClearBuffStacks(characterBody, MetronomeBuffTally);
-                //HelperUtil.AddBuffStacks(characterBody, MetronomeBuffTally, kills);
             }
             public void SetLastSkillSlot(int SlotNumber)
             {
