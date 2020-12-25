@@ -165,7 +165,7 @@ namespace RiskOfBulletstorm.Items
                                                 eqpName = eqp.equipmentDef.nameToken;
                                             }
                                             charges = eqp.charges;
-                                            cooldown = eqp.isPerfomingRecharge ? (int)eqp.chargeFinishTime.timeUntil : cooldown;
+                                            cooldown = eqp.isPerfomingRecharge ? Mathf.Max((int)eqp.chargeFinishTime.timeUntil,0) : cooldown;
                                         }
                                         // Slot 0: "[1] Bomb 5x CD:10"
                                         Chat.AddMessage(
