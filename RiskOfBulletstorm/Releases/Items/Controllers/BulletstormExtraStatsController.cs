@@ -133,7 +133,7 @@ namespace RiskOfBulletstorm.Items
                 "mageIceBombClone",
                 "mageLightningBombClone",
 
-                // ROB - MINER - DIRESEEKER //
+                // ROB - DIRESEEKER //
                 "DireseekerBossFireball",
                 "DireseekerBossGroundFireball",
 
