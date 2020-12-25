@@ -72,14 +72,14 @@ namespace RiskOfBulletstorm.Items
             "arena"
         };
 
-        readonly string[] filePaths = 
+        readonly Texture[] textures =
         {
-            "@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundI.png",
-            "@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundII.png",
-            "@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundIII.png",
-            "@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundIV.png",
-            "@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundV.png",
-            "@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundMoon.png",
+            Resources.Load<Texture>("@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundI.png"),
+            Resources.Load<Texture>("@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundII.png"),
+            Resources.Load<Texture>("@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundIII.png"),
+            Resources.Load<Texture>("@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundIV.png"),
+            Resources.Load<Texture>("@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundV.png"),
+            Resources.Load<Texture>("@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundMoon.png"),
         };
 
         public MasterRoundNth()
@@ -189,7 +189,7 @@ namespace RiskOfBulletstorm.Items
 
             string numberString = HelperUtil.NumbertoOrdinal(StageCount);
             string numberCapitalized = char.ToUpper(numberString[0]) + numberString.Substring(1);
-            string descString = adjustedDesc[Mathf.Clamp(StageCount, 0, adjustedDesc.Length)];
+            string descString = adjustedDesc[Mathf.Clamp(StageCount, 0, adjustedDesc.Length-1)];
 
             //https://www.dotnetperls.com/uppercase-first-letter
 
@@ -207,9 +207,9 @@ namespace RiskOfBulletstorm.Items
             if (itemDef.pickupIconPath != null)
             {
                 //self.iconImage.texture = Resources.Load<Texture>(itemDef.pickupIconPath);
-                var index = Mathf.Max(clearCount, filePaths.Length-1);
+                var index = Mathf.Max(clearCount, textures.Length-1);
                 //self.iconImage.texture = Resources.Load<Texture>(filePaths[index]);
-                self.iconImage.texture = Resources.Load<Texture>("@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundMoon.png");
+                self.iconImage.texture = textures[index];
             }
 
         }

@@ -154,10 +154,13 @@ namespace RiskOfBulletstorm.Items
                                 {
                                     for (int i = 0; i <= maxAvailableSlot; i++)
                                     {
-                                        var eqp = equipmentStateSlots[i];
                                         var eqpName = "None";
-                                        if (eqp.equipmentIndex != EquipmentIndex.None)
-                                            eqpName = eqp.equipmentDef.nameToken;
+                                        if (i < equipmentStateSlots.Length - 1)
+                                        {
+                                            var eqp = equipmentStateSlots[i];
+                                            if (eqp.equipmentIndex != EquipmentIndex.None)
+                                                eqpName = eqp.equipmentDef.nameToken;
+                                        }
                                         Chat.AddMessage("[" + (i+1) + "] : " + eqpName);
                                     }
                                 }
