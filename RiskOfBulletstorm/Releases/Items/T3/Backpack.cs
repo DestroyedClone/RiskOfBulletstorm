@@ -102,7 +102,7 @@ namespace RiskOfBulletstorm.Items
                 
                 if (maxAvailableSlot > invcount)
                 {
-                    var difference = invcount - maxAvailableSlot;
+                    var difference = maxAvailableSlot - invcount;
                     Chat.AddMessage("Backpack: Difference is "+difference);
                     for (int i = 1; i <= difference+1; i++)
                     {
