@@ -98,22 +98,75 @@ namespace RiskOfBulletstorm.Items
             // MODDED //
             string[] moddedProjectileStrings =
             {
-                // MINER - DIRESEEKER //
-                "DireseekerFireball",
-                "DireseekerGroundFireball",
+                // LUAFUBUKI - GAUSS //
+                "Gauss0a", //"prefabs/Gauss/Gauss0a"
 
-                // AETHERIUM //
+                // LUAFUBUKI - LUNAR CHIMERA //
+                "Prefabs/Custom/LunarWispBall",
+                "Prefabs/Custom/FirePillar",
+                "Assets/Custom/SoulRocketProjectile",
+                "Assets/Custom/LunarShardProjectile",
+                //"Prefabs/Custom/MoonWave"
+
+                // LUAFUBUKI - VOID REAVER //
+                "Prefabs/Custom/ShortPortalBomb",
+
+                // KOMRADESPECTRE - AETHERIUM //
                 "JarOfReshapingProjectile",
-                "SplinteringProjectile",
-            };
+                "SwordProjectile",
 
-            // VANILLA //
-            //game doesnt like this RIP
-            /*foreach (string projectileString in WhitelistedProjectilesString)
-            {
-                var projectileIndex = ProjectileCatalog.FindProjectileIndex("Prefabs/Projectiles/"+projectileString);
-                if (projectileIndex > 0) WhitelistedProjectiles.Add(ProjectileCatalog.GetProjectilePrefab(projectileIndex));
-            }*/
+                // ZERODOMAI - TRISTANA //
+                "Cannonball",
+                "Explosiveball",
+                "Blastball",
+
+                // DUCKDUCKGREYDUCK - ARTIFICEREXTENDED //
+                "ThunderProjectile", //Rolling Thunder
+                "NapalmSpit", //Napalm projectile
+                //Napalm decal thing: NapalmFire
+                "ShockwaveZapCone",
+                "NanometeorImpact", //Meteor
+                "mageFireballInner", //Flame Burst 1
+                "mageFireballOuter", //Flame Burst 2
+
+                // HELTER2 - ARTIFICER2 //
+                "mageIceBombClone",
+                "mageLightningBombClone",
+
+                // ROB - MINER - DIRESEEKER //
+                "DireseekerBossFireball",
+                "DireseekerBossGroundFireball",
+
+                // ROB - PLAYABLETEMPLAR //
+                "TemplarGrenadeProjectile",
+                "TemplarRocketProjectile",
+
+                // ROB - PALADIN //
+                "PaladinLunarShard",
+                "LightningSpear",
+                "PaladinSwordBeam",
+
+                // ROB - TWITCH //
+                "Prefabs/Projectiles/CrossbowBoltProjectile",
+                "Prefabs/Projectiles/ExpungeProjectile",
+                "Prefabs/Projectiles/VenomCaskProjectile",
+                "Prefabs/Projectiles/TwitchBazookaProjectile",
+
+                // RYANPALLESAN - EXPANDEDSKILLS //
+                "magefireboltcopy",
+
+                // THEMYSTICSWORD - ASPECTABILITIES //
+                "AspectAbilitiesFireMissile",
+
+                // ENIGMA - CLOUDBURST //
+                "MIRVEquipmentProjectile",
+                "MIRVClusterEquipmentProjectile",
+                "OverchargedProjectile",
+                "BombardierRocketProjectile",
+                "BombardierFireRocketProjectile",
+                "BombardierSeekerRocketProjectile",
+
+            };
             // MODDED //
             //Debug.Log("Adding modded projectiles");
             foreach (string projectileString in moddedProjectileStrings)
