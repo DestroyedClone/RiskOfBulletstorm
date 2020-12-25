@@ -282,7 +282,7 @@ namespace RiskOfBulletstorm.Items
             if (ItemCount_Scope > 0)
                 ScopeMult -= (Scope_SpreadReduction + Scope_SpreadReductionStack * (ItemCount_Scope - 1));
 
-
+            //switch case?
             if (ItemCount_Spice > 0)
             {
                 if (ItemCount_Spice > 2 && ItemCount_Spice <= 4)
@@ -315,11 +315,10 @@ namespace RiskOfBulletstorm.Items
                 ResultMult = -ResultMult > 1 ? 1 : -ResultMult;
             } else
             {
-                // With bullets we have to add 1 to start the base off properly
+                // With bullets we have to start at 1
                 // Then we evaluate it (1 - ~1.1 = -0.1)
                 // We clamp it at zero because a negative multiplier might result in a weird inverse increase in spread.
-                ResultMult++;
-                ResultMult = ResultMult < 0 ? 0 : 1 + ResultMult;
+                ResultMult = 1 + ResultMult < 0 ? 0 : 1 + ResultMult;
             }
 
             //ResultMult = Clamp(ResultMult);
