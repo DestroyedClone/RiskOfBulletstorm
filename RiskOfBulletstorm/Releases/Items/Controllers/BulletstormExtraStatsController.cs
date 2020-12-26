@@ -137,6 +137,10 @@ namespace RiskOfBulletstorm.Items
                 "DireseekerBossFireball",
                 "DireseekerBossGroundFireball",
 
+                // ROB - MINER's DIRESEEKER // why is it different
+                "DireseekerFireball",
+                "DireseekerGroundFireball",
+
                 // ROB - PLAYABLETEMPLAR //
                 "TemplarGrenadeProjectile",
                 "TemplarRocketProjectile",
