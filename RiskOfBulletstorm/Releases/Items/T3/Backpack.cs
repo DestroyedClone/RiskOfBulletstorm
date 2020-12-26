@@ -83,6 +83,7 @@ namespace RiskOfBulletstorm.Items
             public CharacterBody characterBody;
             public Inventory inventory;
             public byte maxAvailableSlot = 0;
+            bool canDrop = true;
             //private bool isToolbot = false;
             //private byte defaultMax = 0;
 
@@ -195,13 +196,18 @@ namespace RiskOfBulletstorm.Items
 
             private void DropEquipSlot(byte equipmentSlot)
             {
-                var equipment = inventory.equipmentStateSlots[equipmentSlot];
-                var index = equipment.equipmentIndex;
-                if (index != EquipmentIndex.None)
+                if (canDrop)
                 {
-                    var pickupIndex = PickupCatalog.FindPickupIndex(index);
-                    PickupDropletController.CreatePickupDroplet(pickupIndex, characterBody.corePosition, Vector3.up * 5);
-                    equipment.equipmentIndex = EquipmentIndex.None;
+                    canDrop = false;
+                    var equipment = inventory.equipmentStateSlots[equipmentSlot];
+                    var index = equipment.equipmentIndex;
+                    if (index != EquipmentIndex.None)
+                    {
+                        var pickupIndex = PickupCatalog.FindPickupIndex(index);
+                        PickupDropletController.CreatePickupDroplet(pickupIndex, characterBody.corePosition, Vector3.up * 5);
+                        equipment.equipmentIndex = EquipmentIndex.None;
+                    }
+                    canDrop = true;
                 }
             }
         }

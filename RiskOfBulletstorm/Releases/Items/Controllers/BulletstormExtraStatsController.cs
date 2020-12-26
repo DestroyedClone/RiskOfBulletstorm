@@ -375,7 +375,9 @@ namespace RiskOfBulletstorm.Items
                                     var rand2 = UnityEngine.Random.Range(deviation2, -deviation2);
                                     var rand3 = UnityEngine.Random.Range(deviation3, -deviation3);
                                     var rand4 = UnityEngine.Random.Range(deviation4, -deviation4);
-                                    fireProjectileInfo.rotation *= new Quaternion(rand1, rand2, rand3, rand4);
+                                    var tempdev = new Quaternion(rand1, rand2, rand3, rand4);
+                                    Debug.Log("Scope: "+ fireProjectileInfo.rotation+" => "+ tempdev.x+" "+ tempdev.y+" "+ tempdev.z+" "+ tempdev.w);
+                                    fireProjectileInfo.rotation *= tempdev;
                                 }
                             }
                         }
