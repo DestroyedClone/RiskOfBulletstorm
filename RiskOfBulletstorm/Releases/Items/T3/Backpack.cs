@@ -201,7 +201,7 @@ namespace RiskOfBulletstorm.Items
                     canDrop = false;
                     var equipment = inventory.equipmentStateSlots[equipmentSlot];
                     var index = equipment.equipmentIndex;
-                    if (index != EquipmentIndex.None)
+                    if (inventory.equipmentStateSlots.Length > 0 && index != EquipmentIndex.None)
                     {
                         var pickupIndex = PickupCatalog.FindPickupIndex(index);
                         PickupDropletController.CreatePickupDroplet(pickupIndex, characterBody.corePosition, Vector3.up * 5);
