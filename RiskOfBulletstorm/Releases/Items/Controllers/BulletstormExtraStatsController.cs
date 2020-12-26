@@ -362,8 +362,15 @@ namespace RiskOfBulletstorm.Items
                                     //Chat.AddMessage("Scope Lerp: " + aimDir + " and " + rotation + " resulting " + UpdatedAngle);
                                 } else
                                 {
-                                    ResultMult = Mathf.Abs(ResultMult);
-
+                                    var deviation1 = ResultMult * rotation.x;
+                                    var deviation2 = ResultMult * rotation.y;
+                                    var deviation3 = ResultMult * rotation.z;
+                                    var deviation4 = ResultMult * rotation.w;
+                                    var rand1 = UnityEngine.Random.Range(deviation1, -deviation1);
+                                    var rand2 = UnityEngine.Random.Range(deviation2, -deviation2);
+                                    var rand3 = UnityEngine.Random.Range(deviation3, -deviation3);
+                                    var rand4 = UnityEngine.Random.Range(deviation4, -deviation4);
+                                    fireProjectileInfo.rotation *= new Quaternion(rand1, rand2, rand3, rand4);
                                 }
                             }
                         }
@@ -411,13 +418,13 @@ namespace RiskOfBulletstorm.Items
 
                     characterBody.SetSpreadBloom(Mathf.Min(0, characterBody.spreadBloomAngle * ResultMult), false);
 
-                    Debug.Log("Bulletscope: maxspread: "+self.maxSpread+" multiplier: "+ResultMult+" result: "+ Mathf.Max(self.maxSpread * ResultMult, 0));
-                    self.maxSpread = self.maxSpread * ResultMult;
+                    //Debug.Log("Bulletscope: maxspread: "+self.maxSpread+" multiplier: "+ResultMult+" result: "+ Mathf.Max(self.maxSpread * ResultMult, 0));
+                    self.maxSpread *= ResultMult;
 
-                    self.minSpread = self.minSpread * ResultMult;
+                    self.minSpread *= ResultMult;
 
-                    self.spreadPitchScale = self.spreadPitchScale * ResultMult;
-                    self.spreadYawScale = self.spreadYawScale * ResultMult;
+                    self.spreadPitchScale *= ResultMult;
+                    self.spreadYawScale *= ResultMult;
 
                     //self.owner.GetComponent<CharacterBody>().SetSpreadBloom(ResultMult, false);
 
