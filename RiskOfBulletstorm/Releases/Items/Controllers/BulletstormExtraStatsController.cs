@@ -349,20 +349,22 @@ namespace RiskOfBulletstorm.Items
                             Quaternion aimDir = Util.QuaternionSafeLookRotation(input.aimDirection);
                             Quaternion rotation = fireProjectileInfo.rotation;
 
-                            Quaternion UpdatedAngle = Quaternion.Lerp(rotation, aimDir, ResultMult);
 
                             bool isProjectileAllowed = WhitelistedProjectiles.Contains(projectilePrefab);
 
-                            //bool whitelistEnabled = Scope_WhitelistProjectiles && WhitelistedProjectiles.Contains(projectilePrefab);
-
                             if ((Scope_WhitelistProjectiles && isProjectileAllowed) || !Scope_WhitelistProjectiles)
                             {
-                                if (isProjectileAllowed)
+                                if (ResultMult >= 0)
                                 {
-                                    //Debug.Log("Projectile Fired: " + projectilePrefab.name + " at angle "+ fireProjectileInfo.rotation+" => "+ UpdatedAngle) ;
+                                    Quaternion UpdatedAngle = Quaternion.Lerp(rotation, aimDir, ResultMult);
                                     fireProjectileInfo.rotation = UpdatedAngle;
+                                    //Debug.Log("Projectile Fired: " + projectilePrefab.name + " at angle "+ fireProjectileInfo.rotation+" => "+ UpdatedAngle) ;
+                                    //Chat.AddMessage("Scope Lerp: " + aimDir + " and " + rotation + " resulting " + UpdatedAngle);
+                                } else
+                                {
+                                    ResultMult = Mathf.Abs(ResultMult);
+
                                 }
-                                //Chat.AddMessage("Scope Lerp: " + aimDir + " and " + rotation + " resulting " + UpdatedAngle);
                             }
                         }
                     }
