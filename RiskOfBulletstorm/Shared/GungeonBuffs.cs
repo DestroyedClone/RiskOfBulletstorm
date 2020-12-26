@@ -188,7 +188,7 @@ namespace RiskOfBulletstorm.Items
                     case 4:
                         //health, attack speed, shot accuracy, enemy bullet speed, damage
                         //args.baseHealthAdd += HeartValue * SpiceBonuses[SpiceTallyCount, 0];
-                        args.healthMultAdd *= 1 + SpiceBonuses[SpiceTallyCount, 0];
+                        args.healthMultAdd += 1 + SpiceBonuses[SpiceTallyCount, 0];
                         args.attackSpeedMultAdd += SpiceBonuses[SpiceTallyCount, 1];
                         //accuracy 
                         //enemy bullet speed
@@ -197,7 +197,7 @@ namespace RiskOfBulletstorm.Items
                     default:
                         //var baseHealthAdd = HeartValue * SpiceBonusesAdditive[0] * (SpiceTallyCount - 4);
                         //args.baseHealthAdd += baseHealthAdd;
-                        args.healthMultAdd *= Math.Min(0.1f, 1 + SpiceBonusesAdditive[0] * (SpiceTallyCount - 4));
+                        args.healthMultAdd += Math.Min(0.1f, 1 + SpiceBonusesAdditive[0] * (SpiceTallyCount - 4));
                         //health, attack speed, shot accuracy, enemy bullet speed, damage
                         args.attackSpeedMultAdd += SpiceBonusesConstantMaxed[1];
                         //accuracy
@@ -645,11 +645,6 @@ namespace RiskOfBulletstorm.Items
                 //Debug.Log("Charm: OnEnable, last target was "+ baseAI.currentEnemy.characterBody.name);
 
                 // If the current target is was an enemy of the previous team
-                if (!baseAI)
-                    baseAI = characterBody.masterObject.GetComponent<BaseAI>();
-                if (!baseAI)
-                    enabled = false;
-
                 if (baseAI.currentEnemy.characterBody.teamComponent.teamIndex == GetOppositeTeamIndex(oldTeamIndex))
                 {
                     ResetTarget();

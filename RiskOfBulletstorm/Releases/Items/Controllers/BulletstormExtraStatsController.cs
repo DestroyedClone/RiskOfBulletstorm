@@ -312,7 +312,8 @@ namespace RiskOfBulletstorm.Items
                 // Projectiles get better the closer they are to 1 (due to LERP) starting at a multiplier of 0.0
                 // When we get max scope amount, it's a value of ~-1.1
                 // Here with projectiles we get a resulting value of 1.1 rounded to 1.
-                ResultMult = -ResultMult > 1 ? 1 : -ResultMult;
+                //ResultMult = -ResultMult > 1 ? 1 : -ResultMult;
+                ResultMult *= -1;
             } else
             {
                 // With bullets we have to start at 1
@@ -350,20 +351,18 @@ namespace RiskOfBulletstorm.Items
 
                             Quaternion UpdatedAngle = Quaternion.Lerp(rotation, aimDir, ResultMult);
 
+                            bool isProjectileAllowed = WhitelistedProjectiles.Contains(projectilePrefab);
+
                             //bool whitelistEnabled = Scope_WhitelistProjectiles && WhitelistedProjectiles.Contains(projectilePrefab);
 
-                            if (Scope_WhitelistProjectiles)
+                            if ((Scope_WhitelistProjectiles && isProjectileAllowed) || !Scope_WhitelistProjectiles)
                             {
-                                if (WhitelistedProjectiles.Contains(projectilePrefab))
+                                if (isProjectileAllowed)
                                 {
                                     //Debug.Log("Projectile Fired: " + projectilePrefab.name + " at angle "+ fireProjectileInfo.rotation+" => "+ UpdatedAngle) ;
                                     fireProjectileInfo.rotation = UpdatedAngle;
                                 }
                                 //Chat.AddMessage("Scope Lerp: " + aimDir + " and " + rotation + " resulting " + UpdatedAngle);
-                            }
-                            else
-                            {
-                                fireProjectileInfo.rotation = UpdatedAngle;
                             }
                         }
                     }

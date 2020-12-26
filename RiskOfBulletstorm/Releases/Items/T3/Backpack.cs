@@ -103,11 +103,10 @@ namespace RiskOfBulletstorm.Items
                 if (maxAvailableSlot > invcount)
                 {
                     var difference = maxAvailableSlot - invcount;
-                    Chat.AddMessage("Backpack: Difference is "+difference);
-                    for (int i = 1; i <= difference; i++)
+                    for (int i = 0; i < difference; i++)
                     {
                         var slot = (byte)(maxAvailableSlot+i);
-                        Chat.AddMessage("Backpack: Dropping Slot " + (slot));
+                        Chat.AddMessage("Backpack: Dropping Slot " + (slot) + "/"+ difference);
                         DropEquipSlot(slot);
                     }
 
@@ -118,7 +117,7 @@ namespace RiskOfBulletstorm.Items
                 if (maxAvailableSlot != invcount)
                 {
                     maxAvailableSlot = invcount;
-                    Chat.AddMessage("Backpack: Updated allowed slots to " + maxAvailableSlot);
+                    //Chat.AddMessage("Backpack: Updated allowed slots to " + maxAvailableSlot);
                 }
             }
 
