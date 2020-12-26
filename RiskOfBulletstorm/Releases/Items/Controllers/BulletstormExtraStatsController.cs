@@ -287,18 +287,19 @@ namespace RiskOfBulletstorm.Items
                 ScopeMult -= (Scope_SpreadReduction + Scope_SpreadReductionStack * (ItemCount_Scope - 1));
 
             //switch case?
-            if (ItemCount_Spice > 0)
+            switch (ItemCount_Spice)
             {
-                if (ItemCount_Spice > 2 && ItemCount_Spice <= 4)
-                {
+                case 0:
+                case 1:
+                case 2:
+                    break;
+                case 3:
+                case 4:
                     SpiceMult -= SpiceBonuses[ItemCount_Spice, 2];
-                    // -0.15 + 
-                }
-                else if (ItemCount_Spice > 4)
-                {
+                    break;
+                default:
                     SpiceMult -= SpiceBonusesConstantMaxed[2] + SpiceBonusesAdditive[2] + SpiceBonusesAdditive[2] * (ItemCount_Spice - 4);
-                    // +0.15 (+) -0.10 (+) -0.10*additionalstacks
-                }
+                    break;
             }
 
             /*float Clamp(float value, float min = 0f, float max = 1f)
