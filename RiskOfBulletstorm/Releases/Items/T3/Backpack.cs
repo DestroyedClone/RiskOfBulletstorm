@@ -12,6 +12,7 @@ using BepInEx;
 using static TILER2.StatHooks;
 using static TILER2.MiscUtil;
 using System;
+using static RiskOfBulletstorm.HelperPlugin;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -20,6 +21,14 @@ namespace RiskOfBulletstorm.Items
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What button should be held down to choose which slot to select?", AutoConfigFlags.None)]
         public KeyCode Backpack_ModifierButton { get; private set; } = KeyCode.LeftShift;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("What button should be pressed down to cycle to the previous equipment slot?", AutoConfigFlags.None)]
+        public KeyCode Backpack_CycleLeftButton { get; private set; } = KeyCode.F;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("What button should be pressed down to cycle to the next equipment slot", AutoConfigFlags.None)]
+        public KeyCode Backpack_CycleRightButton { get; private set; } = KeyCode.G;
         //https://docs.unity3d.com/ScriptReference/KeyCode.html
         public override string displayName => "Backpack";
         public override ItemTier itemTier => ItemTier.Tier3;
@@ -28,11 +37,16 @@ namespace RiskOfBulletstorm.Items
         protected override string GetNameString(string langID = null) => displayName;
         protected override string GetPickupString(string langID = null) => "Item Capacity Up!\nThe Backpack grants you the use of another Active Item. Useful, but cumbersome.";
 
-        protected override string GetDescString(string langid = null) => $"Grants one extra equipment slot." +
-            $"\nUse {Backpack_ModifierButton} and number keys to swap between slots." +
-            $"\n<link=\"youtube.com/destroyedclone\">Test</link>";
+        //protected override string GetDescString(string langid = null) => $"Grants one extra equipment slot." +
+            //$"\nUse your modifier key+number keys or your cycle keys to switch slots.";
 
         protected override string GetLoreString(string langID = null) => "";
+        public KeyCode ModifierKey_KB = KeyCode.None;
+        public KeyCode CycleLeftKey_KB = KeyCode.None;
+        public KeyCode CycleRightKey_KB = KeyCode.None;
+
+        public KeyCode CycleLeftKey_GP = KeyCode.None;
+        public KeyCode CycleRightKey_GP = KeyCode.None;
 
         public override void SetupBehavior()
         {
@@ -46,7 +60,24 @@ namespace RiskOfBulletstorm.Items
         public override void SetupConfig()
         {
             base.SetupConfig();
+            if (RiskOfOptionsCompat.enabled)
+            {
+                ModifierKey_KB = (KeyCode)Enum.Parse(typeof(KeyCode), RiskOfOptionsCompat.getOptionValue("BACKPACK: Modifier (Keyboard)"));
+                CycleLeftKey_KB = (KeyCode)Enum.Parse(typeof(KeyCode), RiskOfOptionsCompat.getOptionValue("BACKPACK: Modifier (Keyboard)"));
+                CycleRightKey_KB = (KeyCode)Enum.Parse(typeof(KeyCode), RiskOfOptionsCompat.getOptionValue("BACKPACK: Modifier (Keyboard)"));
+
+                CycleLeftKey_GP = (KeyCode)Enum.Parse(typeof(KeyCode), RiskOfOptionsCompat.getOptionValue("BACKPACK: Modifier (Gamepad)"));
+                CycleRightKey_GP = (KeyCode)Enum.Parse(typeof(KeyCode), RiskOfOptionsCompat.getOptionValue("BACKPACK: Modifier (Gamepad)"));
+            } else
+            {
+                ModifierKey_KB = Backpack_ModifierButton;
+                CycleLeftKey_KB = Backpack_CycleLeftButton;
+                CycleRightKey_KB = Backpack_CycleRightButton;
+            }
         }
+        protected override string GetDescString(string langid = null) => $"Grants one extra equipment slot." +
+            $"\nHold {ModifierKey_KB} and press 1-0 to switch equipment slots." +
+            $"\nPress {CycleLeftKey_KB}/{CycleLeftKey_GP} or {CycleRightKey_KB}/{CycleRightKey_GP} to cycle slots";
 
 
         public override void Install()
@@ -89,7 +120,7 @@ namespace RiskOfBulletstorm.Items
             public List<EquipmentIndex> equipmentDropQueue;
             private float stopwatch = 9999f;
 
-            private float dropCooldown = 5f;
+            private readonly float dropCooldown = 5f;
 
             public void Start()
             {
@@ -153,17 +184,12 @@ namespace RiskOfBulletstorm.Items
                     {
                         if (Input.GetKey(instance.Backpack_ModifierButton))
                         {
-                            if (Input.GetKeyDown(KeyCode.Alpha1)) SetEquipmentSlot(0);
-                            else if (Input.GetKeyDown(KeyCode.Alpha2)) SetEquipmentSlot(1);
-                            else if (Input.GetKeyDown(KeyCode.Alpha3)) SetEquipmentSlot(2);
-                            else if (Input.GetKeyDown(KeyCode.Alpha4)) SetEquipmentSlot(3);
-                            else if (Input.GetKeyDown(KeyCode.Alpha5)) SetEquipmentSlot(4);
-                            else if (Input.GetKeyDown(KeyCode.Alpha6)) SetEquipmentSlot(5);
-                            else if (Input.GetKeyDown(KeyCode.Alpha7)) SetEquipmentSlot(6);
-                            else if (Input.GetKeyDown(KeyCode.Alpha8)) SetEquipmentSlot(7);
-                            else if (Input.GetKeyDown(KeyCode.Alpha9)) SetEquipmentSlot(8);
-                            else if (Input.GetKeyDown(KeyCode.Alpha0)) SetEquipmentSlot(9);
-                            else if (Input.GetKeyDown(KeyCode.Equals))
+                            for (byte i = 0; i < 10; i++)
+                            {
+                                if(Input.GetKeyDown(KeyCode.Alpha1 + i)){ SetEquipmentSlot(i); break; }
+                            };
+
+                            if (Input.GetKeyDown(KeyCode.Equals))
                             {
                                 var equipmentStateSlots = inventory.equipmentStateSlots;
                                 if (equipmentStateSlots.Length > 0)
@@ -178,7 +204,7 @@ namespace RiskOfBulletstorm.Items
                                             var eqp = equipmentStateSlots[i];
                                             if (eqp.equipmentIndex != EquipmentIndex.None)
                                             {
-                                                eqpName = eqp.equipmentDef.nameToken;
+                                                eqpName = eqp.equipmentDef.name;
                                             }
                                             charges = eqp.charges;
                                             cooldown = eqp.isPerfomingRecharge ? Mathf.Max((int)eqp.chargeFinishTime.timeUntil, 0) : cooldown;
@@ -193,6 +219,16 @@ namespace RiskOfBulletstorm.Items
                                     }
                                 }
                             }
+                        }
+
+                        //lol
+                        if (Input.GetButtonDown("BACKPACK: Cycle Left (Keyboard)") || Input.GetButtonDown("BACKPACK: Cycle Left (Gamepad)"))
+                        {
+                            CycleSlot(false);
+                        }
+                        if (Input.GetButtonDown("BACKPACK: Cycle Right (Keyboard)") || Input.GetButtonDown("BACKPACK: Cycle Right (Gamepad)"))
+                        {
+                            CycleSlot(true);
                         }
                     }
                 }
@@ -209,7 +245,7 @@ namespace RiskOfBulletstorm.Items
                     {
                         if (equipmentDropQueue[i] != EquipmentIndex.None)
                         {
-                            dropSlot(i);
+                            DropSlot(i);
                         }
                     }
                 }
@@ -247,11 +283,25 @@ namespace RiskOfBulletstorm.Items
                 }
             }
 
-            private void dropSlot(byte equipmentSlot)
+            private void DropSlot(byte equipmentSlot)
             {
                 var slot = equipmentDropQueue[equipmentSlot];
                 var pickupIndex = PickupCatalog.FindPickupIndex(slot);
                 PickupDropletController.CreatePickupDroplet(pickupIndex, characterBody.corePosition, Vector3.up * 5);
+            }
+
+            private void CycleSlot(bool cycleRight)
+            {
+                var currentSlot = inventory.activeEquipmentSlot + (cycleRight ? 1 : -1);
+                var newValue = (byte)LoopAround(currentSlot, 0, maxAvailableSlot);
+                inventory.SetActiveEquipmentSlot(newValue);
+            }
+
+            private float LoopAround(float value, float min, float max)
+            {
+                if (value < min) value = max;
+                else if (value > max) value = min;
+                return value;
             }
         }
     }

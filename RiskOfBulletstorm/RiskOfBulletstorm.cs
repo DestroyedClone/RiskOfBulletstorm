@@ -66,14 +66,13 @@ namespace DestroyedClone
                 RiskOfOptionsCompat.addOption(2, "BLANK: Activate Blank (Keyboard)", "Keyboard button to activate a Blank", "T");
                 RiskOfOptionsCompat.addOption(2, "BLANK: Activate Blank (Gamepad)", "Gamepad button to activate a Blank", null);
 
-                RiskOfOptionsCompat.addOption(2, "BACKPACK: Modifier (Keyboard)", "Key to hold down to switch between slots", null);
+                //RiskOfOptionsCompat.addOption(2, "BACKPACK: Modifier (Keyboard)", "Key to hold down to switch between slots", null);
                 RiskOfOptionsCompat.addOption(2, "BACKPACK: Modifier (Gamepad)", "Button to hold down to switch between slots", null);
 
-                RiskOfOptionsCompat.addOption(2, "BACKPACK: Cycle Right (Keyboard)", "Key to cycle to the next equipment", null);
-                RiskOfOptionsCompat.addOption(2, "BACKPACK: Cycle Left (Keyboard)", "Key to cycle to the previous equipment", null);
+                RiskOfOptionsCompat.addOption(2, "BACKPACK: Cycle Right (Keyboard)", "Key to cycle to the next equipment", "F");
+                RiskOfOptionsCompat.addOption(2, "BACKPACK: Cycle Left (Keyboard)", "Key to cycle to the previous equipment", "G");
                 RiskOfOptionsCompat.addOption(2, "BACKPACK: Cycle Right (Gamepad)", "Key to cycle to the next equipment", null);
                 RiskOfOptionsCompat.addOption(2, "BACKPACK: Cycle Left (Gamepad)", "Key to cycle to the previous equipment", null);
-
             }
 
 

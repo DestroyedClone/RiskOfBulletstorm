@@ -43,7 +43,7 @@ namespace RiskOfBulletstorm
 
             internal static bool hasSetup = false;
 
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "dont want to")]
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Matches recommended by modwiki")]
             public static bool enabled
             {
                 get
@@ -53,6 +53,7 @@ namespace RiskOfBulletstorm
                 }
             }
 
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Matches methodname from original")]
             public static void addOption(byte OptionType, string title, string desc, string defaultValue)
             {
                 ModOption.OptionType peepee;
@@ -71,17 +72,36 @@ namespace RiskOfBulletstorm
                 ModSettingsManager.addOption(new ModOption(peepee, title, desc, defaultValue));
             }
 
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Matches methodname from original")]
             public static void setPanelTitle(string panelTitle)
             {
                 ModSettingsManager.setPanelTitle(panelTitle);
             }
 
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Matches methodname from original")]
             public static void setPanelDescription(string panelDescription)
             {
                 ModSettingsManager.setPanelDescription(panelDescription);
             }
 
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Matches methodname from original")]
+            public static void addStartupListener(UnityEngine.Events.UnityAction unityAction)
+            {
+                ModSettingsManager.addStartupListener(unityAction);
+               // ModSettingsManager.addStartupListener(new UnityEngine.Events.UnityAction(loadModels));
+            }
 
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Matches methodname from original")]
+            public static string getOptionValue(string keybindingName)
+            {
+                return ModSettingsManager.getOptionValue(keybindingName);
+            }
+
+            //[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Matches methodname from original")]
+            /*public static void addListener(ModOption modOption, UnityEngine.Events.UnityAction<float> unityAction)
+            {
+                ModSettingsManager.addListener(ModSettingsManager.getOption("Test Slider"), new UnityEngine.Events.UnityAction<float>(floatEvent));
+            }*/
         }
     }
 }

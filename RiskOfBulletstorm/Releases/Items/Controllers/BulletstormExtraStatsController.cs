@@ -384,7 +384,7 @@ namespace RiskOfBulletstorm.Items
                                     var tempdev = new Quaternion(rand1, rand2, rand3, 0);
                                     Debug.Log("Scope: " + fireProjectileInfo.rotation + " => " + tempdev.x + " " + tempdev.y + " " + tempdev.z + " " + tempdev.w);
 
-                                    int directionModifier = Util.CheckRoll(50) ? 1 : -1;
+                                    //int directionModifier = Util.CheckRoll(50) ? 1 : -1;
 
                                     fireProjectileInfo.rotation *= tempdev;
                                 }
