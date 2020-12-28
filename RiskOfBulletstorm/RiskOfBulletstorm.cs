@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using RiskOfBulletstorm.Utils;
+using static RiskOfBulletstorm.HelperPlugin;
+using System.Reflection;
 using BepInEx;
 using BepInEx.Configuration;
 using R2API;
@@ -18,6 +20,7 @@ namespace DestroyedClone
     [BepInDependency(TILER2Plugin.ModGuid, TILER2Plugin.ModVer)]
     //[BepInDependency(EliteSpawningOverhaul.EsoPlugin.PluginGuid)]
     [BepInDependency(ClassicItemsPlugin.ModGuid, BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency("com.rune580.riskofoptions", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency(EnemyItemDisplays.EnemyItemDisplaysPlugin.MODUID, BepInDependency.DependencyFlags.SoftDependency)] //because chen's mod has it
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.EveryoneNeedSameModVersion)]
     [R2APISubmoduleDependency(
@@ -54,6 +57,25 @@ namespace DestroyedClone
         private void Awake()
         {
             _logger = Logger;
+
+            if (RiskOfOptionsCompat.enabled)
+            {
+                RiskOfOptionsCompat.setPanelTitle("Risk of Bulletstorm");
+                RiskOfOptionsCompat.setPanelDescription("Configure keybindings.");
+
+                RiskOfOptionsCompat.addOption(2, "BLANK: Activate Blank (Keyboard)", "Keyboard button to activate a Blank", "T");
+                RiskOfOptionsCompat.addOption(2, "BLANK: Activate Blank (Gamepad)", "Gamepad button to activate a Blank", null);
+
+                RiskOfOptionsCompat.addOption(2, "BACKPACK: Modifier (Keyboard)", "Key to hold down to switch between slots", null);
+                RiskOfOptionsCompat.addOption(2, "BACKPACK: Modifier (Gamepad)", "Button to hold down to switch between slots", null);
+
+                RiskOfOptionsCompat.addOption(2, "BACKPACK: Cycle Right (Keyboard)", "Key to cycle to the next equipment", null);
+                RiskOfOptionsCompat.addOption(2, "BACKPACK: Cycle Left (Keyboard)", "Key to cycle to the previous equipment", null);
+                RiskOfOptionsCompat.addOption(2, "BACKPACK: Cycle Right (Gamepad)", "Key to cycle to the next equipment", null);
+                RiskOfOptionsCompat.addOption(2, "BACKPACK: Cycle Left (Gamepad)", "Key to cycle to the previous equipment", null);
+
+            }
+
 
             using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("RiskOfBulletstorm.riskofgungeonassets"))
             {

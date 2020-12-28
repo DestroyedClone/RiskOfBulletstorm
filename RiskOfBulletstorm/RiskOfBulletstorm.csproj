@@ -74,6 +74,7 @@
     <None Include="lib\MonoMod.RuntimeDetour.dll" />
     <None Include="lib\MonoMod.Utils.dll" />
     <None Include="lib\R2API.dll" />
+    <None Include="lib\RiskOfOptions.dll" />
     <None Include="lib\TILER2.dll" />
     <None Include="lib\Unity.TextMeshPro.dll" />
     <None Include="lib\UnityEngine.AssetBundleModule.dll" />
@@ -112,9 +113,6 @@
     <Reference Include="ClassicItems">
       <HintPath>lib\ClassicItems.dll</HintPath>
     </Reference>
-    <Reference Include="EliteSpawningOverhaul">
-      <HintPath>lib\EliteSpawningOverhaul.dll</HintPath>
-    </Reference>
     <Reference Include="EnemyItemDisplays">
       <HintPath>lib\EnemyItemDisplays.dll</HintPath>
     </Reference>
@@ -147,6 +145,9 @@
     </Reference>
     <Reference Include="R2API">
       <HintPath>lib\R2API.dll</HintPath>
+    </Reference>
+    <Reference Include="RiskOfOptions">
+      <HintPath>lib\RiskOfOptions.dll</HintPath>
     </Reference>
     <Reference Include="TILER2">
       <HintPath>lib\TILER2.dll</HintPath>
