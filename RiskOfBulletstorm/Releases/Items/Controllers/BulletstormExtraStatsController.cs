@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Numerics;
 using RoR2;
 using UnityEngine;
 using TILER2;
@@ -297,8 +298,11 @@ namespace RiskOfBulletstorm.Items
                 case 4:
                     SpiceMult -= SpiceBonuses[ItemCount_Spice, 2];
                     break;
+                case 5: //fuck IT GOES FROM 0.15 to -0.2 WHYYYYYYYYYYYYYYY hardcoded stopgap time
+                    SpiceMult -= 0f;
+                    break;
                 default:
-                    SpiceMult -= SpiceBonusesConstantMaxed[2] + SpiceBonusesAdditive[2] + SpiceBonusesAdditive[2] * (ItemCount_Spice - 4);
+                    SpiceMult -= SpiceBonusesConstantMaxed[2] + SpiceBonusesAdditive[2] * (ItemCount_Spice - 4);
                     break;
             }
 
@@ -359,6 +363,7 @@ namespace RiskOfBulletstorm.Items
 
                             if ((Scope_WhitelistProjectiles && isProjectileAllowed) || !Scope_WhitelistProjectiles)
                             {
+                                //Debug.Log("scope: ayo the log is at "+ResultMult);
                                 if (ResultMult >= 0)
                                 {
                                     Quaternion UpdatedAngle = Quaternion.Lerp(rotation, aimDir, ResultMult);
@@ -367,16 +372,20 @@ namespace RiskOfBulletstorm.Items
                                     //Chat.AddMessage("Scope Lerp: " + aimDir + " and " + rotation + " resulting " + UpdatedAngle);
                                 } else
                                 {
-                                    var deviation1 = ResultMult * rotation.x;
-                                    var deviation2 = ResultMult * rotation.y;
-                                    var deviation3 = ResultMult * rotation.z;
-                                    var deviation4 = ResultMult * rotation.w;
+                                    var inverse = ResultMult;
+                                    var deviation1 = inverse * rotation.x;
+                                    var deviation2 = inverse * rotation.y;
+                                    var deviation3 = inverse * rotation.z;
+                                    //var deviation4 = inverse * rotation.w;
                                     var rand1 = UnityEngine.Random.Range(deviation1, -deviation1);
                                     var rand2 = UnityEngine.Random.Range(deviation2, -deviation2);
                                     var rand3 = UnityEngine.Random.Range(deviation3, -deviation3);
-                                    var rand4 = UnityEngine.Random.Range(deviation4, -deviation4);
-                                    var tempdev = new Quaternion(rand1, rand2, rand3, rand4);
-                                    Debug.Log("Scope: "+ fireProjectileInfo.rotation+" => "+ tempdev.x+" "+ tempdev.y+" "+ tempdev.z+" "+ tempdev.w);
+                                    //var rand4 = UnityEngine.Random.Range(deviation4, -deviation4);
+                                    var tempdev = new Quaternion(rand1, rand2, rand3, 0);
+                                    Debug.Log("Scope: " + fireProjectileInfo.rotation + " => " + tempdev.x + " " + tempdev.y + " " + tempdev.z + " " + tempdev.w);
+
+                                    int directionModifier = Util.CheckRoll(50) ? 1 : -1;
+
                                     fireProjectileInfo.rotation *= tempdev;
                                 }
                             }

@@ -645,7 +645,8 @@ namespace RiskOfBulletstorm.Items
                 //Debug.Log("Charm: OnEnable, last target was "+ baseAI.currentEnemy.characterBody.name);
 
                 // If the current target is was an enemy of the previous team
-                if (baseAI.currentEnemy.characterBody.teamComponent.teamIndex == GetOppositeTeamIndex(oldTeamIndex))
+                var cb = baseAI.currentEnemy.characterBody;
+                if (cb && cb.teamComponent.teamIndex == GetOppositeTeamIndex(oldTeamIndex))
                 {
                     ResetTarget();
                 }
