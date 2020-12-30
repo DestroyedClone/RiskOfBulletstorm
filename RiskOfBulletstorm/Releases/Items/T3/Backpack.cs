@@ -69,12 +69,12 @@ namespace RiskOfBulletstorm.Items
 
                 CycleLeftKey_GP = (KeyCode)Enum.Parse(typeof(KeyCode), RiskOfOptionsCompat.getOptionValue("BACKPACK: Modifier (Gamepad)"));
                 CycleRightKey_GP = (KeyCode)Enum.Parse(typeof(KeyCode), RiskOfOptionsCompat.getOptionValue("BACKPACK: Modifier (Gamepad)"));
-            } else
-            {
-                ModifierKey_KB = Backpack_ModifierButton;
+            } else*/
+
+            ModifierKey_KB = Backpack_ModifierButton;
                 CycleLeftKey_KB = Backpack_CycleLeftButton;
                 CycleRightKey_KB = Backpack_CycleRightButton;
-            }*/
+            
         }
         protected override string GetDescString(string langid = null) => $"Grants one extra equipment slot." +
             $"\nHold {ModifierKey_KB} and press 1-0 to switch equipment slots." +
@@ -119,9 +119,9 @@ namespace RiskOfBulletstorm.Items
             //private bool isToolbot = false;
             //private byte defaultMax = 0;
             public List<EquipmentIndex> equipmentDropQueue;
+            private readonly float dropCooldown = 5f;
             private float stopwatch = 9999f;
 
-            private readonly float dropCooldown = 5f;
 
             public void Start()
             {
