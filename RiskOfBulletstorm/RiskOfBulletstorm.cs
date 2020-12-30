@@ -12,7 +12,7 @@ using static TILER2.MiscUtil;
 using RoR2;
 using R2API.AssetPlus;
 using R2API.Networking;
-//using ThinkInvisible.ClassicItems;
+using ThinkInvisible.ClassicItems;
 //using ExtraSkillSlots;
 
 

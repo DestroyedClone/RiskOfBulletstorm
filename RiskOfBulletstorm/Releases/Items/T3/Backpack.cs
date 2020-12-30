@@ -13,6 +13,7 @@ using static TILER2.StatHooks;
 using static TILER2.MiscUtil;
 using System;
 using static RiskOfBulletstorm.HelperPlugin;
+using static RiskOfBulletstorm.RiskofBulletstorm;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -118,25 +119,25 @@ namespace RiskOfBulletstorm.Items
             bool canDrop = false;
             //private bool isToolbot = false;
             //private byte defaultMax = 0;
-            public List<EquipmentIndex> equipmentDropQueue;
+            public List<EquipmentIndex> equipmentDropQueue = new List<EquipmentIndex>();
             private readonly float dropCooldown = 5f;
             private float stopwatch = 9999f;
 
 
             public void Start()
             {
-                RiskofBulletstorm._logger.LogMessage("Entered Start of Backpack Component");
+                _logger.LogMessage("Entered Start of Backpack Component");
                 if (equipmentDropQueue.Count <= 0)
                 {
-                    RiskofBulletstorm._logger.LogMessage("Queue is empty, filling queue");
+                    _logger.LogMessage("Queue is empty, filling queue");
                     // Fills the drop queue for the first time
                     for (int i = 0; i < 10; i++)
                     {
                         equipmentDropQueue.Add(EquipmentIndex.None);
-                        RiskofBulletstorm._logger.LogMessage("Adding slot "+i);
+                        _logger.LogMessage("Adding slot "+i);
                     }
                 }
-                RiskofBulletstorm._logger.LogMessage("Attempting to reset drop cooldown");
+                _logger.LogMessage("Attempting to reset drop cooldown");
                 stopwatch = dropCooldown;
             }
 

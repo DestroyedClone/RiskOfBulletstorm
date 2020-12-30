@@ -2,11 +2,11 @@
 using RoR2;
 using UnityEngine;
 using BepInEx;
+using ThinkInvisible.ClassicItems;
 
 //credit to chen for the base stuff
 namespace RiskOfBulletstorm
 {
-    using ThinkInvisible.ClassicItems;
     public class HelperPlugin : BaseUnityPlugin
     {
         public static class ClassicItemsCompat
@@ -14,13 +14,22 @@ namespace RiskOfBulletstorm
             private static bool? _enabled;
 
             internal static bool hasSetup = false;
+            internal static void Setup()
+            {
+                if (hasSetup)
+                {
+                    RiskofBulletstorm._logger.LogWarning("ClassicItemsCompat.Setup: Already performed. Skipping.");
+                    return;
+                }
+                hasSetup = true;
+            }
 
             [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "dont want to")]
             public static bool enabled
             {
                 get
                 {
-                    if (_enabled == null) _enabled = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey(ClassicItemsPlugin.ModGuid);
+                    if (_enabled == null) _enabled = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.ThinkInvisible.ClassicItems");
                     return (bool)_enabled;
                 }
             }
@@ -32,7 +41,7 @@ namespace RiskOfBulletstorm
             public static void RegisterEmbryo(EquipmentIndex equipmentIndex)
             {
                 Embryo_V2.instance.Compat_Register(equipmentIndex);
-                Debug.Log("Embryo_V2Compat_: Registed equipment " + equipmentIndex);
+                RiskofBulletstorm._logger.LogInfo("Embryo_V2Compat_: Registed equipment ID " + equipmentIndex + EquipmentCatalog.GetEquipmentDef(equipmentIndex).name);
             }
         }
 

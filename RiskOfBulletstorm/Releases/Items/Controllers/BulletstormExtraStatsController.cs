@@ -6,6 +6,7 @@ using UnityEngine;
 using TILER2;
 using static RiskOfBulletstorm.Utils.HelperUtil;
 using RoR2.Projectile;
+using RiskOfBulletstorm;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -372,7 +373,7 @@ namespace RiskOfBulletstorm.Items
                                     //Chat.AddMessage("Scope Lerp: " + aimDir + " and " + rotation + " resulting " + UpdatedAngle);
                                 } else
                                 {
-                                    var inverse = ResultMult;
+                                    var inverse = 1 + ResultMult;
                                     var deviation1 = inverse * rotation.x;
                                     var deviation2 = inverse * rotation.y;
                                     var deviation3 = inverse * rotation.z;
@@ -382,7 +383,13 @@ namespace RiskOfBulletstorm.Items
                                     var rand3 = UnityEngine.Random.Range(deviation3, -deviation3);
                                     //var rand4 = UnityEngine.Random.Range(deviation4, -deviation4);
                                     var tempdev = new Quaternion(rand1, rand2, rand3, 0);
-                                    Debug.Log("Scope: " + fireProjectileInfo.rotation + " => " + tempdev.x + " " + tempdev.y + " " + tempdev.z + " " + tempdev.w);
+                                    void printDifference(float value1, float value2)
+                                    {
+                                        RiskofBulletstorm._logger.LogMessage("Diff: "+(float)(value1-value2));
+                                    }
+                                    //RiskofBulletstorm._logger.LogInfo(printDifference(fireProjectileInfo.rotation.x);
+
+                                    //Debug.Log("Scope: " + fireProjectileInfo.rotation + " => " + tempdev.x + " " + tempdev.y + " " + tempdev.z + " " + tempdev.w);
 
                                     //int directionModifier = Util.CheckRoll(50) ? 1 : -1;
 
