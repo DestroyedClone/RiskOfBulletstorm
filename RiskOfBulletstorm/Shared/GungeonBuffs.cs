@@ -642,7 +642,7 @@ namespace RiskOfBulletstorm.Items
             {
                 //if (characterBody.GetBuffCount(Charm) <= 0)
                 //characterBody.AddTimedBuff(Charm, duration);
-                //Debug.Log("Charm: OnEnable, last target was "+ baseAI.currentEnemy.characterBody.name);
+                Debug.Log("Charm: OnEnable, last target was "+ baseAI.currentEnemy.characterBody.name);
 
                 // If the current target is was an enemy of the previous team
                 var cb = baseAI.currentEnemy.characterBody;
@@ -654,8 +654,11 @@ namespace RiskOfBulletstorm.Items
 
             public void ResetTarget()
             {
-                baseAI.currentEnemy.Reset();
-                baseAI.ForceAcquireNearestEnemyIfNoCurrentEnemy();
+                if (baseAI)
+                {
+                    baseAI.currentEnemy.Reset();
+                    baseAI.ForceAcquireNearestEnemyIfNoCurrentEnemy();
+                }
                 //Debug.Log("Charm: Changed Target to " + baseAI.currentEnemy.characterBody.name);
             }
 
@@ -678,9 +681,10 @@ namespace RiskOfBulletstorm.Items
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
             void OnDisable()
             {
-                if (characterBody.HasBuff(Charm))
+                if (characterBody && characterBody.HasBuff(Charm))
                     characterBody.RemoveBuff(Charm);
-                characterBody.teamComponent.teamIndex = oldTeamIndex;
+                if (characterBody)
+                    characterBody.teamComponent.teamIndex = oldTeamIndex;
                 ResetTarget();
             }
 

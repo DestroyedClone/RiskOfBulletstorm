@@ -9,14 +9,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ExtraSkillSlotsOverrides\**" />
     <Compile Remove="Items\**" />
     <Compile Remove="Items\Elites\**" />
     <Compile Remove="lib\**" />
     <Compile Remove="Releases\Items\Elites\**" />
+    <EmbeddedResource Remove="ExtraSkillSlotsOverrides\**" />
     <EmbeddedResource Remove="Items\**" />
     <EmbeddedResource Remove="Items\Elites\**" />
     <EmbeddedResource Remove="lib\**" />
     <EmbeddedResource Remove="Releases\Items\Elites\**" />
+    <None Remove="ExtraSkillSlotsOverrides\**" />
     <None Remove="Items\**" />
     <None Remove="Items\Elites\**" />
     <None Remove="lib\**" />
@@ -64,6 +67,7 @@
     <None Include="lib\BetterUI.dll" />
     <None Include="lib\ClassicItems.dll" />
     <None Include="lib\EnemyItemDisplays.dll" />
+    <None Include="lib\ExtraSkillSlots.dll" />
     <None Include="lib\HGCSharpUtils.dll" />
     <None Include="lib\ItemStats.dll" />
     <None Include="lib\MMHOOK_Assembly-CSharp.dll" />
@@ -74,6 +78,9 @@
     <None Include="lib\MonoMod.RuntimeDetour.dll" />
     <None Include="lib\MonoMod.Utils.dll" />
     <None Include="lib\R2API.dll" />
+    <None Include="lib\Rewired_Core.dll" />
+    <None Include="lib\Rewired_CSharp.dll" />
+    <None Include="lib\Rewired_Windows_Lib.dll" />
     <None Include="lib\TILER2.dll" />
     <None Include="lib\Unity.TextMeshPro.dll" />
     <None Include="lib\UnityEngine.AssetBundleModule.dll" />
@@ -115,6 +122,9 @@
     <Reference Include="EnemyItemDisplays">
       <HintPath>lib\EnemyItemDisplays.dll</HintPath>
     </Reference>
+    <Reference Include="ExtraSkillSlots">
+      <HintPath>lib\ExtraSkillSlots.dll</HintPath>
+    </Reference>
     <Reference Include="HGCSharpUtils">
       <HintPath>lib\HGCSharpUtils.dll</HintPath>
     </Reference>
@@ -144,6 +154,15 @@
     </Reference>
     <Reference Include="R2API">
       <HintPath>lib\R2API.dll</HintPath>
+    </Reference>
+    <Reference Include="Rewired_Core">
+      <HintPath>lib\Rewired_Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Rewired_CSharp">
+      <HintPath>lib\Rewired_CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Rewired_Windows_Lib">
+      <HintPath>lib\Rewired_Windows_Lib.dll</HintPath>
     </Reference>
     <Reference Include="TILER2">
       <HintPath>lib\TILER2.dll</HintPath>

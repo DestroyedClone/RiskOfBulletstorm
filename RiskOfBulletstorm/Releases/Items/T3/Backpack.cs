@@ -115,7 +115,7 @@ namespace RiskOfBulletstorm.Items
             public CharacterBody characterBody;
             public Inventory inventory;
             public byte maxAvailableSlot = 0;
-            bool canDrop = true;
+            bool canDrop = false;
             //private bool isToolbot = false;
             //private byte defaultMax = 0;
             public List<EquipmentIndex> equipmentDropQueue;
@@ -125,14 +125,18 @@ namespace RiskOfBulletstorm.Items
 
             public void Start()
             {
+                RiskofBulletstorm._logger.LogMessage("Entered Start of Backpack Component");
                 if (equipmentDropQueue.Count <= 0)
                 {
+                    RiskofBulletstorm._logger.LogMessage("Queue is empty, filling queue");
                     // Fills the drop queue for the first time
                     for (int i = 0; i < 10; i++)
                     {
                         equipmentDropQueue.Add(EquipmentIndex.None);
+                        RiskofBulletstorm._logger.LogMessage("Adding slot "+i);
                     }
                 }
+                RiskofBulletstorm._logger.LogMessage("Attempting to reset drop cooldown");
                 stopwatch = dropCooldown;
             }
 
@@ -241,11 +245,14 @@ namespace RiskOfBulletstorm.Items
                 stopwatch -= Time.deltaTime;
                 if (canDrop)
                 {
+                    RiskofBulletstorm._logger.LogMessage("Able to drop item");
                     canDrop = false;
+                    RiskofBulletstorm._logger.LogMessage("Reset drop to false");
                     for (byte i = 0; i <= 9; i++)
                     {
                         if (equipmentDropQueue[i] != EquipmentIndex.None)
                         {
+                            RiskofBulletstorm._logger.LogMessage("Slot"+i+" selected for drop");
                             DropSlot(i);
                         }
                     }

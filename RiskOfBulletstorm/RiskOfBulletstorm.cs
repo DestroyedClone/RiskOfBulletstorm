@@ -12,15 +12,27 @@ using static TILER2.MiscUtil;
 using RoR2;
 using R2API.AssetPlus;
 using R2API.Networking;
-using ThinkInvisible.ClassicItems;
+//using ThinkInvisible.ClassicItems;
+//using ExtraSkillSlots;
 
-namespace DestroyedClone
+
+using EntityStates;
+using MonoMod.RuntimeDetour;
+
+using Rewired.Data;
+using System;
+
+using System.Security;
+using System.Security.Permissions;
+//using RiskOfBulletstorm.ExtraSkillSlotsOverrides;
+
+namespace RiskOfBulletstorm
 {
     [BepInDependency(R2API.R2API.PluginGUID, R2API.R2API.PluginVersion)]
     [BepInDependency(TILER2Plugin.ModGuid, TILER2Plugin.ModVer)]
     //[BepInDependency(EliteSpawningOverhaul.EsoPlugin.PluginGuid)]
-    [BepInDependency(ClassicItemsPlugin.ModGuid, BepInDependency.DependencyFlags.SoftDependency)]
-    [BepInDependency("com.rune580.riskofoptions", BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency("com.ThinkInvisible.ClassicItems", BepInDependency.DependencyFlags.SoftDependency)]
+    //[BepInDependency("com.KingEnderBrine.ExtraSkillSlots")]
     [BepInDependency(EnemyItemDisplays.EnemyItemDisplaysPlugin.MODUID, BepInDependency.DependencyFlags.SoftDependency)] //because chen's mod has it
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.EveryoneNeedSameModVersion)]
     [R2APISubmoduleDependency(
@@ -59,6 +71,7 @@ namespace DestroyedClone
         private void Awake()
         {
             _logger = Logger;
+            
             /*
             if (RiskOfOptionsCompat.enabled)
             {
@@ -95,7 +108,56 @@ namespace DestroyedClone
                 mainConfigFile = ConfigFile
             });
             T2Module.SetupAll_PluginAwake(masterItemList);
+
+            //ExtraAwake();
         }
+
+        /*public void ExtraAwake()
+        {
+            //Add actions to RoR2.InputCatalog
+            ExtraInputs.AddActionsToInputCatalog();
+
+            //Hook to method with some rewired initialization (or not? Anyway it works) to add custom actions
+            var userDataInit = typeof(UserData).GetMethod("KFIfLMJhIpfzcbhqEXHpaKpGsgeZ", BindingFlags.NonPublic | BindingFlags.Instance);
+            new Hook(userDataInit, (Action<Action<UserData>, UserData>)ExtraInputs.AddCustomActions);
+
+            //Adding custom actions to Settings
+            On.RoR2.UI.SettingsPanelController.Start += UIHooks.SettingsPanelControllerStart;
+
+            //Adding custom InputBankTest
+            On.RoR2.InputBankTest.Awake += (orig, self) =>
+            {
+                orig(self);
+                self.gameObject.AddComponent<ExtraInputBankTest>();
+            };
+            On.RoR2.InputBankTest.CheckAnyButtonDown += ExtraInputBankTest.CheckAnyButtonDownOverrideHook;
+
+            //Applying override to BaseSkillState
+            IL.EntityStates.BaseSkillState.IsKeyDownAuthority += ExtraBaseSkillState.IsKeyDownAuthorityILHook;
+
+            var baseSkillStateOnEnter = typeof(BaseSkillState).GetMethod("OnEnter", BindingFlags.Public | BindingFlags.Instance);
+            new Hook(baseSkillStateOnEnter, new Action<Action<BaseSkillState>, BaseSkillState>((orig, self) =>
+            {
+                ExtraBaseSkillState.Add(self);
+                orig(self);
+            }));
+
+            var baseSkillStateOnExit = typeof(BaseSkillState).GetMethod("OnExit", BindingFlags.Public | BindingFlags.Instance);
+            new Hook(baseSkillStateOnExit, new Action<Action<BaseSkillState>, BaseSkillState>((orig, self) =>
+            {
+                orig(self);
+                ExtraBaseSkillState.Remove(self);
+            }));
+
+            //Adding custom PlayerCharacterMasterController
+            On.RoR2.PlayerCharacterMasterController.Awake += (orig, self) =>
+            {
+                orig(self);
+                self.gameObject.AddComponent<ExtraPlayerCharacterMasterController>();
+            };
+            On.RoR2.PlayerCharacterMasterController.SetBody += ExtraPlayerCharacterMasterController.SetBodyOverrideHook;
+        }*/
+        
 
         private void Start()
         {
