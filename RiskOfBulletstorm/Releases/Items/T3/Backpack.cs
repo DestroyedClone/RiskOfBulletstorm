@@ -60,6 +60,7 @@ namespace RiskOfBulletstorm.Items
         public override void SetupConfig()
         {
             base.SetupConfig();
+            /*
             if (RiskOfOptionsCompat.enabled)
             {
                 ModifierKey_KB = (KeyCode)Enum.Parse(typeof(KeyCode), RiskOfOptionsCompat.getOptionValue("BACKPACK: Modifier (Keyboard)"));
@@ -73,7 +74,7 @@ namespace RiskOfBulletstorm.Items
                 ModifierKey_KB = Backpack_ModifierButton;
                 CycleLeftKey_KB = Backpack_CycleLeftButton;
                 CycleRightKey_KB = Backpack_CycleRightButton;
-            }
+            }*/
         }
         protected override string GetDescString(string langid = null) => $"Grants one extra equipment slot." +
             $"\nHold {ModifierKey_KB} and press 1-0 to switch equipment slots." +

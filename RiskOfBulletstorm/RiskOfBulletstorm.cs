@@ -39,6 +39,8 @@ namespace DestroyedClone
         nameof(LoadoutAPI), //Artifacts
         nameof(SurvivorAPI))] //?
     [BepInPlugin(ModGuid, ModName, ModVer)]
+
+    // will be used to prevent dropping the upcoming bullet that can kill the past
     //[BepInDependency("com.ThinkInvisible.Yeet", BepInDependency.DependencyFlags.SoftDependency)]
     //[BepInDependency("KookehsDropItemMod", BepInDependency.DependencyFlags.SoftDependency)]
     public class RiskofBulletstorm : BaseUnityPlugin
@@ -57,7 +59,7 @@ namespace DestroyedClone
         private void Awake()
         {
             _logger = Logger;
-
+            /*
             if (RiskOfOptionsCompat.enabled)
             {
                 RiskOfOptionsCompat.setPanelTitle("Risk of Bulletstorm");
@@ -73,7 +75,7 @@ namespace DestroyedClone
                 RiskOfOptionsCompat.addOption(2, "BACKPACK: Cycle Left (Keyboard)", "Key to cycle to the previous equipment", "G");
                 RiskOfOptionsCompat.addOption(2, "BACKPACK: Cycle Right (Gamepad)", "Key to cycle to the next equipment", null);
                 RiskOfOptionsCompat.addOption(2, "BACKPACK: Cycle Left (Gamepad)", "Key to cycle to the previous equipment", null);
-            }
+            }*/
 
 
             using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("RiskOfBulletstorm.riskofgungeonassets"))
