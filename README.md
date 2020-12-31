@@ -1,64 +1,71 @@
-
-
 # Risk of Bulletstorm
 A mod for Risk of Rain 2 that plans to add custom content, modified from Enter The Gungeon. Currently Multiplayer Untested.
 
 Feel free to message me in the Risk of Rain 2 Modding discord for any broken junk or suggestions.
 ***
 # Dependencies
- - BepInEx and R2API
- - ThinkInvis - TILER2
-
+ - [Hard] BepInEx and R2API
+ - [Hard] ThinkInvis - TILER2
+ - [Soft] ThinkInvis - ClassicItems
 # Compatibility with other mods
  1. **Classic-Items** : Beating Embryo Support
  2. **Bandit Reloaded** : Item Displays
  3. **HAND** : Item Displays
+ 4. **Various**: Unofficial support for changing the accuracy for projectiles (such as from the uncommon Scope item) for:
+	- LuaFubuki: Gauss, Lunar Chimera, Void Reaver
+	- KomradeSpectre: Aetherium,
+	- Zerodomai: Tristana
+	- duckduckgreyduck: ArtificerExtended
+	- rob: Direseeker, PlayableTemplar, Paladin, Twitch
+	- RyanP: ExpandedSkills
+	- TheMysticSword: AspectAbilities
+	- Enigma: Cloudburst
 
 # Planned
 1. BetterUI, ItemStatsMod Support
 2. Multiplayer Support
+3. Jarlyk's Hailstorm support (Curse increases mimic chance)
 
 ***
 # Items
 ## Pickups
-Every 30 kills *(+50% per stage)*, the game will have a 30% chance to *spawn a random weighted pickup*. "Forgive Me, Please" will not trigger this.
+Every 30 kills *(+50% per stage)*, the game will have a 30% chance to *spawn a random weighted pickup*. "Forgive Me, Please" will not trigger this. If it does, tell me because it's not supposed to.
  - **Armor**: *[10% chance]* Destroys itself to block one hit of damage dealing more than 20% health or fatal, and fires a Blank. (TODO: SFX)
  - **Blank**: *[25% chance]* Press T to activate, destroying all projectiles, stunning and knocking nearby enemies back. Consumed on use. (TODO: SFX, Visual effect)
- - **Key**: *[15% chance]* Opens a locked chest for free. Consumed on use.
  - **Spread Ammo**: *[30% chance]* Pick up to restore *all* players' cooldowns and restores one equipment charge to all equipment.
 
 ## White
- - **Battery Bullets**: 1% chance *(+1% per stack, up to 15%)* for your attacks to stun enemies. Affected by proc coefficients.
- - **Cartographer's Ring**: Upon starting the next stage, 20% chance (+10% chance per stack) of automatically revealing all chests.
- - **Mustache**: Heal for +10% (+10% per stack) health upon purchasing something.
+ - **Battery Bullets**: 1% chance *(+1% per stack, up to 15%)* for your attacks to shock enemies. Affected by proc coefficients.
+ - **Cartographer's Ring**: Upon starting the next stage, 20% chance (+10% chance per stack) of automatically revealing all chests. Counts based off all players' item counts.
+ - **Mustache**: Heal for +10% (+10% per stack) health upon purchase.
 
 ## Green
  - **Disarming Personality**: *Hyperbolically* reduces chest prices by 10% (-5% per stack) up to 60%.
  - **Enraging Photo**: Gain a temporary +100% damage boost upon taking 11% of your health in damage for 1 (+0.25 per stack) seconds.
- - **Live Ammo**: Using your Utility creates a 7m explosion for 100% *(+50%  per stack)* damage that propels you by 100% *(+50% per stack)*
-	 - *Note: I couldn't do contact damage adjustments at the time, so I opted to add this custom effect. Will likely be changed or removed.*
  - **Roll Bomb**: After using your Utility, drop 1 bomb(s) (+1 per stack) for 100% damage.
-- **Scope**: Reduces bullet spread by -10% (-5% per stack). 
+- **Scope**: Reduces spread by -10% (-5% per stack). 
 	- There is a projectile whitelist to prevent breaking.
 	- You can disable the whitelist to affect all projectiles, but note this may break some functionality with other projectiles. Feel free to recommend me other projectiles to add to the whitelist, including any modded projectiles.
 
 ## Red
- - **Number 2**: Boosts your base damage and movement speed by 6 for every dead survivor. Currently doesn't stack.
+ - **Backpack**: Grants 1 extra equipment slot per stack.
+	 - Hold [Left Shift] + [NumberRow keys] to switch between slots.
+	 - Press [Left Shift] + [=] to list all equipment.
+	 - If you lose Backpacks, then your inaccessible equipment drop onto the ground.
+ - **Number 2**: Increases your stats by 10% (+5% per stack) for every dead player.
 	 - *Singleplayer: Effect acts like one player is dead.*
- - **Orbital Bullets**: [Experimental] Projectiles that hit a wall will instead orbit around the player. Max of 5 projectiles, +1 per stack.
- - **Ring of Triggers**: [Experimental] Using your equipment will fire projectiles/bullets/melee attacks from your primary skill in a circle for 3 seconds (+1 second per stack). 
  - **Unity**: +0.1 (+0.01 per stack) base damage per unique item in inventory.
 
 ## Lunar
- - **Metronome**: Gain a 2% damage bonus for every enemy you kill with the same skill, up to 150%. Gain 50 extra stacks per pickup. Lose 25 stacks upon using a different skill. Shows a buff for tracking.
- - **Ring of Miserly Protection**: Grants +100%(+50% per stack) increased maximum health ...but one shatters upon using a shrine (does not include combat).
+ - **Metronome**: Gain a 2% damage bonus for every enemy you kill with the same skill, up to 150% (75 kills). Gain 50 extra stacks per pickup. Lose 25 stacks upon using a different skill. Shows a buff for tracking.
+ - **Ring of Miserly Protection**: Grants +125%(+75% per stack) increased maximum health ...but one shatters upon using a shrine (does not include combat).
 
 ## Boss
  - **Master Round**: Granted upon clearing a teleporter boss, as long as no player took more than 3 hits (scales with stages cleared) each. Adds 150 max health per stack.
 
 # Equipment
 ## Normal
-*[Currently Broken, equipment works fine otherwise] Beating Embryo from ThinkInvis's Classic Items has support, listed as BEmbryo. If you don't have it you can just ignore the line.*
+Beating Embryo from ThinkInvis's Classic Items has support, listed as BEmbryo. If you don't have it you can just ignore the line.
 
  - **Bomb**: Throws a bomb for 100% damage. CD: 14s
 	 - *BEmbryo: Throws an extra bomb.*
@@ -80,8 +87,6 @@ Every 30 kills *(+50% per stage)*, the game will have a 30% chance to *spawn a r
 	 - *BEmbryo: Places two barrels.*
  - **Ration**: Heals for 40% health. Automatically used upon taking fatal damage. Consumed on use.
 	 - *BEmbryo: Heals twice.*
- - **Trusty Lockpicks**: 50% chance to unlock a chest. If it fails, doubles its price and prevents further picklocking or using Keys.
-	 - *BEmbryo: Adds 30% of your base chance to unlock. By default, raises your unlock chance to 65%.*
 ## Lunar
  - **Spice**: Increases and decreases stats per consumed Spice.  It's been slightly adjusted from Gungeon's values. Bonuses:
  - 
@@ -102,7 +107,7 @@ Every 30 kills *(+50% per stage)*, the game will have a 30% chance to *spawn a r
  - **[Enraged]**: +100% damage.
 
 ---AI Specific:---
- - **[Charmed]**: Switches to the opposite team and fights the former team. Can be damaged by both sides.
+ - **[Charmed]**: Switches to the opposite team and fights the former team. Can be damaged by anybody, including other charmed enemies, but will attempt to avoid the Charmer's team.
  - **[Jammed]**: +100% damage, +100% crit chance, +20% attack speed, +20% movement speed. 
 
 # Current Issues:
@@ -112,17 +117,17 @@ Every 30 kills *(+50% per stage)*, the game will have a 30% chance to *spawn a r
 # Changelog
 1.1.0 - Content Update:
  -  *Added---* 
-	 - Pickups: Armor, Blank, Key, and Spread Ammo
+	 - Pickups: Armor, Blank, and Spread Ammo
 	 - Whites: Cartographer's Ring, Battery Bullets
 	 - Greens: Disarming Personality, Enraging Photo, Roll Bomb, Live Ammo
-	 - Reds: Number 2, Orbital Bullets, Ring of Triggers, Unity
+	 - Reds: Number 2, Unity
 	 - Lunars: Ring of Miserly Protection
 	 - Boss: Master Round
 	 - Equipment: Charm Horn, Friendship Cookie, Magazine Rack, Meatbun, Medkit, Molotov, Orange, Portable ~~Table~~ Barrel Device, Ration, Trusty Lockpicks
 	 - Lunar Equipment: Spice
  - *Mustache---* Added config for interaction with Blood Shrines.
  - *Scope---* now affects ALOT of projectiles but not all. Can affect all projectiles via config (strongly discouraged).
- - *Metronome---* Added config for stack loss. Added stack display via buff count.
+ - *Metronome---* Added config for stack loss. Added stack display via buff count. Component changes should prevent the negative damage bug.
  - *Bomb---* Added assets, increased cooldown
  - *EliteSpawningOverhaul---* Temporarily removed dependency due to changing how Jammed is applied. Deciding whether to keep or not.
 
