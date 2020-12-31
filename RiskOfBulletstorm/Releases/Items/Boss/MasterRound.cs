@@ -8,6 +8,7 @@ using TMPro;
 using TILER2;
 using static TILER2.StatHooks;
 using RiskOfBulletstorm.Utils;
+using static RoR2.Chat;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -138,10 +139,13 @@ namespace RiskOfBulletstorm.Items
             if (!MasterRound_AllowSelfDamage && damageInfo.attacker == victim) return;
             if (damageInfo.rejected || damageInfo.damage < MasterRound_MinimumDamage) return;
             if (!component.teleporterCharging) return;
+            var characterBody = victim.gameObject.GetComponent<CharacterBody>();
+            if (!characterBody) return;
             component.currentHits++;
             if (MasterRound_ShowHitInChat)
             {
-                Chat.AddMessage("[MASTER_ROUND] " + victim.name + " has " + component.currentHits + "/" + component.allowedHits);
+                //Chat.AddMessage("[MASTER_ROUND] " + victim.name + " has " + component.currentHits + "/" + component.allowedHits);
+                Chat.SendBroadcastChat(new SimpleChatMessage { baseToken = "<color=#ba3f0f>[Master Round] Player {0} has been hit {1} out of {2} times!</color>", paramTokens = new[] { "SOME_USERNAME_STRING", component.currentHits.ToString(), component.allowedHits.ToString() } });
             }
         }
 
@@ -175,7 +179,8 @@ namespace RiskOfBulletstorm.Items
                 }
             }
             if (MasterRound_AnnounceMax)
-                Chat.AddMessage("[MASTER_ROUND] Max Hits: "+ maxHits);
+                Chat.SendBroadcastChat(new SimpleChatMessage { baseToken = "<color=#c9ab14>[Master Round] Players can take a max of {0} hits!</color>", paramTokens = new[] { maxHits.ToString() } });
+            //Chat.AddMessage("[MASTER_ROUND] Max Hits: "+ maxHits);
         }
         private void GenericNotification_SetItem(On.RoR2.UI.GenericNotification.orig_SetItem orig, GenericNotification self, ItemDef itemDef)
         {

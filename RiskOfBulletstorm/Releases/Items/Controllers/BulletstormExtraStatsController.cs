@@ -7,6 +7,7 @@ using TILER2;
 using static RiskOfBulletstorm.Utils.HelperUtil;
 using RoR2.Projectile;
 using RiskOfBulletstorm;
+using static EntityStates.Croco.FireSpit;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -38,30 +39,95 @@ namespace RiskOfBulletstorm.Items
 
         public static List<GameObject> WhitelistedProjectiles = new List<GameObject>
         {
+            // Equipment/Items
             Resources.Load<GameObject>("Prefabs/Projectiles/Sawmerang"), //Saw
-            Resources.Load<GameObject>("prefabs/projectiles/BeetleQueenSpit"), // Beetle Spit
-            Resources.Load<GameObject>("prefabs/projectiles/LunarShardProjectile"),
+            Resources.Load<GameObject>("Prefabs/Projectiles/LunarNeedleProjectile"), // Visions of Heresy
+
+            // Survivors
+                // Acrid
+            // spit
+            // disease projectile
+                // Artificer
+            // flame bolt
+            // plasma bolt
+            // charged nano bomb
+            // cast nano-spear
+            // Snapfreeze
+                //
+
+                // Captain
             Resources.Load<GameObject>("Prefabs/Projectiles/CaptainTazer"),
+            // captain orbital probe
+
+                // Commando
+            Resources.Load<GameObject>("prefabs/projectiles/CommandoGrenadeProjectile"),
+            // commando phase round
+
+                // Engineer
+            Resources.Load<GameObject>("Prefabs/Projectiles/EngiHarpoon"), //engineer harpoon
+            // Engineer bouncing grenade
+            // pressure mines
+            // spider mines
+            // bubble shield ?
+
+                // REX
+            Resources.Load<GameObject>("prefabs/projectiles/SyringeProjectile"),
+            Resources.Load<GameObject>("prefabs/projectiles/SyringeProjectileHealing"),
+
+            // Enemies
+                // Beetle Queen
+            Resources.Load<GameObject>("prefabs/projectiles/BeetleQueenSpit"), // Beetle Spit
+                // Mithrix
+            Resources.Load<GameObject>("prefabs/projectiles/LunarShardProjectile"),
+                // Clay Dunestrider
             Resources.Load<GameObject>("Prefabs/Projectiles/Tarball"),
             EntityStates.ClayBoss.ClayBossWeapon.FireBombardment.projectilePrefab, //
-            Resources.Load<GameObject>("prefabs/projectiles/CommandoGrenadeProjectile"),
-            Resources.Load<GameObject>("Prefabs/Projectiles/EngiHarpoon"),
-            Resources.Load<GameObject>("Prefabs/Projectiles/LunarNeedleProjectile"),
+                // Grovetender
             Resources.Load<GameObject>("prefabs/projectiles/GravekeeperHookProjectile"), //not used?
             Resources.Load<GameObject>("prefabs/projectiles/GravekeeperHookProjectileSimple"), //????
             Resources.Load<GameObject>("GravekeeperTrackingFireball"),
+                // Imp + Imp Overlord
             Resources.Load<GameObject>("prefabs/projectiles/ImpVoidspikeProjectile"),
             EntityStates.ImpMonster.FireSpines.projectilePrefab, 
+                // Elder Lemurian
             Resources.Load<GameObject>("prefabs/projectiles/LemurianBigFireball"), 
+                // Void Reaver
             Resources.Load<GameObject>("prefabs/projectiles/NullifierBombProjectile"),
+                // Alloy Worship Unit / Solus Control Unit
             Resources.Load<GameObject>("prefabs/projectiles/RoboBallProjectile"),
             Resources.Load<GameObject>("prefabs/projectiles/SuperRoboBallProjectile"), //idk??
+                // Scavenger
             Resources.Load<GameObject>("prefabs/projectiles/ScavEnergyCannonProjectile"),
-            Resources.Load<GameObject>("prefabs/projectiles/SyringeProjectile"),
-            Resources.Load<GameObject>("prefabs/projectiles/SyringeProjectileHealing"),
+                // Malachite Urchin
             Resources.Load<GameObject>("prefabs/projectiles/UrchinSeekingProjectile"),
+                // Wandering Vagrant
             EntityStates.VagrantMonster.Weapon.JellyBarrage.projectilePrefab,
-            Resources.Load<GameObject>("prefabs/projectiles/WindbladeProjectile"),
+                // Alloy Vulture
+            Resources.Load<GameObject>("prefabs/projectiles/WindbladeProjectile"), 
+
+            // arti
+            // huntress laser glaive?
+            // loader grapple fist
+            // spiked fist
+            // Pylon
+            // slicing winds
+            // MULT
+            // scrap launcher
+            // blast canister
+            // REX seed barrage
+            // directive: drill
+            // tangling growth
+            // 
+            // beetle guard
+            // Sunder
+            // brass contraption spiked ball
+            // greater wisp
+            // hermit crab mortal volley
+            // Lemurian fireball
+            // lunar chimera projectile
+            // lunar wisp projectile
+            // mini mushrum spore bomb
+            // void reaver nullifier
 
             // Toggleables
             DisposableMissileLauncherPrefab,
@@ -382,11 +448,7 @@ namespace RiskOfBulletstorm.Items
                                     var rand2 = UnityEngine.Random.Range(deviation2, -deviation2);
                                     var rand3 = UnityEngine.Random.Range(deviation3, -deviation3);
                                     //var rand4 = UnityEngine.Random.Range(deviation4, -deviation4);
-                                    var tempdev = new Quaternion(rand1, rand2, rand3, 0);
-                                    void printDifference(float value1, float value2)
-                                    {
-                                        RiskofBulletstorm._logger.LogMessage("Diff: "+(float)(value1-value2));
-                                    }
+                                    var tempdev = Util.QuaternionSafeLookRotation(new Vector3(rand1, rand2, rand3));
                                     //RiskofBulletstorm._logger.LogInfo(printDifference(fireProjectileInfo.rotation.x);
 
                                     //Debug.Log("Scope: " + fireProjectileInfo.rotation + " => " + tempdev.x + " " + tempdev.y + " " + tempdev.z + " " + tempdev.w);
