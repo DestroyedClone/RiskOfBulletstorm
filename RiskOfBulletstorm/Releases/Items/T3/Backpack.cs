@@ -20,7 +20,7 @@ namespace RiskOfBulletstorm.Items
     public class Backpack : Item_V2<Backpack>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What button should be held down to choose which slot to select?", AutoConfigFlags.None)]
+        [AutoConfig("What button should be held down to choose which slot to select with number keys?", AutoConfigFlags.None)]
         public KeyCode Backpack_ModifierButton { get; private set; } = KeyCode.LeftShift;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
@@ -42,9 +42,9 @@ namespace RiskOfBulletstorm.Items
             //$"\nUse your modifier key+number keys or your cycle keys to switch slots.";
 
         protected override string GetLoreString(string langID = null) => "";
-        public KeyCode ModifierKey_KB = KeyCode.None;
-        public KeyCode CycleLeftKey_KB = KeyCode.None;
-        public KeyCode CycleRightKey_KB = KeyCode.None;
+        public static KeyCode ModifierKey_KB = KeyCode.None;
+        public static KeyCode CycleLeftKey_KB = KeyCode.None;
+        public static KeyCode CycleRightKey_KB = KeyCode.None;
 
         public KeyCode CycleLeftKey_GP = KeyCode.None;
         public KeyCode CycleRightKey_GP = KeyCode.None;
@@ -227,15 +227,10 @@ namespace RiskOfBulletstorm.Items
                             }
                         }
 
-                        //lol
-                        if (Input.GetButtonDown("BACKPACK: Cycle Left (Keyboard)") || Input.GetButtonDown("BACKPACK: Cycle Left (Gamepad)"))
-                        {
+                        if (Input.GetKeyDown(CycleLeftKey_KB))
                             CycleSlot(false);
-                        }
-                        if (Input.GetButtonDown("BACKPACK: Cycle Right (Keyboard)") || Input.GetButtonDown("BACKPACK: Cycle Right (Gamepad)"))
-                        {
+                        if (Input.GetKeyDown(CycleRightKey_KB))
                             CycleSlot(true);
-                        }
                     }
                 }
             }
@@ -246,14 +241,14 @@ namespace RiskOfBulletstorm.Items
                 stopwatch -= Time.deltaTime;
                 if (canDrop)
                 {
-                    RiskofBulletstorm._logger.LogMessage("Able to drop item");
+                    _logger.LogMessage("Able to drop item");
                     canDrop = false;
-                    RiskofBulletstorm._logger.LogMessage("Reset drop to false");
+                    _logger.LogMessage("Reset drop to false");
                     for (byte i = 0; i <= 9; i++)
                     {
                         if (equipmentDropQueue[i] != EquipmentIndex.None)
                         {
-                            RiskofBulletstorm._logger.LogMessage("Slot"+i+" selected for drop");
+                            _logger.LogMessage("Slot"+i+" selected for drop");
                             DropSlot(i);
                         }
                     }
@@ -297,6 +292,7 @@ namespace RiskOfBulletstorm.Items
                 var slot = equipmentDropQueue[equipmentSlot];
                 var pickupIndex = PickupCatalog.FindPickupIndex(slot);
                 PickupDropletController.CreatePickupDroplet(pickupIndex, characterBody.corePosition, Vector3.up * 5);
+                equipmentDropQueue[equipmentSlot] = EquipmentIndex.None;
             }
 
             private void CycleSlot(bool cycleRight)
