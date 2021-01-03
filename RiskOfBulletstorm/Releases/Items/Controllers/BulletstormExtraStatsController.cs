@@ -11,6 +11,18 @@ namespace RiskOfBulletstorm.Items
 {
     public class BulletstormExtraStatsController : Item_V2<BulletstormExtraStatsController>
     {
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("If enabled, Shot Spread will affect the Disposable Missile Launcher." +
+            "\nThis tends to make it fire forwards rather than vertically, but shouldn't affect its homing.", AutoConfigFlags.PreventNetMismatch)]
+        public static bool ShotSpread_EnableDML { get; private set; } = true;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("If enabled, Shot Spread will affect Loader's Hooks.", AutoConfigFlags.PreventNetMismatch)]
+        public static bool ShotSpread_EnableLoader { get; private set; } = true;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("If enabled, Shot Spread will only tighten the spread of specific projectiles." +
+            "\nIt is HIGHLY recommended not to disable, because alot of projectiles could break otherwise.", AutoConfigFlags.PreventNetMismatch)]
+        public static bool ShotSpread_WhitelistProjectiles { get; private set; } = true;
+
         public override string displayName => "BulletstormExtraStatsController";
         public override ItemTier itemTier => ItemTier.NoTier;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.WorldUnique, ItemTag.AIBlacklist });
@@ -23,11 +35,11 @@ namespace RiskOfBulletstorm.Items
         protected override string GetLoreString(string langID = null) => "";
 
         private static readonly GameObject DisposableMissileLauncherPrefab = Resources.Load<GameObject>("Prefabs/Projectiles/MissileProjectile");
+        private static readonly GameObject LoaderHookPrefab = Resources.Load<GameObject>("prefabs/projectiles/LoaderHook");
+        private static readonly GameObject LoaderYankHookPrefab = Resources.Load<GameObject>("prefabs/projectiles/LoaderYankHook");
 
         private float Scope_SpreadReduction;
         private float Scope_SpreadReductionStack;
-        private bool Scope_EnableDML;
-        private bool Scope_WhitelistProjectiles;
         private ItemIndex ItemIndex_Scope;
         private ItemIndex ItemIndex_SpiceTally;
 
@@ -43,8 +55,8 @@ namespace RiskOfBulletstorm.Items
 
             // Survivors
                 // Acrid
-            // spit
-            // disease projectile
+            Resources.Load<GameObject>("prefabs/projectiles/CrocoSpit"),
+            Resources.Load<GameObject>("prefabs/projectiles/CrocoDiseaseProjectile"),
                 // Artificer
             // flame bolt
             // plasma bolt
@@ -63,14 +75,28 @@ namespace RiskOfBulletstorm.Items
 
                 // Engineer
             Resources.Load<GameObject>("Prefabs/Projectiles/EngiHarpoon"), //engineer harpoon
-            // Engineer bouncing grenade
+            Resources.Load<GameObject>("Prefabs/Projectiles/EngiGrenadeProjectile"),
             // pressure mines
             // spider mines
             // bubble shield ?
 
+                // Huntress
+            EntityStates.Huntress.HuntressWeapon.FireGlaive.projectilePrefab,
+
+                // Loader
+            Resources.Load<GameObject>("prefabs/projectiles/LoaderZapCone"),
+            Resources.Load<GameObject>("prefabs/projectiles/LoaderPylon"),
+
+                // MUL-T
+            // scrap launcher
+            // blast canister
+
                 // REX
             Resources.Load<GameObject>("prefabs/projectiles/SyringeProjectile"),
             Resources.Load<GameObject>("prefabs/projectiles/SyringeProjectileHealing"),
+            // seed barrage
+            // directive: drill
+            // tangling growth
 
             // Enemies
                 // Beetle Queen
@@ -102,32 +128,25 @@ namespace RiskOfBulletstorm.Items
             EntityStates.VagrantMonster.Weapon.JellyBarrage.projectilePrefab,
                 // Alloy Vulture
             Resources.Load<GameObject>("prefabs/projectiles/WindbladeProjectile"), 
-
-            // huntress laser glaive?
-            // loader grapple fist
-            // spiked fist
-            // Pylon
+                // Beetle Guard
+            Resources.Load<GameObject>("prefabs/projectiles/Sunder"), 
+                // Brass Contraption
+             // brass contraption spiked ball
+                // Lemurian
+            Resources.Load<GameObject>("prefabs/projectiles/Fireball"), //fireball
             // slicing winds
-            // MULT
-            // scrap launcher
-            // blast canister
-            // REX seed barrage
-            // directive: drill
-            // tangling growth
-            // 
-            // beetle guard
-            // Sunder
-            // brass contraption spiked ball
-            // greater wisp
-            // hermit crab mortal volley
-            // Lemurian fireball
-            // lunar chimera projectile
-            // lunar wisp projectile
-            // mini mushrum spore bomb
-            // void reaver nullifier
+                // Hermit Crab
+            // Mortal Volley
+                // Lunar Chimera
+            // projectile
+                // Lunar Wisp
+            // thing
+                // Mini Mushrum
 
-            // Toggleables
-            DisposableMissileLauncherPrefab,
+                // Void Reaver
+            // nullifier
+            // 
+                // Greater Wisp
         };
 
 
@@ -138,8 +157,13 @@ namespace RiskOfBulletstorm.Items
         public override void SetupAttributes()
         {
             base.SetupAttributes();
-            if (!Scope_EnableDML)
-                WhitelistedProjectiles.Remove(DisposableMissileLauncherPrefab);
+            if (ShotSpread_EnableDML)
+                WhitelistedProjectiles.Add(DisposableMissileLauncherPrefab);
+            if (ShotSpread_EnableLoader)
+            {
+                WhitelistedProjectiles.Add(LoaderHookPrefab);
+                WhitelistedProjectiles.Add(LoaderYankHookPrefab);
+            }
 
         }
         public override void SetupLate()
@@ -148,8 +172,6 @@ namespace RiskOfBulletstorm.Items
             // SCOPE //
             Scope_SpreadReduction = Scope.Scope_SpreadReduction;
             Scope_SpreadReductionStack = Scope.Scope_SpreadReductionStack;
-            Scope_EnableDML = Scope.Scope_EnableDML;
-            Scope_WhitelistProjectiles = Scope.Scope_WhitelistProjectiles;
 
             // ITEM COUNTS //
             ItemIndex_Scope = Scope.instance.catalogIndex;
@@ -430,10 +452,10 @@ namespace RiskOfBulletstorm.Items
                             Quaternion aimDir = Util.QuaternionSafeLookRotation(input.aimDirection);
                             Quaternion rotation = fireProjectileInfo.rotation;
 
-
+                            _logger.LogDebug("Projectile Fired: "+ fireProjectileInfo.projectilePrefab.name);
                             bool isProjectileAllowed = WhitelistedProjectiles.Contains(projectilePrefab);
 
-                            if ((Scope_WhitelistProjectiles && isProjectileAllowed) || !Scope_WhitelistProjectiles)
+                            if ((ShotSpread_WhitelistProjectiles && isProjectileAllowed) || !ShotSpread_WhitelistProjectiles)
                             {
                                 //Debug.Log("scope: ayo the log is at "+ResultMult);
                                 if (ResultMult >= 0)
