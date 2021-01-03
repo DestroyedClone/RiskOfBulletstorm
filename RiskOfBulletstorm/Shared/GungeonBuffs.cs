@@ -16,7 +16,7 @@ using RoR2.Networking;
 using System.Runtime.CompilerServices;
 using Unity.Collections;
 using Unity.Jobs;
-
+using static RiskOfBulletstorm.RiskofBulletstorm;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -336,7 +336,7 @@ namespace RiskOfBulletstorm.Items
                 var attackerIsCharmerTeam = damageReport.attackerTeamIndex == isCharmed.GetOppositeTeamIndex(isCharmed.GetOldTeam());
                 if (attackerIsCharmerTeam)
                 {
-                    //Debug.Log("BaseAI: Target was from the charmer's team.");
+                    _logger.LogDebug("Charmed BaseAI: Target was from the charmer's team.");
                     if (noTarget && attackerNotSelf && retaliate)
                     {
                         return;
@@ -364,7 +364,7 @@ namespace RiskOfBulletstorm.Items
                 self.enemySearch.RefreshCandidates();
                 self.enemySearch.FilterOutGameObject(gameObject);
                 var list = self.enemySearch.GetResults().ToList();
-                //Debug.Log("findennemyhurtbox: "+ list.FirstOrDefault<HurtBox>());
+                //_logger.LogDebug("Charmed: FindEnemyHurtbox: "+ list.FirstOrDefault<HurtBox>());
                 //if (list.Count > 1) //If there are targets
                     //list.RemoveAt(0); //remove the first one because its usually themself
 
@@ -501,7 +501,7 @@ namespace RiskOfBulletstorm.Items
                         }
                         else
                         {
-                            Debug.Log("No projectile damage component!");
+                            _logger.LogWarning("GungeonBuffs ProjectileSingleTargetImpact_OnProjectileImpact : No projectile damage component!");
                         }
                         HurtBox component = collider.GetComponent<HurtBox>();
                         if (component)
@@ -642,7 +642,7 @@ namespace RiskOfBulletstorm.Items
             {
                 //if (characterBody.GetBuffCount(Charm) <= 0)
                 //characterBody.AddTimedBuff(Charm, duration);
-                Debug.Log("Charm: OnEnable, last target was "+ baseAI.currentEnemy.characterBody.name);
+                _logger.LogDebug("GungeonBuffs Charm: OnEnable, last target was " + baseAI.currentEnemy.characterBody.name);
 
                 // If the current target is was an enemy of the previous team
                 var cb = baseAI.currentEnemy.characterBody;
@@ -659,7 +659,7 @@ namespace RiskOfBulletstorm.Items
                     baseAI.currentEnemy.Reset();
                     baseAI.ForceAcquireNearestEnemyIfNoCurrentEnemy();
                 }
-                //Debug.Log("Charm: Changed Target to " + baseAI.currentEnemy.characterBody.name);
+                _logger.LogDebug("Charm: Changed Target to " + baseAI.currentEnemy.characterBody.name);
             }
 
             public TeamIndex GetOppositeTeamIndex(TeamIndex teamIndex)

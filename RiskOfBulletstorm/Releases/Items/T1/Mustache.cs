@@ -5,6 +5,7 @@ using RoR2;
 using UnityEngine;
 using TILER2;
 using static TILER2.MiscUtil;
+using static RiskOfBulletstorm.RiskofBulletstorm;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -293,7 +294,8 @@ namespace RiskOfBulletstorm.Items
                     if (body.inventory)
                     {
                         var InventoryCount = body.inventory.GetItemCount(catalogIndex);
-                        //Debug.Log("Mustache: " + activator.ToString() + "|" + activator.gameObject.ToString() + " bought from " + self.ToString());
+                        _logger.LogDebug("Mustache: " + activator.ToString() + "|" + activator.gameObject.ToString() + " bought from " + self.ToString());
+
                         if (InventoryCount > 0)
                         {
                             var component = activator.GetComponent<CharacterBody>()?.healthComponent;

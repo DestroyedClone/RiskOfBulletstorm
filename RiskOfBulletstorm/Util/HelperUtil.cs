@@ -6,6 +6,7 @@ using RoR2.UI;
 using UnityEngine;
 using RiskOfBulletstorm;
 using static RiskOfBulletstorm.Items.GungeonBuffController;
+using static RiskOfBulletstorm.RiskofBulletstorm;
 
 namespace RiskOfBulletstorm.Utils
 {
@@ -116,12 +117,12 @@ namespace RiskOfBulletstorm.Utils
 
                 if (!showInChat)
                 {
-                    Debug.Log("Showinchat false, gave it");
+                    _logger.LogDebug("HelperUtil: GiveItemIfLess: ShowInChat was false, so we gave the item.");
                     self.GiveItem(itemIndex, amount);
                 }
                 else
                 {
-                    Debug.Log("Showinchat true, continuing");
+                    _logger.LogDebug("HelperUtil: GiveItemIfLess: ShowInChat was true, so we called SimulatePickup()");
                     SimulatePickup(characterMaster, itemIndex, amount);
                 }
             }

@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Numerics;
 using RoR2;
 using UnityEngine;
 using TILER2;
 using static RiskOfBulletstorm.Utils.HelperUtil;
 using RoR2.Projectile;
-using RiskOfBulletstorm;
-using static EntityStates.Croco.FireSpit;
+using static RiskOfBulletstorm.RiskofBulletstorm;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -249,12 +247,17 @@ namespace RiskOfBulletstorm.Items
 
             };
             // MODDED //
-            //Debug.Log("Adding modded projectiles");
+            _logger.LogMessage("Projectile Whitelist: Adding modded projectiles.");
+            
             foreach (string projectileString in moddedProjectileStrings)
             {
                 var projectileIndex = ProjectileCatalog.FindProjectileIndex(projectileString);
                 //failures to find defaults to -1
-                if (projectileIndex > 0) WhitelistedProjectiles.Add(ProjectileCatalog.GetProjectilePrefab(projectileIndex));
+                if (projectileIndex > 0)
+                {
+                    WhitelistedProjectiles.Add(ProjectileCatalog.GetProjectilePrefab(projectileIndex));
+                    _logger.LogMessage("Projectile Whitelist: Added projectile = "+projectileString);
+                }
             }
         }
 

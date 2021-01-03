@@ -7,6 +7,7 @@ using TILER2;
 using static TILER2.StatHooks;
 using static TILER2.MiscUtil;
 using System;
+using static RiskOfBulletstorm.RiskofBulletstorm;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -172,7 +173,7 @@ namespace RiskOfBulletstorm.Items
                                 else if (skillLocation.secondary.Equals(self)) { MetronomeTrackKills.SetLastSkillSlot(1); }
                                 else if (skillLocation.utility.Equals(self)) { MetronomeTrackKills.SetLastSkillSlot(2); }
                                 else if (skillLocation.special.Equals(self)) { MetronomeTrackKills.SetLastSkillSlot(3); }
-                                //else { Debug.LogError("Metronome: Invalid Skill Slot accessed!", self); }
+                                //else { _logger.LogError("Metronome: Invalid Skill Slot ["+self+"] accessed!"); }
                             }
                         }
                     }

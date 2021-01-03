@@ -65,7 +65,6 @@ namespace RiskOfBulletstorm.Items
 
             /*if (HelperPlugin.ClassicItemsCompat.enabled)
             {
-                Debug.Log("MagazineRack: Classicitemscompat added");
                 HelperPlugin.ClassicItemsCompat.RegisterEmbryo(catalogIndex);
             }*/
         }

@@ -6,6 +6,7 @@ using UnityEngine;
 using TILER2;
 using static TILER2.MiscUtil;
 using static RiskOfBulletstorm.Utils.HelperUtil;
+using static RiskOfBulletstorm.RiskofBulletstorm;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -296,7 +297,6 @@ namespace RiskOfBulletstorm.Items
 
             if (chest)
             {
-                //Debug.Log("Disarm: Invcount = "+InventoryCount);
                 if (InventoryCount > 0)
                 {
                     //var ResultMultUnclamp = 1 - DisarmingPersonality_CostReductionAmount + DisarmingPersonality_CostReductionAmountStack * (InventoryCount - 1);

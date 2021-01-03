@@ -13,6 +13,7 @@ using static TILER2.MiscUtil;
 using System;
 using RoR2.Projectile;
 using RiskOfBulletstorm.Items;
+using static RiskOfBulletstorm.RiskofBulletstorm;
 
 namespace RiskOfBulletstorm.Shared.Blanks
 {
@@ -41,7 +42,6 @@ namespace RiskOfBulletstorm.Shared.Blanks
         public override void SetupAttributes()
         {
             base.SetupAttributes();
-            //BlankEffect = (GameObject)Resources.Load("prefabs/effects/SonicBoomEffect.prefab");
         }
         public override void SetupConfig()
         {
@@ -51,7 +51,7 @@ namespace RiskOfBulletstorm.Shared.Blanks
         {
             base.Install();
             On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
-            //dont bother with instant removal due to increasing load
+            //dont bother with instant removal due to increasing load.
         }
 
         public override void Uninstall()
@@ -87,7 +87,6 @@ namespace RiskOfBulletstorm.Shared.Blanks
                                 damageInfo.force += Vector3.Normalize(ZeroYVector3(damageInfo.position - characterBody.corePosition)) * prcf * mass;
                             else
                                 damageInfo.force += Vector3.Normalize(ZeroYVector3(damageInfo.force)) * prcf * mass;
-                            //Debug.Log("Blank Force Applied!", self);
                         }
                     }
                 }
@@ -102,7 +101,8 @@ namespace RiskOfBulletstorm.Shared.Blanks
             var blankAmount = attacker.inventory.GetItemCount(Blank.instance.catalogIndex);
             if (blankAmount == 0 && consumeBlank) //if needs blank and have no blank
             {
-                //Debug.LogError("[RiskOfBulletstorm]: Blank was required, but player had no blank!");
+                _logger.LogMessage("Blank: A Blank item was required, but the player had no blank! Returning false.");
+
                 return false;
             }
             Util.PlayScaledSound(BlankSound, attacker.gameObject, 0.75f);

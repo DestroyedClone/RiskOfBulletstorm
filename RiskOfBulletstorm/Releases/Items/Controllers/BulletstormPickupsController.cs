@@ -3,6 +3,7 @@ using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
 using TILER2;
+using static RiskOfBulletstorm.RiskofBulletstorm;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -17,6 +18,9 @@ namespace RiskOfBulletstorm.Items
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the chance to create a pickup after reaching the required amount? (Value: Direct Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float BUP_RollChance { get; private set; } = 30f;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Debugging: Enable to show in console when a Forgive Me, Please was detected with its damageinfo.", AutoConfigFlags.PreventNetMismatch)]
+        public bool BUP_DebugShowDollProc { get; private set; } = false;
         public override string displayName => "BulletstormPickupsController";
         public override ItemTier itemTier => ItemTier.NoTier;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.WorldUnique, ItemTag.AIBlacklist });
@@ -91,8 +95,11 @@ namespace RiskOfBulletstorm.Items
         {
             if (!dmginfo.inflictor && dmginfo.procCoefficient == 1 && dmginfo.damageColorIndex == DamageColorIndex.Item && dmginfo.force == Vector3.zero && dmginfo.damageType == DamageType.Generic)
             {
-                //Debug.Log("Doll Detected: ");
-                //Debug.Log(dmginfo);
+                if (BUP_DebugShowDollProc)
+                {
+                    _logger.LogMessage("Pickups Controller: Forgive Me, Please usage was detected.");
+                    _logger.LogMessage("Pickups Controller: "+dmginfo);
+                }
                 return true;
             }
             else

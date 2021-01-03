@@ -353,7 +353,7 @@ namespace RiskOfBulletstorm.Items
                     {
                         //var olddmg = (float)damageInfo.damage;
                         damageInfo.damage *= 1 + (MeatBunBoostCount * Meatbun_DamageBonus);
-                        //Debug.Log("Meatbun: Increased damage from " + olddmg + " to " + damageInfo.damage + " with " + MeatBunBoostCount + " stacks");
+                        //RiskOfBulletstorm.RiskofBulletstorm._logger.LogDebug("Meatbun: Increased damage from " + olddmg + " to " + damageInfo.damage + " with " + MeatBunBoostCount + " stacks");
                     }
                 }
             }
