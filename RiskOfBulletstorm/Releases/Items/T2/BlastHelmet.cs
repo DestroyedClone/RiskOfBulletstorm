@@ -27,7 +27,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetNameString(string langID = null) => displayName;
         protected override string GetPickupString(string langID = null) => "Duck And Cover\nReduces hazard radius of explosions.";
 
-        protected override string GetDescString(string langid = null) => $"";
+        protected override string GetDescString(string langid = null) => $"Reduces enemy explosives by 1% per stack up -99%";
 
         protected override string GetLoreString(string langID = null) => "This hardy helmet provides protection when too close to an explosion. Be wary though, it only works at a distance.";
 
@@ -68,8 +68,7 @@ namespace RiskOfBulletstorm.Items
             var enemyItemCount = Util.GetItemCountForTeam(enemyTeamIndex, catalogIndex, true);
             if (enemyItemCount > 0)
             {
-                float radiusCoefficient = 100 - enemyItemCount;
-                radiusCoefficient /= 100;
+                float radiusCoefficient = Mathf.Max(100 - enemyItemCount,1)/100;
                 self.radius *= radiusCoefficient;
                 _logger.LogDebug("BlastHelmet: Adjusted blast radius by coefficient of "+ radiusCoefficient);
             }
