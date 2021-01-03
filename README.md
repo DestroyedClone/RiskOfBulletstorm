@@ -40,6 +40,7 @@ Every 30 kills *(+50% per stage)*, the game will have a 30% chance to *spawn a r
  - **Mustache**: Heal for +10% (+10% per stack) health upon purchase.
 
 ## Green
+ - **Blast Helmet**: Reduces enemy explosion radius by 1% per stack up to -99%.
  - **Disarming Personality**: *Hyperbolically* reduces chest prices by 10% (-5% per stack) up to 60%.
  - **Enraging Photo**: Gain a temporary +100% damage boost upon taking 11% of your health in damage for 1 (+0.25 per stack) seconds.
  - **Roll Bomb**: After using your Utility, drop 1 bomb(s) (+1 per stack) for 100% damage.
@@ -51,6 +52,7 @@ Every 30 kills *(+50% per stage)*, the game will have a 30% chance to *spawn a r
  - **Backpack**: Grants 1 extra equipment slot per stack.
 	 - Hold [Left Shift] + [NumberRow keys] to switch between slots.
 	 - Press [Left Shift] + [=] to list all equipment.
+	 - Press [F] or [G] to cycle left/right through equipment.
 	 - If you lose Backpacks, then your inaccessible equipment drop onto the ground.
  - **Number 2**: Increases your stats by 10% (+5% per stack) for every dead player.
 	 - *Singleplayer: Effect acts like one player is dead.*
