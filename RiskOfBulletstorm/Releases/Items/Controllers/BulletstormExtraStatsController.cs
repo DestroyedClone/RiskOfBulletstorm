@@ -248,7 +248,8 @@ namespace RiskOfBulletstorm.Items
             };
             // MODDED //
             _logger.LogMessage("Projectile Whitelist: Adding modded projectiles.");
-            
+
+            int moddedProjectilesAdded = 0;
             foreach (string projectileString in moddedProjectileStrings)
             {
                 var projectileIndex = ProjectileCatalog.FindProjectileIndex(projectileString);
@@ -257,8 +258,10 @@ namespace RiskOfBulletstorm.Items
                 {
                     WhitelistedProjectiles.Add(ProjectileCatalog.GetProjectilePrefab(projectileIndex));
                     _logger.LogMessage("Projectile Whitelist: Added projectile = "+projectileString);
+                    moddedProjectilesAdded++;
                 }
             }
+            _logger.LogMessage("Projectile Whitelist: Added "+moddedProjectilesAdded+" modded projectiles.");
         }
 
         public override void SetupConfig()
