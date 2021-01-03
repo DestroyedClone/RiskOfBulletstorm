@@ -31,7 +31,7 @@ namespace RiskOfBulletstorm
     [BepInDependency(R2API.R2API.PluginGUID, R2API.R2API.PluginVersion)]
     [BepInDependency(TILER2Plugin.ModGuid, TILER2Plugin.ModVer)]
     //[BepInDependency(EliteSpawningOverhaul.EsoPlugin.PluginGuid)]
-    [BepInDependency("com.ThinkInvisible.ClassicItems", BepInDependency.DependencyFlags.SoftDependency)]
+    //[BepInDependency("com.ThinkInvisible.ClassicItems", BepInDependency.DependencyFlags.SoftDependency)]
     //[BepInDependency("com.KingEnderBrine.ExtraSkillSlots")]
     [BepInDependency(EnemyItemDisplays.EnemyItemDisplaysPlugin.MODUID, BepInDependency.DependencyFlags.SoftDependency)] //because chen's mod has it
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.EveryoneNeedSameModVersion)]
