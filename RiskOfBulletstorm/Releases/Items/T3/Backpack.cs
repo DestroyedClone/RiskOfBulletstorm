@@ -119,8 +119,11 @@ namespace RiskOfBulletstorm.Items
             bool canDrop = false;
             //private bool isToolbot = false;
             //private byte defaultMax = 0;
-            public List<EquipmentIndex> equipmentDropQueue = new List<EquipmentIndex>();
-            private readonly float dropCooldown = 5f;
+            public List<EquipmentIndex> equipmentDropQueue = new List<EquipmentIndex>()
+            {
+
+            };
+            private readonly float dropCooldown = 2f;
             private float stopwatch = 9999f;
 
 
@@ -160,7 +163,7 @@ namespace RiskOfBulletstorm.Items
                     var difference = maxAvailableSlot - invcount;
                     for (int i = 0; i < difference; i++)
                     {
-                        var slot = (byte)(maxAvailableSlot + i);
+                        var slot = (byte)(maxAvailableSlot);
                         Chat.AddMessage("Backpack: Dropping Slot " + slot + "/" + difference);
                         QueueDrop(slot);
                     }
@@ -241,9 +244,9 @@ namespace RiskOfBulletstorm.Items
                 stopwatch -= Time.deltaTime;
                 if (canDrop)
                 {
-                    _logger.LogMessage("Able to drop item");
+                    //_logger.LogMessage("Able to drop item");
                     canDrop = false;
-                    _logger.LogMessage("Reset drop to false");
+                    //_logger.LogMessage("Reset drop to false");
                     for (byte i = 0; i <= 9; i++)
                     {
                         if (equipmentDropQueue[i] != EquipmentIndex.None)
@@ -300,6 +303,7 @@ namespace RiskOfBulletstorm.Items
                 var currentSlot = inventory.activeEquipmentSlot + (cycleRight ? 1 : -1);
                 var newValue = (byte)LoopAround(currentSlot, 0, maxAvailableSlot);
                 inventory.SetActiveEquipmentSlot(newValue);
+                Chat.AddMessage("Backpack: Set equipment slot to " + newValue);
             }
 
             private float LoopAround(float value, float min, float max)
