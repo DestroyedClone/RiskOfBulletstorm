@@ -108,55 +108,7 @@ namespace RiskOfBulletstorm
                 mainConfigFile = ConfigFile
             });
             T2Module.SetupAll_PluginAwake(masterItemList);
-
-            //ExtraAwake();
         }
-
-        /*public void ExtraAwake()
-        {
-            //Add actions to RoR2.InputCatalog
-            ExtraInputs.AddActionsToInputCatalog();
-
-            //Hook to method with some rewired initialization (or not? Anyway it works) to add custom actions
-            var userDataInit = typeof(UserData).GetMethod("KFIfLMJhIpfzcbhqEXHpaKpGsgeZ", BindingFlags.NonPublic | BindingFlags.Instance);
-            new Hook(userDataInit, (Action<Action<UserData>, UserData>)ExtraInputs.AddCustomActions);
-
-            //Adding custom actions to Settings
-            On.RoR2.UI.SettingsPanelController.Start += UIHooks.SettingsPanelControllerStart;
-
-            //Adding custom InputBankTest
-            On.RoR2.InputBankTest.Awake += (orig, self) =>
-            {
-                orig(self);
-                self.gameObject.AddComponent<ExtraInputBankTest>();
-            };
-            On.RoR2.InputBankTest.CheckAnyButtonDown += ExtraInputBankTest.CheckAnyButtonDownOverrideHook;
-
-            //Applying override to BaseSkillState
-            IL.EntityStates.BaseSkillState.IsKeyDownAuthority += ExtraBaseSkillState.IsKeyDownAuthorityILHook;
-
-            var baseSkillStateOnEnter = typeof(BaseSkillState).GetMethod("OnEnter", BindingFlags.Public | BindingFlags.Instance);
-            new Hook(baseSkillStateOnEnter, new Action<Action<BaseSkillState>, BaseSkillState>((orig, self) =>
-            {
-                ExtraBaseSkillState.Add(self);
-                orig(self);
-            }));
-
-            var baseSkillStateOnExit = typeof(BaseSkillState).GetMethod("OnExit", BindingFlags.Public | BindingFlags.Instance);
-            new Hook(baseSkillStateOnExit, new Action<Action<BaseSkillState>, BaseSkillState>((orig, self) =>
-            {
-                orig(self);
-                ExtraBaseSkillState.Remove(self);
-            }));
-
-            //Adding custom PlayerCharacterMasterController
-            On.RoR2.PlayerCharacterMasterController.Awake += (orig, self) =>
-            {
-                orig(self);
-                self.gameObject.AddComponent<ExtraPlayerCharacterMasterController>();
-            };
-            On.RoR2.PlayerCharacterMasterController.SetBody += ExtraPlayerCharacterMasterController.SetBodyOverrideHook;
-        }*/
         
 
         private void Start()
