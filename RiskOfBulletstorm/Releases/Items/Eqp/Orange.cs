@@ -307,7 +307,8 @@ namespace RiskOfBulletstorm.Items
             Inventory inventory = body.inventory;
             if (!inventory) return false;
 
-            int DeployCount = HelperPlugin.ClassicItemsCompat.enabled && HelperPlugin.ClassicItemsCompat.CheckEmbryoProc(instance, body) ? 2 : 1; //Embryo Check
+            //int DeployCount = HelperPlugin.ClassicItemsCompat.enabled && HelperPlugin.ClassicItemsCompat.CheckEmbryoProc(instance, body) ? 2 : 1; //Embryo Check
+            int DeployCount = 1;
 
             for (int i = 0; i < DeployCount; i++)
             {

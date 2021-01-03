@@ -79,8 +79,8 @@ namespace RiskOfBulletstorm.Items
 
             if (BombPrefab) PrefabAPI.RegisterNetworkPrefab(BombPrefab);
 
-            if (HelperPlugin.ClassicItemsCompat.enabled)
-                HelperPlugin.ClassicItemsCompat.RegisterEmbryo(catalogIndex);
+            //if (HelperPlugin.ClassicItemsCompat.enabled)
+                //HelperPlugin.ClassicItemsCompat.RegisterEmbryo(catalogIndex);
         }
         public override void SetupAttributes()
         {
@@ -300,8 +300,8 @@ namespace RiskOfBulletstorm.Items
 
             Util.PlaySound(FireMines.throwMineSoundString, gameObject);
             FireBomb(body, gameObject);
-            if (HelperPlugin.ClassicItemsCompat.enabled && HelperPlugin.ClassicItemsCompat.CheckEmbryoProc(instance, body))
-                FireBomb(body, gameObject, 1f);
+            //if (HelperPlugin.ClassicItemsCompat.enabled && HelperPlugin.ClassicItemsCompat.CheckEmbryoProc(instance, body))
+                //FireBomb(body, gameObject, 1f);
             return true;
         }
 

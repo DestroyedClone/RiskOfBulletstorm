@@ -69,8 +69,8 @@ namespace RiskOfBulletstorm.Items
         {
             base.SetupBehavior();
 
-            if (HelperPlugin.ClassicItemsCompat.enabled)
-                HelperPlugin.ClassicItemsCompat.RegisterEmbryo(catalogIndex);
+            //if (HelperPlugin.ClassicItemsCompat.enabled)
+                //HelperPlugin.ClassicItemsCompat.RegisterEmbryo(catalogIndex);
         }
         public override void SetupAttributes()
         {

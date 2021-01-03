@@ -101,8 +101,8 @@ namespace RiskOfBulletstorm.Items
 
             if (BarrelPrefab) PrefabAPI.RegisterNetworkPrefab(BarrelPrefab);
 
-            if (HelperPlugin.ClassicItemsCompat.enabled)
-                HelperPlugin.ClassicItemsCompat.RegisterEmbryo(catalogIndex);
+            //if (HelperPlugin.ClassicItemsCompat.enabled)
+                //HelperPlugin.ClassicItemsCompat.RegisterEmbryo(catalogIndex);
         }
         public override void SetupAttributes()
         {
@@ -367,10 +367,10 @@ namespace RiskOfBulletstorm.Items
 
             if (PlaceTable(body))
             {
-                if (HelperPlugin.ClassicItemsCompat.enabled && HelperPlugin.ClassicItemsCompat.CheckEmbryoProc(instance, body))
+                /*if (HelperPlugin.ClassicItemsCompat.enabled && HelperPlugin.ClassicItemsCompat.CheckEmbryoProc(instance, body))
                 {
                     PlaceTable(body);
-                }
+                }*/
                 return true;
             } else
             {

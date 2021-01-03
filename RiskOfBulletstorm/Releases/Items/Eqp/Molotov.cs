@@ -143,8 +143,8 @@ namespace RiskOfBulletstorm.Items
             if (MolotovPrefab) PrefabAPI.RegisterNetworkPrefab(MolotovPrefab);
             if (MolotovDotZonePrefab) PrefabAPI.RegisterNetworkPrefab(MolotovDotZonePrefab);
 
-            if (HelperPlugin.ClassicItemsCompat.enabled)
-                HelperPlugin.ClassicItemsCompat.RegisterEmbryo(catalogIndex);
+            //if (HelperPlugin.ClassicItemsCompat.enabled)
+                //HelperPlugin.ClassicItemsCompat.RegisterEmbryo(catalogIndex);
         }
         public override void SetupAttributes()
         {
@@ -365,7 +365,7 @@ namespace RiskOfBulletstorm.Items
 
             Util.PlaySound(FireMines.throwMineSoundString, gameObject);
             var damageMult = 1f;
-            if (HelperPlugin.ClassicItemsCompat.enabled && HelperPlugin.ClassicItemsCompat.CheckEmbryoProc(instance, body)) damageMult = Molotov_BeatingEmbryo;
+            //if (HelperPlugin.ClassicItemsCompat.enabled && HelperPlugin.ClassicItemsCompat.CheckEmbryoProc(instance, body)) damageMult = Molotov_BeatingEmbryo;
             FireMolotov(body, gameObject, damageMult);
             return true;
         }

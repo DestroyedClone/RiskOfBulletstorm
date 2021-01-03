@@ -12,9 +12,9 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("What is the duration of immunity after respawning someone?", AutoConfigFlags.None)]
         public float FriendshipCookie_BaseImmunityTime { get; private set; } = 3f;
 
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("[Classic Items] Beating Embryo: What is the duration of immunity if it procs?", AutoConfigFlags.None)]
-        public float FriendshipCookie_EmbryoImmunityTime { get; private set; } = 9f;
+        //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        //[AutoConfig("[Classic Items] Beating Embryo: What is the duration of immunity if it procs?", AutoConfigFlags.None)]
+        //public float FriendshipCookie_EmbryoImmunityTime { get; private set; } = 9f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the ItemIndex of the item to be given in singleplayer?", AutoConfigFlags.None)]
@@ -55,8 +55,8 @@ namespace RiskOfBulletstorm.Items
         {
             base.SetupBehavior();
 
-            if (HelperPlugin.ClassicItemsCompat.enabled)
-                HelperPlugin.ClassicItemsCompat.RegisterEmbryo(catalogIndex);
+            //if (HelperPlugin.ClassicItemsCompat.enabled)
+                //HelperPlugin.ClassicItemsCompat.RegisterEmbryo(catalogIndex);
         }
         public override void SetupAttributes()
         {
@@ -308,7 +308,8 @@ namespace RiskOfBulletstorm.Items
             //var playerList = CharacterMaster.readOnlyInstancesList;
             int playerAmt = playerList.Count;
 
-            bool EmbryoProc = HelperPlugin.ClassicItemsCompat.CheckEmbryoProc(instance, body) && HelperPlugin.ClassicItemsCompat.enabled;
+            //bool EmbryoProc = HelperPlugin.ClassicItemsCompat.CheckEmbryoProc(instance, body) && HelperPlugin.ClassicItemsCompat.enabled;
+            bool EmbryoProc = false;
 
             if (playerAmt > 1)
             {
@@ -318,8 +319,8 @@ namespace RiskOfBulletstorm.Items
                     if (master.IsDeadAndOutOfLivesServer())
                     {
                         var respawnLength = FriendshipCookie_BaseImmunityTime;
-                        if (EmbryoProc)
-                            respawnLength = FriendshipCookie_EmbryoImmunityTime;
+                        //if (EmbryoProc)
+                            //respawnLength = FriendshipCookie_EmbryoImmunityTime;
 
                         RespawnExtraLife(master, false, true, respawnLength, body.master);
                         //Stage.instance.RespawnCharacter(master);

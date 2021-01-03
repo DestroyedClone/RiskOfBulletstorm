@@ -63,11 +63,11 @@ namespace RiskOfBulletstorm.Items
 
             if (MagazinePrefab) PrefabAPI.RegisterNetworkPrefab(MagazinePrefab);
 
-            if (HelperPlugin.ClassicItemsCompat.enabled)
+            /*if (HelperPlugin.ClassicItemsCompat.enabled)
             {
                 Debug.Log("MagazineRack: Classicitemscompat added");
                 HelperPlugin.ClassicItemsCompat.RegisterEmbryo(catalogIndex);
-            }
+            }*/
         }
         public override void SetupAttributes()
         {
@@ -312,8 +312,9 @@ namespace RiskOfBulletstorm.Items
             GameObject gameObject = slot.gameObject;
             if (!gameObject || !body) return false;
 
-            bool EmbryoProc = HelperPlugin.ClassicItemsCompat.enabled && HelperPlugin.ClassicItemsCompat.CheckEmbryoProc(instance, body);
-            return PlaceWard(body, MagazinePrefab, EmbryoProc);
+            //bool EmbryoProc = HelperPlugin.ClassicItemsCompat.enabled && HelperPlugin.ClassicItemsCompat.CheckEmbryoProc(instance, body);
+            //return PlaceWard(body, MagazinePrefab, EmbryoProc);
+            return PlaceWard(body, MagazinePrefab, false);
         }
 
         public bool PlaceWard(CharacterBody body, GameObject wardObject, bool embryoProc)

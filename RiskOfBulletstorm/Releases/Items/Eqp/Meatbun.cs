@@ -87,8 +87,8 @@ namespace RiskOfBulletstorm.Items
         {
             base.SetupBehavior();
 
-            if (HelperPlugin.ClassicItemsCompat.enabled)
-                HelperPlugin.ClassicItemsCompat.RegisterEmbryo(catalogIndex);
+            //if (HelperPlugin.ClassicItemsCompat.enabled)
+                //HelperPlugin.ClassicItemsCompat.RegisterEmbryo(catalogIndex);
         }
         public override void SetupAttributes()
         {
@@ -391,7 +391,7 @@ namespace RiskOfBulletstorm.Items
             if (Meatbun_HealAmount > 0)
             {
                 health.HealFraction(Meatbun_HealAmount, default);
-                if (HelperPlugin.ClassicItemsCompat.enabled && HelperPlugin.ClassicItemsCompat.CheckEmbryoProc(instance, body)) health.HealFraction(Meatbun_HealAmount, default);
+                //if (HelperPlugin.ClassicItemsCompat.enabled && HelperPlugin.ClassicItemsCompat.CheckEmbryoProc(instance, body)) health.HealFraction(Meatbun_HealAmount, default);
             }
             return true;
         }

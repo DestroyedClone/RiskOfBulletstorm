@@ -105,7 +105,6 @@ namespace RiskOfBulletstorm.Items
                 // Alloy Vulture
             Resources.Load<GameObject>("prefabs/projectiles/WindbladeProjectile"), 
 
-            // arti
             // huntress laser glaive?
             // loader grapple fist
             // spiked fist
