@@ -150,8 +150,6 @@ namespace RiskOfBulletstorm.Items
                 // Greater Wisp
             Resources.Load<GameObject>("prefabs/projectiles/WispCannon"),
         };
-
-
         public override void SetupBehavior()
         {
             base.SetupBehavior();
@@ -159,14 +157,6 @@ namespace RiskOfBulletstorm.Items
         public override void SetupAttributes()
         {
             base.SetupAttributes();
-            if (ShotSpread_EnableDML)
-                WhitelistedProjectiles.Add(DisposableMissileLauncherPrefab);
-            if (ShotSpread_EnableLoader)
-            {
-                WhitelistedProjectiles.Add(LoaderHookPrefab);
-                WhitelistedProjectiles.Add(LoaderYankHookPrefab);
-            }
-
         }
         public override void SetupLate()
         {
@@ -291,6 +281,13 @@ namespace RiskOfBulletstorm.Items
         public override void SetupConfig()
         {
             base.SetupConfig();
+            if (ShotSpread_EnableDML)
+                WhitelistedProjectiles.Add(DisposableMissileLauncherPrefab);
+            if (ShotSpread_EnableLoader)
+            {
+                WhitelistedProjectiles.Add(LoaderHookPrefab);
+                WhitelistedProjectiles.Add(LoaderYankHookPrefab);
+            }
         }
         public override void Install()
         {
@@ -454,12 +451,11 @@ namespace RiskOfBulletstorm.Items
                             Quaternion aimDir = Util.QuaternionSafeLookRotation(input.aimDirection);
                             Quaternion rotation = fireProjectileInfo.rotation;
 
-                            _logger.LogMessage("Projectile Fired: "+ fireProjectileInfo.projectilePrefab.name);
+                            //_logger.LogMessage("Projectile Fired: "+ fireProjectileInfo.projectilePrefab.name);
                             bool isProjectileAllowed = WhitelistedProjectiles.Contains(projectilePrefab);
 
                             if ((ShotSpread_WhitelistProjectiles && isProjectileAllowed) || !ShotSpread_WhitelistProjectiles)
                             {
-                                //Debug.Log("scope: ayo the log is at "+ResultMult);
                                 if (ResultMult >= 0)
                                 {
                                     Quaternion UpdatedAngle = Quaternion.Lerp(rotation, aimDir, ResultMult);
@@ -468,23 +464,25 @@ namespace RiskOfBulletstorm.Items
                                     //Chat.AddMessage("Scope Lerp: " + aimDir + " and " + rotation + " resulting " + UpdatedAngle);
                                 } else
                                 {
-                                    var inverse = 1 + ResultMult;
-                                    var deviation1 = inverse * rotation.x;
-                                    var deviation2 = inverse * rotation.y;
-                                    var deviation3 = inverse * rotation.z;
+                                    ResultMult = Mathf.Abs(ResultMult);
+                                    var deviation1 = ResultMult * rotation.x;
+                                    var deviation2 = ResultMult * rotation.y;
+                                    var deviation3 = ResultMult * rotation.z;
                                     //var deviation4 = inverse * rotation.w;
                                     var rand1 = UnityEngine.Random.Range(deviation1, -deviation1);
                                     var rand2 = UnityEngine.Random.Range(deviation2, -deviation2);
                                     var rand3 = UnityEngine.Random.Range(deviation3, -deviation3);
                                     //var rand4 = UnityEngine.Random.Range(deviation4, -deviation4);
-                                    var tempdev = Util.QuaternionSafeLookRotation(new Vector3(rand1, rand2, rand3));
+                                    //var tempdev = Util.QuaternionSafeLookRotation(new Vector3(rand1, rand2, rand3));
+                                    var tempdev = new Vector3(rand1, rand2, rand3);
                                     //RiskofBulletstorm._logger.LogInfo(printDifference(fireProjectileInfo.rotation.x);
 
                                     //Debug.Log("Scope: " + fireProjectileInfo.rotation + " => " + tempdev.x + " " + tempdev.y + " " + tempdev.z + " " + tempdev.w);
 
                                     //int directionModifier = Util.CheckRoll(50) ? 1 : -1;
 
-                                    fireProjectileInfo.rotation *= tempdev;
+                                    fireProjectileInfo.rotation = Quaternion.Euler(tempdev);
+                                    //fireProjectileInfo.rotation *= tempdev;
                                 }
                             }
                         }
