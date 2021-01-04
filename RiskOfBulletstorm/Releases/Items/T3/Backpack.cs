@@ -140,7 +140,6 @@ namespace RiskOfBulletstorm.Items
                         _logger.LogMessage("Adding slot "+i);
                     }
                 }
-                _logger.LogMessage("Attempting to reset drop cooldown");
                 stopwatch = dropCooldown;
             }
 
@@ -281,11 +280,29 @@ namespace RiskOfBulletstorm.Items
                 // because otherwise it'll drop equipments twice
                 var equipment = inventory.equipmentStateSlots[equipmentSlot];
                 var index = equipment.equipmentIndex;
+
+                var oldValueDEBUG = equipmentDropQueue[equipmentSlot];
+
                 if (inventory.equipmentStateSlots.Length > 0 && index != EquipmentIndex.None)
                 {
-                    equipmentDropQueue[equipmentSlot] = (EquipmentIndex)index; //required cast?
-                    //equipment.equipmentIndex = EquipmentIndex.None;
-                    inventory.SetEquipment(EquipmentState.empty, equipmentSlot);
+                    _logger.LogMessage("QueueDrop: Check succeeded.");
+                    equipmentDropQueue[equipmentSlot] = index; //required cast?
+                    _logger.LogMessage("QueueDrop: Slot "+equipmentSlot+" changed from "+ oldValueDEBUG+" to "+ index);
+
+                    EquipmentState equipmentborrowed = inventory.GetEquipment(equipmentSlot);
+                    byte charges = equipmentborrowed.charges;
+                    Run.FixedTimeStamp chargeFinishTime = equipmentborrowed.chargeFinishTime;
+                    if (equipmentborrowed.equipmentIndex == EquipmentIndex.None && chargeFinishTime.isNegativeInfinity)
+                    {
+                        charges = 1;
+                        chargeFinishTime = Run.FixedTimeStamp.now;
+                    }
+                    EquipmentState equipmentState = new EquipmentState(EquipmentIndex.None, chargeFinishTime, charges);
+                    inventory.SetEquipment(equipmentState, equipmentSlot);
+
+
+                    //inventory.equipmentStateSlots[equipmentSlot].equipmentIndex = EquipmentIndex.None;
+                    _logger.LogMessage("QueueDrop: Equipmentslot changed to "+ inventory.equipmentStateSlots[equipmentSlot].equipmentIndex);
                     stopwatch = dropCooldown;
                     canDrop = false;
                 }
