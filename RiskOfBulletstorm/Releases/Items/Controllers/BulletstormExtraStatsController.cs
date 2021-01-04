@@ -452,7 +452,7 @@ namespace RiskOfBulletstorm.Items
                             Quaternion aimDir = Util.QuaternionSafeLookRotation(input.aimDirection);
                             Quaternion rotation = fireProjectileInfo.rotation;
 
-                            _logger.LogDebug("Projectile Fired: "+ fireProjectileInfo.projectilePrefab.name);
+                            _logger.LogMessage("Projectile Fired: "+ fireProjectileInfo.projectilePrefab.name);
                             bool isProjectileAllowed = WhitelistedProjectiles.Contains(projectilePrefab);
 
                             if ((ShotSpread_WhitelistProjectiles && isProjectileAllowed) || !ShotSpread_WhitelistProjectiles)

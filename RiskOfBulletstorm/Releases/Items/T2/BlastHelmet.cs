@@ -70,7 +70,7 @@ namespace RiskOfBulletstorm.Items
             {
                 float radiusCoefficient = Mathf.Max(100 - enemyItemCount,1)/100;
                 self.radius *= radiusCoefficient;
-                _logger.LogDebug("BlastHelmet: Adjusted blast radius by coefficient of "+ radiusCoefficient);
+                _logger.LogMessage("BlastHelmet: Adjusted blast radius by coefficient of "+ radiusCoefficient);
             }
             return orig(self);
         }
