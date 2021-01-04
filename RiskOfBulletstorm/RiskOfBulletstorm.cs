@@ -71,7 +71,9 @@ namespace RiskOfBulletstorm
         private void Awake()
         {
             _logger = Logger;
-            
+
+            R2API.Utils.CommandHelper.AddToConsoleWhenReady();
+
             /*
             if (RiskOfOptionsCompat.enabled)
             {
@@ -109,7 +111,6 @@ namespace RiskOfBulletstorm
             });
             T2Module.SetupAll_PluginAwake(masterItemList);
         }
-        
 
         private void Start()
         {
