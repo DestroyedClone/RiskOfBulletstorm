@@ -160,10 +160,11 @@ namespace RiskOfBulletstorm.Items
                 if (maxAvailableSlot > invcount)
                 {
                     var difference = maxAvailableSlot - invcount;
+                    Chat.AddMessage("Backpack: Difference was "+ difference);
                     for (int i = 0; i < difference; i++)
                     {
                         var slot = (byte)(invcount+i);
-                        Chat.AddMessage("Backpack: Dropping Slot " + slot + "/" + difference);
+                        Chat.AddMessage("Backpack: Queueing Slot " + slot);
                         QueueDrop(slot);
                     }
 
