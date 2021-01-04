@@ -58,27 +58,27 @@ namespace RiskOfBulletstorm.Items
             Resources.Load<GameObject>("prefabs/projectiles/CrocoSpit"),
             Resources.Load<GameObject>("prefabs/projectiles/CrocoDiseaseProjectile"),
                 // Artificer
-            // flame bolt
-            // plasma bolt
-            // charged nano bomb
-            // cast nano-spear
-            // Snapfreeze
-                //
+            Resources.Load<GameObject>("Prefabs/Projectiles/MageFireboltBasic"),
+            Resources.Load<GameObject>("Prefabs/Projectiles/MageLightningboltBasic"),
+            Resources.Load<GameObject>("Prefabs/Projectiles/MageLightningBombProjectile"),
+            Resources.Load<GameObject>("Prefabs/Projectiles/MageIceBombProjectile"),
+            Resources.Load<GameObject>("Prefabs/Projectiles/MageIcewallWalkerProjectile"),
+            //MageIcewallPillarProjectile
 
                 // Captain
             Resources.Load<GameObject>("Prefabs/Projectiles/CaptainTazer"),
-            // captain orbital probe
+            Resources.Load<GameObject>("Prefabs/Projectiles/FMJ"), //??
 
                 // Commando
             Resources.Load<GameObject>("prefabs/projectiles/CommandoGrenadeProjectile"),
-            // commando phase round
+            Resources.Load<GameObject>("Prefabs/Projectiles/CaptainTazer"),
 
                 // Engineer
             Resources.Load<GameObject>("Prefabs/Projectiles/EngiHarpoon"), //engineer harpoon
             Resources.Load<GameObject>("Prefabs/Projectiles/EngiGrenadeProjectile"),
-            // pressure mines
-            // spider mines
-            // bubble shield ?
+            Resources.Load<GameObject>("Prefabs/Projectiles/EngiMine"),
+            Resources.Load<GameObject>("Prefabs/Projectiles/SpiderMine"),
+            Resources.Load<GameObject>("prefabs/projectiles/EngiBubbleShield"),
 
                 // Huntress
             EntityStates.Huntress.HuntressWeapon.FireGlaive.projectilePrefab,
@@ -87,16 +87,19 @@ namespace RiskOfBulletstorm.Items
             Resources.Load<GameObject>("prefabs/projectiles/LoaderZapCone"),
             Resources.Load<GameObject>("prefabs/projectiles/LoaderPylon"),
 
+                // Merc
+            Resources.Load<GameObject>("prefabs/projectiles/EvisProjectile"),
+
                 // MUL-T
-            // scrap launcher
-            // blast canister
+            Resources.Load<GameObject>("prefabs/projectiles/ToolbotGrenadeLauncherProjectile"),
+            Resources.Load<GameObject>("prefabs/projectiles/CryoCanisterProjectile"),
 
                 // REX
             Resources.Load<GameObject>("prefabs/projectiles/SyringeProjectile"),
             Resources.Load<GameObject>("prefabs/projectiles/SyringeProjectileHealing"),
-            // seed barrage
-            // directive: drill
-            // tangling growth
+            Resources.Load<GameObject>("prefabs/projectiles/TreebotMortarRain"),
+            Resources.Load<GameObject>("prefabs/projectiles/TreebotMortar2"),
+            Resources.Load<GameObject>("prefabs/projectiles/TreebotFlowerSeed"),
 
             // Enemies
                 // Beetle Queen
@@ -131,22 +134,21 @@ namespace RiskOfBulletstorm.Items
                 // Beetle Guard
             Resources.Load<GameObject>("prefabs/projectiles/Sunder"), 
                 // Brass Contraption
-             // brass contraption spiked ball
+            Resources.Load<GameObject>("prefabs/projectiles/BellBall"), 
                 // Lemurian
             Resources.Load<GameObject>("prefabs/projectiles/Fireball"), //fireball
-            // slicing winds
                 // Hermit Crab
-            // Mortal Volley
+            Resources.Load<GameObject>("prefabs/projectiles/HermitCrabBombProjectile"), 
                 // Lunar Chimera
-            // projectile
+            Resources.Load<GameObject>("prefabs/projectiles/LunarGolemTwinShotProjectile"), 
                 // Lunar Wisp
-            // thing
+            Resources.Load<GameObject>("prefabs/projectiles/LunarWispTrackingBomb"), 
                 // Mini Mushrum
-
+            Resources.Load<GameObject>("prefabs/projectiles/SporeGrenadeProjectile"), 
                 // Void Reaver
-            // nullifier
-            // 
+            Resources.Load<GameObject>("prefabs/projectiles/NullifierPreBombProjectile"), 
                 // Greater Wisp
+            Resources.Load<GameObject>("prefabs/projectiles/WispCannon"),
         };
 
 

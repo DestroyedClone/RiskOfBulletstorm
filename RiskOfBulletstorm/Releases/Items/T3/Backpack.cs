@@ -163,7 +163,7 @@ namespace RiskOfBulletstorm.Items
                     var difference = maxAvailableSlot - invcount;
                     for (int i = 0; i < difference; i++)
                     {
-                        var slot = (byte)(maxAvailableSlot);
+                        var slot = (byte)(invcount+i);
                         Chat.AddMessage("Backpack: Dropping Slot " + slot + "/" + difference);
                         QueueDrop(slot);
                     }
@@ -283,8 +283,9 @@ namespace RiskOfBulletstorm.Items
                 var index = equipment.equipmentIndex;
                 if (inventory.equipmentStateSlots.Length > 0 && index != EquipmentIndex.None)
                 {
-                    equipmentDropQueue[equipmentSlot] = index;
-                    equipment.equipmentIndex = EquipmentIndex.None;
+                    equipmentDropQueue[equipmentSlot] = (EquipmentIndex)index; //required cast?
+                    //equipment.equipmentIndex = EquipmentIndex.None;
+                    inventory.SetEquipment(EquipmentState.empty, equipmentSlot);
                     stopwatch = dropCooldown;
                     canDrop = false;
                 }

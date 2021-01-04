@@ -68,7 +68,7 @@ namespace RiskOfBulletstorm.Items
             var enemyItemCount = Util.GetItemCountForTeam(enemyTeamIndex, catalogIndex, true);
             if (enemyItemCount > 0)
             {
-                float radiusCoefficient = Mathf.Max(100 - enemyItemCount,1)/100;
+                float radiusCoefficient = Mathf.Max(100 - enemyItemCount,1f)/100f;
                 self.radius *= radiusCoefficient;
                 _logger.LogMessage("BlastHelmet: Adjusted blast radius by coefficient of "+ radiusCoefficient);
             }
