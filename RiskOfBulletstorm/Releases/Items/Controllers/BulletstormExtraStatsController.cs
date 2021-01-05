@@ -572,6 +572,10 @@ namespace RiskOfBulletstorm.Items
                     characterBody.SetSpreadBloom(Mathf.Min(0, characterBody.spreadBloomAngle * ResultMult), false);
 
                     //Debug.Log("Bulletscope: maxspread: "+self.maxSpread+" multiplier: "+ResultMult+" result: "+ Mathf.Max(self.maxSpread * ResultMult, 0));
+
+                    if (self.radius == 0) //(maybe?)
+                        self.radius = ResultMult;
+
                     self.maxSpread *= ResultMult;
 
                     self.minSpread *= ResultMult;
