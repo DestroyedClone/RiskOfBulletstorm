@@ -531,13 +531,11 @@ namespace RiskOfBulletstorm.Items
                                 } else
                                 {
                                     ResultMult = Mathf.Abs(ResultMult);
-                                    var deviation1 = ResultMult * rotation.x;
-                                    var deviation2 = ResultMult * rotation.y;
-                                    var deviation3 = ResultMult * rotation.z;
-                                    //var deviation4 = inverse * rotation.w;
-                                    var rand1 = UnityEngine.Random.Range(deviation1, -deviation1);
-                                    var rand2 = UnityEngine.Random.Range(deviation2, -deviation2);
-                                    var rand3 = UnityEngine.Random.Range(deviation3, -deviation3);
+                                    var lessThan = 360 - 360 * ResultMult;
+                                    var moreThan = 360 + 360 * ResultMult;
+                                    float rand1 = Random.Range(rotation.x * lessThan, rotation.x * moreThan);
+                                    float rand2 = Random.Range(rotation.y * lessThan, rotation.y * moreThan);
+                                    float rand3 = Random.Range(rotation.z * lessThan, rotation.z * moreThan);
                                     //var rand4 = UnityEngine.Random.Range(deviation4, -deviation4);
                                     var tempdev = Util.QuaternionSafeLookRotation(new Vector3(rand1, rand2, rand3));
                                     //var tempdev = new Vector3(rand1, rand2, rand3);
