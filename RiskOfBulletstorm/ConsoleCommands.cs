@@ -189,11 +189,14 @@ namespace RiskOfBulletstorm
                 if (inventory)
                 { //https://stackoverflow.com/questions/23563960/how-to-get-enum-value-by-string-or-int
                     var ChatQueue = component.targetedBody.GetDisplayName() + "'s inventory:\n";
-                    foreach (ItemIndex itemIndex in (ItemIndex[])Enum.GetValues(typeof(ItemIndex)))
+                    ItemIndex itemIndexIterate = ItemIndex.Syringe;
+                    ItemIndex itemCountIterate = (ItemIndex)ItemCatalog.itemCount;
+                    while (itemIndexIterate < itemCountIterate)
                     {
-                        var itemCount = inventory.GetItemCount(itemIndex);
+                        var itemCount = inventory.GetItemCount(itemIndexIterate);
                         if (itemCount > 0)
-                            ChatQueue += itemIndex+" x"+itemCount+"\n";
+                            ChatQueue += itemIndexIterate + " x" + itemCount + "\n";
+                        itemIndexIterate++;
                     }
 
                     Debug.Log(ChatQueue);
