@@ -141,16 +141,17 @@ namespace RiskOfBulletstorm
         private static void TargetEnemyHook(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
             var localMaster = PlayerCharacterMasterController.instances[0].master;
-            var component = HasComponent(localMaster);
-            if (component)
+            if (damageInfo.attacker.gameObject == localMaster.GetBodyObject())
             {
-                if (damageInfo.attacker.gameObject == localMaster.GetBodyObject())
+
+                var component = HasComponent(localMaster);
+                if (component)
                 {
                     damageInfo.rejected = true;
                     damageInfo.procCoefficient = -1;
                     damageInfo.crit = false;
                     component.SetBody(self.body);
-                    Chat.AddMessage("Body assigned to "+ self.body.GetDisplayName());
+                    Chat.AddMessage("Body assigned to " + self.body.GetDisplayName());
                 }
             }
             orig(self, damageInfo);
@@ -178,8 +179,7 @@ namespace RiskOfBulletstorm
 
         [ConCommand(commandName = "ROB_target_inventory", flags = ConVarFlags.ExecuteOnServer, helpText = "Prints their inventory.")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Console Command")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
-        private static void TargetCheckItems(ConCommandArgs args)
+        private static void TargetCheckItems()
         {
             var localMaster = PlayerCharacterMasterController.instances[0].master;
             var component = HasComponent(localMaster);
@@ -204,6 +204,45 @@ namespace RiskOfBulletstorm
             }
         }
 
+        [ConCommand(commandName = "ROB_target_kill", flags = ConVarFlags.ExecuteOnServer, helpText = "Calls the targets healthcomponent to suicide")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Console Command")]
+        private static void TargetSuicide()
+        {
+            var localMaster = PlayerCharacterMasterController.instances[0].master;
+            var component = HasComponent(localMaster);
+            if (component && component.HasBody())
+            {
+                var healthComponent = component.targetedBody.healthComponent;
+                if (healthComponent)
+                {
+                    healthComponent.Suicide();
+                    Debug.Log("Suicided target");
+                }
+            }
+        }
+
+        [ConCommand(commandName = "ROB_target_takedamage", flags = ConVarFlags.ExecuteOnServer, helpText = "[damage] [isCrit] [rejected] [damageType]")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Console Command")]
+        private static void TargetTakeDamage(ConCommandArgs args)
+        {
+            var localMaster = PlayerCharacterMasterController.instances[0].master;
+            var component = HasComponent(localMaster);
+            if (component && component.HasBody())
+            {
+                var healthComponent = component.targetedBody.healthComponent;
+                if (healthComponent)
+                {
+
+                    healthComponent.TakeDamage(new DamageInfo
+                    {
+                        damage = args.GetArgInt(0),
+                        crit = args.GetArgBool(1),
+                        rejected = args.GetArgBool(2),
+                        damageType = (DamageType)args.GetArgInt(3)
+                    });
+                }
+            }
+        }
 
         public class ROBConsoleCommand : MonoBehaviour
         {
