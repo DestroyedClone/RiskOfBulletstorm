@@ -126,12 +126,12 @@ namespace RiskOfBulletstorm
                 var state = component.GetState();
                 if (state != 1)
                 {
-                    state = 1;
+                    component.SetState(1);
                     Debug.Log("Attack an enemy to target them. Run the command again to cancel.");
                     On.RoR2.HealthComponent.TakeDamage += TargetEnemyHook;
                     return;
                 }
-                state = 0;
+                component.SetState(0);
                 On.RoR2.HealthComponent.TakeDamage -= TargetEnemyHook;
                 Debug.Log("No longer targeting.");
                 return;

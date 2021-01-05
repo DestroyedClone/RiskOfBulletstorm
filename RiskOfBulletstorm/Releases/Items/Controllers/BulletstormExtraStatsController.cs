@@ -530,9 +530,9 @@ namespace RiskOfBulletstorm.Items
                                     //Chat.AddMessage("Scope Lerp: " + aimDir + " and " + rotation + " resulting " + UpdatedAngle);
                                 } else
                                 {
-                                    ResultMult = Mathf.Abs(ResultMult);
-                                    var lessThan = 360 - 360 * ResultMult;
-                                    var moreThan = 360 + 360 * ResultMult;
+                                    var absResultMult = Mathf.Abs(ResultMult);
+                                    var lessThan = 360 - 360 * absResultMult;
+                                    var moreThan = 360 + 360 * absResultMult;
                                     float rand1 = Random.Range(rotation.x * lessThan, rotation.x * moreThan);
                                     float rand2 = Random.Range(rotation.y * lessThan, rotation.y * moreThan);
                                     float rand3 = Random.Range(rotation.z * lessThan, rotation.z * moreThan);
