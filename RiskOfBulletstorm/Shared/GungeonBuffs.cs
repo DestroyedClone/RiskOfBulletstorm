@@ -643,15 +643,18 @@ namespace RiskOfBulletstorm.Items
                 //if (characterBody.GetBuffCount(Charm) <= 0)
                 //characterBody.AddTimedBuff(Charm, duration);
 
-                // If the current target is was an enemy of the previous team
-                var currentEnemy = baseAI.currentEnemy.owner;
-                if (currentEnemy) //???
+                // If the current target was an enemy of the previous team
+                if (baseAI.currentEnemy != null)
                 {
-                    var currentEnemyCharacterBody = baseAI.currentEnemy.characterBody;
-                    _logger.LogDebug("GungeonBuffs Charm: OnEnable, last target was " + currentEnemyCharacterBody.name);
-                    if (currentEnemyCharacterBody && currentEnemyCharacterBody.teamComponent && currentEnemyCharacterBody.teamComponent.teamIndex == GetOppositeTeamIndex(oldTeamIndex))
+                    var currentEnemy = baseAI.currentEnemy.owner;
+                    if (currentEnemy)
                     {
-                        ResetTarget();
+                        var currentEnemyCharacterBody = baseAI.currentEnemy.characterBody;
+                        _logger.LogDebug("GungeonBuffs Charm: OnEnable, last target was " + currentEnemyCharacterBody.name);
+                        if (currentEnemyCharacterBody && currentEnemyCharacterBody.teamComponent && currentEnemyCharacterBody.teamComponent.teamIndex == GetOppositeTeamIndex(oldTeamIndex))
+                        {
+                            ResetTarget();
+                        }
                     }
                 }
             }

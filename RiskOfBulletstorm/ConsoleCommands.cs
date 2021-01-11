@@ -77,6 +77,19 @@ namespace RiskOfBulletstorm
             }
         }
 
+        [ConCommand(commandName = "ROB_set_equipment_slot_safe", flags = ConVarFlags.ExecuteOnServer, helpText = "Sets equipment slot to specified index.")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Console Command")]
+        private static void GivePingItemSafe(ConCommandArgs args)
+        {
+            var localMaster = PlayerCharacterMasterController.instances[0].master;
+            var inventory = localMaster.inventory;
+            var component = localMaster.GetComponent<Items.Backpack.BackpackComponent>();
+            if (inventory && component)
+            {
+                var value = (byte)args.GetArgInt(0);
+                inventory.SetActiveEquipmentSlot(Math.Max(component.maxAvailableSlot, value));
+            }
+        }
 
         [ConCommand(commandName = "ROB_target_enable", flags = ConVarFlags.ExecuteOnServer, helpText = "Allow yourself to use the target commands")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
