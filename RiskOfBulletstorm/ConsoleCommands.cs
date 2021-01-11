@@ -89,7 +89,7 @@ namespace RiskOfBulletstorm
             if (inventory && component)
             {
                 var value = (byte)args.GetArgInt(0);
-                inventory.SetActiveEquipmentSlot(Math.Max(component.maxAvailableSlot, value));
+                inventory.SetActiveEquipmentSlot(Math.Min(component.maxAvailableSlot, value));
             }
         }
 
