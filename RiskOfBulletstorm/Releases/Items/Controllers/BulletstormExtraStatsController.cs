@@ -514,7 +514,8 @@ namespace RiskOfBulletstorm.Items
                         {
                             float ResultMult = CalculateSpreadMultiplier(inventory, true);
                             GameObject projectilePrefab = fireProjectileInfo.projectilePrefab;
-                            Quaternion aimDir = Util.QuaternionSafeLookRotation(input.aimDirection);
+                            var aimDirection = input.aimDirection;
+                            Quaternion aimDirectionQuaternion = Util.QuaternionSafeLookRotation(aimDirection);
                             Quaternion rotation = fireProjectileInfo.rotation;
 
                             //_logger.LogMessage("Projectile Fired: "+ fireProjectileInfo.projectilePrefab.name);
@@ -524,21 +525,30 @@ namespace RiskOfBulletstorm.Items
                             {
                                 if (ResultMult >= 0)
                                 {
-                                    Quaternion UpdatedAngle = Quaternion.Lerp(rotation, aimDir, ResultMult);
+                                    Quaternion UpdatedAngle = Quaternion.Lerp(rotation, aimDirectionQuaternion, ResultMult);
                                     fireProjectileInfo.rotation = UpdatedAngle;
                                     //Debug.Log("Projectile Fired: " + projectilePrefab.name + " at angle "+ fireProjectileInfo.rotation+" => "+ UpdatedAngle) ;
                                     //Chat.AddMessage("Scope Lerp: " + aimDir + " and " + rotation + " resulting " + UpdatedAngle);
                                 } else
                                 {
+                                    // We'll take the absolute value since we're now calling for inaccuracy
                                     var absResultMult = Mathf.Abs(ResultMult);
-                                    var lessThan = 360 - 360 * absResultMult;
-                                    var moreThan = 360 + 360 * absResultMult;
-                                    float rand1 = Random.Range(rotation.x * lessThan, rotation.x * moreThan);
-                                    float rand2 = Random.Range(rotation.y * lessThan, rotation.y * moreThan);
-                                    float rand3 = Random.Range(rotation.z * lessThan, rotation.z * moreThan);
-                                    //var rand4 = UnityEngine.Random.Range(deviation4, -deviation4);
-                                    var tempdev = Util.QuaternionSafeLookRotation(new Vector3(rand1, rand2, rand3));
-                                    //var tempdev = new Vector3(rand1, rand2, rand3);
+
+                                    // Get the new range //
+                                    // We'll use the player's aimray as the center point //
+                                    // Next, we'll set our constant
+                                    const float range = 90f;
+                                    // we'll use this value to encompass the whole area in front of the player.
+                                    float rand1 = Random.Range(rotation.x - range, rotation.x + range);
+                                    float rand2 = Random.Range(rotation.y - range, rotation.y + range);
+                                    float rand3 = Random.Range(rotation.z - range, rotation.z + range);
+                                    // this range now encompasses their full view.
+                                    // Next we'll turn our values into quaternions
+                                    var newAngle = Util.QuaternionSafeLookRotation(new Vector3(rand1, rand2, rand3));
+
+                                    // Using this new angle, we'll lerp from our projectile towards the new angle
+                                    var UpdatedAngle = Quaternion.Lerp(rotation, newAngle, absResultMult);
+
                                     //RiskofBulletstorm._logger.LogInfo(printDifference(fireProjectileInfo.rotation.x);
 
                                     //Debug.Log("Scope: " + fireProjectileInfo.rotation + " => " + tempdev.x + " " + tempdev.y + " " + tempdev.z + " " + tempdev.w);
@@ -546,7 +556,8 @@ namespace RiskOfBulletstorm.Items
                                     //int directionModifier = Util.CheckRoll(50) ? 1 : -1;
 
                                     //fireProjectileInfo.rotation = Quaternion.Euler(tempdev);
-                                    fireProjectileInfo.rotation *= tempdev;
+                                    //fireProjectileInfo.rotation *= tempdev;
+                                    fireProjectileInfo.rotation = UpdatedAngle;
                                 }
                             }
                         }

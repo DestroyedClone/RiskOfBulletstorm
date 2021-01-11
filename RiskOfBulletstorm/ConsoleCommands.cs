@@ -221,6 +221,7 @@ namespace RiskOfBulletstorm
 
         [ConCommand(commandName = "ROB_target_inventory", flags = ConVarFlags.ExecuteOnServer, helpText = "Prints their inventory.")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Console Command")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
         private static void TargetCheckItems(ConCommandArgs args)
         {
             var localMaster = PlayerCharacterMasterController.instances[0].master;
@@ -248,6 +249,7 @@ namespace RiskOfBulletstorm
 
         [ConCommand(commandName = "ROB_target_kill", flags = ConVarFlags.ExecuteOnServer, helpText = "Calls the targets healthcomponent to suicide")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Console Command")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
         private static void TargetSuicide(ConCommandArgs args)
         {
             var localMaster = PlayerCharacterMasterController.instances[0].master;
