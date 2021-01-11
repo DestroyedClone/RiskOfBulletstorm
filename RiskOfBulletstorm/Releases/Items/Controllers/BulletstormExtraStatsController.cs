@@ -537,11 +537,12 @@ namespace RiskOfBulletstorm.Items
                                     // Get the new range //
                                     // We'll use the player's aimray as the center point //
                                     // Next, we'll set our constant
-                                    const float range = 90f;
+                                    // I'll set it to 80 instead of 90 so that the range isn't extreme in worst cases
+                                    const float range = 80f;
                                     // we'll use this value to encompass the whole area in front of the player.
-                                    float rand1 = Random.Range(rotation.x - range, rotation.x + range);
-                                    float rand2 = Random.Range(rotation.y - range, rotation.y + range);
-                                    float rand3 = Random.Range(rotation.z - range, rotation.z + range);
+                                    float rand1 = Random.Range(aimDirection.x - range, aimDirection.x + range);
+                                    float rand2 = Random.Range(aimDirection.y - range, aimDirection.y + range);
+                                    float rand3 = Random.Range(aimDirection.z - range, aimDirection.z + range);
                                     // this range now encompasses their full view.
                                     // Next we'll turn our values into quaternions
                                     var newAngle = Util.QuaternionSafeLookRotation(new Vector3(rand1, rand2, rand3));
@@ -549,13 +550,6 @@ namespace RiskOfBulletstorm.Items
                                     // Using this new angle, we'll lerp from our projectile towards the new angle
                                     var UpdatedAngle = Quaternion.Lerp(rotation, newAngle, absResultMult);
 
-                                    //RiskofBulletstorm._logger.LogInfo(printDifference(fireProjectileInfo.rotation.x);
-
-                                    //Debug.Log("Scope: " + fireProjectileInfo.rotation + " => " + tempdev.x + " " + tempdev.y + " " + tempdev.z + " " + tempdev.w);
-
-                                    //int directionModifier = Util.CheckRoll(50) ? 1 : -1;
-
-                                    //fireProjectileInfo.rotation = Quaternion.Euler(tempdev);
                                     //fireProjectileInfo.rotation *= tempdev;
                                     fireProjectileInfo.rotation = UpdatedAngle;
                                 }

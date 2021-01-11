@@ -11,16 +11,18 @@ namespace RiskOfBulletstorm
 {
     public static class ConsoleCommands
     {
-        [ConCommand(commandName = "ROB_set_equipment_slot", flags = ConVarFlags.ExecuteOnServer, helpText = "Sets equipment slot to specified index.")]
+        [ConCommand(commandName = "ROB_godark", flags = ConVarFlags.ExecuteOnServer, helpText = "Sets equipment slot to specified index.")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Console Command")]
-        private static void SetEquipmentSlot(ConCommandArgs args)
+        private static void GoDark(ConCommandArgs args)
         {
             var localMaster = PlayerCharacterMasterController.instances[0].master;
-            var inventory = localMaster.inventory;
-            if (inventory)
+            var cb = localMaster.bodyInstanceObject.GetComponent<CharacterBody>();
+            if (cb)
             {
-                var value = (byte)args.GetArgInt(0);
-                inventory.SetActiveEquipmentSlot(value);
+                if (cb.HasBuff(BuffIndex.Cloak))
+                    cb.RemoveBuff(BuffIndex.Cloak);
+                else
+                    cb.AddBuff(BuffIndex.Cloak);
             }
         }
 

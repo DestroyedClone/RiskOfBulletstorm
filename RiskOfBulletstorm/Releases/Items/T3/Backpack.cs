@@ -123,7 +123,7 @@ namespace RiskOfBulletstorm.Items
             {
 
             };
-            private readonly float dropCooldown = 2f;
+            private readonly float dropCooldown = 1f;
             private float stopwatch = 9999f;
 
 
@@ -134,10 +134,9 @@ namespace RiskOfBulletstorm.Items
                 {
                     _logger.LogMessage("Queue is empty, filling queue");
                     // Fills the drop queue for the first time
-                    for (int i = 0; i < 10; i++)
+                    for (int i = 0; i < 255; i++)
                     {
                         equipmentDropQueue.Add(EquipmentIndex.None);
-                        _logger.LogMessage("Adding slot "+i);
                     }
                 }
                 stopwatch = dropCooldown;
@@ -247,7 +246,7 @@ namespace RiskOfBulletstorm.Items
                     //_logger.LogMessage("Able to drop item");
                     canDrop = false;
                     //_logger.LogMessage("Reset drop to false");
-                    for (byte i = 0; i <= 9; i++)
+                    for (byte i = 0; i <= equipmentDropQueue.Count-1; i++)
                     {
                         if (equipmentDropQueue[i] != EquipmentIndex.None)
                         {
