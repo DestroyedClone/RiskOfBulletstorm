@@ -177,6 +177,35 @@ namespace RiskOfBulletstorm
             }
         }
 
+        [ConCommand(commandName = "ROB_target_remove_item", flags = ConVarFlags.ExecuteOnServer, helpText = "Removes the target item(s). Syntax: [itemindex] [amount]")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Console Command")]
+        private static void TargetRemoveItem(ConCommandArgs args)
+        {
+            var localMaster = PlayerCharacterMasterController.instances[0].master;
+            var component = HasComponent(localMaster);
+            if (component && component.HasBody())
+            {
+                var inventory = component.targetedBody.inventory;
+                if (inventory)
+                { //https://stackoverflow.com/questions/23563960/how-to-get-enum-value-by-string-or-int
+                    ItemIndex itemIndex = (ItemIndex)args.GetArgInt(0);
+                    var targetItemCount = inventory.GetItemCount(itemIndex);
+
+                    int itemCount = args.GetArgInt(1);
+                    if (itemCount < 0)
+                    {
+                        inventory.RemoveItem(itemIndex, targetItemCount);
+                        Chat.AddMessage("Removed " + itemIndex + " x" + itemCount + " from " + component.targetedBody.GetDisplayName());
+                    } else
+                    {
+                        var amountToRemove = Mathf.Max(itemCount, targetItemCount);
+                        inventory.RemoveItem(itemIndex, amountToRemove);
+                        Chat.AddMessage("Removed " + itemIndex + " x" + amountToRemove + " from " + component.targetedBody.GetDisplayName());
+                    }
+                }
+            }
+        }
+
         [ConCommand(commandName = "ROB_target_inventory", flags = ConVarFlags.ExecuteOnServer, helpText = "Prints their inventory.")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Console Command")]
         private static void TargetCheckItems(ConCommandArgs args)
