@@ -512,53 +512,55 @@ namespace RiskOfBulletstorm.Items
                         InputBankTest input = cb.inputBank;
                         if (input)
                         {
-                            float ResultMult = CalculateSpreadMultiplier(inventory, true);
+                            float AccMult = CalculateSpreadMultiplier(inventory, true);
                             GameObject projectilePrefab = fireProjectileInfo.projectilePrefab;
                             var aimDirection = input.aimDirection;
                             Quaternion aimDirectionQuaternion = Util.QuaternionSafeLookRotation(aimDirection);
-                            Quaternion rotation = fireProjectileInfo.rotation;
 
                             //_logger.LogMessage("Projectile Fired: "+ fireProjectileInfo.projectilePrefab.name);
                             bool isProjectileAllowed = WhitelistedProjectiles.Contains(projectilePrefab);
 
                             if ((ShotSpread_WhitelistProjectiles && isProjectileAllowed) || !ShotSpread_WhitelistProjectiles)
                             {
-                                if (ResultMult >= 0)
+                                float BaseSpreadAngle = 90 * AccMult;
+
+                                //Note Clamp Acc at 1 for 100% acc or else it overflows
+                                float CappedAccMult = Mathf.Min(AccMult, 1);
+                                Quaternion UpdatedAngle;
+
+                                if (AccMult >= 0)
                                 {
-                                    Quaternion UpdatedAngle = Quaternion.Lerp(rotation, aimDirectionQuaternion, ResultMult);
+                                    UpdatedAngle = Quaternion.Lerp(fireProjectileInfo.rotation, aimDirectionQuaternion, CappedAccMult);
                                     fireProjectileInfo.rotation = UpdatedAngle;
-                                    //Debug.Log("Projectile Fired: " + projectilePrefab.name + " at angle "+ fireProjectileInfo.rotation+" => "+ UpdatedAngle) ;
-                                    //Chat.AddMessage("Scope Lerp: " + aimDir + " and " + rotation + " resulting " + UpdatedAngle);
                                 } else
                                 {
-                                    // We'll take the absolute value since we're now calling for inaccuracy
-                                    var absResultMult = Mathf.Abs(ResultMult);
+                                    //This is a random dir in cone. USED FOR INACCURACY
+                                    Vector3 bulletRot = GetRandomInsideCone(BaseSpreadAngle) * aimDirection;
+                                    Quaternion bulletDir = Quaternion.LookRotation(bulletRot);
 
-                                    // Get the new range //
-                                    // We'll use the player's aimray as the center point //
-                                    // Next, we'll set our constant
-                                    // I'll set it to 80 instead of 90 so that the range isn't extreme in worst cases
-                                    const float range = 80f;
-                                    // we'll use this value to encompass the whole area in front of the player.
-                                    float rand1 = Random.Range(aimDirection.x - range, aimDirection.x + range);
-                                    float rand2 = Random.Range(aimDirection.y - range, aimDirection.y + range);
-                                    float rand3 = Random.Range(aimDirection.z - range, aimDirection.z + range);
-                                    // this range now encompasses their full view.
-                                    // Next we'll turn our values into quaternions
-                                    var newAngle = Util.QuaternionSafeLookRotation(new Vector3(rand1, rand2, rand3));
-
-                                    // Using this new angle, we'll lerp from our projectile towards the new angle
-                                    var UpdatedAngle = Quaternion.Lerp(rotation, newAngle, absResultMult);
-
-                                    //fireProjectileInfo.rotation *= tempdev;
-                                    fireProjectileInfo.rotation = UpdatedAngle;
+                                    UpdatedAngle = Quaternion.LerpUnclamped(bulletDir, aimDirectionQuaternion, CappedAccMult);
+                                    fireProjectileInfo.rotation *= UpdatedAngle;
                                 }
+
+                                Debug.DrawRay(fireProjectileInfo.position, UpdatedAngle * aimDirection, Color.red, 5f);
                             }
                         }
                     }
                 }
             }
             orig(self, fireProjectileInfo);
+        }
+
+        Quaternion GetRandomInsideCone(float conicAngle)
+        {
+            // random tilt right (which is a random angle around the up axis)
+            Quaternion randomTilt = Quaternion.AngleAxis(Random.Range(0f, conicAngle), Vector3.up);
+
+            // random spin around the forward axis
+            Quaternion randomSpin = Quaternion.AngleAxis(Random.Range(0f, 360f), Vector3.forward);
+
+            // tilt then spin
+            return (randomSpin * randomTilt);
         }
 
         private void AdjustSpreadBullets(On.RoR2.BulletAttack.orig_Fire orig, BulletAttack self)
@@ -576,18 +578,21 @@ namespace RiskOfBulletstorm.Items
 
                     //Debug.Log("Bulletscope: maxspread: "+self.maxSpread+" multiplier: "+ResultMult+" result: "+ Mathf.Max(self.maxSpread * ResultMult, 0));
 
-                    if (self.radius == 0) //(maybe?)
-                        self.radius = ResultMult;
+                    //if (self.radius == 0) //(maybe?)
+                        //self.radius = ResultMult;
 
-                    self.maxSpread *= ResultMult;
+                    self.maxSpread = simpleSpread(self.maxSpread,1.15f);
 
-                    self.minSpread *= ResultMult;
+                    self.minSpread = simpleSpread(self.minSpread);
 
-                    self.spreadPitchScale *= ResultMult;
-                    self.spreadYawScale *= ResultMult;
+                    self.spreadPitchScale *= simpleSpread(self.spreadPitchScale);
+                    self.spreadYawScale *= simpleSpread(self.spreadYawScale);
 
                     //self.owner.GetComponent<CharacterBody>().SetSpreadBloom(ResultMult, false);
-
+                    float simpleSpread(float original, float multiplier = 1f)
+                    {
+                        return original == 0 ? ResultMult * multiplier : original * ResultMult;
+                    }
                 }
             }
             orig(self);

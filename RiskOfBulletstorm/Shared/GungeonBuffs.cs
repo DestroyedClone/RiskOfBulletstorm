@@ -644,9 +644,11 @@ namespace RiskOfBulletstorm.Items
                 //characterBody.AddTimedBuff(Charm, duration);
 
                 // If the current target was an enemy of the previous team
+                _logger.LogMessage("The current enemy is "+ baseAI.currentEnemy);
                 if (baseAI.currentEnemy != null)
                 {
                     var currentEnemy = baseAI.currentEnemy.owner;
+                    _logger.LogMessage("The current enemy's owner is " + currentEnemy);
                     if (currentEnemy)
                     {
                         var currentEnemyCharacterBody = baseAI.currentEnemy.characterBody;

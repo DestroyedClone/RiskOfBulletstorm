@@ -17,11 +17,11 @@ namespace RiskOfBulletstorm.Items
         protected override string GetNameString(string langID = null) => displayName;
         protected override string GetPickupString(string langID = null) => "Sidekick No More\nBoosts stats when alone.";
 
-        protected override string GetDescString(string langid = null) => $"Increases <style=cIsUtility>base movespeed by {statboost}</style>, and <style=cIsDamage>base damage by {statboost}</style> for every dead survivor.";
+        protected override string GetDescString(string langid = null) => $"Increases <style=cIsUtility>base attack speed, damage, health, movespeed, regen, armor, and crit chance by {statboost}</style> for every dead survivor.";
 
         protected override string GetLoreString(string langID = null) => "Now that the protagonist is dead, it's time to shine!";
 
-        private readonly int statboost = 6;
+        private readonly int statboost = 3;
 
         public static GameObject ItemBodyModelPrefab;
 
@@ -45,7 +45,7 @@ namespace RiskOfBulletstorm.Items
             base.SetupAttributes();
 
         }
-        private static ItemDisplayRuleDict GenerateItemDisplayRules()
+        public static ItemDisplayRuleDict GenerateItemDisplayRules()
         {
             ItemBodyModelPrefab.AddComponent<ItemDisplay>();
             ItemBodyModelPrefab.GetComponent<ItemDisplay>().rendererInfos = ItemHelpers.ItemDisplaySetup(ItemBodyModelPrefab);
@@ -276,8 +276,15 @@ namespace RiskOfBulletstorm.Items
                 if (component)
                 {
                     var deadAmt = component.deadProtagonists;
-                    args.baseDamageAdd += statboost * deadAmt;
-                    args.baseMoveSpeedAdd += statboost * deadAmt;
+                    var value = statboost * deadAmt;
+
+                    args.baseAttackSpeedAdd += value;
+                    args.baseDamageAdd += value;
+                    args.baseHealthAdd += value;
+                    args.baseMoveSpeedAdd += value;
+                    args.baseRegenAdd += value;
+                    args.armorAdd += value;
+                    args.critAdd += value;
                 }
             }
         }
