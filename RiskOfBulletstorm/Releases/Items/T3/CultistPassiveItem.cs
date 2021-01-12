@@ -17,11 +17,12 @@ namespace RiskOfBulletstorm.Items
         protected override string GetNameString(string langID = null) => displayName;
         protected override string GetPickupString(string langID = null) => "Sidekick No More\nBoosts stats when alone.";
 
-        protected override string GetDescString(string langid = null) => $"Increases <style=cIsUtility>base attack speed, damage, health, movespeed, regen, armor, and crit chance by {statboost}</style> for every dead survivor.";
+        protected override string GetDescString(string langid = null) => $"Increases <style=cIsUtility>base attack speed, damage, health, movespeed, regen, armor, and crit chance by {statboost}</style>" +
+            $"<style=cStack>+{statboost} per stack </style> for every dead survivor.";
 
         protected override string GetLoreString(string langID = null) => "Now that the protagonist is dead, it's time to shine!";
 
-        private readonly int statboost = 3;
+        private readonly int statboost = 1;
 
         public static GameObject ItemBodyModelPrefab;
 
@@ -276,7 +277,7 @@ namespace RiskOfBulletstorm.Items
                 if (component)
                 {
                     var deadAmt = component.deadProtagonists;
-                    var value = statboost * deadAmt;
+                    var value = statboost * deadAmt * InventoryCount;
 
                     args.baseAttackSpeedAdd += value;
                     args.baseDamageAdd += value;
