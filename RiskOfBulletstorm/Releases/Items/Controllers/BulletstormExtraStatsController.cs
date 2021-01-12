@@ -531,7 +531,6 @@ namespace RiskOfBulletstorm.Items
                                 if (AccMult >= 0)
                                 {
                                     UpdatedAngle = Quaternion.Lerp(fireProjectileInfo.rotation, aimDirectionQuaternion, CappedAccMult);
-                                    fireProjectileInfo.rotation = UpdatedAngle;
                                 } else
                                 {
                                     //This is a random dir in cone. USED FOR INACCURACY
@@ -539,10 +538,10 @@ namespace RiskOfBulletstorm.Items
                                     Quaternion bulletDir = Quaternion.LookRotation(bulletRot);
 
                                     UpdatedAngle = Quaternion.LerpUnclamped(bulletDir, aimDirectionQuaternion, CappedAccMult);
-                                    fireProjectileInfo.rotation *= UpdatedAngle;
                                 }
-
-                                Debug.DrawRay(fireProjectileInfo.position, UpdatedAngle * aimDirection, Color.red, 5f);
+                                fireProjectileInfo.rotation = UpdatedAngle;
+                                //UpdatedAngle = Quaternion.LerpUnclamped(fireProjectileInfo.rotation, aimDirectionQuaternion, CappedAccMult);
+                                //fireProjectileInfo.rotation = UpdatedAngle;
                             }
                         }
                     }

@@ -140,6 +140,8 @@ namespace RiskOfBulletstorm.Items
                     }
                 }
                 stopwatch = dropCooldown;
+
+
             }
 
             public void UpdateDefault()
@@ -278,7 +280,15 @@ namespace RiskOfBulletstorm.Items
             {
                 // I'm doing this instead of dropping it right away
                 // because otherwise it'll drop equipments twice
+
+                if (inventory.equipmentStateSlots.Length < equipmentSlot)
+                {
+                    _logger.LogWarning("RiskOfBulletstorm: Backpack was told to drop slot "+equipmentSlot+" but it is out of bounds of "+ inventory.equipmentStateSlots.Length);
+                    return;
+                }
                 var equipment = inventory.equipmentStateSlots[equipmentSlot];
+
+
                 var index = equipment.equipmentIndex;
 
                 var oldValueDEBUG = equipmentDropQueue[equipmentSlot];
@@ -289,23 +299,30 @@ namespace RiskOfBulletstorm.Items
                     equipmentDropQueue[equipmentSlot] = index; //required cast?
                     _logger.LogMessage("QueueDrop: Slot "+equipmentSlot+" changed from "+ oldValueDEBUG+" to "+ index);
 
-                    EquipmentState equipmentborrowed = inventory.GetEquipment(equipmentSlot);
-                    byte charges = equipmentborrowed.charges;
-                    Run.FixedTimeStamp chargeFinishTime = equipmentborrowed.chargeFinishTime;
-                    if (equipmentborrowed.equipmentIndex == EquipmentIndex.None && chargeFinishTime.isNegativeInfinity)
-                    {
-                        charges = 1;
-                        chargeFinishTime = Run.FixedTimeStamp.now;
-                    }
-                    EquipmentState equipmentState = new EquipmentState(EquipmentIndex.None, chargeFinishTime, charges);
-                    inventory.SetEquipment(equipmentState, equipmentSlot);
-
+                    SetEquipmentIndexUnsafe(inventory, EquipmentIndex.None, equipmentSlot);
 
                     //inventory.equipmentStateSlots[equipmentSlot].equipmentIndex = EquipmentIndex.None;
                     _logger.LogMessage("QueueDrop: Equipmentslot changed to "+ inventory.equipmentStateSlots[equipmentSlot].equipmentIndex);
                     stopwatch = dropCooldown;
                     canDrop = false;
                 }
+            }
+
+            [Server]
+            public void SetEquipmentIndexUnsafe(Inventory inventory, EquipmentIndex newEquipmentIndex, byte equipmentSlot)
+            {
+                if (!NetworkServer.active) return;
+
+                EquipmentState equipment = inventory.GetEquipment(equipmentSlot);
+                byte charges = equipment.charges;
+                Run.FixedTimeStamp chargeFinishTime = equipment.chargeFinishTime;
+                if (equipment.equipmentIndex == EquipmentIndex.None && chargeFinishTime.isNegativeInfinity)
+                {
+                    charges = 1;
+                    chargeFinishTime = Run.FixedTimeStamp.now;
+                }
+                EquipmentState equipmentState = new EquipmentState(newEquipmentIndex, chargeFinishTime, charges);
+                inventory.SetEquipment(equipmentState, equipmentSlot);
             }
 
             private void DropSlot(byte equipmentSlot)

@@ -288,6 +288,7 @@ namespace RiskOfBulletstorm.Items
                     isCharmed.teamComponent = self.teamComponent;
                     isCharmed.baseAI = baseAI;
                     isCharmed.oldTeamIndex = self.teamComponent.teamIndex;
+                    isCharmed.enabled = false;
                 }
             }
         }
@@ -644,19 +645,13 @@ namespace RiskOfBulletstorm.Items
                 //characterBody.AddTimedBuff(Charm, duration);
 
                 // If the current target was an enemy of the previous team
-                _logger.LogMessage("The current enemy is "+ baseAI.currentEnemy);
                 if (baseAI.currentEnemy != null)
                 {
-                    var currentEnemy = baseAI.currentEnemy.owner;
-                    _logger.LogMessage("The current enemy's owner is " + currentEnemy);
-                    if (currentEnemy)
+                    var currentEnemyCharacterBody = baseAI.currentEnemy.characterBody;
+                    _logger.LogDebug("GungeonBuffs Charm: OnEnable, last target was " + currentEnemyCharacterBody.name);
+                    if (currentEnemyCharacterBody && currentEnemyCharacterBody.teamComponent && currentEnemyCharacterBody.teamComponent.teamIndex == GetOppositeTeamIndex(oldTeamIndex))
                     {
-                        var currentEnemyCharacterBody = baseAI.currentEnemy.characterBody;
-                        _logger.LogDebug("GungeonBuffs Charm: OnEnable, last target was " + currentEnemyCharacterBody.name);
-                        if (currentEnemyCharacterBody && currentEnemyCharacterBody.teamComponent && currentEnemyCharacterBody.teamComponent.teamIndex == GetOppositeTeamIndex(oldTeamIndex))
-                        {
-                            ResetTarget();
-                        }
+                        ResetTarget();
                     }
                 }
             }
