@@ -522,7 +522,7 @@ namespace RiskOfBulletstorm.Items
 
                             if ((ShotSpread_WhitelistProjectiles && isProjectileAllowed) || !ShotSpread_WhitelistProjectiles)
                             {
-                                float BaseSpreadAngle = 90 * AccMult;
+                                float BaseSpreadAngle = 15;
 
                                 //Note Clamp Acc at 1 for 100% acc or else it overflows
                                 float CappedAccMult = Mathf.Min(AccMult, 1);
@@ -537,7 +537,7 @@ namespace RiskOfBulletstorm.Items
                                     Vector3 bulletRot = GetRandomInsideCone(BaseSpreadAngle) * aimDirection;
                                     Quaternion bulletDir = Quaternion.LookRotation(bulletRot);
 
-                                    UpdatedAngle = Quaternion.LerpUnclamped(bulletDir, aimDirectionQuaternion, CappedAccMult);
+                                    UpdatedAngle = Quaternion.SlerpUnclamped(bulletDir, aimDirectionQuaternion, CappedAccMult);
                                 }
                                 fireProjectileInfo.rotation = UpdatedAngle;
                                 //UpdatedAngle = Quaternion.LerpUnclamped(fireProjectileInfo.rotation, aimDirectionQuaternion, CappedAccMult);

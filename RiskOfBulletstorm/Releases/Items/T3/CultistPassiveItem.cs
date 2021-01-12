@@ -10,6 +10,13 @@ namespace RiskOfBulletstorm.Items
 {
     public class CultistPassiveItem : Item_V2<CultistPassiveItem>
     {
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("SINGLEPLAYER: Amount to increase stats by.", AutoConfigFlags.PreventNetMismatch)]
+        public static float CPI_singleplayer { get; private set; } = 0.5f;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("MULTIPLAYER: Amount to increase stats by.", AutoConfigFlags.PreventNetMismatch)]
+        public static float CPI_multiplayer { get; private set; } = 1f;
+
         public override string displayName => "Number 2";
         public override ItemTier itemTier => ItemTier.Tier3;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage, ItemTag.Utility, ItemTag.AIBlacklist });
@@ -17,12 +24,11 @@ namespace RiskOfBulletstorm.Items
         protected override string GetNameString(string langID = null) => displayName;
         protected override string GetPickupString(string langID = null) => "Sidekick No More\nBoosts stats when alone.";
 
-        protected override string GetDescString(string langid = null) => $"Increases <style=cIsUtility>base attack speed, damage, health, movespeed, regen, armor, and crit chance by {statboost}</style>" +
-            $"<style=cStack>+{statboost} per stack </style> for every dead survivor.";
+        protected override string GetDescString(string langid = null) => $"Increases <style=cIsUtility>base attack speed, damage, health, movespeed, regen, armor, and crit chance by an amount</style>" +
+            $"<style=cStack>+same per stack </style> for every dead survivor." +
+            $"\nSINGLEPLAYER: {CPI_singleplayer} | MULTIPLAYER: {CPI_multiplayer}";
 
         protected override string GetLoreString(string langID = null) => "Now that the protagonist is dead, it's time to shine!";
-
-        private readonly int statboost = 1;
 
         public static GameObject ItemBodyModelPrefab;
 
@@ -277,15 +283,19 @@ namespace RiskOfBulletstorm.Items
                 if (component)
                 {
                     var deadAmt = component.deadProtagonists;
-                    var value = statboost * deadAmt * InventoryCount;
 
-                    args.baseAttackSpeedAdd += value;
-                    args.baseDamageAdd += value;
-                    args.baseHealthAdd += value;
-                    args.baseMoveSpeedAdd += value;
-                    args.baseRegenAdd += value;
-                    args.armorAdd += value;
-                    args.critAdd += value;
+                    float addAmount = CPI_singleplayer;
+                    if (component.isMultiplayer) addAmount = CPI_multiplayer;
+                    
+                    addAmount *= deadAmt * InventoryCount;
+
+                    args.baseAttackSpeedAdd += addAmount;
+                    args.baseDamageAdd += addAmount;
+                    args.baseHealthAdd += addAmount;
+                    args.baseMoveSpeedAdd += addAmount;
+                    args.baseRegenAdd += addAmount;
+                    args.armorAdd += addAmount;
+                    args.critAdd += addAmount;
                 }
             }
         }
@@ -302,12 +312,13 @@ namespace RiskOfBulletstorm.Items
             UpdateComponentForEveryone();
         }
 
-        private int GetDeadAmount()
+        private int[] GetDeadAmount()
         {
             int deadAmt = 0;
             var list = PlayerCharacterMasterController.instances;
+            // return: dead Amount; 0 = singleplayer, 1 = multiplayer
             if (list.Count == 1)
-                return 1;
+                return new int[] { 1, 0 };
             foreach (var player in list)
             {
                 if (player.master.IsDeadAndOutOfLivesServer())
@@ -315,12 +326,14 @@ namespace RiskOfBulletstorm.Items
                     deadAmt++;
                 }
             }
-            return deadAmt;
+            return new int[] { deadAmt, 1 };
         }
 
         private void UpdateComponentForEveryone()
         {
-            int AmountDead = GetDeadAmount();
+            var result = GetDeadAmount();
+            int AmountDead = result[0];
+            bool isMultiplayer = result[1] == 1;
             var list = PlayerCharacterMasterController.instances;
             foreach (var player in list)
             {
@@ -328,7 +341,11 @@ namespace RiskOfBulletstorm.Items
                 if (body)
                 {
                     var passiveComponent = body.GetComponent<CultistPassiveComponent>();
-                    if (passiveComponent) passiveComponent.deadProtagonists = AmountDead;
+                    if (passiveComponent)
+                    {
+                        passiveComponent.deadProtagonists = AmountDead;
+                        passiveComponent.isMultiplayer = isMultiplayer;
+                    }
                 }
             }
             
@@ -337,6 +354,7 @@ namespace RiskOfBulletstorm.Items
         public class CultistPassiveComponent : MonoBehaviour
         {
             public int deadProtagonists = 0;
+            public bool isMultiplayer = false;
         }
     }
 }
