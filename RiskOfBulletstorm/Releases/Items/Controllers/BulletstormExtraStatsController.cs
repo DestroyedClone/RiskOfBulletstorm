@@ -534,9 +534,8 @@ namespace RiskOfBulletstorm.Items
                                 } else
                                 {
                                     //This is a random dir in cone. USED FOR INACCURACY
-                                    Vector3 bulletRot = GetRandomInsideCone(BaseSpreadAngle) * aimDirection;
-                                    Quaternion bulletDir = Quaternion.LookRotation(bulletRot);
-
+                                    Quaternion bulletDir = GetRandomInsideCone(BaseSpreadAngle);
+                                    _logger.LogMessage(bulletDir);
                                     UpdatedAngle = Quaternion.SlerpUnclamped(bulletDir, aimDirectionQuaternion, CappedAccMult);
                                 }
                                 fireProjectileInfo.rotation = UpdatedAngle;

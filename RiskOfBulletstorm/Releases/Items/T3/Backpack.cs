@@ -34,12 +34,13 @@ namespace RiskOfBulletstorm.Items
         public override string displayName => "Backpack";
         public override ItemTier itemTier => ItemTier.Tier3;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility, ItemTag.EquipmentRelated, ItemTag.AIBlacklist });
-
         protected override string GetNameString(string langID = null) => displayName;
         protected override string GetPickupString(string langID = null) => "Item Capacity Up!\nThe Backpack grants you the use of another Active Item. Useful, but cumbersome.";
 
         //protected override string GetDescString(string langid = null) => $"Grants one extra equipment slot." +
             //$"\nUse your modifier key+number keys or your cycle keys to switch slots.";
+
+        private GameObject commandCubePrefab = Resources.Load<GameObject>("Prefabs/NetworkedObjects/CommandCube");
 
         protected override string GetLoreString(string langID = null) => "";
         public static KeyCode ModifierKey_KB = KeyCode.None;
@@ -86,12 +87,41 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             On.RoR2.CharacterBody.Start += CharacterBody_Start;
+            PickupDropletController.onDropletHitGroundServer += PreventDropletIfMULTIsSoleCharacter;
+        }
+
+        private bool isThereARobotInThisSinglePlayerGame()
+        {
+            var list = PlayerCharacterMasterController.instances;
+            if (list.Count != 1) return false;
+
+            if (list[0].body.baseNameToken.ToUpper().Contains("TOOLBOT"))
+                return true;
+            return false;
+        }
+
+        private void PreventDropletIfMULTIsSoleCharacter(ref GenericPickupController.CreatePickupInfo createPickupInfo, ref bool shouldSpawn)
+        {
+            //IT JUST BREAKS IDK WHY
+            if (!isThereARobotInThisSinglePlayerGame()) return;
+            PickupIndex pickupIndex = createPickupInfo.pickupIndex;
+            PickupDef pickupDef = PickupCatalog.GetPickupDef(pickupIndex);
+            if (pickupDef == null || pickupDef.itemIndex != catalogIndex)
+            {
+                return;
+            }
+            GameObject gameObject = UnityEngine.Object.Instantiate(commandCubePrefab, createPickupInfo.position, createPickupInfo.rotation);
+            gameObject.GetComponent<PickupIndexNetworker>().NetworkpickupIndex = pickupIndex;
+            gameObject.GetComponent<PickupPickerController>().SetOptionsFromPickupForCommandArtifact(pickupIndex);
+            NetworkServer.Spawn(gameObject);
+            shouldSpawn = false;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
             On.RoR2.CharacterBody.Start -= CharacterBody_Start;
+            PickupDropletController.onDropletHitGroundServer -= PreventDropletIfMULTIsSoleCharacter;
         }
         private void CharacterBody_Start(On.RoR2.CharacterBody.orig_Start orig, CharacterBody self)
         {
@@ -105,7 +135,6 @@ namespace RiskOfBulletstorm.Items
                 backpackComponent.localUser = LocalUserManager.readOnlyLocalUsersList[0];
                 backpackComponent.inventory = self.inventory;
                 //backpackComponent.UpdateDefault();
-                backpackComponent.Subscribe();
             }
         }
 
@@ -117,41 +146,29 @@ namespace RiskOfBulletstorm.Items
             public Inventory inventory;
             public byte maxAvailableSlot = 0;
             bool canDrop = false;
-            //private bool isToolbot = false;
+            private bool isToolbot = false;
             //private byte defaultMax = 0;
-            public List<EquipmentIndex> equipmentDropQueue = new List<EquipmentIndex>()
-            {
-
-            };
+            public List<EquipmentIndex> equipmentDropQueue = new List<EquipmentIndex>();
             private readonly float dropCooldown = 1f;
             private float stopwatch = 9999f;
 
 
             public void Start()
             {
-                _logger.LogMessage("Entered Start of Backpack Component");
-                if (equipmentDropQueue.Count <= 0)
-                {
-                    _logger.LogMessage("Queue is empty, filling queue");
-                    // Fills the drop queue for the first time
-                    for (int i = 0; i < 255; i++)
-                    {
-                        equipmentDropQueue.Add(EquipmentIndex.None);
-                    }
-                }
                 stopwatch = dropCooldown;
+                characterBody.onInventoryChanged += CharacterBody_onInventoryChanged;
+                //defaultMax = (byte)(characterBody.baseNameToken.ToUpper().Contains("TOOLBOT") ? 1 : 0);
+
+                //if (isToolbot)
 
 
+                isToolbot = characterBody.baseNameToken.ToUpper().Contains("TOOLBOT");
             }
 
-            public void UpdateDefault()
+            public void OnDisable()
             {
-                //defaultMax = (byte)(characterBody.baseNameToken.ToUpper().Contains("TOOLBOT") ? 1 : 0);
-            } //for MULT
-
-            public void Subscribe()
-            {
-                characterBody.onInventoryChanged += CharacterBody_onInventoryChanged;
+                if (characterBody)
+                    characterBody.onInventoryChanged -= CharacterBody_onInventoryChanged;
             }
 
             private void CharacterBody_onInventoryChanged()
@@ -161,12 +178,15 @@ namespace RiskOfBulletstorm.Items
                 if (maxAvailableSlot > invcount)
                 {
                     var difference = maxAvailableSlot - invcount;
-                    Chat.AddMessage("Backpack: Difference was "+ difference);
+                    Chat.AddMessage("Backpack: Difference was " + difference);
                     for (int i = 1; i <= difference; i++)
                     {
-                        var slot = (byte)(invcount+i);
-                        Chat.AddMessage("Backpack: Queueing Slot " + slot);
-                        QueueDrop(slot);
+                        var slot = (byte)(invcount + i);
+                        if (inventory.equipmentStateSlots.Length > i)
+                        {
+                            Chat.AddMessage("Backpack: Queueing Slot " + slot);
+                            QueueDrop(slot);
+                        }
                     }
 
                     // Check here so if they're under it doesn't force them, only if they're above
@@ -177,12 +197,6 @@ namespace RiskOfBulletstorm.Items
                 {
                     maxAvailableSlot = invcount;
                 }
-            }
-
-            public void OnDisable()
-            {
-                if (characterBody)
-                    characterBody.onInventoryChanged -= CharacterBody_onInventoryChanged;
             }
 
             public void Update()
@@ -196,7 +210,7 @@ namespace RiskOfBulletstorm.Items
                         {
                             for (byte i = 0; i < 10; i++)
                             {
-                                if(Input.GetKeyDown(KeyCode.Alpha1 + i)){ SetEquipmentSlot(i); break; }
+                                if (Input.GetKeyDown(KeyCode.Alpha1 + i)) { SetEquipmentSlot(i); break; }
                             };
 
                             if (Input.GetKeyDown(KeyCode.Equals))
@@ -245,17 +259,16 @@ namespace RiskOfBulletstorm.Items
                 stopwatch -= Time.deltaTime;
                 if (canDrop)
                 {
-                    //_logger.LogMessage("Able to drop item");
                     canDrop = false;
-                    //_logger.LogMessage("Reset drop to false");
-                    for (byte i = 0; i <= equipmentDropQueue.Count-1; i++)
+                    for (byte i = 0; i <= equipmentDropQueue.Count - 1; i++)
                     {
                         if (equipmentDropQueue[i] != EquipmentIndex.None)
                         {
-                            _logger.LogMessage("Slot"+i+" selected for drop");
-                            DropSlot(i);
+                            _logger.LogMessage("Slot" + i + " selected for drop");
+                            CreateDropletFromEquipmentSlot(i);
                         }
                     }
+                    equipmentDropQueue.Clear();
                 }
                 if (stopwatch < 0)
                 {
@@ -266,8 +279,6 @@ namespace RiskOfBulletstorm.Items
 
             private void SetEquipmentSlot(byte i)
             {
-                //var equipmentCount = inventory.GetEquipmentSlotCount() + defaultMax;
-                //var value = (byte)Mathf.Min(i, equipmentCount);
                 if (i > maxAvailableSlot)
                 {
                     return;
@@ -278,31 +289,20 @@ namespace RiskOfBulletstorm.Items
 
             private void QueueDrop(byte equipmentSlot)
             {
-                // I'm doing this instead of dropping it right away
-                // because otherwise it'll drop equipments twice
-
                 if (inventory.equipmentStateSlots.Length < equipmentSlot)
                 {
-                    _logger.LogWarning("RiskOfBulletstorm: Backpack was told to drop slot "+equipmentSlot+" but it is out of bounds of "+ inventory.equipmentStateSlots.Length);
+                    _logger.LogWarning("RiskOfBulletstorm: Backpack was told to drop slot " + equipmentSlot + " but it is out of bounds of length " + inventory.equipmentStateSlots.Length);
                     return;
                 }
                 var equipment = inventory.equipmentStateSlots[equipmentSlot];
-
-
                 var index = equipment.equipmentIndex;
-
-                var oldValueDEBUG = equipmentDropQueue[equipmentSlot];
 
                 if (inventory.equipmentStateSlots.Length > 0 && index != EquipmentIndex.None)
                 {
                     _logger.LogMessage("QueueDrop: Check succeeded.");
-                    equipmentDropQueue[equipmentSlot] = index; //required cast?
-                    _logger.LogMessage("QueueDrop: Slot "+equipmentSlot+" changed from "+ oldValueDEBUG+" to "+ index);
 
+                    equipmentDropQueue.Add(index);
                     SetEquipmentIndexUnsafe(inventory, EquipmentIndex.None, equipmentSlot);
-
-                    //inventory.equipmentStateSlots[equipmentSlot].equipmentIndex = EquipmentIndex.None;
-                    _logger.LogMessage("QueueDrop: Equipmentslot changed to "+ inventory.equipmentStateSlots[equipmentSlot].equipmentIndex);
                     stopwatch = dropCooldown;
                     canDrop = false;
                 }
@@ -325,12 +325,11 @@ namespace RiskOfBulletstorm.Items
                 inventory.SetEquipment(equipmentState, equipmentSlot);
             }
 
-            private void DropSlot(byte equipmentSlot)
+            private void CreateDropletFromEquipmentSlot(byte equipmentSlot)
             {
                 var slot = equipmentDropQueue[equipmentSlot];
                 var pickupIndex = PickupCatalog.FindPickupIndex(slot);
                 PickupDropletController.CreatePickupDroplet(pickupIndex, characterBody.corePosition, Vector3.up * 5);
-                equipmentDropQueue[equipmentSlot] = EquipmentIndex.None;
             }
 
             private void CycleSlot(bool cycleRight)

@@ -48,6 +48,7 @@
     <Folder Include="Items\" />
     <Folder Include="Items\" />
     <Folder Include="Items\" />
+    <Folder Include="Items\Tier1\" />
     <None Remove="riskofgungeonassets" />
 	  <Folder Remove="Items" />
   </ItemGroup>
