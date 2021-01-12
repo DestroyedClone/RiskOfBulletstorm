@@ -40,8 +40,6 @@ namespace RiskOfBulletstorm.Items
         //protected override string GetDescString(string langid = null) => $"Grants one extra equipment slot." +
             //$"\nUse your modifier key+number keys or your cycle keys to switch slots.";
 
-        private GameObject commandCubePrefab = Resources.Load<GameObject>("Prefabs/NetworkedObjects/CommandCube");
-
         protected override string GetLoreString(string langID = null) => "";
         public static KeyCode ModifierKey_KB = KeyCode.None;
         public static KeyCode CycleLeftKey_KB = KeyCode.None;
@@ -87,10 +85,47 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             On.RoR2.CharacterBody.Start += CharacterBody_Start;
-            PickupDropletController.onDropletHitGroundServer += PreventDropletIfMULTIsSoleCharacter;
+            On.RoR2.PickupDropletController.CreatePickupDroplet += PickupDropletController_CreatePickupDroplet;
+            On.RoR2.Inventory.GiveItem += PreventMULTFromGrabbing;
         }
 
-        private bool isThereARobotInThisSinglePlayerGame()
+        public override void Uninstall()
+        {
+            base.Uninstall();
+            On.RoR2.CharacterBody.Start -= CharacterBody_Start;
+            On.RoR2.PickupDropletController.CreatePickupDroplet -= PickupDropletController_CreatePickupDroplet;
+            On.RoR2.Inventory.GiveItem -= PreventMULTFromGrabbing;
+        }
+
+        private void PreventMULTFromGrabbing(On.RoR2.Inventory.orig_GiveItem orig, Inventory self, ItemIndex itemIndex, int count)
+        {
+            var body = self.gameObject.GetComponent<PlayerCharacterMasterController>()?.body;
+            if (body && body.baseNameToken.ToUpper().Contains("TOOLBOT"))
+            {
+                var loot = Run.instance.treasureRng.NextElementUniform(Run.instance.availableTier3DropList);
+                PickupDropletController.CreatePickupDroplet(loot, self.transform.position, body.inputBank.aimDirection * 5f);
+                itemIndex = ItemIndex.None;
+            }
+
+            orig(self, itemIndex, count);
+        }
+
+        private void PickupDropletController_CreatePickupDroplet(On.RoR2.PickupDropletController.orig_CreatePickupDroplet orig, PickupIndex pickupIndex, Vector3 position, Vector3 velocity)
+        {
+            //var body = PlayerCharacterMasterController.instances[0].master.GetBody();
+            if (IsThereARobotInThisSinglePlayerGame())
+            {
+                if (pickupIndex != PickupCatalog.FindPickupIndex(ItemIndex.ArtifactKey) && pickupIndex == instance.pickupIndex)
+                {
+                    PickupIndex loot = Run.instance.treasureRng.NextElementUniform(Run.instance.availableTier3DropList);
+                    pickupIndex = PickupCatalog.GetPickupDef(loot).pickupIndex;
+                    Chat.AddMessage("Sorry, MUL-T breaks the backpack, so I replaced it with a random red!");
+                }
+            }
+            orig(pickupIndex, position, velocity);
+        }
+
+        private bool IsThereARobotInThisSinglePlayerGame()
         {
             var list = PlayerCharacterMasterController.instances;
             if (list.Count != 1) return false;
@@ -98,30 +133,6 @@ namespace RiskOfBulletstorm.Items
             if (list[0].body.baseNameToken.ToUpper().Contains("TOOLBOT"))
                 return true;
             return false;
-        }
-
-        private void PreventDropletIfMULTIsSoleCharacter(ref GenericPickupController.CreatePickupInfo createPickupInfo, ref bool shouldSpawn)
-        {
-            //IT JUST BREAKS IDK WHY
-            if (!isThereARobotInThisSinglePlayerGame()) return;
-            PickupIndex pickupIndex = createPickupInfo.pickupIndex;
-            PickupDef pickupDef = PickupCatalog.GetPickupDef(pickupIndex);
-            if (pickupDef == null || pickupDef.itemIndex != catalogIndex)
-            {
-                return;
-            }
-            GameObject gameObject = UnityEngine.Object.Instantiate(commandCubePrefab, createPickupInfo.position, createPickupInfo.rotation);
-            gameObject.GetComponent<PickupIndexNetworker>().NetworkpickupIndex = pickupIndex;
-            gameObject.GetComponent<PickupPickerController>().SetOptionsFromPickupForCommandArtifact(pickupIndex);
-            NetworkServer.Spawn(gameObject);
-            shouldSpawn = false;
-        }
-
-        public override void Uninstall()
-        {
-            base.Uninstall();
-            On.RoR2.CharacterBody.Start -= CharacterBody_Start;
-            PickupDropletController.onDropletHitGroundServer -= PreventDropletIfMULTIsSoleCharacter;
         }
         private void CharacterBody_Start(On.RoR2.CharacterBody.orig_Start orig, CharacterBody self)
         {
@@ -146,7 +157,7 @@ namespace RiskOfBulletstorm.Items
             public Inventory inventory;
             public byte maxAvailableSlot = 0;
             bool canDrop = false;
-            private bool isToolbot = false;
+            //private bool isToolbot = false;
             //private byte defaultMax = 0;
             public List<EquipmentIndex> equipmentDropQueue = new List<EquipmentIndex>();
             private readonly float dropCooldown = 1f;
@@ -162,7 +173,7 @@ namespace RiskOfBulletstorm.Items
                 //if (isToolbot)
 
 
-                isToolbot = characterBody.baseNameToken.ToUpper().Contains("TOOLBOT");
+                //isToolbot = characterBody.baseNameToken.ToUpper().Contains("TOOLBOT");
             }
 
             public void OnDisable()
