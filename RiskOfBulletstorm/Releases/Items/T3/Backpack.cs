@@ -104,7 +104,7 @@ namespace RiskOfBulletstorm.Items
                 backpackComponent.characterBody = self;
                 backpackComponent.localUser = LocalUserManager.readOnlyLocalUsersList[0];
                 backpackComponent.inventory = self.inventory;
-                //backpackComponent.UpdateDefault();
+                backpackComponent.isToolbot = (byte)(self.baseNameToken.ToUpper().Contains("TOOLBOT") ? 1 : 0);
             }
         }
 
@@ -114,6 +114,8 @@ namespace RiskOfBulletstorm.Items
             public CharacterBody characterBody;
             public Inventory inventory;
             public byte inventoryCount = 0;
+            public byte isToolbot = 0;
+            public byte selectableSlot = 0;
 
             public void Start()
             {
@@ -128,6 +130,7 @@ namespace RiskOfBulletstorm.Items
             private void CharacterBody_onInventoryChanged()
             {
                 inventoryCount = (byte)inventory.GetItemCount(instance.catalogIndex);
+                selectableSlot = (byte)(inventoryCount + isToolbot);
 
                 if (inventory.activeEquipmentSlot > inventoryCount)
                     inventory.SetActiveEquipmentSlot(inventoryCount);
@@ -145,6 +148,7 @@ namespace RiskOfBulletstorm.Items
                             {
                                 if (Input.GetKeyDown(KeyCode.Alpha1 + i)) { SetEquipmentSlot(i); break; }
                             };
+                            if (Input.GetKeyDown(KeyCode.Alpha0)) { SetEquipmentSlot(9); }
 
                             if (Input.GetKeyDown(KeyCode.Equals))
                             {
@@ -161,7 +165,7 @@ namespace RiskOfBulletstorm.Items
                                             var eqp = equipmentStateSlots[i];
                                             if (eqp.equipmentIndex != EquipmentIndex.None)
                                             {
-                                                eqpName = eqp.equipmentDef.name;
+                                                eqpName = Language.GetString(eqp.equipmentDef.nameToken);
                                             }
                                             charges = eqp.charges;
                                             cooldown = eqp.isPerfomingRecharge ? Mathf.Max((int)eqp.chargeFinishTime.timeUntil, 0) : cooldown;
@@ -187,7 +191,7 @@ namespace RiskOfBulletstorm.Items
             }
             private void SetEquipmentSlot(byte i)
             {
-                if (i > inventoryCount)
+                if (i > selectableSlot)
                 {
                     return;
                 }
@@ -197,7 +201,7 @@ namespace RiskOfBulletstorm.Items
             private void CycleSlot(bool cycleRight)
             {
                 var currentSlot = inventory.activeEquipmentSlot + (cycleRight ? 1 : -1);
-                var newValue = (byte)LoopAround(currentSlot, 0, inventoryCount);
+                var newValue = (byte)LoopAround(currentSlot, 0, selectableSlot);
                 inventory.SetActiveEquipmentSlot(newValue);
                 Chat.AddMessage("Backpack: Set equipment slot to " + newValue);
             }
