@@ -533,6 +533,7 @@ namespace RiskOfBulletstorm.Items
                                     UpdatedAngle = Quaternion.Lerp(fireProjectileInfo.rotation, aimDirectionQuaternion, CappedAccMult);
                                 } else
                                 {
+                                    CappedAccMult *= -1;
                                     //This is a random dir in cone. USED FOR INACCURACY
                                     Quaternion bulletDir = GetRandomInsideCone(BaseSpreadAngle);
                                     _logger.LogMessage(bulletDir);

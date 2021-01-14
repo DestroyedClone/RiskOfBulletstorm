@@ -152,6 +152,14 @@ namespace RiskOfBulletstorm.Utils
 
         }
 
+        public static float LoopAround(float value, float min, float max)
+        {
+            if (value < min) value = max;
+            else if (value > max) value = min;
+            return value;
+        }
+
+
         public static string NumbertoOrdinal(int number)
         {
             string words = NumberToWords(number);

@@ -13,7 +13,6 @@ using static TILER2.StatHooks;
 using static TILER2.MiscUtil;
 using System;
 using static RiskOfBulletstorm.HelperPlugin;
-using static RiskOfBulletstorm.Utils.HelperUtil;
 using static RiskOfBulletstorm.RiskofBulletstorm;
 
 namespace RiskOfBulletstorm.Items
@@ -86,12 +85,54 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             On.RoR2.CharacterBody.Start += CharacterBody_Start;
+            On.RoR2.PickupDropletController.CreatePickupDroplet += PickupDropletController_CreatePickupDroplet;
+            On.RoR2.Inventory.GiveItem += PreventMULTFromGrabbing;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
             On.RoR2.CharacterBody.Start -= CharacterBody_Start;
+            On.RoR2.PickupDropletController.CreatePickupDroplet -= PickupDropletController_CreatePickupDroplet;
+            On.RoR2.Inventory.GiveItem -= PreventMULTFromGrabbing;
+        }
+
+        private void PreventMULTFromGrabbing(On.RoR2.Inventory.orig_GiveItem orig, Inventory self, ItemIndex itemIndex, int count)
+        {
+            var body = self.gameObject.GetComponent<PlayerCharacterMasterController>()?.body;
+            if (body && body.baseNameToken.ToUpper().Contains("TOOLBOT") && itemIndex == catalogIndex)
+            {
+                var loot = Run.instance.treasureRng.NextElementUniform(Run.instance.availableTier3DropList);
+                PickupDropletController.CreatePickupDroplet(loot, self.transform.position, body.inputBank.aimDirection * 5f);
+                itemIndex = ItemIndex.None;
+            }
+
+            orig(self, itemIndex, count);
+        }
+
+        private void PickupDropletController_CreatePickupDroplet(On.RoR2.PickupDropletController.orig_CreatePickupDroplet orig, PickupIndex pickupIndex, Vector3 position, Vector3 velocity)
+        {
+            //var body = PlayerCharacterMasterController.instances[0].master.GetBody();
+            if (IsThereARobotInThisSinglePlayerGame())
+            {
+                if (pickupIndex != PickupCatalog.FindPickupIndex(ItemIndex.ArtifactKey) && pickupIndex == instance.pickupIndex)
+                {
+                    PickupIndex loot = Run.instance.treasureRng.NextElementUniform(Run.instance.availableTier3DropList);
+                    pickupIndex = PickupCatalog.GetPickupDef(loot).pickupIndex;
+                    Chat.AddMessage("Sorry, MUL-T breaks the backpack, so I replaced it with a random red!");
+                }
+            }
+            orig(pickupIndex, position, velocity);
+        }
+
+        private bool IsThereARobotInThisSinglePlayerGame()
+        {
+            var list = PlayerCharacterMasterController.instances;
+            if (list.Count != 1) return false;
+
+            if (list[0].body.baseNameToken.ToUpper().Contains("TOOLBOT"))
+                return true;
+            return false;
         }
         private void CharacterBody_Start(On.RoR2.CharacterBody.orig_Start orig, CharacterBody self)
         {
@@ -108,30 +149,68 @@ namespace RiskOfBulletstorm.Items
             }
         }
 
+
         public class BackpackComponent : MonoBehaviour
         {
             public LocalUser localUser;
             public CharacterBody characterBody;
             public Inventory inventory;
-            public byte inventoryCount = 0;
+            public byte maxAvailableSlot = 0;
+            bool canDrop = false;
+            //private bool isToolbot = false;
+            //private byte defaultMax = 0;
+            public List<EquipmentIndex> equipmentDropQueue = new List<EquipmentIndex>();
+            private readonly float dropCooldown = 1f;
+            private float stopwatch = 9999f;
+
 
             public void Start()
             {
+                stopwatch = dropCooldown;
                 if (characterBody)
                     characterBody.onInventoryChanged += CharacterBody_onInventoryChanged;
+                //defaultMax = (byte)(characterBody.baseNameToken.ToUpper().Contains("TOOLBOT") ? 1 : 0);
+
+                //if (isToolbot)
+
+
+                //isToolbot = characterBody.baseNameToken.ToUpper().Contains("TOOLBOT");
             }
+
             public void OnDisable()
             {
                 if (characterBody)
                     characterBody.onInventoryChanged -= CharacterBody_onInventoryChanged;
             }
+
             private void CharacterBody_onInventoryChanged()
             {
-                inventoryCount = (byte)inventory.GetItemCount(instance.catalogIndex);
+                var invcount = (byte)inventory.GetItemCount(instance.catalogIndex);
 
-                if (inventory.activeEquipmentSlot > inventoryCount)
-                    inventory.SetActiveEquipmentSlot(inventoryCount);
+                if (maxAvailableSlot > invcount)
+                {
+                    var difference = maxAvailableSlot - invcount;
+                    Chat.AddMessage("Backpack: Difference was " + difference);
+                    for (int i = 1; i <= difference; i++)
+                    {
+                        var slot = (byte)(invcount + i);
+                        if (inventory.equipmentStateSlots.Length > i)
+                        {
+                            Chat.AddMessage("Backpack: Queueing Slot " + slot);
+                            QueueDrop(slot);
+                        }
+                    }
+
+                    // Check here so if they're under it doesn't force them, only if they're above
+                    if (inventory.activeEquipmentSlot > invcount)
+                        inventory.SetActiveEquipmentSlot(invcount);
+                }
+                if (maxAvailableSlot != invcount)
+                {
+                    maxAvailableSlot = invcount;
+                }
             }
+
             public void Update()
             {
                 if (!localUser.isUIFocused) //TY KingEnderBrine for the help
@@ -151,7 +230,7 @@ namespace RiskOfBulletstorm.Items
                                 var equipmentStateSlots = inventory.equipmentStateSlots;
                                 if (equipmentStateSlots.Length > 0)
                                 {
-                                    for (int i = 0; i <= inventoryCount; i++)
+                                    for (int i = 0; i <= maxAvailableSlot; i++)
                                     {
                                         var eqpName = "None";
                                         var charges = -6;
@@ -185,21 +264,99 @@ namespace RiskOfBulletstorm.Items
                     }
                 }
             }
+
+            public void FixedUpdate()
+            {
+                // Stopwatch //
+                stopwatch -= Time.deltaTime;
+                if (canDrop)
+                {
+                    canDrop = false;
+                    for (byte i = 0; i <= equipmentDropQueue.Count - 1; i++)
+                    {
+                        if (equipmentDropQueue[i] != EquipmentIndex.None)
+                        {
+                            _logger.LogMessage("Slot" + i + " selected for drop");
+                            CreateDropletFromEquipmentSlot(i);
+                        }
+                    }
+                    equipmentDropQueue.Clear();
+                }
+                if (stopwatch < 0)
+                {
+                    canDrop = true;
+                    stopwatch = dropCooldown;
+                }
+            }
+
             private void SetEquipmentSlot(byte i)
             {
-                if (i > inventoryCount)
+                if (i > maxAvailableSlot)
                 {
                     return;
                 }
                 Chat.AddMessage("Backpack: Set equipment slot to " + i);
                 inventory.SetActiveEquipmentSlot(i);
             }
+
+            private void QueueDrop(byte equipmentSlot)
+            {
+                if (inventory.equipmentStateSlots.Length < equipmentSlot)
+                {
+                    _logger.LogWarning("RiskOfBulletstorm: Backpack was told to drop slot " + equipmentSlot + " but it is out of bounds of length " + inventory.equipmentStateSlots.Length);
+                    return;
+                }
+                var equipment = inventory.equipmentStateSlots[equipmentSlot];
+                var index = equipment.equipmentIndex;
+
+                if (inventory.equipmentStateSlots.Length > 0 && index != EquipmentIndex.None)
+                {
+                    _logger.LogMessage("QueueDrop: Check succeeded.");
+
+                    equipmentDropQueue.Add(index);
+                    SetEquipmentIndexUnsafe(inventory, EquipmentIndex.None, equipmentSlot);
+                    stopwatch = dropCooldown;
+                    canDrop = false;
+                }
+            }
+
+            [Server]
+            public void SetEquipmentIndexUnsafe(Inventory inventory, EquipmentIndex newEquipmentIndex, byte equipmentSlot)
+            {
+                if (!NetworkServer.active) return;
+
+                EquipmentState equipment = inventory.GetEquipment(equipmentSlot);
+                byte charges = equipment.charges;
+                Run.FixedTimeStamp chargeFinishTime = equipment.chargeFinishTime;
+                if (equipment.equipmentIndex == EquipmentIndex.None && chargeFinishTime.isNegativeInfinity)
+                {
+                    charges = 1;
+                    chargeFinishTime = Run.FixedTimeStamp.now;
+                }
+                EquipmentState equipmentState = new EquipmentState(newEquipmentIndex, chargeFinishTime, charges);
+                inventory.SetEquipment(equipmentState, equipmentSlot);
+            }
+
+            private void CreateDropletFromEquipmentSlot(byte equipmentSlot)
+            {
+                var slot = equipmentDropQueue[equipmentSlot];
+                var pickupIndex = PickupCatalog.FindPickupIndex(slot);
+                PickupDropletController.CreatePickupDroplet(pickupIndex, characterBody.corePosition, Vector3.up * 5);
+            }
+
             private void CycleSlot(bool cycleRight)
             {
                 var currentSlot = inventory.activeEquipmentSlot + (cycleRight ? 1 : -1);
-                var newValue = (byte)LoopAround(currentSlot, 0, inventoryCount);
+                var newValue = (byte)LoopAround(currentSlot, 0, maxAvailableSlot);
                 inventory.SetActiveEquipmentSlot(newValue);
                 Chat.AddMessage("Backpack: Set equipment slot to " + newValue);
+            }
+
+            private float LoopAround(float value, float min, float max)
+            {
+                if (value < min) value = max;
+                else if (value > max) value = min;
+                return value;
             }
         }
     }
