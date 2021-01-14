@@ -13,6 +13,7 @@ namespace RiskOfBulletstorm
     {
         [ConCommand(commandName = "ROB_godark", flags = ConVarFlags.ExecuteOnServer, helpText = "Sets equipment slot to specified index.")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Console Command")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Empty Arg required")]
         private static void GoDark(ConCommandArgs args)
         {
             var localMaster = PlayerCharacterMasterController.instances[0].master;
@@ -68,7 +69,7 @@ namespace RiskOfBulletstorm
 
         [ConCommand(commandName = "ROB_set_equipment_slot", flags = ConVarFlags.ExecuteOnServer, helpText = "Sets equipment slot to specified index.")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Console Command")]
-        private static void GivePingItem(ConCommandArgs args)
+        private static void SetEquipmentSlot(ConCommandArgs args)
         {
             var localMaster = PlayerCharacterMasterController.instances[0].master;
             var inventory = localMaster.inventory;
@@ -79,9 +80,9 @@ namespace RiskOfBulletstorm
             }
         }
 
-        [ConCommand(commandName = "ROB_set_equipment_slot_safe", flags = ConVarFlags.ExecuteOnServer, helpText = "Sets equipment slot to specified index.")]
+        [ConCommand(commandName = "ROB_set_equipment_slot_safe", flags = ConVarFlags.ExecuteOnServer, helpText = "Sets equipment slot to specified index. Bounded by backpack..")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Console Command")]
-        private static void GivePingItemSafe(ConCommandArgs args)
+        private static void SetEquipmentSlotSafe(ConCommandArgs args)
         {
             var localMaster = PlayerCharacterMasterController.instances[0].master;
             var inventory = localMaster.inventory;
@@ -89,7 +90,7 @@ namespace RiskOfBulletstorm
             if (inventory && component)
             {
                 var value = (byte)args.GetArgInt(0);
-                inventory.SetActiveEquipmentSlot(Math.Min(component.maxAvailableSlot, value));
+                inventory.SetActiveEquipmentSlot(Math.Min(component.selectableSlot, value));
             }
         }
 

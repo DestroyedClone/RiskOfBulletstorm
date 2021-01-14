@@ -18,7 +18,7 @@ namespace RiskOfBulletstorm.Items
 {
     public class BloodiedScarf : Item_V2<BloodiedScarf>
     {
-        const float dmgIncrease = 0.25f;
+        const float dmgIncrease = 0.15f;
 
         public override string displayName => "Bloodied Scarf";
         public override ItemTier itemTier => ItemTier.Lunar;
@@ -29,13 +29,12 @@ namespace RiskOfBulletstorm.Items
         protected override string GetPickupString(string langID = null) => "<b>Blink Away</b>\nDodge roll is replaced with a blink.";
 
         protected override string GetDescString(string langid = null) => $"<style=cIsUtility>Teleport</style> up to <style=cIsUtility>5m</style> " +
-            $"<style=cStack>(+5m per stack)</stack>.\n" +
-            $"After teleporting, <style=cDeath>take 25% more damage (per stack) for 1 seconds after teleporting</style>.";
+            $"<style=cStack>(+5m per stack)</style>.\n" +
+            $"After teleporting, <style=cDeath>take {Pct(dmgIncrease)} more damage (per stack) for 1 second.</style>.";
 
         protected override string GetLoreString(string langID = null) => "This simple scarf was once worn by a skilled assassin. Betrayed by his brothers and assumed dead...";
 
         public static GameObject ItemBodyModelPrefab;
-        //public static SkillDef TeleportUtilitySkillDef = SkillCatalog.GetSkillDef(SkillCatalog.FindSkillIndexByName("LunarPrimaryReplacement"));
         public static BuffIndex ScarfVuln { get; private set; }
         public static SkillDef teleportSkillDef;
 
@@ -66,7 +65,7 @@ namespace RiskOfBulletstorm.Items
 
             SkillCatalog.skillsDefined.CallWhenAvailable(delegate
             {
-                teleportSkillDef = SkillCatalog.GetSkillDef(SkillCatalog.FindSkillIndexByName("Blink"));
+                teleportSkillDef = SkillCatalog.GetSkillDef(SkillCatalog.FindSkillIndexByName("HuntressBodyBlink"));
             });
         }
 
