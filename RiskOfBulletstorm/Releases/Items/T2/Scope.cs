@@ -73,7 +73,8 @@ namespace RiskOfBulletstorm.Items
 
             }*/
 
-            ItemDisplayRuleDict rules = new ItemDisplayRuleDict(new ItemDisplayRule[]
+            ItemDisplayRuleDict rules = new ItemDisplayRuleDict();
+            rules.Add("mdlCommando", new ItemDisplayRule[]
             {
                 new ItemDisplayRule
                 {
@@ -93,15 +94,6 @@ namespace RiskOfBulletstorm.Items
                     localAngles = new Vector3(-90f, 300f, 0f),
                     localScale = generalScale * 0.5f
                 },
-/*                new ItemDisplayRule //Sniper
-                {
-                    ruleType = ItemDisplayRuleType.ParentedPrefab,
-                    followerPrefab = ItemBodyModelPrefab,
-                    childName = "ScopePoint",
-                    localPos = new Vector3(0.07f, 0.09f, 0.7f),
-                    localAngles = new Vector3(0f, 0f, 0f),
-                    localScale = generalScale * 0.5f
-                }*/
             });
             rules.Add("mdlHuntress", new ItemDisplayRule[]
             {

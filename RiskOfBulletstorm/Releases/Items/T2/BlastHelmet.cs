@@ -49,6 +49,8 @@ namespace RiskOfBulletstorm.Items
             On.RoR2.BlastAttack.Fire += BlastAttack_Fire;
         }
 
+        //todo IDR
+
         private BlastAttack.Result BlastAttack_Fire(On.RoR2.BlastAttack.orig_Fire orig, BlastAttack self)
         {
             var attackerTeamIndex = self.teamIndex;

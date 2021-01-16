@@ -341,8 +341,20 @@ namespace RiskOfBulletstorm.Items
                     localScale = generalScale * 10f
                 }
             });
+            rules.Add("mdlEquipmentDrone", new ItemDisplayRule[]
+            {
+                new ItemDisplayRule
+                {
+                    ruleType = ItemDisplayRuleType.ParentedPrefab,
+                    followerPrefab = ItemBodyModelPrefab,
+                    childName = "GunBarrelBase",
+                    localPos = new Vector3(0f, 0f, 1.8f),
+                    localAngles = new Vector3(270f, 0f, 0f),
+                    localScale = new Vector3(0.2f, 0.2f, 0.2f)
+                }
+            });
             return rules;
-        }
+        } //todo
         public override void SetupConfig()
         {
             base.SetupConfig();

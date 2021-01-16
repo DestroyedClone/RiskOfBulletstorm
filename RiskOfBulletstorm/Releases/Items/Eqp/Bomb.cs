@@ -241,7 +241,7 @@ namespace RiskOfBulletstorm.Items
                     localScale = generalScale
                 }
             });
-            rules.Add("mdlClayBruiser", new ItemDisplayRule[] //TODO
+            rules.Add("mdlClayBruiser", new ItemDisplayRule[]
             {
                 new ItemDisplayRule
                 {
@@ -271,10 +271,22 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
+                    childName = "Chest",
                     localPos = new Vector3(8.5f, -6f, 7f),
                     localAngles = new Vector3(0f, 90f, 0f),
                     localScale = generalScale * 10f
+                }
+            });
+            rules.Add("mdlEquipmentDrone", new ItemDisplayRule[]
+            {
+                new ItemDisplayRule
+                {
+                    ruleType = ItemDisplayRuleType.ParentedPrefab,
+                    followerPrefab = ItemBodyModelPrefab,
+                    childName = "GunBarrelBase",
+                    localPos = new Vector3(0f, 0f, 1.5f),
+                    localAngles = new Vector3(-135f, 0f, 0f),
+                    localScale = generalScale * 2
                 }
             });
             return rules;

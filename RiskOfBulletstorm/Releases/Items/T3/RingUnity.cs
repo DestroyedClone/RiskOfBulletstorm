@@ -175,7 +175,7 @@ namespace RiskOfBulletstorm.Items
                     followerPrefab = ItemBodyModelPrefab,
                     childName = "MechFinger23R",
                     localPos = new Vector3(0f, 0.02f, 0.06f),
-                    localAngles = new Vector3(180f, 180f, 180f),
+                    localAngles = new Vector3(0f, 0f, 180f),
                     localScale = generalScale * 3
                 }
             });

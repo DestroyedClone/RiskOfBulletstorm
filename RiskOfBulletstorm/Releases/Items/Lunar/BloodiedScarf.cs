@@ -12,13 +12,19 @@ using TILER2;
 using static TILER2.StatHooks;
 using static TILER2.MiscUtil;
 using static RoR2.GenericSkill;
+using EntityStates;
 
 
 namespace RiskOfBulletstorm.Items
 {
     public class BloodiedScarf : Item_V2<BloodiedScarf>
     {
-        const float dmgIncrease = 0.15f;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("How much damage vulnerability should the debuff give per stack upon teleporting? (Value: Additive Percentage)", AutoConfigFlags.PreventNetMismatch)]
+        public float BloodiedScarf_DamageIncrease { get; private set; } = 0.15f;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("How far should the maximum range increase by per stack? (Value: Meters)", AutoConfigFlags.PreventNetMismatch)]
+        public float BloodiedScarf_RangeIncrease { get; private set; } = 5f;
 
         public override string displayName => "Bloodied Scarf";
         public override ItemTier itemTier => ItemTier.Lunar;
@@ -28,9 +34,9 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "<b>Blink Away</b>\nDodge roll is replaced with a blink.";
 
-        protected override string GetDescString(string langid = null) => $"<style=cIsUtility>Teleport</style> up to <style=cIsUtility>5m</style> " +
-            $"<style=cStack>(+5m per stack)</style>.\n" +
-            $"After teleporting, <style=cDeath>take {Pct(dmgIncrease)} more damage (per stack) for 1 second.</style>.";
+        protected override string GetDescString(string langid = null) => $"<style=cIsUtility>Teleport</style> up to <style=cIsUtility>{BloodiedScarf_RangeIncrease}m </style> " +
+            $"<style=cStack>(+{BloodiedScarf_RangeIncrease}m per stack)</style>.\n" +
+            $"After teleporting, <style=cDeath>take {Pct(BloodiedScarf_DamageIncrease)} more damage (per stack) for 1 second.</style>.";
 
         protected override string GetLoreString(string langID = null) => "This simple scarf was once worn by a skilled assassin. Betrayed by his brothers and assumed dead...";
 
@@ -46,6 +52,33 @@ namespace RiskOfBulletstorm.Items
         {
             base.SetupAttributes();
 
+            LanguageAPI.Add("BULLETSTORM_UTILITY_REPLACEMENT_NAME", "Teleport");
+            LanguageAPI.Add("BULLETSTORM_UTILITY_REPLACEMENT_DESCRIPTION", "Teleport 5m away and take 25% more damage for 1 second.");
+
+            LoadoutAPI.AddSkill(typeof(Lunar.TeleportUtilitySkillState));
+            teleportSkillDef = ScriptableObject.CreateInstance<SkillDef>();
+            teleportSkillDef.activationState = new SerializableEntityStateType(typeof(Lunar.TeleportUtilitySkillState));
+            teleportSkillDef.activationStateMachineName = "Weapon";
+            teleportSkillDef.baseMaxStock = 1;
+            teleportSkillDef.baseRechargeInterval = 12f;
+            teleportSkillDef.beginSkillCooldownOnSkillEnd = true;
+            teleportSkillDef.canceledFromSprinting = true;
+            teleportSkillDef.fullRestockOnAssign = true;
+            teleportSkillDef.interruptPriority = InterruptPriority.Skill;
+            teleportSkillDef.isBullets = false;
+            teleportSkillDef.isCombatSkill = true;
+            teleportSkillDef.mustKeyPress = false;
+            teleportSkillDef.noSprint = true;
+            teleportSkillDef.rechargeStock = 1;
+            teleportSkillDef.requiredStock = 1;
+            teleportSkillDef.shootDelay = 0.5f;
+            teleportSkillDef.stockToConsume = 1;
+            teleportSkillDef.icon = Resources.Load<Sprite>("textures/difficultyicons/texDifficultyEclipse1Icon");
+            teleportSkillDef.skillDescriptionToken = "BULLETSTORM_UTILITY_REPLACEMENT_DESCRIPTION";
+            teleportSkillDef.skillName = "BULLETSTORM_UTILITY_REPLACEMENT_NAME";
+            teleportSkillDef.skillNameToken = "BULLETSTORM_UTILITY_REPLACEMENT_NAME";
+
+            LoadoutAPI.AddSkillDef(teleportSkillDef);
 
             //teleportSkillDef
             var scarfDebuff = new CustomBuff(
@@ -62,11 +95,6 @@ namespace RiskOfBulletstorm.Items
         public override void SetupLate()
         {
             base.SetupLate();
-
-            SkillCatalog.skillsDefined.CallWhenAvailable(delegate
-            {
-                teleportSkillDef = SkillCatalog.GetSkillDef(SkillCatalog.FindSkillIndexByName("HuntressBodyBlink"));
-            });
         }
 
 
@@ -80,29 +108,8 @@ namespace RiskOfBulletstorm.Items
             On.RoR2.CharacterBody.OnInventoryChanged += CharacterBody_OnInventoryChanged;
             On.RoR2.Inventory.GiveItem += Inventory_GiveItem;
             On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
-            On.EntityStates.Huntress.BlinkState.OnExit += BlinkState_OnExit;
         }
 
-        private void BlinkState_OnExit(On.EntityStates.Huntress.BlinkState.orig_OnExit orig, EntityStates.Huntress.BlinkState self)
-        {
-            orig(self);
-            var body = self.characterBody;
-            if (body)
-            {
-                var inventory = body.inventory;
-                if (inventory)
-                {
-                    int scarfCount = inventory.GetItemCount(catalogIndex);
-                    int debuffStacks = body.GetBuffCount(ScarfVuln);
-                    if (debuffStacks > 0)
-                    {
-                        body.ClearTimedBuffs(ScarfVuln);
-                    }
-                    for (uint i = 0; i < scarfCount; i++)
-                        body.AddTimedBuff(ScarfVuln, 1f);
-                }
-            }
-        }
 
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
@@ -112,7 +119,7 @@ namespace RiskOfBulletstorm.Items
                 int debuffStacks = body.GetBuffCount(ScarfVuln);
                 if (debuffStacks > 0)
                 {
-                    damageInfo.damage *= 1 + (debuffStacks * dmgIncrease);
+                    damageInfo.damage *= 1 + (debuffStacks * BloodiedScarf_DamageIncrease);
                 }
             }
             
@@ -125,7 +132,6 @@ namespace RiskOfBulletstorm.Items
             On.RoR2.CharacterBody.OnInventoryChanged -= CharacterBody_OnInventoryChanged;
             On.RoR2.Inventory.GiveItem -= Inventory_GiveItem;
             On.RoR2.HealthComponent.TakeDamage -= HealthComponent_TakeDamage;
-            On.EntityStates.Huntress.BlinkState.OnExit -= BlinkState_OnExit;
         }
 
         private void Inventory_GiveItem(On.RoR2.Inventory.orig_GiveItem orig, Inventory self, ItemIndex itemIndex, int count)
@@ -135,17 +141,17 @@ namespace RiskOfBulletstorm.Items
             var body = self.gameObject.GetComponent<PlayerCharacterMasterController>()?.body;
 
             // Picking up a scarf while you have strides
-            if (stridesCount > 0 && itemIndex == ItemIndex.LunarUtilityReplacement)
+            if (stridesCount > 0 && itemIndex == catalogIndex)
             {
                 Chat.AddMessage("Picking up a scarf while you have strides");
                 DropItemIndex(body.corePosition, ItemIndex.LunarUtilityReplacement, stridesCount);
                 self.RemoveItem(ItemIndex.LunarUtilityReplacement, stridesCount);
             }
             // Picking up a Strides while you have Scarves
-            if (scarfCount > 0 && itemIndex == catalogIndex)
+            if (scarfCount > 0 && itemIndex == ItemIndex.LunarUtilityReplacement)
             {
                 Chat.AddMessage("Picking up a Strides while you have Scarves");
-                DropItemIndex(body.corePosition, catalogIndex, stridesCount);
+                DropItemIndex(body.corePosition, catalogIndex, scarfCount);
                 self.RemoveItem(catalogIndex, scarfCount);
             }
             orig(self, itemIndex, count);
@@ -164,18 +170,21 @@ namespace RiskOfBulletstorm.Items
             orig(self);
 
             var skillLocator = self.skillLocator;
-            var scarfCount = GetCount(self);
             if (skillLocator)
             {
-                if (scarfCount > 0)
+                if (skillLocator.utility)
                 {
-                    //skillLocator.utility.SetSkillOverride(this, CharacterBody.CommonAssets.lunarPrimaryReplacementSkillDef, GenericSkill.SkillOverridePriority.Replacement);
-                    skillLocator.utility.SetSkillOverride(this, teleportSkillDef, GenericSkill.SkillOverridePriority.Replacement);
-                }
-                else
-                {
-                    //skillLocator.utility.UnsetSkillOverride(this, CharacterBody.CommonAssets.lunarPrimaryReplacementSkillDef, GenericSkill.SkillOverridePriority.Replacement);
-                    skillLocator.utility.UnsetSkillOverride(this, teleportSkillDef, GenericSkill.SkillOverridePriority.Replacement);
+                    var scarfCount = GetCount(self);
+                    if (scarfCount > 0)
+                    {
+                        //skillLocator.utility.SetSkillOverride(this, CharacterBody.CommonAssets.lunarPrimaryReplacementSkillDef, GenericSkill.SkillOverridePriority.Replacement);
+                        skillLocator.utility.SetSkillOverride(this, teleportSkillDef, GenericSkill.SkillOverridePriority.Replacement);
+                    }
+                    else
+                    {
+                        //skillLocator.utility.UnsetSkillOverride(this, CharacterBody.CommonAssets.lunarPrimaryReplacementSkillDef, GenericSkill.SkillOverridePriority.Replacement);
+                        skillLocator.utility.UnsetSkillOverride(this, teleportSkillDef, GenericSkill.SkillOverridePriority.Replacement);
+                    }
                 }
             }
         }

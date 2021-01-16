@@ -13,6 +13,7 @@ using static TILER2.StatHooks;
 using static TILER2.MiscUtil;
 using System;
 using static RiskOfBulletstorm.HelperPlugin;
+using  RiskOfBulletstorm.Utils;
 using static RiskOfBulletstorm.Utils.HelperUtil;
 using static RiskOfBulletstorm.RiskofBulletstorm;
 
@@ -49,6 +50,8 @@ namespace RiskOfBulletstorm.Items
         public KeyCode CycleLeftKey_GP = KeyCode.None;
         public KeyCode CycleRightKey_GP = KeyCode.None;
 
+        public static GameObject ItemBodyModelPrefab;
+
         public override void SetupBehavior()
         {
             base.SetupBehavior();
@@ -56,6 +59,9 @@ namespace RiskOfBulletstorm.Items
         public override void SetupAttributes()
         {
             base.SetupAttributes();
+
+            //GameObject ScavBackpackPrefab = Resources.Load<GameObject>("prefabs/networkedobjects/ScavBackpack.prefab");
+            //ScavBackpackPrefab.GetComponent<MeshRenderer>().
 
         }
         public override void SetupConfig()

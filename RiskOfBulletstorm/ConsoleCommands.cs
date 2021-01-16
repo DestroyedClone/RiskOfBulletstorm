@@ -222,6 +222,26 @@ namespace RiskOfBulletstorm
             }
         }
 
+        [ConCommand(commandName = "ROB_target_give_equip", flags = ConVarFlags.ExecuteOnServer, helpText = "Gives the target item(s). Syntax: [itemindex] [amount]")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Console Command")]
+        private static void TargetGiveEquip(ConCommandArgs args)
+        {
+            var localMaster = PlayerCharacterMasterController.instances[0].master;
+            var component = HasComponent(localMaster);
+            if (component && component.HasBody())
+            {
+                var inventory = component.targetedBody.inventory;
+                if (inventory)
+                { //https://stackoverflow.com/questions/23563960/how-to-get-enum-value-by-string-or-int
+                    EquipmentIndex equipmentIndex = (EquipmentIndex)args.GetArgInt(0);
+
+                    inventory.SetEquipmentIndex(equipmentIndex);
+                    Chat.AddMessage("Gave " + equipmentIndex + " to " + component.targetedBody.GetDisplayName());
+                }
+            }
+        }
+
+
         [ConCommand(commandName = "ROB_target_inventory", flags = ConVarFlags.ExecuteOnServer, helpText = "Prints their inventory.")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Console Command")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]

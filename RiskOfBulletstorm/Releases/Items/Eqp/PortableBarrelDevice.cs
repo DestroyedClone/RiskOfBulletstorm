@@ -121,7 +121,7 @@ namespace RiskOfBulletstorm.Items
                 preventOverhead = true
             };
         }
-        private static ItemDisplayRuleDict GenerateItemDisplayRules()
+        private static ItemDisplayRuleDict GenerateItemDisplayRules() //TODO new textures, too bright in game
         {
             ItemBodyModelPrefab.AddComponent<ItemDisplay>();
             ItemBodyModelPrefab.GetComponent<ItemDisplay>().rendererInfos = ItemHelpers.ItemDisplaySetup(ItemBodyModelPrefab);
@@ -133,7 +133,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
+                    childName = "ThighR",
                     localPos = new Vector3(0f, 0.2f, 0.22f),
                     localAngles = new Vector3(0, 0, 0),
                     localScale = new Vector3(0.1f, 0.1f, 0.1f)
@@ -145,7 +145,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
+                    childName = "ThighR",
                     localPos = new Vector3(0.1f, 0.2f, 0.13f),
                     localAngles = new Vector3(0f, 0f, 90f),
                     localScale = new Vector3(0.08f, 0.08f, 0.08f)
@@ -157,7 +157,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
+                    childName = "ThighR",
                     localPos = new Vector3(0f, 3.4f, -1.3f),
                     localAngles = new Vector3(60f, 0f, 0f),
                     localScale = generalScale * 16f
@@ -169,7 +169,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Chest",
+                    childName = "ThighR",
                     localPos = new Vector3(0f, 0.5f, 0.22f),
                     localAngles = new Vector3(0f, 1f, -0.06f),
                     localScale = generalScale
@@ -194,7 +194,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
+                    childName = "ThighR",
                     localPos = new Vector3(0f, 0f, 0.13f),
                     localAngles = new Vector3(0f, 0f, 0f),
                     localScale = generalScale
@@ -206,7 +206,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
+                    childName = "ThighR",
                     localPos = new Vector3(0f, 0.1f, 0.2f),
                     localAngles = new Vector3(0f, 0f, 0f),
                     localScale = generalScale
@@ -218,7 +218,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Base",
+                    childName = "ThighBackR",
                     localPos = new Vector3(0f, 1.2f, 0.2f),
                     localAngles = new Vector3(-90f, 0f, 0f),
                     localScale = generalScale * 8f
@@ -230,7 +230,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
+                    childName = "ThighR",
                     localPos = new Vector3(0f, 0.05f, 0.15f),
                     localAngles = new Vector3(0f, 0f, 0f),
                     localScale = generalScale
@@ -242,7 +242,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
+                    childName = "ThighR",
                     localPos = new Vector3(0f, 5.2f, 0.3f),
                     localAngles = new Vector3(90f, 0f, 0f),
                     localScale = generalScale * 8
@@ -254,7 +254,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
+                    childName = "ThighR",
                     localPos = new Vector3(0f, 0.04f, 0.18f),
                     localAngles = new Vector3(0f, 0f, 0f),
                     localScale = generalScale
@@ -266,7 +266,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
+                    childName = "ThighR",
                     localPos = new Vector3(0f, 0f, 0.18f),
                     localAngles = new Vector3(0, 0, 0),
                     localScale = generalScale
@@ -278,7 +278,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
+                    childName = "ThighR",
                     localPos = new Vector3(0f, 0.15f, 0.12f),
                     localAngles = new Vector3(-20f, 0f, 0f),
                     localScale = generalScale
@@ -290,7 +290,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
+                    childName = "Root",
                     localPos = new Vector3(0f, 0.1f, 0.4f),
                     localAngles = new Vector3(0f, 0f, 0f),
                     localScale = generalScale * 2f
@@ -302,7 +302,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
+                    childName = "ThighR",
                     localPos = new Vector3(0f, 0f, 2.4f),
                     localAngles = new Vector3(0f, 0f, 0f),
                     localScale = generalScale * 10f
@@ -314,24 +314,24 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
+                    childName = "ThighR",
                     localPos = new Vector3(0f, 5f, 0f),
                     localAngles = new Vector3(-90f, 0f, 0f),
                     localScale = generalScale * 20f
                 }
             });
-            //rules.Add("mdlSniper", new ItemDisplayRule[]
-            //{
-            //    new ItemDisplayRule
-            //    {
-            //        ruleType = ItemDisplayRuleType.ParentedPrefab,
-            //        followerPrefab = ItemBodyModelPrefab,
-            //        childName = "Head",
-            //        localPos = new Vector3(0f, -0.14f, 0.1f),
-            //        localAngles = new Vector3(-90f, 0f, 0f),
-            //        localScale = generalScale
-            //    }
-            //});
+            rules.Add("mdlEquipmentDrone", new ItemDisplayRule[]
+            {
+                new ItemDisplayRule
+                {
+                    ruleType = ItemDisplayRuleType.ParentedPrefab,
+                    followerPrefab = ItemBodyModelPrefab,
+                    childName = "GunBarrelBase",
+                    localPos = new Vector3(0f, 0f, 1.7f),
+                    localAngles = new Vector3(0f, 0f, 90f),
+                    localScale = new Vector3(0.2f, 0.2f, 0.2f)
+                }
+            });
             return rules;
         }
         public override void SetupConfig()
