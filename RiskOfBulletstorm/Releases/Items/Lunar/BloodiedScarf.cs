@@ -36,11 +36,12 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "<b>Blink Away</b>\nDodge roll is replaced with a blink.";
+        protected override string GetPickupString(string langID = null) => "<b>Blink Away</b>\nDodge roll is replaced with a blink." +
+            "\n<style=cDeath>Converts your Strides of Heresy to Lunar Coins on pickup.</style>";
 
-        protected override string GetDescString(string langid = null) => $"<style=cIsUtility>Teleport</style> up to <style=cIsUtility>{BloodiedScarf_RangeIncrease}m </style> " +
+        protected override string GetDescString(string langid = null) => $"<style=cIsUtility>Teleport</style> up to <style=cIsUtility>{BloodiedScarf_RangeBase}m </style> " +
             $"<style=cStack>(+{BloodiedScarf_RangeIncrease}m per stack)</style>.\n" +
-            $"After teleporting, <style=cDeath>take {Pct(BloodiedScarf_DamageIncrease)} more damage (per stack) for 1 second.</style>.";
+            $"After teleporting, <style=cDeath>take {Pct(BloodiedScarf_DamageIncrease)} more damage <style=cStack(+{Pct(BloodiedScarf_DamageIncrease)} per stack)</style> for 1 second.</style>.";
 
         protected override string GetLoreString(string langID = null) => "This simple scarf was once worn by a skilled assassin. Betrayed by his brothers and assumed dead...";
 
@@ -148,16 +149,24 @@ namespace RiskOfBulletstorm.Items
             // Picking up a scarf while you have strides
             if (stridesCount > 0 && itemIndex == catalogIndex)
             {
-                
+                DropLunarCoin(body.corePosition, stridesCount);
                 self.RemoveItem(ItemIndex.LunarUtilityReplacement, stridesCount);
             }
             // Picking up a Strides while you have Scarves
             if (scarfCount > 0 && itemIndex == ItemIndex.LunarUtilityReplacement)
             {
-                
+                DropLunarCoin(body.corePosition, scarfCount);
                 self.RemoveItem(catalogIndex, scarfCount);
             }
             orig(self, itemIndex, count);
+        }
+
+        void DropLunarCoin(Vector3 position, int count)
+        {
+            for (uint i = 0; i < count; i++)
+            {
+                PickupDropletController.CreatePickupDroplet(PickupCatalog.FindPickupIndex("LunarCoin.Coin0"), position, Vector3.up * 2f);
+            }
         }
 
         void DropItemIndex(Vector3 position, ItemIndex itemIndex, int count)
