@@ -23,6 +23,9 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("How much damage vulnerability should the debuff give per stack upon teleporting? (Value: Additive Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float BloodiedScarf_DamageIncrease { get; private set; } = 0.15f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("How far should the teleport go with one stack? (Value: Meters)", AutoConfigFlags.PreventNetMismatch)]
+        public float BloodiedScarf_RangeBase { get; private set; } = 10f;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How far should the maximum range increase by per stack? (Value: Meters)", AutoConfigFlags.PreventNetMismatch)]
         public float BloodiedScarf_RangeIncrease { get; private set; } = 5f;
 
@@ -53,7 +56,8 @@ namespace RiskOfBulletstorm.Items
             base.SetupAttributes();
 
             LanguageAPI.Add("BULLETSTORM_UTILITY_REPLACEMENT_NAME", "Teleport");
-            LanguageAPI.Add("BULLETSTORM_UTILITY_REPLACEMENT_DESCRIPTION", "Teleport 5m away and take 25% more damage for 1 second.");
+            LanguageAPI.Add("BULLETSTORM_UTILITY_REPLACEMENT_DESCRIPTION", "Bloodied Scarf:\n" +
+                "Teleport 10m <style=cStack>(+5m per stack)</style> away and gain 25% damage vulnerability <style=cStack>(+25% per stack)</style> for 1 second.");
 
             LoadoutAPI.AddSkill(typeof(Lunar.TeleportUtilitySkillState));
             teleportSkillDef = ScriptableObject.CreateInstance<SkillDef>();

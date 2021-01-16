@@ -494,7 +494,7 @@ namespace RiskOfBulletstorm.Items
             //ResultMult = ResultMult;
 
             //Debug.Log("Scope: "+ ResultMult);
-            Debug.Log("Scope: [isProjectile"+ isProjectile+ "] Scope: "+ ScopeMult + " + SpiceMult: " + SpiceMult + " = " + ResultMult);
+            //Debug.Log("Scope: [isProjectile"+ isProjectile+ "] Scope: "+ ScopeMult + " + SpiceMult: " + SpiceMult + " = " + ResultMult);
             return ResultMult;
         }
 

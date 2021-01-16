@@ -26,6 +26,30 @@ namespace RiskOfBulletstorm
                     cb.AddBuff(BuffIndex.Cloak);
             }
         }
+        [ConCommand(commandName = "ROB_teleport", flags = ConVarFlags.ExecuteOnServer, helpText = "Teleport to specified coords. [x] [y] [z]")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Console Command")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Empty Arg required")]
+        private static void TeleportPos(ConCommandArgs args)
+        {
+            var localMaster = PlayerCharacterMasterController.instances[0].master;
+            var body = localMaster.bodyInstanceObject;
+            var cb = body.GetComponent<CharacterBody>();
+            var rbm = body.GetComponent<RigidbodyMotor>();
+            var position = new Vector3(args.GetArgFloat(0), args.GetArgFloat(1), args.GetArgFloat(2));
+            if (cb)
+            {
+                if (cb.characterMotor)
+                {
+                    Debug.Log("Teleported charactermotor");
+                    cb.characterMotor.Motor.SetPositionAndRotation(position, Quaternion.identity, true);
+                }
+                else if (rbm)
+                {
+                    Debug.Log("Teleported rigidbody");
+                    rbm.rigid.position = position;
+                }
+            }
+        }
 
         [ConCommand(commandName = "ROB_list_equipment", flags = ConVarFlags.None, helpText = "Prints the equipment equipped.")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Console Command")]

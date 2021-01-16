@@ -19,7 +19,7 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("What is the chance to create a pickup after reaching the required amount? (Value: Direct Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float BUP_RollChance { get; private set; } = 30f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Debugging: Enable to show in console when a Forgive Me, Please was detected with its damageinfo.", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Debugging: Enable to show in console when a Forgive Me, Please was detected with its damageinfo. Use it to test for any false positives.", AutoConfigFlags.PreventNetMismatch)]
         public bool BUP_DebugShowDollProc { get; private set; } = false;
         public override string displayName => "BulletstormPickupsController";
         public override ItemTier itemTier => ItemTier.NoTier;
@@ -65,6 +65,29 @@ namespace RiskOfBulletstorm.Items
             base.Install();
             On.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
             RoR2.Stage.onStageStartGlobal += Stage_onStageStartGlobal;
+            On.RoR2.MapZone.TryZoneStart += MapZone_TryZoneStart;
+        }
+
+        private void MapZone_TryZoneStart(On.RoR2.MapZone.orig_TryZoneStart orig, MapZone self, Collider other)
+        {
+            orig(self, other);
+            BulletstormPickupsComponent pickupsComponent = currentStage?.GetComponent<BulletstormPickupsComponent>();
+            if (!pickupsComponent) return;
+            MapZone.ZoneType zoneType = self.zoneType;
+            CharacterBody component = other.GetComponent<CharacterBody>();
+            if (!component) return;
+            TeamComponent teamComponent = component.teamComponent;
+            if (!teamComponent) return;
+            if (teamComponent.teamIndex == TeamIndex.Player) return;
+
+            if (zoneType == MapZone.ZoneType.OutOfBounds)
+            {
+                HealthComponent healthComponent = component.healthComponent;
+                if (healthComponent)
+                {
+                    pickupsComponent.wasMapZoneDeath = true;
+                }
+            }
         }
 
         public override void Uninstall()
@@ -72,6 +95,7 @@ namespace RiskOfBulletstorm.Items
             base.Uninstall();
             On.RoR2.GlobalEventManager.OnCharacterDeath -= GlobalEventManager_OnCharacterDeath;
             RoR2.Stage.onStageStartGlobal -= Stage_onStageStartGlobal;
+            On.RoR2.MapZone.TryZoneStart -= MapZone_TryZoneStart;
         }
 
         private void Stage_onStageStartGlobal(RoR2.Stage obj)
@@ -108,13 +132,16 @@ namespace RiskOfBulletstorm.Items
 
         private void GlobalEventManager_OnCharacterDeath(On.RoR2.GlobalEventManager.orig_OnCharacterDeath orig, GlobalEventManager self, DamageReport damageReport)
         {
-            if (!NetworkServer.active) return;
+            orig(self, damageReport);
+            if (!NetworkServer.active || !currentStage)
+            {
+                return;
+            }
             var dmginfo = damageReport.damageInfo;
             BulletstormPickupsComponent pickupsComponent = currentStage?.GetComponent<BulletstormPickupsComponent>();
             if (!currentStage || CheckIfDoll(dmginfo) || damageReport.victimTeamIndex == TeamIndex.Player || damageReport.victimTeamIndex == TeamIndex.None || !pickupsComponent)
             {
                 //Debug.Log("current stage: "+currentStage+"| Doll? "+CheckIfDoll(dmginfo)+"| teamindex: "+damageReport.victimTeamIndex+" pickups component: "+pickupsComponent);
-                orig(self, damageReport);
                 return;
             }
             var requiredKills = pickupsComponent.requiredKills;
@@ -152,6 +179,7 @@ namespace RiskOfBulletstorm.Items
         {
             public int globalDeaths = 0;
             public int requiredKills = 10;
+            public bool wasMapZoneDeath = false;
         }
     }
 }

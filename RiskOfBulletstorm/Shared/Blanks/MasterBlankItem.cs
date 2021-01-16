@@ -95,7 +95,7 @@ namespace RiskOfBulletstorm.Shared.Blanks
 
         }
 
-        public static bool FireBlank(CharacterBody attacker, Vector3 corePosition, float blankRadius, float damageMult, float projectileClearRadius, bool consumeBlank = false)
+        public static bool FireBlank(CharacterBody attacker, Vector3 corePosition, float blankRadius, float damageMult, float projectileClearRadius, bool consumeBlank = false, bool playSound = true, bool playEffect = true)
         {
             //var body = attacker.GetComponent<CharacterBody>();
             var blankAmount = attacker.inventory.GetItemCount(Blank.instance.catalogIndex);
@@ -105,40 +105,49 @@ namespace RiskOfBulletstorm.Shared.Blanks
 
                 return false;
             }
-            Util.PlayScaledSound(BlankSound, attacker.gameObject, 0.75f);
+            if (playSound)
+            {
+                Util.PlayScaledSound(BlankSound, attacker.gameObject, 0.75f);
+            }
 
             var teamIndex = attacker.teamComponent ? attacker.teamComponent.teamIndex : TeamIndex.Player;
 
             // EFFECT HERE
-            var characterBody = attacker.GetComponent<CharacterBody>();
-            var yOffset = 0f;
-            if (characterBody && characterBody.characterMotor)
-                yOffset = characterBody.characterMotor.capsuleHeight / 2;
-            EffectManager.SpawnEffect(BlankEffect, new EffectData
+            if (playEffect)
             {
-                origin = attacker.transform.position + Vector3.up*yOffset,
-                rotation = Util.QuaternionSafeLookRotation(Vector3.up),
-                scale = 20f
-            }, false) ;
+                var characterBody = attacker.GetComponent<CharacterBody>();
+                var yOffset = 0f;
+                if (characterBody && characterBody.characterMotor)
+                    yOffset = characterBody.characterMotor.capsuleHeight / 2;
+                EffectManager.SpawnEffect(BlankEffect, new EffectData
+                {
+                    origin = attacker.transform.position + Vector3.up * yOffset,
+                    rotation = Util.QuaternionSafeLookRotation(Vector3.up),
+                    scale = 20f
+                }, false);
+            }
 
-            // BLAST ATTACK //
-            new BlastAttack
+            // BLAST ATTACK HERE //
+            if (damageMult > 0)
             {
-                attacker = attacker.gameObject, //who
-                inflictor = BlankObject, //how
-                position = corePosition,
-                procCoefficient = 0f,
-                losType = BlastAttack.LoSType.None,
-                falloffModel = BlastAttack.FalloffModel.None,
-                baseDamage = attacker.damage * damageMult,
-                damageType = DamageType.Stun1s,
-                //crit = self.RollCrit(),
-                radius = blankRadius,
-                teamIndex = teamIndex,
-                baseForce = 900,
-                //baseForce = 2000f,
-                //bonusForce = new Vector3(0, 1600, 0)
-            }.Fire();
+                new BlastAttack
+                {
+                    attacker = attacker.gameObject, //who
+                    inflictor = BlankObject, //how
+                    position = corePosition,
+                    procCoefficient = 0f,
+                    losType = BlastAttack.LoSType.None,
+                    falloffModel = BlastAttack.FalloffModel.None,
+                    baseDamage = attacker.damage * damageMult,
+                    damageType = DamageType.Stun1s,
+                    //crit = self.RollCrit(),
+                    radius = blankRadius,
+                    teamIndex = teamIndex,
+                    baseForce = 900,
+                    //baseForce = 2000f,
+                    //bonusForce = new Vector3(0, 1600, 0)
+                }.Fire();
+            }
 
             if (projectileClearRadius != 0)
             {

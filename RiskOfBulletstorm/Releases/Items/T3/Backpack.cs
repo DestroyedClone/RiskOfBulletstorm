@@ -51,6 +51,7 @@ namespace RiskOfBulletstorm.Items
         public KeyCode CycleRightKey_GP = KeyCode.None;
 
         public static GameObject ItemBodyModelPrefab;
+        public static int ToolbotBodyIndex;
 
         public override void SetupBehavior()
         {
@@ -99,6 +100,13 @@ namespace RiskOfBulletstorm.Items
             base.Uninstall();
             On.RoR2.CharacterBody.Start -= CharacterBody_Start;
         }
+
+        public override void SetupLate()
+        {
+            base.SetupLate();
+            ToolbotBodyIndex = SurvivorCatalog.GetBodyIndexFromSurvivorIndex(SurvivorIndex.Toolbot);
+        }
+
         private void CharacterBody_Start(On.RoR2.CharacterBody.orig_Start orig, CharacterBody self)
         {
             orig(self);
@@ -107,10 +115,13 @@ namespace RiskOfBulletstorm.Items
                 var masterObj = self.masterObject;
                 BackpackComponent backpackComponent = masterObj.GetComponent<BackpackComponent>();
                 if (!backpackComponent) { backpackComponent = masterObj.AddComponent<BackpackComponent>(); }
+                backpackComponent.ToolbotBodyIndex = ToolbotBodyIndex;
                 backpackComponent.characterBody = self;
                 backpackComponent.localUser = LocalUserManager.readOnlyLocalUsersList[0];
                 backpackComponent.inventory = self.inventory;
-                backpackComponent.isToolbot = (byte)(self.baseNameToken.ToUpper().Contains("TOOLBOT") ? 1 : 0);
+                backpackComponent.Subscribe();
+                backpackComponent.UpdateToolbot(self);
+                backpackComponent.CharacterBody_onInventoryChanged();
             }
         }
 
@@ -122,22 +133,34 @@ namespace RiskOfBulletstorm.Items
             public byte inventoryCount = 0;
             public byte isToolbot = 0;
             public byte selectableSlot = 0;
+            public int ToolbotBodyIndex;
 
             public void Start()
             {
-                if (characterBody)
-                    characterBody.onInventoryChanged += CharacterBody_onInventoryChanged;
+                Chat.AddMessage("cum");
             }
             public void OnDisable()
             {
                 if (characterBody)
                     characterBody.onInventoryChanged -= CharacterBody_onInventoryChanged;
             }
-            private void CharacterBody_onInventoryChanged()
+            public void Subscribe()
+            {
+                if (characterBody)
+                    characterBody.onInventoryChanged += CharacterBody_onInventoryChanged;
+            }
+            public void UpdateToolbot(CharacterBody characterBody)
+            {
+                isToolbot = (byte)(characterBody.bodyIndex == ToolbotBodyIndex ? 1 : 0);
+            }
+            public void UpdateCount()
             {
                 inventoryCount = (byte)inventory.GetItemCount(instance.catalogIndex);
                 selectableSlot = (byte)(inventoryCount + isToolbot);
-
+            }
+            public void CharacterBody_onInventoryChanged()
+            {
+                UpdateCount();
                 if (inventory.activeEquipmentSlot > inventoryCount)
                     inventory.SetActiveEquipmentSlot(inventoryCount);
             }

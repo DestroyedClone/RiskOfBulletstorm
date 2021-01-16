@@ -662,8 +662,8 @@ namespace RiskOfBulletstorm.Items
                 {
                     baseAI.currentEnemy.Reset();
                     baseAI.ForceAcquireNearestEnemyIfNoCurrentEnemy();
+                    _logger.LogDebug("Charm: Changed Target to " + baseAI.currentEnemy.characterBody.name);
                 }
-                _logger.LogDebug("Charm: Changed Target to " + baseAI.currentEnemy.characterBody.name);
             }
 
             public TeamIndex GetOppositeTeamIndex(TeamIndex teamIndex)

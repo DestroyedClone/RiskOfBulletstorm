@@ -74,7 +74,7 @@ namespace RiskOfBulletstorm.Items
             }*/
 
             ItemDisplayRuleDict rules = new ItemDisplayRuleDict();
-            rules.Add("mdlCommando", new ItemDisplayRule[]
+            rules.Add("mdlCommandoDualies", new ItemDisplayRule[]
             {
                 new ItemDisplayRule
                 {
@@ -95,6 +95,27 @@ namespace RiskOfBulletstorm.Items
                     localScale = generalScale * 0.5f
                 },
             });
+            rules.Add("mdlCommando", new ItemDisplayRule[]
+{
+                new ItemDisplayRule
+                {
+                    ruleType = ItemDisplayRuleType.ParentedPrefab,
+                    followerPrefab = ItemBodyModelPrefab,
+                    childName = "HandL",
+                    localPos = new Vector3(-0.24f, 0.4f, -0.07f),
+                    localAngles = new Vector3(270, 90, 0),
+                    localScale = generalScale * 0.5f
+                },
+                new ItemDisplayRule
+                {
+                    ruleType = ItemDisplayRuleType.ParentedPrefab,
+                    followerPrefab = ItemBodyModelPrefab,
+                    childName = "HandR",
+                    localPos = new Vector3(0.24f, 0.4f, 0.04f),
+                    localAngles = new Vector3(-90f, 300f, 0f),
+                    localScale = generalScale * 0.5f
+                },
+});
             rules.Add("mdlHuntress", new ItemDisplayRule[]
             {
                 new ItemDisplayRule
