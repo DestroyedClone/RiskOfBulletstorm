@@ -1,9 +1,11 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
 using TILER2;
 using static RiskOfBulletstorm.RiskofBulletstorm;
+using System.Linq;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -16,7 +18,7 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("What value should the required kills be multiplied by per stage?", AutoConfigFlags.PreventNetMismatch)]
         public float BUP_StageMultiplier { get; private set; } = 1.5f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the chance to create a pickup after reaching the required amount? (Value: Direct Percentage)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the chance to create a pickup after reaching the required amount of kills? (Value: Direct Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float BUP_RollChance { get; private set; } = 30f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Debugging: Enable to show in console when a Forgive Me, Please was detected with its damageinfo. Use it to test for any false positives.", AutoConfigFlags.PreventNetMismatch)]
@@ -85,7 +87,8 @@ namespace RiskOfBulletstorm.Items
                 HealthComponent healthComponent = component.healthComponent;
                 if (healthComponent)
                 {
-                    pickupsComponent.wasMapZoneDeath = true;
+                    pickupsComponent.wasMapDeath = true;
+                    pickupsComponent.lastHitAttacker = healthComponent.lastHitAttacker;
                 }
             }
         }
@@ -138,7 +141,7 @@ namespace RiskOfBulletstorm.Items
                 return;
             }
             var dmginfo = damageReport.damageInfo;
-            BulletstormPickupsComponent pickupsComponent = currentStage?.GetComponent<BulletstormPickupsComponent>();
+            BulletstormPickupsComponent pickupsComponent = currentStage.GetComponent<BulletstormPickupsComponent>();
             if (!currentStage || CheckIfDoll(dmginfo) || damageReport.victimTeamIndex == TeamIndex.Player || damageReport.victimTeamIndex == TeamIndex.None || !pickupsComponent)
             {
                 //Debug.Log("current stage: "+currentStage+"| Doll? "+CheckIfDoll(dmginfo)+"| teamindex: "+damageReport.victimTeamIndex+" pickups component: "+pickupsComponent);
@@ -146,17 +149,58 @@ namespace RiskOfBulletstorm.Items
             }
             var requiredKills = pickupsComponent.requiredKills;
             CharacterBody VictimBody = damageReport.victimBody;
-
             if (VictimBody)
             {
-                Vector3 PickupPosition = VictimBody.transform.position + Vector3.up *2f;
-
                 //int DiffMultAdd = Run.instance.selectedDifficulty;
-
                 pickupsComponent.globalDeaths++;
                 //Chat.AddMessage("kills: "+ pickupsComponent.globalDeaths + " / "+ requiredKills);
                 if (pickupsComponent.globalDeaths % requiredKills == 0)
                 {
+                    Vector3 PickupPosition = new Vector3();
+                    if (pickupsComponent.wasMapDeath) //If they die off the map
+                    {
+                        if (pickupsComponent.lastHitAttacker) //If it's killed by a player
+                        {
+                            PickupPosition = pickupsComponent.lastHitAttacker.transform.position;
+                        }
+                        else
+                        {
+                            var playerSearch = new BullseyeSearch() //let's just get the nearest player
+                            {
+                                viewer = VictimBody,
+                                sortMode = BullseyeSearch.SortMode.Distance,
+                                teamMaskFilter = TeamMask.allButNeutral,
+                            };
+                            playerSearch.teamMaskFilter.RemoveTeam(TeamIndex.Monster);
+                            playerSearch.FilterOutGameObject(VictimBody.gameObject);
+                            var list = playerSearch.GetResults().ToList();
+                            bool success = false;
+                            foreach (var player in list)
+                            {
+                                var body = player.gameObject.GetComponent<CharacterBody>();
+                                if (body)
+                                {
+                                    if (body.isPlayerControlled)
+                                    {
+                                        PickupPosition = body.corePosition;
+                                        success = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (!success) //fine just the nearest friendly character, ye bastard.
+                            {
+                                PickupPosition = list.FirstOrDefault().transform.position;
+                            }
+                            //var nearestPlayer = new SphereSearch { origin = VictimBody.transform.position, mask = LayerIndex.entityPrecise.mask }.RefreshCandidates().FilterCandidatesByHurtBoxTeam(TeamMask.GetEnemyTeams(VictimBody.teamComponent.teamIndex)).OrderCandidatesByDistance().FilterCandidatesByDistinctHurtBoxEntities().GetHurtBoxes().FirstOrDefault<HurtBox>();
+                        }
+                    } else
+                    {
+                        PickupPosition = VictimBody.transform.position;
+                    }
+                    pickupsComponent.wasMapDeath = false;
+                    pickupsComponent.lastHitAttacker = null;
+                    PickupPosition += Vector3.up * 2f;
                     if (Util.CheckRoll(BUP_RollChance)) //Roll to spawn pickups
                     {
                         //Chat.AddMessage("Pickups: Rolled success.");
@@ -169,7 +213,7 @@ namespace RiskOfBulletstorm.Items
                     {
                         //Chat.AddMessage("Roll failed");
                     }*/
-                    //Okay, there's no way we'll hit the integer limit, so no need to set it to zero again.
+                    pickupsComponent.globalDeaths = 0;
                 }
             }
 
@@ -179,7 +223,8 @@ namespace RiskOfBulletstorm.Items
         {
             public int globalDeaths = 0;
             public int requiredKills = 10;
-            public bool wasMapZoneDeath = false;
+            public bool wasMapDeath = false;
+            public GameObject lastHitAttacker;
         }
     }
 }
