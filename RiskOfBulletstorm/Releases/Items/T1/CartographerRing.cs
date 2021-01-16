@@ -126,7 +126,7 @@ namespace RiskOfBulletstorm.Items
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
                     childName = "Finger42R",
-                    localPos = new Vector3(-0.032f, -0.03f, 0.02f),
+                    localPos = new Vector3(-0.032f, -0.03f, -0.02f),
                     localAngles = new Vector3(45f, 2.8787f, 180f),
                     localScale = new Vector3(0.012f, 0.01f, 0.012f)
                 }
@@ -215,20 +215,20 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "MechFinger13R",
+                    childName = "MechFinger33R",
                     localPos = new Vector3(0f, 0.02f, 0.06f),
                     localAngles = new Vector3(180f, 180f, 180f),
                     localScale = generalScale * 3
                 }
             });
-            rules.Add("mdlCroco", new ItemDisplayRule[] //todo
+            rules.Add("mdlCroco", new ItemDisplayRule[]
             {
                 new ItemDisplayRule
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
                     childName = "Finger31L",
-                    localPos = new Vector3(0f, 0.3f, 0f),
+                    localPos = new Vector3(-0.3f, 0.3f, 0f),
                     localAngles = new Vector3(-90f, 90f, 0f),
                     localScale = generalScale * 25
                 }

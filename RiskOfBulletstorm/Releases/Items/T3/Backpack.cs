@@ -53,6 +53,7 @@ namespace RiskOfBulletstorm.Items
         public static GameObject ItemBodyModelPrefab;
         public static int ToolbotBodyIndex;
 
+
         public override void SetupBehavior()
         {
             base.SetupBehavior();
@@ -60,6 +61,10 @@ namespace RiskOfBulletstorm.Items
         public override void SetupAttributes()
         {
             base.SetupAttributes();
+
+            var scavBackpackPrefab = Resources.Load<GameObject>("prefabs/networkedobjects/ScavBackpack.prefab");
+            var mesh = scavBackpackPrefab.GetComponentInChildren<SkinnedMeshRenderer>().sharedMesh;
+            _logger.LogMessage("COCKS CTRL F ME PLEASE DONT FORGET"+mesh);
 
             //GameObject ScavBackpackPrefab = Resources.Load<GameObject>("prefabs/networkedobjects/ScavBackpack.prefab");
             //ScavBackpackPrefab.GetComponent<MeshRenderer>().

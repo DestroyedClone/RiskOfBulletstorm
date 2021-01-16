@@ -135,7 +135,7 @@ namespace RiskOfBulletstorm.Items
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
                     childName = "Finger22R",
-                    localPos = new Vector3(0f, -0.02f, -0.01f),
+                    localPos = new Vector3(0.03f, -0.02f, -0.01f),
                     localAngles = new Vector3(-60f, 1f, 180f),
                     localScale = generalScale
                 },
@@ -161,7 +161,7 @@ namespace RiskOfBulletstorm.Items
                     childName = "Finger22R",
                     localPos = new Vector3(-0.035f, 0.03f, -0.035f),
                     localAngles = new Vector3(270f, 0f, 0f),
-                    localScale = new Vector3(0.013f, 0.03f, 0.03f)
+                    localScale = new Vector3(0.013f, 0.013f, 0.013f)
                 }
             });
             rules.Add("mdlTreebot", new ItemDisplayRule[] //todo
@@ -195,7 +195,7 @@ namespace RiskOfBulletstorm.Items
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
                     childName = "Finger11L",
-                    localPos = new Vector3(-0.3f, 0.4f, 0.7f),
+                    localPos = new Vector3(-0.3f, 0.4f, 0f),
                     localAngles = new Vector3(270f, 90f, 0f),
                     localScale = generalScale * 25
                 }
