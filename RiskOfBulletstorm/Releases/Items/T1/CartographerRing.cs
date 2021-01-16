@@ -114,8 +114,8 @@ namespace RiskOfBulletstorm.Items
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
                     childName = "Finger42R",
-                    localPos = new Vector3(-0.003f, -0.01f, -0.05f),
-                    localAngles = new Vector3(30f, 5, 180),
+                    localPos = new Vector3(-0.00f, -0.014f, -0.025f),
+                    localAngles = new Vector3(10f, 1, 170),
                     localScale = generalScale
                 }
             });
@@ -126,7 +126,7 @@ namespace RiskOfBulletstorm.Items
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
                     childName = "Finger42R",
-                    localPos = new Vector3(0f, -0.03f, 0.022f),
+                    localPos = new Vector3(-0.032f, -0.03f, 0.02f),
                     localAngles = new Vector3(45f, 2.8787f, 180f),
                     localScale = new Vector3(0.012f, 0.01f, 0.012f)
                 }
@@ -168,8 +168,8 @@ namespace RiskOfBulletstorm.Items
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
                     childName = "Finger42R",
-                    localPos = new Vector3(0f, -0.02f, -0.01f),
-                    localAngles = new Vector3(-60f, 1f, 180f),
+                    localPos = new Vector3(0.03f, 0.01f, 0.01f),
+                    localAngles = new Vector3(330f, 0f, 180f),
                     localScale = generalScale
                 },
             });
@@ -180,7 +180,7 @@ namespace RiskOfBulletstorm.Items
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
                     childName = "Finger42R",
-                    localPos = new Vector3(-0.005f, -0.05f, -0.02f),
+                    localPos = new Vector3(0.03f, -0.02f, 0.01f),
                     localAngles = new Vector3(90f, 5f, 0f),
                     localScale = new Vector3(0.011f, 0.011f, 0.011f)
                 }
@@ -192,8 +192,8 @@ namespace RiskOfBulletstorm.Items
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
                     childName = "Finger42R",
-                    localPos = new Vector3(-0.003f, 0.04f, -0.03f),
-                    localAngles = new Vector3(-90f, 0f, 0f),
+                    localPos = new Vector3(-0.0035f, 0.04f, -0.05f),
+                    localAngles = new Vector3(270f, 0f, 0f),
                     localScale = new Vector3(0.011f, 0.01f, 0.01f)
                 }
             });
@@ -209,25 +209,25 @@ namespace RiskOfBulletstorm.Items
                     localScale = generalScale * 8f
                 }
             });
-            rules.Add("mdlLoader", new ItemDisplayRule[]
+            rules.Add("mdlLoader", new ItemDisplayRule[] //todo
             {
                 new ItemDisplayRule
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "MechFinger33R",
+                    childName = "MechFinger13R",
                     localPos = new Vector3(0f, 0.02f, 0.06f),
                     localAngles = new Vector3(180f, 180f, 180f),
                     localScale = generalScale * 3
                 }
             });
-            rules.Add("mdlCroco", new ItemDisplayRule[]
+            rules.Add("mdlCroco", new ItemDisplayRule[] //todo
             {
                 new ItemDisplayRule
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Finger21L",
+                    childName = "Finger31L",
                     localPos = new Vector3(0f, 0.3f, 0f),
                     localAngles = new Vector3(-90f, 90f, 0f),
                     localScale = generalScale * 25
@@ -240,12 +240,12 @@ namespace RiskOfBulletstorm.Items
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
                     childName = "Finger42R",
-                    localPos = new Vector3(-0.002f, 0.01f, 0.005f),
-                    localAngles = new Vector3(-90f, 20f, 0f),
+                    localPos = new Vector3(-0.0035f, 0.01f, -0.001f),
+                    localAngles = new Vector3(255f, 195f, 180f),
                     localScale = generalScale
                 }
             });
-            rules.Add("mdlBrother", new ItemDisplayRule[] //todo
+            rules.Add("mdlBrother", new ItemDisplayRule[] //todo child
             {
                 new ItemDisplayRule
                 {
@@ -264,8 +264,8 @@ namespace RiskOfBulletstorm.Items
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
                     childName = "HandL",
-                    localPos = new Vector3(-0.015f, 0.12f, 0.02f),
-                    localAngles = new Vector3(50f, -10f, 6.6411f),
+                    localPos = new Vector3(0.047f, 0.12f, 0.016f),
+                    localAngles = new Vector3(50f, 10f, 6.6411f),
                     localScale = generalScale
                 }
             });
@@ -276,8 +276,8 @@ namespace RiskOfBulletstorm.Items
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
                     childName = "Muzzle",
-                    localPos = new Vector3(0.1f, 0.44f, -2.85f),
-                    localAngles = new Vector3(35f, -1.042f, -135f),
+                    localPos = new Vector3(0.13f, 0.45f, -2.8f),
+                    localAngles = new Vector3(35f, 0f, 270f),
                     localScale = generalScale * 3f
                 }
             });
@@ -288,18 +288,18 @@ namespace RiskOfBulletstorm.Items
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
                     childName = "HandL",
-                    localPos = new Vector3(0.4f, 2.3f, 0.4f),
-                    localAngles = new Vector3(90f, 90f, 0f),
+                    localPos = new Vector3(-0.7f, 2.3f, 0.1f),
+                    localAngles = new Vector3(270f, 90f, 0f),
                     localScale = generalScale * 20f
                 }
             });
-            rules.Add("mdlScav", new ItemDisplayRule[] //todo
+            rules.Add("mdlScav", new ItemDisplayRule[] //RDY 
             {
                 new ItemDisplayRule
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Finger42R",
+                    childName = "Finger42L",
                     localPos = new Vector3(0f, 5f, 0f),
                     localAngles = new Vector3(-90f, 0f, 0f),
                     localScale = generalScale * 20f

@@ -137,7 +137,6 @@ namespace RiskOfBulletstorm.Items
 
             public void Start()
             {
-                Chat.AddMessage("cum");
             }
             public void OnDisable()
             {

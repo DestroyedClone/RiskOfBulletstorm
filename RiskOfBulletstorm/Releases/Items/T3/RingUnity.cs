@@ -179,13 +179,13 @@ namespace RiskOfBulletstorm.Items
                     localScale = generalScale * 3
                 }
             });
-            rules.Add("mdlCroco", new ItemDisplayRule[]
+            rules.Add("mdlCroco", new ItemDisplayRule[] //todo
             {
                 new ItemDisplayRule
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Finger11L",
+                    childName = "Finger21L",
                     localPos = new Vector3(0f, 0.3f, 0f),
                     localAngles = new Vector3(-90f, 90f, 0f),
                     localScale = generalScale * 25

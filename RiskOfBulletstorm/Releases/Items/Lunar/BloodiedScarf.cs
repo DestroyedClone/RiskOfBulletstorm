@@ -1,5 +1,5 @@
 ﻿
-//using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 //using System.Text;
@@ -7,6 +7,7 @@ using R2API;
 using RoR2;
 using RoR2.Skills;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Networking;
 using TILER2;
 using static TILER2.StatHooks;
@@ -147,15 +148,13 @@ namespace RiskOfBulletstorm.Items
             // Picking up a scarf while you have strides
             if (stridesCount > 0 && itemIndex == catalogIndex)
             {
-                Chat.AddMessage("Picking up a scarf while you have strides");
-                DropItemIndex(body.corePosition, ItemIndex.LunarUtilityReplacement, stridesCount);
+                
                 self.RemoveItem(ItemIndex.LunarUtilityReplacement, stridesCount);
             }
             // Picking up a Strides while you have Scarves
             if (scarfCount > 0 && itemIndex == ItemIndex.LunarUtilityReplacement)
             {
-                Chat.AddMessage("Picking up a Strides while you have Scarves");
-                DropItemIndex(body.corePosition, catalogIndex, scarfCount);
+                
                 self.RemoveItem(catalogIndex, scarfCount);
             }
             orig(self, itemIndex, count);
@@ -192,5 +191,6 @@ namespace RiskOfBulletstorm.Items
                 }
             }
         }
+
     }
 }
