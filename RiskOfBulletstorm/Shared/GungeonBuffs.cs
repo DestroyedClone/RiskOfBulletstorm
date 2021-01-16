@@ -651,6 +651,7 @@ namespace RiskOfBulletstorm.Items
                     _logger.LogDebug("GungeonBuffs Charm: OnEnable, last target was " + currentEnemyCharacterBody.name);
                     if (currentEnemyCharacterBody && currentEnemyCharacterBody.teamComponent && currentEnemyCharacterBody.teamComponent.teamIndex == GetOppositeTeamIndex(oldTeamIndex))
                     {
+                        _logger.LogDebug("Start's ResetTarget");
                         ResetTarget();
                     }
                 }
@@ -689,6 +690,7 @@ namespace RiskOfBulletstorm.Items
                     characterBody.RemoveBuff(Charm);
                 if (characterBody)
                     characterBody.teamComponent.teamIndex = oldTeamIndex;
+                _logger.LogDebug("Disable's ResetTarget");
                 ResetTarget();
             }
 
