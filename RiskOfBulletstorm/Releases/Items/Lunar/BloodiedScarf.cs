@@ -29,6 +29,9 @@ namespace RiskOfBulletstorm.Items
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How far should the maximum range increase by per stack? (Value: Meters)", AutoConfigFlags.PreventNetMismatch)]
         public float BloodiedScarf_RangeIncrease { get; private set; } = 5f;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("If true, picking up a Strides of Heresy/Scarf while having the other will drop coins. If false, it will instead drop the other items onto the ground.", AutoConfigFlags.PreventNetMismatch)]
+        public bool BloodiedScarf_DropCoins { get; private set; } = true;
 
         public override string displayName => "Bloodied Scarf";
         public override ItemTier itemTier => ItemTier.Lunar;
@@ -146,16 +149,24 @@ namespace RiskOfBulletstorm.Items
             var stridesCount = self.GetItemCount(ItemIndex.LunarUtilityReplacement);
             var body = self.gameObject.GetComponent<PlayerCharacterMasterController>()?.body;
 
+            // TODO: Replace with a switch statement or something holy shit man
+
             // Picking up a scarf while you have strides
             if (stridesCount > 0 && itemIndex == catalogIndex)
             {
-                DropLunarCoin(body.corePosition, stridesCount);
+                if (BloodiedScarf_DropCoins)
+                    DropLunarCoin(body.corePosition, stridesCount);
+                else
+                    DropItemIndex(body.corePosition, ItemIndex.LunarUtilityReplacement, stridesCount);
                 self.RemoveItem(ItemIndex.LunarUtilityReplacement, stridesCount);
             }
             // Picking up a Strides while you have Scarves
             if (scarfCount > 0 && itemIndex == ItemIndex.LunarUtilityReplacement)
             {
-                DropLunarCoin(body.corePosition, scarfCount);
+                if (BloodiedScarf_DropCoins)
+                    DropLunarCoin(body.corePosition, scarfCount);
+                else
+                    DropItemIndex(body.corePosition, instance.catalogIndex, scarfCount);
                 self.RemoveItem(catalogIndex, scarfCount);
             }
             orig(self, itemIndex, count);
