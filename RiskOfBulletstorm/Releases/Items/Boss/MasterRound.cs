@@ -34,7 +34,7 @@ namespace RiskOfBulletstorm.Items
         public bool MasterRound_AnnounceMax { get; private set; } = true;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Should the chat say who gets hit in chat?", AutoConfigFlags.PreventNetMismatch)]
-        public bool MasterRound_ShowHitInChat { get; private set; } = false;
+        public bool MasterRound_ShowHitInChat { get; private set; } = true;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("For enemies hitting the players, should only the teleporter boss's hits count for the master round?", AutoConfigFlags.PreventNetMismatch)]
         public bool MasterRound_OnlyAllowTeleBoss { get; private set; } = true;
