@@ -278,17 +278,20 @@ namespace RiskOfBulletstorm.Items
 
             if (!self.isPlayerControlled)
             {
-                var baseAI = self.masterObject.GetComponent<BaseAI>();
-                if (baseAI)
+                if (self.masterObject)
                 {
-                    var isCharmed = self.gameObject.GetComponent<IsCharmed>();
-                    if (!isCharmed) isCharmed = self.gameObject.AddComponent<IsCharmed>();
+                    var baseAI = self.masterObject.GetComponent<BaseAI>();
+                    if (baseAI)
+                    {
+                        var isCharmed = self.gameObject.GetComponent<IsCharmed>();
+                        if (!isCharmed) isCharmed = self.gameObject.AddComponent<IsCharmed>();
 
-                    isCharmed.characterBody = self;
-                    isCharmed.teamComponent = self.teamComponent;
-                    isCharmed.baseAI = baseAI;
-                    isCharmed.oldTeamIndex = self.teamComponent.teamIndex;
-                    isCharmed.enabled = false;
+                        isCharmed.enabled = false;
+                        isCharmed.characterBody = self;
+                        isCharmed.teamComponent = self.teamComponent;
+                        isCharmed.baseAI = baseAI;
+                        isCharmed.oldTeamIndex = self.teamComponent.teamIndex;
+                    }
                 }
             }
         }
@@ -296,6 +299,7 @@ namespace RiskOfBulletstorm.Items
         // Buff //
         private void Charmed_EnableComponent(On.RoR2.CharacterBody.orig_AddBuff orig, CharacterBody self, BuffIndex buffType)
         {
+            IsCharmed isCharmed = null;
             if (buffType == Charm)
             {
                 if (!Config_Charm_Boss && self.isBoss) //prevents adding the buff if it's a boss and the config is disabled
@@ -305,14 +309,17 @@ namespace RiskOfBulletstorm.Items
                     buffType = Config_Charm_PlayerBuff;
                 else
                 {
-                    var isCharmed = self.gameObject.GetComponent<IsCharmed>();
-                    if (isCharmed && !isCharmed.enabled)
-                    {
-                        isCharmed.enabled = true;
-                    }
+                    isCharmed = self.gameObject.GetComponent<IsCharmed>();
+                    //if (isCharmed && !isCharmed.enabled)
+                    //{
+                        //isCharmed.enabled = true;
+                    //}
                 }
             }
             orig(self, buffType);
+            // If I don't put this after the orig call I think the component immediately disables because of the
+            // fixedupdate check for no buff. Enable component -> component has no buff so it disables -> buff gets added but component is off
+            if (isCharmed != null && isCharmed && !isCharmed.enabled) isCharmed.enabled = true; //quick and dirty test
         }
         private void Charmed_DisableComponent(On.RoR2.CharacterBody.orig_RemoveBuff orig, CharacterBody self, BuffIndex buffType)
         {
@@ -377,7 +384,7 @@ namespace RiskOfBulletstorm.Items
         private bool BulletAttack_DefaultHitCallback(On.RoR2.BulletAttack.orig_DefaultHitCallback orig, BulletAttack self, ref BulletAttack.BulletHit hitInfo)
         {
             var owner = self.owner;
-            if (owner) //is there an owner
+            if (owner)
             {
                 var component = owner.gameObject.GetComponent<IsCharmed>();
                 if (component && component.enabled) //are they charmed?
@@ -659,7 +666,7 @@ namespace RiskOfBulletstorm.Items
 
             public void ResetTarget()
             {
-                if (baseAI && characterBody.healthComponent && characterBody.healthComponent.alive)
+                if (baseAI && characterBody && characterBody.healthComponent && characterBody.healthComponent.alive)
                 {
                     baseAI.currentEnemy.Reset();
                     baseAI.ForceAcquireNearestEnemyIfNoCurrentEnemy();
