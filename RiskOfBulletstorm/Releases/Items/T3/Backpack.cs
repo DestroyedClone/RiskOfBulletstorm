@@ -62,9 +62,9 @@ namespace RiskOfBulletstorm.Items
         {
             base.SetupAttributes();
 
-            var scavBackpackPrefab = Resources.Load<GameObject>("prefabs/networkedobjects/ScavBackpack.prefab");
-            var mesh = scavBackpackPrefab.GetComponentInChildren<SkinnedMeshRenderer>().sharedMesh;
-            _logger.LogMessage("COCKS CTRL F ME PLEASE DONT FORGET"+mesh);
+            //var scavBackpackPrefab = Resources.Load<GameObject>("prefabs/networkedobjects/ScavBackpack.prefab");
+            //var mesh = scavBackpackPrefab.GetComponentInChildren<SkinnedMeshRenderer>().sharedMesh;
+            //_logger.LogMessage("COCKS CTRL F ME PLEASE DONT FORGET"+mesh);
 
             //GameObject ScavBackpackPrefab = Resources.Load<GameObject>("prefabs/networkedobjects/ScavBackpack.prefab");
             //ScavBackpackPrefab.GetComponent<MeshRenderer>().
@@ -139,10 +139,6 @@ namespace RiskOfBulletstorm.Items
             public byte isToolbot = 0;
             public byte selectableSlot = 0;
             public int ToolbotBodyIndex;
-
-            public void Start()
-            {
-            }
             public void OnDisable()
             {
                 if (characterBody)
@@ -172,7 +168,6 @@ namespace RiskOfBulletstorm.Items
             {
                 if (!localUser.isUIFocused) //TY KingEnderBrine for the help
                 {
-                    var inventory = characterBody.inventory;
                     if (inventory && inventory.GetItemCount(instance.catalogIndex) > 0)
                     {
                         if (Input.GetKey(instance.Backpack_ModifierButton))

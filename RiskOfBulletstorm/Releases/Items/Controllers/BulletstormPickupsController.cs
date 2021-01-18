@@ -73,7 +73,8 @@ namespace RiskOfBulletstorm.Items
         private void MapZone_TryZoneStart(On.RoR2.MapZone.orig_TryZoneStart orig, MapZone self, Collider other)
         {
             orig(self, other);
-            BulletstormPickupsComponent pickupsComponent = currentStage?.GetComponent<BulletstormPickupsComponent>();
+            if (!currentStage) return;
+            BulletstormPickupsComponent pickupsComponent = currentStage.GetComponent<BulletstormPickupsComponent>();
             if (!pickupsComponent) return;
             MapZone.ZoneType zoneType = self.zoneType;
             CharacterBody component = other.GetComponent<CharacterBody>();
