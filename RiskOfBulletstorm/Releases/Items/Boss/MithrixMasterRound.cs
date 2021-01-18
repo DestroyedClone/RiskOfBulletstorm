@@ -4,6 +4,7 @@ using UnityEngine.Networking;
 using TILER2;
 using static TILER2.StatHooks;
 using RiskOfBulletstorm.Utils;
+using static RiskOfBulletstorm.Items.MasterRoundNth;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -33,6 +34,7 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
+            On.EntityStates.Missions.BrotherEncounter.Phase1.OnEnter += Phase1_OnEnter;
             On.EntityStates.Missions.BrotherEncounter.EncounterFinished.OnEnter += EncounterFinished_OnEnter;
             GetStatCoefficients += MithrixMasterRound_GetStatCoefficients;
 
@@ -45,12 +47,23 @@ namespace RiskOfBulletstorm.Items
             GetStatCoefficients -= MithrixMasterRound_GetStatCoefficients;
         }
 
+        private void Phase1_OnEnter(On.EntityStates.Missions.BrotherEncounter.Phase1.orig_OnEnter orig, EntityStates.Missions.BrotherEncounter.Phase1 self)
+        {
+            orig(self);
+            MasterRoundNth.instance.MasterRound_Start();
+        }
+
         private void EncounterFinished_OnEnter(On.EntityStates.Missions.BrotherEncounter.EncounterFinished.orig_OnEnter orig, EntityStates.Missions.BrotherEncounter.EncounterFinished self)
         {
             orig(self);
             if (NetworkServer.active)
             {
-                HelperUtil.GiveItemToPlayers(catalogIndex);
+                var comps = UnityEngine.Object.FindObjectsOfType<MasterRoundComponent>();
+                foreach (var component in comps)
+                {
+                    component.teleporterCharging = false;
+                }
+                MasterRoundNth.instance.MasterRound_CheckResult(catalogIndex);
             }
         }
         private void MithrixMasterRound_GetStatCoefficients(CharacterBody sender, StatHookEventArgs args)

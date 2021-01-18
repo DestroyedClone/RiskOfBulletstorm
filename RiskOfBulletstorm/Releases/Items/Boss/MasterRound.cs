@@ -35,6 +35,9 @@ namespace RiskOfBulletstorm.Items
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Should the chat say who gets hit in chat?", AutoConfigFlags.PreventNetMismatch)]
         public bool MasterRound_ShowHitInChat { get; private set; } = false;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("For enemies hitting the players, should only the teleporter boss's hits count for the master round?", AutoConfigFlags.PreventNetMismatch)]
+        public bool MasterRound_OnlyAllowTeleBoss { get; private set; } = true;
 
         public override string displayName => "Master Round";
         public override ItemTier itemTier => ItemTier.Boss;
@@ -110,7 +113,7 @@ namespace RiskOfBulletstorm.Items
             base.Install();
             TeleporterInteraction.onTeleporterBeginChargingGlobal += TeleporterInteraction_onTeleporterBeginChargingGlobal;
             TeleporterInteraction.onTeleporterChargedGlobal += TeleporterInteraction_onTeleporterChargedGlobal;
-            On.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
+            On.RoR2.GlobalEventManager.OnHitEnemy += MasterRound_OnHitEnemy;
             GetStatCoefficients += MasterRoundNth_GetStatCoefficients;
             On.RoR2.UI.GenericNotification.SetItem += GenericNotification_SetItem;
         }
@@ -120,7 +123,7 @@ namespace RiskOfBulletstorm.Items
             base.Uninstall();
             TeleporterInteraction.onTeleporterBeginChargingGlobal -= TeleporterInteraction_onTeleporterBeginChargingGlobal;
             TeleporterInteraction.onTeleporterChargedGlobal -= TeleporterInteraction_onTeleporterChargedGlobal;
-            On.RoR2.GlobalEventManager.OnHitEnemy -= GlobalEventManager_OnHitEnemy;
+            On.RoR2.GlobalEventManager.OnHitEnemy -= MasterRound_OnHitEnemy;
             GetStatCoefficients -= MasterRoundNth_GetStatCoefficients;
             On.RoR2.UI.GenericNotification.SetItem -= GenericNotification_SetItem;
         }
@@ -130,22 +133,36 @@ namespace RiskOfBulletstorm.Items
             args.baseHealthAdd += MasterRound_MaxHealthAdd * GetCount(sender);
         }
 
-        private void GlobalEventManager_OnHitEnemy(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim)
+        private void MasterRound_OnHitEnemy(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim)
         {
             orig(self, damageInfo, victim);
-            if (!victim) return;
-            var component = victim.gameObject.GetComponent<MasterRoundComponent>();
-            if (!component) return;
-            if (!MasterRound_AllowSelfDamage && damageInfo.attacker == victim) return;
-            if (damageInfo.rejected || damageInfo.damage < MasterRound_MinimumDamage) return;
-            if (!component.teleporterCharging) return;
-            var characterBody = victim.gameObject.GetComponent<CharacterBody>();
-            if (!characterBody) return;
-            component.currentHits++;
+            if (!victim) return; // no victim
+            var MasterRoundComponent = victim.gameObject.GetComponent<MasterRoundComponent>();
+            if (!MasterRoundComponent) return; // no component aka not a player
+            if (!MasterRoundComponent.teleporterCharging) return; // charging check
+            if (damageInfo.rejected || damageInfo.damage < MasterRound_MinimumDamage) return; //minimum damage check
+            var attacker = damageInfo.attacker;
+            if (!attacker) return; // TODO: Figure out if this donkey conflicts, because I feel like it might
+            if (attacker == victim) //TODO: Figure out if I can switch case here.
+            {
+                if (!MasterRound_AllowSelfDamage) return;
+            } else
+            {
+                var characterBody = attacker.gameObject.GetComponent<CharacterBody>();
+                if (!characterBody) return;
+                if (!characterBody.isBoss && MasterRound_OnlyAllowTeleBoss) return; // not a boss and only bosses
+            }
+            MasterRoundComponent.currentHits++;
             if (MasterRound_ShowHitInChat)
             {
+                var characterBody = victim.GetComponent<CharacterBody>();
+                string username = characterBody ? characterBody.GetUserName() : "Someone";
                 //Chat.AddMessage("[MASTER_ROUND] " + victim.name + " has " + component.currentHits + "/" + component.allowedHits);
-                Chat.SendBroadcastChat(new SimpleChatMessage { baseToken = "<color=#ba3f0f>[Master Round] Player {0} has been hit {1} out of {2} times!</color>", paramTokens = new[] { "SOME_USERNAME_STRING", component.currentHits.ToString(), component.allowedHits.ToString() } });
+                Chat.SendBroadcastChat(
+                    new SimpleChatMessage
+                    { baseToken = "<color=#ba3f0f>[Master Round] Player {0} has been hit {1} out of {2} times!</color>", 
+                        paramTokens = new[] { username, MasterRoundComponent.currentHits.ToString(), MasterRoundComponent.allowedHits.ToString()
+                    }});
             }
         }
 
@@ -158,12 +175,18 @@ namespace RiskOfBulletstorm.Items
                 {
                     component.teleporterCharging = false;
                 }
-                Check();
+                MasterRound_CheckResult(catalogIndex);
             }
         }
 
         private void TeleporterInteraction_onTeleporterBeginChargingGlobal(TeleporterInteraction obj)
         {
+            MasterRound_Start();
+        }
+
+        public void MasterRound_Start()
+        {
+            if (!NetworkServer.active) return;
             var playerList = PlayerCharacterMasterController.instances;
             var StageCount = Run.instance.stageClearCount;
             var maxHits = MasterRound_AllowedHits + StageCount * MasterRound_AllowedHitsPerStage;
@@ -180,8 +203,8 @@ namespace RiskOfBulletstorm.Items
             }
             if (MasterRound_AnnounceMax)
                 Chat.SendBroadcastChat(new SimpleChatMessage { baseToken = "<color=#c9ab14>[Master Round] Players can take a max of {0} hits!</color>", paramTokens = new[] { maxHits.ToString() } });
-            //Chat.AddMessage("[MASTER_ROUND] Max Hits: "+ maxHits);
         }
+
         private void GenericNotification_SetItem(On.RoR2.UI.GenericNotification.orig_SetItem orig, GenericNotification self, ItemDef itemDef)
         {
             if (itemDef.itemIndex != catalogIndex)
@@ -219,7 +242,7 @@ namespace RiskOfBulletstorm.Items
 
         }
 
-        private void Check()
+        public void MasterRound_CheckResult(ItemIndex itemIndex)
         {
             bool success = true;
 
@@ -234,7 +257,7 @@ namespace RiskOfBulletstorm.Items
             }
             if (success)
             {
-                HelperUtil.GiveItemToPlayers(catalogIndex);
+                HelperUtil.GiveItemToPlayers(itemIndex);
             }
         }
 
