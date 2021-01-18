@@ -40,6 +40,7 @@
     <Compile Remove="Releases\Items\Pickups\dx.cs" />
     <Compile Remove="Releases\Items\Pickups\GuonStoneGlass.cs" />
     <Compile Remove="Releases\Items\Pickups\Key.cs" />
+    <Compile Remove="Releases\Items\T2\BlastHelmet.cs" />
     <Compile Remove="Releases\Items\T3\OrbitalBullets.cs" />
     <Compile Remove="Releases\Items\T3\RingTriggers.cs" />
   </ItemGroup>
