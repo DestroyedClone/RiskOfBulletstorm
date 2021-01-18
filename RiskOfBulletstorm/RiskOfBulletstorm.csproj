@@ -50,6 +50,7 @@
     <Folder Include="Items\" />
     <Folder Include="Items\" />
     <Folder Include="Items\" />
+    <Folder Include="Items\TierLunar\" />
     <None Remove="riskofgungeonassets" />
 	  <Folder Remove="Items" />
   </ItemGroup>
