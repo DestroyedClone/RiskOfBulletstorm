@@ -11,6 +11,28 @@ namespace RiskOfBulletstorm
 {
     public static class ConsoleCommands
     {
+        [ConCommand(commandName = "ROB_toggleview", flags = ConVarFlags.ExecuteOnServer, helpText = "Draws a line from where you're aiming towards.")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Console Command")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Empty Arg required")]
+        private static void DrawViewLine(ConCommandArgs args)
+        {
+            var localMaster = PlayerCharacterMasterController.instances[0].master;
+            GameObject bodyInstanceObject = localMaster.bodyInstanceObject;
+            CharacterBody characterBody = bodyInstanceObject.GetComponent<CharacterBody>();
+            LaserPointerController laserPointerController = bodyInstanceObject.GetComponent<LaserPointerController>();
+            if (laserPointerController)
+            {
+                UnityEngine.Object.Destroy(laserPointerController);
+                UnityEngine.Object.Destroy(bodyInstanceObject.GetComponent<LaserPointer>());
+            } else
+            {
+                laserPointerController = bodyInstanceObject.AddComponent<LaserPointerController>();
+                LaserPointer laserPointer = bodyInstanceObject.AddComponent<LaserPointer>();
+                laserPointer.laserDistance = 10000f;
+                laserPointerController.source = characterBody.inputBank;
+                laserPointerController.beam = laserPointer.line;
+            }
+        }
         [ConCommand(commandName = "ROB_godark", flags = ConVarFlags.ExecuteOnServer, helpText = "Sets equipment slot to specified index.")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Console Command")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Empty Arg required")]
@@ -361,6 +383,11 @@ namespace RiskOfBulletstorm
                 Debug.LogError("Body not found!.");
                 return false;
             }
+        }
+
+        public class LookLaser : MonoBehaviour
+        {
+
         }
     }
 }
