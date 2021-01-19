@@ -722,6 +722,10 @@ namespace RiskOfBulletstorm.Items
                 {
                     characterBody.AddBuff(Jammed);
                 }
+                if (characterBody.inventory && characterBody.inventory.GetItemCount(CurseController.isJammedItem) == 0)
+                {
+                    characterBody.inventory.GiveItem(CurseController.isJammedItem);
+                }
             }
         }
 

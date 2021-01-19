@@ -40,9 +40,9 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("Allow umbra(e) to become Jammed?", AutoConfigFlags.PreventNetMismatch)]
         public bool Curse_AllowUmbra { get; private set; } = true;
 
-        /*[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Allow Happiest Mask ghosts to retain their Jammed status?", AutoConfigFlags.PreventNetMismatch)]
-        public bool Curse_AllowGhosts { get; private set; } = true;*/
+        public bool Curse_AllowGhost { get; private set; } = false;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("[Aetherium Support] Allow Unstable Design summons to become Jammed?", AutoConfigFlags.PreventNetMismatch)]
@@ -68,6 +68,7 @@ namespace RiskOfBulletstorm.Items
 
         public static ItemIndex curseTally;
         //public static ItemIndex curseMax;
+        public static ItemIndex isJammedItem;
 
         public static readonly ItemIndex umbraItemIndex = ItemIndex.InvadingDoppelganger;
 
@@ -88,6 +89,16 @@ namespace RiskOfBulletstorm.Items
                 canRemove = false
             }, new ItemDisplayRuleDict(null));
             curseTally = ItemAPI.Add(curseTallyDef);
+
+            // This way allows ghosts to maintain their curse status //
+            var isJammedDef = new CustomItem(new ItemDef
+            {
+                hidden = true,
+                name = "ROBInternalIsJammed",
+                tier = ItemTier.NoTier,
+                canRemove = false
+            }, new ItemDisplayRuleDict(null));
+            isJammedItem = ItemAPI.Add(isJammedDef);
 
             // Used to track who to spawn the Lord of the Jammed on //
             // Currently unused //
@@ -117,18 +128,26 @@ namespace RiskOfBulletstorm.Items
             CharacterBody.onBodyStartGlobal -= JamEnemy;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0059:Unnecessary assignment of a value", Justification = "RollValue is used.")]
         private void JamEnemy(CharacterBody obj)
         {
             if (!obj || !obj.inventory || !obj.master) return;
+            var inventory = obj.inventory;
 
             var teamComponent = obj.teamComponent;
             if (!teamComponent) return;
 
+            // Ghosts inherit their previous inventories which include the isJammedItem //
+            // So we can just skip the whole section if it's a ghost //
+            if (CurseUtil.CheckJammedStatus(obj) && Curse_AllowGhost)
+            {
+                CurseUtil.JamEnemy(obj, 100);
+                return;
+            }
+
             CharacterBody mostCursedPlayer = HelperUtil.GetPlayerWithMostItemIndex(curseTally);
             if (!mostCursedPlayer) return;
             int PlayerItemCount = mostCursedPlayer.inventory.GetItemCount(curseTally);
-            float RollValue = 0f;
+            float RollValue;
             float RollValueBosses = 0f;
 
             var teamIndex = teamComponent.teamIndex;
@@ -181,25 +200,20 @@ namespace RiskOfBulletstorm.Items
                 //BOSS CHECK
                 if (obj.isBoss)
                 {
-                    var inventory = obj.inventory;
 
-                    if (inventory)
+                    if (inventory.GetItemCount(umbraItemIndex) > 0)
                     {
-                        if (inventory.GetItemCount(umbraItemIndex) > 0)
+                        // UMBRA CHECK //
+                        if (Curse_AllowUmbra)
                         {
-                            // UMBRA CHECK START //
-                            if (Curse_AllowUmbra)
-                            {
-                                CurseUtil.JamEnemy(obj, RollValueBosses);
-                            }
+                            CurseUtil.JamEnemy(obj, RollValueBosses);
                         }
-                        //UMBRA CHECK END //
-                        else
+                    }
+                    else
+                    {
+                        if (Curse_AllowBosses)
                         {
-                            if (Curse_AllowBosses)
-                            {
-                                CurseUtil.JamEnemy(obj, RollValueBosses);
-                            }
+                            CurseUtil.JamEnemy(obj, RollValueBosses);
                         }
                     }
                 }

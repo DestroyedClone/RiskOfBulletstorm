@@ -7,6 +7,7 @@ using UnityEngine;
 using RiskOfBulletstorm;
 using static RiskOfBulletstorm.Items.GungeonBuffController;
 using static RiskOfBulletstorm.RiskofBulletstorm;
+using static RiskOfBulletstorm.Items.CurseController;
 
 namespace RiskOfBulletstorm.Utils
 {
@@ -296,6 +297,15 @@ namespace RiskOfBulletstorm.Utils
                 if (!jammed) jammed = body.gameObject.AddComponent<IsJammed>();
                 jammed.characterBody = body;
             }
+        }
+
+        public static bool CheckJammedStatus(CharacterBody body)
+        {
+            if (body.inventory)
+            {
+                return body.inventory.GetItemCount(isJammedItem) > 0;
+            }
+            return body.GetComponent<IsJammed>();
         }
     }
     /*
