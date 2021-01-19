@@ -38,6 +38,12 @@ namespace RiskOfBulletstorm.Items
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("For enemies hitting the players, should only the teleporter boss's hits count for the master round?", AutoConfigFlags.PreventNetMismatch)]
         public bool MasterRound_OnlyAllowTeleBoss { get; private set; } = true;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Should the hit detection for teleporter bosses include Lunar Wisps?", AutoConfigFlags.PreventNetMismatch)]
+        public bool MasterRound_TeleLunarWisps { get; private set; } = false;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Should the hit detection for teleporter bosses include Lunar Golems?", AutoConfigFlags.PreventNetMismatch)]
+        public bool MasterRound_TeleLunarGolems { get; private set; } = false;
 
         public override string displayName => "Master Round";
         public override ItemTier itemTier => ItemTier.Boss;
