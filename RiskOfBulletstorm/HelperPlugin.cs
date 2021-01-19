@@ -9,7 +9,7 @@ namespace RiskOfBulletstorm
 {
     public class HelperPlugin : BaseUnityPlugin
     {
-        /*public static class ClassicItemsCompat
+        public static class ClassicItemsCompat
         {
             private static bool? _enabled;
 
@@ -18,7 +18,7 @@ namespace RiskOfBulletstorm
             {
                 if (hasSetup)
                 {
-                    RiskofBulletstorm._logger.LogWarning("ClassicItemsCompat.Setup: Already performed. Skipping.");
+                    RiskofBulletstorm._logger.LogWarning("[Bulletstorm] ClassicItemsCompat.Setup: Already performed. Skipping.");
                     return;
                 }
                 hasSetup = true;
@@ -41,9 +41,9 @@ namespace RiskOfBulletstorm
             public static void RegisterEmbryo(EquipmentIndex equipmentIndex)
             {
                 Embryo_V2.instance.Compat_Register(equipmentIndex);
-                RiskofBulletstorm._logger.LogInfo("Embryo_V2Compat_: Registed equipment ID " + equipmentIndex + EquipmentCatalog.GetEquipmentDef(equipmentIndex).name);
+                RiskofBulletstorm._logger.LogInfo("[Bulletstorm] Embryo_V2Compat_: Registed equipment ID " + equipmentIndex + EquipmentCatalog.GetEquipmentDef(equipmentIndex).name);
             }
-        }*/
+        }
 
     }
 }

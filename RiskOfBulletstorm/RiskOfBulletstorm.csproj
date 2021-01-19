@@ -10,18 +10,18 @@
 
   <ItemGroup>
     <Compile Remove="ExtraSkillSlotsOverrides\**" />
-    <Compile Remove="Items\**" />
-    <Compile Remove="Items\Elites\**" />
+    <Compile Remove="Items_Unused\**" />
+    <Compile Remove="Items_Unused\Elites\**" />
     <Compile Remove="lib\**" />
     <Compile Remove="Releases\Items\Elites\**" />
     <EmbeddedResource Remove="ExtraSkillSlotsOverrides\**" />
-    <EmbeddedResource Remove="Items\**" />
-    <EmbeddedResource Remove="Items\Elites\**" />
+    <EmbeddedResource Remove="Items_Unused\**" />
+    <EmbeddedResource Remove="Items_Unused\Elites\**" />
     <EmbeddedResource Remove="lib\**" />
     <EmbeddedResource Remove="Releases\Items\Elites\**" />
     <None Remove="ExtraSkillSlotsOverrides\**" />
-    <None Remove="Items\**" />
-    <None Remove="Items\Elites\**" />
+    <None Remove="Items_Unused\**" />
+    <None Remove="Items_Unused\Elites\**" />
     <None Remove="lib\**" />
     <None Remove="Releases\Items\Elites\**" />
   </ItemGroup>
@@ -51,7 +51,8 @@
     <Folder Include="Items\" />
     <Folder Include="Items\" />
     <Folder Include="Items\" />
-    <Folder Include="Items\TierLunar\" />
+    <Folder Include="Items_Unused\TierLunar\" />
+    <Folder Include="Compatability\" />
     <None Remove="riskofgungeonassets" />
 	  <Folder Remove="Items" />
   </ItemGroup>
