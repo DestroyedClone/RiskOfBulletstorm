@@ -1,10 +1,11 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using RoR2;
 using RoR2.UI;
 using UnityEngine;
 using UnityEngine.Networking;
-using TMPro;
+//using TMPro;
 using TILER2;
 using static TILER2.StatHooks;
 using RiskOfBulletstorm.Utils;
@@ -21,7 +22,7 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("How many hits are allowed to be taken per player before invalidating the spawn? (Value: Max Hits)", AutoConfigFlags.PreventNetMismatch)]
         public static int MasterRound_AllowedHits { get; private set; } = 3;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How many hits will your allowed hits increase by per stage? (Value: Max Hits * Stage)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How many hits will your allowed hits increase by per stage? (Value: Additional Max Hits multiplied by Stage)", AutoConfigFlags.PreventNetMismatch)]
         public static int MasterRound_AllowedHitsPerStage { get; private set; } = 1;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the minimum damage required from a hit before counting?", AutoConfigFlags.PreventNetMismatch)]
@@ -61,6 +62,9 @@ namespace RiskOfBulletstorm.Items
             "\nA monument to the legendary hero greets all who challenge the Gungeon, though their identity has been lost to the ages." +
             "\nThe legendary hero felled the beast at the heart of the Gungeon with five rounds. According to the myth, the sixth remains unfired.";
 
+        public static int BodyIndexLunarGolem;
+        public static int BodyIndexLunarWisp;
+
         readonly string[] adjustedDesc =
         {
             "questionable",
@@ -82,7 +86,7 @@ namespace RiskOfBulletstorm.Items
             "arena"
         };
 
-        readonly Texture[] textures =
+        readonly Texture[] texturesOld =
         {
             Resources.Load<Texture>("@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundI.png"),
             Resources.Load<Texture>("@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundII.png"),
@@ -91,6 +95,10 @@ namespace RiskOfBulletstorm.Items
             Resources.Load<Texture>("@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundV.png"),
             Resources.Load<Texture>("@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundMoon.png"),
         };
+
+        readonly List<Texture> textures;
+
+        readonly string[] texturePathAppends = { "I", "II", "III", "IV", "V", "Moon" };
 
         public MasterRoundNth()
         {
@@ -113,6 +121,17 @@ namespace RiskOfBulletstorm.Items
         public override void SetupConfig()
         {
             base.SetupConfig();
+        }
+        public override void SetupLate()
+        {
+            base.SetupLate();
+            BodyIndexLunarGolem = BodyCatalog.FindBodyIndex("LUNARGOLEM");
+            BodyIndexLunarWisp = BodyCatalog.FindBodyIndex("LUNARWISP");
+
+            foreach (string append in texturePathAppends)
+            {
+                textures.Add((Texture)Resources.Load("@RiskOfBulletstorm:Assets/Textures/Icons/MasterRound"+append+".png"));
+            }
         }
         public override void Install()
         {
@@ -156,14 +175,18 @@ namespace RiskOfBulletstorm.Items
             {
                 var characterBody = attacker.gameObject.GetComponent<CharacterBody>();
                 if (!characterBody) return;
-                if (!characterBody.isBoss && MasterRound_OnlyAllowTeleBoss) return; // not a boss and only bosses
+                if (MasterRound_OnlyAllowTeleBoss)
+                {
+                    if (!characterBody.isBoss) return;
+                    if (!MasterRound_TeleLunarWisps && characterBody.bodyIndex == BodyIndexLunarWisp) return;
+                    if (!MasterRound_TeleLunarGolems && characterBody.bodyIndex == BodyIndexLunarGolem) return;
+                }
             }
             MasterRoundComponent.currentHits++;
             if (MasterRound_ShowHitInChat)
             {
                 var characterBody = victim.GetComponent<CharacterBody>();
                 string username = characterBody ? characterBody.GetUserName() : "Someone";
-                //Chat.AddMessage("[MASTER_ROUND] " + victim.name + " has " + component.currentHits + "/" + component.allowedHits);
                 Chat.SendBroadcastChat(
                     new SimpleChatMessage
                     { baseToken = "<color=#ba3f0f>[Master Round] Player {0} has been hit {1} out of {2} times!</color>", 
@@ -231,7 +254,7 @@ namespace RiskOfBulletstorm.Items
                 "\nThis " + descString + " artifact indicates mastery of the " + numberString + " chamber.";
             if (bannedStages.Contains(SceneCatalog.mostRecentSceneDef.baseSceneName))
             {
-                output = "huh? how did you...";
+                output = "You probably dropped this, well no interesting lines here.";
             }
 
             self.titleText.token = itemDef.nameToken;
@@ -241,7 +264,7 @@ namespace RiskOfBulletstorm.Items
             if (itemDef.pickupIconPath != null)
             {
                 //self.iconImage.texture = Resources.Load<Texture>(itemDef.pickupIconPath);
-                var index = Mathf.Max(clearCount, textures.Length-1);
+                var index = Mathf.Max(clearCount, textures.Count-1);
                 //self.iconImage.texture = Resources.Load<Texture>(filePaths[index]);
                 self.iconImage.texture = textures[index];
             }

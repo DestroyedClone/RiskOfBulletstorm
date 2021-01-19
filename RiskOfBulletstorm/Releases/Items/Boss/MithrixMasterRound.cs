@@ -3,7 +3,6 @@ using RoR2;
 using UnityEngine.Networking;
 using TILER2;
 using static TILER2.StatHooks;
-using RiskOfBulletstorm.Utils;
 using static RiskOfBulletstorm.Items.MasterRoundNth;
 
 namespace RiskOfBulletstorm.Items
