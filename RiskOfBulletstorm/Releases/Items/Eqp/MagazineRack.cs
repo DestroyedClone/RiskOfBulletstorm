@@ -26,7 +26,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "Instant Mail Order\nPlace to create a zone of no cooldowns.";
+        protected override string GetPickupString(string langID = null) => "Instant Mail Order\nPlace to create a zone of (almost) no cooldowns.";
 
         protected override string GetDescString(string langid = null)
         {

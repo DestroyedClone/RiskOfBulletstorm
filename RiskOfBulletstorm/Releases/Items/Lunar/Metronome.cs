@@ -97,7 +97,7 @@ namespace RiskOfBulletstorm.Items
         {
             base.SetupBehavior();
 
-            if (Compat_ItemStats.enabled)
+            /*if (Compat_ItemStats.enabled)
             {
                 Compat_ItemStats.CreateItemStatDef(itemDef,
                 (
@@ -112,7 +112,7 @@ namespace RiskOfBulletstorm.Items
                     {
                         return (int)(value + extraStackValue * stacks);
                     });
-            }
+            }*/ //this is the wrong way of doing it actually
         }
         public override void SetupAttributes()
         {
@@ -195,6 +195,7 @@ namespace RiskOfBulletstorm.Items
                 metronomeTrackKills.UpdateKills();
             } else
             {
+                metronomeTrackKills.kills = 0;
                 metronomeTrackKills.enabled = false;
             }
             orig(self);

@@ -28,7 +28,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetPickupString(string langID = null)
         {
             if (Medkit_HealAmount > 0 && Medkit_BarrierAmount > 0) return "Heals\nMedkits provides substantial healing when used.";
-            else return "There's nothing inside?";
+            else return "Seems salvaged?";
         }
 
         protected override string GetDescString(string langid = null)
