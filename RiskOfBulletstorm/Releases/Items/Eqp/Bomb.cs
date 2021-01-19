@@ -30,7 +30,6 @@ namespace RiskOfBulletstorm.Items
         protected override string GetDescString(string langid = null)
         {
             var desc = $"{descText}, dealing <style=cIsDamage>";
-            // damage dealt //
             if (Bomb_DamageDealt > 0) desc += $"{Pct(Bomb_DamageDealt)}";
             else desc += $"no ";
             desc += $" damage</style>.";
@@ -329,7 +328,7 @@ namespace RiskOfBulletstorm.Items
 
             if (NetworkServer.active)
             {
-                ProjectileManager.instance.FireProjectile(BombPrefab, resultpos, Util.QuaternionSafeLookRotation(input.aimDirection),
+                ProjectileManager.instance.FireProjectile(BombPrefab, resultpos, Util.QuaternionSafeLookRotation(input ? input.aimDirection : body.transform.forward),
                                       gameObject, body.damage * Bomb_DamageDealt,
                                       0f, Util.CheckRoll(body.crit, body.master),
                                       DamageColorIndex.Item, null, -1f);

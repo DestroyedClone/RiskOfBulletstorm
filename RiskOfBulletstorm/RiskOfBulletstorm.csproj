@@ -52,7 +52,6 @@
     <Folder Include="Items\" />
     <Folder Include="Items\" />
     <Folder Include="Items_Unused\TierLunar\" />
-    <Folder Include="Compatability\" />
     <None Remove="riskofgungeonassets" />
 	  <Folder Remove="Items" />
   </ItemGroup>

@@ -392,7 +392,7 @@ namespace RiskOfBulletstorm.Items
 
             if (NetworkServer.active)
             {
-                ProjectileManager.instance.FireProjectile(MolotovPrefab, resultpos, Util.QuaternionSafeLookRotation(input.aimDirection),
+                ProjectileManager.instance.FireProjectile(MolotovPrefab, resultpos, Util.QuaternionSafeLookRotation(input ? input.aimDirection : body.transform.forward),
                                       gameObject, body.damage * Molotov_Damage * damageMultiplier,
                                       0f, Util.CheckRoll(body.crit, body.master),
                                       DamageColorIndex.Item, null, -1f);
