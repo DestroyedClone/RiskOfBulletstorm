@@ -23,7 +23,7 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("Debugging: Enable to show in console when a Forgive Me, Please was detected with its damageinfo. Use it to test for any false positives.", AutoConfigFlags.PreventNetMismatch)]
         public bool BUP_DebugShowDollProc { get; private set; } = false;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Debugging: Enable to show in console the current kills, and the result of the roll.", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Debugging: Enable to show in console the info about the kills, and the info about the final result.", AutoConfigFlags.PreventNetMismatch)]
         public bool BUP_ShowProgress { get; private set; } = false;
         public override string displayName => "BulletstormPickupsController";
         public override ItemTier itemTier => ItemTier.NoTier;
@@ -125,8 +125,8 @@ namespace RiskOfBulletstorm.Items
             {
                 if (BUP_DebugShowDollProc)
                 {
-                    _logger.LogMessage("Pickups Controller: Forgive Me, Please usage was detected.");
-                    _logger.LogMessage("Pickups Controller: "+dmginfo);
+                    _logger.LogMessage("[RiskOfBulletstorm]Pickups Controller: Forgive Me, Please usage was detected.");
+                    _logger.LogMessage("[RiskOfBulletstorm]Pickups Controller: " + dmginfo);
                 }
                 return true;
             }
@@ -152,9 +152,10 @@ namespace RiskOfBulletstorm.Items
             CharacterBody VictimBody = damageReport.victimBody;
             if (VictimBody)
             {
-                //int DiffMultAdd = Run.instance.selectedDifficulty;
+                //int DiffMultAdd = Run.instance.selectedDifficulty; //TODO: Add difficulty scaling?
                 pickupsComponent.globalDeaths++;
-                //Chat.AddMessage("kills: "+ pickupsComponent.globalDeaths + " / "+ requiredKills);
+                if (BUP_ShowProgress)
+                    _logger.LogMessage(string.Format("[Bulletstorm] Kills/StageRequired: {0}/{1}", pickupsComponent.globalDeaths, requiredKills));
                 if (pickupsComponent.globalDeaths % requiredKills == 0)
                 {
                     Vector3 PickupPosition = new Vector3();
@@ -201,19 +202,30 @@ namespace RiskOfBulletstorm.Items
                         PickupPosition = VictimBody.transform.position;
                     }
                     PickupPosition += Vector3.up * 2f;
+                    if (BUP_ShowProgress)
+                        _logger.LogMessage(string.Format("[Bulletstorm] Pickups Controller: Resulting Kill Info (setup for roll):" +
+                            "\nwasMapDeath: {0}" +
+                            "\nlastHitAttacker: {1}" +
+                            "\nposition: {2}", pickupsComponent.wasMapDeath, pickupsComponent.lastHitAttacker, PickupPosition));
                     if (Util.CheckRoll(BUP_RollChance)) //Roll to spawn pickups
                     {
                         //Chat.AddMessage("Pickups: Rolled success.");
 
                         var randfloat = UnityEngine.Random.Range(0f, 1f);
-                        PickupIndex dropList = weightedSelection.Evaluate(randfloat);
-                        PickupDropletController.CreatePickupDroplet(dropList, PickupPosition, Vector3.up * 5);
+                        PickupIndex dropIndex = weightedSelection.Evaluate(randfloat);
+
+                        if (BUP_ShowProgress)
+                        {
+                            var pickupDef = PickupCatalog.GetPickupDef(dropIndex);
+                            _logger.LogMessage(string.Format("[Bulletstorm] Pickups Controller: Roll success! Chosen item {0} {1} {2}",
+                                dropIndex, pickupDef.internalName, Language.GetString(pickupDef.nameToken)));
+                        }
+                        PickupDropletController.CreatePickupDroplet(dropIndex, PickupPosition, Vector3.up * 5);
                         EffectManager.SimpleEffect(SpawnedPickupEffect, PickupPosition, Quaternion.identity, true);
                     } else
                     {
                         if (BUP_ShowProgress)
-                            _logger.LogMessage("[Bulletstorm][");
-                        //Chat.AddMessage("Roll failed");
+                            _logger.LogMessage("[Bulletstorm] Pickups Controller: Roll failed!");
                     }
                     pickupsComponent.wasMapDeath = false;
                     pickupsComponent.lastHitAttacker = null;
