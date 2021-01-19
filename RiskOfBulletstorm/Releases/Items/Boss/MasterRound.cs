@@ -101,6 +101,13 @@ namespace RiskOfBulletstorm.Items
 
         readonly string[] texturePathAppends = { "I", "II", "III", "IV", "V", "Moon" };
 
+        readonly string announceStartToken = "<color=#c9ab14>[Master Round] Players can take a max of {0} hits!</color>";
+        readonly string playerHitToken = "<color=#ba3f0f>[Bulletstorm - Master Round] Player {0} has been hit {1} out of {2} times!</color>";
+        readonly string playerHitNameFailed = "Someone";
+        //readonly string itemPickupDescToken = numberCapitalized + " Chamber" + "\nThis " + descString + " artifact indicates mastery of the " + numberString + " chamber.";
+        readonly string itemPickupDescToken = "{0} Chamber \nThis {1} artifact indicates mastery of the {2} chamber.";
+        readonly string itemPickupDescBannedToken = "You probably dropped this, well no interesting lines here. If you didn't drop this, well... something's wrong.";
+
         public MasterRoundNth()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/SpreadAmmo.prefab";
@@ -187,10 +194,10 @@ namespace RiskOfBulletstorm.Items
             if (MasterRound_ShowHitInChat)
             {
                 var characterBody = victim.GetComponent<CharacterBody>();
-                string username = characterBody ? characterBody.GetUserName() : "Someone";
+                string username = characterBody ? characterBody.GetUserName() : playerHitNameFailed;
                 Chat.SendBroadcastChat(
                     new SimpleChatMessage
-                    { baseToken = "<color=#ba3f0f>[Master Round] Player {0} has been hit {1} out of {2} times!</color>", 
+                    { baseToken = playerHitToken, 
                         paramTokens = new[] { username, MasterRoundComponent.currentHits.ToString(), MasterRoundComponent.allowedHits.ToString()
                     }});
             }
@@ -232,7 +239,7 @@ namespace RiskOfBulletstorm.Items
                 }
             }
             if (MasterRound_AnnounceMax)
-                Chat.SendBroadcastChat(new SimpleChatMessage { baseToken = "<color=#c9ab14>[Master Round] Players can take a max of {0} hits!</color>", paramTokens = new[] { maxHits.ToString() } });
+                Chat.SendBroadcastChat(new SimpleChatMessage { baseToken = announceStartToken, paramTokens = new[] { maxHits.ToString() } });
         }
 
         private void GenericNotification_SetItem(On.RoR2.UI.GenericNotification.orig_SetItem orig, GenericNotification self, ItemDef itemDef)
@@ -251,11 +258,12 @@ namespace RiskOfBulletstorm.Items
 
             //https://www.dotnetperls.com/uppercase-first-letter
 
-            string output = numberCapitalized + " Chamber" +
-                "\nThis " + descString + " artifact indicates mastery of the " + numberString + " chamber.";
+            //string output2 = numberCapitalized + " Chamber" +
+                //"\nThis " + descString + " artifact indicates mastery of the " + numberString + " chamber."; TODO: REMOVE WHEN KNOW IT WORKS
+            string output = string.Format(itemPickupDescToken, numberCapitalized, descString, numberString);
             if (bannedStages.Contains(SceneCatalog.mostRecentSceneDef.baseSceneName))
             {
-                output = "You probably dropped this, well no interesting lines here.";
+                output = itemPickupDescBannedToken;
             }
 
             self.titleText.token = itemDef.nameToken;

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -23,6 +22,9 @@ namespace RiskOfBulletstorm.Items
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Debugging: Enable to show in console when a Forgive Me, Please was detected with its damageinfo. Use it to test for any false positives.", AutoConfigFlags.PreventNetMismatch)]
         public bool BUP_DebugShowDollProc { get; private set; } = false;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Debugging: Enable to show in console the current kills, and the result of the roll.", AutoConfigFlags.PreventNetMismatch)]
+        public bool BUP_ShowProgress { get; private set; } = false;
         public override string displayName => "BulletstormPickupsController";
         public override ItemTier itemTier => ItemTier.NoTier;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.WorldUnique, ItemTag.AIBlacklist });
@@ -34,7 +36,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "";
 
-        public WeightedSelection<PickupIndex> weightedSelection = new WeightedSelection<PickupIndex>(4);
+        public WeightedSelection<PickupIndex> weightedSelection = new WeightedSelection<PickupIndex>(3); //change to 4 when key is fixed
 
         private GameObject currentStage;
         private readonly GameObject SpawnedPickupEffect = Resources.Load<GameObject>("prefabs/effects/LevelUpEffect");
@@ -46,13 +48,12 @@ namespace RiskOfBulletstorm.Items
         public override void SetupAttributes()
         {
             base.SetupAttributes();
-            //weightedSelection = new WeightedSelection<PickupIndex>();
         }
         public override void SetupLate()
         {
             base.SetupLate();
             //needs to setup late so the indicies can be setup
-            //weightedSelection.AddChoice(Key.instance.pickupIndex, 0.15f);
+            //weightedSelection.AddChoice(Key.instance.pickupIndex, 0.15f); currently unused while i rework it
             weightedSelection.AddChoice(Blank.instance.pickupIndex, 0.25f);
             weightedSelection.AddChoice(Armor.instance.pickupIndex, 0.1f);
             weightedSelection.AddChoice(PickupAmmoSpread.instance.pickupIndex, 0.3f);
@@ -70,30 +71,6 @@ namespace RiskOfBulletstorm.Items
             On.RoR2.MapZone.TryZoneStart += MapZone_TryZoneStart;
         }
 
-        private void MapZone_TryZoneStart(On.RoR2.MapZone.orig_TryZoneStart orig, MapZone self, Collider other)
-        {
-            orig(self, other);
-            if (!currentStage) return;
-            BulletstormPickupsComponent pickupsComponent = currentStage.GetComponent<BulletstormPickupsComponent>();
-            if (!pickupsComponent) return;
-            MapZone.ZoneType zoneType = self.zoneType;
-            CharacterBody component = other.GetComponent<CharacterBody>();
-            if (!component) return;
-            TeamComponent teamComponent = component.teamComponent;
-            if (!teamComponent) return;
-            if (teamComponent.teamIndex == TeamIndex.Player) return;
-
-            if (zoneType == MapZone.ZoneType.OutOfBounds)
-            {
-                HealthComponent healthComponent = component.healthComponent;
-                if (healthComponent)
-                {
-                    pickupsComponent.wasMapDeath = true;
-                    pickupsComponent.lastHitAttacker = healthComponent.lastHitAttacker;
-                }
-            }
-        }
-
         public override void Uninstall()
         {
             base.Uninstall();
@@ -102,12 +79,35 @@ namespace RiskOfBulletstorm.Items
             On.RoR2.MapZone.TryZoneStart -= MapZone_TryZoneStart;
         }
 
+        private void MapZone_TryZoneStart(On.RoR2.MapZone.orig_TryZoneStart orig, MapZone self, Collider other)
+        {
+            orig(self, other);
+            if (!currentStage) return;
+            BulletstormPickupsComponent pickupsComponent = currentStage.GetComponent<BulletstormPickupsComponent>();
+            if (!pickupsComponent) return;
+            MapZone.ZoneType zoneType = self.zoneType;
+            CharacterBody characterBody = other.GetComponent<CharacterBody>();
+            if (!characterBody) return;
+            TeamComponent teamComponent = characterBody.teamComponent;
+            if (!teamComponent) return;
+            if (teamComponent.teamIndex == TeamIndex.Player) return;
+
+            if (zoneType == MapZone.ZoneType.OutOfBounds)
+            {
+                HealthComponent healthComponent = characterBody.healthComponent;
+                if (healthComponent)
+                {
+                    pickupsComponent.wasMapDeath = true;
+                    pickupsComponent.lastHitAttacker = healthComponent.lastHitAttacker;
+                }
+            }
+        }
+
         private void Stage_onStageStartGlobal(RoR2.Stage obj)
         {
             var gameObj = obj.gameObject;
             BulletstormPickupsComponent pickupsComponent = gameObj.GetComponent<BulletstormPickupsComponent>();
             if (!pickupsComponent) pickupsComponent = gameObj.AddComponent<BulletstormPickupsComponent>();
-
 
             var stageCount = Run.instance.stageClearCount;
             var StageMult = (int)(BUP_StageMultiplier * stageCount);
@@ -162,7 +162,7 @@ namespace RiskOfBulletstorm.Items
                     {
                         if (pickupsComponent.lastHitAttacker) //If it's killed by a player
                         {
-                            PickupPosition = pickupsComponent.lastHitAttacker.transform.position;
+                            PickupPosition = pickupsComponent.lastHitAttacker.transform.position; //set the position of the pickup to be on the player
                         }
                         else
                         {
@@ -193,14 +193,13 @@ namespace RiskOfBulletstorm.Items
                             {
                                 PickupPosition = list.FirstOrDefault().transform.position;
                             }
+                            // another way of doing it, but this looks unclean so im not sure if i really want it.
                             //var nearestPlayer = new SphereSearch { origin = VictimBody.transform.position, mask = LayerIndex.entityPrecise.mask }.RefreshCandidates().FilterCandidatesByHurtBoxTeam(TeamMask.GetEnemyTeams(VictimBody.teamComponent.teamIndex)).OrderCandidatesByDistance().FilterCandidatesByDistinctHurtBoxEntities().GetHurtBoxes().FirstOrDefault<HurtBox>();
                         }
                     } else
                     {
                         PickupPosition = VictimBody.transform.position;
                     }
-                    pickupsComponent.wasMapDeath = false;
-                    pickupsComponent.lastHitAttacker = null;
                     PickupPosition += Vector3.up * 2f;
                     if (Util.CheckRoll(BUP_RollChance)) //Roll to spawn pickups
                     {
@@ -210,10 +209,14 @@ namespace RiskOfBulletstorm.Items
                         PickupIndex dropList = weightedSelection.Evaluate(randfloat);
                         PickupDropletController.CreatePickupDroplet(dropList, PickupPosition, Vector3.up * 5);
                         EffectManager.SimpleEffect(SpawnedPickupEffect, PickupPosition, Quaternion.identity, true);
-                    }/* else
+                    } else
                     {
+                        if (BUP_ShowProgress)
+                            _logger.LogMessage("[Bulletstorm][");
                         //Chat.AddMessage("Roll failed");
-                    }*/
+                    }
+                    pickupsComponent.wasMapDeath = false;
+                    pickupsComponent.lastHitAttacker = null;
                     pickupsComponent.globalDeaths = 0;
                 }
             }
