@@ -67,7 +67,7 @@ namespace RiskOfBulletstorm.Items
         }
         private void MithrixMasterRound_GetStatCoefficients(CharacterBody sender, StatHookEventArgs args)
         {
-            args.baseHealthAdd += MasterRoundNth.instance.MasterRound_MaxHealthAdd * GetCount(sender);
+            args.healthMultAdd += MasterRoundNth.instance.MasterRound_MaxHealthMult * GetCount(sender);
         }
     }
 }
