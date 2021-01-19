@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 //using TMPro;
 using TILER2;
+using static TILER2.MiscUtil;
 using static TILER2.StatHooks;
 using RiskOfBulletstorm.Utils;
 using static RoR2.Chat;
@@ -16,8 +17,8 @@ namespace RiskOfBulletstorm.Items
     public class MasterRoundNth : Item_V2<MasterRoundNth>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How much maximum health is increased per Master Round?", AutoConfigFlags.PreventNetMismatch)]
-        public int MasterRound_MaxHealthAdd { get; private set; } = 150;
+        [AutoConfig("What percent of max health should it increase by? (Value: Additive Percentage)", AutoConfigFlags.PreventNetMismatch)]
+        public float MasterRound_MaxHealthMult { get; private set; } = 0.10f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How many hits are allowed to be taken per player before invalidating the spawn? (Value: Max Hits)", AutoConfigFlags.PreventNetMismatch)]
         public static int MasterRound_AllowedHits { get; private set; } = 3;
@@ -54,7 +55,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetPickupString(string langID = null) => "Increases maximum health." +
             "\nGiven to those who survive the teleporter event without exceeding a certain amount of hits";
 
-        protected override string GetDescString(string langid = null) => $"Increases maximum health by <style=cIsHealing>{MasterRound_MaxHealthAdd} health</style> <style=cStack>(+{MasterRound_MaxHealthAdd} max health per stack)</style>";
+        protected override string GetDescString(string langid = null) => $"Increases maximum health by <style=cIsHealing>{Pct(MasterRound_MaxHealthMult)} health</style> <style=cStack>(+{Pct(MasterRound_MaxHealthMult)} max health per stack)</style>";
 
         protected override string GetLoreString(string langID = null) => "Apocryphal texts recovered from cultists of the Order indicate that the Gun and the Bullet are linked somehow." +
             "\nAny who enter the Gungeon are doomed to remain, living countless lives in an effort to break the cycle." +
@@ -155,7 +156,7 @@ namespace RiskOfBulletstorm.Items
 
         private void MasterRoundNth_GetStatCoefficients(CharacterBody sender, StatHookEventArgs args)
         {
-            args.baseHealthAdd += MasterRound_MaxHealthAdd * GetCount(sender);
+            args.healthMultAdd += MasterRound_MaxHealthMult * GetCount(sender);
         }
 
         private void MasterRound_OnHitEnemy(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim)
