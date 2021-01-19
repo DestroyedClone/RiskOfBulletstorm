@@ -24,6 +24,8 @@ namespace RiskOfBulletstorm.Items
             "\nIt is HIGHLY recommended not to disable, because alot of projectiles could break otherwise.", AutoConfigFlags.PreventNetMismatch)]
         public static bool ShotSpread_WhitelistProjectiles { get; private set; } = true;
 
+        private readonly bool ShowAnnoyingDebugText = false;
+
         public override string displayName => "BulletstormExtraStatsController";
         public override ItemTier itemTier => ItemTier.NoTier;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.WorldUnique, ItemTag.AIBlacklist });
@@ -51,31 +53,30 @@ namespace RiskOfBulletstorm.Items
         public static List<GameObject> WhitelistedProjectiles = new List<GameObject>
         {
             // Equipment/Items
-            Resources.Load<GameObject>("Prefabs/Projectiles/Sawmerang"), //Saw
+            Resources.Load<GameObject>("Prefabs/Projectiles/Sawmerang"), // Saw
             Resources.Load<GameObject>("Prefabs/Projectiles/LunarNeedleProjectile"), // Visions of Heresy
 
             // Survivors
                 // Acrid
-            Resources.Load<GameObject>("prefabs/projectiles/CrocoSpit"),
-            Resources.Load<GameObject>("prefabs/projectiles/CrocoDiseaseProjectile"),
+            Resources.Load<GameObject>("prefabs/projectiles/CrocoSpit"), // Ranged Secondary
+            Resources.Load<GameObject>("prefabs/projectiles/CrocoDiseaseProjectile"), // Special
                 // Artificer
             Resources.Load<GameObject>("Prefabs/Projectiles/MageFireboltBasic"),
             Resources.Load<GameObject>("Prefabs/Projectiles/MageLightningboltBasic"),
             Resources.Load<GameObject>("Prefabs/Projectiles/MageLightningBombProjectile"),
             Resources.Load<GameObject>("Prefabs/Projectiles/MageIceBombProjectile"),
             Resources.Load<GameObject>("Prefabs/Projectiles/MageIcewallWalkerProjectile"),
-            //MageIcewallPillarProjectile
+            //MageIcewallPillarProjectile ??
 
                 // Captain
             Resources.Load<GameObject>("Prefabs/Projectiles/CaptainTazer"),
-            Resources.Load<GameObject>("Prefabs/Projectiles/FMJ"), //??
 
                 // Commando
             Resources.Load<GameObject>("prefabs/projectiles/CommandoGrenadeProjectile"),
-            Resources.Load<GameObject>("Prefabs/Projectiles/CaptainTazer"),
+            Resources.Load<GameObject>("Prefabs/Projectiles/FMJ"), //??
 
                 // Engineer
-            Resources.Load<GameObject>("Prefabs/Projectiles/EngiHarpoon"), //engineer harpoon
+            Resources.Load<GameObject>("Prefabs/Projectiles/EngiHarpoon"),
             Resources.Load<GameObject>("Prefabs/Projectiles/EngiGrenadeProjectile"),
             Resources.Load<GameObject>("Prefabs/Projectiles/EngiMine"),
             Resources.Load<GameObject>("Prefabs/Projectiles/SpiderMine"),
@@ -85,19 +86,19 @@ namespace RiskOfBulletstorm.Items
             EntityStates.Huntress.HuntressWeapon.FireGlaive.projectilePrefab,
 
                 // Loader
-            Resources.Load<GameObject>("prefabs/projectiles/LoaderZapCone"),
+            Resources.Load<GameObject>("prefabs/projectiles/LoaderZapCone"), //It's a projectile, go figure.
             Resources.Load<GameObject>("prefabs/projectiles/LoaderPylon"),
 
                 // Merc
-            Resources.Load<GameObject>("prefabs/projectiles/EvisProjectile"),
+            Resources.Load<GameObject>("prefabs/projectiles/EvisProjectile"), // Ranged special
 
                 // MUL-T
-            Resources.Load<GameObject>("prefabs/projectiles/ToolbotGrenadeLauncherProjectile"),
-            Resources.Load<GameObject>("prefabs/projectiles/CryoCanisterProjectile"),
+            Resources.Load<GameObject>("prefabs/projectiles/ToolbotGrenadeLauncherProjectile"), // Scrap Launcher
+            Resources.Load<GameObject>("prefabs/projectiles/CryoCanisterProjectile"), // Secondary bomb
 
                 // REX
             Resources.Load<GameObject>("prefabs/projectiles/SyringeProjectile"),
-            Resources.Load<GameObject>("prefabs/projectiles/SyringeProjectileHealing"),
+            Resources.Load<GameObject>("prefabs/projectiles/SyringeProjectileHealing"), // Third syringe shot
             Resources.Load<GameObject>("prefabs/projectiles/TreebotMortarRain"),
             Resources.Load<GameObject>("prefabs/projectiles/TreebotMortar2"),
             Resources.Load<GameObject>("prefabs/projectiles/TreebotFlowerSeed"),
@@ -151,14 +152,6 @@ namespace RiskOfBulletstorm.Items
                 // Greater Wisp
             Resources.Load<GameObject>("prefabs/projectiles/WispCannon"),
         };
-        public override void SetupBehavior()
-        {
-            base.SetupBehavior();
-        }
-        public override void SetupAttributes()
-        {
-            base.SetupAttributes();
-        }
         public override void SetupLate()
         {
             base.SetupLate();
@@ -217,7 +210,7 @@ namespace RiskOfBulletstorm.Items
                 "DireseekerBossFireball",
                 "DireseekerBossGroundFireball",
 
-                // ROB - MINER's DIRESEEKER // why is it different
+                // ROB - MINER's DIRESEEKER //
                 "DireseekerFireball",
                 "DireseekerGroundFireball",
 
@@ -262,7 +255,7 @@ namespace RiskOfBulletstorm.Items
 
             };
             // MODDED //
-            _logger.LogMessage("Projectile Whitelist: Adding modded projectiles.");
+            _logger.LogMessage("[Risk of Bulletstorm] Projectile Whitelist: Adding modded projectiles.");
 
             int moddedProjectilesAdded = 0;
             foreach (string projectileString in moddedProjectileStrings)
@@ -272,11 +265,11 @@ namespace RiskOfBulletstorm.Items
                 if (projectileIndex > 0)
                 {
                     WhitelistedProjectiles.Add(ProjectileCatalog.GetProjectilePrefab(projectileIndex));
-                    _logger.LogMessage("Projectile Whitelist: Added projectile = "+projectileString);
+                    _logger.LogMessage("[Risk of Bulletstorm] Projectile Whitelist: Added projectile = "+projectileString);
                     moddedProjectilesAdded++;
                 }
             }
-            _logger.LogMessage("Projectile Whitelist: Added "+moddedProjectilesAdded+" modded projectiles.");
+            _logger.LogMessage("[Risk of Bulletstorm] Projectile Whitelist: Added " + moddedProjectilesAdded+" modded projectiles.");
         }
 
         public override void SetupConfig()
@@ -321,6 +314,7 @@ namespace RiskOfBulletstorm.Items
 
                     // fuck it,, we overriding
                     // fuck IL too
+                    // look man i dont know why this shit doesnt work
 
                     self.fireNumber++;
                     self.StartAimMode(aimRay, 3f, false);
@@ -493,8 +487,8 @@ namespace RiskOfBulletstorm.Items
             //ResultMult = Clamp(ResultMult);
             //ResultMult = ResultMult;
 
-            //Debug.Log("Scope: "+ ResultMult);
-            //Debug.Log("Scope: [isProjectile"+ isProjectile+ "] Scope: "+ ScopeMult + " + SpiceMult: " + SpiceMult + " = " + ResultMult);
+            if (ShowAnnoyingDebugText)
+                _logger.LogMessage("Scope: [isProjectile"+ isProjectile+ "] Scope: "+ ScopeMult + " + SpiceMult: " + SpiceMult + " = " + ResultMult);
             return ResultMult;
         }
 
@@ -514,7 +508,7 @@ namespace RiskOfBulletstorm.Items
                         {
                             float AccMult = CalculateSpreadMultiplier(inventory, true);
                             GameObject projectilePrefab = fireProjectileInfo.projectilePrefab;
-                            var aimDirection = input.aimDirection;
+                            Vector3 aimDirection = input.aimDirection;
                             Quaternion aimDirectionQuaternion = Util.QuaternionSafeLookRotation(aimDirection);
 
                             //_logger.LogMessage("Projectile Fired: "+ fireProjectileInfo.projectilePrefab.name);
@@ -533,9 +527,9 @@ namespace RiskOfBulletstorm.Items
                                     UpdatedAngle = Quaternion.Lerp(fireProjectileInfo.rotation, aimDirectionQuaternion, CappedAccMult);
                                 } else
                                 {
-                                    CappedAccMult *= -1;
+                                    //CappedAccMult *= -1;
                                     //This is a random dir in cone. USED FOR INACCURACY
-                                    Quaternion bulletDir = GetRandomInsideCone(BaseSpreadAngle);
+                                    Quaternion bulletDir = GetRandomInsideCone(BaseSpreadAngle, aimDirection);
                                     _logger.LogMessage(bulletDir);
                                     UpdatedAngle = Quaternion.SlerpUnclamped(bulletDir, aimDirectionQuaternion, CappedAccMult);
                                 }
@@ -550,13 +544,13 @@ namespace RiskOfBulletstorm.Items
             orig(self, fireProjectileInfo);
         }
 
-        Quaternion GetRandomInsideCone(float conicAngle)
+        Quaternion GetRandomInsideCone(float conicAngle, Vector3 forward)
         {
             // random tilt right (which is a random angle around the up axis)
             Quaternion randomTilt = Quaternion.AngleAxis(Random.Range(0f, conicAngle), Vector3.up);
 
             // random spin around the forward axis
-            Quaternion randomSpin = Quaternion.AngleAxis(Random.Range(0f, 360f), Vector3.forward);
+            Quaternion randomSpin = Quaternion.AngleAxis(Random.Range(0f, 360f), forward);
 
             // tilt then spin
             return (randomSpin * randomTilt);
