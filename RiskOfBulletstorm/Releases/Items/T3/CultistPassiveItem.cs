@@ -177,7 +177,7 @@ namespace RiskOfBulletstorm.Items
                     localScale = new Vector3(0.14f, 0.5f, 0.14f)
                 }
             });
-            rules.Add("mdlBrother", new ItemDisplayRule[] //todo
+            rules.Add("mdlBrother", new ItemDisplayRule[] //todo: child
             {
                 new ItemDisplayRule
                 {

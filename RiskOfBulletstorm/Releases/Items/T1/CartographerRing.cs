@@ -209,15 +209,15 @@ namespace RiskOfBulletstorm.Items
                     localScale = generalScale * 8f
                 }
             });
-            rules.Add("mdlLoader", new ItemDisplayRule[] //todo
+            rules.Add("mdlLoader", new ItemDisplayRule[]
             {
                 new ItemDisplayRule
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
                     childName = "MechFinger33R",
-                    localPos = new Vector3(0f, 0.02f, 0.06f),
-                    localAngles = new Vector3(180f, 180f, 180f),
+                    localPos = new Vector3(-0.15f, 0.02f, 0.02f),
+                    localAngles = new Vector3(00f, 00f, 180f),
                     localScale = generalScale * 3
                 }
             });
@@ -293,7 +293,7 @@ namespace RiskOfBulletstorm.Items
                     localScale = generalScale * 20f
                 }
             });
-            rules.Add("mdlScav", new ItemDisplayRule[] //RDY 
+            rules.Add("mdlScav", new ItemDisplayRule[] //TODO 
             {
                 new ItemDisplayRule
                 {

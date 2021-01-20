@@ -286,11 +286,12 @@ namespace RiskOfBulletstorm.Items
                         var isCharmed = self.gameObject.GetComponent<IsCharmed>();
                         if (!isCharmed) isCharmed = self.gameObject.AddComponent<IsCharmed>();
 
-                        isCharmed.enabled = false;
+                        //isCharmed.enabled = false;
                         isCharmed.characterBody = self;
                         isCharmed.teamComponent = self.teamComponent;
                         isCharmed.baseAI = baseAI;
                         isCharmed.oldTeamIndex = self.teamComponent.teamIndex;
+                        isCharmed.enabled = true;
                     }
                 }
             }
@@ -364,7 +365,7 @@ namespace RiskOfBulletstorm.Items
                 self.enemySearch.teamMaskFilter.RemoveTeam(isCharmed.GetOppositeTeamIndex(isCharmed.GetOldTeam()));
                 self.enemySearch.sortMode = BullseyeSearch.SortMode.Distance;
                 self.enemySearch.minDistanceFilter = 0;
-                self.enemySearch.maxDistanceFilter = maxDistance;
+                self.enemySearch.maxDistanceFilter = maxDistance*4f; //maxDistance
                 self.enemySearch.searchOrigin = self.bodyInputBank.aimOrigin;
                 self.enemySearch.searchDirection = self.bodyInputBank.aimDirection;
                 self.enemySearch.maxAngleFilter = (full360Vision ? 180f : 90f);
@@ -655,10 +656,10 @@ namespace RiskOfBulletstorm.Items
                 if (baseAI.currentEnemy != null)
                 {
                     var currentEnemyCharacterBody = baseAI.currentEnemy.characterBody;
-                    _logger.LogDebug("GungeonBuffs Charm: OnEnable, last target was " + currentEnemyCharacterBody.name);
+                    _logger.LogMessage("GungeonBuffs Charm: OnEnable, last target was " + currentEnemyCharacterBody.name);
                     if (currentEnemyCharacterBody && currentEnemyCharacterBody.teamComponent && currentEnemyCharacterBody.teamComponent.teamIndex == GetOppositeTeamIndex(oldTeamIndex))
                     {
-                        _logger.LogDebug("Start's ResetTarget");
+                        _logger.LogMessage("Start's ResetTarget");
                         ResetTarget();
                     }
                 }
@@ -686,6 +687,7 @@ namespace RiskOfBulletstorm.Items
             {
                 if (!characterBody.HasBuff(Charm))
                 {
+                    _logger.LogMessage("Setting enabled to false.");
                     enabled = false;
                 }
             }

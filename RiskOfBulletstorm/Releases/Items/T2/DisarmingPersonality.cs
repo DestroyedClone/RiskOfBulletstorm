@@ -65,7 +65,7 @@ namespace RiskOfBulletstorm.Items
             ItemBodyModelPrefab.AddComponent<ItemDisplay>();
             ItemBodyModelPrefab.GetComponent<ItemDisplay>().rendererInfos = ItemHelpers.ItemDisplaySetup(ItemBodyModelPrefab);
 
-            Vector3 generalScale = new Vector3(0.1f, 0.1f, 0.1f);
+            Vector3 generalScale = new Vector3(0.02f, 0.02f, 0.02f);
             ItemDisplayRuleDict rules = new ItemDisplayRuleDict(new ItemDisplayRule[]
             {
                 new ItemDisplayRule
@@ -73,7 +73,7 @@ namespace RiskOfBulletstorm.Items
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
                     childName = "Chest",
-                    localPos = new Vector3(0f, 0.4f, -0.25f),
+                    localPos = new Vector3(0f, 0.17f, 0.2f),
                     localAngles = new Vector3(0, 0, 0),
                     localScale = generalScale
                 }
@@ -85,8 +85,8 @@ namespace RiskOfBulletstorm.Items
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
                     childName = "Chest",
-                    localPos = new Vector3(0.2f, 0.2f, -0.2f),
-                    localAngles = new Vector3(0, 0, 0),
+                    localPos = new Vector3(0f, 0.17f, 0.17f),
+                    localAngles = new Vector3(-30, 0, 0),
                     localScale = generalScale
                 }
             });
@@ -97,9 +97,9 @@ namespace RiskOfBulletstorm.Items
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
                     childName = "Chest",
-                    localPos = new Vector3(0f, 2.3f, 2.5f),
+                    localPos = new Vector3(0f, 1.3f, 3.4f),
                     localAngles = new Vector3(0f, 0f, 0f),
-                    localScale = generalScale * 4
+                    localScale = new Vector3(0.2f, 0.2f, 0.2f)
                 }
             });
             rules.Add("mdlEngi", new ItemDisplayRule[]
@@ -109,7 +109,7 @@ namespace RiskOfBulletstorm.Items
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
                     childName = "Chest",
-                    localPos = new Vector3(0f, 0.3f, -0.4f),
+                    localPos = new Vector3(0f, 0.2f, 0.3f),
                     localAngles = new Vector3(0f, 0f, 0f),
                     localScale = generalScale
                 }
@@ -121,9 +121,9 @@ namespace RiskOfBulletstorm.Items
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
                     childName = "Chest",
-                    localPos = new Vector3(0f, -0.05f, 0.2f),
+                    localPos = new Vector3(0f, 0.2f, 0.14f),
                     localAngles = new Vector3(0f, 0f, 0f),
-                    localScale = generalScale * 0.5f
+                    localScale = generalScale
                 }
             });
             rules.Add("mdlMerc", new ItemDisplayRule[]
@@ -133,8 +133,8 @@ namespace RiskOfBulletstorm.Items
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
                     childName = "Chest",
-                    localPos = new Vector3(0f, -0.1f, -0.3f),
-                    localAngles = new Vector3(0f, 0f, 0f),
+                    localPos = new Vector3(0f, 0.25f, 0.15f),
+                    localAngles = new Vector3(-30f, 0f, 0f),
                     localScale = generalScale
                 }
             });
@@ -145,8 +145,8 @@ namespace RiskOfBulletstorm.Items
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
                     childName = "Base",
-                    localPos = new Vector3(0f, 0.4f, -1.6f),
-                    localAngles = new Vector3(0f, 0f, 0f),
+                    localPos = new Vector3(0f, 0.4f, -1.5f),
+                    localAngles = new Vector3(0f, 180f, 0f),
                     localScale = generalScale
                 }
             });
@@ -157,8 +157,8 @@ namespace RiskOfBulletstorm.Items
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
                     childName = "Chest",
-                    localPos = new Vector3(0f, 0.025f, -0.4f),
-                    localAngles = new Vector3(0f, 0f, 0f),
+                    localPos = new Vector3(0f, 0.25f, 0.15f),
+                    localAngles = new Vector3(-30f, 0f, 0f),
                     localScale = generalScale
                 }
             });
@@ -169,9 +169,9 @@ namespace RiskOfBulletstorm.Items
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
                     childName = "Chest",
-                    localPos = new Vector3(0f, 0.5f, -2.6f),
-                    localAngles = new Vector3(0f, 0f, 0f),
-                    localScale = generalScale * 4
+                    localPos = new Vector3(0f, 1.5f, -2.1f),
+                    localAngles = new Vector3(0f, 180f, 0f),
+                    localScale = new Vector3(0.2f, 0.2f, 0.2f)
                 }
             });
             rules.Add("mdlCaptain", new ItemDisplayRule[]
@@ -181,12 +181,12 @@ namespace RiskOfBulletstorm.Items
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
                     childName = "Chest",
-                    localPos = new Vector3(0f, 0.2f, -0.35f),
+                    localPos = new Vector3(0f, 0.3f, 0.2f),
                     localAngles = new Vector3(0f, 0f, 0f),
                     localScale = generalScale
                 }
             });
-            /*rules.Add("mdlBrother", new ItemDisplayRule[] //Mithrix doesnt use equips
+            /*rules.Add("mdlBrother", new ItemDisplayRule[] //todo
             {
                 new ItemDisplayRule
                 {
@@ -205,21 +205,21 @@ namespace RiskOfBulletstorm.Items
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
                     childName = "Head",
-                    localPos = new Vector3(0f, 0f, -0.3f),
-                    localAngles = new Vector3(0f, 0f, 0f),
+                    localPos = new Vector3(-0.09f, 0f, -0.3f),
+                    localAngles = new Vector3(0f, -60f, 0f),
                     localScale = generalScale
                 }
             });
-            rules.Add("mdlClayBruiser", new ItemDisplayRule[] //TODO
+            rules.Add("mdlClayBruiser", new ItemDisplayRule[]
             {
                 new ItemDisplayRule
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
                     childName = "Head",
-                    localPos = new Vector3(0f, 0f, 0f),
+                    localPos = new Vector3(0f, 0.38f, 0.25f),
                     localAngles = new Vector3(0f, 0f, 0f),
-                    localScale = generalScale * 2.5f
+                    localScale = generalScale * 2f
                 }
             });
             rules.Add("mdlHAND", new ItemDisplayRule[]
@@ -229,9 +229,9 @@ namespace RiskOfBulletstorm.Items
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
                     childName = "Head",
-                    localPos = new Vector3(0f, 0f, -2f),
+                    localPos = new Vector3(0f, -1f, 1f),
                     localAngles = new Vector3(0f, 0f, 0f),
-                    localScale = generalScale * 8f
+                    localScale = new Vector3(0.2f, 0.2f, 0.2f)
                 }
             });
             rules.Add("mdlScav", new ItemDisplayRule[]
@@ -241,9 +241,9 @@ namespace RiskOfBulletstorm.Items
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
                     childName = "Head",
-                    localPos = new Vector3(8.5f, -6f, 7f),
-                    localAngles = new Vector3(0f, 90f, 0f),
-                    localScale = generalScale * 10f
+                    localPos = new Vector3(8f, -7f, 4f),
+                    localAngles = new Vector3(0f, 90f, -90f),
+                    localScale = new Vector3(1f, 1f, 1f)
                 }
             });
             return rules;
@@ -276,7 +276,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     //var ResultMultUnclamp = 1 - DisarmingPersonality_CostReductionAmount + DisarmingPersonality_CostReductionAmountStack * (InventoryCount - 1);
                     //var ResultMult = Mathf.Max(ResultMultUnclamp, 0);
-                        //credit to harb
+                        //credit to harb+bord listam
                     var ResultMult = (DisarmingPersonality_CostReductionAmount + (1 - DisarmingPersonality_CostReductionAmount) * (1 - (DisarmingPersonality_CostReductionAmountLimit / Mathf.Pow(InventoryCount + DisarmingPersonality_CostReductionAmountLimit, DisarmingPersonality_CostReductionAmountStack))));
                     var ResultAmt = (int)Mathf.Ceil(self.cost * ResultMult);
                     //Chat.AddMessage("Cost of chest reduced from" + self.cost + " to " + ResultAmt + " with multiplier "+ResultMult);

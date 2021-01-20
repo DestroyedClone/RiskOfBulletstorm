@@ -86,7 +86,7 @@ namespace RiskOfBulletstorm.Items
             "\n Tick, Tick, tick, tick";
 
         public static BuffIndex MetronomeBuffTally { get; private set; }
-
+        //todo: add IDRS
         public Metronome()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Metronome.prefab";
