@@ -17,9 +17,9 @@ namespace RiskOfBulletstorm.Items
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility, ItemTag.WorldUnique });
 
         protected override string GetNameString(string langID = null) => displayName;
-        protected override string GetPickupString(string langID = null) => "Restores all players' cooldowns on pickup.";
+        protected override string GetPickupString(string langID = null) => "Restores all allies' cooldowns on pickup.";
 
-        protected override string GetDescString(string langid = null) => $"";
+        protected override string GetDescString(string langid = null) => $"On pickup, restores all skills cooldowns and one equipment charge for all equipment for all allies.";
 
         protected override string GetLoreString(string langID = null) => "";
 
