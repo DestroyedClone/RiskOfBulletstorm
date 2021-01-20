@@ -348,7 +348,6 @@ namespace RiskOfBulletstorm.Items
                 {
                     comp.Value.enabled = false;
                 }
-                UnityEngine.Object.Destroy(PermanentScannerPrefab);
             }
         }
 
