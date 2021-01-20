@@ -14,11 +14,11 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How much maximum health is multiplied by per Ring of Miserly Protection? (Value: Additive Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float RingMiserlyProtection_HealthBonus { get; private set; } = 1.25f;
+        public float RingMiserlyProtection_HealthBonus { get; private set; } = 1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How much additional maximum health is multiplied by per subsequent stacks of Ring of Miserly Protection? (Value: Additive Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float RingMiserlyProtection_HealthBonusStack { get; private set; } = 0.75f;
+        public float RingMiserlyProtection_HealthBonusStack { get; private set; } = 0.5f;
         public override string displayName => "Ring of Miserly Protection";
         public override ItemTier itemTier => ItemTier.Lunar;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Healing, ItemTag.Cleansable });

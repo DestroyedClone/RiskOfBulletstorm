@@ -23,7 +23,7 @@ namespace RiskOfBulletstorm.Items
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How many kills are lost upon using a different ability?", AutoConfigFlags.PreventNetMismatch)]
-        public static int Metronome_KillsLost { get; private set; } = 50;
+        public static int Metronome_KillsLost { get; private set; } = 75;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the damage multiplier per kill for the metronome? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
