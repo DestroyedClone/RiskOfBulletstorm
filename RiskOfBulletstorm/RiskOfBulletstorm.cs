@@ -71,7 +71,7 @@ namespace RiskOfBulletstorm
         private void Awake()
         {
             _logger = Logger;
-
+            //JokeMod.Init();
             R2API.Utils.CommandHelper.AddToConsoleWhenReady();
 
             /*

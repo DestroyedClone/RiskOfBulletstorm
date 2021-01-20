@@ -9,7 +9,7 @@ namespace RiskOfBulletstorm
 {
     public class HelperPlugin : BaseUnityPlugin
     {
-        public static class ClassicItemsCompat
+        /*public static class ClassicItemsCompat
         {
             private static bool? _enabled;
 
@@ -43,7 +43,6 @@ namespace RiskOfBulletstorm
                 Embryo_V2.instance.Compat_Register(equipmentIndex);
                 RiskofBulletstorm._logger.LogInfo("[Bulletstorm] Embryo_V2Compat_: Registed equipment ID " + equipmentIndex + EquipmentCatalog.GetEquipmentDef(equipmentIndex).name);
             }
-        }
-
+        }*/
     }
 }

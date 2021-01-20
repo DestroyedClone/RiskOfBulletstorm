@@ -97,10 +97,6 @@ namespace RiskOfBulletstorm.Items
             Resources.Load<Texture>("@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundMoon.png"),
         };
 
-        readonly List<Texture> textures;
-
-        readonly string[] texturePathAppends = { "I", "II", "III", "IV", "V", "Moon" };
-
         readonly string announceStartToken = "<color=#c9ab14>[Master Round] Players can take a max of {0} hits!</color>";
         readonly string playerHitToken = "<color=#ba3f0f>[Master Round] Player {0} has been hit {1} out of {2} times!</color>";
         readonly string playerHitNameFailed = "Someone";
@@ -135,11 +131,6 @@ namespace RiskOfBulletstorm.Items
             base.SetupLate();
             BodyIndexLunarGolem = BodyCatalog.FindBodyIndex("LUNARGOLEM");
             BodyIndexLunarWisp = BodyCatalog.FindBodyIndex("LUNARWISP");
-
-            foreach (string append in texturePathAppends)
-            {
-                textures.Add((Texture)Resources.Load("@RiskOfBulletstorm:Assets/Textures/Icons/MasterRound"+append+".png"));
-            }
         }
         public override void Install()
         {
@@ -272,10 +263,10 @@ namespace RiskOfBulletstorm.Items
 
             if (itemDef.pickupIconPath != null)
             {
-                //self.iconImage.texture = Resources.Load<Texture>(itemDef.pickupIconPath);
-                var index = Mathf.Max(clearCount, textures.Count-1);
+                self.iconImage.texture = Resources.Load<Texture>(itemDef.pickupIconPath);
+                //var index = Mathf.Max(clearCount, textures.Count-1);
                 //self.iconImage.texture = Resources.Load<Texture>(filePaths[index]);
-                self.iconImage.texture = textures[index];
+                //self.iconImage.texture = textures[index];
             }
 
         }

@@ -11,6 +11,17 @@ namespace RiskOfBulletstorm
 {
     public static class ConsoleCommands
     {
+        [ConCommand(commandName = "ROB_deathstateclear", flags = ConVarFlags.ExecuteOnServer, helpText = "Destroys your deathstate so that your corpse keeps the idleanims.")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Console Command")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Empty Arg required")]
+        private static void DeathStateClear(ConCommandArgs args)
+        {
+            var localMaster = PlayerCharacterMasterController.instances[0].master;
+            GameObject bodyInstanceObject = localMaster.bodyInstanceObject;
+            var deathstate = bodyInstanceObject.GetComponent<CharacterDeathBehavior>();
+            if (deathstate) UnityEngine.Object.Destroy(deathstate);
+        }
+
         [ConCommand(commandName = "ROB_toggleview", flags = ConVarFlags.ExecuteOnServer, helpText = "Draws a line from where you're aiming towards.")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Console Command")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Empty Arg required")]
