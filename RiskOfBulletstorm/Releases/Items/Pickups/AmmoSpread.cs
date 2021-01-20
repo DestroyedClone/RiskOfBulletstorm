@@ -94,7 +94,6 @@ namespace RiskOfBulletstorm.Items
                     {
                         if (restoreEquipmentCharges) inventory.RestockEquipmentCharges(0, 1);
 
-                        //in case some maniac uses more than two equipment slots
                         if (restoreOffhandEquipmentCharges)
                         {
                             for (int i = 0; i < inventory.GetEquipmentSlotCount()-1; i++)
