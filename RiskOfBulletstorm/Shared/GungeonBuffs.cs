@@ -286,12 +286,11 @@ namespace RiskOfBulletstorm.Items
                         var isCharmed = self.gameObject.GetComponent<IsCharmed>();
                         if (!isCharmed) isCharmed = self.gameObject.AddComponent<IsCharmed>();
 
-                        //isCharmed.enabled = false;
+                        isCharmed.enabled = false;
                         isCharmed.characterBody = self;
                         isCharmed.teamComponent = self.teamComponent;
                         isCharmed.baseAI = baseAI;
                         isCharmed.oldTeamIndex = self.teamComponent.teamIndex;
-                        isCharmed.enabled = true;
                     }
                 }
             }

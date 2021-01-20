@@ -53,6 +53,7 @@
     <Folder Include="Items\" />
     <Folder Include="Items\" />
     <Folder Include="Items_Unused\TierLunar\" />
+    <Folder Include="Shared\GungeonBuffs\" />
     <None Remove="riskofgungeonassets" />
 	  <Folder Remove="Items" />
   </ItemGroup>
