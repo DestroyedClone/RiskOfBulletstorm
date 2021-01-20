@@ -6,6 +6,7 @@ using static R2API.Utils.CommandHelper;
 using R2API.Utils;
 using RoR2;
 using UnityEngine;
+using EntityStates;
 
 namespace RiskOfBulletstorm
 {
@@ -19,7 +20,7 @@ namespace RiskOfBulletstorm
             var localMaster = PlayerCharacterMasterController.instances[0].master;
             GameObject bodyInstanceObject = localMaster.bodyInstanceObject;
             var deathstate = bodyInstanceObject.GetComponent<CharacterDeathBehavior>();
-            if (deathstate) UnityEngine.Object.Destroy(deathstate);
+            if (deathstate) deathstate.deathState = new SerializableEntityStateType();
         }
 
         [ConCommand(commandName = "ROB_toggleview", flags = ConVarFlags.ExecuteOnServer, helpText = "Draws a line from where you're aiming towards.")]
