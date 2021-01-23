@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1618382832
+CRC: 3561827437
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 22dd6dcb053416f16646c09f6512ef50
+    Hash: d0c93de38f1885dccd32ec79b234767a
   TypeTreeHash:
     serializedVersion: 2
     Hash: 21747e4ee48f36c7a65f9afbfd77f392
@@ -126,7 +126,7 @@ Assets:
 - Assets/Textures/Icons/MagazineRack.png
 - Assets/Models/Raw Models/Friendship Cookie.fbx
 - Assets/Textures/Icons/Bomb.png
-- Assets/Textures/Icons/Charm Horn.png
+- Assets/Textures/Icons/CharmHorn.png
 - Assets/Textures/Icons/Metronome.png
 - Assets/Textures/Materials/Materials/UnityTex.mat
 - Assets/Textures/Materials/shitty map.png
