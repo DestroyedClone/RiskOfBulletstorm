@@ -56,7 +56,7 @@ namespace RiskOfBulletstorm.Items
         public Ration()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Ration.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/RationIcon.png";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/Ration.png";
         }
         public override void SetupBehavior()
         {

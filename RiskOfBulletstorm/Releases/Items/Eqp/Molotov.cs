@@ -41,7 +41,7 @@ namespace RiskOfBulletstorm.Items
         public Molotov()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Molotov.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/MolotovIcon.png";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/Molotov.png";
         }
         protected override string GetNameString(string langID = null) => displayName;
 
@@ -98,7 +98,7 @@ namespace RiskOfBulletstorm.Items
         public static GameObject ItemBodyModelPrefab;
 
         public static GameObject GlassBreakEffect = Resources.Load<GameObject>("prefabs/effects/ShieldBreakEffect");
-        public static string ProjectileModelPath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Molotov_projectile.prefab";
+        public static string ProjectileModelPath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Projectiles/Molotov.prefab";
 
 
 

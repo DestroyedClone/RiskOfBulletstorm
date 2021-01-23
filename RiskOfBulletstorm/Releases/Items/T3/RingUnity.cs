@@ -42,7 +42,7 @@ namespace RiskOfBulletstorm.Items
         public Unity()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/RingUnity.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/RingUnityIcon.png";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/RingUnity.png";
         }
 
         public override void SetupBehavior()

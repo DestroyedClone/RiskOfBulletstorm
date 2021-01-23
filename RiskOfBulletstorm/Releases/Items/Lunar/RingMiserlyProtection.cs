@@ -52,7 +52,7 @@ namespace RiskOfBulletstorm.Items
         public RingMiserlyProtection()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/RingMiserlyProtection.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/RingMiserlyProtectionIcon.png";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/RingMiserlyProtection.png";
         }
         public override void SetupBehavior()
         {
@@ -62,7 +62,7 @@ namespace RiskOfBulletstorm.Items
         {
             if (ItemBodyModelPrefab == null)
             {
-                ItemBodyModelPrefab = Resources.Load<GameObject>(modelResourcePath);
+                ItemBodyModelPrefab = Resources.Load<GameObject>("@RiskOfBulletstorm:Assets/Models/Prefabs/RingMiserlyProtectionWorn.prefab");
                 displayRules = GenerateItemDisplayRules();
             }
 

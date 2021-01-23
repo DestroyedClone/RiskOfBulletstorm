@@ -48,7 +48,7 @@ namespace RiskOfBulletstorm.Items
         public FriendshipCookie()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/FriendshipCookie.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/FriendshipCookieIcon.png";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/FriendshipCookie.png";
         }
 
         public override void SetupBehavior()

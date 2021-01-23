@@ -39,7 +39,7 @@ namespace RiskOfBulletstorm.Items
         public Scope()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Scope.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/ScopeIcon.png";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/Scope.png";
         }
         public override void SetupBehavior()
         {
@@ -73,8 +73,7 @@ namespace RiskOfBulletstorm.Items
 
             }*/
 
-            ItemDisplayRuleDict rules = new ItemDisplayRuleDict();
-            rules.Add("mdlCommandoDualies", new ItemDisplayRule[]
+            ItemDisplayRuleDict rules = new ItemDisplayRuleDict(new ItemDisplayRule[]
             {
                 new ItemDisplayRule
                 {

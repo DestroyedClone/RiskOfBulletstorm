@@ -43,7 +43,7 @@ namespace RiskOfBulletstorm.Items
         public MagazineRack()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/MagazineRack.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/MagazineRackIcon.png";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/MagazineRack.png";
         }
 
         public override void SetupBehavior()

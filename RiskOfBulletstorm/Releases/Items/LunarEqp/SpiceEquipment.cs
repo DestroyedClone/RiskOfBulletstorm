@@ -63,7 +63,7 @@ namespace RiskOfBulletstorm.Items
         public Spice()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Spice.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/SpiceIcon.png";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/Spice.png";
         }
         public override void SetupBehavior()
         {

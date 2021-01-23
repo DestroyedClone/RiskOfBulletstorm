@@ -35,11 +35,7 @@ namespace RiskOfBulletstorm.Items
         public CultistPassiveItem()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/CultistPassiveItem.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/CultistPassiveIcon.png";
-        }
-        public override void SetupBehavior()
-        {
-
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/CultistPassiveItem.png";
         }
         public override void SetupAttributes()
         {
@@ -50,7 +46,6 @@ namespace RiskOfBulletstorm.Items
             }
 
             base.SetupAttributes();
-
         }
         public static ItemDisplayRuleDict GenerateItemDisplayRules()
         {

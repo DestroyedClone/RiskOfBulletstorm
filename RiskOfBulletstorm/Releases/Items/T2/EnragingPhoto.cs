@@ -51,7 +51,7 @@ namespace RiskOfBulletstorm.Items
         public EnragingPhoto()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/EnragingPhoto.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/EnragingPhotoIcon.png";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/EnragingPhoto.png";
         }
 
         public override void SetupBehavior()

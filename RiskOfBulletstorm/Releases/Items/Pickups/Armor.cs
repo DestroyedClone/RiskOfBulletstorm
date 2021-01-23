@@ -48,7 +48,7 @@ namespace RiskOfBulletstorm.Items
         public Armor()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Armor.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/ArmorIcon.png";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/Armor.png";
         }
 
         public override void SetupBehavior()

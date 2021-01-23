@@ -42,7 +42,7 @@ namespace RiskOfBulletstorm.Items
         public DisarmingPersonality()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/DisarmingPersonality.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/DisarmingPersonalityIcon.png";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/DisarmingPersonality.png";
         }
 
         public override void SetupBehavior()

@@ -90,29 +90,12 @@ namespace RiskOfBulletstorm.Items
         public Metronome()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Metronome.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/MetronomeIcon.png";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/Metronome.png";
         }
 
         public override void SetupBehavior()
         {
             base.SetupBehavior();
-
-            /*if (Compat_ItemStats.enabled)
-            {
-                Compat_ItemStats.CreateItemStatDef(itemDef,
-                (
-                    (count, inv, master) => { return Metronome_MaxKills + Metronome_MaxKillsStack*count; },
-                    (value, inv, master) => { return $"Max kills: {Pct(value, 0, 1)}"; }
-                ));
-            }
-            if (Compat_BetterUI.enabled)
-            {
-                Compat_BetterUI.AddEffect(catalogIndex, Metronome_MaxKills, Metronome_MaxKills, null, Compat_BetterUI.LinearStacking,
-                    (value, extraStackValue, stacks) =>
-                    {
-                        return (int)(value + extraStackValue * stacks);
-                    });
-            }*/ //this is the wrong way of doing it actually
         }
         public override void SetupAttributes()
         {
@@ -125,7 +108,7 @@ namespace RiskOfBulletstorm.Items
                 canStack = true,
                 isDebuff = false,
                 name = "Metronome Stacks (Display)",
-                iconPath = iconResourcePath
+                iconPath = "@RiskOfBulletstorm:Assets/Textures/Icons/Buffs/Metronome.png"
             }) ;
             MetronomeBuffTally = BuffAPI.Add(metronomeBuffTallyDef);
 

@@ -58,7 +58,7 @@ namespace RiskOfBulletstorm.Items
         public Medkit()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Medkit.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/MedkitIcon.png";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/Medkit.png";
         }
         public override void SetupBehavior()
         {

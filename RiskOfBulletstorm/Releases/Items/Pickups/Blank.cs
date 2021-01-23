@@ -76,7 +76,7 @@ namespace RiskOfBulletstorm.Items
         public Blank()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Blank.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/BlankIcon.png";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/Blank.png";
         }
         public override void SetupBehavior()
         {

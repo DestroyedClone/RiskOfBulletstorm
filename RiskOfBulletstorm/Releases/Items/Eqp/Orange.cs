@@ -35,7 +35,7 @@ namespace RiskOfBulletstorm.Items
         public Orange()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Orange.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/OrangeIcon.png";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/Orange.png";
         }
         public override void SetupBehavior()
         {

@@ -81,7 +81,7 @@ namespace RiskOfBulletstorm.Items
         public Meatbun()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Meatbun.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/MeatbunIcon.png";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/Meatbun.png";
         }
         public override void SetupBehavior()
         {
@@ -102,9 +102,10 @@ namespace RiskOfBulletstorm.Items
             var dmgBuff = new CustomBuff(
             new BuffDef
             {
-                buffColor = Color.white,
+                buffColor = Color.white, //todo remove?
                 canStack = true,
                 isDebuff = false,
+                iconPath = "@RiskOfBulletstorm:Assets/Textures/Icons/Buffs/Meatbun.png",
                 name = "Meatbun Bonus",
             });
             MeatbunBoost = BuffAPI.Add(dmgBuff);

@@ -37,8 +37,8 @@ namespace RiskOfBulletstorm.Items
 
         public RollBomb()
         {
-            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Rollbomb.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/RollbombIcon.png";
+            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/RollBomb.prefab";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/RollBomb.png";
         }
 
         public override void SetupBehavior()

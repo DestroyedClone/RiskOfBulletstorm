@@ -38,6 +38,8 @@ namespace RiskOfBulletstorm.Shared.Buffs
             // AI //
             On.RoR2.CharacterAI.BaseAI.OnBodyDamaged += BaseAI_RetaliateSpecial;
             On.RoR2.CharacterAI.BaseAI.FindEnemyHurtBox += BaseAI_CustomTargeting;
+            // Visual //
+            On.RoR2.CharacterModel.UpdateOverlays += CharacterModel_UpdateOverlays;
         }
 
         public static void Uninstall()
@@ -50,6 +52,8 @@ namespace RiskOfBulletstorm.Shared.Buffs
             // AI //
             On.RoR2.CharacterAI.BaseAI.OnBodyDamaged -= BaseAI_RetaliateSpecial;
             On.RoR2.CharacterAI.BaseAI.FindEnemyHurtBox -= BaseAI_CustomTargeting;
+            // Visual //
+            On.RoR2.CharacterModel.UpdateOverlays -= CharacterModel_UpdateOverlays;
         }
 
         // Spawn //
@@ -167,7 +171,30 @@ namespace RiskOfBulletstorm.Shared.Buffs
             }
             return orig(self, maxDistance, full360Vision, filterByLoS);
         }
+        private static void CharacterModel_UpdateOverlays(On.RoR2.CharacterModel.orig_UpdateOverlays orig, CharacterModel self)
+        {
+            orig(self);
 
+            if (self)
+            {
+                if (self.body && self.body.HasBuff(Modules.Buffs.torporDebuff))
+                {
+                    var torporController = self.body.GetComponent<Misc.PaladinTorporTracker>();
+                    if (!torporController) torporController = self.body.gameObject.AddComponent<Misc.PaladinTorporTracker>();
+                    else return;
+
+                    torporController.Body = self.body;
+                    TemporaryOverlay overlay = self.gameObject.AddComponent<RoR2.TemporaryOverlay>();
+                    overlay.duration = float.PositiveInfinity;
+                    overlay.alphaCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 0f);
+                    overlay.animateShaderAlpha = true;
+                    overlay.destroyComponentOnEnd = true;
+                    overlay.originalMaterial = Resources.Load<Material>("Materials/matDoppelganger");
+                    overlay.AddToCharacerModel(self);
+                    torporController.Overlay = overlay;
+                }
+            }
+        }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
         public class IsCharmed : MonoBehaviour

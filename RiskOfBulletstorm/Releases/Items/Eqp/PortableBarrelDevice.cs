@@ -79,8 +79,8 @@ namespace RiskOfBulletstorm.Items
 
         public PortableBarrelDevice()
         {
-            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/PortableBarrel.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/PortableBarrelIcon.png";
+            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/PortableBarrelDevice.prefab";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/PortableBarrelDevice.png";
         }
 
         public override void SetupBehavior()

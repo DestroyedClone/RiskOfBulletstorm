@@ -36,7 +36,7 @@ namespace RiskOfBulletstorm.Items
         public Mustache()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Mustache.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/MustacheIcon.png";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/Mustache.png";
         }
 
         public override void SetupBehavior()

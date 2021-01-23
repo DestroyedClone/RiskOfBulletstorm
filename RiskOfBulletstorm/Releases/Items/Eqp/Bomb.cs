@@ -42,12 +42,12 @@ namespace RiskOfBulletstorm.Items
 
         public static GameObject ItemBodyModelPrefab;
 
-        public static string ProjectileModelPath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Bomb_projectile.prefab";
+        public static string ProjectileModelPath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Projectiles/Bomb.prefab";
 
         public Bomb()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Bomb.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/BombIcon.png";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/Bomb.png";
         }
 
         public override void SetupBehavior()

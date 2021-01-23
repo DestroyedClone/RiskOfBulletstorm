@@ -86,6 +86,7 @@ namespace RiskOfBulletstorm.Items
                 buffColor = Color.red,
                 canStack = false,
                 isDebuff = false,
+                iconPath = "@RiskOfBulletstorm:Assets/Textures/Icons/Buffs/Enraged.png",
                 name = "Enraged",
             });
             Anger = BuffAPI.Add(angerBuff);
@@ -97,7 +98,7 @@ namespace RiskOfBulletstorm.Items
                 buffColor = new Color32(201, 42, 193, 255),
                 canStack = false,
                 isDebuff = true,
-                iconPath = "",
+                iconPath = "@RiskOfBulletstorm:Assets/Textures/Icons/Buffs/Charmed.png",
             });
             Charm = BuffAPI.Add(charmedBuff);
 
@@ -108,7 +109,7 @@ namespace RiskOfBulletstorm.Items
                 buffColor = new Color32(150, 10, 10, 255),
                 canStack = false,
                 isDebuff = false,
-                iconPath = "",
+                iconPath = "@RiskOfBulletstorm:Assets/Textures/Icons/Buffs/Jammed.png",
                 //eliteIndex = JammedEliteIndex,
             });
             Jammed = BuffAPI.Add(jammedBuff);

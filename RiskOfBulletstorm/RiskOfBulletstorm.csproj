@@ -37,7 +37,6 @@
     <Compile Remove="Releases\Items\Eqp\SupplyDrop.cs" />
     <Compile Remove="Releases\Items\Eqp\TrustyLockpicks.cs" />
     <Compile Remove="Releases\Items\LunarEqp\Spice.cs" />
-    <Compile Remove="Releases\Items\Lunar\JokeMod.cs" />
     <Compile Remove="Releases\Items\Pickups\dx.cs" />
     <Compile Remove="Releases\Items\Pickups\GuonStoneGlass.cs" />
     <Compile Remove="Releases\Items\Pickups\Key.cs" />

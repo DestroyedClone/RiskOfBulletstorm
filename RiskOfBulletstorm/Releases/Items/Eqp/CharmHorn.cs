@@ -42,8 +42,8 @@ namespace RiskOfBulletstorm.Items
 
         public CharmHorn()
         {
-            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/CharmHorn.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/CharmHornIcon.png";
+            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/CharmHorn.prefab"; //simplify UVs
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/CharmHorn.png";
         }
         public override void SetupBehavior()
         {

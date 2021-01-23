@@ -40,7 +40,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetPickupString(string langID = null) => "Item Capacity Up!\nThe Backpack grants you the use of another Active Item. Useful, but cumbersome.";
 
         //protected override string GetDescString(string langid = null) => $"Grants one extra equipment slot." +
-            //$"\nUse your modifier key+number keys or your cycle keys to switch slots.";
+        //$"\nUse your modifier key+number keys or your cycle keys to switch slots.";
 
         protected override string GetLoreString(string langID = null) => "";
         public static KeyCode ModifierKey_KB = KeyCode.None;
@@ -53,15 +53,12 @@ namespace RiskOfBulletstorm.Items
         public static GameObject ItemBodyModelPrefab;
         public static int ToolbotBodyIndex;
 
+        public Backpack()
+        {
+            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Backpack.prefab";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/Backpack.png";
+        }
 
-        public override void SetupBehavior()
-        {
-            base.SetupBehavior();
-        }
-        public override void SetupAttributes()
-        {
-            base.SetupAttributes();
-        }
         public override void SetupConfig()
         {
             base.SetupConfig();

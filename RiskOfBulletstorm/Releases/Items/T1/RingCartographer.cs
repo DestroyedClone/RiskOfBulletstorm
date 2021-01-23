@@ -10,7 +10,7 @@ using static RiskOfBulletstorm.Utils.HelperUtil;
 
 namespace RiskOfBulletstorm.Items
 {
-    public class CartographerRing : Item_V2<CartographerRing>
+    public class RingCartographer : Item_V2<RingCartographer>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the base chance for the stage to be scanned with one Cartographer's Ring? (Value: Direct Percentage)", AutoConfigFlags.PreventNetMismatch)]
@@ -44,10 +44,10 @@ namespace RiskOfBulletstorm.Items
         public static GameObject PermanentScannerPrefab;
 
         public static GameObject ItemBodyModelPrefab;
-        public CartographerRing()
+        public RingCartographer()
         {
-            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/CartographerRing.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/CartographerRing.png"; //todo fix in unity
+            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/RingCartographer.prefab";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/RingCartographer.png"; //todo fix in unity
         }
 
 
