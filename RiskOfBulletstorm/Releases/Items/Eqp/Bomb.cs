@@ -77,9 +77,6 @@ namespace RiskOfBulletstorm.Items
             ProjectileCatalog.getAdditionalEntries += list => list.Add(BombPrefab);
 
             if (BombPrefab) PrefabAPI.RegisterNetworkPrefab(BombPrefab);
-
-            //if (HelperPlugin.ClassicItemsCompat.enabled)
-                //HelperPlugin.ClassicItemsCompat.RegisterEmbryo(catalogIndex);
         }
         public override void SetupAttributes()
         {
@@ -298,7 +295,6 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
         }
-
         public override void Uninstall()
         {
             base.Uninstall();
@@ -310,13 +306,14 @@ namespace RiskOfBulletstorm.Items
             if (!gameObject || !body) return false;
 
             Util.PlaySound(FireMines.throwMineSoundString, gameObject);
-            FireBomb(body, gameObject);
-            //if (HelperPlugin.ClassicItemsCompat.enabled && HelperPlugin.ClassicItemsCompat.CheckEmbryoProc(instance, body))
-                //FireBomb(body, gameObject, 1f);
+
+            var angle = Util.QuaternionSafeLookRotation(slot.GetAimRay().direction);
+
+            FireBomb(body, gameObject, angle);
             return true;
         }
 
-        public void FireBomb(CharacterBody body, GameObject gameObject, float yOffset = 0)
+        public void FireBomb(CharacterBody body, GameObject gameObject, Quaternion throwAngle, float yOffset = 0)
         {
             var offset = body.characterMotor.capsuleCollider.height / 3;
             var position = body.corePosition;
@@ -328,7 +325,7 @@ namespace RiskOfBulletstorm.Items
 
             if (NetworkServer.active)
             {
-                ProjectileManager.instance.FireProjectile(BombPrefab, resultpos, Util.QuaternionSafeLookRotation(input ? input.aimDirection : body.transform.forward),
+                ProjectileManager.instance.FireProjectile(BombPrefab, resultpos, throwAngle,
                                       gameObject, body.damage * Bomb_DamageDealt,
                                       0f, Util.CheckRoll(body.crit, body.master),
                                       DamageColorIndex.Item, null, -1f);

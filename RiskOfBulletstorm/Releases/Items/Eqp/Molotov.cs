@@ -377,12 +377,12 @@ namespace RiskOfBulletstorm.Items
 
             Util.PlaySound(FireMines.throwMineSoundString, gameObject);
             var damageMult = 1f;
-            //if (HelperPlugin.ClassicItemsCompat.enabled && HelperPlugin.ClassicItemsCompat.CheckEmbryoProc(instance, body)) damageMult = Molotov_BeatingEmbryo;
-            FireMolotov(body, gameObject, damageMult);
+            var angle = Util.QuaternionSafeLookRotation(slot.GetAimRay().direction);
+            FireMolotov(body, gameObject, angle, damageMult);
             return true;
         }
 
-        public void FireMolotov(CharacterBody body, GameObject gameObject, float damageMultiplier = 1f)
+        public void FireMolotov(CharacterBody body, GameObject gameObject, Quaternion throwAngle, float damageMultiplier = 1f)
         {
             InputBankTest input = body.inputBank;
             
@@ -392,7 +392,7 @@ namespace RiskOfBulletstorm.Items
 
             if (NetworkServer.active)
             {
-                ProjectileManager.instance.FireProjectile(MolotovPrefab, resultpos, Util.QuaternionSafeLookRotation(input ? input.aimDirection : body.transform.forward),
+                ProjectileManager.instance.FireProjectile(MolotovPrefab, resultpos, throwAngle,
                                       gameObject, body.damage * Molotov_Damage * damageMultiplier,
                                       0f, Util.CheckRoll(body.crit, body.master),
                                       DamageColorIndex.Item, null, -1f);
