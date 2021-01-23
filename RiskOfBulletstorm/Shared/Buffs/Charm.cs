@@ -177,21 +177,19 @@ namespace RiskOfBulletstorm.Shared.Buffs
 
             if (self)
             {
-                if (self.body && self.body.HasBuff(Modules.Buffs.torporDebuff))
+                if (self.body && self.body.HasBuff(charmIndex))
                 {
-                    var torporController = self.body.GetComponent<Misc.PaladinTorporTracker>();
-                    if (!torporController) torporController = self.body.gameObject.AddComponent<Misc.PaladinTorporTracker>();
-                    else return;
+                    var isCharmed = self.body.GetComponent<IsCharmed>();
+                    if (!isCharmed) return;
 
-                    torporController.Body = self.body;
-                    TemporaryOverlay overlay = self.gameObject.AddComponent<RoR2.TemporaryOverlay>();
+                    TemporaryOverlay overlay = self.gameObject.AddComponent<TemporaryOverlay>();
                     overlay.duration = float.PositiveInfinity;
-                    overlay.alphaCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 0f);
-                    overlay.animateShaderAlpha = true;
+                    //overlay.alphaCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 0f);
+                    //overlay.animateShaderAlpha = true;
                     overlay.destroyComponentOnEnd = true;
-                    overlay.originalMaterial = Resources.Load<Material>("Materials/matDoppelganger");
+                    overlay.originalMaterial = Resources.Load<Material>("@RiskOfBulletstorm:Assets/Textures/Materials/Pink.mat");
                     overlay.AddToCharacerModel(self);
-                    torporController.Overlay = overlay;
+                    isCharmed.Overlay = overlay;
                 }
             }
         }
@@ -207,6 +205,8 @@ namespace RiskOfBulletstorm.Shared.Buffs
             public BuffIndex charmIndex = GungeonBuffController.Charm;
             public bool buffExpired = false;
 
+            public TemporaryOverlay Overlay;
+
             void Start()
             {
                 // If the current target was an enemy of the previous team
@@ -220,12 +220,13 @@ namespace RiskOfBulletstorm.Shared.Buffs
                     }
                 }
             }
-
+            
             void FixedUpdate()
             {
                 if (!characterBody.HasBuff(charmIndex))
                 {
                     buffExpired = true;
+                    Destroy(Overlay);
                 }
                 if (buffExpired)
                 {
