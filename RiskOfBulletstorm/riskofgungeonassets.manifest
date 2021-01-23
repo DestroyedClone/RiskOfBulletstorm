@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 80162849
+CRC: 625482508
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 0ed9f7cc86c44b4c4bd9787303d38da1
+    Hash: 50256ced226a71b3ac2d0c9fd3b6e00d
   TypeTreeHash:
     serializedVersion: 2
     Hash: 21747e4ee48f36c7a65f9afbfd77f392
@@ -49,7 +49,7 @@ Assets:
 - Assets/Textures/Materials/FriendshipCookie.mat
 - Assets/Models/Prefabs/Mustache.prefab
 - Assets/Textures/Icons/Disarming Personality.png
-- Assets/Textures/Icons/PortableBarrel.png
+- Assets/Textures/Icons/PortableBarrelDevice.png
 - Assets/Models/Raw Models/Armor.fbx
 - Assets/Textures/Materials/Globe.mat
 - Assets/Textures/Materials/Blue.mat
@@ -152,7 +152,7 @@ Assets:
 - Assets/Textures/Materials/tsExLQu_10x.png
 - Assets/Models/Raw Models/Meatbun.fbx
 - Assets/Models/Raw Models/DisarmingPersonality.fbx
-- Assets/Models/Prefabs/PortableBarrel.prefab
+- Assets/Models/Prefabs/PortableBarrelDevice.prefab
 - Assets/Textures/Icons/Buffs/Metronome.png
 - Assets/Textures/Icons/CultistPassive.png
 - Assets/Models/Raw Models/Mustache.fbx
