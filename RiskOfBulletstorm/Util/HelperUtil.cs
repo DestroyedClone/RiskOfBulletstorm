@@ -6,7 +6,7 @@ using RoR2.UI;
 using UnityEngine;
 using RiskOfBulletstorm;
 using static RiskOfBulletstorm.Items.GungeonBuffController;
-using static RiskOfBulletstorm.RiskofBulletstorm;
+using static RiskOfBulletstorm.BulletstormPlugin;
 using static RiskOfBulletstorm.Items.CurseController;
 
 namespace RiskOfBulletstorm.Utils

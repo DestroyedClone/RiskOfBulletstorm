@@ -15,7 +15,7 @@ using System;
 using static RiskOfBulletstorm.HelperPlugin;
 using  RiskOfBulletstorm.Utils;
 using static RiskOfBulletstorm.Utils.HelperUtil;
-using static RiskOfBulletstorm.RiskofBulletstorm;
+using static RiskOfBulletstorm.BulletstormPlugin;
 
 namespace RiskOfBulletstorm.Items
 {

@@ -6,7 +6,7 @@ using UnityEngine;
 using TILER2;
 using static TILER2.MiscUtil;
 using static RiskOfBulletstorm.Utils.HelperUtil;
-using static RiskOfBulletstorm.RiskofBulletstorm;
+using static RiskOfBulletstorm.BulletstormPlugin;
 
 namespace RiskOfBulletstorm.Items
 {

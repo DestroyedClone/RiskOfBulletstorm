@@ -55,7 +55,7 @@ namespace RiskOfBulletstorm
     // will be used to prevent dropping the upcoming bullet that can kill the past
     //[BepInDependency("com.ThinkInvisible.Yeet", BepInDependency.DependencyFlags.SoftDependency)]
     //[BepInDependency("KookehsDropItemMod", BepInDependency.DependencyFlags.SoftDependency)]
-    public class RiskofBulletstorm : BaseUnityPlugin
+    public class BulletstormPlugin : BaseUnityPlugin
     {
         public const string ModVer = "1.1.0";
         public const string ModName = "Risk of Bulletstorm";

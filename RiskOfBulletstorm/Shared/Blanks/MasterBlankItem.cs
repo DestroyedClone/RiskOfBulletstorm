@@ -13,7 +13,7 @@ using static TILER2.MiscUtil;
 using System;
 using RoR2.Projectile;
 using RiskOfBulletstorm.Items;
-using static RiskOfBulletstorm.RiskofBulletstorm;
+using static RiskOfBulletstorm.BulletstormPlugin;
 
 namespace RiskOfBulletstorm.Shared.Blanks
 {

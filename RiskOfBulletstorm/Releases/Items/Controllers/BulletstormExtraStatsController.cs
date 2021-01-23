@@ -5,7 +5,7 @@ using UnityEngine;
 using TILER2;
 using static RiskOfBulletstorm.Utils.HelperUtil;
 using RoR2.Projectile;
-using static RiskOfBulletstorm.RiskofBulletstorm;
+using static RiskOfBulletstorm.BulletstormPlugin;
 using static EntityStates.FireNailgun;
 
 namespace RiskOfBulletstorm.Items

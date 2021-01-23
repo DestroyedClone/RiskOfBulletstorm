@@ -7,7 +7,7 @@ using TILER2;
 using static TILER2.StatHooks;
 using static TILER2.MiscUtil;
 using System;
-using static RiskOfBulletstorm.RiskofBulletstorm;
+using static RiskOfBulletstorm.BulletstormPlugin;
 
 namespace RiskOfBulletstorm.Items
 {
