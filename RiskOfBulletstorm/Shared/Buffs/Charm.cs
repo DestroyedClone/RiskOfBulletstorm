@@ -1,22 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using R2API;
-using RoR2;
+﻿using RoR2;
 using RoR2.CharacterAI;
-using RoR2.UI;
 using UnityEngine;
-using UnityEngine.Networking;
-using TILER2;
-using static TILER2.StatHooks;
-using static TILER2.MiscUtil;
-using System;
-using RoR2.Artifacts;
 using System.Linq;
-using RoR2.Networking;
-using System.Runtime.CompilerServices;
-using Unity.Collections;
-using Unity.Jobs;
-using static RiskOfBulletstorm.BulletstormPlugin;
 using RiskOfBulletstorm.Items;
 
 namespace RiskOfBulletstorm.Shared.Buffs
