@@ -90,12 +90,11 @@ namespace RiskOfBulletstorm.Shared.Buffs
                 else
                 {
                     isCharmed = self.gameObject.GetComponent<IsCharmed>();
+                    isCharmed.enabled = true;
                 }
             }
             orig(self, buffType);
-            // If I don't put this after the orig call I think the component immediately disables because of the
-            // fixedupdate check for no buff. Enable component -> component has no buff so it disables -> buff gets added but component is off
-            if (isCharmed != null && isCharmed && !isCharmed.enabled) isCharmed.enabled = true; //quick and dirty test
+            //if (isCharmed != null && isCharmed && !isCharmed.enabled) isCharmed.enabled = true; //quick and dirty test 
         }
         // AI //
         private static void BaseAI_RetaliateSpecial(On.RoR2.CharacterAI.BaseAI.orig_OnBodyDamaged orig, BaseAI self, DamageReport damageReport)
@@ -172,7 +171,7 @@ namespace RiskOfBulletstorm.Shared.Buffs
                     {
                         TemporaryOverlay overlay = self.gameObject.AddComponent<TemporaryOverlay>();
                         overlay.duration = float.PositiveInfinity;
-                        overlay.alphaCurve = AnimationCurve.Constant(0f, 5f, 0.54f);
+                        overlay.alphaCurve = AnimationCurve.Constant(0f, 0f, 0.54f);
                         overlay.animateShaderAlpha = true;
                         overlay.destroyComponentOnEnd = true;
                         overlay.originalMaterial = Resources.Load<Material>("@RiskOfBulletstorm:Assets/Textures/Materials/Overlays/Charmed.mat");
