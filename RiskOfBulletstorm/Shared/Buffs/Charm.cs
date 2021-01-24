@@ -30,8 +30,6 @@ namespace RiskOfBulletstorm.Shared.Buffs
 
         public static void Install()
         {
-            // Spawn //
-            On.RoR2.CharacterBody.Start += Charmed_AddComponent;
             // Buff //
             On.RoR2.CharacterBody.AddBuff += Charmed_EnableComponent;
             // AI //
@@ -43,8 +41,6 @@ namespace RiskOfBulletstorm.Shared.Buffs
 
         public static void Uninstall()
         {
-            // Spawn //
-            On.RoR2.CharacterBody.Start -= Charmed_AddComponent;
             // Buff //
             On.RoR2.CharacterBody.AddBuff -= Charmed_EnableComponent;
             // AI //
@@ -54,47 +50,33 @@ namespace RiskOfBulletstorm.Shared.Buffs
             On.RoR2.CharacterModel.UpdateOverlays -= CharacterModel_UpdateOverlays;
         }
 
-        // Spawn //
-        private static void Charmed_AddComponent(On.RoR2.CharacterBody.orig_Start orig, CharacterBody self)
-        {
-            orig(self);
-
-            if (!self.isPlayerControlled && self.masterObject)
-            {
-                var baseAI = self.masterObject.GetComponent<BaseAI>();
-                if (baseAI)
-                {
-                    var isCharmed = self.gameObject.GetComponent<IsCharmed>();
-                    if (!isCharmed) isCharmed = self.gameObject.AddComponent<IsCharmed>();
-
-                    isCharmed.enabled = false;
-                    isCharmed.characterBody = self;
-                    isCharmed.teamComponent = self.teamComponent;
-                    isCharmed.baseAI = baseAI;
-                    isCharmed.oldTeamIndex = self.teamComponent.teamIndex;
-                }
-            }
-        }
-
         // Buff //
         private static void Charmed_EnableComponent(On.RoR2.CharacterBody.orig_AddBuff orig, CharacterBody self, BuffIndex buffType)
         {
-            IsCharmed isCharmed = null;
             if (buffType == charmIndex)
             {
                 if (!Config_Charm_Boss && self.isBoss) //prevents adding the buff if it's a boss and the config is disabled
                     return;
 
+
                 if (self.isPlayerControlled)
                     buffType = Config_Charm_PlayerBuff;
-                else
+                else if (self.masterObject && self.masterObject.GetComponent<BaseAI>())
                 {
-                    isCharmed = self.gameObject.GetComponent<IsCharmed>();
+                    var isCharmed = self.gameObject.GetComponent<IsCharmed>();
+                    if (!isCharmed)
+                    {
+                        isCharmed = self.gameObject.AddComponent<IsCharmed>();
+                        isCharmed.characterBody = self;
+                        isCharmed.baseAI = self.masterObject.GetComponent<BaseAI>();
+                        isCharmed.oldTeamIndex = self.teamComponent.teamIndex;
+                    }
+                    orig(self, buffType); //unneeded?
                     isCharmed.enabled = true;
+                    return;
                 }
             }
             orig(self, buffType);
-            //if (isCharmed != null && isCharmed && !isCharmed.enabled) isCharmed.enabled = true; //quick and dirty test 
         }
         // AI //
         private static void BaseAI_RetaliateSpecial(On.RoR2.CharacterAI.BaseAI.orig_OnBodyDamaged orig, BaseAI self, DamageReport damageReport)
@@ -187,16 +169,16 @@ namespace RiskOfBulletstorm.Shared.Buffs
         {
             //public float duration = CharmHorn.instance.CharmHorn_Duration;
             public CharacterBody characterBody;
-            public TeamComponent teamComponent;
             public TeamIndex oldTeamIndex;
             public BaseAI baseAI;
             public BuffIndex charmIndex = GungeonBuffController.Charm;
-            public bool buffExpired = false;
 
             public TemporaryOverlay Overlay;
 
             void Start()
             {
+                if (!characterBody) characterBody = gameObject.GetComponent<CharacterBody>();
+                if (!baseAI) baseAI = characterBody.masterObject.GetComponent<BaseAI>();
                 // If the current target was an enemy of the previous team
                 if (baseAI.currentEnemy != null)
                 {
@@ -212,24 +194,19 @@ namespace RiskOfBulletstorm.Shared.Buffs
             {
                 if (!characterBody.HasBuff(charmIndex))
                 {
-                    buffExpired = true;
-                    Destroy(Overlay);
-                }
-                if (buffExpired)
-                {
+                    if (Overlay) Destroy(Overlay);
                     enabled = false;
                 }
             }
 
             void OnDisable()
             {
-                if (characterBody)
+                if (characterBody && characterBody.HasBuff(charmIndex))
                 {
-                    if (characterBody.HasBuff(charmIndex))
-                        characterBody.RemoveBuff(charmIndex);
+                    characterBody.RemoveBuff(charmIndex);
                 }
-                buffExpired = false;
                 ResetTarget();
+                Destroy(this);
             }
 
             public void ResetTarget()
