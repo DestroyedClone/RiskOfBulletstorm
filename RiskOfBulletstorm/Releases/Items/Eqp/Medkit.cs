@@ -38,7 +38,7 @@ namespace RiskOfBulletstorm.Items
             if (!canHeal && !canBarrier) return $"Everything inside was emptied, it does nothing.";
             var desc = $"";
             if (canHeal) desc += $"Heals for <style=cIsHealing>{Pct(Medkit_HealAmount)} health</style>. ";
-            if (canBarrier) desc += $"Gives a <style=cIsHealing>temporary barrier for {Pct(Medkit_BarrierAmount)} of your max health.</style>.";
+            if (canBarrier) desc += $"Gives a <style=cIsUtility>temporary barrier for {Pct(Medkit_BarrierAmount)} of your max health.</style>";
             return desc;
         }
 

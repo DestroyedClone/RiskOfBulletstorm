@@ -384,8 +384,6 @@ namespace RiskOfBulletstorm.Items
 
         public void FireMolotov(CharacterBody body, GameObject gameObject, Quaternion throwAngle, float damageMultiplier = 1f)
         {
-            InputBankTest input = body.inputBank;
-            
             var offset = body.characterMotor.capsuleCollider.height / 3;
             var position = body.corePosition;
             var resultpos = position + Vector3.up * offset;

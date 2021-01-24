@@ -321,8 +321,6 @@ namespace RiskOfBulletstorm.Items
             var newyOffset = Vector3.up * yOffset;
             var resultpos = position + Vector3.up * offset + newyOffset;
 
-            InputBankTest input = body.inputBank;
-
             if (NetworkServer.active)
             {
                 ProjectileManager.instance.FireProjectile(BombPrefab, resultpos, throwAngle,

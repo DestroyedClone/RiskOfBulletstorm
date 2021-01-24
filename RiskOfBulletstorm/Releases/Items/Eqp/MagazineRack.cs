@@ -30,8 +30,8 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetDescString(string langid = null)
         {
-            var desc = $"Place to create a zone of infinite ammo within a radius of {MagazineRack_Radius} meters";
-            desc += $"that lasts {MagazineRack_Duration} seconds.";
+            var desc = $"Place to create a zone of <style=cIsUtility>infinite ammo</style> within a radius of <style=cIsUtility>{MagazineRack_Radius} meters</style>";
+            desc += $" that lasts <style=cIsUtility>{MagazineRack_Duration} seconds</style>.";
             return desc;
         }
 

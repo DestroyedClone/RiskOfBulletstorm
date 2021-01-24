@@ -61,12 +61,12 @@ namespace RiskOfBulletstorm.Items
 
                 // health threshold
                 if (Meatbun_HealthThreshold > 0)
-                    desc += $"by at least {Pct(Meatbun_HealthThreshold)} health";
+                    desc += $" by at least {Pct(Meatbun_HealthThreshold)} health";
             }
 
-            desc += $".";
+            desc += $". ";
 
-            desc += $"<style=cStack>Buff stacks up to {Meatbun_BuffLimit} time{(Meatbun_BuffLimit > 1 ? "s" : "")}</style>";
+            desc += $"<style=cStack>Buff stacks up to {Meatbun_BuffLimit} time{(Meatbun_BuffLimit > 1 ? "s " : "")}</style>";
             if (Meatbun_BuffLimit > 1)
                 desc += $"for a max of <style=cIsDamage>+{Pct(Meatbun_BuffLimit * Meatbun_DamageBonus)} damage.</style>";
             return desc;

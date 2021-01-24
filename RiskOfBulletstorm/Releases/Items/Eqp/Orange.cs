@@ -22,10 +22,10 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetDescString(string langid = null)
         {
-            var desc = $"<style=cIsHealing>Heals for 100% health.</style> <style=cIsHealth>Permanently increases max health by 10%</style> and <style=cIsUtility>reduces equipment recharge rate by 10%</style>"+
+            var desc = $"<style=cIsHealing>Heals for 100% health,</style> <style=cIsHealth>permanently increases max health by 10%</style>, and <style=cIsUtility>reduces equipment recharge rate by 10%</style>"+
               $"\n<style=cDeath>One-time Use.</style>";
             if (Orange_Rarity < 100f)
-                desc += $"<style=cWorldEvent>{Orange_Rarity}% chance to spawn.</style>";
+                desc += $" <style=cWorldEvent>{Orange_Rarity}% chance to spawn.</style>";
             return desc;
         }
 

@@ -27,7 +27,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetPickupString(string langID = null) => "A Familiar Face" +
             "\nSpending money soothes the soul.";
 
-        protected override string GetDescString(string langid = null) => $"<style=cIsHealing>Heals for {Pct(Mustache_HealAmount)} health</style> <style=cStack>per stack.</style>";
+        protected override string GetDescString(string langid = null) => $"<style=cIsHealing>Upon purchase, heals for {Pct(Mustache_HealAmount)} health</style> <style=cStack>per stack.</style>";
 
         protected override string GetLoreString(string langID = null) => "The power of commerce fills your veins... and your follicles! This mustache vertically integrates your purchasing synergies, giving you a chance to be healed on every transaction.";
 

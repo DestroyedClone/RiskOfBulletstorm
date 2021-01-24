@@ -180,16 +180,17 @@ namespace RiskOfBulletstorm.Shared.Buffs
                 if (self.body && self.body.HasBuff(charmIndex))
                 {
                     var isCharmed = self.body.GetComponent<IsCharmed>();
-                    if (!isCharmed) return;
-
-                    TemporaryOverlay overlay = self.gameObject.AddComponent<TemporaryOverlay>();
-                    overlay.duration = float.PositiveInfinity;
-                    //overlay.alphaCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 0f);
-                    //overlay.animateShaderAlpha = true;
-                    overlay.destroyComponentOnEnd = true;
-                    overlay.originalMaterial = Resources.Load<Material>("@RiskOfBulletstorm:Assets/Textures/Materials/Pink.mat");
-                    overlay.AddToCharacerModel(self);
-                    isCharmed.Overlay = overlay;
+                    if (isCharmed && !isCharmed.Overlay)
+                    {
+                        TemporaryOverlay overlay = self.gameObject.AddComponent<TemporaryOverlay>();
+                        overlay.duration = float.PositiveInfinity;
+                        overlay.alphaCurve = AnimationCurve.Constant(0f, float.PositiveInfinity, 0.54f);
+                        overlay.animateShaderAlpha = true;
+                        overlay.destroyComponentOnEnd = true;
+                        overlay.originalMaterial = Resources.Load<Material>("@RiskOfBulletstorm:Assets/Textures/Materials/Overlays/Charmed.mat");
+                        overlay.AddToCharacerModel(self);
+                        isCharmed.Overlay = overlay;
+                    } else return;
                 }
             }
         }
