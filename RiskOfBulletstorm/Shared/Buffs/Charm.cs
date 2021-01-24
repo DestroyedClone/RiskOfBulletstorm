@@ -23,7 +23,7 @@ namespace RiskOfBulletstorm.Shared.Buffs
 {
     public static class CharmBuff
     {
-
+        // TODO: IL Add friendly fire bypass
         public static bool Config_Charm_Boss = GungeonBuffController.instance.Config_Charm_Boss;
         public static BuffIndex Config_Charm_PlayerBuff = GungeonBuffController.instance.Config_Charm_PlayerBuff;
         public static BuffIndex charmIndex = GungeonBuffController.Charm;
