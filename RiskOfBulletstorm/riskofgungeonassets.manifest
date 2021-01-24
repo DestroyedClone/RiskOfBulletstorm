@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3561827437
+CRC: 3640709804
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: d0c93de38f1885dccd32ec79b234767a
+    Hash: 72d1123469f60f751f11f655edda5fb1
   TypeTreeHash:
     serializedVersion: 2
     Hash: 21747e4ee48f36c7a65f9afbfd77f392
@@ -48,10 +48,11 @@ Assets:
 - Assets/Textures/Materials/Materials/UV_CharmHorn.mat
 - Assets/Textures/Materials/FriendshipCookie.mat
 - Assets/Models/Prefabs/Mustache.prefab
-- Assets/Textures/Icons/Disarming Personality.png
+- Assets/Textures/Icons/DisarmingPersonality.png
 - Assets/Textures/Icons/PortableBarrelDevice.png
 - Assets/Models/Raw Models/Armor.fbx
 - Assets/Textures/Materials/Globe.mat
+- Assets/Textures/Materials/Overlays/Charmed.mat
 - Assets/Textures/Materials/Blue.mat
 - Assets/Textures/Icons/Scope.png
 - Assets/Textures/Materials/Meatbun.mat
@@ -142,7 +143,7 @@ Assets:
 - Assets/Models/Prefabs/RingMiserlyProtectionWorn.prefab
 - Assets/Models/Prefabs/Backpack.prefab
 - Assets/Models/Prefabs/Blank.prefab
-- Assets/Textures/Icons/CartographersRing.png
+- Assets/Textures/Icons/RingCartographer.png
 - Assets/Textures/Materials/MetalGrey.mat
 - Assets/Textures/Materials/Materials/RWsycsV_10x.mat
 - Assets/Models/Raw Models/Charm Horn.fbx

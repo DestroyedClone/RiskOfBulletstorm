@@ -34,7 +34,6 @@ namespace RiskOfBulletstorm.Shared.Buffs
             On.RoR2.CharacterBody.Start += Charmed_AddComponent;
             // Buff //
             On.RoR2.CharacterBody.AddBuff += Charmed_EnableComponent;
-            On.RoR2.CharacterBody.RemoveBuff += Charmed_DisableComponent;
             // AI //
             On.RoR2.CharacterAI.BaseAI.OnBodyDamaged += BaseAI_RetaliateSpecial;
             On.RoR2.CharacterAI.BaseAI.FindEnemyHurtBox += BaseAI_CustomTargeting;
@@ -48,7 +47,6 @@ namespace RiskOfBulletstorm.Shared.Buffs
             On.RoR2.CharacterBody.Start -= Charmed_AddComponent;
             // Buff //
             On.RoR2.CharacterBody.AddBuff -= Charmed_EnableComponent;
-            On.RoR2.CharacterBody.RemoveBuff -= Charmed_DisableComponent;
             // AI //
             On.RoR2.CharacterAI.BaseAI.OnBodyDamaged -= BaseAI_RetaliateSpecial;
             On.RoR2.CharacterAI.BaseAI.FindEnemyHurtBox -= BaseAI_CustomTargeting;
@@ -98,16 +96,6 @@ namespace RiskOfBulletstorm.Shared.Buffs
             // If I don't put this after the orig call I think the component immediately disables because of the
             // fixedupdate check for no buff. Enable component -> component has no buff so it disables -> buff gets added but component is off
             if (isCharmed != null && isCharmed && !isCharmed.enabled) isCharmed.enabled = true; //quick and dirty test
-        }
-        private static void Charmed_DisableComponent(On.RoR2.CharacterBody.orig_RemoveBuff orig, CharacterBody self, BuffIndex buffType)
-        {
-            if (buffType == charmIndex)
-            {
-                var isCharmed = self.gameObject.GetComponent<IsCharmed>();
-                if (isCharmed && isCharmed.enabled)
-                    isCharmed.enabled = false;
-            }
-            orig(self, buffType);
         }
         // AI //
         private static void BaseAI_RetaliateSpecial(On.RoR2.CharacterAI.BaseAI.orig_OnBodyDamaged orig, BaseAI self, DamageReport damageReport)
@@ -184,7 +172,7 @@ namespace RiskOfBulletstorm.Shared.Buffs
                     {
                         TemporaryOverlay overlay = self.gameObject.AddComponent<TemporaryOverlay>();
                         overlay.duration = float.PositiveInfinity;
-                        overlay.alphaCurve = AnimationCurve.Constant(0f, float.PositiveInfinity, 0.54f);
+                        overlay.alphaCurve = AnimationCurve.Constant(0f, 5f, 0.54f);
                         overlay.animateShaderAlpha = true;
                         overlay.destroyComponentOnEnd = true;
                         overlay.originalMaterial = Resources.Load<Material>("@RiskOfBulletstorm:Assets/Textures/Materials/Overlays/Charmed.mat");
@@ -216,7 +204,6 @@ namespace RiskOfBulletstorm.Shared.Buffs
                     var currentEnemyCharacterBody = baseAI.currentEnemy.characterBody;
                     if (currentEnemyCharacterBody && currentEnemyCharacterBody.teamComponent && currentEnemyCharacterBody.teamComponent.teamIndex == GetOppositeTeamIndex(oldTeamIndex))
                     {
-                        _logger.LogMessage("Start's ResetTarget");
                         ResetTarget();
                     }
                 }
@@ -232,7 +219,6 @@ namespace RiskOfBulletstorm.Shared.Buffs
                 if (buffExpired)
                 {
                     enabled = false;
-                    buffExpired = false;
                 }
             }
 
@@ -240,11 +226,10 @@ namespace RiskOfBulletstorm.Shared.Buffs
             {
                 if (characterBody)
                 {
-                    characterBody.teamComponent.teamIndex = oldTeamIndex;
                     if (characterBody.HasBuff(charmIndex))
                         characterBody.RemoveBuff(charmIndex);
                 }
-                _logger.LogDebug("Disable's ResetTarget");
+                buffExpired = false;
                 ResetTarget();
             }
 
