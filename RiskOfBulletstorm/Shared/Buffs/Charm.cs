@@ -57,7 +57,6 @@ namespace RiskOfBulletstorm.Shared.Buffs
                         isCharmed.oldTeamIndex = self.teamComponent.teamIndex;
                     }
                     orig(self, buffType); //unneeded?
-                    isCharmed.enabled = true;
                     return;
                 }
             }
