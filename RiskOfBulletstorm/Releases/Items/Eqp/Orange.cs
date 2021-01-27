@@ -8,11 +8,6 @@ namespace RiskOfBulletstorm.Items
 {
     public class Orange : Equipment_V2<Orange>
     {
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the chance for the Orange to spawn? (Default: 80.00% chance to spawn)" +
-            "\n((When it is chosen by the game, it does a roll. By default, it has a 80% not to get rerolled.))", AutoConfigFlags.PreventNetMismatch)]
-        public float Orange_Rarity { get; private set; } = 80.00f;
-
         public override string displayName => "Orange";
         public override float cooldown { get; protected set; } = 0f;
 
@@ -22,10 +17,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetDescString(string langid = null)
         {
-            var desc = $"<style=cIsHealing>Heals for 100% health,</style> <style=cIsHealth>permanently increases max health by 10%</style>, and <style=cIsUtility>reduces equipment recharge rate by 10%</style>"+
-              $"\n<style=cDeath>One-time Use.</style>";
-            if (Orange_Rarity < 100f)
-                desc += $" <style=cWorldEvent>{Orange_Rarity}% chance to spawn.</style>";
+            var desc = $"<style=cIsHealing>Heals for 100% health,</style> <style=cIsHealth>permanently increases max health by 10%</style>, and <style=cIsUtility>reduces equipment recharge rate by 10%</style>.";
             return desc;
         }
 
@@ -261,28 +253,11 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            On.RoR2.PickupDropletController.CreatePickupDroplet += PickupDropletController_CreatePickupDroplet;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
-            On.RoR2.PickupDropletController.CreatePickupDroplet -= PickupDropletController_CreatePickupDroplet;
-        }
-
-        private void PickupDropletController_CreatePickupDroplet(On.RoR2.PickupDropletController.orig_CreatePickupDroplet orig, PickupIndex pickupIndex, Vector3 position, Vector3 velocity)
-        {
-            var body = PlayerCharacterMasterController.instances[0].master.GetBody();
-            if (pickupIndex == PickupCatalog.FindPickupIndex(catalogIndex)) //if it's the orange
-            {
-                if (!Util.CheckRoll(Orange_Rarity, body.master)) //rarity roll
-                {
-                    PickupIndex loot = Run.instance.treasureRng.NextElementUniform(Run.instance.availableEquipmentDropList);
-                    PickupDef def = PickupCatalog.GetPickupDef(loot);
-                    pickupIndex = PickupCatalog.FindPickupIndex(def.equipmentIndex);
-                }
-            }
-            orig(pickupIndex, position, velocity);
         }
 
         protected override bool PerformEquipmentAction(EquipmentSlot slot)
