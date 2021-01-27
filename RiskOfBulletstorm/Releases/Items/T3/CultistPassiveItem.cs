@@ -12,10 +12,10 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("SINGLEPLAYER: Amount to increase stats by.", AutoConfigFlags.PreventNetMismatch)]
-        public static float CPI_singleplayer { get; private set; } = 0.5f;
+        public static float CPI_singleplayer { get; private set; } = 2f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("MULTIPLAYER: Amount to increase stats by.", AutoConfigFlags.PreventNetMismatch)]
-        public static float CPI_multiplayer { get; private set; } = 1f;
+        public static float CPI_multiplayer { get; private set; } = 4f;
 
         public override string displayName => "Number 2";
         public override ItemTier itemTier => ItemTier.Tier3;
