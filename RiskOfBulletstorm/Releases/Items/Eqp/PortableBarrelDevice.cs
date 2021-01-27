@@ -404,7 +404,7 @@ namespace RiskOfBulletstorm.Items
         private class BarrelDestroyOnInteraction : MonoBehaviour
         {
             public float lifetime = 16;
-            public float uselifetime = 4;
+            public float uselifetime = 1;
             public bool used = false;
 
             private void OnEnable()

@@ -275,12 +275,40 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             On.RoR2.PurchaseInteraction.OnInteractionBegin += PurchaseInteraction_OnInteractionBegin;
+            On.RoR2.Artifacts.SacrificeArtifactManager.OnArtifactEnabled += SacrificeArtifactManager_OnArtifactEnabled;
+            On.RoR2.Artifacts.SacrificeArtifactManager.OnArtifactDisabled += SacrificeArtifactManager_OnArtifactDisabled;
+        }
+
+        private void SacrificeArtifactManager_OnArtifactEnabled(On.RoR2.Artifacts.SacrificeArtifactManager.orig_OnArtifactEnabled orig, RunArtifactManager runArtifactManager, ArtifactDef artifactDef)
+        {
+            orig(runArtifactManager, artifactDef);
+            On.RoR2.GenericPickupController.GrantEquipment += GenericPickupController_GrantEquipment;
+            On.RoR2.GenericPickupController.GrantItem += GenericPickupController_GrantItem;
+        }
+
+        private void SacrificeArtifactManager_OnArtifactDisabled(On.RoR2.Artifacts.SacrificeArtifactManager.orig_OnArtifactDisabled orig, RunArtifactManager runArtifactManager, ArtifactDef artifactDef)
+        {
+            orig(runArtifactManager, artifactDef);
+            On.RoR2.GenericPickupController.GrantEquipment -= GenericPickupController_GrantEquipment;
+            On.RoR2.GenericPickupController.GrantItem -= GenericPickupController_GrantItem;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
             On.RoR2.PurchaseInteraction.OnInteractionBegin -= PurchaseInteraction_OnInteractionBegin;
+        }
+
+        private void GenericPickupController_GrantEquipment(On.RoR2.GenericPickupController.orig_GrantEquipment orig, GenericPickupController self, CharacterBody body, Inventory inventory)
+        {
+            orig(self, body, inventory);
+            Heal(body);
+        }
+
+        private void GenericPickupController_GrantItem(On.RoR2.GenericPickupController.orig_GrantItem orig, GenericPickupController self, CharacterBody body, Inventory inventory)
+        {
+            orig(self, body, inventory);
+            Heal(body);
         }
 
         private void PurchaseInteraction_OnInteractionBegin(On.RoR2.PurchaseInteraction.orig_OnInteractionBegin orig, PurchaseInteraction self, Interactor activator)
@@ -292,32 +320,30 @@ namespace RiskOfBulletstorm.Items
                 CharacterBody body = gameObject.GetComponent<CharacterBody>();
                 if (body)
                 {
-                    if (body.inventory)
+                    if (self.costType == CostTypeIndex.PercentHealth && Mustache_BloodShrine)
                     {
-                        var InventoryCount = body.inventory.GetItemCount(catalogIndex);
-                        _logger.LogDebug("Mustache: " + activator.ToString() + "|" + activator.gameObject.ToString() + " bought from " + self.ToString());
-
-                        if (InventoryCount > 0)
+                        if (Mustache_BloodShrine)
                         {
-                            var component = activator.GetComponent<CharacterBody>()?.healthComponent;
-
-                            if (component)
-                            {
-                                var ResultHeal = Mustache_HealAmount * InventoryCount;
-                                if (self.costType == CostTypeIndex.PercentHealth)
-                                {
-                                    if (Mustache_BloodShrine)
-                                    {
-                                        component.HealFraction(ResultHeal, default);
-                                    }
-                                }
-                                else
-                                {
-                                    component.HealFraction(ResultHeal, default);
-                                }
-                            }
+                            Heal(body);
                         }
                     }
+                    else
+                    {
+                        Heal(body);
+                    }
+                }
+            }
+        }
+
+        private void Heal(CharacterBody characterBody)
+        {
+            var InventoryCount = characterBody.inventory.GetItemCount(catalogIndex);
+            if (InventoryCount > 0)
+            {
+                var resultingHeal = Mustache_HealAmount * InventoryCount;
+                if (characterBody.healthComponent)
+                {
+                    characterBody.healthComponent.HealFraction(resultingHeal, default);
                 }
             }
         }
