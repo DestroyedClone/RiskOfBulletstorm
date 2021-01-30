@@ -58,30 +58,10 @@ namespace RiskOfBulletstorm.Items
             buffWard.buffDuration = CharmHorn_Duration;
             buffWard.invertTeamFilter = true;
             buffWard.animateRadius = false;
+            buffWard.floorWard = false;
 
             SkinnedMeshRenderer mesh = CharmWardPrefab.GetComponentInChildren<SkinnedMeshRenderer>();
             mesh.material.color = new Color32(217, 20, 194, 255);
-
-            //CharmWard charmWard = CharmWardPrefab.AddComponent<CharmWard>();
-            //charmWard.expires = true;
-            //charmWard.expireDuration = 3f;
-            //charmWard.floorWard = false;
-
-            //charmWard.invertTeamFilter = true;
-            /*buffWard.Networkradius = CharmHorn_Radius;
-            charmWard.animateRadius = buffWard.animateRadius;
-            charmWard.calculatedRadius = buffWard.calculatedRadius;
-            charmWard.interval = buffWard.interval;
-            charmWard.needsRemovalTime = buffWard.needsRemovalTime;
-            charmWard.onRemoval = buffWard.onRemoval;
-            charmWard.radiusCoefficientCurve = buffWard.radiusCoefficientCurve;
-            charmWard.rangeIndicator = buffWard.rangeIndicator;
-            charmWard.rangeIndicatorScaleVelocity = buffWard.rangeIndicatorScaleVelocity;
-            charmWard.removalTime = buffWard.removalTime;
-            charmWard.stopwatch = buffWard.stopwatch;
-            charmWard.teamFilter = buffWard.teamFilter;*/
-
-            //UnityEngine.Object.Destroy(buffWard);
 
             //if (HelperPlugin.ClassicItemsCompat.enabled)
                 //HelperPlugin.ClassicItemsCompat.RegisterEmbryo(catalogIndex);
@@ -343,30 +323,5 @@ namespace RiskOfBulletstorm.Items
             }
         }
 
-        /*public class CharmWard : BuffWard
-        {
-            // Token: 0x06000839 RID: 2105 RVA: 0x00020118 File Offset: 0x0001E318
-#pragma warning disable CS0108 // Member hides inherited member; missing new keyword
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "overrides method")]
-            private void BuffTeam(IEnumerable<TeamComponent> recipients, float radiusSqr, Vector3 currentPosition)
-#pragma warning restore CS0108 // Member hides inherited member; missing new keyword
-            {
-                if (!NetworkServer.active)
-                {
-                    return;
-                }
-                foreach (TeamComponent teamComponent in recipients)
-                {
-                    if ((teamComponent.transform.position - currentPosition).sqrMagnitude <= radiusSqr)
-                    {
-                        CharacterBody component = teamComponent.GetComponent<CharacterBody>();
-                        if (component)
-                        {
-                            component.AddBuff(buffType);
-                        }
-                    }
-                }
-            }
-        }*/
     }
 }
