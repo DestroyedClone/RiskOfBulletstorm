@@ -79,7 +79,7 @@ Every 30 kills *(+50% per stage)*, the game will have a 30% chance to *spawn a r
  - **Ring of Miserly Protection**: Grants +125% (+75% per stack) increased maximum health ...but one shatters upon using a shrine (does not include combat).
 
 ## Boss
- - **Master Round**: Granted upon clearing a teleporter boss, as long as no player took more than 3 hits (scales with stages cleared) each. Adds 150 max health per stack.
+ - **Master Round**: +10% max health per stack. Granted upon clearing a teleporter boss, as long as no player took more than 3 hits (scales with stages cleared) each. 
 
 # Equipment
 ## Normal

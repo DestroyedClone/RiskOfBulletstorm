@@ -6,7 +6,6 @@ using TILER2;
 using static RiskOfBulletstorm.Utils.HelperUtil;
 using RoR2.Projectile;
 using static RiskOfBulletstorm.BulletstormPlugin;
-using static EntityStates.FireNailgun;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -18,9 +17,9 @@ namespace RiskOfBulletstorm.Items
         public static bool ShotSpread_EnableDML { get; private set; } = true;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("If enabled, Shot Spread will affect Loader's Hooks.", AutoConfigFlags.PreventNetMismatch)]
-        public static bool ShotSpread_EnableLoader { get; private set; } = true;
+        public static bool ShotSpread_EnableLoader { get; private set; } = false;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("If enabled, Shot Spread will only tighten the spread of specific projectiles." +
+        [AutoConfig("If enabled, Shot Spread will only tighten the spread of SPECIFIC projectiles." +
             "\nIt is HIGHLY recommended not to disable, because alot of projectiles could break otherwise.", AutoConfigFlags.PreventNetMismatch)]
         public static bool ShotSpread_WhitelistProjectiles { get; private set; } = true;
 

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using RoR2;
 using RoR2.UI;
@@ -20,7 +19,7 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("What percent of max health should it increase by? (Value: Additive Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float MasterRound_MaxHealthMult { get; private set; } = 0.10f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How many hits are allowed to be taken per player before invalidating the spawn? (Value: Max Hits)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("How many hits are allowed to be taken per player before invalidating the drop? (Value: Max Hits)", AutoConfigFlags.PreventNetMismatch)]
         public static int MasterRound_AllowedHits { get; private set; } = 3;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How many hits will your allowed hits increase by per stage? (Value: Additional Max Hits multiplied by Stage)", AutoConfigFlags.PreventNetMismatch)]
@@ -55,7 +54,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetPickupString(string langID = null) => "Increases maximum health." +
             "\nGiven to those who survive the teleporter event without exceeding a certain amount of hits";
 
-        protected override string GetDescString(string langid = null) => $"Increases maximum health by <style=cIsHealing>{Pct(MasterRound_MaxHealthMult)} health</style> <style=cStack>(+{Pct(MasterRound_MaxHealthMult)} max health per stack)</style>";
+        protected override string GetDescString(string langid = null) => $"Increases maximum health by <style=cIsHealth>{Pct(MasterRound_MaxHealthMult)} health</style> <style=cStack>(+{Pct(MasterRound_MaxHealthMult)} max health per stack)</style>";
 
         protected override string GetLoreString(string langID = null) => "Apocryphal texts recovered from cultists of the Order indicate that the Gun and the Bullet are linked somehow." +
             "\nAny who enter the Gungeon are doomed to remain, living countless lives in an effort to break the cycle." +
@@ -184,13 +183,18 @@ namespace RiskOfBulletstorm.Items
             MasterRoundComponent.currentHits++;
             if (MasterRound_ShowHitInChat)
             {
-                var characterBody = victim.GetComponent<CharacterBody>();
-                string username = characterBody ? characterBody.GetUserName() : playerHitNameFailed;
-                Chat.SendBroadcastChat(
-                    new SimpleChatMessage
-                    { baseToken = playerHitToken, 
-                        paramTokens = new[] { username, MasterRoundComponent.currentHits.ToString(), MasterRoundComponent.allowedHits.ToString()
-                    }});
+                if (MasterRoundComponent.currentHits < MasterRoundComponent.allowedHits)
+                {
+                    var characterBody = victim.GetComponent<CharacterBody>();
+                    string username = characterBody ? characterBody.GetUserName() : playerHitNameFailed;
+                    Chat.SendBroadcastChat(
+                        new SimpleChatMessage
+                        {
+                            baseToken = playerHitToken,
+                            paramTokens = new[] { username, MasterRoundComponent.currentHits.ToString(), MasterRoundComponent.allowedHits.ToString()
+                        }
+                        });
+                }
             }
         }
 
