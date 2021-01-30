@@ -5,6 +5,7 @@ using UnityEngine;
 using TILER2;
 using static RiskOfBulletstorm.Utils.HelperUtil;
 using GenericNotification = On.RoR2.UI.GenericNotification;
+using System;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -68,9 +69,6 @@ namespace RiskOfBulletstorm.Items
         public override void SetupBehavior()
         {
             base.SetupBehavior();
-
-            //if (HelperPlugin.ClassicItemsCompat.enabled)
-                //HelperPlugin.ClassicItemsCompat.RegisterEmbryo(catalogIndex);
         }
         public override void SetupAttributes()
         {
@@ -307,11 +305,78 @@ namespace RiskOfBulletstorm.Items
             On.RoR2.PickupDropletController.CreatePickupDroplet += PickupDropletController_CreatePickupDroplet;
             GenericNotification.SetEquipment += GenericNotification_SetEquipment;
             StatHooks.GetStatCoefficients += StatHooks_GetStatCoefficients;
+            On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+        }
+
+        private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
+        {
+            var attacker = damageInfo.attacker;
+            if (attacker)
+            {
+                CharacterBody body = attacker.GetComponent<CharacterBody>();
+                if (body)
+                {
+                    var inventory = body.inventory;
+                    if (inventory)
+                    {
+                        var SpiceTallyCount = inventory.GetItemCount(SpiceTally);
+                        //var DamageMult = 0f;
+                        float SpiceMult;
+                        switch (SpiceTallyCount)
+                        {
+                            case 0: //
+                            case 1:
+                            case 2:
+                            case 3:
+                                SpiceMult = 0f;
+                                break;
+                            case 4:
+                                SpiceMult = SpiceBonuses[SpiceTallyCount, 4];
+                                break;
+                            default: //also 5
+                                SpiceMult = SpiceBonuses[4, 4] + SpiceBonusesAdditive[4] * (SpiceTallyCount - 4);
+                                break;
+                        }
+                        damageInfo.damage *= 1 + SpiceMult;
+                    }
+                }
+            }
+            orig(self, damageInfo);
         }
 
         private void StatHooks_GetStatCoefficients(CharacterBody sender, StatHooks.StatHookEventArgs args)
         {
-            throw new System.NotImplementedException();
+            if (sender && sender.inventory)
+            {
+                var SpiceTallyCount = sender.inventory.GetItemCount(SpiceTally);
+                switch (SpiceTallyCount)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                        //health, attack speed, shot accuracy, enemy bullet speed, damage
+                        //args.baseHealthAdd += HeartValue * SpiceBonuses[SpiceTallyCount, 0];
+                        args.healthMultAdd += 1 + SpiceBonuses[SpiceTallyCount, 0];
+                        args.attackSpeedMultAdd += SpiceBonuses[SpiceTallyCount, 1];
+                        //accuracy 
+                        //enemy bullet speed
+                        //damage
+                        break;
+                    default:
+                        //var baseHealthAdd = HeartValue * SpiceBonusesAdditive[0] * (SpiceTallyCount - 4);
+                        //args.baseHealthAdd += baseHealthAdd;
+                        args.healthMultAdd += Math.Min(0.1f, 1 + SpiceBonusesAdditive[0] * (SpiceTallyCount - 4));
+                        //health, attack speed, shot accuracy, enemy bullet speed, damage
+                        args.attackSpeedMultAdd += SpiceBonusesConstantMaxed[1];
+                        //accuracy
+                        //enemy
+                        //damage
+                        break;
+                }
+            }
         }
 
         public override void Uninstall()
