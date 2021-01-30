@@ -15,10 +15,6 @@ namespace RiskOfBulletstorm.Shared.Buffs
         [AutoConfig("CHARM: Should Bosses (including Umbrae) get charmed?", AutoConfigFlags.PreventNetMismatch)]
         public static bool Config_Charm_Boss { get; private set; } = false;
 
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("CHARM: A player shouldn't get charmed. What buff should be granted instead?", AutoConfigFlags.PreventNetMismatch)]
-        public static BuffIndex Config_Charm_PlayerBuff { get; private set; } = BuffIndex.PowerBuff;
-
         //public static BuffIndex Burn { get; private set; } 
         //public static BuffIndex Poison { get; private set; }
         //public static BuffIndex Curse { get; private set; }

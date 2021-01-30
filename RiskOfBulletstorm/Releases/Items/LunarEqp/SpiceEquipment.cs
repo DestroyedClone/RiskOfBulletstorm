@@ -48,27 +48,27 @@ namespace RiskOfBulletstorm.Items
             { -1f,  0f,     -0.1f,  0f,     +0.15f }, 
         };
         */ //documentation purposes
-        public static readonly float[] SpiceBonusesAdditive = new float[] { -0.05f, 0f, -0.1f, 0f, +0.15f };
 
-        public static readonly float[,] SpiceBonuses = new float[,]
+        public static float heartValue = 0.25f;
+        public static float atkSpdBonus = 0.2f;
+
+
+        public static readonly float[,] SpiceBonusesConstant = new float[,]
         {
-            { 0f, 0f, 0f, 0f, 0f }, //0
-            { +0.25f, +0.2f, +0.25f, 0f, 0f }, //1
-            { +0.50f, +0.4f, +0.25f, -0.1f, 0f }, //2
-            { +0.25f, +0.4f, +0.25f, -0.15f, +0.2f }, //3
-            { 0f, +0.4f, +0.15f, -0.15f, +0.35f }, //4
+            { 0f,               0f,                 0f,     0f,     0f }, //0
+            { +heartValue,      +atkSpdBonus,       +0.25f, 0f,     0f }, //1
+            { +heartValue*2f,   +atkSpdBonus*2f,    +0.25f, -0.1f,  0f }, //2
+            { +heartValue,      +atkSpdBonus*2f,    +0.25f, -0.15f, +0.2f }, //3
+            { 0f,               +atkSpdBonus*2f,    +0.15f, -0.15f, +0.35f }, //4
+            { 0f,               +atkSpdBonus*2f,    +0f,    -0.15f, +0.5f }, //maxed
         };
-
-        public static readonly float[] SpiceBonusesConstantMaxed = new float[] {0f, 0.4f, 0f, -0.15f, 0f };
+        public static readonly float[] SpiceBonusesAdditive = new float[] 
+            { -0.05f,           0f,                 -0.1f,  0f,     +0.15f };
 
         public Spice()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Spice.prefab";
             iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/Spice.png";
-        }
-        public override void SetupBehavior()
-        {
-            base.SetupBehavior();
         }
         public override void SetupAttributes()
         {
@@ -289,11 +289,6 @@ namespace RiskOfBulletstorm.Items
             });
             return rules;
         }
-        public override void SetupConfig()
-        {
-            base.SetupConfig();
-        }
-
         public override void SetupLate()
         {
             base.SetupLate();
@@ -307,7 +302,14 @@ namespace RiskOfBulletstorm.Items
             StatHooks.GetStatCoefficients += StatHooks_GetStatCoefficients;
             On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
         }
-
+        public override void Uninstall()
+        {
+            base.Install();
+            On.RoR2.PickupDropletController.CreatePickupDroplet -= PickupDropletController_CreatePickupDroplet;
+            GenericNotification.SetEquipment -= GenericNotification_SetEquipment;
+            StatHooks.GetStatCoefficients -= StatHooks_GetStatCoefficients;
+            On.RoR2.HealthComponent.TakeDamage -= HealthComponent_TakeDamage;
+        }
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
             var attacker = damageInfo.attacker;
@@ -320,7 +322,6 @@ namespace RiskOfBulletstorm.Items
                     if (inventory)
                     {
                         var SpiceTallyCount = inventory.GetItemCount(SpiceTally);
-                        //var DamageMult = 0f;
                         float SpiceMult;
                         switch (SpiceTallyCount)
                         {
@@ -331,10 +332,10 @@ namespace RiskOfBulletstorm.Items
                                 SpiceMult = 0f;
                                 break;
                             case 4:
-                                SpiceMult = SpiceBonuses[SpiceTallyCount, 4];
+                                SpiceMult = SpiceBonusesConstant[SpiceTallyCount, 4];
                                 break;
                             default: //also 5
-                                SpiceMult = SpiceBonuses[4, 4] + SpiceBonusesAdditive[4] * (SpiceTallyCount - 4);
+                                SpiceMult = SpiceBonusesConstant[4, 4] + SpiceBonusesAdditive[4] * (SpiceTallyCount - 4);
                                 break;
                         }
                         damageInfo.damage *= 1 + SpiceMult;
@@ -359,18 +360,20 @@ namespace RiskOfBulletstorm.Items
                     case 4:
                         //health, attack speed, shot accuracy, enemy bullet speed, damage
                         //args.baseHealthAdd += HeartValue * SpiceBonuses[SpiceTallyCount, 0];
-                        args.healthMultAdd += 1 + SpiceBonuses[SpiceTallyCount, 0];
-                        args.attackSpeedMultAdd += SpiceBonuses[SpiceTallyCount, 1];
+                        args.healthMultAdd += 1 + SpiceBonusesConstant[SpiceTallyCount, 0];
+                        args.attackSpeedMultAdd += SpiceBonusesConstant[SpiceTallyCount, 1];
                         //accuracy 
                         //enemy bullet speed
                         //damage
                         break;
                     default:
+                        SpiceTallyCount -= 4;
                         //var baseHealthAdd = HeartValue * SpiceBonusesAdditive[0] * (SpiceTallyCount - 4);
                         //args.baseHealthAdd += baseHealthAdd;
-                        args.healthMultAdd += Math.Min(0.1f, 1 + SpiceBonusesAdditive[0] * (SpiceTallyCount - 4));
+                        int debuffCount = SpiceTallyCount * (int)Math.Abs(SpiceBonusesAdditive[0]*100);
+                        GiveCursedDebuffMinimum(sender, debuffCount);
                         //health, attack speed, shot accuracy, enemy bullet speed, damage
-                        args.attackSpeedMultAdd += SpiceBonusesConstantMaxed[1];
+                        args.attackSpeedMultAdd += SpiceBonusesConstant[5, 1];
                         //accuracy
                         //enemy
                         //damage
@@ -379,13 +382,18 @@ namespace RiskOfBulletstorm.Items
             }
         }
 
-        public override void Uninstall()
+        public void GiveCursedDebuffMinimum(CharacterBody characterBody, int curseAmount)
         {
-            base.Uninstall();
-            On.RoR2.PickupDropletController.CreatePickupDroplet -= PickupDropletController_CreatePickupDroplet;
-            GenericNotification.SetEquipment -= GenericNotification_SetEquipment;
-            StatHooks.GetStatCoefficients -= StatHooks_GetStatCoefficients;
+            if (characterBody && characterBody.healthComponent)
+            {
+                var curseDebuffAmount = characterBody.GetBuffCount(BuffIndex.PermanentCurse);
+                if (curseDebuffAmount < curseAmount)
+                {
+                    HelperUtil.AddBuffStacks(characterBody, BuffIndex.PermanentCurse, curseAmount - curseDebuffAmount);
+                }
+            }
         }
+
         private void GenericNotification_SetEquipment(GenericNotification.orig_SetEquipment orig, RoR2.UI.GenericNotification self, EquipmentDef equipmentDef)
         {
             orig(self, equipmentDef);
@@ -394,7 +402,7 @@ namespace RiskOfBulletstorm.Items
                 var LocalUserList = LocalUserManager.readOnlyLocalUsersList;
                 var localUser = LocalUserList[0];
                 var inventoryCount = localUser.cachedBody.inventory.GetItemCount(SpiceTally);
-                var index = Mathf.Max(inventoryCount, SpiceDescArray.Length - 1);
+                var index = Mathf.Min(inventoryCount, SpiceDescArray.Length - 1);
                 self.descriptionText.token = SpiceDescArray[index];
             }
         }

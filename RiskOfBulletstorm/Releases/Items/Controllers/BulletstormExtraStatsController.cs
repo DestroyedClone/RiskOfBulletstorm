@@ -46,9 +46,8 @@ namespace RiskOfBulletstorm.Items
         private ItemIndex ItemIndex_Scope;
         private ItemIndex ItemIndex_SpiceTally;
 
-        private float[,] SpiceBonuses;
+        private float[,] SpiceBonusesConstant;
         private float[] SpiceBonusesAdditive;
-        private float[] SpiceBonusesConstantMaxed;
 
         public static List<GameObject> WhitelistedProjectiles = new List<GameObject>
         {
@@ -164,9 +163,8 @@ namespace RiskOfBulletstorm.Items
             ItemIndex_SpiceTally = Spice.SpiceTally;
 
             // SPICE //
-            SpiceBonuses = Spice.SpiceBonuses;
+            SpiceBonusesConstant = Spice.SpiceBonusesConstant;
             SpiceBonusesAdditive = Spice.SpiceBonusesAdditive;
-            SpiceBonusesConstantMaxed = Spice.SpiceBonusesConstantMaxed;
 
             // MODDED //
             string[] moddedProjectileStrings =
@@ -395,8 +393,9 @@ namespace RiskOfBulletstorm.Items
                                 {
                                     //var oldSpeed = projectileSimple.velocity;
                                     var speedMult = CalculateEnemyProjectileSpeedMultiplier();
-
-                                    projectileSimple.velocity *= 1f + speedMult;
+                                    fireProjectileInfo.speedOverride = projectileSimple.velocity * (1f + speedMult);
+                                    fireProjectileInfo.useSpeedOverride = true;
+                                    //Debug.Log("vel " + projectileSimple.velocity + " speedoverride " + fireProjectileInfo.speedOverride);
                                 }
                             }
                         }
@@ -419,11 +418,11 @@ namespace RiskOfBulletstorm.Items
                 {
                     if (ItemCount_Spice > 4)
                     {
-                        SpiceMult = SpiceBonusesConstantMaxed[3];
+                        SpiceMult = SpiceBonusesConstant[5, 3];
                     }
                     else
                     {
-                        SpiceMult = SpiceBonuses[ItemCount_Spice, 3];
+                        SpiceMult = SpiceBonusesConstant[ItemCount_Spice, 3];
                     }
                 }
             }
@@ -449,13 +448,13 @@ namespace RiskOfBulletstorm.Items
                     break;
                 case 3:
                 case 4:
-                    SpiceMult -= SpiceBonuses[ItemCount_Spice, 2];
+                    SpiceMult -= SpiceBonusesConstant[ItemCount_Spice, 2];
                     break;
                 case 5: //fuck IT GOES FROM 0.15 to -0.2 WHYYYYYYYYYYYYYYY hardcoded stopgap time
                     SpiceMult -= 0f;
                     break;
                 default:
-                    SpiceMult -= SpiceBonusesConstantMaxed[2] + SpiceBonusesAdditive[2] * (ItemCount_Spice - 4);
+                    SpiceMult -= SpiceBonusesConstant[5, 2] + SpiceBonusesAdditive[2] * (ItemCount_Spice - 4);
                     break;
             }
 

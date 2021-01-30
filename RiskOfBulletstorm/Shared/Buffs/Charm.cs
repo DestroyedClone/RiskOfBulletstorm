@@ -10,7 +10,6 @@ namespace RiskOfBulletstorm.Shared.Buffs
     {
         // TODO: IL Add friendly fire bypass
         public static bool Config_Charm_Boss = BuffsController.Config_Charm_Boss;
-        public static BuffIndex Config_Charm_PlayerBuff = BuffsController.Config_Charm_PlayerBuff;
         public static BuffIndex charmIndex = BuffsController.Charm;
 
         public static void Install()
@@ -43,10 +42,7 @@ namespace RiskOfBulletstorm.Shared.Buffs
                 if (!Config_Charm_Boss && self.isBoss) //prevents adding the buff if it's a boss and the config is disabled
                     return;
 
-
-                if (self.isPlayerControlled)
-                    buffType = Config_Charm_PlayerBuff;
-                else if (self.masterObject && self.masterObject.GetComponent<BaseAI>())
+                if (!self.isPlayerControlled && self.masterObject && self.masterObject.GetComponent<BaseAI>())
                 {
                     var isCharmed = self.gameObject.GetComponent<IsCharmed>();
                     if (!isCharmed)
