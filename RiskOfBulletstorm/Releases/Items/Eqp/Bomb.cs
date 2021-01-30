@@ -20,7 +20,7 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("What is the cooldown in seconds?", AutoConfigFlags.PreventNetMismatch)]
         public override float cooldown { get; protected set; } = 14.00f;
 
-        public override string displayName => "Bomb";
+        public override string displayName => "<b>Bomb</b>";
         public string descText = "Throws a bomb that explodes after a short delay";
 
         protected override string GetNameString(string langID = null) => displayName;
@@ -87,7 +87,7 @@ namespace RiskOfBulletstorm.Items
             }
             base.SetupAttributes();
         }
-        private static ItemDisplayRuleDict GenerateItemDisplayRules()
+        public static ItemDisplayRuleDict GenerateItemDisplayRules()
         {
             ItemBodyModelPrefab.AddComponent<ItemDisplay>();
             ItemBodyModelPrefab.GetComponent<ItemDisplay>().rendererInfos = ItemHelpers.ItemDisplaySetup(ItemBodyModelPrefab);

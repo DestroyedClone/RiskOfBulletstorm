@@ -27,7 +27,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null)
         {
-            if (Medkit_HealAmount > 0 && Medkit_BarrierAmount > 0) return "Heals\nMedkits provides substantial healing when used.";
+            if (Medkit_HealAmount > 0 && Medkit_BarrierAmount > 0) return "<b>Heals</b>\nMedkits provides substantial healing when used.";
             else return "Seems salvaged?";
         }
 
@@ -77,7 +77,7 @@ namespace RiskOfBulletstorm.Items
 
             base.SetupAttributes();
         }
-        private static ItemDisplayRuleDict GenerateItemDisplayRules() //TODO new model (too big)
+        public static ItemDisplayRuleDict GenerateItemDisplayRules() //TODO new model (too big)
         {
             ItemBodyModelPrefab.AddComponent<ItemDisplay>();
             ItemBodyModelPrefab.GetComponent<ItemDisplay>().rendererInfos = ItemHelpers.ItemDisplaySetup(ItemBodyModelPrefab);

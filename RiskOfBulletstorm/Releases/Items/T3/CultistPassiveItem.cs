@@ -10,23 +10,16 @@ namespace RiskOfBulletstorm.Items
 {
     public class CultistPassiveItem : Item_V2<CultistPassiveItem>
     {
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("SINGLEPLAYER: Amount to increase stats by.", AutoConfigFlags.PreventNetMismatch)]
-        public static float CPI_singleplayer { get; private set; } = 2f;
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("MULTIPLAYER: Amount to increase stats by.", AutoConfigFlags.PreventNetMismatch)]
-        public static float CPI_multiplayer { get; private set; } = 4f;
 
         public override string displayName => "Number 2";
         public override ItemTier itemTier => ItemTier.Tier3;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage, ItemTag.Utility, ItemTag.AIBlacklist });
 
         protected override string GetNameString(string langID = null) => displayName;
-        protected override string GetPickupString(string langID = null) => "Sidekick No More\nBoosts stats when alone.";
+        protected override string GetPickupString(string langID = null) => "<b>Sidekick No More</b>\nBoosts stats when alone.";
 
-        protected override string GetDescString(string langid = null) => $"Increases <style=cIsUtility>base attack speed, damage, health, movespeed, regen, armor, and crit chance by an amount</style>" +
-            $"<style=cStack>+same per stack </style> for every dead survivor." +
-            $"\nSINGLEPLAYER: {CPI_singleplayer} | MULTIPLAYER: {CPI_multiplayer}";
+        protected override string GetDescString(string langid = null) => $"Increases <style=cIsUtility>stats</style> by a certain amount." +
+            $"<style=cStack>+same per stack </style> for every dead survivor.";
 
         protected override string GetLoreString(string langID = null) => "Now that the protagonist is dead, it's time to shine!";
 
@@ -35,7 +28,7 @@ namespace RiskOfBulletstorm.Items
         public CultistPassiveItem()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/CultistPassiveItem.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/CultistPassiveItem.png";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/CultistPassiveItem";
         }
         public override void SetupAttributes()
         {
@@ -279,18 +272,18 @@ namespace RiskOfBulletstorm.Items
                 {
                     var deadAmt = component.deadProtagonists;
 
-                    float addAmount = CPI_singleplayer;
-                    if (component.isMultiplayer) addAmount = CPI_multiplayer;
+                    //float addAmount = CPI_singleplayer;
+                    //if (component.isMultiplayer) addAmount = CPI_multiplayer;
                     
-                    addAmount *= deadAmt * InventoryCount;
+                    float multAmount = deadAmt * InventoryCount;
 
-                    args.baseAttackSpeedAdd += addAmount;
-                    args.baseDamageAdd += addAmount;
-                    args.baseHealthAdd += addAmount;
-                    args.baseMoveSpeedAdd += addAmount;
-                    args.baseRegenAdd += addAmount;
-                    args.armorAdd += addAmount;
-                    args.critAdd += addAmount;
+                    args.baseAttackSpeedAdd += 0.25f * multAmount;
+                    args.baseDamageAdd += 2f * multAmount;
+                    args.baseHealthAdd += 25 * multAmount;
+                    args.baseMoveSpeedAdd += 1f * multAmount;
+                    args.baseRegenAdd += 0.5f * multAmount;
+                    args.armorAdd += 2 * multAmount;
+                    args.critAdd += 5 * multAmount;
                 }
             }
         }

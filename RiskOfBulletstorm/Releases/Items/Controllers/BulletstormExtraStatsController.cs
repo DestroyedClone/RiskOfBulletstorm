@@ -516,7 +516,7 @@ namespace RiskOfBulletstorm.Items
 
                             if ((ShotSpread_WhitelistProjectiles && isProjectileAllowed) || !ShotSpread_WhitelistProjectiles)
                             {
-                                float BaseSpreadAngle = 15;
+                                //float BaseSpreadAngle = 15;
 
                                 //Note Clamp Acc at 1 for 100% acc or else it overflows
                                 float CappedAccMult = Mathf.Min(AccMult, 1);
@@ -529,9 +529,13 @@ namespace RiskOfBulletstorm.Items
                                 {
                                     //CappedAccMult *= -1;
                                     //This is a random dir in cone. USED FOR INACCURACY
-                                    Quaternion bulletDir = GetRandomInsideCone(BaseSpreadAngle, aimDirection);
-                                    _logger.LogMessage(bulletDir);
-                                    UpdatedAngle = Quaternion.SlerpUnclamped(bulletDir, aimDirectionQuaternion, CappedAccMult);
+
+
+                                    //TODO
+                                    //Quaternion bulletDir = GetRandomInsideCone(BaseSpreadAngle, aimDirection);
+                                    //_logger.LogMessage(bulletDir);
+                                    //UpdatedAngle = Quaternion.SlerpUnclamped(bulletDir, aimDirectionQuaternion, CappedAccMult);
+                                    UpdatedAngle = fireProjectileInfo.rotation;
                                 }
                                 fireProjectileInfo.rotation = UpdatedAngle;
                                 //UpdatedAngle = Quaternion.LerpUnclamped(fireProjectileInfo.rotation, aimDirectionQuaternion, CappedAccMult);

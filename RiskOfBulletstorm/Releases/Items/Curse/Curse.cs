@@ -3,6 +3,7 @@ using R2API;
 using RoR2;
 using TILER2;
 using RiskOfBulletstorm.Utils;
+using UnityEngine;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -47,11 +48,6 @@ namespace RiskOfBulletstorm.Items
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("[Aetherium Support] Allow Unstable Design summons to become Jammed?", AutoConfigFlags.PreventNetMismatch)]
         public bool Curse_AllowUnstableDesign { get; private set; } = true;
-
-        /*
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Allow Lord of the Jammed to spawn at Max curse? (Default: true)", AutoConfigFlags.PreventNetMismatch)]
-        public bool Curse_SpawnLOTJ { get; private set; } = true;*/
 
         public override string displayName => "CurseMasterItem";
         public override ItemTier itemTier => ItemTier.NoTier;
@@ -229,6 +225,24 @@ namespace RiskOfBulletstorm.Items
                 if (AetheriumCheck)
                 {
                     CurseUtil.JamEnemy(obj, RollValue);
+                }
+            }
+        }
+        public class IsJammed : MonoBehaviour
+        {
+            public CharacterBody characterBody;
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
+            void OnEnable()
+            {
+                //ContactDamageCooldown = ContactDamageCooldownFull;
+                characterBody = gameObject.GetComponent<CharacterBody>();
+                if (!characterBody.HasBuff(Shared.Buffs.BuffsController.Jammed))
+                {
+                    characterBody.AddBuff(Shared.Buffs.BuffsController.Jammed);
+                }
+                if (characterBody.inventory && characterBody.inventory.GetItemCount(CurseController.isJammedItem) == 0)
+                {
+                    characterBody.inventory.GiveItem(CurseController.isJammedItem);
                 }
             }
         }

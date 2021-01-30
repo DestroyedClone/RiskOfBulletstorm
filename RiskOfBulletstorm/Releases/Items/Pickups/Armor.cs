@@ -29,7 +29,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "Protect Body\n"+descText+" from heavy hits";
+        protected override string GetPickupString(string langID = null) => "<b>Protect Body</b>\n"+descText+" from heavy hits";
 
         protected override string GetDescString(string langid = null)
         {
@@ -66,7 +66,7 @@ namespace RiskOfBulletstorm.Items
             base.SetupAttributes();
 
         }
-        private static ItemDisplayRuleDict GenerateItemDisplayRules()
+        public static ItemDisplayRuleDict GenerateItemDisplayRules()
         {
             ItemBodyModelPrefab.AddComponent<ItemDisplay>();
             ItemBodyModelPrefab.GetComponent<ItemDisplay>().rendererInfos = ItemHelpers.ItemDisplaySetup(ItemBodyModelPrefab);

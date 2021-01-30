@@ -28,14 +28,12 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "Our Powers Combined\nIncreased combat effectiveness per item.";
+        protected override string GetPickupString(string langID = null) => "<b>Our Powers Combined</b>\nIncreased combat effectiveness per item.";
 
         protected override string GetDescString(string langid = null) => $"<style=cIsDamage>+{RingUnity_DamageBonus} base damage</style> per unique item in inventory." +
             $"\n<style=cStack>(+{RingUnity_DamageBonusStack} base damage per stack)</style>";
 
         protected override string GetLoreString(string langID = null) => "This ring takes a small amount of power from each gun carried and adds it to the currently equipped gun.";
-
-        //FieldInfo itemStacksField;
 
         public static GameObject ItemBodyModelPrefab;
 
@@ -59,7 +57,7 @@ namespace RiskOfBulletstorm.Items
 
             base.SetupAttributes();
         }
-        private static ItemDisplayRuleDict GenerateItemDisplayRules() //THIS SUCKS
+        public static ItemDisplayRuleDict GenerateItemDisplayRules() //THIS SUCKS
         {
             ItemBodyModelPrefab.AddComponent<ItemDisplay>();
             ItemBodyModelPrefab.GetComponent<ItemDisplay>().rendererInfos = ItemHelpers.ItemDisplaySetup(ItemBodyModelPrefab);

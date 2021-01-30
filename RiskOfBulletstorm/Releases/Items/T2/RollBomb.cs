@@ -21,16 +21,12 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "Power Charge\nDrop bomb(s) after using your utility skill.";
+        protected override string GetPickupString(string langID = null) => "<b>Power Charge</b>\nDrop bomb(s) after using your utility skill.";
 
-        protected override string GetDescString(string langid = null) => $"Using your utility <style=cIsUtility>drops 1 bombs</style> for <style=cIsDamage>{Pct(RollBomb_Damage)} damage </style>." +
+        protected override string GetDescString(string langid = null) => $"Using your utility <style=cIsUtility>drops 1 bomb</style> for <style=cIsDamage>{Pct(RollBomb_Damage)} damage</style>." +
             $"\n<style=cStack>(+1 bomb dropped per stack)</style>";
 
         protected override string GetLoreString(string langID = null) => "Produces a bomb when dodge rolling.\nThis strange mechanism dispenses explosives when spun.";
-
-        //private static List<RoR2.CharacterBody> Playername = new List<RoR2.CharacterBody>();
-
-        //public static GameObject ItemBodyModelPrefab;
         public static GameObject BombPrefab { get; private set; }
 
         public static GameObject ItemBodyModelPrefab;
@@ -47,11 +43,8 @@ namespace RiskOfBulletstorm.Items
             BombPrefab = engiMinePrefab.InstantiateClone("Bulletstorm_RollBomb");
             //BombPrefab.transform.localScale = new Vector3(3, 3, 3);
             BombPrefab.GetComponent<ProjectileSimple>().velocity = 1; //default 50
-            //BombPrefab.GetComponent<ProjectileSimple>().lifetime = 4; //default 5
             BombPrefab.GetComponent<ProjectileDamage>().damageColorIndex = DamageColorIndex.Item;
-            //BombPrefab.GetComponent<ProjectileImpactExplosion>().lifetime = 2;
             BombPrefab.GetComponent<ProjectileImpactExplosion>().destroyOnEnemy = false; //default True
-            //BombPrefab.GetComponent<ProjectileImpactExplosion>().timerAfterImpact = false;
             Object.Destroy(BombPrefab.GetComponent<ApplyTorqueOnStart>());
         }
 
@@ -65,7 +58,7 @@ namespace RiskOfBulletstorm.Items
 
             base.SetupAttributes();
         }
-        private static ItemDisplayRuleDict GenerateItemDisplayRules()
+        public static ItemDisplayRuleDict GenerateItemDisplayRules()
         {
             ItemBodyModelPrefab.AddComponent<ItemDisplay>();
             ItemBodyModelPrefab.GetComponent<ItemDisplay>().rendererInfos = ItemHelpers.ItemDisplaySetup(ItemBodyModelPrefab);

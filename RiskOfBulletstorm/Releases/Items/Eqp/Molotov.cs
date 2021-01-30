@@ -47,7 +47,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null)
         {
-            var desc = "Feel the Burn\n";
+            var desc = "<b>Feel the Burn</b>\n";
             if (Molotov_Duration <= 0)
                 desc += durationZero;
             else desc += durationNormal;
@@ -155,7 +155,7 @@ namespace RiskOfBulletstorm.Items
             }
             base.SetupAttributes();
         }
-        private static ItemDisplayRuleDict GenerateItemDisplayRules()
+        public static ItemDisplayRuleDict GenerateItemDisplayRules()
         {
             ItemBodyModelPrefab.AddComponent<ItemDisplay>();
             ItemBodyModelPrefab.GetComponent<ItemDisplay>().rendererInfos = ItemHelpers.ItemDisplaySetup(ItemBodyModelPrefab);
@@ -355,19 +355,6 @@ namespace RiskOfBulletstorm.Items
             });
             return rules;
         } //todo
-        public override void SetupConfig()
-        {
-            base.SetupConfig();
-        }
-        public override void Install()
-        {
-            base.Install();
-        }
-
-        public override void Uninstall()
-        {
-            base.Uninstall();
-        }
         protected override bool PerformEquipmentAction(EquipmentSlot slot)
         {
             CharacterBody body = slot.characterBody;

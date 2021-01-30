@@ -45,7 +45,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "Banish Bullets\n"+descText;
+        protected override string GetPickupString(string langID = null) => "<b>Banish Bullets<b>\n"+descText;
 
         protected override string GetDescString(string langid = null)
         {

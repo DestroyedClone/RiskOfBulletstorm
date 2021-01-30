@@ -13,7 +13,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "You're Not Alexander\nPermanently increases stats upon consumption.";
+        protected override string GetPickupString(string langID = null) => "<b>You're Not Alexander</b>\nPermanently increases stats upon consumption.";
 
         protected override string GetDescString(string langid = null)
         {
@@ -46,7 +46,7 @@ namespace RiskOfBulletstorm.Items
 
             base.SetupAttributes();
         }
-        private static ItemDisplayRuleDict GenerateItemDisplayRules()
+        public static ItemDisplayRuleDict GenerateItemDisplayRules()
         {
             ItemBodyModelPrefab.AddComponent<ItemDisplay>();
             ItemBodyModelPrefab.GetComponent<ItemDisplay>().rendererInfos = ItemHelpers.ItemDisplaySetup(ItemBodyModelPrefab);

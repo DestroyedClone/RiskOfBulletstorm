@@ -26,7 +26,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "Instant Mail Order\nPlace to create a zone of (almost) no cooldowns.";
+        protected override string GetPickupString(string langID = null) => "<b>Instant Mail Order</b>\nPlace to create a zone of (almost) no cooldowns.";
 
         protected override string GetDescString(string langid = null)
         {
@@ -78,7 +78,7 @@ namespace RiskOfBulletstorm.Items
 
             base.SetupAttributes();
         }
-        private static ItemDisplayRuleDict GenerateItemDisplayRules()
+        public static ItemDisplayRuleDict GenerateItemDisplayRules()
         {
             ItemBodyModelPrefab.AddComponent<ItemDisplay>();
             ItemBodyModelPrefab.GetComponent<ItemDisplay>().rendererInfos = ItemHelpers.ItemDisplaySetup(ItemBodyModelPrefab);

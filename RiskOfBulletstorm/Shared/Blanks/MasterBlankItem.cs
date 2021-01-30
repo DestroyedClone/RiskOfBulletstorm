@@ -30,7 +30,7 @@ namespace RiskOfBulletstorm.Shared.Blanks
         protected override string GetDescString(string langid = null) => $"";
 
         protected override string GetLoreString(string langID = null) => "";
-        public static GameObject BlankObject; // { get; private set; }
+        public static GameObject BlankObject = new GameObject(); // { get; private set; }
         public static string BlankSound = EntityStates.Treebot.Weapon.FirePlantSonicBoom.impactSoundString;
         //private readonly string BlankEffect = "Prefabs/Effects/TreebotShockwaveEffect";
         public static GameObject BlankEffect = (GameObject)Resources.Load("prefabs/effects/SonicBoomEffect");

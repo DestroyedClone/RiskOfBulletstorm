@@ -5,6 +5,7 @@ using RoR2;
 using UnityEngine;
 using TILER2;
 using static TILER2.MiscUtil;
+using RiskOfBulletstorm.Shared.Buffs;
 
 
 namespace RiskOfBulletstorm.Items
@@ -37,17 +38,14 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "\"Don't Believe His Lies\"\nDeal extra damage for a short time after receiving a heavy hit.";
+        protected override string GetPickupString(string langID = null) => "<b>\"Don't Believe His Lies\"</b>\nDeal extra damage for a short time after receiving a heavy hit.";
 
         protected override string GetDescString(string langid = null) => $"Gain a temporary <style=cIsHealth>{Pct(EnragingPhoto_DmgBoost)} damage bonus</style> upon taking <style=cIsHealth>{Pct(EnragingPhoto_HealthThreshold)} </style> of your health that lasts {EnragingPhoto_BaseDuration} seconds." +
             $"\n<style=cStack>(+{EnragingPhoto_StackDuration} second duration per additional Enraging Photo.)</style>";
 
         protected override string GetLoreString(string langID = null) => "A photo that the Convict brought with her to the Gungeon.\nDeal extra damage for a short time after getting hit.\n\nOn the journey to the Breach, the Pilot once asked her why she always stared at this photo. Later, she was released from the brig.";
 
-        //private static List<RoR2.CharacterBody> Playername = new List<RoR2.CharacterBody>();
-
         public static GameObject ItemBodyModelPrefab;
-        public static readonly BuffIndex AngerBuff = GungeonBuffController.Anger;
         public EnragingPhoto()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/EnragingPhoto.prefab";
@@ -73,7 +71,7 @@ namespace RiskOfBulletstorm.Items
             }
             base.SetupAttributes();
         }
-        private static ItemDisplayRuleDict GenerateItemDisplayRules()
+        public static ItemDisplayRuleDict GenerateItemDisplayRules()
         {
             ItemBodyModelPrefab.AddComponent<ItemDisplay>();
             ItemBodyModelPrefab.GetComponent<ItemDisplay>().rendererInfos = ItemHelpers.ItemDisplaySetup(ItemBodyModelPrefab);
@@ -284,9 +282,9 @@ namespace RiskOfBulletstorm.Items
             var healthCompare = (oldHealth - self.health) / self.fullHealth;
             if (healthCompare >= EnragingPhoto_HealthThreshold)
             {
-                if (InventoryCount > 0 && self.body.GetBuffCount(AngerBuff) == 0)
+                if (InventoryCount > 0 && self.body.GetBuffCount(BuffsController.Anger) == 0)
                 {
-                    self.body.AddTimedBuffAuthority(GungeonBuffController.Anger, (EnragingPhoto_BaseDuration + EnragingPhoto_StackDuration * (InventoryCount - 1)));
+                    self.body.AddTimedBuffAuthority(BuffsController.Anger, (EnragingPhoto_BaseDuration + EnragingPhoto_StackDuration * (InventoryCount - 1)));
                 }
             }
         }

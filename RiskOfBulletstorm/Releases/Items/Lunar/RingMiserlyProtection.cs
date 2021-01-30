@@ -25,7 +25,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "Aids The Fiscally Responsible\n<style=cHealth>Increases health substantially.</style> <style=cDeath>Any shrine purchases will shatter a ring.</style>";
+        protected override string GetPickupString(string langID = null) => "<b>Aids The Fiscally Responsible</b>\n<style=cHealth>Increases health substantially.</style> <style=cDeath>Any shrine purchases will shatter a ring.</style>";
 
         protected override string GetDescString(string langid = null)
         {
@@ -54,10 +54,6 @@ namespace RiskOfBulletstorm.Items
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/RingMiserlyProtection.prefab";
             iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/RingMiserlyProtection.png";
         }
-        public override void SetupBehavior()
-        {
-
-        }
         public override void SetupAttributes()
         {
             if (ItemBodyModelPrefab == null)
@@ -68,7 +64,7 @@ namespace RiskOfBulletstorm.Items
 
             base.SetupAttributes();
         }
-        private static ItemDisplayRuleDict GenerateItemDisplayRules() //THIS SUCKS
+        public static ItemDisplayRuleDict GenerateItemDisplayRules() //THIS SUCKS
         {
             ItemBodyModelPrefab.AddComponent<ItemDisplay>();
             ItemBodyModelPrefab.GetComponent<ItemDisplay>().rendererInfos = ItemHelpers.ItemDisplaySetup(ItemBodyModelPrefab);

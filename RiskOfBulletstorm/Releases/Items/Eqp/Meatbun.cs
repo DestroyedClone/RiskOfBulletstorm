@@ -34,7 +34,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null)
         {
-            var desc = "On A Roll\n";
+            var desc = "<b>On A Roll</b>\n";
             var doHeal = Meatbun_HealAmount > 0;
             var canBuff = Meatbun_BuffLimit > 0 && Meatbun_DamageBonus > 0;
             if (!doHeal && !canBuff)
@@ -114,7 +114,7 @@ namespace RiskOfBulletstorm.Items
         {
             base.SetupConfig();
         }
-        private static ItemDisplayRuleDict GenerateItemDisplayRules()
+        public static ItemDisplayRuleDict GenerateItemDisplayRules()
         {
             ItemBodyModelPrefab.AddComponent<ItemDisplay>();
             ItemBodyModelPrefab.GetComponent<ItemDisplay>().rendererInfos = ItemHelpers.ItemDisplaySetup(ItemBodyModelPrefab);

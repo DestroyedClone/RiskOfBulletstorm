@@ -31,7 +31,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null)
         {
-            var desc = "Know When To Fold 'Em\n";
+            var desc = "<b>Know When To Fold 'Em</b>\n";
             if (PortableTableDevice_MaxBarrels > 0 && PortableTableDevice_Lifetime > 0)
                 desc += "Places a barrel.";
             else desc += "Faulty user input prevents this device from functioning.";
@@ -121,7 +121,7 @@ namespace RiskOfBulletstorm.Items
                 preventOverhead = true
             };
         }
-        private static ItemDisplayRuleDict GenerateItemDisplayRules() //TODO new textures, too bright in game
+        public static ItemDisplayRuleDict GenerateItemDisplayRules() //TODO new textures, too bright in game
         {
             ItemBodyModelPrefab.AddComponent<ItemDisplay>();
             ItemBodyModelPrefab.GetComponent<ItemDisplay>().rendererInfos = ItemHelpers.ItemDisplaySetup(ItemBodyModelPrefab);

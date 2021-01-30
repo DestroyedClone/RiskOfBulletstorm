@@ -1,5 +1,4 @@
 ﻿using RiskOfBulletstorm.Utils;
-//using EntityStates.Engi.EngiWeapon;
 using R2API;
 using RoR2;
 using UnityEngine;
@@ -76,7 +75,7 @@ namespace RiskOfBulletstorm.Items
             }
             base.SetupAttributes();
         }
-        private static ItemDisplayRuleDict GenerateItemDisplayRules()
+        public static ItemDisplayRuleDict GenerateItemDisplayRules()
         {
             ItemBodyModelPrefab.AddComponent<ItemDisplay>();
             ItemBodyModelPrefab.GetComponent<ItemDisplay>().rendererInfos = ItemHelpers.ItemDisplaySetup(ItemBodyModelPrefab);
@@ -316,7 +315,7 @@ namespace RiskOfBulletstorm.Items
                 GameObject gameObject = UnityEngine.Object.Instantiate(CharmWardPrefab, body.transform.position, Quaternion.identity);
                 gameObject.GetComponent<TeamFilter>().teamIndex = body.teamComponent.teamIndex;
                 BuffWard buffWard = gameObject.GetComponent<BuffWard>();
-                buffWard.buffType = GungeonBuffController.Charm;
+                buffWard.buffType = Shared.Buffs.BuffsController.Charm;
                 buffWard.GetComponent<BuffWard>().Networkradius *= radius;
                 buffWard.GetComponent<BuffWard>().radius *= radius;
                 NetworkServer.Spawn(gameObject);

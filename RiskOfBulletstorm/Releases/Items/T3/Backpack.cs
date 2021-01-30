@@ -1,21 +1,9 @@
-﻿
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using R2API;
+﻿using System.Collections.ObjectModel;
 using RoR2;
-using RoR2.UI;
-using Unity;
 using UnityEngine;
 using UnityEngine.Networking;
 using TILER2;
-using BepInEx;
-using static TILER2.StatHooks;
-using static TILER2.MiscUtil;
-using System;
-using static RiskOfBulletstorm.HelperPlugin;
-using  RiskOfBulletstorm.Utils;
 using static RiskOfBulletstorm.Utils.HelperUtil;
-using static RiskOfBulletstorm.BulletstormPlugin;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -37,12 +25,8 @@ namespace RiskOfBulletstorm.Items
         public override ItemTier itemTier => ItemTier.Tier3;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility, ItemTag.EquipmentRelated, ItemTag.AIBlacklist });
         protected override string GetNameString(string langID = null) => displayName;
-        protected override string GetPickupString(string langID = null) => "Item Capacity Up!\nThe Backpack grants you the use of another Active Item. Useful, but cumbersome.";
-
-        //protected override string GetDescString(string langid = null) => $"Grants one extra equipment slot." +
-        //$"\nUse your modifier key+number keys or your cycle keys to switch slots.";
-
-        protected override string GetLoreString(string langID = null) => "";
+        protected override string GetPickupString(string langID = null) => "<b>Item Capacity Up!<b>\nThe Backpack grants you the use of another Active Item. Useful, but cumbersome.";
+        protected override string GetLoreString(string langID = null) => "A backpack (also called rucksack, knapsack, packsack, pack, Haversack, or Bergen) is a bag put on somebody's back. It usually has two straps that go over the shoulders. It is used to carry things in it, and it often has many compartments to carry things. People often use backpacks on camping trips, hikes, or any form of outdoor activity where people need to carry many things. Backpacks are also be used in the military by soldiers. It can be also used in school, or in this case, it also called a bookbag or school bag.\n\nLarge backpacks, used to carry loads over 10 kg (22 lbs), and smaller sports backpacks, usually offload the biggest part of their weight onto padded hip belts. This leaves the shoulder straps mainly for keeping the load in place. This makes it easier to carry heavy loads, because the hips are stronger than the shoulders. It also improves agility and balance, because the load lies closer to the center of mass of the person wearing it.\n\nIn the very distant past, backpacks were to carry hunters' larger catches. If the hunts were even larger, the hunters would cut their prey into pieces and hand out the pieces to other hunters. The hunters would then carry smaller pieces separately. The bag would be made up of animal skin and sewn together by animal intestines. They would then be woven together tightly to make a firm material.\n\nSome backpacks are specialized to carry a particular thing, such as fluids or a laptop computer.";
         public static KeyCode ModifierKey_KB = KeyCode.None;
         public static KeyCode CycleLeftKey_KB = KeyCode.None;
         public static KeyCode CycleRightKey_KB = KeyCode.None;
@@ -62,17 +46,6 @@ namespace RiskOfBulletstorm.Items
         public override void SetupConfig()
         {
             base.SetupConfig();
-            /*
-            if (RiskOfOptionsCompat.enabled)
-            {
-                ModifierKey_KB = (KeyCode)Enum.Parse(typeof(KeyCode), RiskOfOptionsCompat.getOptionValue("BACKPACK: Modifier (Keyboard)"));
-                CycleLeftKey_KB = (KeyCode)Enum.Parse(typeof(KeyCode), RiskOfOptionsCompat.getOptionValue("BACKPACK: Modifier (Keyboard)"));
-                CycleRightKey_KB = (KeyCode)Enum.Parse(typeof(KeyCode), RiskOfOptionsCompat.getOptionValue("BACKPACK: Modifier (Keyboard)"));
-
-                CycleLeftKey_GP = (KeyCode)Enum.Parse(typeof(KeyCode), RiskOfOptionsCompat.getOptionValue("BACKPACK: Modifier (Gamepad)"));
-                CycleRightKey_GP = (KeyCode)Enum.Parse(typeof(KeyCode), RiskOfOptionsCompat.getOptionValue("BACKPACK: Modifier (Gamepad)"));
-            } else*/
-
             ModifierKey_KB = Backpack_ModifierButton;
                 CycleLeftKey_KB = Backpack_CycleLeftButton;
                 CycleRightKey_KB = Backpack_CycleRightButton;

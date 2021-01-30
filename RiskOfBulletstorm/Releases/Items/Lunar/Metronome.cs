@@ -40,7 +40,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetNameString(string langID = null) => displayName;
         protected override string GetPickupString(string langID = null)
         {
-            var desc = "Better And Better\n";
+            var desc = "<b>Better And Better</b>\n";
             if (Metronome_DmgCoeff == 0 && Metronome_MaxKillsStack <= 0)
                 return desc + "Does nothing.";
 

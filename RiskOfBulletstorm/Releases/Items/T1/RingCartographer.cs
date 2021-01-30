@@ -14,10 +14,10 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the base chance for the stage to be scanned with one Cartographer's Ring? (Value: Direct Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float CartographerRing_ScanChance { get; private set; } = 20f;
+        public float CartographerRing_ScanChance { get; private set; } = 10f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is that chance for additional Cartographer's Ring for stage to scan? (Value: Direct Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float CartographerRing_ScanChanceStack { get; private set; } = 10f;
+        public float CartographerRing_ScanChanceStack { get; private set; } = 5f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How long should the scan last in seconds? (Setting it to zero automatically sets it to 27 hours)", AutoConfigFlags.PreventNetMismatch)]
         public float CartographerRing_ScanDuration { get; private set; } = 0f;
@@ -34,7 +34,7 @@ namespace RiskOfBulletstorm.Items
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility, ItemTag.AIBlacklist });
 
         protected override string GetNameString(string langID = null) => displayName;
-        protected override string GetPickupString(string langID = null) => "Some Floors Are Familiar\nSometimes reveals the floor.";
+        protected override string GetPickupString(string langID = null) => "<b>Some Floors Are Familiar</b>\nSometimes reveals the floor.";
         protected override string GetDescString(string langid = null) => $"<style=cIsUtility>{CartographerRing_ScanChance}% chance of revealing all interactables upon stage start.</style>" +
             $"\n <style=cStack>(+{CartographerRing_ScanChanceStack}% per stack)</style>." +
             $"\n <style=cSub>Chance is shared amongst players.</style>";
@@ -85,11 +85,6 @@ namespace RiskOfBulletstorm.Items
             }
 
             if (PermanentScannerPrefab) PrefabAPI.RegisterNetworkPrefab(PermanentScannerPrefab);
-            /*
-            if (Compat_BetterUI.enabled)
-            {
-                Compat_BetterUI.AddEffect(catalogIndex, CartographerRing_ScanChance, CartographerRing_ScanChanceStack, Compat_BetterUI.ChanceFormatter, Compat_BetterUI.LinearStacking, Compat_BetterUI.LinearCap);
-            };*/
         }
         public override void SetupAttributes()
         {
@@ -101,7 +96,7 @@ namespace RiskOfBulletstorm.Items
 
             base.SetupAttributes();
         }
-        private static ItemDisplayRuleDict GenerateItemDisplayRules() //THIS SUCKS
+        public static ItemDisplayRuleDict GenerateItemDisplayRules() //THIS SUCKS
         {
             ItemBodyModelPrefab.AddComponent<ItemDisplay>();
             ItemBodyModelPrefab.GetComponent<ItemDisplay>().rendererInfos = ItemHelpers.ItemDisplaySetup(ItemBodyModelPrefab);

@@ -6,6 +6,12 @@ using UnityEngine;
 using TILER2;
 using static TILER2.MiscUtil;
 using static RiskOfBulletstorm.BulletstormPlugin;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using RoR2.UI;
+using UnityEngine.Events;
+using UnityEngine.Networking;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -24,7 +30,7 @@ namespace RiskOfBulletstorm.Items
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Healing, ItemTag.AIBlacklist });
 
         protected override string GetNameString(string langID = null) => displayName;
-        protected override string GetPickupString(string langID = null) => "A Familiar Face" +
+        protected override string GetPickupString(string langID = null) => "<b>A Familiar Face</b>" +
             "\nSpending money soothes the soul.";
 
         protected override string GetDescString(string langid = null) => $"<style=cIsHealing>Upon purchase, heals for {Pct(Mustache_HealAmount)} health</style> <style=cStack>per stack.</style>";
@@ -52,7 +58,7 @@ namespace RiskOfBulletstorm.Items
             }
             base.SetupAttributes();
         }
-        private static ItemDisplayRuleDict GenerateItemDisplayRules()
+        public static ItemDisplayRuleDict GenerateItemDisplayRules()
         {
             ItemBodyModelPrefab.AddComponent<ItemDisplay>();
             ItemBodyModelPrefab.GetComponent<ItemDisplay>().rendererInfos = ItemHelpers.ItemDisplaySetup(ItemBodyModelPrefab);
@@ -275,40 +281,12 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             On.RoR2.PurchaseInteraction.OnInteractionBegin += PurchaseInteraction_OnInteractionBegin;
-            On.RoR2.Artifacts.SacrificeArtifactManager.OnArtifactEnabled += SacrificeArtifactManager_OnArtifactEnabled;
-            On.RoR2.Artifacts.SacrificeArtifactManager.OnArtifactDisabled += SacrificeArtifactManager_OnArtifactDisabled;
-        }
-
-        private void SacrificeArtifactManager_OnArtifactEnabled(On.RoR2.Artifacts.SacrificeArtifactManager.orig_OnArtifactEnabled orig, RunArtifactManager runArtifactManager, ArtifactDef artifactDef)
-        {
-            orig(runArtifactManager, artifactDef);
-            On.RoR2.GenericPickupController.GrantEquipment += GenericPickupController_GrantEquipment;
-            On.RoR2.GenericPickupController.GrantItem += GenericPickupController_GrantItem;
-        }
-
-        private void SacrificeArtifactManager_OnArtifactDisabled(On.RoR2.Artifacts.SacrificeArtifactManager.orig_OnArtifactDisabled orig, RunArtifactManager runArtifactManager, ArtifactDef artifactDef)
-        {
-            orig(runArtifactManager, artifactDef);
-            On.RoR2.GenericPickupController.GrantEquipment -= GenericPickupController_GrantEquipment;
-            On.RoR2.GenericPickupController.GrantItem -= GenericPickupController_GrantItem;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
             On.RoR2.PurchaseInteraction.OnInteractionBegin -= PurchaseInteraction_OnInteractionBegin;
-        }
-
-        private void GenericPickupController_GrantEquipment(On.RoR2.GenericPickupController.orig_GrantEquipment orig, GenericPickupController self, CharacterBody body, Inventory inventory)
-        {
-            orig(self, body, inventory);
-            Heal(body);
-        }
-
-        private void GenericPickupController_GrantItem(On.RoR2.GenericPickupController.orig_GrantItem orig, GenericPickupController self, CharacterBody body, Inventory inventory)
-        {
-            orig(self, body, inventory);
-            Heal(body);
         }
 
         private void PurchaseInteraction_OnInteractionBegin(On.RoR2.PurchaseInteraction.orig_OnInteractionBegin orig, PurchaseInteraction self, Interactor activator)

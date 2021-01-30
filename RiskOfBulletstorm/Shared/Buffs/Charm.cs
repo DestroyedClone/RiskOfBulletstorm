@@ -2,16 +2,16 @@
 using RoR2.CharacterAI;
 using UnityEngine;
 using System.Linq;
-using RiskOfBulletstorm.Items;
+using static RiskOfBulletstorm.Shared.Buffs.BuffsController;
 
 namespace RiskOfBulletstorm.Shared.Buffs
 {
     public static class CharmBuff
     {
         // TODO: IL Add friendly fire bypass
-        public static bool Config_Charm_Boss = GungeonBuffController.instance.Config_Charm_Boss;
-        public static BuffIndex Config_Charm_PlayerBuff = GungeonBuffController.instance.Config_Charm_PlayerBuff;
-        public static BuffIndex charmIndex = GungeonBuffController.Charm;
+        public static bool Config_Charm_Boss = BuffsController.Config_Charm_Boss;
+        public static BuffIndex Config_Charm_PlayerBuff = BuffsController.Config_Charm_PlayerBuff;
+        public static BuffIndex charmIndex = BuffsController.Charm;
 
         public static void Install()
         {
@@ -155,7 +155,7 @@ namespace RiskOfBulletstorm.Shared.Buffs
             public CharacterBody characterBody;
             public TeamIndex oldTeamIndex;
             public BaseAI baseAI;
-            public BuffIndex charmIndex = GungeonBuffController.Charm;
+            public BuffIndex charmIndex = BuffsController.Charm;
 
             public TemporaryOverlay Overlay;
 

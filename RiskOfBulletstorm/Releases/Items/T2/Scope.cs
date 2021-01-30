@@ -21,7 +21,7 @@ namespace RiskOfBulletstorm.Items
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility });
 
         protected override string GetNameString(string langID = null) => displayName;
-        protected override string GetPickupString(string langID = null) => "Steady Aim\nA standard scope. Increases accuracy!";
+        protected override string GetPickupString(string langID = null) => "<b>Steady Aim</b>\nA standard scope. Increases accuracy!";
 
         protected override string GetDescString(string langid = null) => $"<style=cIsUtility>Decreases firing spread by {Pct(Scope_SpreadReduction)}</style>" +
             $"\n<style=cStack>(+{Pct(Scope_SpreadReductionStack)} per stack)</style>";
@@ -54,24 +54,12 @@ namespace RiskOfBulletstorm.Items
             }
             base.SetupAttributes();
         }
-        private static ItemDisplayRuleDict GenerateItemDisplayRules()
+        public static ItemDisplayRuleDict GenerateItemDisplayRules()
         {
             ItemBodyModelPrefab.AddComponent<ItemDisplay>();
             ItemBodyModelPrefab.GetComponent<ItemDisplay>().rendererInfos = ItemHelpers.ItemDisplaySetup(ItemBodyModelPrefab);
 
             Vector3 generalScale = new Vector3(0.1f, 0.1f, 0.1f);
-
-            /*var GetEnforcerIndex = BodyCatalog.FindBodyIndex("EnforcerBody");
-            var GetEnforcerPrefab = BodyCatalog.GetBodyPrefab(GetEnforcerIndex);
-            if (GetEnforcerPrefab)
-            {
-                var GetEnforcerModel = GetEnforcerPrefab.GetComponentsInChildren<CharacterModel>()[22];
-                if (GetEnforcerModel)
-                {
-
-                }
-
-            }*/
 
             ItemDisplayRuleDict rules = new ItemDisplayRuleDict(new ItemDisplayRule[]
             {

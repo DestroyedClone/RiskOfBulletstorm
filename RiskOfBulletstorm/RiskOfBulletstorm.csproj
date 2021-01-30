@@ -11,22 +11,20 @@
   <ItemGroup>
     <Compile Remove="ExtraSkillSlotsOverrides\**" />
     <Compile Remove="Items_Unused\**" />
-    <Compile Remove="Items_Unused\Elites\**" />
     <Compile Remove="lib\**" />
     <Compile Remove="Releases\Items\Elites\**" />
     <EmbeddedResource Remove="ExtraSkillSlotsOverrides\**" />
     <EmbeddedResource Remove="Items_Unused\**" />
-    <EmbeddedResource Remove="Items_Unused\Elites\**" />
     <EmbeddedResource Remove="lib\**" />
     <EmbeddedResource Remove="Releases\Items\Elites\**" />
     <None Remove="ExtraSkillSlotsOverrides\**" />
     <None Remove="Items_Unused\**" />
-    <None Remove="Items_Unused\Elites\**" />
     <None Remove="lib\**" />
     <None Remove="Releases\Items\Elites\**" />
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="ConsoleCommands.cs" />
     <Compile Remove="ProperSaveCompatability.cs" />
     <Compile Remove="Releases\Items\Boss\Beetle.cs" />
     <Compile Remove="Releases\Items\Boss\BeetleNew.cs" />
@@ -52,7 +50,6 @@
     <Folder Include="Items\" />
     <Folder Include="Items\" />
     <Folder Include="Items\" />
-    <Folder Include="Items_Unused\" />
     <None Remove="riskofgungeonassets" />
 	  <Folder Remove="Items" />
   </ItemGroup>

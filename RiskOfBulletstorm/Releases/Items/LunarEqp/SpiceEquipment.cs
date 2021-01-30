@@ -90,7 +90,7 @@ namespace RiskOfBulletstorm.Items
             }, new ItemDisplayRuleDict(null));
             SpiceTally = ItemAPI.Add(spiceTallyDef);
         }
-        private static ItemDisplayRuleDict GenerateItemDisplayRules()
+        public static ItemDisplayRuleDict GenerateItemDisplayRules()
         {
             ItemBodyModelPrefab.AddComponent<ItemDisplay>();
             ItemBodyModelPrefab.GetComponent<ItemDisplay>().rendererInfos = ItemHelpers.ItemDisplaySetup(ItemBodyModelPrefab);
@@ -306,6 +306,12 @@ namespace RiskOfBulletstorm.Items
             base.Install();
             On.RoR2.PickupDropletController.CreatePickupDroplet += PickupDropletController_CreatePickupDroplet;
             GenericNotification.SetEquipment += GenericNotification_SetEquipment;
+            StatHooks.GetStatCoefficients += StatHooks_GetStatCoefficients;
+        }
+
+        private void StatHooks_GetStatCoefficients(CharacterBody sender, StatHooks.StatHookEventArgs args)
+        {
+            throw new System.NotImplementedException();
         }
 
         public override void Uninstall()
@@ -313,6 +319,7 @@ namespace RiskOfBulletstorm.Items
             base.Uninstall();
             On.RoR2.PickupDropletController.CreatePickupDroplet -= PickupDropletController_CreatePickupDroplet;
             GenericNotification.SetEquipment -= GenericNotification_SetEquipment;
+            StatHooks.GetStatCoefficients -= StatHooks_GetStatCoefficients;
         }
         private void GenericNotification_SetEquipment(GenericNotification.orig_SetEquipment orig, RoR2.UI.GenericNotification self, EquipmentDef equipmentDef)
         {
@@ -351,7 +358,6 @@ namespace RiskOfBulletstorm.Items
             if (!health) return false;
             Inventory inventory = body.inventory;
             if (!inventory) return false;
-            //var spiceCount = inventory.GetItemCount(SpiceTally);
 
             if (inventory.GetItemCount(SpiceTally) == 0) inventory.GiveItem(CurseIndex);
             else inventory.GiveItem(CurseIndex, 2);

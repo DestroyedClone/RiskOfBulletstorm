@@ -24,7 +24,7 @@ namespace RiskOfBulletstorm.Items
         public override float cooldown { get; protected set; } = 0f;
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "It's Delicious!\nRevives all players.";
+        protected override string GetPickupString(string langID = null) => "<b>It's Delicious!</b>\nRevives all players.";
 
         protected override string GetDescString(string langid = null)
         {
@@ -68,7 +68,7 @@ namespace RiskOfBulletstorm.Items
             base.SetupAttributes();
         }
 
-        private static ItemDisplayRuleDict GenerateItemDisplayRules()
+        public static ItemDisplayRuleDict GenerateItemDisplayRules()
         {
             ItemBodyModelPrefab.AddComponent<ItemDisplay>();
             ItemBodyModelPrefab.GetComponent<ItemDisplay>().rendererInfos = ItemHelpers.ItemDisplaySetup(ItemBodyModelPrefab);
