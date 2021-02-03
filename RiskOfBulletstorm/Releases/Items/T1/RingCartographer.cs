@@ -361,7 +361,7 @@ namespace RiskOfBulletstorm.Items
             {
                 int InventoryCount = Util.GetItemCountForTeam(TeamIndex.Player, catalogIndex, true, true);
 
-                var ResultChance = CartographerRing_ScanChance + CartographerRing_ScanChanceStack * (InventoryCount - 1);
+                var ResultChance = InventoryCount > 0 ? (CartographerRing_ScanChance + CartographerRing_ScanChanceStack * (InventoryCount - 1)) : 0;
                 if (Util.CheckRoll(ResultChance))
                 {
                     var clone = UnityEngine.Object.Instantiate(PermanentScannerPrefab);
