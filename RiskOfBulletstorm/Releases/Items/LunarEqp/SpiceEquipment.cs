@@ -11,6 +11,12 @@ namespace RiskOfBulletstorm.Items
 {
     public class Spice : Equipment_V2<Spice>
     {
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Limit of Spice per player", AutoConfigFlags.PreventNetMismatch)]
+        public int SpiceEquipment_MaxPerPlayer { get; private set; } = 40;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Spice only affects the pickups of the person running Spice. ", AutoConfigFlags.PreventNetMismatch)]
+        public bool SpiceEquipment_Disconnect { get; private set; } = true;
         public override string displayName => "Spice";
         public override float cooldown { get; protected set; } = 1f;
         public override bool isEnigmaCompatible => false;
