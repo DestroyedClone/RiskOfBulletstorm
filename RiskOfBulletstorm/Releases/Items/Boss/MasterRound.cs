@@ -218,19 +218,21 @@ namespace RiskOfBulletstorm.Items
 
         public void MasterRound_Start()
         {
-            if (!NetworkServer.active) return;
             var playerList = PlayerCharacterMasterController.instances;
             var StageCount = Run.instance.stageClearCount;
             var maxHits = MasterRound_AllowedHits + StageCount * MasterRound_AllowedHitsPerStage;
-            foreach (var player in playerList)
+            if (NetworkServer.active)
             {
-                var body = player.master.GetBody();
-                if (body)
+                foreach (var player in playerList)
                 {
-                    var MasterRoundComponent = body.gameObject.GetComponent<MasterRoundComponent>();
-                    if (!MasterRoundComponent) MasterRoundComponent = body.gameObject.AddComponent<MasterRoundComponent>();
-                    MasterRoundComponent.allowedHits = maxHits;
-                    MasterRoundComponent.teleporterCharging = true;
+                    var body = player.master.GetBody();
+                    if (body)
+                    {
+                        var MasterRoundComponent = body.gameObject.GetComponent<MasterRoundComponent>();
+                        if (!MasterRoundComponent) MasterRoundComponent = body.gameObject.AddComponent<MasterRoundComponent>();
+                        MasterRoundComponent.allowedHits = maxHits;
+                        MasterRoundComponent.teleporterCharging = true;
+                    }
                 }
             }
             if (MasterRound_AnnounceMax)
@@ -290,7 +292,7 @@ namespace RiskOfBulletstorm.Items
             }
             if (success)
             {
-                HelperUtil.GiveItemToPlayers(itemIndex);
+                HelperUtil.GiveItemToPlayers(itemIndex, true, 1);
             }
         }
 
