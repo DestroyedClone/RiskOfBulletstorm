@@ -10,7 +10,7 @@ namespace RiskOfBulletstorm.Items
     public class MithrixMasterRound : Item_V2<MithrixMasterRound>
     {
         public override string displayName => "Master Round";
-        public override ItemTier itemTier => ItemTier.Lunar;
+        public override ItemTier itemTier => ItemTier.Tier3;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.WorldUnique, ItemTag.AIBlacklist });
 
         protected override string GetNameString(string langID = null) => displayName;
