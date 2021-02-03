@@ -313,8 +313,15 @@ namespace RiskOfBulletstorm.Items
             Stage.onServerStageComplete += StageEnd_DestroyComponent;
             if (CartographerRing_DestroyOnTeleporterStart)
                 TeleporterInteraction.onTeleporterBeginChargingGlobal += TeleporterCharged_DestroyComponent;
+            GlobalEventManager.OnInteractionsGlobal += GlobalEventManager_OnInteractionsGlobal;
         }
 
+        private void GlobalEventManager_OnInteractionsGlobal(Interactor interactor, IInteractable interactable, GameObject gameObject)
+        {
+            var comp = gameObject.GetComponent<ChestRevealer.RevealedObject>();
+            if (comp)
+                comp.enabled = false;
+        }
 
         public override void Uninstall()
         {
@@ -323,6 +330,7 @@ namespace RiskOfBulletstorm.Items
             Stage.onServerStageComplete -= StageEnd_DestroyComponent;
             if (CartographerRing_DestroyOnTeleporterStart)
                 TeleporterInteraction.onTeleporterBeginChargingGlobal -= TeleporterCharged_DestroyComponent;
+            GlobalEventManager.OnInteractionsGlobal -= GlobalEventManager_OnInteractionsGlobal;
         }
 
         private void TeleporterCharged_DestroyComponent(TeleporterInteraction obj)
@@ -359,12 +367,10 @@ namespace RiskOfBulletstorm.Items
                     if (Util.CheckRoll(ResultChance))
                     {
                         var clone = UnityEngine.Object.Instantiate(PermanentScannerPrefab);
-                        //NetworkServer.Spawn(UnityEngine.Object.Instantiate(PermanentScannerPrefab));
                         NetworkServer.Spawn(clone);
                     }
                 }
             }
         }
-
     }
 }
