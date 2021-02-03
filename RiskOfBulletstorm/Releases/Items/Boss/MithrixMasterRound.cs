@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using RoR2;
+using UnityEngine;
 using UnityEngine.Networking;
 using TILER2;
 using static TILER2.StatHooks;
@@ -9,7 +10,7 @@ namespace RiskOfBulletstorm.Items
 {
     public class MithrixMasterRound : Item_V2<MithrixMasterRound>
     {
-        public override string displayName => "Master Round";
+        public override string displayName => "<color=#{lunarColorString}>Master Round</color>";
         public override ItemTier itemTier => ItemTier.Tier3;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.WorldUnique, ItemTag.AIBlacklist });
 
@@ -21,6 +22,9 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "The last bullet that delivered the hero to redemption.";
 
+        public static Color32 lunarColor32 = ColorCatalog.GetColor(ColorCatalog.ColorIndex.LunarItem);
+        public static string lunarColorString = ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.LunarItem);
+
         public override void SetupBehavior()
         {
             base.SetupBehavior();
@@ -29,6 +33,8 @@ namespace RiskOfBulletstorm.Items
         {
             base.SetupAttributes();
 
+            BulletstormPlugin._logger.LogMessage("LUNAR COLOR32:");
+            BulletstormPlugin._logger.LogMessage(lunarColor32);
         }
         public override void Install()
         {
@@ -37,6 +43,15 @@ namespace RiskOfBulletstorm.Items
             On.EntityStates.Missions.BrotherEncounter.EncounterFinished.OnEnter += EncounterFinished_OnEnter;
             GetStatCoefficients += MithrixMasterRound_GetStatCoefficients;
 
+            On.RoR2.UI.GenericNotification.SetItem += GenericNotification_SetItem;
+
+        }
+
+        private void GenericNotification_SetItem(On.RoR2.UI.GenericNotification.orig_SetItem orig, RoR2.UI.GenericNotification self, ItemDef itemDef)
+        {
+            orig(self, itemDef);
+            if (itemDef == ItemCatalog.GetItemDef(catalogIndex))
+                self.titleTMP.color = lunarColor32;
         }
 
         public override void Uninstall()
