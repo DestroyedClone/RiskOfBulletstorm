@@ -361,14 +361,11 @@ namespace RiskOfBulletstorm.Items
             {
                 int InventoryCount = Util.GetItemCountForTeam(TeamIndex.Player, catalogIndex, true, true);
 
-                if (InventoryCount > 0)
+                var ResultChance = CartographerRing_ScanChance + CartographerRing_ScanChanceStack * (InventoryCount - 1);
+                if (Util.CheckRoll(ResultChance))
                 {
-                    var ResultChance = CartographerRing_ScanChance + CartographerRing_ScanChanceStack * (InventoryCount - 1);
-                    if (Util.CheckRoll(ResultChance))
-                    {
-                        var clone = UnityEngine.Object.Instantiate(PermanentScannerPrefab);
-                        NetworkServer.Spawn(clone);
-                    }
+                    var clone = UnityEngine.Object.Instantiate(PermanentScannerPrefab);
+                    NetworkServer.Spawn(clone);
                 }
             }
         }
