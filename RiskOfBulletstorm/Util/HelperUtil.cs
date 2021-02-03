@@ -103,7 +103,8 @@ namespace RiskOfBulletstorm.Utils
 
                         if (inventory)
                         {
-                            SimulatePickup(master, itemIndex, amount);
+                            if (showInChat) SimulatePickup(master, itemIndex, amount);
+                            else inventory.GiveItem(itemIndex, amount);
                         }
                     }
                 }
