@@ -87,6 +87,29 @@ namespace RiskOfBulletstorm.Utils
             }
         }
 
+
+        public static void GiveItemToPlayers(ItemIndex itemIndex, bool showInChat = true, int amount = 1)
+        {
+            var instances = PlayerCharacterMasterController.instances;
+            foreach (PlayerCharacterMasterController playerCharacterMaster in instances)
+            {
+                var master = playerCharacterMaster.master;
+                if (master)
+                {
+                    var body = playerCharacterMaster.body;
+                    if (body)
+                    {
+                        var inventory = master.inventory;
+
+                        if (inventory)
+                        {
+                            SimulatePickup(master, itemIndex, amount);
+                        }
+                    }
+                }
+            }
+        }
+
         public static GameObject GetFirstPlayerWithItem(ItemIndex itemIndex)
         {
             int InventoryCount = 0;
@@ -129,6 +152,7 @@ namespace RiskOfBulletstorm.Utils
             }
             return amount;
         }
+
         public static void SimulatePickup(CharacterMaster characterMaster, ItemIndex itemIndex, int amount = 1)
         {
             var self = characterMaster.inventory;
