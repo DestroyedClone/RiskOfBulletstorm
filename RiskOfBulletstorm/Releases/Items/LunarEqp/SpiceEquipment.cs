@@ -465,10 +465,10 @@ namespace RiskOfBulletstorm.Items
             Inventory inventory = body.inventory;
             if (!inventory) return false;
 
+            inventory.SetEquipmentIndex(EquipmentIndex.None); //credit to : Rico
             if (inventory.GetItemCount(SpiceTally) == 0) inventory.GiveItem(CurseIndex);
             else inventory.GiveItem(CurseIndex, 2);
             inventory.GiveItem(SpiceTally);
-            inventory.SetEquipmentIndex(EquipmentIndex.None); //credit to : Rico
 
             return false;
         }
