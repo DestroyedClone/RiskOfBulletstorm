@@ -442,7 +442,8 @@ namespace RiskOfBulletstorm.Items
 
         private void PickupDropletController_CreatePickupDroplet(On.RoR2.PickupDropletController.orig_CreatePickupDroplet orig, PickupIndex pickupIndex, Vector3 position, Vector3 velocity)
         {
-            var spiceCount = IntOfMostSpice();
+            var spiceCount = IntOfMostSpice(SpiceEquipment_MaxPerPlayer);
+            // IF all players are over the cap, then it will roll for 0
             if (Util.CheckRoll(spiceCount))
             {
                 if (pickupIndex != PickupCatalog.FindPickupIndex(ItemIndex.ArtifactKey)) //safety to prevent softlocks
