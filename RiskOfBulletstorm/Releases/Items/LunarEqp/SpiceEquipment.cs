@@ -6,6 +6,7 @@ using TILER2;
 using static RiskOfBulletstorm.Utils.HelperUtil;
 using GenericNotification = On.RoR2.UI.GenericNotification;
 using System;
+using UnityEngine.Networking;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -317,31 +318,46 @@ namespace RiskOfBulletstorm.Items
             StatHooks.GetStatCoefficients += StatHooks_GetStatCoefficients;
             On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
             if (SpiceEquipment_Disconnect)
-                On.RoR2.Inventory.GiveItem += Inventory_GiveItem;
+                On.RoR2.GenericPickupController.AttemptGrant += GenericPickupController_AttemptGrant;
             else
-                On.RoR2.PickupDropletController.CreatePickupDroplet += PickupDropletController_CreatePickupDroplet;
+                On.RoR2.PickupDropletController.CreatePickupDroplet += ReplacePickupDropletSynced;
         }
 
-        private void Inventory_GiveItem(On.RoR2.Inventory.orig_GiveItem orig, Inventory self, ItemIndex itemIndex, int count)
+        [Server]
+        private void GenericPickupController_AttemptGrant(On.RoR2.GenericPickupController.orig_AttemptGrant orig, GenericPickupController self, CharacterBody body)
         {
-            if (itemIndex != ItemIndex.ArtifactKey)
+            if (!NetworkServer.active)
             {
-
+                Debug.LogWarning("[Server] function 'System.Void RoR2.GenericPickupController::AttemptGrant(RoR2.CharacterBody)' called on client");
+                return;
             }
-            orig(self, itemIndex, count);
+            TeamComponent component = body.GetComponent<TeamComponent>();
+            if (component && component.teamIndex == TeamIndex.Player)
+            {
+                Inventory inventory = body.inventory;
+                if (inventory)
+                {
+                    var spiceCount = inventory.GetItemCount(SpiceTally);
+                    if (Util.CheckRoll(spiceCount) & (pickupDef.itemIndex != ItemIndex.None || pickupDef.equipmentIndex != EquipmentIndex.None))
+                    {
+                        self.pickupIndex = pickupIndex;
+                    }
+                }
+            }
+            orig(self, body);
         }
+        
 
         public override void Uninstall()
         {
             base.Install();
-            On.RoR2.PickupDropletController.CreatePickupDroplet -= PickupDropletController_CreatePickupDroplet;
             GenericNotification.SetEquipment -= GenericNotification_SetEquipment;
             StatHooks.GetStatCoefficients -= StatHooks_GetStatCoefficients;
             On.RoR2.HealthComponent.TakeDamage -= HealthComponent_TakeDamage;
             if (SpiceEquipment_Disconnect)
-                On.RoR2.Inventory.GiveItem -= Inventory_GiveItem;
+                On.RoR2.GenericPickupController.AttemptGrant -= GenericPickupController_AttemptGrant;
             else
-                On.RoR2.PickupDropletController.CreatePickupDroplet -= PickupDropletController_CreatePickupDroplet;
+                On.RoR2.PickupDropletController.CreatePickupDroplet -= ReplacePickupDropletSynced;
         }
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
@@ -440,7 +456,7 @@ namespace RiskOfBulletstorm.Items
             }
         }
 
-        private void PickupDropletController_CreatePickupDroplet(On.RoR2.PickupDropletController.orig_CreatePickupDroplet orig, PickupIndex pickupIndex, Vector3 position, Vector3 velocity)
+        private void ReplacePickupDropletSynced(On.RoR2.PickupDropletController.orig_CreatePickupDroplet orig, PickupIndex pickupIndex, Vector3 position, Vector3 velocity)
         {
             var spiceCount = IntOfMostSpice(SpiceEquipment_MaxPerPlayer);
             // IF all players are over the cap, then it will roll for 0
