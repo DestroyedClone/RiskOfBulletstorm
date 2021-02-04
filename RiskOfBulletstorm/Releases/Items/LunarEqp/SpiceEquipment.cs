@@ -462,7 +462,7 @@ namespace RiskOfBulletstorm.Items
                 if (master && master.inventory)
                 {
                     var itemCount = master.inventory.GetItemCount(SpiceTally);
-                    if (itemCount > largestStack && itemCount < 40)
+                    if (itemCount > largestStack && itemCount < cap)
                     {
                         largestStack = itemCount;
                     }
