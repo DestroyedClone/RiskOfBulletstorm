@@ -32,6 +32,7 @@ namespace RiskOfBulletstorm.Items
 
         public static ItemIndex SpiceTally { get; private set; }
         public static ItemIndex CurseIndex;
+        public static ItemIndex GimmeSpiceIndex;
 
         public static GameObject ItemBodyModelPrefab;
 
@@ -93,6 +94,15 @@ namespace RiskOfBulletstorm.Items
                 canRemove = false
             }, new ItemDisplayRuleDict(null));
             SpiceTally = ItemAPI.Add(spiceTallyDef);
+
+            var gimmeSpiceDef = new CustomItem(new ItemDef
+            {
+                hidden = true,
+                name = "ROBInternalGiveSpice",
+                tier = ItemTier.NoTier,
+                canRemove = false
+            }, new ItemDisplayRuleDict(null));
+            GimmeSpiceIndex = ItemAPI.Add(spiceTallyDef);
         }
         public static ItemDisplayRuleDict GenerateItemDisplayRules()
         {
@@ -303,11 +313,24 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            On.RoR2.PickupDropletController.CreatePickupDroplet += PickupDropletController_CreatePickupDroplet;
             GenericNotification.SetEquipment += GenericNotification_SetEquipment;
             StatHooks.GetStatCoefficients += StatHooks_GetStatCoefficients;
             On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+            if (SpiceEquipment_Disconnect)
+                On.RoR2.Inventory.GiveItem += Inventory_GiveItem;
+            else
+                On.RoR2.PickupDropletController.CreatePickupDroplet += PickupDropletController_CreatePickupDroplet;
         }
+
+        private void Inventory_GiveItem(On.RoR2.Inventory.orig_GiveItem orig, Inventory self, ItemIndex itemIndex, int count)
+        {
+            if (itemIndex != ItemIndex.ArtifactKey)
+            {
+
+            }
+            orig(self, itemIndex, count);
+        }
+
         public override void Uninstall()
         {
             base.Install();
@@ -315,6 +338,10 @@ namespace RiskOfBulletstorm.Items
             GenericNotification.SetEquipment -= GenericNotification_SetEquipment;
             StatHooks.GetStatCoefficients -= StatHooks_GetStatCoefficients;
             On.RoR2.HealthComponent.TakeDamage -= HealthComponent_TakeDamage;
+            if (SpiceEquipment_Disconnect)
+                On.RoR2.Inventory.GiveItem -= Inventory_GiveItem;
+            else
+                On.RoR2.PickupDropletController.CreatePickupDroplet -= PickupDropletController_CreatePickupDroplet;
         }
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {

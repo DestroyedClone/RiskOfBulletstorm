@@ -10,7 +10,10 @@ namespace RiskOfBulletstorm.Items
 {
     public class MithrixMasterRound : Item_V2<MithrixMasterRound>
     {
-        public override string displayName => "<color=#{lunarColorString}>Master Round</color>";
+        public static Color32 lunarColor32 = ColorCatalog.GetColor(ColorCatalog.ColorIndex.LunarItem);
+        public static string lunarColorString = ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.LunarItem);
+        string formattedDisplayName = string.Format("<color={0}>Master Round</color>", lunarColorString);
+        public override string displayName => formattedDisplayName;
         public override ItemTier itemTier => ItemTier.Tier3;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.WorldUnique, ItemTag.AIBlacklist });
 
@@ -22,9 +25,6 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "The last bullet that delivered the hero to redemption.";
 
-        public static Color32 lunarColor32 = ColorCatalog.GetColor(ColorCatalog.ColorIndex.LunarItem);
-        public static string lunarColorString = ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.LunarItem);
-
         public override void SetupBehavior()
         {
             base.SetupBehavior();
@@ -35,6 +35,7 @@ namespace RiskOfBulletstorm.Items
 
             BulletstormPlugin._logger.LogMessage("LUNAR COLOR32:");
             BulletstormPlugin._logger.LogMessage(lunarColor32);
+            BulletstormPlugin._logger.LogMessage(lunarColorString);
         }
         public override void Install()
         {
