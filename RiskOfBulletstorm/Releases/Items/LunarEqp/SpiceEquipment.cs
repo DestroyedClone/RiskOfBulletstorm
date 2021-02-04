@@ -442,18 +442,32 @@ namespace RiskOfBulletstorm.Items
 
         private void PickupDropletController_CreatePickupDroplet(On.RoR2.PickupDropletController.orig_CreatePickupDroplet orig, PickupIndex pickupIndex, Vector3 position, Vector3 velocity)
         {
-            //var body = PlayerCharacterMasterController.instances[0].master.GetBody();
-            var characterBody = GetPlayerWithMostItemIndex(SpiceTally);
-            if (characterBody != null)
+            var spiceCount = IntOfMostSpice();
+            if (Util.CheckRoll(spiceCount))
             {
-                var SpiceReplaceChance = characterBody.inventory.GetItemCount(SpiceTally);
-                if (Util.CheckRoll(SpiceReplaceChance))
-                {
-                    if (pickupIndex != PickupCatalog.FindPickupIndex(ItemIndex.ArtifactKey)) //safety to prevent softlocks
-                        pickupIndex = PickupCatalog.FindPickupIndex(catalogIndex);
-                }
+                if (pickupIndex != PickupCatalog.FindPickupIndex(ItemIndex.ArtifactKey)) //safety to prevent softlocks
+                    pickupIndex = PickupCatalog.FindPickupIndex(catalogIndex);
             }
             orig(pickupIndex, position, velocity);
+        }
+
+        private int IntOfMostSpice(int cap = 40)
+        {
+            var instances = PlayerCharacterMasterController.instances;
+            var largestStack = 0;
+            foreach (PlayerCharacterMasterController playerCharacterMaster in instances)
+            {
+                var master = playerCharacterMaster.master;
+                if (master && master.inventory)
+                {
+                    var itemCount = master.inventory.GetItemCount(SpiceTally);
+                    if (itemCount > largestStack && itemCount < 40)
+                    {
+                        largestStack = itemCount;
+                    }
+                }
+            }
+            return largestStack;
         }
 
         protected override bool PerformEquipmentAction(EquipmentSlot slot)
