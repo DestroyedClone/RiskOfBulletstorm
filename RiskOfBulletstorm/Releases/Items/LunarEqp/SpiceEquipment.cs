@@ -337,7 +337,7 @@ namespace RiskOfBulletstorm.Items
                 Inventory inventory = body.inventory;
                 if (inventory)
                 {
-                    var spiceCount = inventory.GetItemCount(SpiceTally);
+                    var spiceCount = Math.Min(inventory.GetItemCount(SpiceTally), SpiceEquipment_MaxPerPlayer);
                     if (Util.CheckRoll(spiceCount) & (pickupDef.itemIndex != ItemIndex.None || pickupDef.equipmentIndex != EquipmentIndex.None))
                     {
                         self.pickupIndex = pickupIndex;
