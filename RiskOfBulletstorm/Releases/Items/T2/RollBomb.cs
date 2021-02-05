@@ -13,7 +13,10 @@ namespace RiskOfBulletstorm.Items
 	{
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How many damage should Roll Bomb deal? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float RollBomb_Damage { get; private set; } = 1.0f;
+        public float RollBomb_Damage { get; private set; } = 2.0f;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Scaled radius of Roll Bomb explosion? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
+        public float RollBomb_Radius { get; private set; } = 3f;
 
         public override string displayName => "Roll Bomb";
         public override ItemTier itemTier => ItemTier.Tier2;
@@ -45,6 +48,7 @@ namespace RiskOfBulletstorm.Items
             BombPrefab.GetComponent<ProjectileSimple>().velocity = 1; //default 50
             BombPrefab.GetComponent<ProjectileDamage>().damageColorIndex = DamageColorIndex.Item;
             BombPrefab.GetComponent<ProjectileImpactExplosion>().destroyOnEnemy = false; //default True
+            BombPrefab.GetComponent<ProjectileImpactExplosion>().blastRadius *= RollBomb_Radius;
             Object.Destroy(BombPrefab.GetComponent<ApplyTorqueOnStart>());
 
             var controller = BombPrefab.GetComponent<ProjectileController>();
@@ -290,9 +294,7 @@ namespace RiskOfBulletstorm.Items
         }
         private Quaternion RollBombFireDirection() //credit: chen
         {
-            return Util.QuaternionSafeLookRotation(
-                new Vector3(Random.Range(-10,10), 0f, Random.Range(-10, 10))
-            );
+            return Util.QuaternionSafeLookRotation(new Vector3(Random.Range(-10,10), 0f, Random.Range(-10, 10)));
         }
     }
 }
