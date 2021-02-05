@@ -16,8 +16,11 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("Limit of Spice per player", AutoConfigFlags.PreventNetMismatch)]
         public int SpiceEquipment_MaxPerPlayer { get; private set; } = 40;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Spice only affects the pickups of the person running Spice. ", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Spice only affects the pickups of the person running Spice.", AutoConfigFlags.PreventNetMismatch)]
         public bool SpiceEquipment_Disconnect { get; private set; } = true;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Should the amount of spice consumed be shown in the inventory?", AutoConfigFlags.PreventNetMismatch)]
+        public bool SpiceEquipment_ShowTally { get; private set; } = true;
         public override string displayName => "Spice";
         public override float cooldown { get; protected set; } = 1f;
         public override bool isEnigmaCompatible => false;
@@ -88,9 +91,10 @@ namespace RiskOfBulletstorm.Items
             base.SetupAttributes();
             var spiceTallyDef = new CustomItem(new ItemDef
             {
-                hidden = true,
+                hidden = !SpiceEquipment_ShowTally,
                 name = "ROBInternalSpiceTally",
                 tier = ItemTier.NoTier,
+                pickupIconPath = Spice.instance.iconResourcePath,
                 canRemove = false
             }, new ItemDisplayRuleDict(null));
             SpiceTally = ItemAPI.Add(spiceTallyDef);
@@ -312,6 +316,7 @@ namespace RiskOfBulletstorm.Items
             else
                 On.RoR2.PickupDropletController.CreatePickupDroplet += ReplacePickupDropletSynced;
         }
+
 
         [Server]
         private void GenericPickupController_AttemptGrant(On.RoR2.GenericPickupController.orig_AttemptGrant orig, GenericPickupController self, CharacterBody body)
