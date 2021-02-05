@@ -28,6 +28,8 @@ namespace RiskOfBulletstorm.Items
 
         public static ItemIndex OrangeConsumedIndex;
         public static GameObject ItemBodyModelPrefab;
+        public float healthMultAdd = 0.1f;
+        public float cooldownReduction = 0.1f;
         public Orange()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Orange.prefab";
@@ -267,6 +269,12 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             StatHooks.GetStatCoefficients += StatHooks_GetStatCoefficients;
+            On.RoR2.Inventory.CalculateEquipmentCooldownScale += Inventory_CalculateEquipmentCooldownScale;
+        }
+
+        private float Inventory_CalculateEquipmentCooldownScale(On.RoR2.Inventory.orig_CalculateEquipmentCooldownScale orig, Inventory self)
+        {
+            return orig(self) * Mathf.Pow(cooldownReduction, self.GetItemCount(OrangeConsumedIndex));
         }
 
         private void StatHooks_GetStatCoefficients(CharacterBody sender, StatHooks.StatHookEventArgs args)
@@ -276,7 +284,7 @@ namespace RiskOfBulletstorm.Items
                 var itemCount = sender.inventory.GetItemCount(OrangeConsumedIndex);
                 if (itemCount > 0)
                 {
-
+                    args.healthMultAdd += 0.1f * itemCount;
                 }
             }
         }
@@ -285,6 +293,7 @@ namespace RiskOfBulletstorm.Items
         {
             base.Uninstall();
             StatHooks.GetStatCoefficients -= StatHooks_GetStatCoefficients;
+            On.RoR2.Inventory.CalculateEquipmentCooldownScale -= Inventory_CalculateEquipmentCooldownScale;
         }
 
         protected override bool PerformEquipmentAction(EquipmentSlot slot)
@@ -297,8 +306,7 @@ namespace RiskOfBulletstorm.Items
             if (!inventory) return false;
 
             inventory.SetEquipmentIndex(EquipmentIndex.None); //credit to : Rico
-            inventory.GiveItem(ItemIndex.BoostHp);
-            inventory.GiveItem(ItemIndex.BoostEquipmentRecharge);
+            inventory.GiveItem(OrangeConsumedIndex);
             health.HealFraction(1, default);
 
             return false;
