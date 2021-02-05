@@ -16,7 +16,7 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("By how much will your base damage increase with a single Unity?" +
             "\nKeep in mind that this number is MULTIPLIED by the amount of TOTAL items.",
             AutoConfigFlags.PreventNetMismatch)]
-        public float RingUnity_DamageBonus { get; private set; } = 0.4f;
+        public float RingUnity_DamageBonus { get; private set; } = 0.2f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("By how much will your base damage increase on subsequent stacks?" +
@@ -30,7 +30,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "<b>Our Powers Combined</b>\nIncreased combat effectiveness per item.";
 
-        protected override string GetDescString(string langid = null) => $"<style=cIsDamage>+{RingUnity_DamageBonus} base damage</style> per unique item in inventory." +
+        protected override string GetDescString(string langid = null) => $"<style=cIsDamage>+{RingUnity_DamageBonus} base damage</style> per item in inventory." +
             $"\n<style=cStack>(+{RingUnity_DamageBonusStack} base damage per stack)</style>";
 
         protected override string GetLoreString(string langID = null) => "This ring takes a small amount of power from each gun carried and adds it to the currently equipped gun.";
@@ -271,34 +271,23 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             GetStatCoefficients += BoostDamage;
-            On.RoR2.Run.Start += Run_Start;
+            CharacterBody.onBodyStartGlobal += CharacterBody_onBodyStartGlobal;
         }
 
-        private void Run_Start(On.RoR2.Run.orig_Start orig, Run self)
+        private void CharacterBody_onBodyStartGlobal(CharacterBody obj)
         {
-            orig(self);
-            //try caching the item count?
+            if (!obj.gameObject.GetComponent<RingUnityTracker>())
+            {
+                var tracker = obj.gameObject.AddComponent<RingUnityTracker>();
+                tracker.inventory = obj.inventory;
+            }
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
             GetStatCoefficients -= BoostDamage;
-            On.RoR2.Run.Start -= Run_Start;
-        }
-
-        static int GetUniqueItemCount(CharacterBody characterBody)
-        {
-            int num = 0;
-            ItemIndex itemIndex = ItemIndex.Syringe;
-            ItemIndex itemCount = (ItemIndex)ItemCatalog.itemCount;
-            while (itemIndex < itemCount)
-            {
-                if (characterBody.inventory.GetItemCount(itemIndex) > 0)
-                    num++;
-                itemIndex++;
-            }
-            return num;
+            CharacterBody.onBodyStartGlobal -= CharacterBody_onBodyStartGlobal;
         }
 
         private void BoostDamage(CharacterBody sender, StatHookEventArgs args)
@@ -306,10 +295,44 @@ namespace RiskOfBulletstorm.Items
             var inventory = sender.inventory;
             if (!inventory) return;
             var UnityInventoryCount = inventory.GetItemCount(catalogIndex);
-
-            if (UnityInventoryCount > 0)
+            var component = sender.gameObject.GetComponent<RingUnityTracker>();
+            if (UnityInventoryCount > 0 && component)
             {
-                args.baseDamageAdd += GetUniqueItemCount(sender) * (RingUnity_DamageBonus + (RingUnity_DamageBonusStack * (UnityInventoryCount - 1)));
+                var totalCount = component.itemCount;
+                args.baseDamageAdd += totalCount * (RingUnity_DamageBonus + (RingUnity_DamageBonusStack * (UnityInventoryCount - 1)));
+            }
+        }
+        private class RingUnityTracker : MonoBehaviour
+        {
+            public int itemCount = 0;
+            public Inventory inventory;
+
+            public void Awake()
+            {
+                if (!inventory) Destroy(this);
+                inventory.onInventoryChanged += Inventory_onInventoryChanged;
+            }
+
+            private void Inventory_onInventoryChanged()
+            {
+                itemCount = GetTotalItemCount();
+            }
+
+            public int GetTotalItemCount()
+            {
+                int num = 0;
+                ItemIndex itemIndex = ItemIndex.Syringe;
+                ItemIndex itemCount = (ItemIndex)ItemCatalog.itemCount;
+                while (itemIndex < itemCount)
+                {
+                    var itemDef = ItemCatalog.GetItemDef(itemIndex);
+                    if (itemDef.tier != ItemTier.NoTier)
+                    {
+                        num += inventory.GetItemCount(itemIndex);
+                    }
+                    itemIndex++;
+                }
+                return num;
             }
         }
     }

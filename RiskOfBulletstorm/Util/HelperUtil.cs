@@ -34,6 +34,20 @@ namespace RiskOfBulletstorm.Utils
             return PlayerCharacterMasterController.instances.Count;
         }
 
+        public static int GetUniqueItemCount(CharacterBody characterBody)
+        {
+            int num = 0;
+            ItemIndex itemIndex = ItemIndex.Syringe;
+            ItemIndex itemCount = (ItemIndex)ItemCatalog.itemCount;
+            while (itemIndex < itemCount)
+            {
+                if (characterBody.inventory.GetItemCount(itemIndex) > 0)
+                    num++;
+                itemIndex++;
+            }
+            return num;
+        }
+
         public static CharacterBody GetPlayerWithMostItemIndex(ItemIndex itemIndex)
         {
             var instances = PlayerCharacterMasterController.instances;
