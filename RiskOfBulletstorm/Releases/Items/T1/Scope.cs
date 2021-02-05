@@ -17,7 +17,7 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("How much should each Scope reduce spread by per stack? (Value: Subtractive Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public static float Scope_SpreadReductionStack { get; private set; } = 0.05f;
         public override string displayName => "Scope";
-        public override ItemTier itemTier => ItemTier.Tier2;
+        public override ItemTier itemTier => ItemTier.Tier1;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility });
 
         protected override string GetNameString(string langID = null) => displayName;
