@@ -269,16 +269,10 @@ namespace RiskOfBulletstorm.Items
             Inventory inventory = body.inventory;
             if (!inventory) return false;
 
-            //int DeployCount = HelperPlugin.ClassicItemsCompat.enabled && HelperPlugin.ClassicItemsCompat.CheckEmbryoProc(instance, body) ? 2 : 1; //Embryo Check
-            int DeployCount = 1;
-
-            for (int i = 0; i < DeployCount; i++)
-            {
-                inventory.GiveItem(ItemIndex.BoostHp);
-                inventory.GiveItem(ItemIndex.BoostEquipmentRecharge);
-                health.HealFraction(1, default);
-            }
             inventory.SetEquipmentIndex(EquipmentIndex.None); //credit to : Rico
+            inventory.GiveItem(ItemIndex.BoostHp);
+            inventory.GiveItem(ItemIndex.BoostEquipmentRecharge);
+            health.HealFraction(1, default);
 
             return false;
         }
