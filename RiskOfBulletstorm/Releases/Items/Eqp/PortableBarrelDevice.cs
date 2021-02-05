@@ -365,17 +365,7 @@ namespace RiskOfBulletstorm.Items
             CharacterBody body = slot.characterBody;
             if (!body) return false;
 
-            if (PlaceTable(body))
-            {
-                /*if (HelperPlugin.ClassicItemsCompat.enabled && HelperPlugin.ClassicItemsCompat.CheckEmbryoProc(instance, body))
-                {
-                    PlaceTable(body);
-                }*/
-                return true;
-            } else
-            {
-                return false;
-            }
+            return PlaceTable(body);
         }
 
         private bool PlaceTable(CharacterBody characterBody)
