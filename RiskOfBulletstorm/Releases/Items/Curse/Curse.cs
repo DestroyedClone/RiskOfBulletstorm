@@ -82,7 +82,7 @@ namespace RiskOfBulletstorm.Items
             var curseTallyDef = new CustomItem(new ItemDef
             {
                 hidden = !Curse_Show,
-                name = "Curse Stack",
+                name = "CurseCount",
                 tier = ItemTier.NoTier,
                 canRemove = false
             }, new ItemDisplayRuleDict(null));

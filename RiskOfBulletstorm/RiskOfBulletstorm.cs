@@ -67,6 +67,8 @@ namespace RiskOfBulletstorm
             T2Module.SetupAll_PluginAwake(masterItemList);
 
             Shared.Buffs.BuffsController.Init();
+
+            R2API.Utils.CommandHelper.AddToConsoleWhenReady();
         }
 
         private void Start()
