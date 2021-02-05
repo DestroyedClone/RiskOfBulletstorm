@@ -54,7 +54,7 @@ namespace RiskOfBulletstorm.Items
             var OrangeConsumedDef = new CustomItem(new ItemDef
             {
                 hidden = !Orange_ShowConsumed,
-                name = "ROBInternalSpiceTally",
+                name = "Oranges Consumed",
                 tier = ItemTier.NoTier,
                 pickupIconPath = iconResourcePath,
                 canRemove = false
