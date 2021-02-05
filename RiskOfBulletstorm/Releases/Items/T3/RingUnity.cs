@@ -271,31 +271,30 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             GetStatCoefficients += BoostDamage;
-            CharacterBody.onBodyStartGlobal += CharacterBody_onBodyStartGlobal;
-        }
-
-        private void CharacterBody_onBodyStartGlobal(CharacterBody obj)
-        {
-            if (!obj.gameObject.GetComponent<RingUnityTracker>())
-            {
-                var tracker = obj.gameObject.AddComponent<RingUnityTracker>();
-                tracker.inventory = obj.inventory;
-            }
+            CharacterMaster.onStartGlobal += CharacterMaster_onStartGlobal;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
             GetStatCoefficients -= BoostDamage;
-            CharacterBody.onBodyStartGlobal -= CharacterBody_onBodyStartGlobal;
+            CharacterMaster.onStartGlobal -= CharacterMaster_onStartGlobal;
+        }
+
+        private void CharacterMaster_onStartGlobal(CharacterMaster obj)
+        {
+            if (obj && obj.inventory && !obj.gameObject.GetComponent<RingUnityTracker>())
+            {
+                var tracker = obj.gameObject.AddComponent<RingUnityTracker>();
+                tracker.inventory = obj.inventory;
+            }
         }
 
         private void BoostDamage(CharacterBody sender, StatHookEventArgs args)
         {
-            var inventory = sender.inventory;
-            if (!inventory) return;
-            var UnityInventoryCount = inventory.GetItemCount(catalogIndex);
-            var component = sender.gameObject.GetComponent<RingUnityTracker>();
+            if (!sender.master && !sender.master.inventory) return;
+            var UnityInventoryCount = sender.master.inventory.GetItemCount(catalogIndex);
+            var component = sender.masterObject.GetComponent<RingUnityTracker>();
             if (UnityInventoryCount > 0 && component)
             {
                 var totalCount = component.itemCount;
@@ -309,30 +308,12 @@ namespace RiskOfBulletstorm.Items
 
             public void Awake()
             {
-                if (!inventory) Destroy(this);
                 inventory.onInventoryChanged += Inventory_onInventoryChanged;
             }
 
             private void Inventory_onInventoryChanged()
             {
-                itemCount = GetTotalItemCount();
-            }
-
-            public int GetTotalItemCount()
-            {
-                int num = 0;
-                ItemIndex itemIndex = ItemIndex.Syringe;
-                ItemIndex itemCount = (ItemIndex)ItemCatalog.itemCount;
-                while (itemIndex < itemCount)
-                {
-                    var itemDef = ItemCatalog.GetItemDef(itemIndex);
-                    if (itemDef.tier != ItemTier.NoTier)
-                    {
-                        num += inventory.GetItemCount(itemIndex);
-                    }
-                    itemIndex++;
-                }
-                return num;
+                itemCount = HelperUtil.GetTotalItemCount(inventory);
             }
         }
     }

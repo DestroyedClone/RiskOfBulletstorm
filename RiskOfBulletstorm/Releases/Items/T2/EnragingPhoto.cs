@@ -290,16 +290,16 @@ namespace RiskOfBulletstorm.Items
             if (InventoryCount > 0 && healthLost >= EnragingPhoto_HealthThresholdMin)
             {
                 var maxDuration = EnragingPhoto_BaseDuration + EnragingPhoto_StackDuration * (InventoryCount - 1);
-                var scale = GetClampedPercentBetweenTwoValues(healthLost, EnragingPhoto_HealthThresholdMin, EnragingPhoto_HealthThresholdMax);
-
+                var scale = GetPercentBetweenTwoValues(healthLost, EnragingPhoto_HealthThresholdMin, EnragingPhoto_HealthThresholdMax);
+                BulletstormPlugin._logger.LogMessage("EnragingPhotoScale = " + scale);
                 self.body.AddTimedBuffAuthority(BuffsController.Anger, maxDuration * scale);
             }
         }
 
         //normalized or not?
-        private float GetClampedPercentBetweenTwoValues(float value, float min, float max)
+        private float GetPercentBetweenTwoValues(float value, float min, float max)
         {
-            return Mathf.Clamp((value - min) / (max - min), min, max);
+            return (value - min) / (max - min);
         }
     }
 }

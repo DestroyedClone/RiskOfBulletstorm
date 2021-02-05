@@ -345,15 +345,14 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             On.RoR2.BarrelInteraction.OnInteractionBegin += DestroyBarrel;
-            RoR2.CharacterBody.onBodyStartGlobal += CharacterBody_onBodyStartGlobal;
+            CharacterMaster.onStartGlobal += CharacterMaster_onStartGlobal;
         }
 
-        private void CharacterBody_onBodyStartGlobal(CharacterBody obj)
+        private void CharacterMaster_onStartGlobal(CharacterMaster obj)
         {
-            if (obj)
+            if (obj && !obj.gameObject.GetComponent<BarrelTracker>())
             {
-                if (!obj.gameObject.GetComponent<BarrelTracker>())
-                    obj.gameObject.AddComponent<BarrelTracker>();
+                obj.gameObject.AddComponent<BarrelTracker>();
             }
         }
 
@@ -361,7 +360,7 @@ namespace RiskOfBulletstorm.Items
         {
             base.Uninstall();
             On.RoR2.BarrelInteraction.OnInteractionBegin -= DestroyBarrel;
-            RoR2.CharacterBody.onBodyStartGlobal -= CharacterBody_onBodyStartGlobal;
+            CharacterMaster.onStartGlobal -= CharacterMaster_onStartGlobal;
         }
 
         private void DestroyBarrel(On.RoR2.BarrelInteraction.orig_OnInteractionBegin orig, BarrelInteraction self, Interactor activator)
@@ -376,10 +375,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override bool PerformEquipmentAction(EquipmentSlot slot)
         {
-            CharacterBody body = slot.characterBody;
-            if (!body) return false;
-
-            return TryPlaceBarrel(body);
+            return TryPlaceBarrel(slot.characterBody);
         }
 
         private bool PlaceTableOld(CharacterBody characterBody)
@@ -405,22 +401,25 @@ namespace RiskOfBulletstorm.Items
         private bool TryPlaceBarrel(CharacterBody characterBody)
         {
             bool success = false;
-            var tracker = characterBody.gameObject.GetComponent<BarrelTracker>();
-            var position = characterBody.corePosition;
-            if (tracker)
+            if (characterBody)
             {
-                var spawnBarrel = iscBarrelNew.DoSpawn(position, characterBody.transform.rotation, new DirectorSpawnRequest(
-                    iscBarrelNew, placementRule, RoR2Application.rng));
-                success = spawnBarrel.success;
-
-                if (spawnBarrel.success)
+                var tracker = characterBody.gameObject.GetComponent<BarrelTracker>();
+                var position = characterBody.corePosition;
+                if (tracker)
                 {
-                    if (tracker.spawnedBarrels.Count >= PortableTableDevice_MaxBarrelsPerPlayer)
+                    var spawnBarrel = iscBarrelNew.DoSpawn(position, characterBody.transform.rotation, new DirectorSpawnRequest(
+                        iscBarrelNew, placementRule, RoR2Application.rng));
+                    success = spawnBarrel.success;
+
+                    if (spawnBarrel.success)
                     {
-                        tracker.spawnedBarrels.RemoveAt(0);
-                        UnityEngine.Object.Destroy(tracker.spawnedBarrels[0]);
+                        if (tracker.spawnedBarrels.Count >= PortableTableDevice_MaxBarrelsPerPlayer)
+                        {
+                            UnityEngine.Object.Destroy(tracker.spawnedBarrels[0].gameObject);
+                            tracker.spawnedBarrels.RemoveAt(0);
+                        }
+                        tracker.spawnedBarrels.Add(spawnBarrel.spawnedInstance.gameObject);
                     }
-                    tracker.spawnedBarrels.Add(spawnBarrel.spawnedInstance);
                 }
             }
             return success;

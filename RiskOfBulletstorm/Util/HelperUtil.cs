@@ -47,6 +47,22 @@ namespace RiskOfBulletstorm.Utils
             }
             return num;
         }
+        public static int GetTotalItemCount(Inventory inventory)
+        {
+            int num = 0;
+            ItemIndex itemIndex = ItemIndex.Syringe;
+            ItemIndex itemCount = (ItemIndex)ItemCatalog.itemCount;
+            while (itemIndex < itemCount)
+            {
+                var itemDef = ItemCatalog.GetItemDef(itemIndex);
+                if (itemDef.tier != ItemTier.NoTier)
+                {
+                    num += inventory.GetItemCount(itemIndex);
+                }
+                itemIndex++;
+            }
+            return num;
+        }
 
         public static CharacterBody GetPlayerWithMostItemIndex(ItemIndex itemIndex)
         {
