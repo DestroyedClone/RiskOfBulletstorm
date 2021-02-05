@@ -41,11 +41,14 @@ namespace RiskOfBulletstorm.Items
         {
             GameObject engiMinePrefab = Resources.Load<GameObject>("prefabs/projectiles/EngiGrenadeProjectile");
             BombPrefab = engiMinePrefab.InstantiateClone("Bulletstorm_RollBomb");
-            //BombPrefab.transform.localScale = new Vector3(3, 3, 3);
+            BombPrefab.transform.localScale = new Vector3(2f, 2f, 2f);
             BombPrefab.GetComponent<ProjectileSimple>().velocity = 1; //default 50
             BombPrefab.GetComponent<ProjectileDamage>().damageColorIndex = DamageColorIndex.Item;
             BombPrefab.GetComponent<ProjectileImpactExplosion>().destroyOnEnemy = false; //default True
             Object.Destroy(BombPrefab.GetComponent<ApplyTorqueOnStart>());
+
+            var controller = BombPrefab.GetComponent<ProjectileController>();
+            controller.transform.localScale = new Vector3(2f, 2f, 2f);
         }
 
         public override void SetupAttributes()
