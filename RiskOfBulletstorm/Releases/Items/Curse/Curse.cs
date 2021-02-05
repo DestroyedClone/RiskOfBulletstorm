@@ -16,7 +16,9 @@ namespace RiskOfBulletstorm.Items
         //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         //[AutoConfig("Enable Jammed enemies?", AutoConfigFlags.PreventNetMismatch)]
         //public bool Curse_Enable { get; private set; } = true;
-
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Should the stacks of Curse be shown in the inventory?", AutoConfigFlags.PreventNetMismatch)]
+        public bool Curse_Show { get; private set; } = true;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How much additional damage should a Jammed enemy deal? (Value: Additive Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float Curse_DamageBoost { get; private set; } = 1.00f;
@@ -79,8 +81,8 @@ namespace RiskOfBulletstorm.Items
             // Used to keep track of the player's curse per player //
             var curseTallyDef = new CustomItem(new ItemDef
             {
-                hidden = true,
-                name = "ROBInternalCurseTally",
+                hidden = !Curse_Show,
+                name = "Curse Stack",
                 tier = ItemTier.NoTier,
                 canRemove = false
             }, new ItemDisplayRuleDict(null));
