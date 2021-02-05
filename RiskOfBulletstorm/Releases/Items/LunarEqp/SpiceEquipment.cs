@@ -33,7 +33,6 @@ namespace RiskOfBulletstorm.Items
 
         public static ItemIndex SpiceTally { get; private set; }
         public static ItemIndex CurseIndex;
-        public static ItemIndex GimmeSpiceIndex;
 
         public static GameObject ItemBodyModelPrefab;
 
@@ -95,15 +94,6 @@ namespace RiskOfBulletstorm.Items
                 canRemove = false
             }, new ItemDisplayRuleDict(null));
             SpiceTally = ItemAPI.Add(spiceTallyDef);
-
-            var gimmeSpiceDef = new CustomItem(new ItemDef
-            {
-                hidden = true,
-                name = "ROBInternalGiveSpice",
-                tier = ItemTier.NoTier,
-                canRemove = false
-            }, new ItemDisplayRuleDict(null));
-            GimmeSpiceIndex = ItemAPI.Add(spiceTallyDef);
         }
         public static ItemDisplayRuleDict GenerateItemDisplayRules()
         {
