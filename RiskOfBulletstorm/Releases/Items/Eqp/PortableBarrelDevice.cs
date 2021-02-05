@@ -22,6 +22,9 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("How many barrels should be allowed in the world? (Set to -1 for infinite)", AutoConfigFlags.PreventNetMismatch)]
         public static int PortableTableDevice_MaxBarrels { get; private set; } = 100;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Max barrels per player?", AutoConfigFlags.PreventNetMismatch)]
+        public static int PortableTableDevice_MaxBarrelsPerPlayer { get; private set; } = 20;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the cooldown in seconds?", AutoConfigFlags.PreventNetMismatch)]
         public override float cooldown { get; protected set; } = 30f;
 
@@ -342,12 +345,23 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             On.RoR2.BarrelInteraction.OnInteractionBegin += DestroyBarrel;
+            RoR2.CharacterBody.onBodyStartGlobal += CharacterBody_onBodyStartGlobal;
+        }
+
+        private void CharacterBody_onBodyStartGlobal(CharacterBody obj)
+        {
+            if (obj)
+            {
+                if (!obj.gameObject.GetComponent<BarrelTracker>())
+                    obj.gameObject.AddComponent<BarrelTracker>();
+            }
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
             On.RoR2.BarrelInteraction.OnInteractionBegin -= DestroyBarrel;
+            RoR2.CharacterBody.onBodyStartGlobal -= CharacterBody_onBodyStartGlobal;
         }
 
         private void DestroyBarrel(On.RoR2.BarrelInteraction.orig_OnInteractionBegin orig, BarrelInteraction self, Interactor activator)
@@ -365,10 +379,10 @@ namespace RiskOfBulletstorm.Items
             CharacterBody body = slot.characterBody;
             if (!body) return false;
 
-            return PlaceTable(body);
+            return TryPlaceBarrel(body);
         }
 
-        private bool PlaceTable(CharacterBody characterBody)
+        private bool PlaceTableOld(CharacterBody characterBody)
         {
             var barrels = UnityEngine.Object.FindObjectsOfType<BarrelDestroyOnInteraction>();
             var barrelAmt = barrels.Length;
@@ -385,6 +399,29 @@ namespace RiskOfBulletstorm.Items
                 var spawnBarrel = iscBarrelNew.DoSpawn(position, characterBody.transform.rotation, new DirectorSpawnRequest(
                     iscBarrelNew, placementRule, RoR2Application.rng));
                 success = spawnBarrel.success;
+            }
+            return success;
+        }
+        private bool TryPlaceBarrel(CharacterBody characterBody)
+        {
+            bool success = false;
+            var tracker = characterBody.gameObject.GetComponent<BarrelTracker>();
+            var position = characterBody.corePosition;
+            if (tracker)
+            {
+                var spawnBarrel = iscBarrelNew.DoSpawn(position, characterBody.transform.rotation, new DirectorSpawnRequest(
+                    iscBarrelNew, placementRule, RoR2Application.rng));
+                success = spawnBarrel.success;
+
+                if (spawnBarrel.success)
+                {
+                    if (tracker.spawnedBarrels.Count >= PortableTableDevice_MaxBarrelsPerPlayer)
+                    {
+                        tracker.spawnedBarrels.RemoveAt(0);
+                        UnityEngine.Object.Destroy(tracker.spawnedBarrels[0]);
+                    }
+                    tracker.spawnedBarrels.Add(spawnBarrel.spawnedInstance);
+                }
             }
             return success;
         }
@@ -421,6 +458,10 @@ namespace RiskOfBulletstorm.Items
                     Destroy(gameObject);
                 }
             }
+        }
+        public class BarrelTracker : MonoBehaviour
+        {
+            public List<GameObject> spawnedBarrels;
         }
     }
 }
