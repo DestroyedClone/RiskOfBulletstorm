@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using R2API;
 using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -40,10 +41,20 @@ namespace RiskOfBulletstorm.Items
 
         private GameObject currentStage;
         private readonly GameObject SpawnedPickupEffect = Resources.Load<GameObject>("prefabs/effects/LevelUpEffect");
+        private GameObject IndicatorProjectile;
 
         public override void SetupBehavior()
         {
             base.SetupBehavior();
+            GameObject brotherFirePillar = Resources.Load<GameObject>("prefabs/projectiles/BrotherFirePillar");
+            IndicatorProjectile = brotherFirePillar.InstantiateClone("Bulletstorm_BrotherFirePillar");
+            Object.Destroy(IndicatorProjectile.GetComponent<RoR2.Projectile.ProjectileDamage>());
+            Object.Destroy(IndicatorProjectile.GetComponent<TeamFilter>());
+            Object.Destroy(IndicatorProjectile.GetComponent<RoR2.Projectile.ProjectileDotZone>());
+
+            ProjectileCatalog.getAdditionalEntries += list => list.Add(IndicatorProjectile);
+
+            if (IndicatorProjectile) PrefabAPI.RegisterNetworkPrefab(IndicatorProjectile);
         }
         public override void SetupAttributes()
         {
@@ -225,6 +236,7 @@ namespace RiskOfBulletstorm.Items
                         }
                         PickupDropletController.CreatePickupDroplet(dropIndex, PickupPosition, Vector3.up * 5);
                         EffectManager.SimpleEffect(SpawnedPickupEffect, PickupPosition, Quaternion.identity, true);
+                        RoR2.Projectile.ProjectileManager.instance.FireProjectile(IndicatorProjectile, PickupPosition, Quaternion.identity, null, 0f, 0f, false);
                     } else
                     {
                         if (BUP_ShowProgress)
