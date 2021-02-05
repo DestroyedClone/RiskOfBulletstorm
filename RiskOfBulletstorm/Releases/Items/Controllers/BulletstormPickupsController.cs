@@ -12,13 +12,13 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the base amount of kills required to roll a pickup spawn?", AutoConfigFlags.PreventNetMismatch)]
-        public int BUP_RequiredKills { get; private set; } = 30;
+        public int BUP_RequiredKills { get; private set; } = 25;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What value should the required kills be multiplied by per stage?", AutoConfigFlags.PreventNetMismatch)]
-        public float BUP_StageMultiplier { get; private set; } = 1.5f;
+        public float BUP_StageMultiplier { get; private set; } = 1.1f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the chance to create a pickup after reaching the required amount of kills? (Value: Direct Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float BUP_RollChance { get; private set; } = 30f;
+        public float BUP_RollChance { get; private set; } = 40f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Debugging: Enable to show in console when a Forgive Me, Please was detected with its damageinfo. Use it to test for any false positives.", AutoConfigFlags.PreventNetMismatch)]
         public bool BUP_DebugShowDollProc { get; private set; } = false;
@@ -54,9 +54,9 @@ namespace RiskOfBulletstorm.Items
             base.SetupLate();
             //needs to setup late so the indicies can be setup
             //weightedSelection.AddChoice(Key.instance.pickupIndex, 0.15f); currently unused while i rework it
-            weightedSelection.AddChoice(Blank.instance.pickupIndex, 0.25f);
+            weightedSelection.AddChoice(Blank.instance.pickupIndex, 0.35f);
             weightedSelection.AddChoice(Armor.instance.pickupIndex, 0.1f);
-            weightedSelection.AddChoice(PickupAmmoSpread.instance.pickupIndex, 0.3f);
+            weightedSelection.AddChoice(PickupAmmoSpread.instance.pickupIndex, 0.6f);
         }
 
         public override void SetupConfig()
