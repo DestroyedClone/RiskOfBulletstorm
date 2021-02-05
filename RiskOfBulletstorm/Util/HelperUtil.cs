@@ -110,6 +110,16 @@ namespace RiskOfBulletstorm.Utils
                 }
             }
         }
+        public static float GetPlayersLuck()
+        {
+            var instances = PlayerCharacterMasterController.instances;
+            float luck = 0f;
+            foreach (PlayerCharacterMasterController playerCharacterMaster in instances)
+            {
+                luck += playerCharacterMaster.master ? playerCharacterMaster.master.luck : 0f;
+            }
+            return luck;
+        }
 
         public static GameObject GetFirstPlayerWithItem(ItemIndex itemIndex)
         {

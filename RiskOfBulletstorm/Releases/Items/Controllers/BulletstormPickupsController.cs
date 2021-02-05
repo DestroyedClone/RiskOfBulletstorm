@@ -208,7 +208,9 @@ namespace RiskOfBulletstorm.Items
                             "\nwasMapDeath: {0}" +
                             "\nlastHitAttacker: {1}" +
                             "\nposition: {2}", pickupsComponent.wasMapDeath, pickupsComponent.lastHitAttacker, PickupPosition));
-                    if (Util.CheckRoll(BUP_RollChance)) //Roll to spawn pickups
+
+                    var teamLuck = RiskOfBulletstorm.Utils.HelperUtil.GetPlayersLuck();
+                    if (Util.CheckRoll(BUP_RollChance, teamLuck)) //Roll to spawn pickups
                     {
                         //Chat.AddMessage("Pickups: Rolled success.");
 
@@ -233,8 +235,8 @@ namespace RiskOfBulletstorm.Items
                     pickupsComponent.globalDeaths = 0;
                 }
             }
-
         }
+
 
         public class BulletstormPickupsComponent : MonoBehaviour
         {
