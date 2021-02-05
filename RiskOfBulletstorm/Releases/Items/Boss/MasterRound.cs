@@ -98,6 +98,7 @@ namespace RiskOfBulletstorm.Items
 
         readonly string announceStartToken = "<color=#c9ab14>[Master Round] Players can take a max of {0} hits!</color>";
         readonly string playerHitToken = "<color=#ba3f0f>[Master Round] Player {0} has been hit {1} out of {2} times!</color>";
+        readonly string playerFailToken = "<color=#ba3f0f>[Master Round] Player {0} failed by getting hit {1} out of {2} times!</color>";
         readonly string playerHitNameFailed = "Someone";
         //readonly string itemPickupDescToken = numberCapitalized + " Chamber" + "\nThis " + descString + " artifact indicates mastery of the " + numberString + " chamber.";
         readonly string itemPickupDescToken = "{0} Chamber \nThis {1} artifact indicates mastery of the {2} chamber.";
@@ -183,17 +184,18 @@ namespace RiskOfBulletstorm.Items
             MasterRoundComponent.currentHits++;
             if (MasterRound_ShowHitInChat)
             {
-                if (MasterRoundComponent.currentHits < MasterRoundComponent.allowedHits)
+                if (MasterRoundComponent.currentHits <= MasterRoundComponent.allowedHits)
                 {
                     var characterBody = victim.GetComponent<CharacterBody>();
                     string username = characterBody ? characterBody.GetUserName() : playerHitNameFailed;
+                    string token = MasterRoundComponent.currentHits < MasterRoundComponent.allowedHits ? playerHitToken : playerFailToken;
                     Chat.SendBroadcastChat(
-                        new SimpleChatMessage
-                        {
-                            baseToken = playerHitToken,
-                            paramTokens = new[] { username, MasterRoundComponent.currentHits.ToString(), MasterRoundComponent.allowedHits.ToString()
-                        }
-                        });
+                    new SimpleChatMessage
+                    {
+                        baseToken = token,
+                        paramTokens = new[] { username, MasterRoundComponent.currentHits.ToString(), MasterRoundComponent.allowedHits.ToString()
+                    }
+                    });
                 }
             }
         }
