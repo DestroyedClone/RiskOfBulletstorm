@@ -92,7 +92,7 @@ namespace RiskOfBulletstorm.Items
             var spiceTallyDef = new CustomItem(new ItemDef
             {
                 hidden = !SpiceEquipment_ShowTally,
-                name = "ROBInternalSpiceTally",
+                name = "Spice Consumed",
                 tier = ItemTier.NoTier,
                 pickupIconPath = iconResourcePath,
                 canRemove = false
