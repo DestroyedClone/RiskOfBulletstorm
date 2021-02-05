@@ -5,21 +5,17 @@ using RoR2;
 using UnityEngine;
 using TILER2;
 using static TILER2.MiscUtil;
-using static RiskOfBulletstorm.BulletstormPlugin;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using RoR2.UI;
-using UnityEngine.Events;
-using UnityEngine.Networking;
-
 namespace RiskOfBulletstorm.Items
 {
     public class Mustache : Item_V2<Mustache>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the percentage of max health to heal per stack? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float Mustache_HealAmount { get; private set; } = 0.10f;
+        [AutoConfig("What is the percentage of max health to heal per stack on purchase? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
+        public float Mustache_HealAmount { get; private set; } = 0.20f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("What is the percentage of max health to heal per stack on non-purchase interactions? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
+        public float Mustache_HealAmountAny { get; private set; } = 0.1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Should it heal upon using a bloodshrine?", AutoConfigFlags.PreventNetMismatch)]
@@ -280,49 +276,48 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            On.RoR2.PurchaseInteraction.OnInteractionBegin += PurchaseInteraction_OnInteractionBegin;
+            RoR2.GlobalEventManager.OnInteractionsGlobal += GlobalEventManager_OnInteractionsGlobal;
         }
 
-        public override void Uninstall()
+        private void GlobalEventManager_OnInteractionsGlobal(Interactor interactor, IInteractable interactable, GameObject gameObject)
         {
-            base.Uninstall();
-            On.RoR2.PurchaseInteraction.OnInteractionBegin -= PurchaseInteraction_OnInteractionBegin;
-        }
-
-        private void PurchaseInteraction_OnInteractionBegin(On.RoR2.PurchaseInteraction.orig_OnInteractionBegin orig, PurchaseInteraction self, Interactor activator)
-        {
-            orig(self, activator);
-            var gameObject = activator.gameObject;
-            if (gameObject)
+            CharacterBody characterBody = interactor.GetComponent<CharacterBody>();
+            if (interactor && characterBody && characterBody.inventory)
             {
-                CharacterBody body = gameObject.GetComponent<CharacterBody>();
-                if (body)
+                var itemCount = characterBody.inventory.GetItemCount(catalogIndex);
+                if (itemCount > 0)
                 {
-                    if (self.costType == CostTypeIndex.PercentHealth && Mustache_BloodShrine)
+                    var purchaseInteraction = gameObject.GetComponent<PurchaseInteraction>();
+                    if (purchaseInteraction)
                     {
-                        if (Mustache_BloodShrine)
+                        var isBloodShrine = purchaseInteraction.costType == CostTypeIndex.PercentHealth;
+                        if ((isBloodShrine && Mustache_BloodShrine) || !isBloodShrine)
                         {
-                            Heal(body);
+                            if (Mustache_BloodShrine)
+                            {
+                                Heal(characterBody, itemCount, Mustache_HealAmount);
+                            }
                         }
-                    }
-                    else
+                    } else
                     {
-                        Heal(body);
+                        Heal(characterBody, itemCount, Mustache_HealAmountAny);
                     }
                 }
             }
         }
 
-        private void Heal(CharacterBody characterBody)
+        public override void Uninstall()
         {
-            var InventoryCount = characterBody.inventory.GetItemCount(catalogIndex);
-            if (InventoryCount > 0)
+            base.Uninstall();
+            RoR2.GlobalEventManager.OnInteractionsGlobal -= GlobalEventManager_OnInteractionsGlobal;
+        }
+
+        private void Heal(CharacterBody characterBody, int itemCount, float healFraction)
+        {
+            var resultingHeal = healFraction * itemCount;
+            if (characterBody.healthComponent)
             {
-                var resultingHeal = Mustache_HealAmount * InventoryCount;
-                if (characterBody.healthComponent)
-                {
-                    characterBody.healthComponent.HealFraction(resultingHeal, default);
-                }
+                characterBody.healthComponent.HealFraction(resultingHeal, default);
             }
         }
     }
