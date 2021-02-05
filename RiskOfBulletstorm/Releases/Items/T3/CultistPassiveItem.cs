@@ -277,13 +277,13 @@ namespace RiskOfBulletstorm.Items
                     
                     float multAmount = deadAmt * InventoryCount;
 
-                    args.baseAttackSpeedAdd += 0.25f * multAmount;
-                    args.baseDamageAdd += 2f * multAmount;
-                    args.baseHealthAdd += 25 * multAmount;
+                    args.baseAttackSpeedAdd += 0.4f * multAmount;
+                    args.baseDamageAdd += 10f * multAmount;
+                    args.healthMultAdd += multAmount;
                     args.baseMoveSpeedAdd += 1f * multAmount;
-                    args.baseRegenAdd += 0.5f * multAmount;
-                    args.armorAdd += 2 * multAmount;
-                    args.critAdd += 5 * multAmount;
+                    args.regenMultAdd += 0.5f * multAmount;
+                    args.armorAdd += 8 * multAmount;
+                    args.critAdd += 15 * multAmount;
                 }
             }
         }
