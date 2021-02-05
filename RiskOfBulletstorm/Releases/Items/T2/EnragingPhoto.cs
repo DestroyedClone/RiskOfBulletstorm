@@ -14,15 +14,19 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How many seconds should Enraging Photo's buff last with a single stack?", AutoConfigFlags.PreventNetMismatch)]
-        public float EnragingPhoto_BaseDuration { get; private set; } = 1f;
+        public float EnragingPhoto_BaseDuration { get; private set; } = 2f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How many additional seconds of buff should each Enraging Photo after the first give? ", AutoConfigFlags.PreventNetMismatch)]
-        public float EnragingPhoto_StackDuration { get; private set; } = 0.25f;
+        public float EnragingPhoto_StackDuration { get; private set; } = 0.5f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What percent of health lost should activate the Enraging Photo's damage bonus? (Value: Percentage", AutoConfigFlags.PreventNetMismatch)]
-        public float EnragingPhoto_HealthThreshold { get; private set; } = 0.11f;
+        [AutoConfig("Minimum percent of health loss for lower bound? (Value: Percentage", AutoConfigFlags.PreventNetMismatch)]
+        public float EnragingPhoto_HealthThresholdMin { get; private set; } = 0.01f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Maximum percent of health loss for higher bound? (Value: Percentage", AutoConfigFlags.PreventNetMismatch)]
+        public float EnragingPhoto_HealthThresholdMax { get; private set; } = 0.10f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How much should your damage be increased when Enraging Photo activates? (Value: Additive Percentage)", AutoConfigFlags.PreventNetMismatch)]
@@ -38,10 +42,10 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "<b>\"Don't Believe His Lies\"</b>\nDeal extra damage for a short time after receiving a heavy hit.";
+        protected override string GetPickupString(string langID = null) => "<b>\"Don't Believe His Lies\"</b>\nDeal extra damage for a short time after receiving a hit.";
 
-        protected override string GetDescString(string langid = null) => $"Gain a temporary <style=cIsHealth>{Pct(EnragingPhoto_DmgBoost)} damage bonus</style> upon taking <style=cIsHealth>{Pct(EnragingPhoto_HealthThreshold)} </style> of your health that lasts {EnragingPhoto_BaseDuration} seconds." +
-            $"\n<style=cStack>(+{EnragingPhoto_StackDuration} second duration per additional Enraging Photo.)</style>";
+        protected override string GetDescString(string langid = null) => $"Gain a temporary <style=cIsDamage>{Pct(EnragingPhoto_DmgBoost)} damage bonus</style> that can last up to {EnragingPhoto_BaseDuration} seconds <style=cStack>(+{EnragingPhoto_StackDuration} seconds duration per stack).</style>" +
+            $"\nThe duration scales from the amount of damage taken, from <style=cIsHealth>{Pct(EnragingPhoto_HealthThresholdMin)} to {Pct(EnragingPhoto_HealthThresholdMax)}.";
 
         protected override string GetLoreString(string langID = null) => "A photo that the Convict brought with her to the Gungeon.\nDeal extra damage for a short time after getting hit.\n\nOn the journey to the Breach, the Pilot once asked her why she always stared at this photo. Later, she was released from the brig.";
 
@@ -274,19 +278,28 @@ namespace RiskOfBulletstorm.Items
             base.Uninstall();
             On.RoR2.HealthComponent.TakeDamage -= CalculateDamageReward;
         }
+        //https://math.stackexchange.com/questions/754130/find-what-percent-x-is-between-two-numbers
         private void CalculateDamageReward(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
             var InventoryCount = GetCount(self.body);
             var oldHealth = self.health;
             orig(self, damageInfo);
-            var healthCompare = (oldHealth - self.health) / self.fullHealth;
-            if (healthCompare >= EnragingPhoto_HealthThreshold)
+            
+            var healthLost = (oldHealth - self.health) / self.fullHealth;
+
+            if (InventoryCount > 0 && healthLost >= EnragingPhoto_HealthThresholdMin)
             {
-                if (InventoryCount > 0 && self.body.GetBuffCount(BuffsController.Anger) == 0)
-                {
-                    self.body.AddTimedBuffAuthority(BuffsController.Anger, (EnragingPhoto_BaseDuration + EnragingPhoto_StackDuration * (InventoryCount - 1)));
-                }
+                var maxDuration = EnragingPhoto_BaseDuration + EnragingPhoto_StackDuration * (InventoryCount - 1);
+                var scale = GetClampedPercentBetweenTwoValues(healthLost, EnragingPhoto_HealthThresholdMin, EnragingPhoto_HealthThresholdMax);
+
+                self.body.AddTimedBuffAuthority(BuffsController.Anger, maxDuration * scale);
             }
+        }
+
+        //normalized or not?
+        private float GetClampedPercentBetweenTwoValues(float value, float min, float max)
+        {
+            return Mathf.Clamp((value - min) / (max - min), min, max);
         }
     }
 }
