@@ -8,6 +8,9 @@ namespace RiskOfBulletstorm.Items
 {
     public class Orange : Equipment_V2<Orange>
     {
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Should the benefits of Orange show in your inventory?", AutoConfigFlags.PreventNetMismatch)]
+        public bool Orange_ShowConsumed { get; private set; } = true;
         public override string displayName => "Orange";
         public override float cooldown { get; protected set; } = 0f;
 
@@ -23,6 +26,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "With this orange, your style... it's impetuous. Your defense, impregnable.";
 
+        public static ItemIndex OrangeConsumedIndex;
         public static GameObject ItemBodyModelPrefab;
         public Orange()
         {
@@ -43,8 +47,17 @@ namespace RiskOfBulletstorm.Items
                 ItemBodyModelPrefab = Resources.Load<GameObject>(modelResourcePath);
                 displayRules = GenerateItemDisplayRules();
             }
-
             base.SetupAttributes();
+
+            var OrangeConsumedDef = new CustomItem(new ItemDef
+            {
+                hidden = !Orange_ShowConsumed,
+                name = "ROBInternalSpiceTally",
+                tier = ItemTier.NoTier,
+                pickupIconPath = iconResourcePath,
+                canRemove = false
+            }, new ItemDisplayRuleDict(null));
+            OrangeConsumedIndex = ItemAPI.Add(OrangeConsumedDef);
         }
         public static ItemDisplayRuleDict GenerateItemDisplayRules()
         {
@@ -253,11 +266,25 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
+            StatHooks.GetStatCoefficients += StatHooks_GetStatCoefficients;
+        }
+
+        private void StatHooks_GetStatCoefficients(CharacterBody sender, StatHooks.StatHookEventArgs args)
+        {
+            if (sender && sender.inventory)
+            {
+                var itemCount = sender.inventory.GetItemCount(OrangeConsumedIndex);
+                if (itemCount > 0)
+                {
+
+                }
+            }
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
+            StatHooks.GetStatCoefficients -= StatHooks_GetStatCoefficients;
         }
 
         protected override bool PerformEquipmentAction(EquipmentSlot slot)

@@ -94,7 +94,7 @@ namespace RiskOfBulletstorm.Items
                 hidden = !SpiceEquipment_ShowTally,
                 name = "ROBInternalSpiceTally",
                 tier = ItemTier.NoTier,
-                pickupIconPath = Spice.instance.iconResourcePath,
+                pickupIconPath = iconResourcePath,
                 canRemove = false
             }, new ItemDisplayRuleDict(null));
             SpiceTally = ItemAPI.Add(spiceTallyDef);
