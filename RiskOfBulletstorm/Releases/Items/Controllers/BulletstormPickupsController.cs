@@ -47,9 +47,9 @@ namespace RiskOfBulletstorm.Items
         {
             base.SetupBehavior();
             GameObject brotherFirePillar = Resources.Load<GameObject>("prefabs/projectiles/BrotherFirePillar");
-            IndicatorProjectile = brotherFirePillar.InstantiateClone("Bulletstorm_BrotherFirePillar");
+            IndicatorProjectile = brotherFirePillar.InstantiateClone("Bulletstorm_PickupsIndicator");
+            IndicatorProjectile.transform.localScale = new Vector3(0.25f, 1f, 0.25f);
             Object.Destroy(IndicatorProjectile.GetComponent<RoR2.Projectile.ProjectileDamage>());
-            Object.Destroy(IndicatorProjectile.GetComponent<TeamFilter>());
             Object.Destroy(IndicatorProjectile.GetComponent<RoR2.Projectile.ProjectileDotZone>());
 
             ProjectileCatalog.getAdditionalEntries += list => list.Add(IndicatorProjectile);
