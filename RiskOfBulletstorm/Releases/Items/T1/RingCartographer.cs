@@ -28,6 +28,9 @@ namespace RiskOfBulletstorm.Items
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Should the scanners be destroyed upon starting the teleporter?", AutoConfigFlags.PreventNetMismatch)]
         public bool CartographerRing_DestroyOnTeleporterStart { get; private set; } = false;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("When scanning the stage, hould indicators on interactables be hidden after using them?", AutoConfigFlags.PreventNetMismatch)]
+        public bool CartographerRing_HideNotif { get; private set; } = true;
 
         public override string displayName => "Cartographer's Ring";
         public override ItemTier itemTier => ItemTier.Tier1;
@@ -313,7 +316,8 @@ namespace RiskOfBulletstorm.Items
             Stage.onServerStageComplete += StageEnd_DestroyComponent;
             if (CartographerRing_DestroyOnTeleporterStart)
                 TeleporterInteraction.onTeleporterBeginChargingGlobal += TeleporterCharged_DestroyComponent;
-            GlobalEventManager.OnInteractionsGlobal += GlobalEventManager_OnInteractionsGlobal;
+            if (CartographerRing_HideNotif)
+                GlobalEventManager.OnInteractionsGlobal += GlobalEventManager_OnInteractionsGlobal;
         }
 
         private void GlobalEventManager_OnInteractionsGlobal(Interactor interactor, IInteractable interactable, GameObject gameObject)
@@ -330,7 +334,8 @@ namespace RiskOfBulletstorm.Items
             Stage.onServerStageComplete -= StageEnd_DestroyComponent;
             if (CartographerRing_DestroyOnTeleporterStart)
                 TeleporterInteraction.onTeleporterBeginChargingGlobal -= TeleporterCharged_DestroyComponent;
-            GlobalEventManager.OnInteractionsGlobal -= GlobalEventManager_OnInteractionsGlobal;
+            if (CartographerRing_HideNotif)
+                GlobalEventManager.OnInteractionsGlobal -= GlobalEventManager_OnInteractionsGlobal;
         }
 
         private void TeleporterCharged_DestroyComponent(TeleporterInteraction obj)

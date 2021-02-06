@@ -292,7 +292,7 @@ namespace RiskOfBulletstorm.Items
 
         private void BoostDamage(CharacterBody sender, StatHookEventArgs args)
         {
-            if (!sender.master && !sender.master.inventory) return;
+            if (!sender.master || !sender.master.inventory) return;
             var UnityInventoryCount = sender.master.inventory.GetItemCount(catalogIndex);
             var component = sender.masterObject.GetComponent<RingUnityTracker>();
             if (UnityInventoryCount > 0 && component)
@@ -306,7 +306,7 @@ namespace RiskOfBulletstorm.Items
             public int itemCount = 0;
             public Inventory inventory;
 
-            public void Awake()
+            public void Start()
             {
                 inventory.onInventoryChanged += Inventory_onInventoryChanged;
             }
