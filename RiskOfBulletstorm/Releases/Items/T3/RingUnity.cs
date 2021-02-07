@@ -308,7 +308,10 @@ namespace RiskOfBulletstorm.Items
 
             public void Start()
             {
-                inventory.onInventoryChanged += Inventory_onInventoryChanged;
+                if (inventory)
+                    inventory.onInventoryChanged += Inventory_onInventoryChanged;
+                else
+                    BulletstormPlugin._logger.LogMessage("Inventory not found!");
             }
 
             private void Inventory_onInventoryChanged()
