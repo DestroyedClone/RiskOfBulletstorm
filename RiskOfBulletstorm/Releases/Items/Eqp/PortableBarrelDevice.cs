@@ -401,9 +401,9 @@ namespace RiskOfBulletstorm.Items
         private bool TryPlaceBarrel(CharacterBody characterBody)
         {
             bool success = false;
-            if (characterBody)
+            if (characterBody && characterBody.masterObject)
             {
-                var tracker = characterBody.gameObject.GetComponent<BarrelTracker>();
+                var tracker = characterBody.masterObject.GetComponent<BarrelTracker>();
                 var position = characterBody.corePosition;
                 if (tracker)
                 {

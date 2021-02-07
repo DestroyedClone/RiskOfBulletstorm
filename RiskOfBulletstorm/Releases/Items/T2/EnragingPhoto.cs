@@ -21,11 +21,11 @@ namespace RiskOfBulletstorm.Items
         public float EnragingPhoto_StackDuration { get; private set; } = 0.5f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Minimum percent of health loss for lower bound? (Value: Percentage", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Minimum percent of health loss for lower bound? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float EnragingPhoto_HealthThresholdMin { get; private set; } = 0.01f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Maximum percent of health loss for higher bound? (Value: Percentage", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Maximum percent of health loss for higher bound? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float EnragingPhoto_HealthThresholdMax { get; private set; } = 0.10f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
