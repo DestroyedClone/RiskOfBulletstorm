@@ -290,7 +290,7 @@ namespace RiskOfBulletstorm.Items
             if (InventoryCount > 0 && healthLost >= EnragingPhoto_HealthThresholdMin)
             {
                 var maxDuration = EnragingPhoto_BaseDuration + EnragingPhoto_StackDuration * (InventoryCount - 1);
-                var scale = GetPercentBetweenTwoValues(healthLost, EnragingPhoto_HealthThresholdMin, EnragingPhoto_HealthThresholdMax);
+                var scale = Mathf.Min(GetPercentBetweenTwoValues(healthLost, EnragingPhoto_HealthThresholdMin, EnragingPhoto_HealthThresholdMax), EnragingPhoto_HealthThresholdMax);
                 BulletstormPlugin._logger.LogMessage("EnragingPhotoScale = " + scale);
                 self.body.AddTimedBuffAuthority(BuffsController.Anger, maxDuration * scale);
             }
