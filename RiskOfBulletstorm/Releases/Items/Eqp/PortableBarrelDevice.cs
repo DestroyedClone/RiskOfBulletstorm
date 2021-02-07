@@ -346,6 +346,32 @@ namespace RiskOfBulletstorm.Items
             base.Install();
             On.RoR2.BarrelInteraction.OnInteractionBegin += DestroyBarrel;
             CharacterMaster.onStartGlobal += CharacterMaster_onStartGlobal;
+            On.RoR2.PurchaseInteraction.GetInteractability += PurchaseInteraction_GetInteractability;
+        }
+
+        private Interactability PurchaseInteraction_GetInteractability(On.RoR2.PurchaseInteraction.orig_GetInteractability orig, PurchaseInteraction self, Interactor activator)
+        {
+            SummonMasterBehavior summonMasterBehavior = self.gameObject.GetComponent<SummonMasterBehavior>();
+            if (summonMasterBehavior && summonMasterBehavior.callOnEquipmentSpentOnPurchase)
+            {
+                CharacterBody characterBody = activator.GetComponent<CharacterBody>();
+                if (characterBody && characterBody.inventory)
+                {
+                    if (characterBody.inventory.currentEquipmentIndex == catalogIndex)
+                    {
+                        return Interactability.ConditionsNotMet;
+                    }
+                }
+            }
+            return orig(self, activator);
+        }
+
+        public override void Uninstall()
+        {
+            base.Uninstall();
+            On.RoR2.BarrelInteraction.OnInteractionBegin -= DestroyBarrel;
+            CharacterMaster.onStartGlobal -= CharacterMaster_onStartGlobal;
+            On.RoR2.PurchaseInteraction.GetInteractability -= PurchaseInteraction_GetInteractability;
         }
 
         private void CharacterMaster_onStartGlobal(CharacterMaster obj)
@@ -355,14 +381,6 @@ namespace RiskOfBulletstorm.Items
                 obj.gameObject.AddComponent<BarrelTracker>();
             }
         }
-
-        public override void Uninstall()
-        {
-            base.Uninstall();
-            On.RoR2.BarrelInteraction.OnInteractionBegin -= DestroyBarrel;
-            CharacterMaster.onStartGlobal -= CharacterMaster_onStartGlobal;
-        }
-
         private void DestroyBarrel(On.RoR2.BarrelInteraction.orig_OnInteractionBegin orig, BarrelInteraction self, Interactor activator)
         {
             orig(self, activator);
