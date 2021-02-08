@@ -456,9 +456,8 @@ namespace RiskOfBulletstorm.Items
                             var spiceCountAdjusted = spiceCount < SpiceEquipment_MaxPerPlayer ? spiceCount : 0;
                             if (Util.CheckRoll(spiceCountAdjusted))
                             {
-
+                                self.pickupIndex = pickupIndex;
                             }
-                            self.pickupIndex = pickupIndex;
                         }
                     }
                 }
