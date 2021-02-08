@@ -16,11 +16,7 @@ namespace RiskOfBulletstorm.Items
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How long should the barrel stay around after being opened?", AutoConfigFlags.PreventNetMismatch)]
-        public static float PortableTableDevice_UseLifetime { get; private set; } = 4f;
-
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How many barrels should be allowed in the world? (Set to -1 for infinite)", AutoConfigFlags.PreventNetMismatch)]
-        public static int PortableTableDevice_MaxBarrels { get; private set; } = 100;
+        public static float PortableTableDevice_UseLifetime { get; private set; } = 3f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Max barrels per player?", AutoConfigFlags.PreventNetMismatch)]
         public static int PortableTableDevice_MaxBarrelsPerPlayer { get; private set; } = 20;
@@ -35,7 +31,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetPickupString(string langID = null)
         {
             var desc = "<b>Know When To Fold 'Em</b>\n";
-            if (PortableTableDevice_MaxBarrels > 0 && PortableTableDevice_Lifetime > 0)
+            if (PortableTableDevice_MaxBarrelsPerPlayer > 0 && PortableTableDevice_Lifetime > 0)
                 desc += "Places a barrel.";
             else desc += "Faulty user input prevents this device from functioning.";
             return desc;
@@ -43,8 +39,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetDescString(string langid = null)
         {
-            var canBarrel = PortableTableDevice_MaxBarrels > 0;
-            var isInfiniteBarrel = PortableTableDevice_MaxBarrels == -1;
+            var canBarrel = PortableTableDevice_MaxBarrelsPerPlayer > 0;
             var canLive = PortableTableDevice_Lifetime > 0;
             var isLifeLongerThanOne = PortableTableDevice_Lifetime > 1;
             var desc = $"";
@@ -57,15 +52,12 @@ namespace RiskOfBulletstorm.Items
                 else desc += $"a second.";
 
                 // barrel count //
-                if (isInfiniteBarrel)
-                    desc += $"There is no limit on the amount of barrels that";
-                else
-                {
-                    desc += $"At most, ";
-                    if (PortableTableDevice_MaxBarrels == 1) desc += $"a single barrel";
-                    else if (PortableTableDevice_MaxBarrels > 1) desc += $"{PortableTableDevice_MaxBarrels} barrels";
-                }
-                desc += $" can be placed in the world.";
+
+                desc += $"At most, ";
+                if (PortableTableDevice_MaxBarrelsPerPlayer == 1) desc += $"a single barrel";
+                else if (PortableTableDevice_MaxBarrelsPerPlayer > 1) desc += $"{PortableTableDevice_MaxBarrelsPerPlayer} barrels";
+
+                desc += $" can be placed per person.";
             }
             else return $"Unsuccesfully attempts to place a barrel.";
             return desc;
@@ -394,27 +386,6 @@ namespace RiskOfBulletstorm.Items
         protected override bool PerformEquipmentAction(EquipmentSlot slot)
         {
             return TryPlaceBarrel(slot.characterBody);
-        }
-
-        private bool PlaceTableOld(CharacterBody characterBody)
-        {
-            var barrels = UnityEngine.Object.FindObjectsOfType<BarrelDestroyOnInteraction>();
-            var barrelAmt = barrels.Length;
-            var maxBarrels = PortableTableDevice_MaxBarrels;
-
-            bool success = false;
-
-            if (barrelAmt < maxBarrels || maxBarrels == -1 )
-            {
-                //var yOffset = characterBody.characterMotor.capsuleCollider.height / 2;
-                //var randomoffset = new Vector3(Random.Range(-randomValue, randomValue), 0f, Random.Range(-randomValue, randomValue));
-                var position = characterBody.corePosition;
-
-                var spawnBarrel = iscBarrelNew.DoSpawn(position, characterBody.transform.rotation, new DirectorSpawnRequest(
-                    iscBarrelNew, placementRule, RoR2Application.rng));
-                success = spawnBarrel.success;
-            }
-            return success;
         }
         private bool TryPlaceBarrel(CharacterBody characterBody)
         {
