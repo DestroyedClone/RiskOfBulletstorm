@@ -20,7 +20,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetDescString(string langid = null)
         {
-            var desc = $"<style=cIsHealing>Heals for 100% health,</style> <style=cIsHealth>permanently increases max health by 10%</style>, and <style=cIsUtility>reduces equipment recharge rate by 10%</style>.";
+            var desc = $"<style=cIsHealing>Heals for 100% health,</style> <style=cIsHealth>increases max health by 10%</style>, and <style=cIsUtility>reduces equipment recharge rate by 10%</style>.";
             return desc;
         }
 
@@ -29,7 +29,7 @@ namespace RiskOfBulletstorm.Items
         public static ItemIndex OrangeConsumedIndex;
         public static GameObject ItemBodyModelPrefab;
         public float healthMultAdd = 0.1f;
-        public float cooldownReduction = 0.1f;
+        public float cooldownReduction = 0.9f;
         public Orange()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Orange.prefab";
@@ -272,6 +272,12 @@ namespace RiskOfBulletstorm.Items
             On.RoR2.Inventory.CalculateEquipmentCooldownScale += Inventory_CalculateEquipmentCooldownScale;
         }
 
+        public override void InstallLanguage()
+        {
+            base.InstallLanguage();
+            LanguageAPI.Add("ITEM_ORANGETALLY_NAME", "Oranges (Consumed)");
+            LanguageAPI.Add("ITEM_ORANGETALLY_DESC", "Per stack, grants<style=cIsHealth>+10% maximum health</style> and <style=cIsUtility>+10% reduced equipment recharge rate</style>.");
+        }
         private float Inventory_CalculateEquipmentCooldownScale(On.RoR2.Inventory.orig_CalculateEquipmentCooldownScale orig, Inventory self)
         {
             return orig(self) * Mathf.Pow(cooldownReduction, self.GetItemCount(OrangeConsumedIndex));

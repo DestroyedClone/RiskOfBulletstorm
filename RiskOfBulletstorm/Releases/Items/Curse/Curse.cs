@@ -120,10 +120,22 @@ namespace RiskOfBulletstorm.Items
             CharacterBody.onBodyStartGlobal += JamEnemy;
         }
 
+        public override void InstallLanguage()
+        {
+            base.InstallLanguage();
+            LanguageAPI.Add("ITEM_CURSETALLY_NAME", "Current Curse");
+            LanguageAPI.Add("ITEM_CURSETALLY_DESC", "");
+        }
+
         public override void Uninstall()
         {
             base.Uninstall();
             CharacterBody.onBodyStartGlobal -= JamEnemy;
+        }
+
+        public override void UninstallLanguage()
+        {
+            base.UninstallLanguage();
         }
 
         private void JamEnemy(CharacterBody obj)

@@ -19,7 +19,7 @@ namespace RiskOfBulletstorm.Items
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the duration of regen?", AutoConfigFlags.PreventNetMismatch)]
-        public float Mustache_Duration { get; private set; } = 2f;
+        public float Mustache_Duration { get; private set; } = 10f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Should it heal upon using a bloodshrine?", AutoConfigFlags.PreventNetMismatch)]
@@ -33,7 +33,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetPickupString(string langID = null) => "<b>A Familiar Face</b>" +
             "\n<align=\"center\">Spending money soothes the soul.</align>";
 
-        protected override string GetDescString(string langid = null) => $"Upon purchase, increases your regeneration by <style=cIsHealing>{Mustache_RegenAmount} health</style> <style=cStack>(+{Mustache_RegenAmountStack} per stack.)</style> for {Mustache_Duration} seconds.";
+        protected override string GetDescString(string langid = null) => $"Upon purchase, increases your regeneration by <style=cIsHealing>{Mustache_RegenAmount} health</style> <style=cStack>(+{Mustache_RegenAmountStack} per stack)</style> for {Mustache_Duration} seconds.";
 
         protected override string GetLoreString(string langID = null) => "The power of commerce fills your veins... and your follicles! This mustache vertically integrates your purchasing synergies, giving you a chance to be healed on every transaction.";
 

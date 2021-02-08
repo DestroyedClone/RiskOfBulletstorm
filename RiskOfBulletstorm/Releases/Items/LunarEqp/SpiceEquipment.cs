@@ -317,33 +317,13 @@ namespace RiskOfBulletstorm.Items
                 On.RoR2.PickupDropletController.CreatePickupDroplet += ReplacePickupDropletSynced;
         }
 
-
-        [Server]
-        private void GenericPickupController_AttemptGrant(On.RoR2.GenericPickupController.orig_AttemptGrant orig, GenericPickupController self, CharacterBody body)
+        public override void InstallLanguage()
         {
-            if (!NetworkServer.active)
-            {
-                Debug.LogWarning("[Server] function 'System.Void RoR2.GenericPickupController::AttemptGrant(RoR2.CharacterBody)' called on client");
-                return;
-            }
-            TeamComponent component = body.GetComponent<TeamComponent>();
-            if (component && component.teamIndex == TeamIndex.Player)
-            {
-                Inventory inventory = body.inventory;
-                if (inventory)
-                {
-                    var spiceCount = inventory.GetItemCount(SpiceTally);
-                    var spiceCountAdjusted = spiceCount < SpiceEquipment_MaxPerPlayer ? spiceCount : 0;
-                    if (Util.CheckRoll(spiceCountAdjusted) && (pickupDef.itemIndex != ItemIndex.None || pickupDef.equipmentIndex != EquipmentIndex.None))
-                    {
-                        self.pickupIndex = pickupIndex;
-                    }
-                }
-            }
-            orig(self, body);
+            base.InstallLanguage();
+            LanguageAPI.Add("ITEM_SPICETALLY_NAME", "Spice (Consumed)");
+            LanguageAPI.Add("ITEM_SPICETALLY_DESC", "Grants various stat changes. Most notably, increased damage and reduced accuracy and health.");
         }
         
-
         public override void Uninstall()
         {
             base.Install();
@@ -452,6 +432,40 @@ namespace RiskOfBulletstorm.Items
             }
         }
 
+
+        [Server]
+        private void GenericPickupController_AttemptGrant(On.RoR2.GenericPickupController.orig_AttemptGrant orig, GenericPickupController self, CharacterBody body)
+        {
+            if (!NetworkServer.active)
+            {
+                Debug.LogWarning("[Server] function 'System.Void RoR2.GenericPickupController::AttemptGrant(RoR2.CharacterBody)' called on client");
+                return;
+            }
+            if (!self.gameObject.GetComponent<SpiceRolled>())
+            {
+                self.gameObject.AddComponent<SpiceRolled>();
+                TeamComponent component = body.GetComponent<TeamComponent>();
+                if (component && component.teamIndex == TeamIndex.Player)
+                {
+                    Inventory inventory = body.inventory;
+                    if (inventory)
+                    {
+                        if (pickupDef.itemIndex != ItemIndex.None || pickupDef.equipmentIndex != EquipmentIndex.None)
+                        {
+                            var spiceCount = inventory.GetItemCount(SpiceTally);
+                            var spiceCountAdjusted = spiceCount < SpiceEquipment_MaxPerPlayer ? spiceCount : 0;
+                            if (Util.CheckRoll(spiceCountAdjusted))
+                            {
+
+                            }
+                            self.pickupIndex = pickupIndex;
+                        }
+                    }
+                }
+            }
+            orig(self, body);
+        }
+
         private void ReplacePickupDropletSynced(On.RoR2.PickupDropletController.orig_CreatePickupDroplet orig, PickupIndex pickupIndex, Vector3 position, Vector3 velocity)
         {
             var spiceCount = IntOfMostSpice(SpiceEquipment_MaxPerPlayer);
@@ -498,6 +512,12 @@ namespace RiskOfBulletstorm.Items
             inventory.GiveItem(SpiceTally);
 
             return false;
+        }
+
+        // used to prevent hotswapping spice on client mode for equipment
+        public class SpiceRolled : MonoBehaviour
+        {
+
         }
     }
 }
