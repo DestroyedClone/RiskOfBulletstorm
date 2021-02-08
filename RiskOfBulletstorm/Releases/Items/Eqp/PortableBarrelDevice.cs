@@ -437,7 +437,13 @@ namespace RiskOfBulletstorm.Items
                             tracker.spawnedBarrels.RemoveAt(0);
                         }
                         tracker.spawnedBarrels.Add(spawnBarrel.spawnedInstance.gameObject);
+                    } else
+                    {
+                        Debug.Log("barrel failed!");
                     }
+                } else
+                {
+                    Debug.Log("No tracker!");
                 }
             }
             return success;
@@ -478,7 +484,7 @@ namespace RiskOfBulletstorm.Items
         }
         public class BarrelTracker : MonoBehaviour
         {
-            public List<GameObject> spawnedBarrels;
+            public List<GameObject> spawnedBarrels = new List<GameObject>(PortableTableDevice_MaxBarrelsPerPlayer);
         }
     }
 }
