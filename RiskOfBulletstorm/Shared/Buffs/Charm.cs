@@ -63,18 +63,21 @@ namespace RiskOfBulletstorm.Shared.Buffs
         {
             DamageInfo damageInfo = damageReport.damageInfo;
 
-            var isCharmed = self.body.gameObject.GetComponent<IsCharmed>();
+            var isCharmed = self.body?.gameObject.GetComponent<IsCharmed>();
             if (isCharmed && isCharmed.enabled)
             {
                 bool attackerIsCharmerTeam = damageReport.attackerTeamIndex == isCharmed.GetOppositeTeamIndex(isCharmed.GetOldTeam());
                 if (attackerIsCharmerTeam)
                 {
-                    bool noTarget = (!self.currentEnemy.gameObject || self.enemyAttention <= 0f); // no current enemy or they're ready to retarget
-                    bool attackerNotSelf = damageInfo.attacker != self.body.gameObject; // if their target isnt themselves
-                    bool enemyIsNotCharmed = !damageInfo.attacker.GetComponent<IsCharmed>();
-                    if (noTarget && attackerNotSelf && enemyIsNotCharmed)
+                    if (damageInfo.attacker)
                     {
-                        return;
+                        bool noTarget = (!self.currentEnemy.gameObject || self.enemyAttention <= 0f); // no current enemy or they're ready to retarget
+                        bool attackerNotSelf = damageInfo.attacker != self.body.gameObject; // if their target isnt themselves
+                        bool enemyIsNotCharmed = !damageInfo.attacker.GetComponent<IsCharmed>();
+                        if (noTarget && attackerNotSelf && enemyIsNotCharmed)
+                        {
+                            return;
+                        }
                     }
                 }
             }
