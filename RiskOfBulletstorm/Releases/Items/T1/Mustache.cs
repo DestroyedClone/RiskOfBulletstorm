@@ -10,16 +10,20 @@ namespace RiskOfBulletstorm.Items
     public class Mustache : Item_V2<Mustache>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the percentage of max health to heal per stack on purchase? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float Mustache_HealAmount { get; private set; } = 0.20f;
+        [AutoConfig("What is the base amount of regen increase?", AutoConfigFlags.PreventNetMismatch)]
+        public float Mustache_RegenAmount { get; private set; } = 2f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the percentage of max health to heal per stack on non-purchase interactions? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float Mustache_HealAmountAny { get; private set; } = 0.1f;
+        [AutoConfig("What is the base amount of regen increase?", AutoConfigFlags.PreventNetMismatch)]
+        public float Mustache_RegenAmountStack { get; private set; } = 2f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("What is the duration of regen?", AutoConfigFlags.PreventNetMismatch)]
+        public float Mustache_Duration { get; private set; } = 2f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Should it heal upon using a bloodshrine?", AutoConfigFlags.PreventNetMismatch)]
-        public bool Mustache_BloodShrine { get; private set; } = false;
+        public bool Mustache_BloodShrine { get; private set; } = true;
 
         public override string displayName => "Mustache";
         public override ItemTier itemTier => ItemTier.Tier1;
@@ -27,13 +31,14 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetNameString(string langID = null) => displayName;
         protected override string GetPickupString(string langID = null) => "<b>A Familiar Face</b>" +
-            "\nSpending money soothes the soul.";
+            "\n<align=\"center\">Spending money soothes the soul.</align>";
 
-        protected override string GetDescString(string langid = null) => $"<style=cIsHealing>Upon purchase, heals for {Pct(Mustache_HealAmount)} health</style> <style=cStack>per stack.</style>";
+        protected override string GetDescString(string langid = null) => $"Upon purchase, increases your regeneration by <style=cIsHealing>{Mustache_RegenAmount} health</style> <style=cStack>(+{Mustache_RegenAmountStack} per stack.)</style> for {Mustache_Duration} seconds.";
 
         protected override string GetLoreString(string langID = null) => "The power of commerce fills your veins... and your follicles! This mustache vertically integrates your purchasing synergies, giving you a chance to be healed on every transaction.";
 
         public static GameObject ItemBodyModelPrefab;
+        public BuffIndex MustacheHealBuff { get; private set; }
 
         public Mustache()
         {
@@ -53,6 +58,16 @@ namespace RiskOfBulletstorm.Items
                 displayRules = GenerateItemDisplayRules();
             }
             base.SetupAttributes();
+            var healBuff = new CustomBuff(
+            new BuffDef
+            {
+                buffColor = Color.yellow,
+                canStack = false,
+                isDebuff = false,
+                iconPath = iconResourcePath,
+                name = "Power of Commerce",
+            });
+            MustacheHealBuff = BuffAPI.Add(healBuff);
         }
         public static ItemDisplayRuleDict GenerateItemDisplayRules()
         {
@@ -276,48 +291,55 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            RoR2.GlobalEventManager.OnInteractionsGlobal += GlobalEventManager_OnInteractionsGlobal;
-        }
-
-        private void GlobalEventManager_OnInteractionsGlobal(Interactor interactor, IInteractable interactable, GameObject gameObject)
-        {
-            CharacterBody characterBody = interactor.GetComponent<CharacterBody>();
-            if (interactor && characterBody && characterBody.inventory)
-            {
-                var itemCount = characterBody.inventory.GetItemCount(catalogIndex);
-                if (itemCount > 0)
-                {
-                    var purchaseInteraction = gameObject.GetComponent<PurchaseInteraction>();
-                    if (purchaseInteraction)
-                    {
-                        var isBloodShrine = purchaseInteraction.costType == CostTypeIndex.PercentHealth;
-                        if ((isBloodShrine && Mustache_BloodShrine) || !isBloodShrine)
-                        {
-                            if (Mustache_BloodShrine)
-                            {
-                                Heal(characterBody, itemCount, Mustache_HealAmount);
-                            }
-                        }
-                    } else
-                    {
-                        Heal(characterBody, itemCount, Mustache_HealAmountAny);
-                    }
-                }
-            }
+            On.RoR2.PurchaseInteraction.OnInteractionBegin += PurchaseInteraction_OnInteractionBegin;
+            On.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
-            RoR2.GlobalEventManager.OnInteractionsGlobal -= GlobalEventManager_OnInteractionsGlobal;
+            On.RoR2.PurchaseInteraction.OnInteractionBegin -= PurchaseInteraction_OnInteractionBegin;
+            On.RoR2.CharacterBody.RecalculateStats -= CharacterBody_RecalculateStats;
         }
 
-        private void Heal(CharacterBody characterBody, int itemCount, float healFraction)
+        private void CharacterBody_RecalculateStats(On.RoR2.CharacterBody.orig_RecalculateStats orig, CharacterBody self)
         {
-            var resultingHeal = healFraction * itemCount;
+            orig(self);
+            if (self.inventory)
+            {
+                if (self.HasBuff(MustacheHealBuff))
+                {
+                    self.regen += Mustache_RegenAmount + (Mustache_RegenAmountStack * GetCount(self));
+                }
+            }
+        }
+
+        private void PurchaseInteraction_OnInteractionBegin(On.RoR2.PurchaseInteraction.orig_OnInteractionBegin orig, PurchaseInteraction self, Interactor activator)
+        {
+            orig(self, activator);
+            CharacterBody characterBody = activator.GetComponent<CharacterBody>();
+            if (characterBody && characterBody.inventory)
+            {
+                var itemCount = GetCount(characterBody);
+                if (itemCount > 0)
+                {
+                    var isBloodShrine = self.costType == CostTypeIndex.PercentHealth;
+                    if ((isBloodShrine && Mustache_BloodShrine) || !isBloodShrine)
+                    {
+                        if (Mustache_BloodShrine)
+                        {
+                            Heal(characterBody);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void Heal(CharacterBody characterBody)
+        {
             if (characterBody.healthComponent)
             {
-                characterBody.healthComponent.HealFraction(resultingHeal, default);
+                characterBody.AddTimedBuff(MustacheHealBuff, Mustache_Duration);
             }
         }
     }
