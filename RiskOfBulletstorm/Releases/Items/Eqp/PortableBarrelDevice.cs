@@ -49,7 +49,7 @@ namespace RiskOfBulletstorm.Items
                 desc += $"Places a <style=cIsUtility>barrel</style> at your feet." +
                     $"\nEach barrel lasts for ";
                 if (isLifeLongerThanOne) desc += $"{PortableTableDevice_Lifetime} seconds.";
-                else desc += $"a second.";
+                else desc += $"a second. ";
 
                 // barrel count //
 

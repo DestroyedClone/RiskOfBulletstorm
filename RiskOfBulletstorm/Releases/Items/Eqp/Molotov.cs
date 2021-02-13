@@ -79,7 +79,7 @@ namespace RiskOfBulletstorm.Items
                 //duration
                 if (Molotov_Duration > 0) desc += $"{Molotov_Duration} seconds";
                 else desc += $"a moment in time";
-                desc += $" </style>.";
+                desc += $"</style>.";
                 return desc;
             }
         }

@@ -30,7 +30,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetDescString(string langid = null)
         {
-            var desc = $"<style=cIsHealing>Heals for {Pct(Orange_HealAmount)} health,</style> <style=cIsHealth>increases max health by {Pct(Orange_HealthMultAdd)}</style>, and <style=cIsUtility>reduces equipment recharge rate by {Pct(10)}</style>.";
+            var desc = $"<style=cIsHealing>Heals for {Pct(Orange_HealAmount)} health,</style> <style=cIsHealth>increases max health by {Pct(Orange_HealthMultAdd)}</style>, and <style=cIsUtility>reduces equipment recharge rate by {Pct(Orange_EquipmentReduce)}</style>.";
             return desc;
         }
 
@@ -281,7 +281,7 @@ namespace RiskOfBulletstorm.Items
         {
             base.InstallLanguage();
             LanguageAPI.Add("ITEM_ORANGETALLY_NAME", "Oranges (Consumed)");
-            LanguageAPI.Add("ITEM_ORANGETALLY_DESC", "Per stack, grants<style=cIsHealth>+" + Pct(Orange_HealthMultAdd) + " maximum health</style> and <style=cIsUtility>+" + Pct(Orange_EquipmentReduce) + " reduced equipment recharge rate</style>.");
+            LanguageAPI.Add("ITEM_ORANGETALLY_DESC", "Per stack, grants <style=cIsHealth>+" + Pct(Orange_HealthMultAdd) + " maximum health</style> and <style=cIsUtility>+" + Pct(Orange_EquipmentReduce) + " reduced equipment recharge rate</style>.");
         }
         private float Inventory_CalculateEquipmentCooldownScale(On.RoR2.Inventory.orig_CalculateEquipmentCooldownScale orig, Inventory self)
         {

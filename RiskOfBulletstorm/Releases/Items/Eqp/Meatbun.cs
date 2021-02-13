@@ -103,7 +103,7 @@ namespace RiskOfBulletstorm.Items
                 canStack = true,
                 isDebuff = false,
                 iconPath = "@RiskOfBulletstorm:Assets/Textures/Icons/Buffs/Meatbun.png",
-                name = "Meatbun Bonus\n+"+ Meatbun_DamageBonus*100f+"% damage dealt per stack",
+                name = "<color=black>Meatbun Bonus\n+" + Meatbun_DamageBonus*100f+"% damage dealt per stack</color>",
             });
             MeatbunBoost = BuffAPI.Add(dmgBuff);
         }
