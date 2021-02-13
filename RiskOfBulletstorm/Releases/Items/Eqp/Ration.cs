@@ -271,13 +271,49 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            On.RoR2.HealthComponent.TakeDamage += TankHit;
+            if (Ration_SaveFromDeathAnySlot)
+                On.RoR2.HealthComponent.TakeDamage += TankHitAnySlot;
+            else
+                On.RoR2.HealthComponent.TakeDamage += TankHit;
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
-            On.RoR2.HealthComponent.TakeDamage -= TankHit;
+            if (Ration_SaveFromDeathAnySlot)
+                On.RoR2.HealthComponent.TakeDamage -= TankHitAnySlot;
+            else
+                On.RoR2.HealthComponent.TakeDamage -= TankHit;
+        }
+
+        //slightly more expensive because it iterates through the equipment slots
+        private void TankHitAnySlot(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
+        {
+            if (Ration_SaveFromDeath)
+            {
+                var body = self.body;
+                if (body)
+                {
+                    var inventory = body.inventory;
+                    if (inventory)
+                    {
+                        var equipmentStateSlots = inventory.equipmentStateSlots;
+                        if (equipmentStateSlots.Length > 0)
+                        {
+                            for (int i = 0; i < equipmentStateSlots.Length; i++)
+                            {
+                                if (equipmentStateSlots[i].equipmentIndex == catalogIndex)
+                                {
+                                    damageInfo.rejected = true;
+                                    RationUse(self, inventory, i);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            orig(self, damageInfo);
         }
 
         private void TankHit(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
@@ -290,33 +326,14 @@ namespace RiskOfBulletstorm.Items
                     var inventory = body.inventory;
                     if (inventory)
                     {
-                        int validSlot = -1;
                         if (inventory.GetEquipmentIndex() == catalogIndex)
                         {
                             var endHealth = self.combinedHealth - damageInfo.damage;
                             if ((endHealth <= 0) && (!damageInfo.rejected))
                             {
-                                validSlot = 0;
+                                damageInfo.rejected = true;
+                                RationUse(self, inventory, inventory.activeEquipmentSlot);
                             }
-                        }
-                        if (Ration_SaveFromDeathAnySlot)
-                        {
-                            var equipmentStateSlots = inventory.equipmentStateSlots;
-                            if (equipmentStateSlots.Length > 0)
-                            {
-                                foreach (var equipmentState in equipmentStateSlots)
-                                {
-                                    if (equipmentState.equipmentIndex == catalogIndex)
-                                    {
-
-                                    }
-                                }
-                            }
-                        }
-                        if (validSlot >= 0)
-                        {
-                            damageInfo.rejected = true;
-                            RationUse(self, inventory, validSlot);
                         }
                     }
                 }
@@ -342,7 +359,7 @@ namespace RiskOfBulletstorm.Items
             Inventory inventory = body.inventory;
             if (!inventory) return false;
 
-            RationUse(health, inventory);
+            RationUse(health, inventory, slot.activeEquipmentSlot);
 
             return false;
         }
