@@ -14,7 +14,7 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How much damage should the Bomb deal upon explosion? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float Bomb_DamageDealt { get; private set; } = 1f;
+        public float Bomb_DamageDealt { get; private set; } = 3f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the cooldown in seconds?", AutoConfigFlags.PreventNetMismatch)]
