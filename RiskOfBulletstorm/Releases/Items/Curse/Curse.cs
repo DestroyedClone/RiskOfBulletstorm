@@ -63,6 +63,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetLoreString(string langID = null) => "";
 
         //public GameObject curseEffect = Resources.Load<GameObject>("prefabs/effects/ImpSwipeEffect");
+        public GameObject jammedFire;
 
         public static ItemIndex curseTally;
         //public static ItemIndex curseMax;
@@ -73,6 +74,13 @@ namespace RiskOfBulletstorm.Items
         public override void SetupBehavior()
         {
             base.SetupBehavior();
+            GameObject wispBody = Resources.Load<GameObject>("prefabs/characterbodies/WispBody");
+            var wispMouth = wispBody.transform.Find("Model Base").transform.Find("mdlWisp1Mouth");
+            //UnityEngine.Object.Destroy(wispMouth.transform.Find("Sphere.000"));
+            //UnityEngine.Object.Destroy(wispMouth.transform.Find("Point light"));
+            var wispFire = wispMouth.transform.Find("WispArmature").transform.Find("ROOT").transform.Find("Base").transform.Find("Fire").gameObject;
+            jammedFire = wispFire.InstantiateClone("Bulletstorm_JammedFire");
+
         }
         public override void SetupAttributes()
         {
@@ -246,6 +254,9 @@ namespace RiskOfBulletstorm.Items
         public class IsJammed : MonoBehaviour
         {
             public CharacterBody characterBody;
+            public TemporaryOverlay overlay;
+            public GameObject fireEffect = instance.jammedFire;
+            
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
             void OnEnable()
             {
@@ -259,6 +270,11 @@ namespace RiskOfBulletstorm.Items
                 {
                     characterBody.inventory.GiveItem(CurseController.isJammedItem);
                 }
+                if (fireEffect)
+                {
+                    fireEffect.transform.parent = gameObject.transform;
+                }
+
             }
         }
     }
