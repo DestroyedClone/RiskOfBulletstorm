@@ -13,12 +13,12 @@ namespace RiskOfBulletstorm.Items
         //[AutoConfig("How many curse is needed before Lord of the Jammed spawns? Set it to -1 to disable. (Default: 10)", AutoConfigFlags.PreventNetMismatch)]
         //public float Curse_LOTJAmount { get; private set; } = 10f;
 
-        //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        //[AutoConfig("Enable Jammed enemies?", AutoConfigFlags.PreventNetMismatch)]
-        //public bool Curse_Enable { get; private set; } = true;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Should the stacks of Curse be shown in the inventory?", AutoConfigFlags.PreventNetMismatch)]
         public bool Curse_Show { get; private set; } = true;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Enable Jammed enemies?", AutoConfigFlags.PreventNetMismatch)]
+        public bool Curse_Enable { get; private set; } = true;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How much additional damage should a Jammed enemy deal? (Value: Additive Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float Curse_DamageBoost { get; private set; } = 1.00f;
@@ -117,20 +117,22 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            CharacterBody.onBodyStartGlobal += JamEnemy;
+            if (Curse_Enable)
+                CharacterBody.onBodyStartGlobal += JamEnemy;
         }
 
         public override void InstallLanguage()
         {
             base.InstallLanguage();
             LanguageAPI.Add("ITEM_CURSETALLY_NAME", "Current Curse");
-            LanguageAPI.Add("ITEM_CURSETALLY_DESC", "");
+            LanguageAPI.Add("ITEM_CURSETALLY_DESC", "Affects various factors of the game.");
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
-            CharacterBody.onBodyStartGlobal -= JamEnemy;
+            if (Curse_Enable)
+                CharacterBody.onBodyStartGlobal -= JamEnemy;
         }
 
         public override void UninstallLanguage()
@@ -210,7 +212,6 @@ namespace RiskOfBulletstorm.Items
                 //BOSS CHECK
                 if (obj.isBoss)
                 {
-
                     if (inventory.GetItemCount(umbraItemIndex) > 0)
                     {
                         // UMBRA CHECK //
