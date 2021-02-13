@@ -338,10 +338,10 @@ namespace RiskOfBulletstorm.Items
             base.Install();
             On.RoR2.BarrelInteraction.OnInteractionBegin += DestroyBarrel;
             CharacterMaster.onStartGlobal += CharacterMaster_onStartGlobal;
-            On.RoR2.PurchaseInteraction.GetInteractability += PurchaseInteraction_GetInteractability;
+            On.RoR2.PurchaseInteraction.GetInteractability += PreventEquipmentDroneGive;
         }
 
-        private Interactability PurchaseInteraction_GetInteractability(On.RoR2.PurchaseInteraction.orig_GetInteractability orig, PurchaseInteraction self, Interactor activator)
+        private Interactability PreventEquipmentDroneGive(On.RoR2.PurchaseInteraction.orig_GetInteractability orig, PurchaseInteraction self, Interactor activator)
         {
             SummonMasterBehavior summonMasterBehavior = self.gameObject.GetComponent<SummonMasterBehavior>();
             if (summonMasterBehavior && summonMasterBehavior.callOnEquipmentSpentOnPurchase)
@@ -363,7 +363,7 @@ namespace RiskOfBulletstorm.Items
             base.Uninstall();
             On.RoR2.BarrelInteraction.OnInteractionBegin -= DestroyBarrel;
             CharacterMaster.onStartGlobal -= CharacterMaster_onStartGlobal;
-            On.RoR2.PurchaseInteraction.GetInteractability -= PurchaseInteraction_GetInteractability;
+            On.RoR2.PurchaseInteraction.GetInteractability -= PreventEquipmentDroneGive;
         }
 
         private void CharacterMaster_onStartGlobal(CharacterMaster obj)
@@ -393,9 +393,9 @@ namespace RiskOfBulletstorm.Items
             if (characterBody && characterBody.masterObject)
             {
                 var tracker = characterBody.masterObject.GetComponent<BarrelTracker>();
-                var position = characterBody.corePosition;
                 if (tracker)
                 {
+                    var position = characterBody.corePosition;
                     var spawnBarrel = iscBarrelNew.DoSpawn(position, characterBody.transform.rotation, new DirectorSpawnRequest(
                         iscBarrelNew, placementRule, RoR2Application.rng));
                     success = spawnBarrel.success;
@@ -410,11 +410,11 @@ namespace RiskOfBulletstorm.Items
                         tracker.spawnedBarrels.Add(spawnBarrel.spawnedInstance.gameObject);
                     } else
                     {
-                        Debug.Log("barrel failed!");
+                        //Debug.Log("barrel failed!");
                     }
                 } else
                 {
-                    Debug.Log("No tracker!");
+                    //Debug.Log("No tracker!");
                 }
             }
             return success;
@@ -434,6 +434,16 @@ namespace RiskOfBulletstorm.Items
                 {
                     base.transform.position = raycastHit.point;
                     base.transform.up = raycastHit.normal;
+                }
+            }
+
+            private void DestroyBarrel(On.RoR2.BarrelInteraction.orig_OnInteractionBegin orig, BarrelInteraction self, Interactor activator)
+            {
+                orig(self, activator);
+                var component = self.gameObject.GetComponent<BarrelDestroyOnInteraction>();
+                if (component)
+                {
+                    component.used = true;
                 }
             }
 

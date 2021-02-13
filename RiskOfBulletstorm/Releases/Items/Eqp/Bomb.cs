@@ -31,7 +31,7 @@ namespace RiskOfBulletstorm.Items
         {
             var desc = $"{descText}, dealing <style=cIsDamage>";
             if (Bomb_DamageDealt > 0) desc += $"{Pct(Bomb_DamageDealt)}";
-            else desc += $"no ";
+            else desc += $"no";
             desc += $" damage</style>.";
             return desc;
         }

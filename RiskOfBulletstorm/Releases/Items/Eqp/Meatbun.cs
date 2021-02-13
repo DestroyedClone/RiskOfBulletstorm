@@ -86,9 +86,6 @@ namespace RiskOfBulletstorm.Items
         public override void SetupBehavior()
         {
             base.SetupBehavior();
-
-            //if (HelperPlugin.ClassicItemsCompat.enabled)
-                //HelperPlugin.ClassicItemsCompat.RegisterEmbryo(catalogIndex);
         }
         public override void SetupAttributes()
         {
@@ -102,11 +99,11 @@ namespace RiskOfBulletstorm.Items
             var dmgBuff = new CustomBuff(
             new BuffDef
             {
-                buffColor = Color.white, //todo remove?
+                buffColor = Color.white,
                 canStack = true,
                 isDebuff = false,
                 iconPath = "@RiskOfBulletstorm:Assets/Textures/Icons/Buffs/Meatbun.png",
-                name = "Meatbun Bonus",
+                name = "Meatbun Bonus\n+"+ Meatbun_DamageBonus*100f+"% damage dealt per stack",
             });
             MeatbunBoost = BuffAPI.Add(dmgBuff);
         }
@@ -392,7 +389,6 @@ namespace RiskOfBulletstorm.Items
             if (Meatbun_HealAmount > 0)
             {
                 health.HealFraction(Meatbun_HealAmount, default);
-                //if (HelperPlugin.ClassicItemsCompat.enabled && HelperPlugin.ClassicItemsCompat.CheckEmbryoProc(instance, body)) health.HealFraction(Meatbun_HealAmount, default);
             }
             return true;
         }

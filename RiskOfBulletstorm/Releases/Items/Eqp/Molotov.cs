@@ -103,14 +103,14 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            On.RoR2.PurchaseInteraction.GetInteractability += PurchaseInteraction_GetInteractability;
+            On.RoR2.PurchaseInteraction.GetInteractability += PreventEquipmentDroneGive;
         }
         public override void Uninstall()
         {
             base.Uninstall();
-            On.RoR2.PurchaseInteraction.GetInteractability -= PurchaseInteraction_GetInteractability;
+            On.RoR2.PurchaseInteraction.GetInteractability -= PreventEquipmentDroneGive;
         }
-        private Interactability PurchaseInteraction_GetInteractability(On.RoR2.PurchaseInteraction.orig_GetInteractability orig, PurchaseInteraction self, Interactor activator)
+        private Interactability PreventEquipmentDroneGive(On.RoR2.PurchaseInteraction.orig_GetInteractability orig, PurchaseInteraction self, Interactor activator)
         {
             SummonMasterBehavior summonMasterBehavior = self.gameObject.GetComponent<SummonMasterBehavior>();
             if (summonMasterBehavior && summonMasterBehavior.callOnEquipmentSpentOnPurchase)

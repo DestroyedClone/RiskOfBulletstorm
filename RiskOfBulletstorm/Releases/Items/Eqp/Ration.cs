@@ -17,6 +17,10 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("Should the Ration be consumed to save the holder from death?", AutoConfigFlags.PreventNetMismatch)]
         public bool Ration_SaveFromDeath { get; private set; } = true;
 
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Does the Ration need to be active to be consumed to save the holder from death?", AutoConfigFlags.PreventNetMismatch)]
+        public bool Ration_SaveFromDeathAnySlot { get; private set; } = true;
+
         public override float cooldown { get; protected set; } = 0f;
 
         public override string displayName => "Ration";
@@ -61,8 +65,6 @@ namespace RiskOfBulletstorm.Items
         public override void SetupBehavior()
         {
             base.SetupBehavior();
-            //if (HelperPlugin.ClassicItemsCompat.enabled)
-                //HelperPlugin.ClassicItemsCompat.RegisterEmbryo(catalogIndex);
         }
         public override void SetupAttributes()
         {
@@ -288,14 +290,33 @@ namespace RiskOfBulletstorm.Items
                     var inventory = body.inventory;
                     if (inventory)
                     {
+                        int validSlot = -1;
                         if (inventory.GetEquipmentIndex() == catalogIndex)
                         {
                             var endHealth = self.combinedHealth - damageInfo.damage;
                             if ((endHealth <= 0) && (!damageInfo.rejected))
                             {
-                                damageInfo.rejected = true;
-                                RationUse(self, inventory);
+                                validSlot = 0;
                             }
+                        }
+                        if (Ration_SaveFromDeathAnySlot)
+                        {
+                            var equipmentStateSlots = inventory.equipmentStateSlots;
+                            if (equipmentStateSlots.Length > 0)
+                            {
+                                foreach (var equipmentState in equipmentStateSlots)
+                                {
+                                    if (equipmentState.equipmentIndex == catalogIndex)
+                                    {
+
+                                    }
+                                }
+                            }
+                        }
+                        if (validSlot >= 0)
+                        {
+                            damageInfo.rejected = true;
+                            RationUse(self, inventory, validSlot);
                         }
                     }
                 }
@@ -303,14 +324,13 @@ namespace RiskOfBulletstorm.Items
             orig(self, damageInfo);
         }
 
-        private void RationUse(HealthComponent health, Inventory inventory)
+        private void RationUse(HealthComponent health, Inventory inventory, int equipmentSlot)
         {
             if (Ration_HealAmount > 0)
             {
                 health.HealFraction(Ration_HealAmount, default);
-                //if (HelperPlugin.ClassicItemsCompat.enabled && HelperPlugin.ClassicItemsCompat.CheckEmbryoProc(instance, health.body)) health.HealFraction(Ration_HealAmount, default);
             }
-            inventory.SetEquipmentIndex(EquipmentIndex.None); //credit to : Rico
+            inventory.equipmentStateSlots[equipmentSlot].equipmentIndex = EquipmentIndex.None;
         }
 
         protected override bool PerformEquipmentAction(EquipmentSlot slot)

@@ -3,14 +3,24 @@ using RoR2;
 using R2API;
 using UnityEngine;
 using TILER2;
+using static TILER2.MiscUtil;
 
 namespace RiskOfBulletstorm.Items
 {
     public class Orange : Equipment_V2<Orange>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Should the benefits of Orange show in your inventory?", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Should the consumed amount of Orange show in your inventory?", AutoConfigFlags.PreventNetMismatch)]
         public bool Orange_ShowConsumed { get; private set; } = true;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("What is the percentage of health to heal per use?", AutoConfigFlags.PreventNetMismatch)]
+        public float Orange_HealAmount { get; private set; } = 1f;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("What is the percentage of max health to increase per use?", AutoConfigFlags.PreventNetMismatch)]
+        public float Orange_HealthMultAdd { get; private set; } = 0.1f;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("What is the equipment recharge reduction per use?", AutoConfigFlags.PreventNetMismatch)]
+        public float Orange_EquipmentReduce { get; private set; } = 0.1f;
         public override string displayName => "Orange";
         public override float cooldown { get; protected set; } = 0f;
 
@@ -20,7 +30,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetDescString(string langid = null)
         {
-            var desc = $"<style=cIsHealing>Heals for 100% health,</style> <style=cIsHealth>increases max health by 10%</style>, and <style=cIsUtility>reduces equipment recharge rate by 10%</style>.";
+            var desc = $"<style=cIsHealing>Heals for {Pct(Orange_HealAmount)} health,</style> <style=cIsHealth>increases max health by {Pct(Orange_HealthMultAdd)}</style>, and <style=cIsUtility>reduces equipment recharge rate by {Pct(10)}</style>.";
             return desc;
         }
 
@@ -28,8 +38,6 @@ namespace RiskOfBulletstorm.Items
 
         public static ItemIndex OrangeConsumedIndex;
         public static GameObject ItemBodyModelPrefab;
-        public float healthMultAdd = 0.1f;
-        public float cooldownReduction = 0.9f;
         public Orange()
         {
             modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Orange.prefab";
@@ -38,9 +46,6 @@ namespace RiskOfBulletstorm.Items
         public override void SetupBehavior()
         {
             base.SetupBehavior();
-
-           // if (HelperPlugin.ClassicItemsCompat.enabled)
-                //HelperPlugin.ClassicItemsCompat.RegisterEmbryo(catalogIndex);
         }
         public override void SetupAttributes()
         {
@@ -276,11 +281,11 @@ namespace RiskOfBulletstorm.Items
         {
             base.InstallLanguage();
             LanguageAPI.Add("ITEM_ORANGETALLY_NAME", "Oranges (Consumed)");
-            LanguageAPI.Add("ITEM_ORANGETALLY_DESC", "Per stack, grants<style=cIsHealth>+10% maximum health</style> and <style=cIsUtility>+10% reduced equipment recharge rate</style>.");
+            LanguageAPI.Add("ITEM_ORANGETALLY_DESC", "Per stack, grants<style=cIsHealth>+" + Pct(Orange_HealthMultAdd) + " maximum health</style> and <style=cIsUtility>+" + Pct(Orange_EquipmentReduce) + " reduced equipment recharge rate</style>.");
         }
         private float Inventory_CalculateEquipmentCooldownScale(On.RoR2.Inventory.orig_CalculateEquipmentCooldownScale orig, Inventory self)
         {
-            return orig(self) * Mathf.Pow(cooldownReduction, self.GetItemCount(OrangeConsumedIndex));
+            return orig(self) * Mathf.Pow(1f-Orange_EquipmentReduce, self.GetItemCount(OrangeConsumedIndex));
         }
 
         private void StatHooks_GetStatCoefficients(CharacterBody sender, StatHooks.StatHookEventArgs args)
@@ -290,7 +295,7 @@ namespace RiskOfBulletstorm.Items
                 var itemCount = sender.inventory.GetItemCount(OrangeConsumedIndex);
                 if (itemCount > 0)
                 {
-                    args.healthMultAdd += 0.1f * itemCount;
+                    args.healthMultAdd += Orange_HealthMultAdd * itemCount;
                 }
             }
         }

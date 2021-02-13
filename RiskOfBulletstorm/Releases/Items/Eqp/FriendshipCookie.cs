@@ -12,10 +12,6 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("What is the duration of immunity after respawning someone?", AutoConfigFlags.None)]
         public float FriendshipCookie_BaseImmunityTime { get; private set; } = 3f;
 
-        //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        //[AutoConfig("[Classic Items] Beating Embryo: What is the duration of immunity if it procs?", AutoConfigFlags.None)]
-        //public float FriendshipCookie_EmbryoImmunityTime { get; private set; } = 9f;
-
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the ItemIndex of the item to be given in singleplayer?", AutoConfigFlags.None)]
         public ItemIndex FriendshipCookie_ItemIndex { get; private set; } = ItemIndex.Infusion;
@@ -54,9 +50,6 @@ namespace RiskOfBulletstorm.Items
         public override void SetupBehavior()
         {
             base.SetupBehavior();
-
-            //if (HelperPlugin.ClassicItemsCompat.enabled)
-                //HelperPlugin.ClassicItemsCompat.RegisterEmbryo(catalogIndex);
         }
         public override void SetupAttributes()
         {

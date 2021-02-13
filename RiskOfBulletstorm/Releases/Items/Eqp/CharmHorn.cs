@@ -58,12 +58,10 @@ namespace RiskOfBulletstorm.Items
             buffWard.invertTeamFilter = true;
             buffWard.animateRadius = false;
             buffWard.floorWard = false;
+            buffWard.buffType = Shared.Buffs.BuffsController.Charm;
 
             SkinnedMeshRenderer mesh = CharmWardPrefab.GetComponentInChildren<SkinnedMeshRenderer>();
             mesh.material.color = new Color32(217, 20, 194, 255);
-
-            //if (HelperPlugin.ClassicItemsCompat.enabled)
-                //HelperPlugin.ClassicItemsCompat.RegisterEmbryo(catalogIndex);
             if (CharmWardPrefab) PrefabAPI.RegisterNetworkPrefab(CharmWardPrefab);
         }
         public override void SetupAttributes()
@@ -312,7 +310,7 @@ namespace RiskOfBulletstorm.Items
                 GameObject gameObject = UnityEngine.Object.Instantiate(CharmWardPrefab, body.transform.position, Quaternion.identity);
                 gameObject.GetComponent<TeamFilter>().teamIndex = body.teamComponent.teamIndex;
                 BuffWard buffWard = gameObject.GetComponent<BuffWard>();
-                buffWard.buffType = Shared.Buffs.BuffsController.Charm;
+                //buffWard.buffType = Shared.Buffs.BuffsController.Charm;
                 buffWard.GetComponent<BuffWard>().Networkradius *= radius;
                 buffWard.GetComponent<BuffWard>().radius *= radius;
                 NetworkServer.Spawn(gameObject);

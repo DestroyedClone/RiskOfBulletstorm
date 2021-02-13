@@ -35,7 +35,7 @@ namespace RiskOfBulletstorm.Items
             return desc;
         }
 
-        protected override string GetLoreString(string langID = null) => "Often found in gungeon doctors´ offices, this rack displays magazines of all sorts. The clips contained within should prove useful, and plentiful, for even the most inaccurate of Gungeoneers.";
+        protected override string GetLoreString(string langID = null) => "Often found in gungeon doctors\' offices, this rack displays magazines of all sorts. The clips contained within should prove useful, and plentiful, for even the most inaccurate of Gungeoneers.";
 
         public static GameObject MagazinePrefab { get; private set; }
 
@@ -60,13 +60,7 @@ namespace RiskOfBulletstorm.Items
             buffWard.expireDuration = MagazineRack_Duration;
             buffWard.buffType = BuffIndex.NoCooldowns;
 
-
             if (MagazinePrefab) PrefabAPI.RegisterNetworkPrefab(MagazinePrefab);
-
-            /*if (HelperPlugin.ClassicItemsCompat.enabled)
-            {
-                HelperPlugin.ClassicItemsCompat.RegisterEmbryo(catalogIndex);
-            }*/
         }
         public override void SetupAttributes()
         {
@@ -298,8 +292,6 @@ namespace RiskOfBulletstorm.Items
             GameObject gameObject = slot.gameObject;
             if (!gameObject || !body) return false;
 
-            //bool EmbryoProc = HelperPlugin.ClassicItemsCompat.enabled && HelperPlugin.ClassicItemsCompat.CheckEmbryoProc(instance, body);
-            //return PlaceWard(body, MagazinePrefab, EmbryoProc);
             return PlaceWard(body, MagazinePrefab, false);
         }
 
