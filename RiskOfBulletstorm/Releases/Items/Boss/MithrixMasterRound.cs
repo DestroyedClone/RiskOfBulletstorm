@@ -12,7 +12,7 @@ namespace RiskOfBulletstorm.Items
     {
         public static Color32 lunarColor32 = ColorCatalog.GetColor(ColorCatalog.ColorIndex.LunarItem);
         public static string lunarColorString = ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.LunarItem);
-        string formattedDisplayName = string.Format("<color={0}>Master Round</color>", "blue");
+        string formattedDisplayName = string.Format("<color={0}>Master Round</color>", lunarColorString);
         public override string displayName => formattedDisplayName;
         public override ItemTier itemTier => ItemTier.Tier3;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.WorldUnique, ItemTag.AIBlacklist });
