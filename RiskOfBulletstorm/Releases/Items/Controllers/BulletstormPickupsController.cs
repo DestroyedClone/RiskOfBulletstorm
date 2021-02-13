@@ -42,15 +42,31 @@ namespace RiskOfBulletstorm.Items
         private GameObject currentStage;
         private readonly GameObject SpawnedPickupEffect = Resources.Load<GameObject>("prefabs/effects/LevelUpEffect");
         private GameObject IndicatorProjectile;
+        private GameObject IndicatorProjectileGhost;
 
         public override void SetupBehavior()
         {
             base.SetupBehavior();
             GameObject brotherFirePillar = Resources.Load<GameObject>("prefabs/projectiles/BrotherFirePillar");
             IndicatorProjectile = brotherFirePillar.InstantiateClone("Bulletstorm_PickupsIndicator");
-            IndicatorProjectile.transform.localScale = new Vector3(0.25f, 1f, 0.25f);
-            Object.Destroy(IndicatorProjectile.GetComponent<RoR2.Projectile.ProjectileDamage>());
+            IndicatorProjectile.GetComponent<RoR2.Projectile.ProjectileController>().ghostPrefab = IndicatorProjectileGhost;
             Object.Destroy(IndicatorProjectile.GetComponent<RoR2.Projectile.ProjectileDotZone>());
+
+            GameObject firepillaerghost = Resources.Load<GameObject>("prefabs/projectileghosts/BrotherFirePillarGhost");
+            IndicatorProjectileGhost = firepillaerghost.InstantiateClone("Bulletstorm_PickupsIndicator");
+            IndicatorProjectileGhost.transform.Find("Point Light").GetComponent<Light>().color = Color.red;
+
+            var scale = IndicatorProjectileGhost.transform.Find("Scale");
+            scale.transform.localScale = new Vector3(0.25f, 1f, 0.25f);
+
+            var glowlooping = scale.transform.Find("Glow, Looping");
+
+            var particlesysrend = glowlooping.GetComponent<ParticleSystemRenderer>();
+            particlesysrend.lengthScale = 10f;
+            particlesysrend.material = Resources.Load<Material>("materials/matFullCrit.mat");
+
+            var abc = IndicatorProjectileGhost.AddComponent<BulletstormPickupIndicatorTerminator>();
+            abc.particleSystem = glowlooping.GetComponent<ParticleSystem>();
 
             ProjectileCatalog.getAdditionalEntries += list => list.Add(IndicatorProjectile);
 
@@ -256,6 +272,25 @@ namespace RiskOfBulletstorm.Items
             public int requiredKills = 10;
             public bool wasMapDeath = false;
             public GameObject lastHitAttacker;
+        }
+
+        public class BulletstormPickupIndicatorTerminator : MonoBehaviour
+        {
+            public ParticleSystem particleSystem;
+            public GameObject spawnedItem;
+            public void Awake()
+            {
+                if (!particleSystem)
+                    this.enabled = false;
+            }
+            public void FixedUpdate()
+            {
+                if (particleSystem.time >= 43)
+                {
+                    particleSystem.time = 0;
+                }
+            }
+
         }
     }
 }

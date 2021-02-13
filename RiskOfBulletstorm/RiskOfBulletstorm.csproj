@@ -89,6 +89,7 @@
     <None Include="lib\UnityEngine.CoreModule.dll" />
     <None Include="lib\UnityEngine.dll" />
     <None Include="lib\UnityEngine.Networking.dll" />
+    <None Include="lib\UnityEngine.ParticleSystemModule.dll" />
     <None Include="lib\UnityEngine.PhysicsModule.dll" />
     <None Include="lib\UnityEngine.UI.dll" />
   </ItemGroup>
@@ -183,6 +184,9 @@
     </Reference>
     <Reference Include="UnityEngine.Networking">
       <HintPath>lib\UnityEngine.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ParticleSystemModule">
+      <HintPath>lib\UnityEngine.ParticleSystemModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule">
       <HintPath>lib\UnityEngine.PhysicsModule.dll</HintPath>
