@@ -310,7 +310,7 @@ namespace RiskOfBulletstorm.Items
                 GameObject gameObject = UnityEngine.Object.Instantiate(CharmWardPrefab, body.transform.position, Quaternion.identity);
                 gameObject.GetComponent<TeamFilter>().teamIndex = body.teamComponent.teamIndex;
                 BuffWard buffWard = gameObject.GetComponent<BuffWard>();
-                //buffWard.buffType = Shared.Buffs.BuffsController.Charm;
+                buffWard.buffType = Shared.Buffs.BuffsController.Charm;
                 buffWard.GetComponent<BuffWard>().Networkradius *= radius;
                 buffWard.GetComponent<BuffWard>().radius *= radius;
                 NetworkServer.Spawn(gameObject);
