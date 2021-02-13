@@ -525,6 +525,7 @@ namespace RiskOfBulletstorm.Items
                                     UpdatedAngle = Quaternion.Lerp(fireProjectileInfo.rotation, aimDirectionQuaternion, CappedAccMult);
                                 } else
                                 {
+                                    //AGONY
                                     AccMult *= -1;
                                     //CappedAccMult *= -1;
                                     //This is a random dir in cone. USED FOR INACCURACY
@@ -532,7 +533,7 @@ namespace RiskOfBulletstorm.Items
                                     //Quaternion bulletDir = GetRandomInsideCone(BaseSpreadAngle, aimDirection);
                                     //_logger.LogMessage(bulletDir);
                                     //UpdatedAngle = Quaternion.SlerpUnclamped(bulletDir, aimDirectionQuaternion, CappedAccMult);
-                                    var minSpread = Mathf.Max(0f, AccMult);
+                                    var minSpread = Mathf.Max(0f, 1f - AccMult);
                                     UpdatedAngle = Util.QuaternionSafeLookRotation(Util.ApplySpread(fireProjectileInfo.rotation.eulerAngles, minSpread, AccMult, 1f, 1f));
                                 }
                                 fireProjectileInfo.rotation = UpdatedAngle;
