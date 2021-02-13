@@ -80,6 +80,8 @@ namespace RiskOfBulletstorm.Items
             //UnityEngine.Object.Destroy(wispMouth.transform.Find("Point light"));
             var wispFire = wispMouth.transform.Find("WispArmature").transform.Find("ROOT").transform.Find("Base").transform.Find("Fire").gameObject;
             jammedFire = wispFire.InstantiateClone("Bulletstorm_JammedFire");
+            jammedFire.transform.localPosition = Vector3.zero;
+            jammedFire.GetComponent<ParticleSystemRenderer>().material = Resources.Load<Material>("materials/matClayGooDebuff");
 
         }
         public override void SetupAttributes()
