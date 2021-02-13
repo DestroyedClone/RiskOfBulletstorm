@@ -271,43 +271,46 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            if (Ration_SaveFromDeathAnySlot)
-                On.RoR2.HealthComponent.TakeDamage += TankHitAnySlot;
-            else
-                On.RoR2.HealthComponent.TakeDamage += TankHit;
+            if (Ration_SaveFromDeath)
+            {
+                if (Ration_SaveFromDeathAnySlot)
+                    On.RoR2.HealthComponent.TakeDamage += TankHitAnySlot;
+                else
+                    On.RoR2.HealthComponent.TakeDamage += TankHit;
+            }
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
-            if (Ration_SaveFromDeathAnySlot)
-                On.RoR2.HealthComponent.TakeDamage -= TankHitAnySlot;
-            else
-                On.RoR2.HealthComponent.TakeDamage -= TankHit;
+            if (Ration_SaveFromDeath)
+            {
+                if (Ration_SaveFromDeathAnySlot)
+                    On.RoR2.HealthComponent.TakeDamage -= TankHitAnySlot;
+                else
+                    On.RoR2.HealthComponent.TakeDamage -= TankHit;
+            }
         }
 
         //slightly more expensive because it iterates through the equipment slots
         private void TankHitAnySlot(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
-            if (Ration_SaveFromDeath)
+            var body = self.body;
+            if (body)
             {
-                var body = self.body;
-                if (body)
+                var inventory = body.inventory;
+                if (inventory)
                 {
-                    var inventory = body.inventory;
-                    if (inventory)
+                    var equipmentStateSlots = inventory.equipmentStateSlots;for (int i = 0; i <= equipmentStateSlots.Length; i++)
                     {
-                        var equipmentStateSlots = inventory.equipmentStateSlots;
-                        if (equipmentStateSlots.Length > 0)
+                        if (equipmentStateSlots[i].equipmentIndex == catalogIndex)
                         {
-                            for (int i = 0; i < equipmentStateSlots.Length; i++)
+                            var endHealth = self.combinedHealth - damageInfo.damage;
+                            if ((endHealth <= 0) && (!damageInfo.rejected))
                             {
-                                if (equipmentStateSlots[i].equipmentIndex == catalogIndex)
-                                {
-                                    damageInfo.rejected = true;
-                                    RationUse(self, inventory, i);
-                                    break;
-                                }
+                                damageInfo.rejected = true;
+                                RationUse(self, inventory, i);
+                                break;
                             }
                         }
                     }
@@ -318,25 +321,23 @@ namespace RiskOfBulletstorm.Items
 
         private void TankHit(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
-            if (Ration_SaveFromDeath)
+            var body = self.body;
+            if (body)
             {
-                var body = self.body;
-                if (body)
+                var inventory = body.inventory;
+                if (inventory)
                 {
-                    var inventory = body.inventory;
-                    if (inventory)
+                    if (inventory.GetEquipmentIndex() == catalogIndex)
                     {
-                        if (inventory.GetEquipmentIndex() == catalogIndex)
+                        var endHealth = self.combinedHealth - damageInfo.damage;
+                        if ((endHealth <= 0) && (!damageInfo.rejected))
                         {
-                            var endHealth = self.combinedHealth - damageInfo.damage;
-                            if ((endHealth <= 0) && (!damageInfo.rejected))
-                            {
-                                damageInfo.rejected = true;
-                                RationUse(self, inventory, inventory.activeEquipmentSlot);
-                            }
+                            damageInfo.rejected = true;
+                            RationUse(self, inventory, inventory.activeEquipmentSlot);
                         }
                     }
                 }
+
             }
             orig(self, damageInfo);
         }
