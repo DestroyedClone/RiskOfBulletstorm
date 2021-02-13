@@ -525,15 +525,14 @@ namespace RiskOfBulletstorm.Items
                                     UpdatedAngle = Quaternion.Lerp(fireProjectileInfo.rotation, aimDirectionQuaternion, CappedAccMult);
                                 } else
                                 {
+                                    AccMult *= -1;
                                     //CappedAccMult *= -1;
                                     //This is a random dir in cone. USED FOR INACCURACY
-
-
                                     //TODO
                                     //Quaternion bulletDir = GetRandomInsideCone(BaseSpreadAngle, aimDirection);
                                     //_logger.LogMessage(bulletDir);
                                     //UpdatedAngle = Quaternion.SlerpUnclamped(bulletDir, aimDirectionQuaternion, CappedAccMult);
-                                    UpdatedAngle = fireProjectileInfo.rotation;
+                                    UpdatedAngle = Util.QuaternionSafeLookRotation(Util.ApplySpread(fireProjectileInfo.rotation.eulerAngles, 0f, 1f, AccMult, AccMult));
                                 }
                                 fireProjectileInfo.rotation = UpdatedAngle;
                                 //UpdatedAngle = Quaternion.LerpUnclamped(fireProjectileInfo.rotation, aimDirectionQuaternion, CappedAccMult);
@@ -546,7 +545,7 @@ namespace RiskOfBulletstorm.Items
             orig(self, fireProjectileInfo);
         }
 
-        Quaternion GetRandomInsideCone(float conicAngle, Vector3 forward)
+        /*Quaternion GetRandomInsideCone(float conicAngle, Vector3 forward)
         {
             // random tilt right (which is a random angle around the up axis)
             Quaternion randomTilt = Quaternion.AngleAxis(Random.Range(0f, conicAngle), Vector3.up);
@@ -556,7 +555,7 @@ namespace RiskOfBulletstorm.Items
 
             // tilt then spin
             return (randomSpin * randomTilt);
-        }
+        }*/
 
         private void AdjustSpreadBullets(On.RoR2.BulletAttack.orig_Fire orig, BulletAttack self)
         {
