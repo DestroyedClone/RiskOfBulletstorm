@@ -41,7 +41,7 @@ namespace RiskOfBulletstorm.Items
 
         public CharmHorn()
         {
-            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/CharmHorn.prefab"; //simplify UVs
+            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/CharmHorn.prefab";
             iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/CharmHorn.png";
         }
         public override void SetupBehavior()
@@ -301,9 +301,6 @@ namespace RiskOfBulletstorm.Items
             if (!gameObject || !body) return false;
             float multiplier = 1.0f;
 
-            //Util.PlaySound(FireMines.throwMineSoundString, gameObject);
-            //if (HelperPlugin.ClassicItemsCompat.enabled && HelperPlugin.ClassicItemsCompat.CheckEmbryoProc(instance, body))
-               // multiplier += 0.5f;
             CharmNearby(body, multiplier);
             return true;
         }
