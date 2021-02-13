@@ -532,7 +532,9 @@ namespace RiskOfBulletstorm.Items
                                     //Quaternion bulletDir = GetRandomInsideCone(BaseSpreadAngle, aimDirection);
                                     //_logger.LogMessage(bulletDir);
                                     //UpdatedAngle = Quaternion.SlerpUnclamped(bulletDir, aimDirectionQuaternion, CappedAccMult);
-                                    UpdatedAngle = Util.QuaternionSafeLookRotation(Util.ApplySpread(fireProjectileInfo.rotation.eulerAngles, 0f, 1f, AccMult, AccMult));
+                                    var minSpread = Mathf.Max(0f, AccMult);
+                                    var maxSpread = Mathf.Min(1f, AccMult);
+                                    UpdatedAngle = Util.QuaternionSafeLookRotation(Util.ApplySpread(fireProjectileInfo.rotation.eulerAngles, minSpread, maxSpread, 1f, 1f));
                                 }
                                 fireProjectileInfo.rotation = UpdatedAngle;
                                 //UpdatedAngle = Quaternion.LerpUnclamped(fireProjectileInfo.rotation, aimDirectionQuaternion, CappedAccMult);
