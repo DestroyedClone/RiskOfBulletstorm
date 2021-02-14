@@ -75,8 +75,7 @@ namespace RiskOfBulletstorm.Items
             ItemBodyModelPrefab.GetComponent<ItemDisplay>().rendererInfos = ItemHelpers.ItemDisplaySetup(ItemBodyModelPrefab);
 
             Vector3 generalScale = new Vector3(0.05f, 0.05f, 0.05f);
-            ItemDisplayRuleDict rules = new ItemDisplayRuleDict();
-            rules.Add("mdlCommandoDualies", new ItemDisplayRule[]
+            ItemDisplayRuleDict rules = new ItemDisplayRuleDict(new ItemDisplayRule[]
             {
                 new ItemDisplayRule
                 {
