@@ -25,7 +25,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "Use For Boom\n"+descText;
+        protected override string GetPickupString(string langID = null) => "Use For Boom\n" + descText;
 
         protected override string GetDescString(string langid = null)
         {
@@ -99,10 +99,10 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Chest",
-                    localPos = new Vector3(0f, 0.4f, -0.25f),
-                    localAngles = new Vector3(0, 0, 0),
-                    localScale = generalScale
+                    childName = "Pelvis",
+                    localPos = new Vector3(0.3601F, 0.3967F, -0.0525F),
+                    localAngles = new Vector3(333.7637F, 301.6419F, 65.6547F),
+                    localScale = new Vector3(0.0302F, 0.0302F, 0.0302F)
                 }
             });
             rules.Add("mdlHuntress", new ItemDisplayRule[]

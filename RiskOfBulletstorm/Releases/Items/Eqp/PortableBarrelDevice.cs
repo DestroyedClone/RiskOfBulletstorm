@@ -129,9 +129,9 @@ namespace RiskOfBulletstorm.Items
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
                     childName = "ThighR",
-                    localPos = new Vector3(0f, 0.2f, 0.22f),
-                    localAngles = new Vector3(0, 0, 0),
-                    localScale = new Vector3(0.1f, 0.1f, 0.1f)
+localPos = new Vector3(-0.0506F, 0.0031F, 0.1144F),
+localAngles = new Vector3(353.1398F, 207.1862F, 190.5688F),
+localScale = new Vector3(0.044F, 0.044F, 0.044F)
                 }
             });
             rules.Add("mdlHuntress", new ItemDisplayRule[]
