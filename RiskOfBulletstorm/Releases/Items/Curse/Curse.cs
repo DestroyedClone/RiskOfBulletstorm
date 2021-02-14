@@ -259,7 +259,7 @@ namespace RiskOfBulletstorm.Items
         {
             public CharacterBody characterBody;
             public TemporaryOverlay overlay;
-            public GameObject fireEffect = instance.jammedFire;
+            public GameObject fireEffect;
             
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
             void OnEnable()
@@ -274,9 +274,14 @@ namespace RiskOfBulletstorm.Items
                 {
                     characterBody.inventory.GiveItem(CurseController.isJammedItem);
                 }
-                if (fireEffect)
+                ModelLocator modelLocator = gameObject.GetComponent<ModelLocator>();
+                if (modelLocator)
                 {
-                    fireEffect.transform.parent = gameObject.transform;
+                    if (!fireEffect)
+                    {
+                        fireEffect = Object.Instantiate<GameObject>(instance.jammedFire, modelLocator.modelTransform);
+                        fireEffect.transform.parent = modelLocator.modelTransform;
+                    }
                 }
 
             }
