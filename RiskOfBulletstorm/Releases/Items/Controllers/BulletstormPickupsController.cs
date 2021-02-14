@@ -43,6 +43,9 @@ namespace RiskOfBulletstorm.Items
         private readonly GameObject SpawnedPickupEffect = Resources.Load<GameObject>("prefabs/effects/LevelUpEffect");
         private GameObject IndicatorProjectile;
         private GameObject IndicatorProjectileGhost;
+        private readonly float chanceBlank = 0.35f;
+        private readonly float chanceArmor = 0.1f;
+        private readonly float chanceAmmo = 0.6f;
 
         public override void SetupBehavior()
         {
@@ -81,9 +84,9 @@ namespace RiskOfBulletstorm.Items
             base.SetupLate();
             //needs to setup late so the indicies can be setup
             //weightedSelection.AddChoice(Key.instance.pickupIndex, 0.15f); currently unused while i rework it
-            weightedSelection.AddChoice(Blank.instance.pickupIndex, 0.35f);
-            weightedSelection.AddChoice(Armor.instance.pickupIndex, 0.1f);
-            weightedSelection.AddChoice(PickupAmmoSpread.instance.pickupIndex, 0.6f);
+            weightedSelection.AddChoice(Blank.instance.pickupIndex, chanceBlank);
+            weightedSelection.AddChoice(Armor.instance.pickupIndex, chanceArmor);
+            weightedSelection.AddChoice(PickupAmmoSpread.instance.pickupIndex, chanceAmmo);
         }
 
         public override void SetupConfig()
