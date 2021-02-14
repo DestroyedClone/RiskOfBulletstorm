@@ -145,7 +145,7 @@ namespace RiskOfBulletstorm.Items
                                 var equipmentStateSlots = inventory.equipmentStateSlots;
                                 if (equipmentStateSlots.Length > 0)
                                 {
-                                    for (int i = 0; i <= inventoryCount; i++)
+                                    for (int i = 0; i <= selectableSlot; i++)
                                     {
                                         var eqpName = "None";
                                         var charges = -6;
