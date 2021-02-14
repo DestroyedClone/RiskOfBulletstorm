@@ -305,15 +305,20 @@ namespace RiskOfBulletstorm.Items
                     if (equipmentStateSlots.Length > 0)
                     {
                         var endHealth = self.combinedHealth - damageInfo.damage;
-
+                        BulletstormPlugin._logger.LogMessage("Damage check");
                         if ((endHealth <= 0) && (!damageInfo.rejected))
                         {
+                            BulletstormPlugin._logger.LogMessage("Passed amage check");
                             for (int i = 0; i <= equipmentStateSlots.Length; i++)
                             {
+                                BulletstormPlugin._logger.LogMessage("Currently on iteration "+i);
                                 if (equipmentStateSlots[i].equipmentIndex == catalogIndex)
                                 {
+                                    BulletstormPlugin._logger.LogMessage("Matched with iteration "+i);
                                     damageInfo.rejected = true;
+                                    BulletstormPlugin._logger.LogMessage("Rejected damage");
                                     RationUse(self, inventory, i);
+                                    BulletstormPlugin._logger.LogMessage("Used ration");
                                     break;
                                 }
                             }
