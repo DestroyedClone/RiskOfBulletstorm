@@ -82,7 +82,9 @@ namespace RiskOfBulletstorm.Items
             jammedFire = wispFire.InstantiateClone("Bulletstorm_JammedFire");
             jammedFire.transform.localPosition = Vector3.zero;
             jammedFire.GetComponent<ParticleSystemRenderer>().material = Resources.Load<Material>("materials/matClayGooDebuff");
-
+            // https://discordapp.com/channels/562704639141740588/562704639569428506/810301262432174090
+            var main = jammedFire.GetComponent<ParticleSystem>().main;
+            main.scalingMode = ParticleSystemScalingMode.Hierarchy;
         }
         public override void SetupAttributes()
         {
