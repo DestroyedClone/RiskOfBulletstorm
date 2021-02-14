@@ -301,16 +301,20 @@ namespace RiskOfBulletstorm.Items
                 var inventory = body.inventory;
                 if (inventory)
                 {
-                    var equipmentStateSlots = inventory.equipmentStateSlots;for (int i = 0; i <= equipmentStateSlots.Length; i++)
+                    var equipmentStateSlots = inventory.equipmentStateSlots;
+                    if (equipmentStateSlots.Length > 0)
                     {
-                        if (equipmentStateSlots[i].equipmentIndex == catalogIndex)
+                        for (int i = 0; i <= equipmentStateSlots.Length; i++)
                         {
-                            var endHealth = self.combinedHealth - damageInfo.damage;
-                            if ((endHealth <= 0) && (!damageInfo.rejected))
+                            if (equipmentStateSlots[i].equipmentIndex == catalogIndex)
                             {
-                                damageInfo.rejected = true;
-                                RationUse(self, inventory, i);
-                                break;
+                                var endHealth = self.combinedHealth - damageInfo.damage;
+                                if ((endHealth <= 0) && (!damageInfo.rejected))
+                                {
+                                    damageInfo.rejected = true;
+                                    RationUse(self, inventory, i);
+                                    break;
+                                }
                             }
                         }
                     }
