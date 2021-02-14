@@ -304,12 +304,13 @@ namespace RiskOfBulletstorm.Items
                     var equipmentStateSlots = inventory.equipmentStateSlots;
                     if (equipmentStateSlots.Length > 0)
                     {
-                        for (int i = 0; i <= equipmentStateSlots.Length; i++)
+                        var endHealth = self.combinedHealth - damageInfo.damage;
+
+                        if ((endHealth <= 0) && (!damageInfo.rejected))
                         {
-                            if (equipmentStateSlots[i].equipmentIndex == catalogIndex)
+                            for (int i = 0; i <= equipmentStateSlots.Length; i++)
                             {
-                                var endHealth = self.combinedHealth - damageInfo.damage;
-                                if ((endHealth <= 0) && (!damageInfo.rejected))
+                                if (equipmentStateSlots[i].equipmentIndex == catalogIndex)
                                 {
                                     damageInfo.rejected = true;
                                     RationUse(self, inventory, i);
