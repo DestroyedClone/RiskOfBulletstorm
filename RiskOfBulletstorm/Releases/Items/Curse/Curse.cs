@@ -172,7 +172,10 @@ namespace RiskOfBulletstorm.Items
         {
             base.Uninstall();
             if (Curse_Enable)
+            {
                 CharacterBody.onBodyStartGlobal -= JamEnemy;
+                On.RoR2.CharacterModel.UpdateOverlays -= CharacterModel_UpdateOverlays;
+            }
         }
 
         public override void UninstallLanguage()
