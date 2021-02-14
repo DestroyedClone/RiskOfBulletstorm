@@ -308,7 +308,7 @@ namespace RiskOfBulletstorm.Items
             {
                 if (self.HasBuff(MustacheHealBuff))
                 {
-                    self.regen += Mustache_RegenAmount + (Mustache_RegenAmountStack * GetCount(self));
+                    self.regen += Mustache_RegenAmount + (Mustache_RegenAmountStack * (GetCount(self)-1));
                 }
             }
         }
