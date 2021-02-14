@@ -213,7 +213,7 @@ namespace RiskOfBulletstorm.Items
                     localScale = generalScale
                 }
             });
-            /*rules.Add("mdlBrother", new ItemDisplayRule[] //Mithrix doesnt use equips
+            rules.Add("mdlBrother", new ItemDisplayRule[]
             {
                 new ItemDisplayRule
                 {
@@ -224,7 +224,7 @@ namespace RiskOfBulletstorm.Items
                     localAngles = new Vector3(0, 0, 0),
                     localScale = generalScale
                 }
-            });*/
+            });
             rules.Add("mdlBandit", new ItemDisplayRule[]
             {
                 new ItemDisplayRule
@@ -285,6 +285,17 @@ namespace RiskOfBulletstorm.Items
                     localScale = generalScale * 2
                 }
             });
+            rules.Add("mdlBeetle",
+                new ItemDisplayRule
+                {
+                    ruleType = ItemDisplayRuleType.ParentedPrefab,
+                    followerPrefab = ItemBodyModelPrefab,
+                    childName = "Chest",
+                    localPos = new Vector3(0.4702F, 0.0941F, 0.3208F),
+                    localAngles = new Vector3(330.3268F, 318.3562F, 295.7811F),
+                    localScale = new Vector3(0.1F, 0.1F, 0.1F)
+                });
+
             return rules;
         }
         public override void SetupConfig()
