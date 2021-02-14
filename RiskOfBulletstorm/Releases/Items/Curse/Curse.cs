@@ -130,7 +130,35 @@ namespace RiskOfBulletstorm.Items
         {
             base.Install();
             if (Curse_Enable)
+            {
                 CharacterBody.onBodyStartGlobal += JamEnemy;
+                On.RoR2.CharacterModel.UpdateOverlays += CharacterModel_UpdateOverlays;
+            }
+        }
+
+        private void CharacterModel_UpdateOverlays(On.RoR2.CharacterModel.orig_UpdateOverlays orig, CharacterModel self)
+        {
+            orig(self);
+
+            if (self)
+            {
+                if (self.body)
+                {
+                    var isJammed = self.body.GetComponent<IsJammed>();
+                    if (isJammed && !isJammed.Overlay)
+                    {
+                        TemporaryOverlay overlay = self.gameObject.AddComponent<TemporaryOverlay>();
+                        overlay.duration = float.PositiveInfinity;
+                        overlay.alphaCurve = AnimationCurve.Constant(0f, 0f, 0.54f);
+                        overlay.animateShaderAlpha = true;
+                        overlay.destroyComponentOnEnd = true;
+                        overlay.originalMaterial = Resources.Load<Material>("Materials/matFullCrit");
+                        overlay.AddToCharacerModel(self);
+                        isJammed.Overlay = overlay;
+                    }
+                    else return;
+                }
+            }
         }
 
         public override void InstallLanguage()
@@ -258,7 +286,7 @@ namespace RiskOfBulletstorm.Items
         public class IsJammed : MonoBehaviour
         {
             public CharacterBody characterBody;
-            public TemporaryOverlay overlay;
+            public TemporaryOverlay Overlay;
             public GameObject fireEffect;
             
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
