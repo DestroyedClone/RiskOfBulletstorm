@@ -282,10 +282,10 @@ localScale = new Vector3(0.2666F, 0.2666F, 0.2666F)
             {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
                 followerPrefab = ItemBodyModelPrefab,
-                childName = "Chest",
-                localPos = new Vector3(0.4957F, 0.1282F, 0.3521F),
-                localAngles = new Vector3(330.3268F, 318.3562F, 295.7811F),
-                localScale = new Vector3(0.1F, 0.1F, 0.1F)
+                childName = "Hip",
+                localPos = new Vector3(1.8362F, 0.502F, 0.449F),
+                localAngles = new Vector3(22.8307F, 79.628F, 180.4365F),
+                localScale = new Vector3(0.3292F, 0.3292F, 0.3292F)
             });
             rules.Add("mdlLunarGolem", new ItemDisplayRule
             {
