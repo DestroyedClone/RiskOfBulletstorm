@@ -262,10 +262,10 @@ localScale = new Vector3(0.05F, 0.05F, 0.05F)
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
-                    localPos = new Vector3(0f, 5f, 0f),
-                    localAngles = new Vector3(-90f, 0f, 0f),
-                    localScale = generalScale * 20f
+childName = "Head",
+localPos = new Vector3(0F, 4.8685F, 0.0438F),
+localAngles = new Vector3(288.4044F, 180F, 180F),
+localScale = new Vector3(1F, 1F, 1F)
                 }
             });
             //rules.Add("mdlSniper", new ItemDisplayRule[]

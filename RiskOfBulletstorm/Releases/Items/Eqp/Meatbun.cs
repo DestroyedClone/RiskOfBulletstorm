@@ -304,10 +304,10 @@ localScale = new Vector3(0.1195F, 0.1195F, 0.1195F)
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "ThighR",
-                    localPos = new Vector3(0f, 5f, 0f),
-                    localAngles = new Vector3(-90f, 0f, 0f),
-                    localScale = generalScale * 20f
+childName = "ThighR",
+localPos = new Vector3(-6.5838F, -4.8704F, -4.3014F),
+localAngles = new Vector3(356.0911F, 195.7111F, 231.5835F),
+localScale = new Vector3(0.7244F, 0.7244F, 0.7244F)
                 }
             });
             rules.Add("mdlEquipmentDrone", new ItemDisplayRule[]

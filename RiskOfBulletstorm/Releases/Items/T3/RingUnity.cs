@@ -249,16 +249,16 @@ localScale = new Vector3(0.01F, 0.01F, 0.01F)
                     localScale = generalScale * 20f
                 }
             });
-            rules.Add("mdlScav", new ItemDisplayRule[] //todo
+            rules.Add("mdlScav", new ItemDisplayRule[]
             {
                 new ItemDisplayRule
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Finger22R",
-                    localPos = new Vector3(0f, 5f, 0f),
-                    localAngles = new Vector3(-90f, 0f, 0f),
-                    localScale = generalScale * 20f
+childName = "Finger11L",
+localPos = new Vector3(0.0585F, 0.2059F, -0.0867F),
+localAngles = new Vector3(296.9756F, 52.6793F, 49.2558F),
+localScale = new Vector3(0.2351F, 0.2351F, 0.2351F)
                 }
             });
             return rules;
