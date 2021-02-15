@@ -222,10 +222,10 @@ localScale = new Vector3(0.05F, 0.05F, 0.05F)
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
-                    localPos = new Vector3(-0.06f, 0.7f, 0f),
-                    localAngles = new Vector3(0f, -50f, 0f),
-                    localScale = new Vector3(0.43f, 0.43f, 0.43f)
+childName = "Head",
+localPos = new Vector3(-0.06F, 0.7F, 0F),
+localAngles = new Vector3(0F, 310F, 0F),
+localScale = new Vector3(0.4428F, 0.4428F, 0.4428F)
                 }
             });
             rules.Add("mdlHAND", new ItemDisplayRule[]

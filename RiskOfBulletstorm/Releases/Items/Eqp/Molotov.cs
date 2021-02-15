@@ -330,16 +330,16 @@ localAngles = new Vector3(9.6482F, 301.1407F, 358.7223F),
 localScale = new Vector3(0.0606F, 0.0606F, 0.0425F)
                 }
             });
-            rules.Add("mdlClayBruiser", new ItemDisplayRule[] //TODO
+            rules.Add("mdlClayBruiser", new ItemDisplayRule[]
             {
                 new ItemDisplayRule
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
-                    localPos = new Vector3(0f, 0f, 0f),
-                    localAngles = new Vector3(0f, 0f, 0f),
-                    localScale = generalScale * 2.5f
+childName = "Head",
+localPos = new Vector3(0F, 0F, 0.0935F),
+localAngles = new Vector3(0F, 0F, 0F),
+localScale = new Vector3(0.25F, 0.25F, 0.25F)
                 }
             });
             rules.Add("mdlHAND", new ItemDisplayRule[]
