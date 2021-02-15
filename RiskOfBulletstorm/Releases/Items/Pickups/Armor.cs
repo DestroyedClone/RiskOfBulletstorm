@@ -210,10 +210,10 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
-                    localPos = new Vector3(0f, 0f, -0.3f),
-                    localAngles = new Vector3(0f, 0f, 0f),
-                    localScale = generalScale
+childName = "Chest",
+localPos = new Vector3(0F, 0.1917F, 0.1773F),
+localAngles = new Vector3(358.7213F, 0F, 0F),
+localScale = new Vector3(0.033F, 0.033F, 0.033F)
                 }
             });
             rules.Add("mdlClayBruiser", new ItemDisplayRule[]
@@ -256,8 +256,8 @@ namespace RiskOfBulletstorm.Items
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
                 followerPrefab = ItemBodyModelPrefab,
                 childName = "Chest",
-                localPos = new Vector3(0.4957F, 0.1282F, 0.3521F),
-                localAngles = new Vector3(330.3268F, 318.3562F, 295.7811F),
+                localPos = new Vector3(0.1039F, 0.6426F, 0.3095F),
+                localAngles = new Vector3(315.0077F, 36.5607F, 345.2149F),
                 localScale = new Vector3(0.1F, 0.1F, 0.1F)
             });
             rules.Add("mdlLemurian", new ItemDisplayRule

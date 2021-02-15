@@ -289,9 +289,9 @@ localScale = new Vector3(0.7392F, 0.7392F, 0.7392F)
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
                 followerPrefab = ItemBodyModelPrefab,
                 childName = "Chest",
-                localPos = new Vector3(0.4957F, 0.1282F, 0.3521F),
-                localAngles = new Vector3(330.3268F, 318.3562F, 295.7811F),
-                localScale = new Vector3(0.1F, 0.1F, 0.1F)
+                localPos = new Vector3(0.3146F, 0.4452F, -0.6225F),
+                localAngles = new Vector3(354.1583F, 159.5557F, 268.4077F),
+                localScale = new Vector3(0.4267F, 0.4267F, 0.4267F)
             });
             rules.Add("mdlLemurian", new ItemDisplayRule
             {

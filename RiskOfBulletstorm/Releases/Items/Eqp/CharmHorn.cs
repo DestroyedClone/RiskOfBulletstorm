@@ -270,13 +270,14 @@ localScale = new Vector3(0.05F, 0.05F, 0.05F)
                     localAngles = new Vector3(0f, 90f, -80f),
                     localScale = new Vector3(0.2f, 0.2f, 0.2f)
         }
-            }); rules.Add("mdlBeetle", new ItemDisplayRule
+            }); 
+            rules.Add("mdlBeetle", new ItemDisplayRule
             {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
                 followerPrefab = ItemBodyModelPrefab,
                 childName = "Chest",
-                localPos = new Vector3(0.4957F, 0.1282F, 0.3521F),
-                localAngles = new Vector3(330.3268F, 318.3562F, 295.7811F),
+                localPos = new Vector3(0.4628F, 0.1143F, 0.3728F),
+                localAngles = new Vector3(316.3471F, 309.305F, 217.9808F),
                 localScale = new Vector3(0.1F, 0.1F, 0.1F)
             });
             rules.Add("mdlLemurian", new ItemDisplayRule
