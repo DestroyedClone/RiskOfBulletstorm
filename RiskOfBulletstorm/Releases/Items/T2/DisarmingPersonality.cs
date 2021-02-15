@@ -186,7 +186,7 @@ namespace RiskOfBulletstorm.Items
                     localScale = generalScale
                 }
             });
-            /*rules.Add("mdlBrother", new ItemDisplayRule[] //todo
+            rules.Add("mdlBrother", new ItemDisplayRule[]
             {
                 new ItemDisplayRule
                 {
@@ -197,17 +197,17 @@ namespace RiskOfBulletstorm.Items
                     localAngles = new Vector3(0, 0, 0),
                     localScale = generalScale
                 }
-            });*/
+            });
             rules.Add("mdlBandit", new ItemDisplayRule[]
             {
                 new ItemDisplayRule
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
-                    localPos = new Vector3(-0.09f, 0f, -0.3f),
-                    localAngles = new Vector3(0f, -60f, 0f),
-                    localScale = generalScale
+childName = "Chest",
+localPos = new Vector3(0F, 0.342F, 0.1123F),
+localAngles = new Vector3(332.6455F, 0F, 0F),
+localScale = new Vector3(0.02F, 0.02F, 0.02F)
                 }
             });
             rules.Add("mdlClayBruiser", new ItemDisplayRule[]

@@ -202,16 +202,16 @@ localAngles = new Vector3(83.4425F, 0F, 0F),
 localScale = new Vector3(0.0384F, 0.0384F, 0.0384F)
                 }
             });
-            rules.Add("mdlBandit", new ItemDisplayRule[] //RDY
+            rules.Add("mdlBandit", new ItemDisplayRule[]
             {
                 new ItemDisplayRule
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Chest",
-                    localPos = new Vector3(0f, 0f, -0.3f),
-                    localAngles = new Vector3(0f, 0f, 0f),
-                    localScale = generalScale
+childName = "Stomach",
+localPos = new Vector3(0.0118F, 0.0868F, 0.1562F),
+localAngles = new Vector3(73.0916F, 0F, 0F),
+localScale = new Vector3(0.0248F, 0.0248F, 0.0248F)
                 }
             });
             rules.Add("mdlClayBruiser", new ItemDisplayRule[] //RDY

@@ -277,10 +277,10 @@ localScale = new Vector3(0.1F, 0.1F, 0.1F)
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Shotgun", //BanditShotgunMesh
-                    localPos = new Vector3(0.05f, 0.4f, -0.13f),
-                    localAngles = new Vector3(-90f, 0f, 0f),
-                    localScale = generalScale * 0.5f
+childName = "Shotgun",
+localPos = new Vector3(0.0656F, 0.4F, -0.13F),
+localAngles = new Vector3(274.8828F, 180F, 180F),
+localScale = new Vector3(0.05F, 0.05F, 0.05F)
                 },
                 new ItemDisplayRule
                 {
@@ -295,10 +295,10 @@ localScale = new Vector3(0.1F, 0.1F, 0.1F)
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "PistolMeshHip", //BanditPistolMeshHand
-                    localPos = new Vector3(0.05f, -0.2f, 0.2f),
-                    localAngles = new Vector3(90f, 0f, 0f),
-                    localScale = generalScale * 0.3f
+childName = "PistolMeshHip",
+localPos = new Vector3(0.0294F, -0.2215F, 0.1904F),
+localAngles = new Vector3(83.6198F, 0F, 0F),
+localScale = new Vector3(0.03F, 0.03F, 0.03F)
                 }
             });
             //rules.Add("mdlSniper", new ItemDisplayRule[] //?

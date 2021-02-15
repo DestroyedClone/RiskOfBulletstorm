@@ -209,10 +209,10 @@ localScale = new Vector3(0.0127F, 0.0127F, 0.0127F)
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
-                    localPos = new Vector3(0f, 0f, -0.3f),
-                    localAngles = new Vector3(0f, 0f, 0f),
-                    localScale = generalScale
+childName = "UpperArmL",
+localPos = new Vector3(-0.0288F, -0.1947F, 0.0032F),
+localAngles = new Vector3(290.4564F, 114.5281F, 211.5726F),
+localScale = new Vector3(0.0099F, 0.0099F, 0.0099F)
                 }
             });
             rules.Add("mdlClayBruiser", new ItemDisplayRule[] //TODO

@@ -204,31 +204,31 @@ namespace RiskOfBulletstorm.Items
                     localScale = generalScale
                 }
             });*/
-            rules.Add("mdlBandit", new ItemDisplayRule[] //tpdp
+            rules.Add("mdlBandit", new ItemDisplayRule[]
             {
                 new ItemDisplayRule
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "None",
+                    childName = "Head",
                     localPos = new Vector3(0f, 0f, -0.3f),
                     localAngles = new Vector3(0f, 0f, 0f),
                     localScale = generalScale
                 }
             });
-            rules.Add("mdlClayBruiser", new ItemDisplayRule[] //TODO
+            rules.Add("mdlClayBruiser", new ItemDisplayRule[]
             {
                 new ItemDisplayRule
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "None",
+                    childName = "Root",
                     localPos = new Vector3(0f, 0f, 0f),
                     localAngles = new Vector3(0f, 0f, 0f),
                     localScale = generalScale * 2.5f
                 }
             });
-            rules.Add("mdlHAND", new ItemDisplayRule[] //todo
+            rules.Add("mdlHAND", new ItemDisplayRule[]
             {
                 new ItemDisplayRule
                 {
@@ -240,7 +240,7 @@ namespace RiskOfBulletstorm.Items
                     localScale = generalScale * 8f
                 }
             });
-            rules.Add("mdlScav", new ItemDisplayRule[] //todo
+            rules.Add("mdlScav", new ItemDisplayRule[]
             {
                 new ItemDisplayRule
                 {
