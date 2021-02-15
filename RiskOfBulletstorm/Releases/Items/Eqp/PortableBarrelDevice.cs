@@ -261,10 +261,10 @@ localScale = new Vector3(0.05F, 0.05F, 0.05F)
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "ThighR",
-                    localPos = new Vector3(0f, 0f, 0.18f),
-                    localAngles = new Vector3(0, 0, 0),
-                    localScale = generalScale
+childName = "ThighR",
+localPos = new Vector3(-0.0885F, 0.1363F, 0.1562F),
+localAngles = new Vector3(2.7053F, 244.227F, 178.6945F),
+localScale = new Vector3(0.05F, 0.05F, 0.05F)
                 }
             });
             rules.Add("mdlBandit", new ItemDisplayRule[]

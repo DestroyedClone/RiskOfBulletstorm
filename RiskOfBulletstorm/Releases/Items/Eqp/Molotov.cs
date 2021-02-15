@@ -306,16 +306,16 @@ localAngles = new Vector3(87.0354F, 0F, 0F),
 localScale = new Vector3(0.0587F, 0.0587F, 0.0587F)
                 }
             });
-            rules.Add("mdlBrother", new ItemDisplayRule[] //Mithrix doesnt use equips
+            rules.Add("mdlBrother", new ItemDisplayRule[] 
             {
                 new ItemDisplayRule
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
-                    localPos = new Vector3(0f, 0f, 0.18f),
-                    localAngles = new Vector3(0, 0, 0),
-                    localScale = generalScale
+childName = "Pelvis",
+localPos = new Vector3(-0.1972F, -0.0935F, -0.0374F),
+localAngles = new Vector3(7.6113F, 51.273F, 210.9014F),
+localScale = new Vector3(0.1F, 0.1F, 0.1F)
                 }
             });
             rules.Add("mdlBandit", new ItemDisplayRule[]
