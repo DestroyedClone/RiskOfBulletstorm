@@ -183,10 +183,10 @@ localScale = new Vector3(0.0344F, 0.0344F, 0.0344F)
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Chest",
-                    localPos = new Vector3(0f, 0.025f, -0.4f),
-                    localAngles = new Vector3(0f, 0f, 0f),
-                    localScale = generalScale
+childName = "Chest",
+localPos = new Vector3(-0.0005F, 0.1335F, -0.3255F),
+localAngles = new Vector3(0F, 0F, 0F),
+localScale = new Vector3(0.0473F, 0.0473F, 0.0473F)
                 }
             });
             rules.Add("mdlCroco", new ItemDisplayRule[]
