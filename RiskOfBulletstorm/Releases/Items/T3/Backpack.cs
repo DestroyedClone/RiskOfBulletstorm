@@ -86,8 +86,8 @@ namespace RiskOfBulletstorm.Items
                 backpackComponent.characterBody = self;
                 backpackComponent.localUser = LocalUserManager.readOnlyLocalUsersList[0];
                 backpackComponent.inventory = self.inventory;
-                backpackComponent.Subscribe();
                 backpackComponent.UpdateToolbot(self);
+                backpackComponent.Subscribe();
                 backpackComponent.CharacterBody_onInventoryChanged();
             }
         }
@@ -123,8 +123,8 @@ namespace RiskOfBulletstorm.Items
             public void CharacterBody_onInventoryChanged()
             {
                 UpdateCount();
-                if (inventory.activeEquipmentSlot > inventoryCount)
-                    inventory.SetActiveEquipmentSlot(inventoryCount);
+                if (inventory.activeEquipmentSlot > selectableSlot)
+                    inventory.SetActiveEquipmentSlot(selectableSlot);
             }
             public void Update()
             {
