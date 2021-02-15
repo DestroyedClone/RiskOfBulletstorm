@@ -175,19 +175,19 @@ localScale = new Vector3(0.1F, 0.1F, 0.1F)
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "LowerArmL",
-                    localPos = new Vector3(0.2f, 0.27f, -0.1f),
-                    localAngles = new Vector3(-90f, 5f, 0f),
-                    localScale = generalScale * 0.5f
+childName = "LowerArmL",
+localPos = new Vector3(0.1917F, 0.27F, -0.0934F),
+localAngles = new Vector3(270F, 308.4749F, 0F),
+localScale = new Vector3(0.05F, 0.05F, 0.05F)
                 },
                 new ItemDisplayRule
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "LowerArmR",
-                    localPos = new Vector3(0.08f, 0.34f, 0.05f),
-                    localAngles = new Vector3(-90f, 180f, 0f),
-                    localScale = generalScale * 0.5f
+childName = "LowerArmR",
+localPos = new Vector3(0.1305F, 0.34F, 0.1554F),
+localAngles = new Vector3(270F, 227.3861F, 0F),
+localScale = new Vector3(0.05F, 0.05F, 0.05F)
                 }
             });
             rules.Add("mdlMerc", new ItemDisplayRule[]
