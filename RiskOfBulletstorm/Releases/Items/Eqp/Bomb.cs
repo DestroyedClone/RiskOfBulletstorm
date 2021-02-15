@@ -111,10 +111,10 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Chest",
-                    localPos = new Vector3(0.2f, 0.2f, -0.2f),
-                    localAngles = new Vector3(0, 0, 0),
-                    localScale = generalScale
+childName = "Pelvis",
+localPos = new Vector3(0.1752F, -0.0196F, -0.041F),
+localAngles = new Vector3(339.6875F, 3.2063F, 113.7526F),
+localScale = new Vector3(0.0361F, 0.0361F, 0.0361F)
                 }
             });
             rules.Add("mdlToolbot", new ItemDisplayRule[]

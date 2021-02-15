@@ -123,10 +123,10 @@ localScale = new Vector3(0.01F, 0.01F, 0.01F)
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Finger42R",
-                    localPos = new Vector3(-0.032f, -0.03f, -0.02f),
-                    localAngles = new Vector3(45f, 2.8787f, 180f),
-                    localScale = new Vector3(0.012f, 0.01f, 0.012f)
+childName = "Finger42R",
+localPos = new Vector3(-0.0313F, -0.0297F, -0.0205F),
+localAngles = new Vector3(46.8051F, 359.0542F, 190.2538F),
+localScale = new Vector3(0.012F, 0.01F, 0.012F)
                 }
             });
             rules.Add("mdlToolbot", new ItemDisplayRule[] // TODO

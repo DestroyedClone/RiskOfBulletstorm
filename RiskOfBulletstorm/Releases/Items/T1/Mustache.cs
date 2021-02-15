@@ -93,10 +93,10 @@ localScale = new Vector3(0.1F, 0.1F, 0.1F)
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
-                    localPos = new Vector3(0.1f, 0.2f, 0.13f),
-                    localAngles = new Vector3(0f, 0f, 90f),
-                    localScale = new Vector3(0.08f, 0.08f, 0.08f)
+childName = "Head",
+localPos = new Vector3(0.1F, 0.1849F, 0.0903F),
+localAngles = new Vector3(339.1738F, 0F, 90F),
+localScale = new Vector3(0.08F, 0.08F, 0.08F)
                 }
             });
             rules.Add("mdlToolbot", new ItemDisplayRule[]
