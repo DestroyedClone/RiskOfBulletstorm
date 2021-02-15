@@ -154,10 +154,10 @@ localScale = new Vector3(0.08F, 0.08F, 0.08F)
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
-                    localPos = new Vector3(0f, 0.1f, 0.2f),
-                    localAngles = new Vector3(0f, 0f, 0f),
-                    localScale = generalScale
+childName = "Head",
+localPos = new Vector3(0F, 0.1F, 0.1705F),
+localAngles = new Vector3(0F, 0F, 0F),
+localScale = new Vector3(0.05F, 0.05F, 0.05F)
                 }
             });
             rules.Add("mdlTreebot", new ItemDisplayRule[]
