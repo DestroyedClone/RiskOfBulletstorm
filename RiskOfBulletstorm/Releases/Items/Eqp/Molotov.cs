@@ -300,10 +300,10 @@ localScale = new Vector3(0.4F, 0.4F, 0.4F)
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Chest",
-                    localPos = new Vector3(0f, 0.2f, -0.35f),
-                    localAngles = new Vector3(0f, 0f, 0f),
-                    localScale = generalScale
+childName = "HandR",
+localPos = new Vector3(0.0149F, 0.1615F, -0.0084F),
+localAngles = new Vector3(87.0354F, 0F, 0F),
+localScale = new Vector3(0.0587F, 0.0587F, 0.0587F)
                 }
             });
             /*rules.Add("mdlBrother", new ItemDisplayRule[] //Mithrix doesnt use equips

@@ -192,10 +192,10 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "ThighR",
-                    localPos = new Vector3(0f, 0.04f, 0.18f),
-                    localAngles = new Vector3(0f, 0f, 180f),
-                    localScale = generalScale
+childName = "ThighR",
+localPos = new Vector3(-0.0075F, -0.0243F, 0.1858F),
+localAngles = new Vector3(350.2282F, 353.2943F, 179.4433F),
+localScale = new Vector3(0.05F, 0.05F, 0.05F)
                 }
             });
             rules.Add("mdlBrother", new ItemDisplayRule[]
