@@ -18,7 +18,7 @@ namespace RiskOfBulletstorm.Items
         public bool Ration_SaveFromDeath { get; private set; } = true;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Does the Ration need to be active to be consumed to save the holder from death?", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Does the Ration need to be active to be consumed to save the holder from death? Requires the previous config value to be enabled.", AutoConfigFlags.PreventNetMismatch)]
         public bool Ration_SaveFromDeathAnySlot { get; private set; } = true;
 
         public override float cooldown { get; protected set; } = 0f;
@@ -305,20 +305,14 @@ localScale = new Vector3(0.0331F, 0.0331F, 0.0331F)
                     if (equipmentStateSlots.Length > 0)
                     {
                         var endHealth = self.combinedHealth - damageInfo.damage;
-                        BulletstormPlugin._logger.LogMessage("Damage check");
                         if ((endHealth <= 0) && (!damageInfo.rejected))
                         {
-                            BulletstormPlugin._logger.LogMessage("Passed amage check");
-                            for (int i = 0; i <= equipmentStateSlots.Length; i++)
+                            for (int i = 0; i <= equipmentStateSlots.Length-1; i++)
                             {
-                                BulletstormPlugin._logger.LogMessage("Currently on iteration "+i);
                                 if (equipmentStateSlots[i].equipmentIndex == catalogIndex)
                                 {
-                                    BulletstormPlugin._logger.LogMessage("Matched with iteration "+i);
                                     damageInfo.rejected = true;
-                                    BulletstormPlugin._logger.LogMessage("Rejected damage");
                                     RationUse(self, inventory, i);
-                                    BulletstormPlugin._logger.LogMessage("Used ration");
                                     break;
                                 }
                             }
