@@ -122,10 +122,10 @@ localScale = new Vector3(0.1303F, 0.1303F, 0.1303F)
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "ThighR",
-                    localPos = new Vector3(0f, 0.5f, 0.22f),
-                    localAngles = new Vector3(0f, 1f, -0.06f),
-                    localScale = generalScale
+childName = "ThighR",
+localPos = new Vector3(-0.1043F, 0.2921F, 0.0137F),
+localAngles = new Vector3(353.135F, 291.1656F, 359.7365F),
+localScale = new Vector3(0.2055F, 0.2055F, 0.2055F)
                 }
             });
 

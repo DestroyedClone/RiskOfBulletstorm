@@ -310,10 +310,14 @@ namespace RiskOfBulletstorm.Items
                 {
                     if (!fireEffect)
                     {
-                        fireEffect = Object.Instantiate<GameObject>(instance.jammedFire, modelLocator.modelTransform);
-                        fireEffect.transform.parent = modelLocator.modelTransform;
+                        fireEffect = Object.Instantiate<GameObject>(instance.jammedFire, modelLocator.modelTransform.Find("ROOT").transform);
+                        //fireEffect.transform.parent = modelLocator.modelTransform;
                     }
                 }
+            }
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
+            void FixedUpdate()
+            {
 
             }
         }

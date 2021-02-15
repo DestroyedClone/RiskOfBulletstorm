@@ -165,10 +165,10 @@ localScale = new Vector3(0.012F, 0.01F, 0.012F)
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Finger42R",
-                    localPos = new Vector3(0.03f, 0.01f, 0.01f),
-                    localAngles = new Vector3(330f, 0f, 180f),
-                    localScale = generalScale
+childName = "Finger42R",
+localPos = new Vector3(0.0308F, 0.0142F, 0.0086F),
+localAngles = new Vector3(338.9612F, 358.592F, 173.5894F),
+localScale = new Vector3(0.0105F, 0.0105F, 0.0105F)
                 },
             });
             rules.Add("mdlMage", new ItemDisplayRule[]

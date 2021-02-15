@@ -127,25 +127,25 @@ localScale = new Vector3(0.0341F, 0.0341F, 0.0341F)
                     localScale = generalScale * 5
                 }
             });
-            rules.Add("mdlEngi", new ItemDisplayRule[] // 
+            rules.Add("mdlEngi", new ItemDisplayRule[]
             {
                 new ItemDisplayRule
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "CannonHeadL",
-                    localPos = new Vector3(-0.1f, 0.5f, 0.2f),
-                    localAngles = new Vector3(-90f, 90f, 0f),
-                    localScale = generalScale
+childName = "CannonHeadL",
+localPos = new Vector3(-0.1529F, 0.4954F, 0.3552F),
+localAngles = new Vector3(272.366F, 313.7744F, 223.7704F),
+localScale = new Vector3(0.1F, 0.1F, 0.1F)
                 },
                 new ItemDisplayRule
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "CannonHeadR",
-                    localPos = new Vector3(-0.1f, 0.5f, 0.2f),
-                    localAngles = new Vector3(-90f, 90f, 0f),
-                    localScale = generalScale
+childName = "CannonHeadR",
+localPos = new Vector3(-0.0912F, 0.4954F, 0.3552F),
+localAngles = new Vector3(272.3658F, 313.7745F, 223.7703F),
+localScale = new Vector3(0.1F, 0.1F, 0.1F)
                 }
             });
             rules.Add("mdlEngiTurret", new ItemDisplayRule[] // 
