@@ -208,10 +208,10 @@ localScale = new Vector3(0.0384F, 0.0384F, 0.0384F)
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
-                    localPos = new Vector3(0f, 0f, 0.18f),
-                    localAngles = new Vector3(0, 0, 0),
-                    localScale = generalScale
+childName = "UpperArmL",
+localPos = new Vector3(0.1265F, 0.1693F, 0.0163F),
+localAngles = new Vector3(356.6359F, 338.8943F, 261.3554F),
+localScale = new Vector3(0.0294F, 0.0288F, 0.0294F)
                 }
 });
             rules.Add("mdlBandit", new ItemDisplayRule[]
@@ -273,6 +273,51 @@ localScale = new Vector3(0.4916F, 0.4916F, 0.4916F)
                     localAngles = new Vector3(0f, 0f, 90f),
                     localScale = new Vector3(0.2f, 0.2f, 0.2f)
                 }
+            });
+            rules.Add("mdlBeetle", new ItemDisplayRule
+            {
+                ruleType = ItemDisplayRuleType.ParentedPrefab,
+                followerPrefab = ItemBodyModelPrefab,
+                childName = "Chest",
+                localPos = new Vector3(0.4957F, 0.1282F, 0.3521F),
+                localAngles = new Vector3(330.3268F, 318.3562F, 295.7811F),
+                localScale = new Vector3(0.1F, 0.1F, 0.1F)
+            });
+            rules.Add("mdlLemurian", new ItemDisplayRule
+            {
+                ruleType = ItemDisplayRuleType.ParentedPrefab,
+                followerPrefab = ItemBodyModelPrefab,
+                childName = "Hip",
+                localPos = new Vector3(2.0102F, 1.266F, -0.1872F),
+                localAngles = new Vector3(19.2145F, 302.6854F, 126.0682F),
+                localScale = new Vector3(0.4502F, 0.4502F, 0.4502F)
+            });
+            rules.Add("mdlLunarGolem", new ItemDisplayRule
+            {
+                ruleType = ItemDisplayRuleType.ParentedPrefab,
+                followerPrefab = ItemBodyModelPrefab,
+                childName = "Root",
+                localPos = new Vector3(0.4957F, 0.1282F, 0.3521F),
+                localAngles = new Vector3(330.3268F, 318.3562F, 295.7811F),
+                localScale = new Vector3(0.1F, 0.1F, 0.1F)
+            });
+            rules.Add("mdlNullifier", new ItemDisplayRule
+            {
+                ruleType = ItemDisplayRuleType.ParentedPrefab,
+                followerPrefab = ItemBodyModelPrefab,
+                childName = "Center",
+                localPos = new Vector3(0.4957F, 0.1282F, 0.3521F),
+                localAngles = new Vector3(330.3268F, 318.3562F, 295.7811F),
+                localScale = new Vector3(0.1F, 0.1F, 0.1F)
+            });
+            rules.Add("mdlGravekeeper", new ItemDisplayRule
+            {
+                ruleType = ItemDisplayRuleType.ParentedPrefab,
+                followerPrefab = ItemBodyModelPrefab,
+                childName = "Head",
+                localPos = new Vector3(0.4957F, 0.1282F, 0.3521F),
+                localAngles = new Vector3(330.3268F, 318.3562F, 295.7811F),
+                localScale = new Vector3(0.1F, 0.1F, 0.1F)
             });
             return rules;
         }
