@@ -321,10 +321,10 @@ localScale = new Vector3(1F, 1F, 1F)
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "GunBarrelBase",
-                    localPos = new Vector3(0f, 0f, 1.7f),
-                    localAngles = new Vector3(0f, 0f, 90f),
-                    localScale = new Vector3(0.2f, 0.2f, 0.2f)
+childName = "GunBarrelBase",
+localPos = new Vector3(0.1063F, 0.2238F, 1.6999F),
+localAngles = new Vector3(13.9629F, 84.7981F, 261.6667F),
+localScale = new Vector3(0.2F, 0.2F, 0.2F)
                 }
             });
             return rules;
