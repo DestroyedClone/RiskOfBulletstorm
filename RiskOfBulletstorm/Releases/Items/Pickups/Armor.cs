@@ -234,7 +234,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "None",
+                    childName = "Root",
                     localPos = new Vector3(0f, 0f, -2f),
                     localAngles = new Vector3(0f, 0f, 0f),
                     localScale = generalScale * 8f
@@ -246,7 +246,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "None",
+                    childName = "Root",
                     localPos = new Vector3(8.5f, -6f, 7f),
                     localAngles = new Vector3(0f, 90f, 0f),
                     localScale = generalScale * 10f
