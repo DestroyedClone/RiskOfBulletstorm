@@ -379,10 +379,10 @@ localScale = new Vector3(0.3F, 0.3F, 0.6F)
             {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
                 followerPrefab = ItemBodyModelPrefab,
-                childName = "Center",
-                localPos = new Vector3(0.4957F, 0.1282F, 0.3521F),
-                localAngles = new Vector3(330.3268F, 318.3562F, 295.7811F),
-                localScale = new Vector3(0.1F, 0.1F, 0.1F)
+                childName = "Muzzle",
+                localPos = new Vector3(-0.1374F, -0.435F, 1.0132F),
+                localAngles = new Vector3(29.9611F, 359.8247F, 180.4726F),
+                localScale = new Vector3(0.1228F, 0.1228F, 0.0959F)
             });
             rules.Add("mdlGravekeeper", new ItemDisplayRule
             {
