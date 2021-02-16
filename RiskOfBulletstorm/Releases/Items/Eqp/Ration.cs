@@ -278,27 +278,27 @@ localScale = new Vector3(0.4916F, 0.4916F, 0.4916F)
             {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
                 followerPrefab = ItemBodyModelPrefab,
-                childName = "Chest",
-                localPos = new Vector3(0.4957F, 0.1282F, 0.3521F),
-                localAngles = new Vector3(330.3268F, 318.3562F, 295.7811F),
-                localScale = new Vector3(0.1F, 0.1F, 0.1F)
+                childName = "Head",
+                localPos = new Vector3(0.0277F, 0.1204F, -0.2472F),
+                localAngles = new Vector3(342.2797F, 0.6727F, 358.0747F),
+                localScale = new Vector3(0.0654F, 0.0433F, 0.0654F)
             });
             rules.Add("mdlLemurian", new ItemDisplayRule
             {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
                 followerPrefab = ItemBodyModelPrefab,
-                childName = "Hip",
-                localPos = new Vector3(2.0102F, 1.266F, -0.1872F),
-                localAngles = new Vector3(19.2145F, 302.6854F, 126.0682F),
-                localScale = new Vector3(0.4502F, 0.4502F, 0.4502F)
+                childName = "RightCalf",
+                localPos = new Vector3(0.3748F, 1.274F, 0.0391F),
+                localAngles = new Vector3(67.3883F, 72.1054F, 349.0374F),
+                localScale = new Vector3(0.0698F, 0.0698F, 0.0698F)
             });
             rules.Add("mdlLunarGolem", new ItemDisplayRule
             {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
                 followerPrefab = ItemBodyModelPrefab,
-                childName = "MuzzleLT",
-                localPos = new Vector3(-0.1679F, 1.4223F, -0.2243F),
-                localAngles = new Vector3(87.3634F, 16.5595F, 16.7779F),
+                childName = "Center",
+                localPos = new Vector3(0F, -0.428F, 0.4195F),
+                localAngles = new Vector3(0F, 0F, 0F),
                 localScale = new Vector3(0.1F, 0.1F, 0.1F)
             });
             rules.Add("mdlNullifier", new ItemDisplayRule
