@@ -350,10 +350,10 @@ localScale = new Vector3(0.4205F, 0.4205F, 0.4205F)
             {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
                 followerPrefab = ItemBodyModelPrefab,
-                childName = "Head",
-                localPos = new Vector3(0.4957F, 0.1282F, 0.3521F),
-                localAngles = new Vector3(330.3268F, 318.3562F, 295.7811F),
-                localScale = new Vector3(0.1F, 0.1F, 0.1F)
+                childName = "MuzzleJar",
+                localPos = new Vector3(2.0046F, -2.7849F, 1.7857F),
+                localAngles = new Vector3(352.9601F, 323.766F, 252.3455F),
+                localScale = new Vector3(0.4172F, 0.4172F, 0.4172F)
             });
             return rules;
         }
