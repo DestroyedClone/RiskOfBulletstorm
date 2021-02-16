@@ -110,10 +110,10 @@ localScale = new Vector3(0.1303F, 0.1303F, 0.1303F)
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "ThighR",
-                    localPos = new Vector3(0f, 3.4f, -1.3f),
-                    localAngles = new Vector3(60f, 0f, 0f),
-                    localScale = generalScale * 16f
+childName = "ThighR",
+localPos = new Vector3(0.2547F, 0.6413F, 0.6974F),
+localAngles = new Vector3(0F, 0F, 252.5814F),
+localScale = new Vector3(1.704F, 1.704F, 1.704F)
                 }
             });
             rules.Add("mdlEngi", new ItemDisplayRule[]

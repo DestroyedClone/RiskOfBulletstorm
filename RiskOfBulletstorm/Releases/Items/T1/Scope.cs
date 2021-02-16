@@ -121,10 +121,10 @@ localScale = new Vector3(0.0341F, 0.0341F, 0.0341F)
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "LowerArmL",
-                    localPos = new Vector3(-1f, 5f, -0.9f),
-                    localAngles = new Vector3(-100f, 275f, 180f),
-                    localScale = generalScale * 5
+childName = "LowerArmL",
+localPos = new Vector3(-1.3296F, 4.4384F, -0.8709F),
+localAngles = new Vector3(271.0498F, 275.0005F, 179.9995F),
+localScale = new Vector3(0.5F, 0.5F, 0.5F)
                 }
             });
             rules.Add("mdlEngi", new ItemDisplayRule[]

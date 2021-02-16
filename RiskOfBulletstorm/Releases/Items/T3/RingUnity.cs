@@ -93,28 +93,10 @@ localScale = new Vector3(0.012F, 0.0097F, 0.012F)
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "MuzzleNailgun",
-                    localPos = new Vector3(0f, 3.4f, -1.3f),
-                    localAngles = new Vector3(60f, 0f, 0f),
-                    localScale = generalScale * 16f
-                },
-                new ItemDisplayRule
-                {
-                    ruleType = ItemDisplayRuleType.ParentedPrefab,
-                    followerPrefab = ItemBodyModelPrefab,
-                    childName = "MuzzleSpear",
-                    localPos = new Vector3(0f, 0.5f, 0.22f),
-                    localAngles = new Vector3(0f, 1f, -0.06f),
-                    localScale = generalScale
-                },
-                new ItemDisplayRule
-                {
-                    ruleType = ItemDisplayRuleType.ParentedPrefab,
-                    followerPrefab = ItemBodyModelPrefab,
-                    childName = "MuzzleBuzzsaw",
-                    localPos = new Vector3(0f, 0.5f, 0.22f),
-                    localAngles = new Vector3(0f, 1f, -0.06f),
-                    localScale = generalScale
+childName = "Finger21R",
+localPos = new Vector3(0.1537F, 0.7114F, -0.011F),
+localAngles = new Vector3(270F, 93.9872F, 0F),
+localScale = new Vector3(0.16F, 0.16F, 0.16F)
                 }
             });
             rules.Add("mdlEngi", new ItemDisplayRule[]
