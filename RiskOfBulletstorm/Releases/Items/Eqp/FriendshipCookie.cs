@@ -280,9 +280,9 @@ localScale = new Vector3(0.2F, 0.2F, 0.2F)
             {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
                 followerPrefab = ItemBodyModelPrefab,
-                childName = "Root",
-                localPos = new Vector3(0.4957F, 0.1282F, 0.3521F),
-                localAngles = new Vector3(330.3268F, 318.3562F, 295.7811F),
+                childName = "Center",
+                localPos = new Vector3(0F, -0.2602F, 0.4547F),
+                localAngles = new Vector3(0F, 0F, 0F),
                 localScale = new Vector3(0.1F, 0.1F, 0.1F)
             });
             rules.Add("mdlNullifier", new ItemDisplayRule
