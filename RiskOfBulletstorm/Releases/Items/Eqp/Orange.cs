@@ -144,16 +144,34 @@ namespace RiskOfBulletstorm.Items
                     localScale = generalScale
                 }
             });
-            rules.Add("mdlTreebot", new ItemDisplayRule[] //RDY
+            rules.Add("mdlTreebot", new ItemDisplayRule[]
             {
                 new ItemDisplayRule
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Base",
-                    localPos = new Vector3(0f, 1.2f, 0.2f),
-                    localAngles = new Vector3(-90f, 0f, 0f),
-                    localScale = generalScale * 8f
+childName = "FlowerBase",
+localPos = new Vector3(0.8143F, 1.4498F, 0.672F),
+localAngles = new Vector3(0.4932F, 333.8098F, 282.4889F),
+localScale = new Vector3(0.1515F, 0.1515F, 0.1515F)
+                },
+                new ItemDisplayRule
+                {
+                    ruleType = ItemDisplayRuleType.ParentedPrefab,
+                    followerPrefab = ItemBodyModelPrefab,
+childName = "FlowerBase",
+localPos = new Vector3(-0.0186F, 1.4495F, 0.8039F),
+localAngles = new Vector3(62.9394F, 74.8923F, 0F),
+localScale = new Vector3(0.095F, 0.095F, 0.095F)
+                },
+                new ItemDisplayRule
+                {
+                    ruleType = ItemDisplayRuleType.ParentedPrefab,
+                    followerPrefab = ItemBodyModelPrefab,
+childName = "FlowerBase",
+localPos = new Vector3(0.5237F, 1.4812F, -0.9807F),
+localAngles = new Vector3(18.5778F, 63.8499F, 246.666F),
+localScale = new Vector3(0.172F, 0.172F, 0.172F)
                 }
             });
             rules.Add("mdlLoader", new ItemDisplayRule[]

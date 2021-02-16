@@ -153,16 +153,16 @@ localScale = new Vector3(0.011F, 0.011F, 0.011F)
                     localScale = new Vector3(0.011f, 0.01f, 0.01f)
                 }
             });
-            rules.Add("mdlTreebot", new ItemDisplayRule[] //todo
+            rules.Add("mdlTreebot", new ItemDisplayRule[] 
             {
                 new ItemDisplayRule
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "WeaponPlatform",
-                    localPos = new Vector3(0f, 1.2f, 0.2f),
-                    localAngles = new Vector3(-90f, 0f, 0f),
-                    localScale = generalScale * 8f
+childName = "FootFrontL",
+localPos = new Vector3(0.0005F, 0.3249F, 0.0159F),
+localAngles = new Vector3(270F, 0F, 0F),
+localScale = new Vector3(0.0829F, 0.0829F, 0.0829F)
                 }
             });
             rules.Add("mdlLoader", new ItemDisplayRule[]

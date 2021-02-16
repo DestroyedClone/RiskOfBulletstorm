@@ -117,16 +117,16 @@ localScale = new Vector3(0.17F, 0.5F, 0.195F)
                     localScale = new Vector3(0.13f, 0.5f, 0.14f)
                 }
             });
-            rules.Add("mdlTreebot", new ItemDisplayRule[] //todo
+            rules.Add("mdlTreebot", new ItemDisplayRule[]
             {
                 new ItemDisplayRule
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "HeadCenter",
-                    localPos = new Vector3(0f, 1.2f, 0.2f),
-                    localAngles = new Vector3(-90f, 0f, 0f),
-                    localScale = new Vector3(1f,1f,1f)
+childName = "HeadBase",
+localPos = new Vector3(0F, -0.1712F, 0F),
+localAngles = new Vector3(0F, 180F, 180F),
+localScale = new Vector3(0.6851F, 1.4182F, 0.6851F)
                 }
             });
             rules.Add("mdlLoader", new ItemDisplayRule[]

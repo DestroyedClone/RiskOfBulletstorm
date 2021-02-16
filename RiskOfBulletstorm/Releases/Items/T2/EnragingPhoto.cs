@@ -159,10 +159,10 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Base",
-                    localPos = new Vector3(0.3f, 0.96f, 0.1f),
-                    localAngles = new Vector3(-90f, 0f, 0f),
-                    localScale = generalScale
+childName = "PlatformBase",
+localPos = new Vector3(0.1301F, 0.0483F, 0.4469F),
+localAngles = new Vector3(0F, 0F, 0F),
+localScale = new Vector3(0.0761F, 0.0761F, 0.0761F)
                 }
             });
             rules.Add("mdlLoader", new ItemDisplayRule[]
