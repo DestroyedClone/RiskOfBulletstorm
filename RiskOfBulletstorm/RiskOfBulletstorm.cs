@@ -34,7 +34,7 @@ namespace RiskOfBulletstorm
 
     public class BulletstormPlugin : BaseUnityPlugin
     {
-        public const string ModVer = "1.1.0";
+        public const string ModVer = "1.1.1";
         public const string ModName = "Risk of Bulletstorm";
         public const string ModGuid = "com.DestroyedClone.RiskOfBulletstorm";
 
