@@ -1,7 +1,7 @@
 # Risk of Bulletstorm
 A mod for Risk of Rain 2 that plans to add custom content, modified from Enter The Gungeon. Very configurable.
 
-Likely not going to be updated.
+Feel free to message me in the [Risk of Rain 2 Modding Discord](https://discord.gg/5MbXZvd) for anything broken or any suggestions, including any networking issues.
 ***
 # Dependencies
  - [Hard] BepInEx and R2API
@@ -21,7 +21,13 @@ Likely not going to be updated.
 
 # Known Issues:
 * Master Round isn't given if the teleporter event was forcefully completed (such as with RORCheats)
+* Item Displays on REX and MULT aren't setup properly
 
+# Planned
+1. BetterUI, ItemStatsMod Support
+2. Multiplayer Support
+3. Jarlyk's Hailstorm support (Curse increases mimic chance)
+4. Better messages for the Master Round
 
 ***
 # Items
@@ -31,34 +37,47 @@ Every 25 kills *(+10% per stage)*, the game will have a 40% chance to *spawn a r
 -
 |Icon| Chance |Item | Description |
 |:--:|:--:|:--:|--|
-|![](=)| 10% | Armor | Destroys itself to block one hit of damage dealing more than 20% health or deals fatal damage, and fires a Blank.
-|![](=)| 35% | Blank| Press T to activate, destroying all projectiles, stunning and knocking nearby enemies back. Consumed on use.
-|![](=)| 60% | Spread Ammo|Pick up to restore *all* allies' cooldowns and restores one equipment charge to all equipment.
+|![](https://i.imgur.com/RNzbyB9.png)| 15% | Armor | Destroys itself to block one hit of damage dealing more than 20% health or deals fatal damage, and fires a Blank.
+|![](https://i.imgur.com/kGKjmcw.png)| 45% | Blank| Press T to activate, destroying all projectiles, stunning and knocking nearby enemies back. Consumed on use.
+|![](https://i.imgur.com/XnEVLst.png)| 70% | Spread Ammo|Pick up to restore *all* allies' cooldowns and restores one equipment charge to all equipment.
 -
 
 ## White
-
+-
 |Icon| Item | Description |
 |:--:|:--:|--|
-|![](=)|Cartographer's Ring|Upon starting the next stage, 10% chance (+5% chance per stack) of automatically revealing all interactables. Counts based off all players' item counts. Stacking beyond 100% has no effect.<br>!! *I recommend installing my other mod, ["HideScannerIndicatorOnUse"](https://thunderstore.io/package/DestroyedClone/HideScannerIndicatorOnUse/), so that the indicator that pops over interactables disappears upon interaction.* !!</br>
-|![](=)|Mustache|Upon purchase, increases your regeneration by `2 health` `(+2 per stack)` for `10` seconds.
-|![](=)|Scope|Reduces spread by -10% (-5% per stack). <br>*You can enable all projectiles, but by default it follows a whitelist. Feel free to recommend me other projectiles to add to the whitelist, including any modded projectiles.*</br>
+|![](https://i.imgur.com/r7DDd9U.png)|Cartographer's Ring|Upon starting the next stage, 10% chance (+5% chance per stack) of automatically revealing all interactables. Counts based off all players' item counts. Stacking beyond 100% has no effect. [1]
+|![](https://i.imgur.com/mgb7N2g.png)|Mustache|Upon purchase, increases your regeneration by `2 health` `(+2 per stack)` for `10` seconds.
+|![](https://i.imgur.com/MFuBwOI.png)|Scope|Reduces spread by -10% (-5% per stack). Stacking beyond 100% has no effect. [2]
+-
+<br>[1] *I recommend installing my other mod, ["HideScannerIndicatorOnUse"](https://thunderstore.io/package/DestroyedClone/HideScannerIndicatorOnUse/), so that the indicator that pops over interactables disappears upon interaction.*</br>
+
+<br>[2] *You can enable all projectiles, but by default it follows a whitelist. Feel free to recommend me other projectiles to add to the whitelist, including any modded projectiles.*</br>
 
 ## Green
+
+-
 |Icon| Item | Description |
 |:--:|:--:|--|
-|![](=)|Disarming Personality|*Hyperbolically* reduces purchase costs by 10% (-5% per stack) up to 60%. Chance is shared among players.
-|![](=)|Enraging Photo|Gain a temporary `100% damage bonus` that can last up to 2 seconds `(+0.5 seconds duration per stack).` The duration scales from the amount of damage taken, from `1% to 10%`.
-|![](=)|Roll Bomb| Using your utility `drops 1 bomb` for `200% damage`.<br>`(+1 bomb dropped per stack)`</br>
+|![](https://i.imgur.com/mwbq6Jh.png)|Disarming Personality|*Hyperbolically* reduces purchase costs by 10% (-5% per stack) up to 60%. Chance is shared among players. [1]
+|![](https://i.imgur.com/FqM3osk.png)|Enraging Photo|Gain a temporary `100% damage bonus` that can last up to 2 seconds `(+0.5 seconds duration per stack).` The duration scales from the amount of damage taken, from `1% to 10%`.
+|![](https://i.imgur.com/yxhT1zA.png)|Roll Bomb| Using your utility `drops 1 bomb` for `200% damage`.<br>`(+1 bomb dropped per stack)`</br>
+-
+
+[1] Duration increased on base and per stack, and is a percentage based on how hard you were damaged with a lower/higher bound. EX: (duration of 5 seconds with a bound of 0% health lost and 20% health loss, so a 10% health loss would result in 2.5 seconds (or half).
 
 ## Red
+
+-
 |Icon| Item | Description |
 |:--:|:--:|--|
-|![](=)|Backpack|Grants 1 extra equipment slot per stack.<br> - Hold [Left Shift] + [NumberRow keys] to switch between slots.</br><br> - Press [Left Shift] + [=] to list all equipment.</br><br> - Press [F] or [G] to cycle left/right through equipment.</br><br> - Adds onto MULT's additional slot. *(MULT w/ 1 backpack = 3 slots, though you can't use retool to switch to the modded ones)*</br>
-|![](=)|Number 2|Increases your base stats for every dead player.<br>*Singleplayer: Starts with one player dead.*</br>
+|![](https://i.imgur.com/msag2Ku.png)|Backpack|Grants 1 extra equipment slot per stack.<br> - Hold [Left Shift] + [NumberRow keys] to switch between slots.</br><br> - Press [Left Shift] + [=] to list all equipment.</br><br> - Press [F] or [G] to cycle left/right through equipment.</br><br> - Adds onto MULT's additional slot. *(MULT w/ 1 backpack = 3 slots, though you can't use retool to switch to the modded ones)*</br>
+|![](https://i.imgur.com/wAGP4zm.png)|**Unity**| +0.2 (+0.05 per stack) base damage per item in inventory.
+|![](https://i.imgur.com/3b82HWP.png)|Number 2|Increases your base stats for every dead player.<br>*Singleplayer: Starts with one player dead.*</br>
  - 
+ ### Number 2 Stat Bonuses
 | Stat | Bonus 
-|--:|--|
+|:--:|:--:|
 | baseAttackSpeedAdd | 0.25
 | baseDamageAdd | 2
 | baseHealthAdd | 25
@@ -66,36 +85,48 @@ Every 25 kills *(+10% per stage)*, the game will have a 40% chance to *spawn a r
 | baseRegenAdd | 0.5
 | armorAdd | 2
 | critAdd | 5
- - 
-|Icon| Unity | Description |
- - **Unity**: +0.4 (+0.05 per stack) base damage per unique item in inventory.
+-
 
 ## Lunar
- - **Metronome**: Gain a 2% damage bonus for every enemy you kill with the same skill, up to 150% (75 kills). Gain 25 extra stacks per pickup. Lose 75 stacks upon using a different skill. Shows a buff for tracking.
- - **Ring of Miserly Protection**: Grants +125% (+75% per stack) increased maximum health ...but one shatters upon using a shrine (does not include combat).
+
+-
+|Icon| Item | Description |
+|:--:|:--:|--|
+|![](https://i.imgur.com/J0Gpgqo.png)|**Metronome**|Gain a 2% damage bonus for every enemy you kill with the same skill, up to 150% (75 kills). Gain 25 extra stacks per pickup. Lose 75 stacks upon using a different skill.|
+|![](https://i.imgur.com/xWR2pab.png)|**Ring of Miserly Protection**|Grants +100% (+50% per stack) increased maximum health ...but one shatters upon using a shrine (does not include combat).|
+ - 
 
 ## Boss
- - **Master Round**: +10% max health per stack. Granted upon clearing a teleporter boss, as long as no player took more than 3 hits (scales with stages cleared) each. 
+
+-
+|Icon| Item | Description |
+|:--:|:--:|--|
+|![](https://i.imgur.com/sst33CW.png)|**Master Round**|+10% max health per stack. <br>`Granted upon clearing a teleporter boss, as long as no player took more than 3 hits (scales with stages cleared) each.`</br> |
+ - 
 
 # Equipment
 ## Normal
+
 - 
 |Icon| Item | Description | CD |
 |:--:|:--:|--|:--:|
-| ![](=) | **Bomb**| Throws a bomb for `300% damage`. | 14s |
-| ![](=) | **Charm Horn**| Upon use, blows the horn to `Charm` enemies within `20 meters` for 10 seconds. | 85s |
-| ![](=) | **Friendship Cookie** | Revives all players and gives 3 seconds of immunity. If in singleplayer, gives an Infusion instead. Consumed on use. | 0s |
-| ![](=) | **Magazine Rack**| Place to create a zone of no cooldowns within a radius of 3.5m for 2.5 seconds. | 14s |
-| ![](=) | **Meatbun** | Heals the player for 33% health. Grants +10% damage until the player takes more than 5% damage. Buff stacks up to 5 times. | 90s |
-| ![](=) | **Medkit** | Heals the player for 75% max health and restores 50% barrier. | 55s |
-| ![](=) | **Molotov** | Throw to cover an area in flames for 10% damage per second for 8 seconds. | 55s |
-| ![](=) | **Orange** | Consuming permanently reduces equipment recharge rate by 10%, increases health by 10%, fully heals the player, but is removed from the inventory. | 0s |
-| ![](=) | **Portable Barrel Device** | Places a barrel, but doesn't give any money or experience for picking it up. | 30s |
-| ![](=) | **Ration** | Heals for 40% health. Automatically used upon taking fatal damage. Consumed on use. | 0s |
-| ![](=) |  |  | s |
+| ![](https://i.imgur.com/vSRIX8I.png) | **Bomb**| Throws a bomb for `300% damage`. | 14s |
+| ![](https://i.imgur.com/XKVAmkD.png) | **Charm Horn**| Upon use, blows the horn to `Charm` enemies within `20 meters` for 10 seconds. | 85s |
+| ![](https://i.imgur.com/CHAxjQN.png) | **Friendship Cookie** | Revives all players and gives 3 seconds of immunity. If in singleplayer, gives an Infusion instead. Consumed on use. | 0s |
+| ![](https://i.imgur.com/PwZygkK.png) | **Magazine Rack**| Place to create a zone of no cooldowns within a radius of 3.5m for 2.5 seconds. | 14s |
+| ![](https://i.imgur.com/zmdbNX8.png) | **Meatbun** | Heals the player for 33% health. Grants +10% damage until the player takes more than 5% damage. Buff stacks up to 5 times. | 90s |
+| ![](https://i.imgur.com/p8HO3m1.png) | **Medkit** | Heals the player for 75% max health and restores 50% barrier. | 55s |
+| ![](https://i.imgur.com/ISfLK77.png) | **Molotov** | Throw to cover an area in flames for 10% damage per second for 8 seconds. | 55s |
+| ![](https://i.imgur.com/Cvvu8rB.png) | **Orange** | Consuming permanently reduces equipment recharge rate by 10%, increases health by 10%, fully heals the player, but is removed from the inventory. | 0s |
+| ![](https://i.imgur.com/hPjK5TE.png) | **Portable Barrel Device** | Places a barrel, but doesn't give any money or experience for picking it up. | 30s |
+| ![](https://i.imgur.com/6nzBNeh.png) | **Ration** | Heals for 40% health. Automatically used upon taking fatal damage. Consumed on use. | 0s |
 - 
+
 ## Lunar
- - **Spice**: Increases and decreases stats per consumed Spice.  It's been slightly adjusted from Gungeon's values. These values are constant for each stack, not additive, except for the 6+ stack.
+
+|Icon| Item | Description |
+|:--:|:--:|--|
+|![](https://i.imgur.com/T71srU2.png)|**Spice**|Increases and decreases stats per consumed Spice.  It's been slightly adjusted from Gungeon's values. These values are constant for each stack, not additive, except for the 6+ stack.
  - 
 | Spice Consumed | Health Multiplier | Attack Speed | Accuracy | Enemy Bullet Speed | Damage | Curse
 |:--:|:--:|:--:|:--:|:--:|:--:|:--:|
@@ -106,9 +137,11 @@ Every 25 kills *(+10% per stage)*, the game will have a 40% chance to *spawn a r
 | 5 | 5 curse | +40% | -10% | -15%  | +50% | +1
 | 6+ <br>(additive)</br> | +5 curse | +0% | -10% | -0%  | +15% | +1
  - 
+ 
  - Consuming beyond 5 will continue to add the bonuses from 6+. It's not exact, but the health reduction is added via PermanentCurse. Maximum health reduced by curse is reduced by a factor of `1 + 0.01 * n`, where `n` is the number of stacks.
 
 ## Special
+
  - **Curse** - Certain items apply curse. The chance of encountering a Jammed enemy increases as you gain more Curse. This is independent of elite affixes.
  - 
 | Curse Count | Enemy Chance | Boss Chance |
@@ -121,10 +154,13 @@ Every 25 kills *(+10% per stage)*, the game will have a 40% chance to *spawn a r
 | 8.5 - 9.5 | 25% | 30% |
 | 10+ | 50% | 50% |
 -
+
  - **Accuracy** - Certain items (Spice, Scope) affect the accuracy.
 	 - +Acc: Tighter bullet spread, projectiles fire closer towards your crosshair
 	 - -Acc: Wider bullet spread, projectiles tend to become inaccurate.
+
 ## Buffs
+
  - **[Enraged]**: +100% damage.
 
 ---AI Specific:---
@@ -132,6 +168,7 @@ Every 25 kills *(+10% per stage)*, the game will have a 40% chance to *spawn a r
  - **[Jammed]**: +100% damage, +100% crit chance, +20% attack speed, +20% movement speed. 
 
 # Changelog
+
 1.1.1 - Patches
 * *Master Round---*
 	* Fixed giving only one per player.
@@ -156,15 +193,14 @@ Every 25 kills *(+10% per stage)*, the game will have a 40% chance to *spawn a r
 * Unity
 	* Nerfed damage and stacking, but now scales of total item count rather than unique item count.
 * Curse
-	* Curse Amount shown in inventory
+	* Curse amount shown in inventory
 	* New Jammed Enemy visuals
 * Pickups
 	* Buffed rates and added indicator
-* Banned the following equipment from being used on equipment drones:
-	* Bomb, Portable Barrel Equipment, Molotov
 * Buffed overall stats:
 	* Bomb, Roll Bomb, Number2
-* Probably the last update
+* Fixed Bomb and Molotov from not working on Equipment Drones.
+* Various visual updates
 
 1.1.0 - Content Update:
  -  *Added---* 

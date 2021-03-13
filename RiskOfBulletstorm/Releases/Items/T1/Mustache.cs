@@ -65,7 +65,8 @@ namespace RiskOfBulletstorm.Items
                 canStack = false,
                 isDebuff = false,
                 iconPath = iconResourcePath,
-                name = "Power of Commerce",
+                name = "Power of Commerce\n" +
+                "Your regeneration is increased.",
             });
             MustacheHealBuff = BuffAPI.Add(healBuff);
         }
