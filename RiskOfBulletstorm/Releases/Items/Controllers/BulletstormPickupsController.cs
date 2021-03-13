@@ -41,8 +41,6 @@ namespace RiskOfBulletstorm.Items
 
         private GameObject currentStage;
         private readonly GameObject SpawnedPickupEffect = Resources.Load<GameObject>("prefabs/effects/LevelUpEffect");
-        private GameObject IndicatorProjectile;
-        private GameObject IndicatorProjectileGhost;
         private readonly float chanceBlank = 0.35f;
         private readonly float chanceArmor = 0.1f;
         private readonly float chanceAmmo = 0.6f;
@@ -50,30 +48,6 @@ namespace RiskOfBulletstorm.Items
         public override void SetupBehavior()
         {
             base.SetupBehavior();
-            GameObject brotherFirePillar = Resources.Load<GameObject>("prefabs/projectiles/BrotherFirePillar");
-            IndicatorProjectile = brotherFirePillar.InstantiateClone("Bulletstorm_PickupsIndicator");
-            IndicatorProjectile.GetComponent<RoR2.Projectile.ProjectileController>().ghostPrefab = IndicatorProjectileGhost;
-            Object.Destroy(IndicatorProjectile.GetComponent<RoR2.Projectile.ProjectileDotZone>());
-
-            GameObject firepillaerghost = Resources.Load<GameObject>("prefabs/projectileghosts/BrotherFirePillarGhost");
-            IndicatorProjectileGhost = firepillaerghost.InstantiateClone("Bulletstorm_PickupsIndicator");
-            IndicatorProjectileGhost.transform.Find("Point Light").GetComponent<Light>().color = Color.red;
-
-            var scale = IndicatorProjectileGhost.transform.Find("Scale");
-            scale.transform.localScale = new Vector3(0.25f, 1f, 0.25f);
-
-            var glowlooping = scale.transform.Find("Glow, Looping");
-
-            var particlesysrend = glowlooping.GetComponent<ParticleSystemRenderer>();
-            particlesysrend.lengthScale = 10f;
-            particlesysrend.material = Resources.Load<Material>("materials/matFullCrit.mat");
-
-            var abc = IndicatorProjectileGhost.AddComponent<BulletstormPickupIndicatorTerminator>();
-            abc.particleSystem = glowlooping.GetComponent<ParticleSystem>();
-
-            ProjectileCatalog.getAdditionalEntries += list => list.Add(IndicatorProjectile);
-
-            if (IndicatorProjectile) PrefabAPI.RegisterNetworkPrefab(IndicatorProjectile);
         }
         public override void SetupAttributes()
         {
@@ -254,8 +228,11 @@ namespace RiskOfBulletstorm.Items
                                 dropIndex, pickupDef.internalName, Language.GetString(pickupDef.nameToken)));
                         }
                         PickupDropletController.CreatePickupDroplet(dropIndex, PickupPosition, Vector3.up * 5);
+
+
+                        EffectManager.SimpleEffect(SpawnedPickupEffect, PickupPosition+Vector3.up*8f, Quaternion.identity, true);
                         EffectManager.SimpleEffect(SpawnedPickupEffect, PickupPosition, Quaternion.identity, true);
-                        RoR2.Projectile.ProjectileManager.instance.FireProjectile(IndicatorProjectile, PickupPosition, Quaternion.identity, null, 0f, 0f, false);
+                        EffectManager.SimpleEffect(SpawnedPickupEffect, PickupPosition+Vector3.down*8f, Quaternion.identity, true);
                     } else
                     {
                         if (BUP_ShowProgress)
