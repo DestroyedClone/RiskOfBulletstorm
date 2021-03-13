@@ -382,32 +382,14 @@ localScale = new Vector3(0.2F, 0.2F, 0.2F)
             base.Install();
             On.RoR2.BarrelInteraction.OnInteractionBegin += DestroyBarrel;
             CharacterMaster.onStartGlobal += CharacterMaster_onStartGlobal;
-            On.RoR2.PurchaseInteraction.GetInteractability += PreventEquipmentDroneGive;
         }
 
-        private Interactability PreventEquipmentDroneGive(On.RoR2.PurchaseInteraction.orig_GetInteractability orig, PurchaseInteraction self, Interactor activator)
-        {
-            SummonMasterBehavior summonMasterBehavior = self.gameObject.GetComponent<SummonMasterBehavior>();
-            if (summonMasterBehavior && summonMasterBehavior.callOnEquipmentSpentOnPurchase)
-            {
-                CharacterBody characterBody = activator.GetComponent<CharacterBody>();
-                if (characterBody && characterBody.inventory)
-                {
-                    if (characterBody.inventory.currentEquipmentIndex == catalogIndex)
-                    {
-                        return Interactability.ConditionsNotMet;
-                    }
-                }
-            }
-            return orig(self, activator);
-        }
 
         public override void Uninstall()
         {
             base.Uninstall();
             On.RoR2.BarrelInteraction.OnInteractionBegin -= DestroyBarrel;
             CharacterMaster.onStartGlobal -= CharacterMaster_onStartGlobal;
-            On.RoR2.PurchaseInteraction.GetInteractability -= PreventEquipmentDroneGive;
         }
 
         private void CharacterMaster_onStartGlobal(CharacterMaster obj)

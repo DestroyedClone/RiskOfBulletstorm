@@ -381,7 +381,12 @@ localScale = new Vector3(1F, 1F, 1F)
 
         public void FireBomb(CharacterBody body, GameObject gameObject, Quaternion throwAngle, float yOffset = 0)
         {
-            var offset = body.characterMotor.capsuleCollider.height / 3;
+            float offset = 0f;
+            if (body.characterMotor)
+            {
+                offset = body.characterMotor.capsuleCollider.height / 3;
+            }
+
             var position = body.corePosition;
 
             var newyOffset = Vector3.up * yOffset;

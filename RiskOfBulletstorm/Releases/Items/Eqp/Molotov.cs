@@ -103,28 +103,10 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            On.RoR2.PurchaseInteraction.GetInteractability += PreventEquipmentDroneGive;
         }
         public override void Uninstall()
         {
             base.Uninstall();
-            On.RoR2.PurchaseInteraction.GetInteractability -= PreventEquipmentDroneGive;
-        }
-        private Interactability PreventEquipmentDroneGive(On.RoR2.PurchaseInteraction.orig_GetInteractability orig, PurchaseInteraction self, Interactor activator)
-        {
-            SummonMasterBehavior summonMasterBehavior = self.gameObject.GetComponent<SummonMasterBehavior>();
-            if (summonMasterBehavior && summonMasterBehavior.callOnEquipmentSpentOnPurchase)
-            {
-                CharacterBody characterBody = activator.GetComponent<CharacterBody>();
-                if (characterBody && characterBody.inventory)
-                {
-                    if (characterBody.inventory.currentEquipmentIndex == catalogIndex)
-                    {
-                        return Interactability.ConditionsNotMet;
-                    }
-                }
-            }
-            return orig(self, activator);
         }
 
         public override void SetupBehavior()
@@ -440,7 +422,11 @@ localScale = new Vector3(1F, 1F, 1F)
 
         public void FireMolotov(CharacterBody body, GameObject gameObject, Quaternion throwAngle, float damageMultiplier = 1f)
         {
-            var offset = body.characterMotor.capsuleCollider.height / 3;
+            float offset = 0f;
+            if (body.characterMotor)
+            {
+                offset = body.characterMotor.capsuleCollider.height / 3;
+            }
             var position = body.corePosition;
             var resultpos = position + Vector3.up * offset;
 
