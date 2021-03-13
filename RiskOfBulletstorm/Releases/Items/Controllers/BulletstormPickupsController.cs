@@ -21,6 +21,16 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("What is the chance to create a pickup after reaching the required amount of kills? (Value: Direct Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float BUP_RollChance { get; private set; } = 40f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("What is the weighted chance to select a Blank?", AutoConfigFlags.PreventNetMismatch)]
+        public float BUP_chanceBlank { get; private set; } = 0.45f;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("What is the weighted chance to select a Blank?", AutoConfigFlags.PreventNetMismatch)]
+        public float BUP_chanceArmor { get; private set; } = 0.15f;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("What is the weighted chance to select a Blank?", AutoConfigFlags.PreventNetMismatch)]
+        public float BUP_chanceAmmo { get; private set; } = 0.7f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Debugging: Enable to show in console when a Forgive Me, Please was detected with its damageinfo. Use it to test for any false positives.", AutoConfigFlags.PreventNetMismatch)]
         public bool BUP_DebugShowDollProc { get; private set; } = false;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
@@ -41,9 +51,6 @@ namespace RiskOfBulletstorm.Items
 
         private GameObject currentStage;
         private readonly GameObject SpawnedPickupEffect = Resources.Load<GameObject>("prefabs/effects/LevelUpEffect");
-        private readonly float chanceBlank = 0.45f;
-        private readonly float chanceArmor = 0.1f;
-        private readonly float chanceAmmo = 0.7f;
 
         public override void SetupBehavior()
         {
@@ -58,9 +65,9 @@ namespace RiskOfBulletstorm.Items
             base.SetupLate();
             //needs to setup late so the indicies can be setup
             //weightedSelection.AddChoice(Key.instance.pickupIndex, 0.15f); currently unused while i rework it
-            weightedSelection.AddChoice(Blank.instance.pickupIndex, chanceBlank);
-            weightedSelection.AddChoice(Armor.instance.pickupIndex, chanceArmor);
-            weightedSelection.AddChoice(PickupAmmoSpread.instance.pickupIndex, chanceAmmo);
+            weightedSelection.AddChoice(Blank.instance.pickupIndex, BUP_chanceBlank);
+            weightedSelection.AddChoice(Armor.instance.pickupIndex, BUP_chanceArmor);
+            weightedSelection.AddChoice(PickupAmmoSpread.instance.pickupIndex, BUP_chanceAmmo);
         }
 
         public override void SetupConfig()
