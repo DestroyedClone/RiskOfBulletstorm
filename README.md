@@ -34,48 +34,44 @@ Feel free to message me in the [Risk of Rain 2 Modding Discord](https://discord.
 ## Pickups
 Every 25 kills *(+10% per stage)*, the game will have a 40% chance to *spawn a random weighted pickup*. "Forgive Me, Please" will not trigger this. If it does, tell me because it's not supposed to.
 
--
 |Icon| Chance |Item | Description |
 |:--:|:--:|:--:|--|
 |![](https://i.imgur.com/RNzbyB9.png)| 15% | Armor | Destroys itself to block one hit of damage dealing more than 20% health or deals fatal damage, and fires a Blank.
 |![](https://i.imgur.com/kGKjmcw.png)| 45% | Blank| Press T to activate, destroying all projectiles, stunning and knocking nearby enemies back. Consumed on use.
 |![](https://i.imgur.com/XnEVLst.png)| 70% | Spread Ammo|Pick up to restore *all* allies' cooldowns and restores one equipment charge to all equipment.
--
 
 ## White
--
+
 |Icon| Item | Description |
 |:--:|:--:|--|
-|![](https://i.imgur.com/r7DDd9U.png)|Cartographer's Ring|Upon starting the next stage, 10% chance (+5% chance per stack) of automatically revealing all interactables. Counts based off all players' item counts. Stacking beyond 100% has no effect. [1]
+|![](https://i.imgur.com/r7DDd9U.png)|Cartographer's Ring|Upon starting the next stage, 10% chance (+5% chance per stack) of automatically revealing all interactables. Counts based off all players' item counts. Stacking beyond 100% has no effect. (¹)
 |![](https://i.imgur.com/mgb7N2g.png)|Mustache|Upon purchase, increases your regeneration by `2 health` `(+2 per stack)` for `10` seconds.
-|![](https://i.imgur.com/MFuBwOI.png)|Scope|Reduces spread by -10% (-5% per stack). Stacking beyond 100% has no effect. [2]
--
-<br>[1] *I recommend installing my other mod, ["HideScannerIndicatorOnUse"](https://thunderstore.io/package/DestroyedClone/HideScannerIndicatorOnUse/), so that the indicator that pops over interactables disappears upon interaction.*</br>
+|![](https://i.imgur.com/MFuBwOI.png)|Scope|Reduces spread by -10% (-5% per stack). Stacking beyond 100% has no effect. (²)
 
-<br>[2] *You can enable all projectiles, but by default it follows a whitelist. Feel free to recommend me other projectiles to add to the whitelist, including any modded projectiles.*</br>
+(¹) *I recommend installing my other mod, ["HideScannerIndicatorOnUse"](https://thunderstore.io/package/DestroyedClone/HideScannerIndicatorOnUse/), so that the indicator that pops over interactables disappears upon interaction.*
+
+(²) *You can enable all projectiles, but by default it follows a whitelist. Feel free to recommend me other projectiles to add to the whitelist, including any modded projectiles.*
 
 ## Green
 
--
 |Icon| Item | Description |
 |:--:|:--:|--|
-|![](https://i.imgur.com/mwbq6Jh.png)|Disarming Personality|*Hyperbolically* reduces purchase costs by 10% (-5% per stack) up to 60%. Chance is shared among players. [1]
-|![](https://i.imgur.com/FqM3osk.png)|Enraging Photo|Gain a temporary `100% damage bonus` that can last up to 2 seconds `(+0.5 seconds duration per stack).` The duration scales from the amount of damage taken, from `1% to 10%`.
-|![](https://i.imgur.com/yxhT1zA.png)|Roll Bomb| Using your utility `drops 1 bomb` for `200% damage`.<br>`(+1 bomb dropped per stack)`</br>
--
+|![](https://i.imgur.com/mwbq6Jh.png)|Disarming Personality|*Hyperbolically* reduces purchase costs by 10% (-5% per stack) up to 60%. Chance is shared among players. 
+|![](https://i.imgur.com/FqM3osk.png)|Enraging Photo|Gain a temporary `100% damage bonus` that can last up to 2 seconds `(+0.5 seconds duration per stack).` The duration scales from the amount of damage taken, from `1% to 10%`. (¹)
+|![](https://i.imgur.com/yxhT1zA.png)|Roll Bomb| Using your utility `drops 1 bomb` for `200% damage`. `(+1 bomb dropped per stack)`
 
-[1] Duration increased on base and per stack, and is a percentage based on how hard you were damaged with a lower/higher bound. EX: (duration of 5 seconds with a bound of 0% health lost and 20% health loss, so a 10% health loss would result in 2.5 seconds (or half).
+(¹) Duration increased on base and per stack, and is a percentage based on how hard you were damaged with a lower/higher bound. EX: (duration of 5 seconds with a bound of 0% health lost and 20% health loss, so a 10% health loss would result in 2.5 seconds (or half).
 
 ## Red
 
--
 |Icon| Item | Description |
 |:--:|:--:|--|
-|![](https://i.imgur.com/msag2Ku.png)|Backpack|Grants 1 extra equipment slot per stack.<br> - Hold [Left Shift] + [NumberRow keys] to switch between slots.</br><br> - Press [Left Shift] + [=] to list all equipment.</br><br> - Press [F] or [G] to cycle left/right through equipment.</br><br> - Adds onto MULT's additional slot. *(MULT w/ 1 backpack = 3 slots, though you can't use retool to switch to the modded ones)*</br>
-|![](https://i.imgur.com/wAGP4zm.png)|**Unity**| +0.2 (+0.05 per stack) base damage per item in inventory.
-|![](https://i.imgur.com/3b82HWP.png)|Number 2|Increases your base stats for every dead player.<br>*Singleplayer: Starts with one player dead.*</br>
- - 
- ### Number 2 Stat Bonuses
+|![](https://i.imgur.com/msag2Ku.png)|Backpack|Grants 1 extra equipment slot per stack.![](https://i.imgur.com/G5NGtxV.png) - Hold [Left Shift] + [NumberRow keys] to switch between slots.![](https://i.imgur.com/G5NGtxV.png) - Press [Left Shift] + [=] to list all equipment.![](https://i.imgur.com/G5NGtxV.png) - Press [F] or [G] to cycle left/right through equipment.![](https://i.imgur.com/G5NGtxV.png) - Adds onto MULT's additional slot. *(MULT w/ 1 backpack = 3 slots, though you can't use retool to switch to the modded ones)* |
+|![](https://i.imgur.com/wAGP4zm.png)|**Unity**| +0.2 `(+0.05 per stack)` base damage per item in inventory.
+|![](https://i.imgur.com/3b82HWP.png)|Number 2|Increases your base stats for every dead player.![](https://i.imgur.com/G5NGtxV.png)*Singleplayer: Starts with one player dead.*
+
+ **Number 2 Stat Bonuses**
+ 
 | Stat | Bonus 
 |:--:|:--:|
 | baseAttackSpeedAdd | 0.25
@@ -85,29 +81,25 @@ Every 25 kills *(+10% per stage)*, the game will have a 40% chance to *spawn a r
 | baseRegenAdd | 0.5
 | armorAdd | 2
 | critAdd | 5
--
+
 
 ## Lunar
 
--
 |Icon| Item | Description |
 |:--:|:--:|--|
 |![](https://i.imgur.com/J0Gpgqo.png)|**Metronome**|Gain a 2% damage bonus for every enemy you kill with the same skill, up to 150% (75 kills). Gain 25 extra stacks per pickup. Lose 75 stacks upon using a different skill.|
-|![](https://i.imgur.com/xWR2pab.png)|**Ring of Miserly Protection**|Grants +100% (+50% per stack) increased maximum health ...but one shatters upon using a shrine (does not include combat).|
- - 
+|![](https://i.imgur.com/xWR2pab.png)|**Ring of Miserly Protection**|Grants +100% (+50% per stack) increased maximum health `...but one shatters upon using a shrine` (does not include combat).|
+
 
 ## Boss
 
--
 |Icon| Item | Description |
 |:--:|:--:|--|
-|![](https://i.imgur.com/sst33CW.png)|**Master Round**|+10% max health per stack. <br>`Granted upon clearing a teleporter boss, as long as no player took more than 3 hits (scales with stages cleared) each.`</br> |
- - 
+|![](https://i.imgur.com/sst33CW.png)|**Master Round**|+10% max health per stack.![](https://i.imgur.com/G5NGtxV.png)`Granted upon clearing a teleporter boss, as long as no player took more than 3 hits (scales with stages cleared) each.` |
 
 # Equipment
 ## Normal
 
-- 
 |Icon| Item | Description | CD |
 |:--:|:--:|--|:--:|
 | ![](https://i.imgur.com/vSRIX8I.png) | **Bomb**| Throws a bomb for `300% damage`. | 14s |
@@ -120,14 +112,13 @@ Every 25 kills *(+10% per stage)*, the game will have a 40% chance to *spawn a r
 | ![](https://i.imgur.com/Cvvu8rB.png) | **Orange** | Consuming permanently reduces equipment recharge rate by 10%, increases health by 10%, fully heals the player, but is removed from the inventory. | 0s |
 | ![](https://i.imgur.com/hPjK5TE.png) | **Portable Barrel Device** | Places a barrel, but doesn't give any money or experience for picking it up. | 30s |
 | ![](https://i.imgur.com/6nzBNeh.png) | **Ration** | Heals for 40% health. Automatically used upon taking fatal damage. Consumed on use. | 0s |
-- 
 
 ## Lunar
 
 |Icon| Item | Description |
 |:--:|:--:|--|
 |![](https://i.imgur.com/T71srU2.png)|**Spice**|Increases and decreases stats per consumed Spice.  It's been slightly adjusted from Gungeon's values. These values are constant for each stack, not additive, except for the 6+ stack.
- - 
+
 | Spice Consumed | Health Multiplier | Attack Speed | Accuracy | Enemy Bullet Speed | Damage | Curse
 |:--:|:--:|:--:|:--:|:--:|:--:|:--:|
 | 1 | +25% | +20% | +0%  | +0%   | +0%   | +0.5
@@ -135,15 +126,14 @@ Every 25 kills *(+10% per stage)*, the game will have a 40% chance to *spawn a r
 | 3 | +25% | +40% | +25% | -10%  | +20%  | +1
 | 4 | +0%  | +40% | +15% | -15%  | +35% | +1 
 | 5 | 5 curse | +40% | -10% | -15%  | +50% | +1
-| 6+ <br>(additive)</br> | +5 curse | +0% | -10% | -0%  | +15% | +1
- - 
+| 6+ | +5 curse | +0% | -10% | -0%  | +15% | +1
  
  - Consuming beyond 5 will continue to add the bonuses from 6+. It's not exact, but the health reduction is added via PermanentCurse. Maximum health reduced by curse is reduced by a factor of `1 + 0.01 * n`, where `n` is the number of stacks.
 
 ## Special
 
  - **Curse** - Certain items apply curse. The chance of encountering a Jammed enemy increases as you gain more Curse. This is independent of elite affixes.
- - 
+
 | Curse Count | Enemy Chance | Boss Chance |
 |:--:|:--:|:--:|
 | 0 | 0% | 0% |
@@ -153,7 +143,7 @@ Every 25 kills *(+10% per stage)*, the game will have a 40% chance to *spawn a r
 | 6.5 - 8.0 | 10% | 20% |
 | 8.5 - 9.5 | 25% | 30% |
 | 10+ | 50% | 50% |
--
+
 
  - **Accuracy** - Certain items (Spice, Scope) affect the accuracy.
 	 - +Acc: Tighter bullet spread, projectiles fire closer towards your crosshair
@@ -200,7 +190,7 @@ Every 25 kills *(+10% per stage)*, the game will have a 40% chance to *spawn a r
 * Buffed overall stats:
 	* Bomb, Roll Bomb, Number2
 * Fixed Bomb and Molotov from not working on Equipment Drones.
-* Various visual updates
+* Various visual updates, including a ton of IDRs
 
 1.1.0 - Content Update:
  -  *Added---* 
@@ -231,3 +221,4 @@ KingEnderBrine - keypress stuff
 OKIGotIt, Ghor - Spice
 rob - help with hooks
 Minicooper237 - Projectile inaccuracy formula
+Enigma - Equipment Drone Fix
