@@ -326,9 +326,9 @@ namespace RiskOfBulletstorm.Items
             {
                 if (characterBody.healthComponent.health <= 0)
                 {
-                    if (Overlay)
+                    if (fireEffect)
                     {
-                        Destroy(Overlay);
+                        Destroy(fireEffect);
                         enabled = false;
                     }
                 }
