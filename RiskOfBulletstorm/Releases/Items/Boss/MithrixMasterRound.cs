@@ -54,8 +54,11 @@ namespace RiskOfBulletstorm.Items
         public override void Uninstall()
         {
             base.Uninstall();
+            On.EntityStates.Missions.BrotherEncounter.Phase1.OnEnter -= Phase1_OnEnter;
             On.EntityStates.Missions.BrotherEncounter.EncounterFinished.OnEnter -= EncounterFinished_OnEnter;
             GetStatCoefficients -= MithrixMasterRound_GetStatCoefficients;
+
+            On.RoR2.UI.GenericNotification.SetItem -= GenericNotification_SetItem;
         }
 
         private void Phase1_OnEnter(On.EntityStates.Missions.BrotherEncounter.Phase1.orig_OnEnter orig, EntityStates.Missions.BrotherEncounter.Phase1 self)

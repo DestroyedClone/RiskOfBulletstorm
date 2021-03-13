@@ -293,7 +293,6 @@ namespace RiskOfBulletstorm.Items
                     particleSystem.time = 0;
                 }
             }
-
         }
     }
 }

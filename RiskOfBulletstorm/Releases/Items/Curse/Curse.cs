@@ -291,6 +291,7 @@ namespace RiskOfBulletstorm.Items
             public CharacterBody characterBody;
             public TemporaryOverlay Overlay;
             public GameObject fireEffect;
+            public CharacterDeathBehavior characterDeathBehavior;
             
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
             void OnEnable()
@@ -314,11 +315,23 @@ namespace RiskOfBulletstorm.Items
                         //fireEffect.transform.parent = modelLocator.modelTransform;
                     }
                 }
+                var deathBehaviour = gameObject.GetComponent<CharacterDeathBehavior>();
+                if (deathBehaviour)
+                {
+                    characterDeathBehavior = deathBehaviour;
+                }
             }
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
             void FixedUpdate()
             {
-
+                if (characterBody.healthComponent.health <= 0)
+                {
+                    if (Overlay)
+                    {
+                        Destroy(Overlay);
+                        enabled = false;
+                    }
+                }
             }
         }
     }

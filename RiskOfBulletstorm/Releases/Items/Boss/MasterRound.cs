@@ -167,7 +167,7 @@ namespace RiskOfBulletstorm.Items
             if (damageInfo.rejected || damageInfo.damage < MasterRound_MinimumDamage) return; //minimum damage check
             var attacker = damageInfo.attacker;
             if (!attacker) return; // TODO: Figure out if this donkey conflicts, because I feel like it might
-            if (attacker == victim) //TODO: Figure out if I can switch case here.
+            if (attacker == victim)
             {
                 if (!MasterRound_AllowSelfDamage) return;
             } else
