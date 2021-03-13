@@ -41,9 +41,9 @@ namespace RiskOfBulletstorm.Items
 
         private GameObject currentStage;
         private readonly GameObject SpawnedPickupEffect = Resources.Load<GameObject>("prefabs/effects/LevelUpEffect");
-        private readonly float chanceBlank = 0.35f;
+        private readonly float chanceBlank = 0.45f;
         private readonly float chanceArmor = 0.1f;
-        private readonly float chanceAmmo = 0.6f;
+        private readonly float chanceAmmo = 0.7f;
 
         public override void SetupBehavior()
         {
