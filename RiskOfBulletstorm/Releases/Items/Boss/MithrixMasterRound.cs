@@ -25,6 +25,11 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "The last bullet that delivered the hero to redemption.";
 
+        public MithrixMasterRound()
+        {
+            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/SpreadAmmo.prefab";
+            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundXVII.png"; //For evolution somehow
+        }
         public override void SetupBehavior()
         {
             base.SetupBehavior();

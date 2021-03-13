@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1308650308
+CRC: 4269495044
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: b9f3af61baca7c4edfd0b1d43621a8dd
+    Hash: f2069b886dc24b40d18965cc53f9104c
   TypeTreeHash:
     serializedVersion: 2
     Hash: 21747e4ee48f36c7a65f9afbfd77f392
@@ -47,6 +47,7 @@ Assets:
 - Assets/Models/Prefabs/Scope.prefab
 - Assets/Textures/Materials/Materials/UV_CharmHorn.mat
 - Assets/Textures/Materials/FriendshipCookie.mat
+- Assets/Textures/Icons/MasterRoundV.png
 - Assets/Models/Prefabs/Mustache.prefab
 - Assets/Textures/Icons/DisarmingPersonality.png
 - Assets/Textures/Icons/PortableBarrelDevice.png
@@ -77,6 +78,7 @@ Assets:
 - Assets/Models/Prefabs/EnragingPhoto.prefab
 - Assets/Textures/Materials/EmissionRed.mat
 - Assets/Textures/Materials/Magenta.mat
+- Assets/Textures/Icons/MasterRoundII.png
 - Assets/Models/Raw Models/SpiceItem.fbx
 - Assets/Models/Raw Models/Barrel.fbx
 - Assets/Textures/Materials/Brown.mat
@@ -99,6 +101,7 @@ Assets:
 - Assets/Textures/Icons/Buffs/Charmed.png
 - Assets/Models/Raw Models/Molotov.fbx
 - Assets/Models/Prefabs/FriendshipCookie.prefab
+- Assets/Textures/Icons/MasterRoundXVII.png
 - Assets/Textures/Materials/Materials/UV_Orange.mat
 - Assets/Textures/Materials/Glass.mat
 - Assets/Models/Prefabs/Meatbun.prefab
@@ -107,10 +110,12 @@ Assets:
 - Assets/Models/Raw Models/Spread Ammo.fbx
 - Assets/Models/Prefabs/Molotov.prefab
 - Assets/Textures/Materials/Materials/EnragingPhotoTexture.mat
+- Assets/Textures/Icons/RingCartographer.png
 - Assets/Models/Raw Models/Metronome.fbx
 - Assets/Models/Raw Models/Number 2 Item.fbx
 - Assets/Textures/Materials/UV_Orange.png
 - Assets/Models/Prefabs/Spice.prefab
+- Assets/Textures/Icons/MasterRoundI.png
 - Assets/Textures/Icons/FriendshipCookie.png
 - Assets/Textures/Materials/Materials/shitty map.mat
 - Assets/Textures/Materials/Orange.mat
@@ -125,6 +130,7 @@ Assets:
 - Assets/Textures/Materials/MetalD.Grey.mat
 - Assets/Textures/Materials/AkgUi2q_10x.png
 - Assets/Textures/Icons/MagazineRack.png
+- Assets/Textures/Icons/MasterRoundIV.png
 - Assets/Models/Raw Models/Friendship Cookie.fbx
 - Assets/Textures/Icons/Bomb.png
 - Assets/Textures/Icons/CharmHorn.png
@@ -143,7 +149,6 @@ Assets:
 - Assets/Models/Prefabs/RingMiserlyProtectionWorn.prefab
 - Assets/Models/Prefabs/Backpack.prefab
 - Assets/Models/Prefabs/Blank.prefab
-- Assets/Textures/Icons/RingCartographer.png
 - Assets/Textures/Materials/MetalGrey.mat
 - Assets/Textures/Materials/Materials/RWsycsV_10x.mat
 - Assets/Models/Raw Models/Charm Horn.fbx
@@ -154,6 +159,7 @@ Assets:
 - Assets/Models/Raw Models/Meatbun.fbx
 - Assets/Models/Raw Models/DisarmingPersonality.fbx
 - Assets/Models/Prefabs/PortableBarrelDevice.prefab
+- Assets/Textures/Icons/MasterRoundIII.png
 - Assets/Textures/Icons/Buffs/Metronome.png
 - Assets/Textures/Icons/CultistPassive.png
 - Assets/Models/Raw Models/Mustache.fbx
