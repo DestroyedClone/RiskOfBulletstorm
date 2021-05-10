@@ -31,9 +31,9 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetDescString(string langid = null)
         {
-            var desc = $"Place to create a zone of <style=cIsUtility>infinite ammo</style> within a radius of <style=cIsUtility>{MagazineRack_Radius} meters</style>";
-            desc += $" that lasts <style=cIsUtility>{MagazineRack_Duration} seconds</style>.";
-            return desc;
+            return  $"Place to create a zone of <style=cIsUtility>infinite ammo</style>" +
+                $" within a radius of <style=cIsUtility>{MagazineRack_Radius} meters</style>" +
+                $" that lasts <style=cIsUtility>{MagazineRack_Duration} seconds</style>.";
         }
 
         protected override string GetLoreString(string langID = null) => "Often found in gungeon doctors\' offices, this rack displays magazines of all sorts. The clips contained within should prove useful, and plentiful, for even the most inaccurate of Gungeoneers.";

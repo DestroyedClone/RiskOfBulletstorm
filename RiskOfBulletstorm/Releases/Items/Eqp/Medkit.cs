@@ -29,7 +29,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetPickupString(string langID = null)
         {
             if (Medkit_HealAmount > 0 && Medkit_BarrierAmount > 0) return "<b>Heals</b>\nMedkits provides substantial healing when used.";
-            else return "Seems salvaged?";
+            else return "Seems salvaged? There's nothing in it.";
         }
 
         protected override string GetDescString(string langid = null)
@@ -39,16 +39,14 @@ namespace RiskOfBulletstorm.Items
             if (!canHeal && !canBarrier) return $"Everything inside was emptied, it does nothing.";
             var desc = $"";
             if (canHeal) desc += $"Heals for <style=cIsHealing>{Pct(Medkit_HealAmount)} health</style>. ";
-            if (canBarrier) desc += $"Gives a <style=cIsUtility>temporary barrier for {Pct(Medkit_BarrierAmount)} of your max health.</style>";
+            if (canBarrier) desc += $"Gives a <style=cIsHealing>temporary barrier</style> for <style=cIsHealingy>{Pct(Medkit_BarrierAmount)} of your max health.</style>";
             return desc;
         }
 
         protected override string GetLoreString(string langID = null)
         {
             var desc = "";
-            if (Medkit_HealAmount > 0)
-                desc += "Contains";
-            else desc += "Used to contain";
+            desc += (Medkit_HealAmount > 0 ? "Contains" : "Used to contain");
             desc += " a small piece of fairy." +
                 "\nSeeking a place that would provide a near constant flow of the desperate and injured, Médecins Sans Diplôme recognized the Gungeon as the perfect place to found their practice.";
             return desc;

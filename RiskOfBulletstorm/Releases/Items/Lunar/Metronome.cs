@@ -29,8 +29,12 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("What is the damage multiplier per kill for the metronome? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public static float Metronome_DmgCoeff { get; private set; } = 0.02f;
 
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Use styled formatting or descriptive formatting? (Value: Bool)", AutoConfigFlags.PreventNetMismatch)]
+        public static bool Metronome_UseStyleFormat { get; private set; } = true;
+
         //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-       // [AutoConfig("Show stacks of metronome as a buff on screen? Default: true", AutoConfigFlags.PreventNetMismatch)]
+        // [AutoConfig("Show stacks of metronome as a buff on screen? Default: true", AutoConfigFlags.PreventNetMismatch)]
         //public static bool Metronome_ShowAsBuff { get; private set; } = true;
 
         public override string displayName => "Metronome";
@@ -64,16 +68,24 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetDescString(string langid = null)
         {
-            var desc = $"";
-            // Nothing Check //
-            if (Metronome_DmgCoeff == 0 && Metronome_MaxKillsStack <= 0)
-                return desc + "Does nothing.";
+            if (Metronome_UseStyleFormat)
+            {
+                return $"Increases your damage to enemies by <style=cIsDamage>{Pct(Metronome_DmgCoeff)} per kill</style> with the same skill up to " +
+                    $"({Metronome_MaxKills} times (<style=cStack>{(Metronome_MaxKillsStack > 0 ? Metronome_MaxKillsStack + "per stack.<style>" : "")}" +
+                    $" {(Metronome_KillsLost > 0 ? "Upon using a different skill, your bonus <style=cHealth>reduces by " + Metronome_KillsLost + "</style>" : "")}";
+            } else
+            {
+                var desc = $"";
+                // Nothing Check //
+                if (Metronome_DmgCoeff == 0 && Metronome_MaxKillsStack <= 0)
+                    return desc + "Does nothing.";
 
-            desc += $"Multiplies your damage by <style=cIsDamage>{Pct(Metronome_DmgCoeff)} per kill</style> with the same skill." +
-            $"\n <style=cStack>Max Kills: {Metronome_MaxKills} {(Metronome_MaxKillsStack > 0 ? Metronome_MaxKillsStack +"per stack." : "")}</style>" +
-            $"\n {(Metronome_KillsLost > 0 ? "<style=cDeath>Using a different skill will reset your bonus by "+Metronome_KillsLost+"</style>" : "" )}";
+                desc += $"Multiplies your damage by <style=cIsDamage>{Pct(Metronome_DmgCoeff)} per kill</style> with the same skill." +
+                $"\n <style=cStack>Max Kills: {Metronome_MaxKills} {(Metronome_MaxKillsStack > 0 ? Metronome_MaxKillsStack + "per stack." : "")}</style>" +
+                $"\n {(Metronome_KillsLost > 0 ? "<style=cDeath>Using a different skill will reset your bonus by " + Metronome_KillsLost + "</style>" : "")}";
 
-            return desc;
+                return desc;
+            }
         }
 
         protected override string GetLoreString(string langID = null) => "Tick, tick, tick, tick...." +

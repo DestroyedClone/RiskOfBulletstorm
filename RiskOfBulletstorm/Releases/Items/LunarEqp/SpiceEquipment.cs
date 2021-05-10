@@ -31,7 +31,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "<style=cIsUtility>Increases combat prowess</style>, <style=cDeath>with absolutely no downside!</style>";
 
-        protected override string GetDescString(string langid = null) => $"Progressively gives stat bonuses and downsides. Consumed on use.";
+        protected override string GetDescString(string langid = null) => $"Progressively gives stat <style=cIsUtility>bonuses</style> and <style=cDeath>downsides</style>. <style=cIsUtility>Consumes</style> on use.";
 
         protected override string GetLoreString(string langID = null) => "A potent gun-enhancing drug from the far reaches of the galaxy. It is known to be extremely addictive, and extremely expensive.";
 

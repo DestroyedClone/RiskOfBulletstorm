@@ -55,7 +55,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetPickupString(string langID = null) => "Increases maximum health." +
             "\nGiven to those who survive the teleporter event without exceeding a certain amount of hits";
 
-        protected override string GetDescString(string langid = null) => $"Increases maximum health by <style=cIsHealth>{Pct(MasterRound_MaxHealthMult)} health</style> <style=cStack>(+{Pct(MasterRound_MaxHealthMult)} max health per stack)</style>";
+        protected override string GetDescString(string langid = null) => $"Increases <style=cIsHealing>maximum health</style> by <style=cIsHealing>{Pct(MasterRound_MaxHealthMult)} health</style> <style=cStack>(+{Pct(MasterRound_MaxHealthMult)} per stack)</style>";
 
         protected override string GetLoreString(string langID = null) => "Apocryphal texts recovered from cultists of the Order indicate that the Gun and the Bullet are linked somehow." +
             "\nAny who enter the Gungeon are doomed to remain, living countless lives in an effort to break the cycle." +

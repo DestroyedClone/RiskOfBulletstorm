@@ -35,14 +35,14 @@ namespace RiskOfBulletstorm.Items
         protected override string GetDescString(string langid = null)
         {
             string descString = $"<style=cIsUtility>{descText}</style> that would have exceeded <style=cIsDamage>{Pct(Armor_HealthThreshold)} health</style>";
-            if (Armor_ActivateBlank) descString += $"\nand <style=cIsUtility>activates a Blank</style>";
-            if (Armor_ProtectDeath) descString += $"\n </style=cIsUtility>Also protects from death.</style>" +
-                    $"\nConsumed on use.";
+            descString += (Armor_ActivateBlank ? $" and <style=cIsUtility>activates a Blank</style>." : ".");
+            if (Armor_ProtectDeath) descString += $" </style=cIsUtility>Automatically activates upon a <style=cHealth>fatal</style> hit.</style>";
+            descString += $" <style=cIsUtility>Consumes</style> on use.";
             return descString;
         }
 
-        protected override string GetLoreString(string langID = null) => "The blue of this shield was formed from the shavings of a Blank." +
-            "Dents into the weak, aluminium metal from bullets and projectiles trigger the power of the Blank.";
+        protected override string GetLoreString(string langID = null) => "This shield was an ordinary shield, until a gunsmith decided to spend an afternoon very carefully shaving Blanks into its dents. " +
+            "Some time has already passed, giving it this deep blue color. Some say that distant explosions are echoes of the gunsmith shaving a little TOO hard.";
 
         public static GameObject ItemBodyModelPrefab;
 

@@ -48,7 +48,7 @@ namespace RiskOfBulletstorm.Items
                 desc = $"Heals for <style=cIsHealing>{Pct(Ration_HealAmount)} health.</style>";
                 if (Ration_SaveFromDeath)
                     desc += $"\n<style=cIsUtility>Automatically used upon fatal damage. " +
-                            $"\n</style><style=cDeath>One-Time Use.</style>";
+                            $"<style=cIsUtility>Consumes</style> on use.";
             }
             return desc;
         }

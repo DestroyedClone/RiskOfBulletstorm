@@ -31,7 +31,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetDescString(string langid = null)
         {
-            var desc = $"<style=cIsHealing>Heals for {Pct(Orange_HealAmount)} health,</style> <style=cIsHealth>increases max health by {Pct(Orange_HealthMultAdd)}</style>, and <style=cIsUtility>reduces equipment recharge rate by {Pct(Orange_EquipmentReduce)}</style>.";
+            var desc = $"<style=cIsHealing>Heals for {Pct(Orange_HealAmount)} health,</style> <style=cIsHealth>increases max health by {Pct(Orange_HealthMultAdd)}</style>, and <style=cIsUtility>reduces equipment recharge rate by {Pct(Orange_EquipmentReduce)}</style>. <style=cIsUtility>Consumes</style> on use.";
             return desc;
         }
 

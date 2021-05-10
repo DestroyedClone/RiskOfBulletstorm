@@ -27,11 +27,14 @@ namespace RiskOfBulletstorm.Items
         protected override string GetDescString(string langid = null) => $"<style=cIsUtility>Decreases firing spread by {Pct(Scope_SpreadReduction)}</style>" +
             $"\n<style=cStack>(+{Pct(Scope_SpreadReductionStack)} per stack)</style>";
 
-        protected override string GetLoreString(string langID = null) => "4:44 - [Kate] Found this scope in a chest, reporting back." +
-            "\n 4:55 - [Kate] Seems to work whether it's attached or not, but I can't really look through it if it's not actually attached. Decision: attaching it." +
-            "\n 5:20 - [Kate] This is great, I can start keeping safer distances, even with the spread." +
-            "\n 6:00 - [Kate] Alright, I'm keeping it. Can't explain it, feels like I'm actually tightening the spread." +
-            "\n 6:02 - [Kate] Scratch that, this is ACTUALLY reducing the spread of bullets. I'm kinda curious how it works, but I'll study it back at the Breach later.";
+        protected override string GetLoreString(string langID = null) => "<style=cStack>DECODING MESSAGE - KATE ****** - G*****N EXPLORATORY TEAM" + 
+            "\n [SYS] Filter: [messages from:KATE_OPERATOR sort:chronological date:today] | Showing 6 recent results" + 
+            "\n\n4:44 - [Kate] Found this scope in a chest, reporting back. It's got a green lens, and looks like a sniper scope." +
+            "\n4:55 - [Kate] Seems to work whether it's attached or not, but I can't really look through it if it's not actually attached. Decision: attaching it." +
+            "\n5:20 - [Kate] Not really sure it fits this place, since its just a scope. Then again, there was some duct tape in a chest, so maybe its not that weird..." +
+            "\n6:00 - [Kate] I'm requesting a possible analysis sometime, I don't think this is just a scope. I'm hitting a lot more of my shots. Maybe I'm just more focused." +
+            "\n6:02 - [Kate] Scratch that, this is ACTUALLY reducing the spread of bullets. I'm kinda curious how it works, but I'll study it at the shop." +
+            "\n3:00 - [Kate] I am now back in the Breach. The shopkeeper did not like me testing the scope.";
 
         //private static readonly string NailgunMuzzleName = BaseNailgunState.muzzleName;
         //private static readonly GameObject NailgunTracer = BaseNailgunState.tracerEffectPrefab;

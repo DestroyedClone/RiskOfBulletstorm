@@ -17,12 +17,12 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("By how much will your base damage increase with a single Unity?" +
             "\nKeep in mind that this number is MULTIPLIED by the amount of TOTAL items.",
             AutoConfigFlags.PreventNetMismatch)]
-        public float RingUnity_DamageBonus { get; private set; } = 0.2f;
+        public float RingUnity_DamageBonus { get; private set; } = 0.1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("By how much will your base damage increase on subsequent stacks?" +
             "\nKeep in mind that this number is MULTIPLIED by the amount of TOTAL items.", AutoConfigFlags.PreventNetMismatch)]
-        public float RingUnity_DamageBonusStack { get; private set; } = 0.05f;
+        public float RingUnity_DamageBonusStack { get; private set; } = 0.04f;
         public override string displayName => "Unity";
         public override ItemTier itemTier => ItemTier.Tier3;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage });

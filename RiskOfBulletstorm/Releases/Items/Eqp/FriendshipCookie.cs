@@ -24,19 +24,14 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "<b>It's Delicious!</b>\nRevives all players.";
 
-
-
         protected override string GetDescString(string langid = null)
         {
             var desc = $"Upon use, <style=cIsHealing>revives all players</style>." +
             $"\nSINGLEPLAYER: <style=cIsHealing>Gives ";
             var itemDef = ItemCatalog.GetItemDef(ItemCatalog.FindItemIndex(FriendshipCookie_ItemIndex));
-            if (itemDef == null)
-                desc += $"nothing";
-            else
-                desc += $"{itemDef.name}";
+            desc += itemDef == null ? $"nothing" : $"{itemDef.name}";
             desc += " instead.</style>" +
-            $"\n<style=cDeath>Consumed on use.</style>";
+            $" <style=cIsUtility>Consumes</style> on use.";
 
             return desc;
         }

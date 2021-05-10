@@ -37,7 +37,7 @@ namespace RiskOfBulletstorm.Items
         public override string displayName => "Molotov";
         public string descText = "Upon use, throws a Molotov that ";
         public string durationNormal = "sets an area on fire";
-        public string durationZero = "would have set an area on fire if you actually lit it.";
+        public string durationZero = "would have set an area on fire if it wasn't empty.";
 
         public Molotov()
         {
@@ -49,9 +49,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetPickupString(string langID = null)
         {
             var desc = "<b>Feel the Burn</b>\n";
-            if (Molotov_Duration <= 0)
-                desc += durationZero;
-            else desc += durationNormal;
+            desc += Molotov_Duration <= 0 ? durationZero : durationNormal;
             return desc;
         }
 
@@ -89,7 +87,7 @@ namespace RiskOfBulletstorm.Items
         {
             var desc = "Molotov cocktails aren't guns, and so they are frowned upon by long-dwelling Gungeoneers. They get the job done regardless." +
             "\nKnowing the Hegemony wouldn't let her bring her own weaponry to the Gungeon, the Convict smuggled these few bottles in with the transport's cargo.";
-            if (Molotov_Duration <= 0) desc += "Unfortunately, the Convict forgot to bring a lighter.";
+            if (Molotov_Duration <= 0) desc += "Unfortunately, the Convict brought an empty bottle.";
             return desc;
         }
 

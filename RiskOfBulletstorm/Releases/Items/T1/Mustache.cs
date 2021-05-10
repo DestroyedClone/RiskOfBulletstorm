@@ -66,8 +66,7 @@ namespace RiskOfBulletstorm.Items
             MustacheHealBuff.canStack = false;
             MustacheHealBuff.isDebuff = false;
             MustacheHealBuff.iconSprite = iconResource;
-            MustacheHealBuff.name = "Power of Commerce\n" +
-                "Your regeneration is increased.";
+            MustacheHealBuff.name = "Power of Commerce";
             BuffAPI.Add(new CustomBuff(MustacheHealBuff));
         }
         public static ItemDisplayRuleDict GenerateItemDisplayRules()

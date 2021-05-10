@@ -20,7 +20,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetNameString(string langID = null) => displayName;
         protected override string GetPickupString(string langID = null) => "Restores all allies' cooldowns on pickup.";
 
-        protected override string GetDescString(string langid = null) => $"On pickup, restores all skills cooldowns and one equipment charge for all equipment for all allies.";
+        protected override string GetDescString(string langid = null) => $"On pickup, <style=cIsUtility>restores cooldowns</style> of <style=cIsUtility>all skills</style> and an <style=cIsDamage>equipment charge</style> for all allies.";
 
         protected override string GetLoreString(string langID = null) => "";
 

@@ -64,13 +64,16 @@ namespace RiskOfBulletstorm.Items
             return desc;
         }
 
-        protected override string GetLoreString(string langID = null) => "12:01 PM - [Kyle] I've gathered about 7 or so of these bullets. They're a light-blue with a blue cap. Not sure of the usage.\n\n" +
-            "12:42 PM - [Kyle] I tried finding one of my guns that I could load it into, but oddly it refuses to fit inside.\n\n" +
-            "12:48 PM - [Kyle] Got upset at trying to shove one of the bullets in and threw it at the wall. I only heard a click before I was pushed back and momentarily stunned. I guess this is how you use it?\n\n" +
-            "1:30 PM - [Kyle] Accidentally activated it while fighting a crowd of [REDACTED]. All of the bullets and [SWEAR REDACTED] coming at me vanished, and the enemies pushed the [SWEAR REDACTED] back and stunned instead of me. Think this is how you use this [SWEAR REDACTED].\n\n" +
-            "4:30 PM - [Kyle] Carried a couple in my hand and tripped like an idiot, only one of them activated, fortunately. Unfortunately, my weapon broke when it was launched against the wall. I see the boss chamber up next, so I think I can take it with just these bullets.\n\n" +
-            "4:33 PM - [LOG] EmptyMessage: The following transcription was automatically sent without any body. Did you accidentally hit send?\n\n" +
-            "12:00 PM - [Kyle] Guess what happened?";
+        protected override string GetLoreString(string langID = null) => "<style=cStack>DECODING MESSAGE - KYLE ******** - G*****N EXPLORATORY TEAM" +
+            "\n12:01 PM - [Kyle] I've gathered about 7 or so of these bullets. They're light-blue with a blue cap. Not sure of the usage." +
+            "\n12:42 PM - [Kyle] I tried finding one of my guns that I could load it into, but oddly it refuses to fit inside." +
+            "\n12:48 PM - [Kyle] Got upset at trying to shove one of the bullets in and threw it at the wall. I only heard a click before I was pushed back and momentarily stunned. I guess this is how you use it?" +
+            "\n1:30 PM - [Kyle] Accidentally activated it while fighting a crowd of [REDACTED]. All of the bullets and [SWEAR REDACTED] coming at me vanished, and the enemies pushed the [SWEAR REDACTED] back and stunned instead of me. Think this is how you use this [SWEAR REDACTED]." +
+            "\n4:30 PM - [Kyle] Carried a couple in my hand and tripped like an idiot, only one of them activated, fortunately. Unfortunately, my weapon broke when it was launched against the wall. I see the boss chamber up next, so I think I can take it with just these bullets." +
+            "\n4:33 PM - [LOG] EmptyMessage: The following transcription was automatically sent without any text." +
+            "\n4:55 PM - [LOG] ConnectionFailure: Lost connection to \"KYLE_COMMS\"! Try getting into an area with visible skies, or if unable, thin walls." + 
+            "\n11:52 PM - [LOG] ConnectionSuccess: Succesfully connected to \"KYLE_COMMS\"" + 
+            "\n12:00 PM - [Kyle] Was my training supposed to help against a [SWEAR REDACTED] minigun?";
 
         public static GameObject ItemBodyModelPrefab;
 

@@ -30,11 +30,9 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetDescString(string langid = null)
         {
-            var desc = $"{descText}, dealing <style=cIsDamage>";
-            if (Bomb_DamageDealt > 0) desc += $"{Pct(Bomb_DamageDealt)}";
-            else desc += $"no";
-            desc += $" damage</style>.";
-            return desc;
+            return $"{descText}, dealing <style=cIsDamage>" +
+                (Bomb_DamageDealt > 0 ? $"{Pct(Bomb_DamageDealt)}" : "no") +
+                " damage </style>.";
         }
 
         protected override string GetLoreString(string langID = null) => "Countless experienced adventurers have brought Bombs to the Gungeon seeking secret doors, only to be foiled by the existence of Blanks. Still, explosives have their place.";
@@ -54,7 +52,6 @@ namespace RiskOfBulletstorm.Items
         public override void SetupBehavior()
         {
             base.SetupBehavior();
-            Debug.Log("Bomb setup delete later");
             GameObject commandoGrenadePrefab = Resources.Load<GameObject>("prefabs/projectiles/CommandoGrenadeProjectile");
             BombPrefab = commandoGrenadePrefab.InstantiateClone("Bulletstorm_Bomb");
             var BombScale = 1.15f;
@@ -65,7 +62,6 @@ namespace RiskOfBulletstorm.Items
             BombPrefab.GetComponent<ProjectileImpactExplosion>().falloffModel = BlastAttack.FalloffModel.None;
             //Object.Destroy(BombPrefab.GetComponent<ApplyTorqueOnStart>());
 
-            Debug.Log("cock3");
             var model = assetBundle.LoadAsset<GameObject>(ProjectileModelPath);
             var modelScale = 0.20f;
             model.transform.localScale = new Vector3(modelScale, modelScale, modelScale);
