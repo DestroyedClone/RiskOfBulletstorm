@@ -97,8 +97,7 @@ namespace RiskOfBulletstorm.Items
             }
 
             base.SetupAttributes();
-            Shared.Buffs.BuffsController.RegisterBuff(MeatbunBoost, 
-                Color.white, 
+            MeatbunBoost = Shared.Buffs.BuffsController.RegisterBuff(Color.white, 
                 true, 
                 false, 
                 "Assets/Textures/Icons/Buffs/Meatbun.png",

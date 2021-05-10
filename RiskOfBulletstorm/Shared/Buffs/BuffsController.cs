@@ -46,35 +46,33 @@ namespace RiskOfBulletstorm.Shared.Buffs
             Hooks();
         }
 
-        public static void RegisterBuff(BuffDef buffDef, Color buffColor, bool canStack, bool isDebuff, string iconPath, string name)
+        public static BuffDef RegisterBuff(Color buffColor, bool canStack, bool isDebuff, string iconPath, string name)
         {
-            buffDef = ScriptableObject.CreateInstance<BuffDef>();
+            var buffDef = ScriptableObject.CreateInstance<BuffDef>();
             buffDef.buffColor = buffColor;
             buffDef.canStack = canStack;
             buffDef.isDebuff = isDebuff;
             buffDef.iconSprite = assetBundle.LoadAsset<Sprite>(iconPath);
             buffDef.name = name;
             BuffAPI.Add(new CustomBuff(buffDef));
+            return buffDef;
         }
 
         public static void RegisterBuffs()
         {
-            RegisterBuff(Anger,
-                Color.red,
+            Anger = RegisterBuff(Color.red,
                 false,
                 false,
                 "@RiskOfBulletstorm:Assets/Textures/Icons/Buffs/Enraged.png",
                 "Enraged");
 
-            RegisterBuff(Charm,
-                new Color32(201, 42, 193, 255),
+            Charm = RegisterBuff(new Color32(201, 42, 193, 255),
                 false,
                 true,
                 "@RiskOfBulletstorm:Assets/Textures/Icons/Buffs/Charmed.png",
                 "Charmed");
 
-            RegisterBuff(Jammed,
-                new Color32(150, 10, 10, 255),
+            Jammed = RegisterBuff(new Color32(150, 10, 10, 255),
                 false,
                 false,
                 "@RiskOfBulletstorm:Assets/Textures/Icons/Buffs/Jammed.png",

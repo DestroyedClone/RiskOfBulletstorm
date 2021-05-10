@@ -72,6 +72,7 @@ namespace RiskOfBulletstorm.Items
         {
             orig(self);
             var inventoryCount = GetCount(self);
+            if (inventoryCount == 0) return;
             for (int i = 0; i < inventoryCount; i++)
             {
                 ApplyAmmoPackToTeam(self.teamComponent.teamIndex);

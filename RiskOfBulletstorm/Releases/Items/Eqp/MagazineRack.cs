@@ -348,6 +348,7 @@ localScale = new Vector3(0.2666F, 0.2666F, 0.2666F)
                 gameObject.GetComponent<TeamFilter>().teamIndex = body.teamComponent.teamIndex;
                 gameObject.GetComponent<BuffWard>().Networkradius *= embryoProc ? 1.5f : 1f;
                 gameObject.GetComponent<BuffWard>().expireDuration *= embryoProc ? 1.2f : 1f;
+                gameObject.GetComponent<BuffWard>().buffDef = RoR2Content.Buffs.NoCooldowns;
                 NetworkServer.Spawn(gameObject);
                 return true;
             }

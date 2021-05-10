@@ -101,8 +101,7 @@ namespace RiskOfBulletstorm.Items
         {
             base.SetupAttributes();
 
-            Shared.Buffs.BuffsController.RegisterBuff(MetronomeBuffTally,
-                Color.blue,
+            MetronomeBuffTally = Shared.Buffs.BuffsController.RegisterBuff(Color.blue,
                 true,
                 false,
                 "Assets/Textures/Icons/Buffs/Metronome.png",
@@ -162,6 +161,7 @@ namespace RiskOfBulletstorm.Items
         }
         private void CharacterBody_OnInventoryChanged(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self) //Update Max Kills
         {
+            orig(self);
             var InventoryCount = GetCount(self);
             MetronomeTrackKills metronomeTrackKills = self.gameObject.GetComponent<MetronomeTrackKills>();
             if (!metronomeTrackKills) { metronomeTrackKills = self.gameObject.AddComponent<MetronomeTrackKills>(); }
@@ -177,7 +177,6 @@ namespace RiskOfBulletstorm.Items
                 metronomeTrackKills.kills = 0;
                 metronomeTrackKills.enabled = false;
             }
-            orig(self);
         }
 
         private void GlobalEventManager_OnCharacterDeath(On.RoR2.GlobalEventManager.orig_OnCharacterDeath orig, GlobalEventManager self, DamageReport damageReport)
@@ -222,7 +221,13 @@ namespace RiskOfBulletstorm.Items
 
             public void OnDisable()
             {
-                HelperUtil.ClearBuffStacks(characterBody, tallyBuff.buffIndex);
+                if (characterBody)
+                {
+                    Debug.Log("attempting with characterbody" + characterBody + " " + characterBody.name);
+                    HelperUtil.ClearBuffStacks(characterBody, tallyBuff.buffIndex);
+                }
+                else
+                    Debug.Log("no characterbody found!");
             }
 
             public void UpdateKills()

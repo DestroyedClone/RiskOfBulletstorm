@@ -72,11 +72,11 @@ namespace RiskOfBulletstorm.Items
         public override void SetupLate()
         {
             base.SetupLate();
-            ToolbotBodyIndex = (int)SurvivorCatalog.GetBodyIndexFromSurvivorIndex(SurvivorCatalog.FindSurvivorIndex("Toolbot"));
+            ToolbotBodyIndex = (int)SurvivorCatalog.GetBodyIndexFromSurvivorIndex(SurvivorCatalog.FindSurvivorIndex("MUL-T"));
             if (ToolbotBodyIndex < 0)
             {
                 Debug.Log("SEARCHME: Failed finding toolbot");
-                ToolbotBodyIndex = (int)SurvivorCatalog.GetBodyIndexFromSurvivorIndex(SurvivorCatalog.FindSurvivorIndex("MUL-T"));
+                ToolbotBodyIndex = (int)SurvivorCatalog.GetBodyIndexFromSurvivorIndex(SurvivorCatalog.FindSurvivorIndex("ToolbotBody"));
             }
         }
 
