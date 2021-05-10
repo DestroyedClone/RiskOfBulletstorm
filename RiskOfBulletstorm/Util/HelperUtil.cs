@@ -15,19 +15,13 @@ namespace RiskOfBulletstorm.Utils
     {
         public static void ClearBuffStacks(CharacterBody characterBody, BuffIndex buffIndex, int stacks = -1)
         {
-            Debug.Log("a1");
             var buffcount = characterBody.GetBuffCount(buffIndex);
-            Debug.Log("a2");
             int iterate = buffcount;
-            Debug.Log("a3");
             if (stacks > 0) iterate = stacks;
 
-            Debug.Log("a4");
             for (int i = 0; i < iterate; i++)
             {
-                Debug.Log("a5: "+i);
                 characterBody.RemoveBuff(buffIndex);
-                Debug.Log("a6");
             }
         }
         public static void AddBuffStacks(CharacterBody characterBody, BuffDef buffDef, int stacks = 1)
