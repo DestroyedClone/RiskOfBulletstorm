@@ -59,13 +59,13 @@ namespace RiskOfBulletstorm.Items
 
             OrangeConsumedDef = ScriptableObject.CreateInstance<ItemDef>();
             OrangeConsumedDef.hidden = !Orange_ShowConsumed;
-            OrangeConsumedDef.name = Orange_ShowConsumed ? "OrangeTally" : modInfo.shortIdentifier + "INTERNALORANGECOUNT";
+            OrangeConsumedDef.name = modInfo.shortIdentifier + "ORANGETALLY_NAME";
             OrangeConsumedDef.tier = ItemTier.NoTier;
             OrangeConsumedDef.canRemove = false;
-            OrangeConsumedDef.nameToken = "";
+            OrangeConsumedDef.nameToken = OrangeConsumedDef.name;
             OrangeConsumedDef.pickupToken = "";
             OrangeConsumedDef.loreToken = "";
-            OrangeConsumedDef.descriptionToken = "";
+            OrangeConsumedDef.descriptionToken = modInfo.shortIdentifier + "ORANGETALLY_DESC";
             OrangeConsumedDef.pickupIconSprite = iconResource;
             ItemAPI.Add(new CustomItem(OrangeConsumedDef, new ItemDisplayRuleDict()));
         }
@@ -345,8 +345,8 @@ localScale = new Vector3(1.4194F, 1.4194F, 1.4194F)
         public override void InstallLanguage()
         {
             base.InstallLanguage();
-            LanguageAPI.Add("ITEM_ORANGETALLY_NAME", "Oranges (Consumed)");
-            LanguageAPI.Add("ITEM_ORANGETALLY_DESC", "Per stack, grants <style=cIsHealth>+" + Pct(Orange_HealthMultAdd) + " maximum health</style> and <style=cIsUtility>+" + Pct(Orange_EquipmentReduce) + " reduced equipment recharge rate</style>.");
+            LanguageAPI.Add(OrangeConsumedDef.nameToken, "Oranges (Consumed)");
+            LanguageAPI.Add(OrangeConsumedDef.descriptionToken, "Per stack, grants <style=cIsHealth>+" + Pct(Orange_HealthMultAdd) + " maximum health</style> and <style=cIsUtility>+" + Pct(Orange_EquipmentReduce) + " reduced equipment recharge rate</style>.");
         }
         private float Inventory_CalculateEquipmentCooldownScale(On.RoR2.Inventory.orig_CalculateEquipmentCooldownScale orig, Inventory self)
         {

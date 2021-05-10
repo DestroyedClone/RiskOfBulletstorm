@@ -94,26 +94,26 @@ namespace RiskOfBulletstorm.Items
             // Used to keep track of the player's curse per player //
             curseTally = ScriptableObject.CreateInstance<ItemDef>();
             curseTally.hidden = !Curse_Show;
-            curseTally.name = Curse_Show ? "CurseTally" : modInfo.shortIdentifier + "INTERNALCURSECOUNT";
+            curseTally.name = modInfo.shortIdentifier + "CURSETALLY_NAME";
             curseTally.tier = ItemTier.NoTier;
             curseTally.canRemove = false;
-            curseTally.nameToken = "";
-            curseTally.pickupToken = "";
+            curseTally.nameToken = curseTally.name;
+            curseTally.pickupToken = modInfo.shortIdentifier + "CURSETALLY_PICKUP";
             curseTally.loreToken = "";
-            curseTally.descriptionToken = "";
+            curseTally.descriptionToken = modInfo.shortIdentifier + "CURSETALLY_DESC";
             curseTally.pickupIconSprite = Resources.Load<Sprite>("materials/matWeakOverlay");
             ItemAPI.Add(new CustomItem(curseTally, new ItemDisplayRuleDict()));
 
             // This way allows ghosts to maintain their curse status //
             isJammedItem = ScriptableObject.CreateInstance<ItemDef>();
             isJammedItem.hidden = true;
-            isJammedItem.name = modInfo.shortIdentifier + "INTERNALISJAMMED";
+            isJammedItem.name = modInfo.shortIdentifier + "ISJAMMED";
             isJammedItem.tier = ItemTier.NoTier;
             isJammedItem.canRemove = false;
-            isJammedItem.nameToken = "";
-            isJammedItem.pickupToken = "";
+            isJammedItem.nameToken = isJammedItem.name;
+            isJammedItem.pickupToken = modInfo.shortIdentifier + "ISJAMMED_PICKUP";
             isJammedItem.loreToken = "";
-            isJammedItem.descriptionToken = "";
+            isJammedItem.descriptionToken = modInfo.shortIdentifier + "ISJAMMED_DESC";
             isJammedItem.pickupIconSprite = Resources.Load<Sprite>("materials/matFullCrit");
             ItemAPI.Add(new CustomItem(isJammedItem, new ItemDisplayRuleDict()));
 
@@ -171,8 +171,10 @@ namespace RiskOfBulletstorm.Items
         public override void InstallLanguage()
         {
             base.InstallLanguage();
-            LanguageAPI.Add("ITEM_CURSETALLY_NAME", "Current Curse");
-            LanguageAPI.Add("ITEM_CURSETALLY_DESC", "Affects various factors of the game.");
+            LanguageAPI.Add(curseTally.nameToken, "Current Curse");
+            LanguageAPI.Add(curseTally.descriptionToken, "Affects various factors of the game.");
+            LanguageAPI.Add(isJammedItem.nameToken, "ISJAMMED");
+            LanguageAPI.Add(isJammedItem.descriptionToken, "Internal used to show this character is Jammed.");
         }
 
         public override void Uninstall()
