@@ -98,7 +98,9 @@ namespace RiskOfBulletstorm.Items
             "\n Tick, Tick, tick, tick";
 
         public BuffDef MetronomeBuffTally;
-        //todo: add IDRS
+        public static GameObject ItemBodyModelPrefab;
+        public static GameObject ItemFollowerPrefab;
+
         public Metronome()
         {
             modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/Metronome.prefab");
@@ -111,6 +113,13 @@ namespace RiskOfBulletstorm.Items
         }
         public override void SetupAttributes()
         {
+            if (ItemBodyModelPrefab == null || ItemFollowerPrefab == null)
+            {
+                ItemBodyModelPrefab = modelResource;
+                ItemFollowerPrefab = modelResource;
+                displayRules = GenerateItemDisplayRules();
+            }
+
             base.SetupAttributes();
 
             MetronomeBuffTally = Shared.Buffs.BuffsController.RegisterBuff(Color.blue,
@@ -118,8 +127,37 @@ namespace RiskOfBulletstorm.Items
                 false,
                 "Assets/Textures/Icons/Buffs/Metronome.png",
                 "Metronome Stacks (Display)");
-
         }
+
+        public static ItemDisplayRuleDict GenerateItemDisplayRules()
+        {
+            ItemBodyModelPrefab.AddComponent<ItemDisplay>();
+            ItemBodyModelPrefab.GetComponent<ItemDisplay>().rendererInfos = ItemHelpers.ItemDisplaySetup(ItemBodyModelPrefab);
+
+            var ItemFollower = ItemBodyModelPrefab.AddComponent<ItemFollower>();
+            ItemFollower.itemDisplay = ItemBodyModelPrefab.AddComponent<RoR2.ItemDisplay>();
+            ItemFollower.itemDisplay.rendererInfos = ItemHelpers.ItemDisplaySetup(ItemBodyModelPrefab);
+            ItemFollower.followerPrefab = ItemFollowerPrefab;
+            ItemFollower.targetObject = ItemBodyModelPrefab;
+            ItemFollower.distanceDampTime = 0.10f;
+            ItemFollower.distanceMaxSpeed = 100;
+            //ItemFollower.SmoothingNumber = 0.25f;
+
+            ItemDisplayRuleDict rules = new ItemDisplayRuleDict(new ItemDisplayRule[]
+{
+                new ItemDisplayRule
+                {
+                    ruleType = ItemDisplayRuleType.ParentedPrefab,
+                    followerPrefab = ItemBodyModelPrefab,
+                    childName = "Base",
+                    localPos = new Vector3(0.0961F, 0.3304F, 0.0824F),
+                    localAngles = new Vector3(325.1511F, 20.5061F, 124.823F),
+                    localScale = new Vector3(0.0331F, 0.0331F, 0.0331F)
+                }
+            });
+            return rules;
+        }
+
         public override void SetupConfig()
         {
             base.SetupConfig();

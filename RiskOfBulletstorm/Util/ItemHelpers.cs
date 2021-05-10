@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace RiskOfBulletstorm.Utils
 {
-    public class ItemHelpers
+    internal class ItemHelpers
     {
         public static CharacterModel.RendererInfo[] ItemDisplaySetup(GameObject obj)
         {
