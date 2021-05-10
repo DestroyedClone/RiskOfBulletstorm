@@ -6,10 +6,11 @@ using RoR2.Projectile;
 using UnityEngine;
 using TILER2;
 using static TILER2.MiscUtil;
+using static RiskOfBulletstorm.BulletstormPlugin;
 
 namespace RiskOfBulletstorm.Items
 {
-	public class RollBomb : Item_V2<RollBomb>
+	public class RollBomb : Item<RollBomb>
 	{
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How many damage should Roll Bomb deal? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
@@ -36,8 +37,8 @@ namespace RiskOfBulletstorm.Items
 
         public RollBomb()
         {
-            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/RollBomb.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/RollBomb.png";
+            modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/RollBomb.prefab");
+            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/RollBomb.png");
         }
 
         public override void SetupBehavior()
@@ -45,7 +46,7 @@ namespace RiskOfBulletstorm.Items
             GameObject engiMinePrefab = Resources.Load<GameObject>("prefabs/projectiles/EngiGrenadeProjectile");
             BombPrefab = engiMinePrefab.InstantiateClone("Bulletstorm_RollBomb");
             BombPrefab.transform.localScale = new Vector3(2f, 2f, 2f);
-            BombPrefab.GetComponent<ProjectileSimple>().velocity = 1; //default 50
+            BombPrefab.GetComponent<ProjectileSimple>().desiredForwardSpeed = 1; //default 50
             BombPrefab.GetComponent<ProjectileDamage>().damageColorIndex = DamageColorIndex.Item;
             BombPrefab.GetComponent<ProjectileImpactExplosion>().destroyOnEnemy = false; //default True
             BombPrefab.GetComponent<ProjectileImpactExplosion>().blastRadius *= RollBomb_Radius;
@@ -59,7 +60,7 @@ namespace RiskOfBulletstorm.Items
         {
             if (ItemBodyModelPrefab == null)
             {
-                ItemBodyModelPrefab = Resources.Load<GameObject>(modelResourcePath);
+                ItemBodyModelPrefab = modelResource;
                 displayRules = GenerateItemDisplayRules();
             }
 

@@ -24,10 +24,10 @@ namespace RiskOfBulletstorm.Utils
                 characterBody.RemoveBuff(buffIndex);
             }
         }
-        public static void AddBuffStacks(CharacterBody characterBody, BuffIndex buffIndex, int stacks = 1)
+        public static void AddBuffStacks(CharacterBody characterBody, BuffDef buffDef, int stacks = 1)
         {
             for (int i = 0; i < stacks; i++)
-                characterBody.AddBuff(buffIndex);
+                characterBody.AddBuff(buffDef);
         }
         public static int GetPlayerCount()
         {
@@ -37,7 +37,7 @@ namespace RiskOfBulletstorm.Utils
         public static int GetUniqueItemCount(CharacterBody characterBody)
         {
             int num = 0;
-            ItemIndex itemIndex = ItemIndex.Syringe;
+            ItemIndex itemIndex = 0;
             ItemIndex itemCount = (ItemIndex)ItemCatalog.itemCount;
             while (itemIndex < itemCount)
             {
@@ -50,7 +50,7 @@ namespace RiskOfBulletstorm.Utils
         public static int GetTotalItemCount(Inventory inventory)
         {
             int num = 0;
-            ItemIndex itemIndex = ItemIndex.Syringe;
+            ItemIndex itemIndex = 0;
             ItemIndex itemCount = (ItemIndex)ItemCatalog.itemCount;
             while (itemIndex < itemCount)
             {

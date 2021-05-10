@@ -7,10 +7,11 @@ using UnityEngine;
 using UnityEngine.Networking;
 using TILER2;
 using static TILER2.MiscUtil;
+using static RiskOfBulletstorm.BulletstormPlugin;
 
 namespace RiskOfBulletstorm.Items
 {
-    public class Molotov : Equipment_V2<Molotov>
+    public class Molotov : Equipment<Molotov>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How much damage should the Molotov's area of effect deal? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
@@ -40,8 +41,8 @@ namespace RiskOfBulletstorm.Items
 
         public Molotov()
         {
-            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Molotov.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/Molotov.png";
+            modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/Molotov.prefab");
+            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/Molotov.png");
         }
         protected override string GetNameString(string langID = null) => displayName;
 
@@ -98,7 +99,7 @@ namespace RiskOfBulletstorm.Items
         public static GameObject ItemBodyModelPrefab;
 
         public static GameObject GlassBreakEffect = Resources.Load<GameObject>("prefabs/effects/ShieldBreakEffect");
-        public static string ProjectileModelPath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Projectiles/Molotov.prefab";
+        public static string ProjectileModelPath = "Assets/Models/Prefabs/Projectiles/Molotov.prefab";
 
         public override void Install()
         {
@@ -130,13 +131,13 @@ namespace RiskOfBulletstorm.Items
             var PIE = MolotovPrefab.GetComponent<ProjectileImpactExplosion>();
             if (Molotov_Duration > 0) PIE.childrenProjectilePrefab = MolotovDotZonePrefab; 
                 else Object.Destroy(PIE);
-            MolotovPrefab.GetComponent<ProjectileSimple>().velocity = 35; //50
+            MolotovPrefab.GetComponent<ProjectileSimple>().desiredForwardSpeed = 35; //50
 
             ApplyTorqueOnStart applyTorque = MolotovPrefab.AddComponent<ApplyTorqueOnStart>();
             applyTorque.randomize = true;
             applyTorque.localTorque = new Vector3(400f, 10f, 400f);
 
-            var model = Resources.Load<GameObject>(ProjectileModelPath);
+            var model = assetBundle.LoadAsset<GameObject>(ProjectileModelPath);
             model.AddComponent<NetworkIdentity>();
             model.AddComponent<ProjectileGhostController>();
             model.transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
@@ -144,8 +145,8 @@ namespace RiskOfBulletstorm.Items
             var controller = MolotovPrefab.GetComponent<ProjectileController>();
             controller.ghostPrefab = model;
 
-            ProjectileCatalog.getAdditionalEntries += list => list.Add(MolotovPrefab);
-            ProjectileCatalog.getAdditionalEntries += list => list.Add(MolotovDotZonePrefab);
+            ProjectileAPI.Add(MolotovPrefab);
+            ProjectileAPI.Add(MolotovDotZonePrefab);
 
             if (MolotovPrefab) PrefabAPI.RegisterNetworkPrefab(MolotovPrefab);
             if (MolotovDotZonePrefab) PrefabAPI.RegisterNetworkPrefab(MolotovDotZonePrefab);
@@ -157,7 +158,7 @@ namespace RiskOfBulletstorm.Items
         {
             if (ItemBodyModelPrefab == null)
             {
-                ItemBodyModelPrefab = Resources.Load<GameObject>(modelResourcePath);
+                ItemBodyModelPrefab = modelResource;
                 displayRules = GenerateItemDisplayRules();
             }
             base.SetupAttributes();

@@ -4,17 +4,19 @@ using RoR2;
 using UnityEngine.Networking;
 using TILER2;
 using UnityEngine;
+using static RiskOfBulletstorm.BulletstormPlugin;
+
 namespace RiskOfBulletstorm.Items
 {
-    public class FriendshipCookie : Equipment_V2<FriendshipCookie>
+    public class FriendshipCookie : Equipment<FriendshipCookie>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the duration of immunity after respawning someone?", AutoConfigFlags.None)]
         public float FriendshipCookie_BaseImmunityTime { get; private set; } = 3f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the ItemIndex of the item to be given in singleplayer?", AutoConfigFlags.None)]
-        public ItemIndex FriendshipCookie_ItemIndex { get; private set; } = ItemIndex.Infusion;
+        [AutoConfig("What is the name of the item to be given in singleplayer?", AutoConfigFlags.None)]
+        public string FriendshipCookie_ItemIndex { get; private set; } = "Infusion";
 
         public override string displayName => "Friendship Cookie";
         public override float cooldown { get; protected set; } = 0f;
@@ -22,11 +24,13 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "<b>It's Delicious!</b>\nRevives all players.";
 
+
+
         protected override string GetDescString(string langid = null)
         {
             var desc = $"Upon use, <style=cIsHealing>revives all players</style>." +
             $"\nSINGLEPLAYER: <style=cIsHealing>Gives ";
-            var itemDef = ItemCatalog.GetItemDef(FriendshipCookie_ItemIndex);
+            var itemDef = ItemCatalog.GetItemDef(ItemCatalog.FindItemIndex(FriendshipCookie_ItemIndex));
             if (itemDef == null)
                 desc += $"nothing";
             else
@@ -40,11 +44,12 @@ namespace RiskOfBulletstorm.Items
         protected override string GetLoreString(string langID = null) => "Baked fresh every morning by Mom! It's to die for! Or, just maybe, to live for.";
 
         public static GameObject ItemBodyModelPrefab;
+        public static ItemDef singleplayerItemDef;
 
         public FriendshipCookie()
         {
-            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/FriendshipCookie.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/FriendshipCookie.png";
+            modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/FriendshipCookie.prefab");
+            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/FriendshipCookie.png");
         }
 
         public override void SetupBehavior()
@@ -55,9 +60,12 @@ namespace RiskOfBulletstorm.Items
         {
             if (ItemBodyModelPrefab == null)
             {
-                ItemBodyModelPrefab = Resources.Load<GameObject>(modelResourcePath);
+                ItemBodyModelPrefab = modelResource;
                 displayRules = GenerateItemDisplayRules();
             }
+            singleplayerItemDef = ItemCatalog.GetItemDef(ItemCatalog.FindItemIndex(FriendshipCookie_ItemIndex));
+            if (!singleplayerItemDef)
+                singleplayerItemDef = RoR2Content.Items.Infusion;
             base.SetupAttributes();
         }
 
@@ -346,7 +354,7 @@ localScale = new Vector3(0.2F, 0.2F, 0.2F)
                         //if (EmbryoProc)
                             //respawnLength = FriendshipCookie_EmbryoImmunityTime;
 
-                        RespawnExtraLife(master, false, true, respawnLength, body.master);
+                        RespawnExtraLife(master, respawnLength, body.master);
                         //Stage.instance.RespawnCharacter(master);
                         if (EmbryoProc)
                         {
@@ -368,7 +376,7 @@ localScale = new Vector3(0.2F, 0.2F, 0.2F)
                     }
                 }
             }
-            else if (playerAmt == 1) inventory.GiveItem(ItemIndex.Infusion, EmbryoProc ? 2 : 1);
+            else if (playerAmt == 1) inventory.GiveItem(RoR2Content.Items.Infusion, EmbryoProc ? 2 : 1);
 
             if (revivedPlayers > 0 || playerAmt == 1) //anyone revived or its singleplayer
             {
@@ -378,17 +386,18 @@ localScale = new Vector3(0.2F, 0.2F, 0.2F)
             return false;
         }
 
-        public void RespawnExtraLife(CharacterMaster master, bool GiveSpentDio = true, bool TryToGroundFootPosition = true, float BuffTimer = 3f, CharacterMaster summoner = null)
+        public void RespawnExtraLife(CharacterMaster master, float BuffTimer = 3f, CharacterMaster summoner = null)
         {
             var RespawnPosition = master.deathFootPosition;
-            if (GiveSpentDio) master.inventory.GiveItem(ItemIndex.ExtraLifeConsumed, 1);
-
             if (summoner)
                 RespawnPosition = summoner.GetBody().footPosition;
+            else if (master.killedByUnsafeArea)
+            {
+                RespawnPosition = (TeleportHelper.FindSafeTeleportDestination(master.deathFootPosition, master.bodyPrefab.GetComponent<CharacterBody>(), RoR2Application.rng) ?? master.deathFootPosition);
+            }
 
-            master.PlayExtraLifeSFX();
-            master.Respawn(RespawnPosition, Quaternion.Euler(0f, UnityEngine.Random.Range(0f, 360f), 0f), TryToGroundFootPosition);
-            master.GetBody().AddTimedBuff(BuffIndex.Immune, BuffTimer);
+            master.Respawn(RespawnPosition, Quaternion.Euler(0f, UnityEngine.Random.Range(0f, 360f), 0f));
+            master.GetBody().AddTimedBuff(RoR2Content.Buffs.Immune, BuffTimer);
             GameObject gameObject = Resources.Load<GameObject>("Prefabs/Effects/HippoRezEffect");
             if (master.bodyInstanceObject)
             {
@@ -400,12 +409,11 @@ localScale = new Vector3(0.2F, 0.2F, 0.2F)
                 {
                     EffectManager.SpawnEffect(gameObject, new EffectData
                     {
-                        origin = master.deathFootPosition,
+                        origin = RespawnPosition,
                         rotation = master.bodyInstanceObject.transform.rotation
                     }, true);
                 }
             }
-            master.ResetLifeStopwatch();
         }
 
     }

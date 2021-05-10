@@ -6,11 +6,12 @@ using UnityEngine;
 using TILER2;
 using static TILER2.MiscUtil;
 using RiskOfBulletstorm.Shared.Buffs;
+using static RiskOfBulletstorm.BulletstormPlugin;
 
 
 namespace RiskOfBulletstorm.Items
 {
-    public class EnragingPhoto : Item_V2<EnragingPhoto>
+    public class EnragingPhoto : Item<EnragingPhoto>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How many seconds should Enraging Photo's buff last with a single stack?", AutoConfigFlags.PreventNetMismatch)]
@@ -52,25 +53,19 @@ namespace RiskOfBulletstorm.Items
         public static GameObject ItemBodyModelPrefab;
         public EnragingPhoto()
         {
-            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/EnragingPhoto.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/EnragingPhoto.png";
+            modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/EnragingPhoto.prefab");
+            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/EnragingPhoto.png");
         }
 
         public override void SetupBehavior()
         {
-            if (ItemBodyModelPrefab == null)
-            {
-                ItemBodyModelPrefab = Resources.Load<GameObject>(modelResourcePath);
-                displayRules = GenerateItemDisplayRules();
-            }
-
             base.SetupBehavior();
         }
         public override void SetupAttributes()
         {
             if (ItemBodyModelPrefab == null)
             {
-                ItemBodyModelPrefab = Resources.Load<GameObject>("@RiskOfBulletstorm:Assets/Models/Prefabs/EnragingPhoto.prefab");
+                ItemBodyModelPrefab = modelResource;
                 displayRules = GenerateItemDisplayRules();
             }
             base.SetupAttributes();
@@ -336,7 +331,7 @@ localScale = new Vector3(2.2747F, 2.2747F, 2.2747F)
                 var maxDuration = EnragingPhoto_BaseDuration + EnragingPhoto_StackDuration * (InventoryCount - 1);
                 var scale = Mathf.Min(GetPercentBetweenTwoValues(healthLost, EnragingPhoto_HealthThresholdMin, EnragingPhoto_HealthThresholdMax), EnragingPhoto_HealthThresholdMax);
                 BulletstormPlugin._logger.LogMessage("EnragingPhotoScale = " + scale);
-                self.body.AddTimedBuffAuthority(BuffsController.Anger, maxDuration * scale);
+                self.body.AddTimedBuffAuthority(BuffsController.Anger.buffIndex, maxDuration * scale);
             }
         }
 

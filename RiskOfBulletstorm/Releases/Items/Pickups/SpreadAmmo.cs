@@ -7,10 +7,11 @@ using UnityEngine.Networking;
 using TILER2;
 using System;
 using GenericNotification = On.RoR2.UI.GenericNotification;
+using static RiskOfBulletstorm.BulletstormPlugin;
 
 namespace RiskOfBulletstorm.Items
 {
-    public class PickupAmmoSpread : Item_V2<PickupAmmoSpread>
+    public class PickupAmmoSpread : Item<PickupAmmoSpread>
     {
         public override string displayName => "Spread Ammo";
         public override ItemTier itemTier => ItemTier.NoTier;
@@ -25,8 +26,8 @@ namespace RiskOfBulletstorm.Items
 
         public PickupAmmoSpread()
         {
-            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/SpreadAmmo.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/SpreadAmmo.png"; //For evolution somehow
+            modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/SpreadAmmo.prefab");
+            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/SpreadAmmo.png");
         }
 
         public override void SetupBehavior()

@@ -6,11 +6,12 @@ using TILER2;
 using UnityEngine;
 using static TILER2.MiscUtil;
 using static RiskOfBulletstorm.Shared.Blanks.MasterBlankItem;
+using static RiskOfBulletstorm.BulletstormPlugin;
 
 
 namespace RiskOfBulletstorm.Items
 {
-    public class Armor : Item_V2<Armor>
+    public class Armor : Item<Armor>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Should Armor activate a blank when broken?", AutoConfigFlags.PreventNetMismatch)]
@@ -47,8 +48,8 @@ namespace RiskOfBulletstorm.Items
 
         public Armor()
         {
-            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Armor.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/Armor.png";
+            modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/Armor.prefab");
+            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/Armor.png");
         }
 
         public override void SetupBehavior()
@@ -59,7 +60,7 @@ namespace RiskOfBulletstorm.Items
         {
             if (ItemBodyModelPrefab == null)
             {
-                ItemBodyModelPrefab = Resources.Load<GameObject>(modelResourcePath);
+                ItemBodyModelPrefab = modelResource;
                 displayRules = GenerateItemDisplayRules();
             }
 

@@ -5,10 +5,11 @@ using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
 using TILER2;
+using static RiskOfBulletstorm.BulletstormPlugin;
 
 namespace RiskOfBulletstorm.Items
 {
-    public class MagazineRack : Equipment_V2<MagazineRack>
+    public class MagazineRack : Equipment<MagazineRack>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the radius in meters of the Magazine Rack's zone?", AutoConfigFlags.PreventNetMismatch)]
@@ -42,8 +43,8 @@ namespace RiskOfBulletstorm.Items
         public static GameObject ItemBodyModelPrefab;
         public MagazineRack()
         {
-            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/MagazineRack.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/MagazineRack.png";
+            modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/MagazineRack.prefab");
+            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/MagazineRack.png");
         }
 
         public override void SetupBehavior()
@@ -58,7 +59,7 @@ namespace RiskOfBulletstorm.Items
             buffWard.radius = MagazineRack_Radius;
             buffWard.expires = true;
             buffWard.expireDuration = MagazineRack_Duration;
-            buffWard.buffType = BuffIndex.NoCooldowns;
+            buffWard.buffDef = RoR2Content.Buffs.NoCooldowns;
 
             if (MagazinePrefab) PrefabAPI.RegisterNetworkPrefab(MagazinePrefab);
         }
@@ -66,7 +67,7 @@ namespace RiskOfBulletstorm.Items
         {
             if (ItemBodyModelPrefab == null)
             {
-                ItemBodyModelPrefab = Resources.Load<GameObject>(modelResourcePath);
+                ItemBodyModelPrefab = modelResource;
                 displayRules = GenerateItemDisplayRules();
             }
 

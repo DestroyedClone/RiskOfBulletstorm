@@ -4,10 +4,11 @@ using UnityEngine;
 using UnityEngine.Networking;
 using TILER2;
 using static RiskOfBulletstorm.Utils.HelperUtil;
+using static RiskOfBulletstorm.BulletstormPlugin;
 
 namespace RiskOfBulletstorm.Items
 {
-    public class Backpack : Item_V2<Backpack>
+    public class Backpack : Item<Backpack>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What button should be held down to choose which slot to select with number keys?", AutoConfigFlags.None)]
@@ -39,8 +40,8 @@ namespace RiskOfBulletstorm.Items
 
         public Backpack()
         {
-            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Backpack.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/Backpack.png";
+            modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/Backpack.prefab");
+            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/Backpack.png");
         }
 
         public override void SetupConfig()
@@ -71,7 +72,12 @@ namespace RiskOfBulletstorm.Items
         public override void SetupLate()
         {
             base.SetupLate();
-            ToolbotBodyIndex = SurvivorCatalog.GetBodyIndexFromSurvivorIndex(SurvivorIndex.Toolbot);
+            ToolbotBodyIndex = (int)SurvivorCatalog.GetBodyIndexFromSurvivorIndex(SurvivorCatalog.FindSurvivorIndex("Toolbot"));
+            if (ToolbotBodyIndex < 0)
+            {
+                Debug.Log("SEARCHME: Failed finding toolbot");
+                ToolbotBodyIndex = (int)SurvivorCatalog.GetBodyIndexFromSurvivorIndex(SurvivorCatalog.FindSurvivorIndex("MUL-T"));
+            }
         }
 
         private void CharacterBody_Start(On.RoR2.CharacterBody.orig_Start orig, CharacterBody self)
@@ -113,7 +119,7 @@ namespace RiskOfBulletstorm.Items
             }
             public void UpdateToolbot(CharacterBody characterBody)
             {
-                isToolbot = (byte)(characterBody.bodyIndex == ToolbotBodyIndex ? 1 : 0);
+                isToolbot = (byte)((int)characterBody.bodyIndex == ToolbotBodyIndex ? 1 : 0);
             }
             public void UpdateCount()
             {

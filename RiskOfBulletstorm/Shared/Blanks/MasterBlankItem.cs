@@ -107,7 +107,7 @@ namespace RiskOfBulletstorm.Shared.Blanks
             }
             if (playSound)
             {
-                Util.PlayScaledSound(BlankSound, attacker.gameObject, 0.75f);
+                Util.PlayAttackSpeedSound(BlankSound, attacker.gameObject, 0.75f);
             }
 
             var teamIndex = attacker.teamComponent ? attacker.teamComponent.teamIndex : TeamIndex.Player;

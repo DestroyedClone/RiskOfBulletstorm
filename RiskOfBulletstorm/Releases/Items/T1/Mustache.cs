@@ -5,9 +5,11 @@ using RoR2;
 using UnityEngine;
 using TILER2;
 using static TILER2.MiscUtil;
+using static RiskOfBulletstorm.BulletstormPlugin;
+
 namespace RiskOfBulletstorm.Items
 {
-    public class Mustache : Item_V2<Mustache>
+    public class Mustache : Item<Mustache>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the base amount of regen increase?", AutoConfigFlags.PreventNetMismatch)]
@@ -38,12 +40,12 @@ namespace RiskOfBulletstorm.Items
         protected override string GetLoreString(string langID = null) => "The power of commerce fills your veins... and your follicles! This mustache vertically integrates your purchasing synergies, giving you a chance to be healed on every transaction.";
 
         public static GameObject ItemBodyModelPrefab;
-        public BuffIndex MustacheHealBuff { get; private set; }
+        public BuffDef MustacheHealBuff { get; private set; }
 
         public Mustache()
         {
-            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Mustache.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/Mustache.png";
+            modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/Mustache.prefab");
+            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/Mustache.png");
         }
 
         public override void SetupBehavior()
@@ -54,21 +56,19 @@ namespace RiskOfBulletstorm.Items
         {
             if (ItemBodyModelPrefab == null)
             {
-                ItemBodyModelPrefab = Resources.Load<GameObject>("@RiskOfBulletstorm:Assets/Models/Prefabs/Mustache.prefab");
+                ItemBodyModelPrefab = modelResource;
                 displayRules = GenerateItemDisplayRules();
             }
             base.SetupAttributes();
-            var healBuff = new CustomBuff(
-            new BuffDef
-            {
-                buffColor = Color.yellow,
-                canStack = false,
-                isDebuff = false,
-                iconPath = iconResourcePath,
-                name = "Power of Commerce\n" +
-                "Your regeneration is increased.",
-            });
-            MustacheHealBuff = BuffAPI.Add(healBuff);
+
+            MustacheHealBuff = ScriptableObject.CreateInstance<BuffDef>();
+            MustacheHealBuff.buffColor = Color.yellow;
+            MustacheHealBuff.canStack = false;
+            MustacheHealBuff.isDebuff = false;
+            MustacheHealBuff.iconSprite = iconResource;
+            MustacheHealBuff.name = "Power of Commerce\n" +
+                "Your regeneration is increased.";
+            BuffAPI.Add(new CustomBuff(MustacheHealBuff));
         }
         public static ItemDisplayRuleDict GenerateItemDisplayRules()
         {

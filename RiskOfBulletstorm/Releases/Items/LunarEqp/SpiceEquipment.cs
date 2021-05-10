@@ -7,10 +7,11 @@ using static RiskOfBulletstorm.Utils.HelperUtil;
 using GenericNotification = On.RoR2.UI.GenericNotification;
 using System;
 using UnityEngine.Networking;
+using static RiskOfBulletstorm.BulletstormPlugin;
 
 namespace RiskOfBulletstorm.Items
 {
-    public class Spice : Equipment_V2<Spice>
+    public class Spice : Equipment<Spice>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Limit of Spice per player", AutoConfigFlags.PreventNetMismatch)]
@@ -34,8 +35,8 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "A potent gun-enhancing drug from the far reaches of the galaxy. It is known to be extremely addictive, and extremely expensive.";
 
-        public static ItemIndex SpiceTally { get; private set; }
-        public static ItemIndex CurseIndex;
+        public static ItemDef SpiceTally { get; private set; }
+        public static ItemDef CurseDef;
 
         public static GameObject ItemBodyModelPrefab;
 
@@ -77,27 +78,29 @@ namespace RiskOfBulletstorm.Items
 
         public Spice()
         {
-            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Spice.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/Spice.png";
+            modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/Spice.prefab");
+            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/Spice.png");
         }
         public override void SetupAttributes()
         {
             if (ItemBodyModelPrefab == null)
             {
-                ItemBodyModelPrefab = Resources.Load<GameObject>(modelResourcePath);
+                ItemBodyModelPrefab = modelResource;
                 displayRules = GenerateItemDisplayRules();
             }
 
             base.SetupAttributes();
-            var spiceTallyDef = new CustomItem(new ItemDef
-            {
-                hidden = !SpiceEquipment_ShowTally,
-                name = "SpiceTally",
-                tier = ItemTier.NoTier,
-                pickupIconPath = iconResourcePath,
-                canRemove = false
-            }, new ItemDisplayRuleDict(null));
-            SpiceTally = ItemAPI.Add(spiceTallyDef);
+
+            SpiceTally = ScriptableObject.CreateInstance<ItemDef>();
+            SpiceTally.hidden = !SpiceEquipment_ShowTally;
+            SpiceTally.name = SpiceEquipment_ShowTally ? "SpiceTally" : modInfo.shortIdentifier + "INTERNALSPICECOUNT";
+            SpiceTally.tier = ItemTier.NoTier;
+            SpiceTally.canRemove = false;
+            SpiceTally.nameToken = "ITEM_SpiceTally_NAME";
+            SpiceTally.pickupToken = "";
+            SpiceTally.loreToken = "";
+            SpiceTally.descriptionToken = "ITEM_SpiceTally_DESC";
+            ItemAPI.Add(new CustomItem(SpiceTally, new ItemDisplayRuleDict()));
         }
         public static ItemDisplayRuleDict GenerateItemDisplayRules()
         {
@@ -360,7 +363,7 @@ localScale = new Vector3(0.4205F, 0.4205F, 0.4205F)
         public override void SetupLate()
         {
             base.SetupLate();
-            CurseIndex = CurseController.curseTally;
+            CurseDef = CurseController.curseTally;
         }
         public override void Install()
         {
@@ -377,8 +380,8 @@ localScale = new Vector3(0.4205F, 0.4205F, 0.4205F)
         public override void InstallLanguage()
         {
             base.InstallLanguage();
-            LanguageAPI.Add("ITEM_SPICETALLY_NAME", "Spice (Consumed)");
-            LanguageAPI.Add("ITEM_SPICETALLY_DESC", "Grants various stat changes. Most notably, increased damage and reduced accuracy and health.");
+            LanguageAPI.Add("ITEM_SpiceTally_NAME", "Spice (Consumed)");
+            LanguageAPI.Add("ITEM_SpiceTally_DESC", "Grants various stat changes. Most notably, increased damage and reduced accuracy and health.");
         }
         
         public override void Uninstall()
@@ -468,10 +471,10 @@ localScale = new Vector3(0.4205F, 0.4205F, 0.4205F)
         {
             if (characterBody && characterBody.healthComponent)
             {
-                var curseDebuffAmount = characterBody.GetBuffCount(BuffIndex.PermanentCurse);
+                var curseDebuffAmount = characterBody.GetBuffCount(RoR2Content.Buffs.PermanentCurse);
                 if (curseDebuffAmount < curseAmount)
                 {
-                    HelperUtil.AddBuffStacks(characterBody, BuffIndex.PermanentCurse, curseAmount - curseDebuffAmount);
+                    HelperUtil.AddBuffStacks(characterBody, RoR2Content.Buffs.PermanentCurse, curseAmount - curseDebuffAmount);
                 }
             }
         }
@@ -528,7 +531,7 @@ localScale = new Vector3(0.4205F, 0.4205F, 0.4205F)
             // IF all players are over the cap, then it will roll for 0
             if (Util.CheckRoll(spiceCount))
             {
-                if (pickupIndex != PickupCatalog.FindPickupIndex(ItemIndex.ArtifactKey)) //safety to prevent softlocks
+                if (pickupIndex != PickupCatalog.FindPickupIndex(RoR2Content.Items.ArtifactKey.itemIndex)) //safety to prevent softlocks
                     pickupIndex = PickupCatalog.FindPickupIndex(catalogIndex);
             }
             orig(pickupIndex, position, velocity);
@@ -563,8 +566,8 @@ localScale = new Vector3(0.4205F, 0.4205F, 0.4205F)
             if (!inventory) return false;
 
             inventory.SetEquipmentIndex(EquipmentIndex.None); //credit to : Rico
-            if (inventory.GetItemCount(SpiceTally) == 0) inventory.GiveItem(CurseIndex);
-            else inventory.GiveItem(CurseIndex, 2);
+            if (inventory.GetItemCount(SpiceTally) == 0) inventory.GiveItem(CurseDef);
+            else inventory.GiveItem(CurseDef, 2);
             inventory.GiveItem(SpiceTally);
 
             return false;

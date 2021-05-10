@@ -10,7 +10,7 @@ using static RiskOfBulletstorm.BulletstormPlugin;
 
 namespace RiskOfBulletstorm.Items
 {
-    public class DisarmingPersonality : Item_V2<DisarmingPersonality>
+    public class DisarmingPersonality : Item<DisarmingPersonality>
     {
         [AutoConfig("What is the base cost reduction of one Disarming Personality? (Value: Subtractive Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float DisarmingPersonality_CostReductionAmount { get; private set; } = 0.1f;
@@ -41,8 +41,8 @@ namespace RiskOfBulletstorm.Items
 
         public DisarmingPersonality()
         {
-            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/DisarmingPersonality.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/DisarmingPersonality.png";
+            modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/DisarmingPersonality.prefab");
+            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/DisarmingPersonality.png");
         }
 
         public override void SetupBehavior()
@@ -53,7 +53,7 @@ namespace RiskOfBulletstorm.Items
         {
             if (ItemBodyModelPrefab == null)
             {
-                ItemBodyModelPrefab = Resources.Load<GameObject>(modelResourcePath);
+                ItemBodyModelPrefab = modelResource;
                 displayRules = GenerateItemDisplayRules();
             }
 

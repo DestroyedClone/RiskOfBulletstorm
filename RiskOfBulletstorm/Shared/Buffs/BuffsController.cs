@@ -6,6 +6,7 @@ using TILER2;
 using static TILER2.StatHooks;
 using System;
 using RiskOfBulletstorm.Items;
+using static RiskOfBulletstorm.BulletstormPlugin;
 
 namespace RiskOfBulletstorm.Shared.Buffs
 {
@@ -15,27 +16,27 @@ namespace RiskOfBulletstorm.Shared.Buffs
         [AutoConfig("CHARM: Should Bosses (including Umbrae) get charmed?", AutoConfigFlags.PreventNetMismatch)]
         public static bool Config_Charm_Boss { get; private set; } = false;
 
-        //public static BuffIndex Burn { get; private set; } 
-        //public static BuffIndex Poison { get; private set; }
-        //public static BuffIndex Curse { get; private set; }
-        //public static BuffIndex Stealth { get; private set; }
-        //public static BuffIndex Petrification { get; private set; }
-        public static BuffIndex Anger { get; private set; } // done
-        //public static BuffIndex Buffed { get; private set; }
-        //public static BuffIndex BurnEnemy { get; private set; } //burn without heal negation
-        //public static BuffIndex PoisonEnemy { get; private set; } //blight
-        public static BuffIndex Charm { get; private set; } // done
-        //public static BuffIndex Encheesed { get; private set; }
-        //public static BuffIndex Fear { get; private set; } //classic items' fear
-        public static BuffIndex Jammed { get; private set; } // done
-        //public static BuffIndex Slow { get; private set; } // slow
-        //public static BuffIndex Freeze { get; private set; } 
-        //public static BuffIndex Stun { get; private set; } // existing status from damagetype
-        //public static BuffIndex Weakened { get; private set; }
-        //public static BuffIndex Tangled { get; private set; }
-        //public static BuffIndex Encircled { get; private set; }
-        //public static BuffIndex Glittered { get; private set; }
-        //public static BuffIndex Bloody { get; private set; }
+        //public static BuffDef Burn { get; private set; } 
+        //public static BuffDef Poison { get; private set; }
+        //public static BuffDef Curse { get; private set; }
+        //public static BuffDef Stealth { get; private set; }
+        //public static BuffDef Petrification { get; private set; }
+        public static BuffDef Anger { get; private set; } // done
+        //public static BuffDef Buffed { get; private set; }
+        //public static BuffDef BurnEnemy { get; private set; } //burn without heal negation
+        //public static BuffDef PoisonEnemy { get; private set; } //blight
+        public static BuffDef Charm { get; private set; } // done
+        //public static BuffDef Encheesed { get; private set; }
+        //public static BuffDef Fear { get; private set; } //classic items' fear
+        public static BuffDef Jammed { get; private set; } // done
+        //public static BuffDef Slow { get; private set; } // slow
+        //public static BuffDef Freeze { get; private set; } 
+        //public static BuffDef Stun { get; private set; } // existing status from damagetype
+        //public static BuffDef Weakened { get; private set; }
+        //public static BuffDef Tangled { get; private set; }
+        //public static BuffDef Encircled { get; private set; }
+        //public static BuffDef Glittered { get; private set; }
+        //public static BuffDef Bloody { get; private set; }
 
 
         private static readonly CurseController curse = CurseController.instance;
@@ -45,41 +46,39 @@ namespace RiskOfBulletstorm.Shared.Buffs
             Hooks();
         }
 
+        public static void RegisterBuff(BuffDef buffDef, Color buffColor, bool canStack, bool isDebuff, string iconPath, string name)
+        {
+            buffDef = ScriptableObject.CreateInstance<BuffDef>();
+            buffDef.buffColor = buffColor;
+            buffDef.canStack = canStack;
+            buffDef.isDebuff = isDebuff;
+            buffDef.iconSprite = assetBundle.LoadAsset<Sprite>(iconPath);
+            buffDef.name = name;
+            BuffAPI.Add(new CustomBuff(buffDef));
+        }
+
         public static void RegisterBuffs()
         {
-            var angerBuff = new CustomBuff(
-            new BuffDef
-            {
-                buffColor = Color.red,
-                canStack = false,
-                isDebuff = false,
-                iconPath = "@RiskOfBulletstorm:Assets/Textures/Icons/Buffs/Enraged.png",
-                name = "Enraged",
-            });
-            Anger = BuffAPI.Add(angerBuff);
+            RegisterBuff(Anger,
+                Color.red,
+                false,
+                false,
+                "@RiskOfBulletstorm:Assets/Textures/Icons/Buffs/Enraged.png",
+                "Enraged");
 
-            var charmedBuff = new CustomBuff(
-            new BuffDef
-            {
-                name = "Charmed",
-                buffColor = new Color32(201, 42, 193, 255),
-                canStack = false,
-                isDebuff = true,
-                iconPath = "@RiskOfBulletstorm:Assets/Textures/Icons/Buffs/Charmed.png",
-            });
-            Charm = BuffAPI.Add(charmedBuff);
+            RegisterBuff(Charm,
+                new Color32(201, 42, 193, 255),
+                false,
+                true,
+                "@RiskOfBulletstorm:Assets/Textures/Icons/Buffs/Charmed.png",
+                "Charmed");
 
-            var jammedBuff = new CustomBuff(
-            new BuffDef
-            {
-                name = "Affix_Jammed",
-                buffColor = new Color32(150, 10, 10, 255),
-                canStack = false,
-                isDebuff = false,
-                iconPath = "@RiskOfBulletstorm:Assets/Textures/Icons/Buffs/Jammed.png",
-                //eliteIndex = JammedEliteIndex,
-            });
-            Jammed = BuffAPI.Add(jammedBuff);
+            RegisterBuff(Jammed,
+                new Color32(150, 10, 10, 255),
+                false,
+                false,
+                "@RiskOfBulletstorm:Assets/Textures/Icons/Buffs/Jammed.png",
+                "Affix_Jammed");
         }
 
         public static void Hooks()

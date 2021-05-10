@@ -6,11 +6,12 @@ using UnityEngine;
 using TILER2;
 using static TILER2.StatHooks;
 using static TILER2.MiscUtil;
+using static RiskOfBulletstorm.BulletstormPlugin;
 
 
 namespace RiskOfBulletstorm.Items
 {
-    public class RingMiserlyProtection : Item_V2<RingMiserlyProtection> //switch to a buff system due to broken
+    public class RingMiserlyProtection : Item<RingMiserlyProtection> //switch to a buff system due to broken
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How much maximum health is multiplied by per Ring of Miserly Protection? (Value: Additive Percentage)", AutoConfigFlags.PreventNetMismatch)]
@@ -51,14 +52,14 @@ namespace RiskOfBulletstorm.Items
 
         public RingMiserlyProtection()
         {
-            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/RingMiserlyProtection.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/RingMiserlyProtection.png";
+            modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/RingMiserlyProtection.prefab");
+            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/RingMiserlyProtection.png");
         }
         public override void SetupAttributes()
         {
             if (ItemBodyModelPrefab == null)
             {
-                ItemBodyModelPrefab = Resources.Load<GameObject>("@RiskOfBulletstorm:Assets/Models/Prefabs/RingMiserlyProtectionWorn.prefab");
+                ItemBodyModelPrefab = modelResource;
                 displayRules = GenerateItemDisplayRules();
             }
 

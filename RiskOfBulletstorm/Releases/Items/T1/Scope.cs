@@ -5,10 +5,11 @@ using RoR2;
 using UnityEngine;
 using TILER2;
 using static TILER2.MiscUtil;
+using static RiskOfBulletstorm.BulletstormPlugin;
 
 namespace RiskOfBulletstorm.Items
 {
-    public class Scope : Item_V2<Scope> 
+    public class Scope : Item<Scope> 
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How much should one Scope reduce spread? (Value: Subtractive Percentage)", AutoConfigFlags.PreventNetMismatch)]
@@ -38,8 +39,8 @@ namespace RiskOfBulletstorm.Items
 
         public Scope()
         {
-            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Scope.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/Scope.png";
+            modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/Scope.prefab");
+            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/Scope.png");
         }
         public override void SetupBehavior()
         {
@@ -49,7 +50,7 @@ namespace RiskOfBulletstorm.Items
         {
             if (ItemBodyModelPrefab == null)
             {
-                ItemBodyModelPrefab = Resources.Load<GameObject>("@RiskOfBulletstorm:Assets/Models/Prefabs/Scope.prefab");
+                ItemBodyModelPrefab = modelResource;
                 displayRules = GenerateItemDisplayRules();
             }
             base.SetupAttributes();

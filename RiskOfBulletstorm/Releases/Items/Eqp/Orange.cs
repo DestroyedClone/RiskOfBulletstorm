@@ -4,10 +4,11 @@ using R2API;
 using UnityEngine;
 using TILER2;
 using static TILER2.MiscUtil;
+using static RiskOfBulletstorm.BulletstormPlugin;
 
 namespace RiskOfBulletstorm.Items
 {
-    public class Orange : Equipment_V2<Orange>
+    public class Orange : Equipment<Orange>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Should the consumed amount of Orange show in your inventory?", AutoConfigFlags.PreventNetMismatch)]
@@ -36,12 +37,12 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "With this orange, your style... it's impetuous. Your defense, impregnable.";
 
-        public static ItemIndex OrangeConsumedIndex;
+        public static ItemDef OrangeConsumedDef;
         public static GameObject ItemBodyModelPrefab;
         public Orange()
         {
-            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Orange.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/Orange.png";
+            modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/Orange.prefab");
+            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/Orange.png");
         }
         public override void SetupBehavior()
         {
@@ -51,20 +52,21 @@ namespace RiskOfBulletstorm.Items
         {
             if (ItemBodyModelPrefab == null)
             {
-                ItemBodyModelPrefab = Resources.Load<GameObject>(modelResourcePath);
+                ItemBodyModelPrefab = modelResource;
                 displayRules = GenerateItemDisplayRules();
             }
             base.SetupAttributes();
 
-            var OrangeConsumedDef = new CustomItem(new ItemDef
-            {
-                hidden = !Orange_ShowConsumed,
-                name = "OrangeTally",
-                tier = ItemTier.NoTier,
-                pickupIconPath = iconResourcePath,
-                canRemove = false
-            }, new ItemDisplayRuleDict(null));
-            OrangeConsumedIndex = ItemAPI.Add(OrangeConsumedDef);
+            OrangeConsumedDef = ScriptableObject.CreateInstance<ItemDef>();
+            OrangeConsumedDef.hidden = !Orange_ShowConsumed;
+            OrangeConsumedDef.name = Orange_ShowConsumed ? "OrangeTally" : modInfo.shortIdentifier + "INTERNALORANGECOUNT";
+            OrangeConsumedDef.tier = ItemTier.NoTier;
+            OrangeConsumedDef.canRemove = false;
+            OrangeConsumedDef.nameToken = "";
+            OrangeConsumedDef.pickupToken = "";
+            OrangeConsumedDef.loreToken = "";
+            OrangeConsumedDef.descriptionToken = "";
+            ItemAPI.Add(new CustomItem(OrangeConsumedDef, new ItemDisplayRuleDict()));
         }
         public static ItemDisplayRuleDict GenerateItemDisplayRules()
         {
@@ -347,14 +349,14 @@ localScale = new Vector3(1.4194F, 1.4194F, 1.4194F)
         }
         private float Inventory_CalculateEquipmentCooldownScale(On.RoR2.Inventory.orig_CalculateEquipmentCooldownScale orig, Inventory self)
         {
-            return orig(self) * Mathf.Pow(1f-Orange_EquipmentReduce, self.GetItemCount(OrangeConsumedIndex));
+            return orig(self) * Mathf.Pow(1f-Orange_EquipmentReduce, self.GetItemCount(OrangeConsumedDef));
         }
 
         private void StatHooks_GetStatCoefficients(CharacterBody sender, StatHooks.StatHookEventArgs args)
         {
             if (sender && sender.inventory)
             {
-                var itemCount = sender.inventory.GetItemCount(OrangeConsumedIndex);
+                var itemCount = sender.inventory.GetItemCount(OrangeConsumedDef);
                 if (itemCount > 0)
                 {
                     args.healthMultAdd += Orange_HealthMultAdd * itemCount;
@@ -379,7 +381,7 @@ localScale = new Vector3(1.4194F, 1.4194F, 1.4194F)
             if (!inventory) return false;
 
             inventory.SetEquipmentIndex(EquipmentIndex.None); //credit to : Rico
-            inventory.GiveItem(OrangeConsumedIndex);
+            inventory.GiveItem(OrangeConsumedDef);
             health.HealFraction(1, default);
 
             return false;

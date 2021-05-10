@@ -5,12 +5,13 @@ using RoR2;
 using TILER2;
 using UnityEngine;
 using static TILER2.StatHooks;
+using static RiskOfBulletstorm.BulletstormPlugin;
 
 //TY Harb
 
 namespace RiskOfBulletstorm.Items
 {
-    public class Unity : Item_V2<Unity>
+    public class Unity : Item<Unity>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("By how much will your base damage increase with a single Unity?" +
@@ -39,8 +40,8 @@ namespace RiskOfBulletstorm.Items
 
         public Unity()
         {
-            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/RingUnity.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/RingUnity.png";
+            modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/RingUnity.prefab");
+            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/RingUnity.png");
         }
 
         public override void SetupBehavior()
@@ -51,7 +52,7 @@ namespace RiskOfBulletstorm.Items
         {
             if (ItemBodyModelPrefab == null)
             {
-                ItemBodyModelPrefab = Resources.Load<GameObject>(modelResourcePath);
+                ItemBodyModelPrefab = modelResource;
                 displayRules = GenerateItemDisplayRules();
             }
 

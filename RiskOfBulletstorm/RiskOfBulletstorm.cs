@@ -8,6 +8,12 @@ using Path = System.IO.Path;
 using TILER2;
 using static TILER2.MiscUtil;
 using R2API.Networking;
+using Chen.Helpers;
+using Chen.Helpers.GeneralHelpers;
+using Chen.Helpers.LogHelpers;
+using Chen.Helpers.LogHelpers.Collections;
+using static Chen.Helpers.GeneralHelpers.AssetsManager;
+using RiskOfBulletstorm;
 
 namespace RiskOfBulletstorm
 {
@@ -20,7 +26,6 @@ namespace RiskOfBulletstorm
         nameof(BuffAPI),
         nameof(LanguageAPI),
         nameof(ResourcesAPI),
-        nameof(PlayerAPI),
         nameof(PrefabAPI),
         nameof(SoundAPI),
         nameof(OrbAPI),
@@ -28,13 +33,14 @@ namespace RiskOfBulletstorm
         nameof(EffectAPI),
         nameof(EliteAPI),
         nameof(LoadoutAPI),
-        nameof(SurvivorAPI)
+        nameof(SurvivorAPI),
+        nameof(ProjectileAPI)
         )]
     [BepInPlugin(ModGuid, ModName, ModVer)]
 
     public class BulletstormPlugin : BaseUnityPlugin
     {
-        public const string ModVer = "1.1.1";
+        public const string ModVer = "1.3.0";
         public const string ModName = "Risk of Bulletstorm";
         public const string ModGuid = "com.DestroyedClone.RiskOfBulletstorm";
 
@@ -43,17 +49,16 @@ namespace RiskOfBulletstorm
         private static ConfigFile ConfigFile;
 
         internal static BepInEx.Logging.ManualLogSource _logger;
+        internal static AssetBundle assetBundle;
 
         private void Awake()
         {
             _logger = Logger;
 
-            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("RiskOfBulletstorm.riskofgungeonassets"))
-            {
-                var bundle = AssetBundle.LoadFromStream(stream);
-                var provider = new AssetBundleResourcesProvider("@RiskOfBulletstorm", bundle);
-                ResourcesAPI.AddProvider(provider);
-            }
+            Logger.LogDebug("Loading assets...");
+
+            BundleInfo bundleInfo = new BundleInfo("@RiskOfBulletstorm", "RiskOfBulletstorm.riskofgungeonassets", BundleType.UnityAssetBundle);
+            assetBundle = new AssetsManager(bundleInfo).Register() as AssetBundle;
 
             ConfigFile = new ConfigFile(Path.Combine(Paths.ConfigPath, ModGuid + ".cfg"), true);
 
@@ -61,7 +66,7 @@ namespace RiskOfBulletstorm
             {
                 displayName = "Risk of Bulletstorm",
                 longIdentifier = "RISKOFBULLETSTORMMOD",
-                shortIdentifier = "ROB",
+                shortIdentifier = "RBS",
                 mainConfigFile = ConfigFile
             });
             T2Module.SetupAll_PluginAwake(masterItemList);

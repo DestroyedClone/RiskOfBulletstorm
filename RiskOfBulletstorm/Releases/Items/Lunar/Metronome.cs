@@ -11,7 +11,7 @@ using static RiskOfBulletstorm.BulletstormPlugin;
 
 namespace RiskOfBulletstorm.Items
 {
-    public class Metronome : Item_V2<Metronome>
+    public class Metronome : Item<Metronome>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What are the maximum amount of kills that can be counted by the Metronome?", AutoConfigFlags.PreventNetMismatch)]
@@ -85,12 +85,12 @@ namespace RiskOfBulletstorm.Items
             "\n And it only took one strike to end him." +
             "\n Tick, Tick, tick, tick";
 
-        public static BuffIndex MetronomeBuffTally { get; private set; }
+        public static BuffDef MetronomeBuffTally { get; private set; }
         //todo: add IDRS
         public Metronome()
         {
-            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Metronome.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/Metronome.png";
+            modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/Metronome.prefab");
+            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/Metronome.png");
         }
 
         public override void SetupBehavior()
@@ -101,16 +101,12 @@ namespace RiskOfBulletstorm.Items
         {
             base.SetupAttributes();
 
-            var metronomeBuffTallyDef = new CustomBuff(
-            new BuffDef
-            {
-                buffColor = Color.blue,
-                canStack = true,
-                isDebuff = false,
-                name = "Metronome Stacks (Display)",
-                iconPath = "@RiskOfBulletstorm:Assets/Textures/Icons/Buffs/Metronome.png"
-            }) ;
-            MetronomeBuffTally = BuffAPI.Add(metronomeBuffTallyDef);
+            Shared.Buffs.BuffsController.RegisterBuff(MetronomeBuffTally,
+                Color.blue,
+                true,
+                false,
+                "Assets/Textures/Icons/Buffs/Metronome.png",
+                "Metronome Stacks (Display)");
 
         }
         public override void SetupConfig()
@@ -225,7 +221,7 @@ namespace RiskOfBulletstorm.Items
 
             public void OnDisable()
             {
-                HelperUtil.ClearBuffStacks(characterBody, MetronomeBuffTally);
+                HelperUtil.ClearBuffStacks(characterBody, MetronomeBuffTally.buffIndex);
             }
 
             public void UpdateKills()
@@ -238,7 +234,7 @@ namespace RiskOfBulletstorm.Items
 
             public void UpdateBuffStack()
             {
-                characterBody.SetBuffCount(MetronomeBuffTally, kills);
+                characterBody.SetBuffCount(MetronomeBuffTally.buffIndex, kills);
             }
             public void SetLastSkillSlot(int SlotNumber)
             {

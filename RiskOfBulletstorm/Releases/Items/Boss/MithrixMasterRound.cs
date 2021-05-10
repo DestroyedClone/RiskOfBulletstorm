@@ -5,10 +5,11 @@ using UnityEngine.Networking;
 using TILER2;
 using static TILER2.StatHooks;
 using static RiskOfBulletstorm.Items.MasterRoundNth;
+using static RiskOfBulletstorm.BulletstormPlugin;
 
 namespace RiskOfBulletstorm.Items
 {
-    public class MithrixMasterRound : Item_V2<MithrixMasterRound>
+    public class MithrixMasterRound : Item<MithrixMasterRound>
     {
         //public static Color32 lunarColor32 = ColorCatalog.GetColor(ColorCatalog.ColorIndex.LunarItem);
         //public static string lunarColorString = ColorCatalog.GetColorHexString(ColorCatalog.ColorIndex.LunarItem);
@@ -27,8 +28,8 @@ namespace RiskOfBulletstorm.Items
 
         public MithrixMasterRound()
         {
-            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/SpreadAmmo.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundXVII.png"; //For evolution somehow
+            modelResource = assetBundle.LoadAsset<GameObject>("Assets/Textures/Icons/MasterRoundXVII.png");
+            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Models/Prefabs/SpreadAmmo.prefab");
         }
         public override void SetupBehavior()
         {

@@ -5,10 +5,11 @@ using R2API;
 using RoR2;
 using UnityEngine;
 using TILER2;
+using static RiskOfBulletstorm.BulletstormPlugin;
 
 namespace RiskOfBulletstorm.Items
 {
-    public class PortableBarrelDevice : Equipment_V2<PortableBarrelDevice>
+    public class PortableBarrelDevice : Equipment<PortableBarrelDevice>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How long should the barrel stay around after being spawned?", AutoConfigFlags.PreventNetMismatch)]
@@ -74,8 +75,8 @@ namespace RiskOfBulletstorm.Items
 
         public PortableBarrelDevice()
         {
-            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/PortableBarrelDevice.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/PortableBarrelDevice.png";
+            modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/PortableBarrelDevice.prefab");
+            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/PortableBarrelDevice.png");
         }
 
         public override void SetupBehavior()
@@ -103,7 +104,7 @@ namespace RiskOfBulletstorm.Items
         {
             if (ItemBodyModelPrefab == null)
             {
-                ItemBodyModelPrefab = Resources.Load<GameObject>(modelResourcePath);
+                ItemBodyModelPrefab = modelResource;
                 displayRules = GenerateItemDisplayRules();
             }
 

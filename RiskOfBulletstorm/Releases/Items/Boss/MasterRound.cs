@@ -10,10 +10,11 @@ using static TILER2.MiscUtil;
 using static TILER2.StatHooks;
 using RiskOfBulletstorm.Utils;
 using static RoR2.Chat;
+using static RiskOfBulletstorm.BulletstormPlugin;
 
 namespace RiskOfBulletstorm.Items
 {
-    public class MasterRoundNth : Item_V2<MasterRoundNth>
+    public class MasterRoundNth : Item<MasterRoundNth>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What percent of max health should it increase by? (Value: Additive Percentage)", AutoConfigFlags.PreventNetMismatch)]
@@ -62,8 +63,8 @@ namespace RiskOfBulletstorm.Items
             "\nA monument to the legendary hero greets all who challenge the Gungeon, though their identity has been lost to the ages." +
             "\nThe legendary hero felled the beast at the heart of the Gungeon with five rounds. According to the myth, the sixth remains unfired.";
 
-        public static int BodyIndexLunarGolem;
-        public static int BodyIndexLunarWisp;
+        public static BodyIndex BodyIndexLunarGolem;
+        public static BodyIndex BodyIndexLunarWisp;
 
         readonly string[] adjustedDesc =
         {
@@ -88,12 +89,12 @@ namespace RiskOfBulletstorm.Items
 
         readonly Texture[] texturesOld =
         {
-            Resources.Load<Texture>("@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundI.png"),
-            Resources.Load<Texture>("@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundII.png"),
-            Resources.Load<Texture>("@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundIII.png"),
-            Resources.Load<Texture>("@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundIV.png"),
-            Resources.Load<Texture>("@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundV.png"),
-            Resources.Load<Texture>("@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundMoon.png"),
+            Resources.Load<Texture>("Assets/Textures/Icons/MasterRoundI.png"),
+            Resources.Load<Texture>("Assets/Textures/Icons/MasterRoundII.png"),
+            Resources.Load<Texture>("Assets/Textures/Icons/MasterRoundIII.png"),
+            Resources.Load<Texture>("Assets/Textures/Icons/MasterRoundIV.png"),
+            Resources.Load<Texture>("Assets/Textures/Icons/MasterRoundV.png"),
+            Resources.Load<Texture>("Assets/Textures/Icons/MasterRoundMoon.png"),
         };
 
         readonly string announceStartToken = "<color=#c9ab14>[Master Round] Players can take a max of {0} hits!</color>";
@@ -106,11 +107,11 @@ namespace RiskOfBulletstorm.Items
 
         public MasterRoundNth()
         {
-            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/SpreadAmmo.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundI.png"; //For evolution somehow
+            modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/SpreadAmmo.prefab");
+            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/MasterRoundI.png"); //For evolution somehow
         }
 
-       // private Texture MoonMansTexture = Resources.Load<Texture>("@RiskOfBulletstorm:Assets/Textures/Icons/MasterRoundMoon.png");
+       // private Texture MoonMansTexture = Resources.Load<Texture>("Assets/Textures/Icons/MasterRoundMoon.png");
 
 
 
@@ -269,9 +270,9 @@ namespace RiskOfBulletstorm.Items
             self.titleTMP.color = ColorCatalog.GetColor(itemDef.colorIndex);
             self.descriptionText.token = output;
 
-            if (itemDef.pickupIconPath != null)
+            if (itemDef.pickupIconSprite != null)
             {
-                self.iconImage.texture = Resources.Load<Texture>(itemDef.pickupIconPath);
+                self.iconImage.texture = itemDef.pickupIconTexture;
                 //var index = Mathf.Max(clearCount, textures.Count-1);
                 //self.iconImage.texture = Resources.Load<Texture>(filePaths[index]);
                 //self.iconImage.texture = textures[index];

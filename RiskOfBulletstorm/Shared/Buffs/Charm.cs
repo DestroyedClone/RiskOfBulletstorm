@@ -10,12 +10,12 @@ namespace RiskOfBulletstorm.Shared.Buffs
     {
         // TODO: IL Add friendly fire bypass
         public static bool Config_Charm_Boss = BuffsController.Config_Charm_Boss;
-        public static BuffIndex charmIndex = BuffsController.Charm;
+        public static BuffDef charmIndex = BuffsController.Charm;
 
         public static void Install()
         {
             // Buff //
-            On.RoR2.CharacterBody.AddBuff += Charmed_EnableComponent;
+            On.RoR2.CharacterBody.AddBuff_BuffIndex += Charmed_EnableComponent;
             // AI //
             On.RoR2.CharacterAI.BaseAI.OnBodyDamaged += BaseAI_RetaliateSpecial;
             On.RoR2.CharacterAI.BaseAI.FindEnemyHurtBox += BaseAI_CustomTargeting;
@@ -26,7 +26,7 @@ namespace RiskOfBulletstorm.Shared.Buffs
         public static void Uninstall()
         {
             // Buff //
-            On.RoR2.CharacterBody.AddBuff -= Charmed_EnableComponent;
+            On.RoR2.CharacterBody.AddBuff_BuffIndex -= Charmed_EnableComponent;
             // AI //
             On.RoR2.CharacterAI.BaseAI.OnBodyDamaged -= BaseAI_RetaliateSpecial;
             On.RoR2.CharacterAI.BaseAI.FindEnemyHurtBox -= BaseAI_CustomTargeting;
@@ -35,9 +35,10 @@ namespace RiskOfBulletstorm.Shared.Buffs
         }
 
         // Buff //
-        private static void Charmed_EnableComponent(On.RoR2.CharacterBody.orig_AddBuff orig, CharacterBody self, BuffIndex buffType)
+
+        private static void Charmed_EnableComponent(On.RoR2.CharacterBody.orig_AddBuff_BuffIndex orig, CharacterBody self, BuffIndex buffType)
         {
-            if (buffType == charmIndex)
+            if (buffType == charmIndex.buffIndex)
             {
                 if (!Config_Charm_Boss && self.isBoss) //prevents adding the buff if it's a boss and the config is disabled
                     return;
@@ -154,7 +155,7 @@ namespace RiskOfBulletstorm.Shared.Buffs
             public CharacterBody characterBody;
             public TeamIndex oldTeamIndex;
             public BaseAI baseAI;
-            public BuffIndex charmIndex = BuffsController.Charm;
+            public BuffDef charmDef = BuffsController.Charm;
 
             public TemporaryOverlay Overlay;
 
@@ -175,7 +176,7 @@ namespace RiskOfBulletstorm.Shared.Buffs
             
             void FixedUpdate()
             {
-                if (!characterBody.HasBuff(charmIndex))
+                if (!characterBody.HasBuff(charmDef))
                 {
                     if (Overlay) Destroy(Overlay);
                     enabled = false;

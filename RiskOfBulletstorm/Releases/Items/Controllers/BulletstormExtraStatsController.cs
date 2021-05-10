@@ -6,10 +6,11 @@ using TILER2;
 using static RiskOfBulletstorm.Utils.HelperUtil;
 using RoR2.Projectile;
 using static RiskOfBulletstorm.BulletstormPlugin;
+using EntityStates;
 
 namespace RiskOfBulletstorm.Items
 {
-    public class BulletstormExtraStatsController : Item_V2<BulletstormExtraStatsController>
+    public class BulletstormExtraStatsController : Item<BulletstormExtraStatsController>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("If enabled, Shot Spread will affect the Disposable Missile Launcher." +
@@ -159,7 +160,7 @@ namespace RiskOfBulletstorm.Items
 
             // ITEM COUNTS //
             ItemIndex_Scope = Scope.instance.catalogIndex;
-            ItemIndex_SpiceTally = Spice.SpiceTally;
+            ItemIndex_SpiceTally = Spice.SpiceTally.itemIndex;
 
             // SPICE //
             SpiceBonusesConstant = Spice.SpiceBonusesConstant;
@@ -286,7 +287,6 @@ namespace RiskOfBulletstorm.Items
             // ACCURACY //
             On.RoR2.BulletAttack.Fire += AdjustSpreadBullets;
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += AdjustSpreadProjectiles;
-            On.EntityStates.BaseNailgunState.FireBullet += BaseNailgunState_FireBullet;
 
             // SPEED //
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += AdjustSpeedEnemyProjectile;
@@ -294,77 +294,12 @@ namespace RiskOfBulletstorm.Items
 
         //EntityStates.BaseNailgunState nailgunState = new EntityStates.BaseNailgunState();
 
-        private void BaseNailgunState_FireBullet(On.EntityStates.BaseNailgunState.orig_FireBullet orig, EntityStates.BaseNailgunState self, Ray aimRay, int bulletCount, float spreadPitchScale, float spreadYawScale)
-        {
-            var characterBody = self.characterBody;
-            if (characterBody)
-            {
-                var inventory = characterBody.inventory;
-                if (inventory)
-                {
-                    var ResultMult = CalculateSpreadMultiplier(inventory, false);
-                    characterBody.SetSpreadBloom(Mathf.Min(0, characterBody.spreadBloomAngle * ResultMult), false);
-
-
-                    spreadPitchScale = Mathf.Min(0, spreadPitchScale * ResultMult);
-                    spreadYawScale = Mathf.Min(0, spreadYawScale * ResultMult);
-
-                    // fuck it,, we overriding
-                    // fuck IL too
-                    // look man i dont know why this shit doesnt work
-
-                    self.fireNumber++;
-                    self.StartAimMode(aimRay, 3f, false);
-                    if (self.isAuthority)
-                    {
-                        new BulletAttack
-                        {
-                            aimVector = aimRay.direction,
-                            origin = aimRay.origin,
-                            owner = self.gameObject,
-                            weapon = self.gameObject,
-                            bulletCount = (uint)bulletCount,
-                            damage = self.damageStat * EntityStates.BaseNailgunState.damageCoefficient,
-                            damageColorIndex = DamageColorIndex.Default,
-                            damageType = DamageType.Generic,
-                            falloffModel = BulletAttack.FalloffModel.DefaultBullet,
-                            force = EntityStates.BaseNailgunState.force,
-                            HitEffectNormal = false,
-                            procChainMask = default,
-                            procCoefficient = EntityStates.BaseNailgunState.procCoefficient,
-                            maxDistance = EntityStates.BaseNailgunState.maxDistance,
-                            radius = 0f,
-                            isCrit = self.RollCrit(),
-                            muzzleName = EntityStates.BaseNailgunState.muzzleName,
-                            minSpread = 0f,
-                            hitEffectPrefab = EntityStates.BaseNailgunState.hitEffectPrefab,
-                            maxSpread = self.characterBody.spreadBloomAngle, //THIS
-                            smartCollision = false,
-                            sniper = false,
-                            spreadPitchScale = spreadPitchScale * spreadPitchScale,
-                            spreadYawScale = spreadYawScale * spreadYawScale,
-                            tracerEffectPrefab = EntityStates.BaseNailgunState.tracerEffectPrefab
-                        }.Fire();
-                    }
-                    if (self.characterBody && ResultMult > 0)
-                    {
-                        var bloomLerp = EntityStates.BaseNailgunState.spreadBloomValue * ResultMult;
-                        self.characterBody.AddSpreadBloom(bloomLerp);
-                    }
-                    Util.PlaySound(EntityStates.BaseNailgunState.fireSoundString, self.gameObject);
-                    EffectManager.SimpleMuzzleFlash(EntityStates.BaseNailgunState.muzzleFlashPrefab, self.gameObject, EntityStates.BaseNailgunState.muzzleName, false);
-                    self.PlayAnimation("Gesture, Additive", "FireNailgun");
-                }
-            }
-        }
-
         public override void Uninstall()
         {
             base.Uninstall();
             // ACCURACY //
             On.RoR2.BulletAttack.Fire -= AdjustSpreadBullets;
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo -= AdjustSpreadProjectiles;
-            On.EntityStates.BaseNailgunState.FireBullet -= BaseNailgunState_FireBullet;
 
             // SPEED //
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo -= AdjustSpeedEnemyProjectile;

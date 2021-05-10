@@ -4,10 +4,11 @@ using RoR2;
 using UnityEngine;
 using TILER2;
 using static TILER2.MiscUtil;
+using static RiskOfBulletstorm.BulletstormPlugin;
 
 namespace RiskOfBulletstorm.Items
 {
-    public class Meatbun : Equipment_V2<Meatbun>
+    public class Meatbun : Equipment<Meatbun>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What percent of maximum health should the Meatbun heal? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
@@ -74,14 +75,14 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "A delicious, freshly baked roll! Sometimes, things just work out.";
 
-        public BuffIndex MeatbunBoost { get; private set; }
+        public BuffDef MeatbunBoost { get; private set; }
 
         public static GameObject ItemBodyModelPrefab;
 
         public Meatbun()
         {
-            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Meatbun.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/Meatbun.png";
+            modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/Meatbun.prefab");
+            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/Meatbun.png");
         }
         public override void SetupBehavior()
         {
@@ -91,21 +92,17 @@ namespace RiskOfBulletstorm.Items
         {
             if (ItemBodyModelPrefab == null)
             {
-                ItemBodyModelPrefab = Resources.Load<GameObject>(modelResourcePath);
+                ItemBodyModelPrefab = modelResource;
                 displayRules = GenerateItemDisplayRules();
             }
 
             base.SetupAttributes();
-            var dmgBuff = new CustomBuff(
-            new BuffDef
-            {
-                buffColor = Color.white,
-                canStack = true,
-                isDebuff = false,
-                iconPath = "@RiskOfBulletstorm:Assets/Textures/Icons/Buffs/Meatbun.png",
-                name = "<color=black>Meatbun Bonus\n+" + Meatbun_DamageBonus*100f+"% damage dealt per stack</color>",
-            });
-            MeatbunBoost = BuffAPI.Add(dmgBuff);
+            Shared.Buffs.BuffsController.RegisterBuff(MeatbunBoost, 
+                Color.white, 
+                true, 
+                false, 
+                "Assets/Textures/Icons/Buffs/Meatbun.png",
+                "<color=black>Meatbun Bonus\n+" + Meatbun_DamageBonus * 100f + "% damage dealt per stack</color>");
         }
         public override void SetupConfig()
         {

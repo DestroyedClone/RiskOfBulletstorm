@@ -7,10 +7,11 @@ using TILER2;
 using static TILER2.MiscUtil;
 using static RiskOfBulletstorm.Shared.Blanks.MasterBlankItem;
 using RiskOfBulletstorm.Utils;
+using static RiskOfBulletstorm.BulletstormPlugin;
 
 namespace RiskOfBulletstorm.Items
 {
-    public class Blank : Item_V2<Blank>
+    public class Blank : Item<Blank>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What Keyboard button should activate the Blank?", AutoConfigFlags.None)]
@@ -75,8 +76,8 @@ namespace RiskOfBulletstorm.Items
 
         public Blank()
         {
-            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Blank.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/Blank.png";
+            modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/Blank.prefab");
+            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/Blank.png");
         }
         public override void SetupBehavior()
         {

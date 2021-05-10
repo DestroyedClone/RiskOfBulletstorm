@@ -67,6 +67,7 @@
     <None Include="lib\BepInEx.MonoMod.Loader.dll" />
     <None Include="lib\BepInEx.Preloader.dll" />
     <None Include="lib\BetterUI.dll" />
+    <None Include="lib\ChensHelpers.dll" />
     <None Include="lib\ClassicItems.dll" />
     <None Include="lib\EnemyItemDisplays.dll" />
     <None Include="lib\ExtraSkillSlots.dll" />
@@ -118,6 +119,9 @@
     </Reference>
     <Reference Include="BetterUI">
       <HintPath>lib\BetterUI.dll</HintPath>
+    </Reference>
+    <Reference Include="ChensHelpers">
+      <HintPath>lib\ClassicItems.dll</HintPath>
     </Reference>
     <Reference Include="ClassicItems">
       <HintPath>lib\ClassicItems.dll</HintPath>

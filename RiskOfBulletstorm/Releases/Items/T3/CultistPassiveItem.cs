@@ -5,10 +5,11 @@ using R2API;
 using UnityEngine;
 using TILER2;
 using static TILER2.StatHooks;
+using static RiskOfBulletstorm.BulletstormPlugin;
 
 namespace RiskOfBulletstorm.Items
 {
-    public class CultistPassiveItem : Item_V2<CultistPassiveItem>
+    public class CultistPassiveItem : Item<CultistPassiveItem>
     {
 
         public override string displayName => "Number 2";
@@ -27,14 +28,14 @@ namespace RiskOfBulletstorm.Items
 
         public CultistPassiveItem()
         {
-            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/CultistPassiveItem.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/CultistPassiveItem";
+            modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/CultistPassiveItem.prefab");
+            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/CultistPassiveItem");
         }
         public override void SetupAttributes()
         {
             if (ItemBodyModelPrefab == null)
             {
-                ItemBodyModelPrefab = Resources.Load<GameObject>("@RiskOfBulletstorm:Assets/Models/Prefabs/CultistPassiveWorn.prefab");
+                ItemBodyModelPrefab = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/CultistPassiveWorn.prefab");
                 displayRules = GenerateItemDisplayRules();
             }
 

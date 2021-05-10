@@ -7,10 +7,11 @@ using UnityEngine.Networking;
 using TILER2;
 using System.Linq;
 using static RiskOfBulletstorm.Utils.HelperUtil;
+using static RiskOfBulletstorm.BulletstormPlugin;
 
 namespace RiskOfBulletstorm.Items
 {
-    public class RingCartographer : Item_V2<RingCartographer>
+    public class RingCartographer : Item<RingCartographer>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the base chance for the stage to be scanned with one Cartographer's Ring? (Value: Direct Percentage)", AutoConfigFlags.PreventNetMismatch)]
@@ -49,8 +50,8 @@ namespace RiskOfBulletstorm.Items
         public static GameObject ItemBodyModelPrefab;
         public RingCartographer()
         {
-            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/RingCartographer.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/RingCartographer.png"; //todo fix in unity
+            modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/RingCartographer.prefab");
+            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/RingCartographer.png");
         }
 
 
@@ -93,7 +94,7 @@ namespace RiskOfBulletstorm.Items
         {
             if (ItemBodyModelPrefab == null)
             {
-                ItemBodyModelPrefab = Resources.Load<GameObject>(modelResourcePath);
+                ItemBodyModelPrefab = modelResource;
                 displayRules = GenerateItemDisplayRules();
             }
 

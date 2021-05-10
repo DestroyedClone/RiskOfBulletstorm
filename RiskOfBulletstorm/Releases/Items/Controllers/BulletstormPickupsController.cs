@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace RiskOfBulletstorm.Items
 {
-    public class BulletstormPickupsController : Item_V2<BulletstormPickupsController>
+    public class BulletstormPickupsController : Item<BulletstormPickupsController>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the base amount of kills required to roll a pickup spawn?", AutoConfigFlags.PreventNetMismatch)]

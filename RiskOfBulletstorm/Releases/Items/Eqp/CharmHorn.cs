@@ -4,10 +4,11 @@ using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
 using TILER2;
+using static RiskOfBulletstorm.BulletstormPlugin;
 
 namespace RiskOfBulletstorm.Items
 {
-    public class CharmHorn : Equipment_V2<CharmHorn>
+    public class CharmHorn : Equipment<CharmHorn>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the radius to charm enemies? (Value: Meters)", AutoConfigFlags.PreventNetMismatch)]
@@ -41,8 +42,8 @@ namespace RiskOfBulletstorm.Items
 
         public CharmHorn()
         {
-            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/CharmHorn.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/CharmHorn.png";
+            modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/CharmHorn.prefab");
+            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/CharmHorn.png");
         }
         public override void SetupBehavior()
         {
@@ -58,7 +59,7 @@ namespace RiskOfBulletstorm.Items
             buffWard.invertTeamFilter = true;
             buffWard.animateRadius = false;
             buffWard.floorWard = false;
-            buffWard.buffType = Shared.Buffs.BuffsController.Charm;
+            buffWard.buffDef = Shared.Buffs.BuffsController.Charm;
 
             SkinnedMeshRenderer mesh = CharmWardPrefab.GetComponentInChildren<SkinnedMeshRenderer>();
             mesh.material.color = new Color32(217, 20, 194, 255);
@@ -68,7 +69,7 @@ namespace RiskOfBulletstorm.Items
         {
             if (ItemBodyModelPrefab == null)
             {
-                ItemBodyModelPrefab = Resources.Load<GameObject>(modelResourcePath);
+                ItemBodyModelPrefab = modelResource;
                 displayRules = GenerateItemDisplayRules();
             }
             base.SetupAttributes();
@@ -355,7 +356,7 @@ localScale = new Vector3(0.05F, 0.05F, 0.05F)
                 GameObject gameObject = UnityEngine.Object.Instantiate(CharmWardPrefab, body.transform.position, Quaternion.identity);
                 gameObject.GetComponent<TeamFilter>().teamIndex = body.teamComponent.teamIndex;
                 BuffWard buffWard = gameObject.GetComponent<BuffWard>();
-                buffWard.buffType = Shared.Buffs.BuffsController.Charm;
+                buffWard.buffDef = Shared.Buffs.BuffsController.Charm;
                 buffWard.GetComponent<BuffWard>().Networkradius *= radius;
                 buffWard.GetComponent<BuffWard>().radius *= radius;
                 NetworkServer.Spawn(gameObject);

@@ -4,10 +4,11 @@ using RoR2;
 using TILER2;
 using UnityEngine;
 using static TILER2.MiscUtil;
+using static RiskOfBulletstorm.BulletstormPlugin;
 
 namespace RiskOfBulletstorm.Items
 {
-    public class Medkit : Equipment_V2<Medkit>
+    public class Medkit : Equipment<Medkit>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What percent of maximum health should the Medkit heal? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
@@ -57,8 +58,8 @@ namespace RiskOfBulletstorm.Items
 
         public Medkit()
         {
-            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Medkit.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/Medkit.png";
+            modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/Medkit.prefab");
+            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/Medkit.png");
         }
         public override void SetupBehavior()
         {
@@ -68,7 +69,7 @@ namespace RiskOfBulletstorm.Items
         {
             if (ItemBodyModelPrefab == null)
             {
-                ItemBodyModelPrefab = Resources.Load<GameObject>(modelResourcePath);
+                ItemBodyModelPrefab = modelResource;
                 displayRules = GenerateItemDisplayRules();
             }
 

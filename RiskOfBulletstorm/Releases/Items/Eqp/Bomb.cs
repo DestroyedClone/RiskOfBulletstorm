@@ -7,10 +7,11 @@ using UnityEngine;
 using UnityEngine.Networking;
 using TILER2;
 using static TILER2.MiscUtil;
+using static RiskOfBulletstorm.BulletstormPlugin;
 
 namespace RiskOfBulletstorm.Items
 {
-    public class Bomb : Equipment_V2<Bomb>
+    public class Bomb : Equipment<Bomb>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How much damage should the Bomb deal upon explosion? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
@@ -42,29 +43,30 @@ namespace RiskOfBulletstorm.Items
 
         public static GameObject ItemBodyModelPrefab;
 
-        public static string ProjectileModelPath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Projectiles/Bomb.prefab";
+        public static string ProjectileModelPath = "Assets/Models/Prefabs/Projectiles/Bomb.prefab";
 
         public Bomb()
         {
-            modelResourcePath = "@RiskOfBulletstorm:Assets/Models/Prefabs/Bomb.prefab";
-            iconResourcePath = "@RiskOfBulletstorm:Assets/Textures/Icons/Bomb.png";
+            modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/Bomb.prefab");
+            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/Bomb.png");
         }
 
         public override void SetupBehavior()
         {
             base.SetupBehavior();
-
+            Debug.Log("Bomb setup delete later");
             GameObject commandoGrenadePrefab = Resources.Load<GameObject>("prefabs/projectiles/CommandoGrenadeProjectile");
             BombPrefab = commandoGrenadePrefab.InstantiateClone("Bulletstorm_Bomb");
             var BombScale = 1.15f;
             BombPrefab.transform.localScale = new Vector3(BombScale, BombScale, BombScale);
-            BombPrefab.GetComponent<ProjectileSimple>().velocity = 25; //default 50
+            BombPrefab.GetComponent<ProjectileSimple>().desiredForwardSpeed = 25; //default 50
             BombPrefab.GetComponent<ProjectileSimple>().lifetime = 5; //default 5
             BombPrefab.GetComponent<ProjectileDamage>().damageColorIndex = DamageColorIndex.Item;
             BombPrefab.GetComponent<ProjectileImpactExplosion>().falloffModel = BlastAttack.FalloffModel.None;
             //Object.Destroy(BombPrefab.GetComponent<ApplyTorqueOnStart>());
 
-            var model = Resources.Load<GameObject>(ProjectileModelPath);
+            Debug.Log("cock3");
+            var model = assetBundle.LoadAsset<GameObject>(ProjectileModelPath);
             var modelScale = 0.20f;
             model.transform.localScale = new Vector3(modelScale, modelScale, modelScale);
             model.AddComponent<NetworkIdentity>();
@@ -74,15 +76,14 @@ namespace RiskOfBulletstorm.Items
             controller.ghostPrefab = model;
             //controller.transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
 
-            ProjectileCatalog.getAdditionalEntries += list => list.Add(BombPrefab);
-
+            ProjectileAPI.Add(BombPrefab);
             if (BombPrefab) PrefabAPI.RegisterNetworkPrefab(BombPrefab);
         }
         public override void SetupAttributes()
         {
             if (ItemBodyModelPrefab == null)
             {
-                ItemBodyModelPrefab = Resources.Load<GameObject>("@RiskOfBulletstorm:Assets/Models/Prefabs/Bomb.prefab");
+                ItemBodyModelPrefab = modelResource;
                 displayRules = GenerateItemDisplayRules();
             }
             base.SetupAttributes();

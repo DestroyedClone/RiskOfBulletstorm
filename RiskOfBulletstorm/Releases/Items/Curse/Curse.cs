@@ -4,10 +4,11 @@ using RoR2;
 using TILER2;
 using RiskOfBulletstorm.Utils;
 using UnityEngine;
+using static RiskOfBulletstorm.BulletstormPlugin;
 
 namespace RiskOfBulletstorm.Items
 {
-    public class CurseController : Item_V2<CurseController>
+    public class CurseController : Item<CurseController>
     {
         //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         //[AutoConfig("How many curse is needed before Lord of the Jammed spawns? Set it to -1 to disable. (Default: 10)", AutoConfigFlags.PreventNetMismatch)]
@@ -65,11 +66,11 @@ namespace RiskOfBulletstorm.Items
         //public GameObject curseEffect = Resources.Load<GameObject>("prefabs/effects/ImpSwipeEffect");
         public GameObject jammedFire;
 
-        public static ItemIndex curseTally;
+        public static ItemDef curseTally;
         //public static ItemIndex curseMax;
-        public static ItemIndex isJammedItem;
+        public static ItemDef isJammedItem;
 
-        public static readonly ItemIndex umbraItemIndex = ItemIndex.InvadingDoppelganger;
+        public static readonly ItemDef umbraItemDef = RoR2.RoR2Content.Items.InvadingDoppelganger;
 
         public override void SetupBehavior()
         {
@@ -91,24 +92,28 @@ namespace RiskOfBulletstorm.Items
             base.SetupAttributes();
 
             // Used to keep track of the player's curse per player //
-            var curseTallyDef = new CustomItem(new ItemDef
-            {
-                hidden = !Curse_Show,
-                name = "CurseTally",
-                tier = ItemTier.NoTier,
-                canRemove = false
-            }, new ItemDisplayRuleDict(null));
-            curseTally = ItemAPI.Add(curseTallyDef);
+            curseTally = ScriptableObject.CreateInstance<ItemDef>();
+            curseTally.hidden = !Curse_Show;
+            curseTally.name = Curse_Show ? "CurseTally" : modInfo.shortIdentifier + "INTERNALCURSECOUNT";
+            curseTally.tier = ItemTier.NoTier;
+            curseTally.canRemove = false;
+            curseTally.nameToken = "";
+            curseTally.pickupToken = "";
+            curseTally.loreToken = "";
+            curseTally.descriptionToken = "";
+            ItemAPI.Add(new CustomItem(curseTally, new ItemDisplayRuleDict()));
 
             // This way allows ghosts to maintain their curse status //
-            var isJammedDef = new CustomItem(new ItemDef
-            {
-                hidden = true,
-                name = "ROBInternalIsJammed",
-                tier = ItemTier.NoTier,
-                canRemove = false
-            }, new ItemDisplayRuleDict(null));
-            isJammedItem = ItemAPI.Add(isJammedDef);
+            isJammedItem = ScriptableObject.CreateInstance<ItemDef>();
+            isJammedItem.hidden = true;
+            isJammedItem.name = modInfo.shortIdentifier + "INTERNALISJAMMED";
+            isJammedItem.tier = ItemTier.NoTier;
+            isJammedItem.canRemove = false;
+            isJammedItem.nameToken = "";
+            isJammedItem.pickupToken = "";
+            isJammedItem.loreToken = "";
+            isJammedItem.descriptionToken = "";
+            ItemAPI.Add(new CustomItem(isJammedItem, new ItemDisplayRuleDict()));
 
             // Used to track who to spawn the Lord of the Jammed on //
             // Currently unused //
@@ -199,7 +204,7 @@ namespace RiskOfBulletstorm.Items
                 return;
             }
 
-            CharacterBody mostCursedPlayer = HelperUtil.GetPlayerWithMostItemIndex(curseTally);
+            CharacterBody mostCursedPlayer = HelperUtil.GetPlayerWithMostItemIndex(curseTally.itemIndex);
             if (!mostCursedPlayer) return;
             int PlayerItemCount = mostCursedPlayer.inventory.GetItemCount(curseTally);
             float RollValue;
@@ -255,7 +260,7 @@ namespace RiskOfBulletstorm.Items
                 //BOSS CHECK
                 if (obj.isBoss)
                 {
-                    if (inventory.GetItemCount(umbraItemIndex) > 0)
+                    if (inventory.GetItemCount(umbraItemDef) > 0)
                     {
                         // UMBRA CHECK //
                         if (Curse_AllowUmbra)
