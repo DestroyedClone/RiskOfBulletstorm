@@ -408,6 +408,7 @@ localScale = new Vector3(0.4916F, 0.4916F, 0.4916F)
         {
             if (Ration_HealAmount > 0)
             {
+                health.body.AddTimedBuff(RoR2Content.Buffs.Immune, 0.5f);
                 health.HealFraction(Ration_HealAmount, default);
             }
             inventory.equipmentStateSlots[equipmentSlot].equipmentIndex = EquipmentIndex.None;
