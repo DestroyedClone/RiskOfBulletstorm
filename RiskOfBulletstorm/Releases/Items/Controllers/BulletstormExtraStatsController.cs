@@ -24,7 +24,7 @@ namespace RiskOfBulletstorm.Items
             "\nIt is HIGHLY recommended not to disable, because alot of projectiles could break otherwise.", AutoConfigFlags.PreventNetMismatch)]
         public static bool ShotSpread_WhitelistProjectiles { get; private set; } = true;
 
-        private readonly bool ShowAnnoyingDebugText = false;
+        private readonly bool ShowAnnoyingDebugText = true;
 
         public override string displayName => "BulletstormExtraStatsController";
         public override ItemTier itemTier => ItemTier.NoTier;
@@ -43,8 +43,8 @@ namespace RiskOfBulletstorm.Items
 
         private float Scope_SpreadReduction;
         private float Scope_SpreadReductionStack;
-        private ItemIndex ItemIndex_Scope;
-        private ItemIndex ItemIndex_SpiceTally;
+        private ItemIndex ItemIndex_Scope => Scope.instance.catalogIndex;
+        private ItemIndex ItemIndex_SpiceTally => Spice.SpiceTally.itemIndex;
 
         private float[,] SpiceBonusesConstant;
         private float[] SpiceBonusesAdditive;
@@ -66,6 +66,8 @@ namespace RiskOfBulletstorm.Items
             Resources.Load<GameObject>("Prefabs/Projectiles/MageIceBombProjectile"),
             Resources.Load<GameObject>("Prefabs/Projectiles/MageIcewallWalkerProjectile"),
             //MageIcewallPillarProjectile ??
+                
+                // Bandit2
 
                 // Captain
             Resources.Load<GameObject>("Prefabs/Projectiles/CaptainTazer"),
@@ -159,8 +161,8 @@ namespace RiskOfBulletstorm.Items
             Scope_SpreadReductionStack = Scope.Scope_SpreadReductionStack;
 
             // ITEM COUNTS //
-            ItemIndex_Scope = Scope.instance.catalogIndex;
-            ItemIndex_SpiceTally = Spice.SpiceTally.itemIndex;
+            //ItemIndex_Scope = Scope.instance.catalogIndex;
+            //ItemIndex_SpiceTally = Spice.SpiceTally.itemIndex;
 
             // SPICE //
             SpiceBonusesConstant = Spice.SpiceBonusesConstant;

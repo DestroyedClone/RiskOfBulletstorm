@@ -3,6 +3,7 @@ using RoR2.CharacterAI;
 using UnityEngine;
 using System.Linq;
 using static RiskOfBulletstorm.Shared.Buffs.BuffsController;
+using static RiskOfBulletstorm.BulletstormPlugin;
 
 namespace RiskOfBulletstorm.Shared.Buffs
 {
@@ -152,7 +153,7 @@ namespace RiskOfBulletstorm.Shared.Buffs
                         overlay.alphaCurve = AnimationCurve.Constant(0f, 0f, 0.54f);
                         overlay.animateShaderAlpha = true;
                         overlay.destroyComponentOnEnd = true;
-                        overlay.originalMaterial = Resources.Load<Material>("@RiskOfBulletstorm:Assets/Textures/Materials/Overlays/Charmed.mat");
+                        overlay.originalMaterial = assetBundle.LoadAsset<Material>("Assets/Textures/Materials/Overlays/Charmed.mat");
                         overlay.AddToCharacerModel(self);
                         isCharmed.Overlay = overlay;
                     } else return;

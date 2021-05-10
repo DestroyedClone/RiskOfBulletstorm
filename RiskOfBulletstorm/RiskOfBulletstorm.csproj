@@ -61,7 +61,6 @@
   <ItemGroup>
     <None Include="lib\0Harmony.dll" />
     <None Include="lib\Assembly-CSharp.dll" />
-    <None Include="lib\Assembly-CSharp.R2API.mm.dll" />
     <None Include="lib\BepInEx.dll" />
     <None Include="lib\BepInEx.Harmony.dll" />
     <None Include="lib\BepInEx.MonoMod.Loader.dll" />
@@ -101,9 +100,6 @@
     </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>lib\Assembly-CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="Assembly-CSharp.R2API.mm">
-      <HintPath>lib\Assembly-CSharp.R2API.mm.dll</HintPath>
     </Reference>
     <Reference Include="BepInEx">
       <HintPath>lib\BepInEx.dll</HintPath>
