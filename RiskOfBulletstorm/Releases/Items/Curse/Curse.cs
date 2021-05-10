@@ -101,6 +101,7 @@ namespace RiskOfBulletstorm.Items
             curseTally.pickupToken = "";
             curseTally.loreToken = "";
             curseTally.descriptionToken = "";
+            curseTally.pickupIconSprite = Resources.Load<Sprite>("materials/matWeakOverlay");
             ItemAPI.Add(new CustomItem(curseTally, new ItemDisplayRuleDict()));
 
             // This way allows ghosts to maintain their curse status //
@@ -113,6 +114,7 @@ namespace RiskOfBulletstorm.Items
             isJammedItem.pickupToken = "";
             isJammedItem.loreToken = "";
             isJammedItem.descriptionToken = "";
+            isJammedItem.pickupIconSprite = Resources.Load<Sprite>("materials/matFullCrit");
             ItemAPI.Add(new CustomItem(isJammedItem, new ItemDisplayRuleDict()));
 
             // Used to track who to spawn the Lord of the Jammed on //

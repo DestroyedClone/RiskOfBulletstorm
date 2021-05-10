@@ -66,6 +66,7 @@ namespace RiskOfBulletstorm.Items
             OrangeConsumedDef.pickupToken = "";
             OrangeConsumedDef.loreToken = "";
             OrangeConsumedDef.descriptionToken = "";
+            OrangeConsumedDef.pickupIconSprite = iconResource;
             ItemAPI.Add(new CustomItem(OrangeConsumedDef, new ItemDisplayRuleDict()));
         }
         public static ItemDisplayRuleDict GenerateItemDisplayRules()

@@ -100,6 +100,7 @@ namespace RiskOfBulletstorm.Items
             SpiceTally.pickupToken = "";
             SpiceTally.loreToken = "";
             SpiceTally.descriptionToken = "ITEM_SpiceTally_DESC";
+            SpiceTally.pickupIconSprite = iconResource;
             ItemAPI.Add(new CustomItem(SpiceTally, new ItemDisplayRuleDict()));
         }
         public static ItemDisplayRuleDict GenerateItemDisplayRules()

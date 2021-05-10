@@ -63,19 +63,19 @@ namespace RiskOfBulletstorm.Shared.Buffs
             Anger = RegisterBuff(Color.red,
                 false,
                 false,
-                "@RiskOfBulletstorm:Assets/Textures/Icons/Buffs/Enraged.png",
+                "Assets/Textures/Icons/Buffs/Enraged.png",
                 "Enraged");
 
             Charm = RegisterBuff(new Color32(201, 42, 193, 255),
                 false,
                 true,
-                "@RiskOfBulletstorm:Assets/Textures/Icons/Buffs/Charmed.png",
+                "Assets/Textures/Icons/Buffs/Charmed.png",
                 "Charmed");
 
             Jammed = RegisterBuff(new Color32(150, 10, 10, 255),
                 false,
                 false,
-                "@RiskOfBulletstorm:Assets/Textures/Icons/Buffs/Jammed.png",
+                "Assets/Textures/Icons/Buffs/Jammed.png",
                 "Affix_Jammed");
         }
 
