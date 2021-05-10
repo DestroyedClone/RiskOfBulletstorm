@@ -23,7 +23,7 @@ namespace RiskOfBulletstorm.Items
         public int Meatbun_BuffLimit { get; private set; } = 5;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the minimum percentage of health lost from a single hit to remove the buffs? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float Meatbun_HealthThreshold { get; private set; } = 0.05f;
+        public float Meatbun_HealthThreshold { get; private set; } = 0.01f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the cooldown in seconds?", AutoConfigFlags.PreventNetMismatch)]
