@@ -85,7 +85,7 @@ namespace RiskOfBulletstorm.Items
             "\n And it only took one strike to end him." +
             "\n Tick, Tick, tick, tick";
 
-        public static BuffDef MetronomeBuffTally { get; private set; }
+        public BuffDef MetronomeBuffTally;
         //todo: add IDRS
         public Metronome()
         {
@@ -218,10 +218,11 @@ namespace RiskOfBulletstorm.Items
             public int maxkills = 16;
             public int LastSkillSlotUsed = 0;
             public CharacterBody characterBody;
+            public BuffDef tallyBuff = Metronome.instance.MetronomeBuffTally;
 
             public void OnDisable()
             {
-                HelperUtil.ClearBuffStacks(characterBody, MetronomeBuffTally.buffIndex);
+                HelperUtil.ClearBuffStacks(characterBody, tallyBuff.buffIndex);
             }
 
             public void UpdateKills()
@@ -234,7 +235,7 @@ namespace RiskOfBulletstorm.Items
 
             public void UpdateBuffStack()
             {
-                characterBody.SetBuffCount(MetronomeBuffTally.buffIndex, kills);
+                characterBody.SetBuffCount(tallyBuff.buffIndex, kills);
             }
             public void SetLastSkillSlot(int SlotNumber)
             {

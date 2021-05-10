@@ -10,7 +10,6 @@ namespace RiskOfBulletstorm.Shared.Buffs
     {
         // TODO: IL Add friendly fire bypass
         public static bool Config_Charm_Boss = BuffsController.Config_Charm_Boss;
-        public static BuffDef charmIndex = BuffsController.Charm;
 
         public static void Install()
         {
@@ -38,21 +37,27 @@ namespace RiskOfBulletstorm.Shared.Buffs
 
         private static void Charmed_EnableComponent(On.RoR2.CharacterBody.orig_AddBuff_BuffIndex orig, CharacterBody self, BuffIndex buffType)
         {
-            if (buffType == charmIndex.buffIndex)
+            Debug.Log("cock1");
+            if (buffType == Charm.buffIndex)
             {
+                Debug.Log("cock2");
                 if (!Config_Charm_Boss && self.isBoss) //prevents adding the buff if it's a boss and the config is disabled
                     return;
 
+                Debug.Log("cock3");
                 if (!self.isPlayerControlled && self.masterObject && self.masterObject.GetComponent<BaseAI>())
                 {
+                    Debug.Log("cock4");
                     var isCharmed = self.gameObject.GetComponent<IsCharmed>();
                     if (!isCharmed)
                     {
+                        Debug.Log("cock5");
                         isCharmed = self.gameObject.AddComponent<IsCharmed>();
                         isCharmed.characterBody = self;
                         isCharmed.baseAI = self.masterObject.GetComponent<BaseAI>();
                         isCharmed.oldTeamIndex = self.teamComponent.teamIndex;
                     }
+                    Debug.Log("cock6");
                     orig(self, buffType); //unneeded?
                     return;
                 }
@@ -130,7 +135,7 @@ namespace RiskOfBulletstorm.Shared.Buffs
 
             if (self)
             {
-                if (self.body && self.body.HasBuff(charmIndex))
+                if (self.body && self.body.HasBuff(Charm))
                 {
                     var isCharmed = self.body.GetComponent<IsCharmed>();
                     if (isCharmed && !isCharmed.Overlay)
@@ -185,9 +190,9 @@ namespace RiskOfBulletstorm.Shared.Buffs
 
             void OnDisable()
             {
-                if (characterBody && characterBody.HasBuff(charmIndex))
+                if (characterBody && characterBody.HasBuff(charmDef))
                 {
-                    characterBody.RemoveBuff(charmIndex);
+                    characterBody.RemoveBuff(charmDef);
                 }
                 ResetTarget();
                 Destroy(this);
