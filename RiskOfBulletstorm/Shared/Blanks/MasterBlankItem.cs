@@ -17,7 +17,7 @@ using static RiskOfBulletstorm.BulletstormPlugin;
 
 namespace RiskOfBulletstorm.Shared.Blanks
 {
-    public class MasterBlankItem : Item_V2<MasterBlankItem>
+    public class MasterBlankItem : Item<MasterBlankItem>
     {
         // Controls Blank logic because i don't know how to make this run without making it an item. what a newbie
         public override string displayName => "";
@@ -34,6 +34,7 @@ namespace RiskOfBulletstorm.Shared.Blanks
         public static string BlankSound = EntityStates.Treebot.Weapon.FirePlantSonicBoom.impactSoundString;
         //private readonly string BlankEffect = "Prefabs/Effects/TreebotShockwaveEffect";
         public static GameObject BlankEffect = (GameObject)Resources.Load("prefabs/effects/SonicBoomEffect");
+        public static GameObject ProjectileDeleteEffect = Resources.Load<GameObject>("prefabs/effects/SmokescreenEffect");
 
         public override void SetupBehavior()
         {
@@ -75,7 +76,7 @@ namespace RiskOfBulletstorm.Shared.Blanks
                     {
                         if (damageInfo.inflictor == BlankObject)
                         {
-                            var prcf = 150;
+                            var prcf = 300;
                             var mass = characterBody.characterMotor?.mass ?? (characterBody.rigidbody?.mass ?? 1f);
 
                             Vector3 ZeroYVector3(Vector3 vector3)
@@ -123,7 +124,7 @@ namespace RiskOfBulletstorm.Shared.Blanks
                 {
                     origin = attacker.transform.position + Vector3.up * yOffset,
                     rotation = Util.QuaternionSafeLookRotation(Vector3.up),
-                    scale = 20f
+                    scale = 40f
                 }, false);
             }
 
@@ -177,6 +178,12 @@ namespace RiskOfBulletstorm.Shared.Blanks
                     ProjectileController projectileController2 = list[j];
                     if (projectileController2)
                     {
+                        EffectManager.SpawnEffect(BlankEffect, new EffectData
+                        {
+                            origin = projectileController2.gameObject.transform.position,
+                            rotation = Util.QuaternionSafeLookRotation(Vector3.up),
+                            scale = 1f
+                        }, false);
                         UnityEngine.Object.Destroy(projectileController2.gameObject);
                     }
                     j++;
