@@ -64,8 +64,8 @@ namespace RiskOfBulletstorm.Items
             chestRevealer.pulseTravelSpeed = 1000;
             chestRevealer.revealDuration = 1;
             chestRevealer.pulseInterval = 10;
-            chestRevealer.pulseEffectScale = 0;
-            chestRevealer.pulseEffectPrefab = null; //light mode users
+            chestRevealer.pulseEffectScale = 0; // a scale of zero should make it invisible
+            //chestRevealer.pulseEffectPrefab = null; //throws an error if null
 
             if (CartographerRing_ScanDuration <= 0)
             {
