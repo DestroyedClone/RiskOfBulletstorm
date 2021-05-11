@@ -54,6 +54,8 @@ namespace RiskOfBulletstorm.Items
             // Equipment/Items
             Resources.Load<GameObject>("Prefabs/Projectiles/Sawmerang"), // Saw
             Resources.Load<GameObject>("Prefabs/Projectiles/LunarNeedleProjectile"), // Visions of Heresy
+            Resources.Load<GameObject>("prefabs/projectiles/LunarSecondaryProjectile"), // Hooks of Heresy
+            Resources.Load<GameObject>("prefabs/projectiles/LunarMissileProjectile"), // Perfected
 
             // Survivors
                 // Acrid
@@ -68,6 +70,8 @@ namespace RiskOfBulletstorm.Items
             //MageIcewallPillarProjectile ??
                 
                 // Bandit2
+            Resources.Load<GameObject>("prefabs/projectiles/Bandit2ShivProjectile"),
+
 
                 // Captain
             Resources.Load<GameObject>("Prefabs/Projectiles/CaptainTazer"),
@@ -103,6 +107,7 @@ namespace RiskOfBulletstorm.Items
             Resources.Load<GameObject>("prefabs/projectiles/TreebotMortarRain"),
             Resources.Load<GameObject>("prefabs/projectiles/TreebotMortar2"),
             Resources.Load<GameObject>("prefabs/projectiles/TreebotFlowerSeed"),
+            Resources.Load<GameObject>("prefabs/projectiles/TreebotFruitSeedProjectile"),
 
             // Enemies
                 // Beetle Queen
@@ -142,16 +147,21 @@ namespace RiskOfBulletstorm.Items
             Resources.Load<GameObject>("prefabs/projectiles/Fireball"), //fireball
                 // Hermit Crab
             Resources.Load<GameObject>("prefabs/projectiles/HermitCrabBombProjectile"), 
-                // Lunar Chimera
+                // Lunar Golem
             Resources.Load<GameObject>("prefabs/projectiles/LunarGolemTwinShotProjectile"), 
                 // Lunar Wisp
             Resources.Load<GameObject>("prefabs/projectiles/LunarWispTrackingBomb"), 
+                // Lunar Exploder
+            Resources.Load<GameObject>("prefabs/projectiles/LunarExploderShardProjectile"),
                 // Mini Mushrum
             Resources.Load<GameObject>("prefabs/projectiles/SporeGrenadeProjectile"), 
                 // Void Reaver
             Resources.Load<GameObject>("prefabs/projectiles/NullifierPreBombProjectile"), 
                 // Greater Wisp
             Resources.Load<GameObject>("prefabs/projectiles/WispCannon"),
+                // Grandparent
+            Resources.Load<GameObject>("prefabs/projectiles/GrandparentBoulder"),
+            Resources.Load<GameObject>("prefabs/projectiles/GrandparentGravSphere"),
         };
         public override void SetupLate()
         {
@@ -295,9 +305,53 @@ namespace RiskOfBulletstorm.Items
             // ACCURACY //
             On.RoR2.BulletAttack.Fire += AdjustSpreadBullets;
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += AdjustSpreadProjectiles;
+            On.EntityStates.Bandit2.Weapon.FireShotgun2.FireBullet += FireShotgun2_FireBullet;
 
             // SPEED //
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += AdjustSpeedEnemyProjectile;
+        }
+
+        private void FireShotgun2_FireBullet(On.EntityStates.Bandit2.Weapon.FireShotgun2.orig_FireBullet orig, EntityStates.Bandit2.Weapon.FireShotgun2 self, Ray aimRay)
+        {
+            var characterBody = self.characterBody;
+            if (characterBody)
+            {
+                var inventory = characterBody.inventory;
+                if (inventory)
+                {
+                    var ResultMult = CalculateSpreadMultiplier(inventory, false);
+
+                    self.StartAimMode(aimRay, 3f, false);
+                    self.DoFireEffects();
+                    self.PlayFireAnimation();
+                    self.AddRecoil(-1f * self.recoilAmplitudeY, -1.5f * self.recoilAmplitudeY, -1f * self.recoilAmplitudeX, 1f * self.recoilAmplitudeX);
+                    if (self.isAuthority)
+                    {
+                        Vector3 rhs = Vector3.Cross(Vector3.up, aimRay.direction);
+                        Vector3 axis = Vector3.Cross(aimRay.direction, rhs);
+                        float spreadBloom = self.characterBody.spreadBloomAngle;
+
+                        float angle = 0f;
+                        float num2 = 0f;
+                        if (self.bulletCount > 1)
+                        { //here
+                            num2 = UnityEngine.Random.Range(SimpleSpread(ResultMult,self.minFixedSpreadYaw + spreadBloom),
+                                SimpleSpread(ResultMult, self.maxFixedSpreadYaw + spreadBloom)) * 2f;
+                            angle = num2 / (self.bulletCount - 1);
+                        }
+                        Vector3 direction = Quaternion.AngleAxis(-num2 * 0.5f, axis) * aimRay.direction;
+                        Quaternion rotation = Quaternion.AngleAxis(angle, axis);
+                        Ray aimRay2 = new Ray(aimRay.origin, direction);
+                        for (int i = 0; i < self.bulletCount; i++)
+                        {
+                            BulletAttack bulletAttack = self.GenerateBulletAttack(aimRay2);
+                            self.ModifyBullet(bulletAttack);
+                            bulletAttack.Fire();
+                            aimRay2.direction = rotation * aimRay2.direction;
+                        }
+                    }
+                }
+            }
         }
 
         //EntityStates.BaseNailgunState nailgunState = new EntityStates.BaseNailgunState();
@@ -308,6 +362,7 @@ namespace RiskOfBulletstorm.Items
             // ACCURACY //
             On.RoR2.BulletAttack.Fire -= AdjustSpreadBullets;
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo -= AdjustSpreadProjectiles;
+            On.EntityStates.Bandit2.Weapon.FireShotgun2.FireBullet -= FireShotgun2_FireBullet;
 
             // SPEED //
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo -= AdjustSpeedEnemyProjectile;
@@ -502,6 +557,11 @@ namespace RiskOfBulletstorm.Items
             return (randomSpin * randomTilt);
         }
 
+        float SimpleSpread(float ResultMult, float original, float multiplier = 1f)
+        {
+            return original == 0 ? ResultMult * multiplier : original * ResultMult;
+        }
+
         private void AdjustSpreadBullets(On.RoR2.BulletAttack.orig_Fire orig, BulletAttack self)
         {
             //doesn't work on MULT?????
@@ -520,18 +580,15 @@ namespace RiskOfBulletstorm.Items
                     //if (self.radius == 0) //(maybe?)
                         //self.radius = ResultMult;
 
-                    self.maxSpread = simpleSpread(self.maxSpread,1.15f);
+                    self.maxSpread = SimpleSpread(self.maxSpread,1.15f);
 
-                    self.minSpread = simpleSpread(self.minSpread);
+                    self.minSpread = SimpleSpread(ResultMult, self.minSpread);
 
-                    self.spreadPitchScale *= simpleSpread(self.spreadPitchScale);
-                    self.spreadYawScale *= simpleSpread(self.spreadYawScale);
+                    self.spreadPitchScale *= SimpleSpread(ResultMult, self.spreadPitchScale);
+                    self.spreadYawScale *= SimpleSpread(ResultMult, self.spreadYawScale);
 
                     //self.owner.GetComponent<CharacterBody>().SetSpreadBloom(ResultMult, false);
-                    float simpleSpread(float original, float multiplier = 1f)
-                    {
-                        return original == 0 ? ResultMult * multiplier : original * ResultMult;
-                    }
+
                 }
             }
             orig(self);
