@@ -303,6 +303,21 @@ namespace RiskOfBulletstorm.Utils
             return words;
         } //https://stackoverflow.com/questions/2729752/converting-numbers-in-to-words-c-sharp
 
+        public static string GenTimeSpanFromSeconds(double seconds) //https://docs.microsoft.com/en-us/dotnet/api/system.timespan.fromseconds
+        {
+            // Create a TimeSpan object and TimeSpan string from 
+            // a number of seconds.
+            TimeSpan interval = TimeSpan.FromSeconds(seconds);
+            string timeInterval = interval.ToString();
+
+            // Pad the end of the TimeSpan string with spaces if it 
+            // does not contain milliseconds.
+            int pIndex = timeInterval.IndexOf(':');
+            pIndex = timeInterval.IndexOf('.', pIndex);
+            if (pIndex < 0) timeInterval += "        ";
+
+            return String.Format("{0,21}{1,26}", seconds, timeInterval);
+        }
     }
     public static class CurseUtil
     {

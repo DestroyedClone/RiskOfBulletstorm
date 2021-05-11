@@ -7,6 +7,8 @@ using static TILER2.StatHooks;
 using System;
 using RiskOfBulletstorm.Items;
 using static RiskOfBulletstorm.BulletstormPlugin;
+using RiskOfBulletstorm.Utils;
+using static TILER2.MiscUtil;
 
 namespace RiskOfBulletstorm.Shared.Buffs
 {
@@ -53,7 +55,7 @@ namespace RiskOfBulletstorm.Shared.Buffs
             buffDef.canStack = canStack;
             buffDef.isDebuff = isDebuff;
             buffDef.iconSprite = assetBundle.LoadAsset<Sprite>(iconPath);
-            buffDef.name = name;
+            buffDef.name = BulletstormPlugin.displayName + ":" + name;
             BuffAPI.Add(new CustomBuff(buffDef));
             return buffDef;
         }

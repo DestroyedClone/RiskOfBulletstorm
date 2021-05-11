@@ -47,6 +47,14 @@ namespace RiskOfBulletstorm.Items
         public override void SetupBehavior()
         {
             base.SetupBehavior();
+
+            if (Compat_ItemStats.enabled)
+            {
+                Compat_ItemStats.CreateItemStatDef(itemDef,
+                    ((count, inv, master) => { return  RingUnity_DamageBonus + RingUnity_DamageBonusStack * (count - 1);},
+                    (value, inv, master) => { return $"Base Damage: +{value} health"; }
+                ));
+            }
         }
         public override void SetupAttributes()
         {

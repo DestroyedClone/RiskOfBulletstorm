@@ -54,6 +54,18 @@ namespace RiskOfBulletstorm.Items
 
             var controller = BombPrefab.GetComponent<ProjectileController>();
             controller.transform.localScale = new Vector3(2f, 2f, 2f);
+
+            if (Compat_ItemStats.enabled)
+            {
+                Compat_ItemStats.CreateItemStatDef(itemDef,
+                    ((count, inv, master) => { return count; },
+                    (value, inv, master) => { return $"Additional Bombs: {value}"; }
+                ));
+                Compat_ItemStats.CreateItemStatDef(itemDef,
+                    ((count, inv, master) => { return count; },
+                    (value, inv, master) => { return $"Damage: {Pct(value)}"; }
+                ));
+            }
         }
 
         public override void SetupAttributes()

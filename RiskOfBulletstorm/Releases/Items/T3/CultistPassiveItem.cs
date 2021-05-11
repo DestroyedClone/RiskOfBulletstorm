@@ -6,6 +6,7 @@ using UnityEngine;
 using TILER2;
 using static TILER2.StatHooks;
 using static RiskOfBulletstorm.BulletstormPlugin;
+using static TILER2.MiscUtil;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -24,6 +25,13 @@ namespace RiskOfBulletstorm.Items
         protected override string GetLoreString(string langID = null) => "Now that the protagonist is dead, it's time to shine!";
 
         public static GameObject ItemBodyModelPrefab;
+        readonly float baseAttackSpeedAdd = 0.4f;
+        readonly float baseDamageAdd = 10f;
+        readonly float healthMultAdd = 1f;
+        readonly float baseMoveSpeedAdd = 1f;
+        readonly float regenMultAdd = 0.5f;
+        readonly float armorAdd = 8f;
+        readonly float critAdd = 15f;
 
         public CultistPassiveItem()
         {
@@ -275,6 +283,41 @@ localScale = new Vector3(8.5F, 30F, 7F)
         {
             base.SetupConfig();
         }
+        public override void SetupBehavior()
+        {
+            base.SetupBehavior();
+            if (Compat_ItemStats.enabled)
+            {
+                Compat_ItemStats.CreateItemStatDef(itemDef,
+                    ((count, inv, master) => { return (baseAttackSpeedAdd * count);},
+                    (value, inv, master) => { return $"Attack Speed: +{Pct(value)}"; }
+                ));
+                Compat_ItemStats.CreateItemStatDef(itemDef,
+                    ((count, inv, master) => { return (baseDamageAdd * count); },
+                    (value, inv, master) => { return $"Base Damage: +{value}"; }
+                ));
+                Compat_ItemStats.CreateItemStatDef(itemDef,
+                    ((count, inv, master) => { return (healthMultAdd * count); },
+                    (value, inv, master) => { return $"Health Multiplier: +{Pct(value)}"; }
+                ));
+                Compat_ItemStats.CreateItemStatDef(itemDef,
+                    ((count, inv, master) => { return (baseMoveSpeedAdd * count); },
+                    (value, inv, master) => { return $"Move Speed: +{value}"; }
+                ));
+                Compat_ItemStats.CreateItemStatDef(itemDef,
+                    ((count, inv, master) => { return (regenMultAdd * count); },
+                    (value, inv, master) => { return $"Regen Multiplier: +{Pct(value)}"; }
+                ));
+                Compat_ItemStats.CreateItemStatDef(itemDef,
+                    ((count, inv, master) => { return (armorAdd * count); },
+                    (value, inv, master) => { return $"Armor: +{value}"; }
+                ));
+                Compat_ItemStats.CreateItemStatDef(itemDef,
+                    ((count, inv, master) => { return (critAdd * count); },
+                    (value, inv, master) => { return $"Crit Chance: +{value}%"; }
+                ));
+            }
+        }
         public override void Install()
         {
             base.Install();
@@ -321,13 +364,13 @@ localScale = new Vector3(8.5F, 30F, 7F)
                     
                     float multAmount = deadAmt * InventoryCount;
 
-                    args.baseAttackSpeedAdd += 0.4f * multAmount;
-                    args.baseDamageAdd += 10f * multAmount;
-                    args.healthMultAdd += multAmount;
-                    args.baseMoveSpeedAdd += 1f * multAmount;
-                    args.regenMultAdd += 0.5f * multAmount;
-                    args.armorAdd += 8 * multAmount;
-                    args.critAdd += 15 * multAmount;
+                    args.baseAttackSpeedAdd += baseAttackSpeedAdd * multAmount;
+                    args.baseDamageAdd += baseDamageAdd * multAmount;
+                    args.healthMultAdd += healthMultAdd * multAmount;
+                    args.baseMoveSpeedAdd += baseMoveSpeedAdd * multAmount;
+                    args.regenMultAdd += regenMultAdd * multAmount;
+                    args.armorAdd += armorAdd * multAmount;
+                    args.critAdd += critAdd * multAmount;
                 }
             }
         }

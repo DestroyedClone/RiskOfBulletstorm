@@ -60,6 +60,21 @@ namespace RiskOfBulletstorm.Items
         public override void SetupBehavior()
         {
             base.SetupBehavior();
+            if (Compat_ItemStats.enabled)
+            {
+                Compat_ItemStats.CreateItemStatDef(itemDef,
+                    ((count, inv, master) => { return EnragingPhoto_BaseDuration + EnragingPhoto_StackDuration * (count - 1); },
+                    (value, inv, master) => { return $"Max Duration: {value} seconds"; }
+                ));
+                Compat_ItemStats.CreateItemStatDef(itemDef,
+                    ((count, inv, master) => { return 0; },
+                    (value, inv, master) => { return $"Health Threshold: {Pct(EnragingPhoto_HealthThresholdMin)} to {Pct(EnragingPhoto_HealthThresholdMax)}"; }
+                ));
+                Compat_ItemStats.CreateItemStatDef(itemDef,
+                    ((count, inv, master) => { return EnragingPhoto_DmgBoost; },
+                    (value, inv, master) => { return $"Damage Boost: +{Pct(value)}"; }
+                ));
+            }
         }
         public override void SetupAttributes()
         {

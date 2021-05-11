@@ -65,6 +65,14 @@ namespace RiskOfBulletstorm.Items
 
             base.SetupAttributes();
         }
+        public override void SetupBehavior()
+        {
+            base.SetupBehavior();
+            Compat_ItemStats.CreateItemStatDef(itemDef,
+                ((count, inv, master) => { return RingMiserlyProtection_HealthBonus + RingMiserlyProtection_HealthBonusStack * (count - 1); },
+                (value, inv, master) => { return $"Health Multiplier: +{Pct(value)}"; }
+            ));
+        }
         public static ItemDisplayRuleDict GenerateItemDisplayRules() //THIS SUCKS
         {
             ItemBodyModelPrefab.AddComponent<ItemDisplay>();

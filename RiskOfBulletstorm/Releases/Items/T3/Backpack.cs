@@ -55,7 +55,17 @@ namespace RiskOfBulletstorm.Items
         protected override string GetDescString(string langid = null) => $"Grants access to an <style=cIsUtility>extra equipment slot</style> <style=cStack>(+1 per stack)</style>" +
             $"\nHold {ModifierKey_KB} and press 1-0 to switch equipment slots." +
             $"\nPress {CycleLeftKey_KB}/{CycleLeftKey_GP} or {CycleRightKey_KB}/{CycleRightKey_GP} to cycle slots";
-
+        public override void SetupBehavior()
+        {
+            base.SetupBehavior();
+            if (Compat_ItemStats.enabled)
+            {
+                Compat_ItemStats.CreateItemStatDef(itemDef,
+                    ((count, inv, master) => { return count; },
+                    (value, inv, master) => { return $"Additional Backpack Slots: {value}"; }
+                ));
+            }
+        }
 
         public override void Install()
         {

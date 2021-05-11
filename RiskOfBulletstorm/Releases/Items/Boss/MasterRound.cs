@@ -118,6 +118,14 @@ namespace RiskOfBulletstorm.Items
         public override void SetupBehavior()
         {
             base.SetupBehavior();
+
+            if (Compat_ItemStats.enabled)
+            {
+                Compat_ItemStats.CreateItemStatDef(itemDef,
+                    ((count, inv, master) => { return MasterRound_MaxHealthMult * count; },
+                    (value, inv, master) => { return $"Max Health Multiplier: +{Pct(value)} health"; }
+                ));
+            }
         }
         public override void SetupAttributes()
         {

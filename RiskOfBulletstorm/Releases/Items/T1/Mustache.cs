@@ -51,6 +51,17 @@ namespace RiskOfBulletstorm.Items
         public override void SetupBehavior()
         {
             base.SetupBehavior();
+            if (Compat_ItemStats.enabled)
+            {
+                Compat_ItemStats.CreateItemStatDef(itemDef,
+                    ((count, inv, master) => { return Mustache_RegenAmount + Mustache_RegenAmountStack * (count - 1); },
+                    (value, inv, master) => { return $"Regen: +{value} health/second"; }
+                ));
+                Compat_ItemStats.CreateItemStatDef(itemDef,
+                    ((count, inv, master) => { return Mustache_Duration; },
+                    (value, inv, master) => { return $"Duration: {value} seconds"; }
+                ));
+            }
         }
         public override void SetupAttributes()
         {

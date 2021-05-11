@@ -30,7 +30,7 @@ namespace RiskOfBulletstorm.Items
         public static float Metronome_DmgCoeff { get; private set; } = 0.02f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Use styled formatting or descriptive formatting? (Value: Bool)", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Use styled formatting or descriptive formatting for the description? (Value: Bool)", AutoConfigFlags.PreventNetMismatch)]
         public static bool Metronome_UseStyleFormat { get; private set; } = true;
 
         //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
@@ -110,6 +110,23 @@ namespace RiskOfBulletstorm.Items
         public override void SetupBehavior()
         {
             base.SetupBehavior();
+            if (Compat_ItemStats.enabled)
+            {
+                Compat_ItemStats.CreateItemStatDef(itemDef,
+                    ((count, inv, master) => { return Metronome_MaxKills + Metronome_MaxKillsStack * (count - 1); },
+                    (value, inv, master) => { return $"Max Stacks: {value}"; }
+                ));
+                Compat_ItemStats.CreateItemStatDef(itemDef,
+                    ((count, inv, master) => { return Metronome_KillsLost; },
+                    (value, inv, master) => { return $"Kills Lost On Other Skill Use: {value}"; }
+                ));
+                Compat_ItemStats.CreateItemStatDef(itemDef, //TODO? HOW?
+                    ((count, inv, master) => {
+                        return Metronome_DmgCoeff; 
+                    },
+                    (value, inv, master) => { return $"Damage Multiplier Per Kill: +{Pct(value)}"; }
+                ));
+            }
         }
         public override void SetupAttributes()
         {

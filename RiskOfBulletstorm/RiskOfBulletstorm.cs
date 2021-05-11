@@ -20,6 +20,7 @@ namespace RiskOfBulletstorm
     [BepInDependency(R2API.R2API.PluginGUID, R2API.R2API.PluginVersion)]
     [BepInDependency(TILER2Plugin.ModGuid, TILER2Plugin.ModVer)]
     [BepInDependency(EnemyItemDisplays.EnemyItemDisplaysPlugin.MODUID, BepInDependency.DependencyFlags.SoftDependency)] //because chen's mod has it
+    [BepInDependency("dev.ontrigger.itemstats", BepInDependency.DependencyFlags.SoftDependency)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.EveryoneNeedSameModVersion)]
     [R2APISubmoduleDependency(
         nameof(ItemAPI),
@@ -50,6 +51,7 @@ namespace RiskOfBulletstorm
 
         internal static BepInEx.Logging.ManualLogSource _logger;
         internal static AssetBundle assetBundle;
+        internal static string displayName = "Risk of Bulletstorm";
 
         private void Awake()
         {
@@ -64,7 +66,7 @@ namespace RiskOfBulletstorm
 
             masterItemList = T2Module.InitAll<CatalogBoilerplate>(new T2Module.ModInfo
             {
-                displayName = "Risk of Bulletstorm",
+                displayName = displayName,
                 longIdentifier = "RISKOFBULLETSTORMMOD",
                 shortIdentifier = "RBS",
                 mainConfigFile = ConfigFile

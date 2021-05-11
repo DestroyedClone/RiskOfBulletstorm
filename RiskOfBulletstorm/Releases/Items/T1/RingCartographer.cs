@@ -1,4 +1,5 @@
 ﻿using RiskOfBulletstorm.Utils;
+using System;
 using System.Collections.ObjectModel;
 using R2API;
 using RoR2;
@@ -8,6 +9,7 @@ using TILER2;
 using System.Linq;
 using static RiskOfBulletstorm.Utils.HelperUtil;
 using static RiskOfBulletstorm.BulletstormPlugin;
+using static TILER2.MiscUtil;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -89,6 +91,22 @@ namespace RiskOfBulletstorm.Items
             }
 
             if (PermanentScannerPrefab) PrefabAPI.RegisterNetworkPrefab(PermanentScannerPrefab);
+
+            if (Compat_ItemStats.enabled)
+            {
+                Compat_ItemStats.CreateItemStatDef(itemDef,
+                    ((count, inv, master) => { return CartographerRing_ScanChance + CartographerRing_ScanChanceStack * (count - 1); },
+                    (value, inv, master) => { return $"Scan Chance: {Pct(value)}"; }
+                ));
+                Compat_ItemStats.CreateItemStatDef(itemDef,
+                    ((count, inv, master) => { return CartographerRing_ScanDuration; },
+                    (value, inv, master) => {
+                        string text = $"Scan Duration: ";
+                        text += CartographerRing_ScanDuration == 0 ? $"27:00:00" : $"{GenTimeSpanFromSeconds(value)}";
+                        return text; 
+                    }
+                ));
+            }
         }
         public override void SetupAttributes()
         {

@@ -17,7 +17,7 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("Limit of Spice per player", AutoConfigFlags.PreventNetMismatch)]
         public int SpiceEquipment_MaxPerPlayer { get; private set; } = 40;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("Spice only affects the pickups of the person running Spice.", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("Spice only affects the pickups of the person running Spice. Experimental.", AutoConfigFlags.PreventNetMismatch)]
         public bool SpiceEquipment_Disconnect { get; private set; } = true;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Should the amount of spice consumed be shown in the inventory?", AutoConfigFlags.PreventNetMismatch)]
@@ -102,6 +102,10 @@ namespace RiskOfBulletstorm.Items
             SpiceTally.descriptionToken = "ITEM_SpiceTally_DESC";
             SpiceTally.pickupIconSprite = iconResource;
             ItemAPI.Add(new CustomItem(SpiceTally, new ItemDisplayRuleDict()));
+        }
+        public override void SetupBehavior()
+        {
+            base.SetupBehavior();
         }
         public static ItemDisplayRuleDict GenerateItemDisplayRules()
         {

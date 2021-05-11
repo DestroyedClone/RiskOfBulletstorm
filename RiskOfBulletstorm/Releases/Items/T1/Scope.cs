@@ -47,7 +47,14 @@ namespace RiskOfBulletstorm.Items
         }
         public override void SetupBehavior()
         {
-
+            base.SetupBehavior();
+            if (Compat_ItemStats.enabled)
+            {
+                Compat_ItemStats.CreateItemStatDef(itemDef,
+                    ((count, inv, master) => { return Scope_SpreadReduction + Scope_SpreadReductionStack * (count - 1); },
+                    (value, inv, master) => { return $"Spread Reduction (Scope): {Pct(value)}"; }
+                ));
+            }
         }
         public override void SetupAttributes()
         {
