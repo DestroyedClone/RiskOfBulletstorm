@@ -253,6 +253,12 @@ namespace RiskOfBulletstorm.Items
                 //"FootMine",
                 "MortarProjectile",
 
+                // STARSTORM //
+                "NemmandoSwordBeam",
+                "ChirrDart",
+                "CyborgbfgProjectile",
+                "WayfarerChainProjectile",
+                "NucleatorProjectile"
             };
             // MODDED //
             _logger.LogMessage("[Risk of Bulletstorm] Projectile Whitelist: Adding modded projectiles.");
@@ -446,7 +452,7 @@ namespace RiskOfBulletstorm.Items
                             Vector3 aimDirection = input.aimDirection;
                             Quaternion aimDirectionQuaternion = Util.QuaternionSafeLookRotation(aimDirection);
 
-                            //_logger.LogMessage("Projectile Fired: "+ fireProjectileInfo.projectilePrefab.name);
+                            _logger.LogMessage("Projectile Fired: "+ fireProjectileInfo.projectilePrefab.name);
                             bool isProjectileAllowed = WhitelistedProjectiles.Contains(projectilePrefab);
 
                             if ((ShotSpread_WhitelistProjectiles && isProjectileAllowed) || !ShotSpread_WhitelistProjectiles)
@@ -484,7 +490,7 @@ namespace RiskOfBulletstorm.Items
             orig(self, fireProjectileInfo);
         }
 
-        /*Quaternion GetRandomInsideCone(float conicAngle, Vector3 forward)
+        Quaternion GetRandomInsideCone(float conicAngle, Vector3 forward)
         {
             // random tilt right (which is a random angle around the up axis)
             Quaternion randomTilt = Quaternion.AngleAxis(Random.Range(0f, conicAngle), Vector3.up);
@@ -494,7 +500,7 @@ namespace RiskOfBulletstorm.Items
 
             // tilt then spin
             return (randomSpin * randomTilt);
-        }*/
+        }
 
         private void AdjustSpreadBullets(On.RoR2.BulletAttack.orig_Fire orig, BulletAttack self)
         {
