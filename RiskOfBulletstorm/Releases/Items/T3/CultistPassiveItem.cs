@@ -19,8 +19,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetNameString(string langID = null) => displayName;
         protected override string GetPickupString(string langID = null) => "<b>Sidekick No More</b>\nBoosts stats when alone.";
 
-        protected override string GetDescString(string langid = null) => $"Increases <style=cIsUtility>stats</style> by a certain amount." +
-            $"<style=cStack>+same per stack </style> for every dead survivor.";
+        protected override string GetDescString(string langid = null) => $"Increases <style=cIsUtility>stats</style> by a certain amount per stack for every dead survivor.";
 
         protected override string GetLoreString(string langID = null) => "Now that the protagonist is dead, it's time to shine!";
 
@@ -29,7 +28,7 @@ namespace RiskOfBulletstorm.Items
         public CultistPassiveItem()
         {
             modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/CultistPassiveItem.prefab");
-            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/CultistPassiveItem");
+            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/CultistPassiveItem.png");
         }
         public override void SetupAttributes()
         {

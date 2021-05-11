@@ -36,7 +36,7 @@ namespace RiskOfBulletstorm.Items
 
         public override string displayName => "Molotov";
         public string descText = "Upon use, throws a Molotov that ";
-        public string durationNormal = "sets an area on fire";
+        public string durationNormal = "ets an area on fire";
         public string durationZero = "would have set an area on fire if it wasn't empty.";
 
         public Molotov()
@@ -49,7 +49,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetPickupString(string langID = null)
         {
             var desc = "<b>Feel the Burn</b>\n";
-            desc += Molotov_Duration <= 0 ? durationZero : durationNormal;
+            desc += Molotov_Duration <= 0 ? durationZero : "S"+durationNormal;
             return desc;
         }
 
@@ -65,7 +65,7 @@ namespace RiskOfBulletstorm.Items
             }
             else
             {
-                desc += $"{durationNormal} dealing <style=cIsDamage>";
+                desc += $"s{durationNormal} dealing <style=cIsDamage>";
                 // damage //
                 if (Molotov_Damage > 0) desc += $"{Pct(Molotov_Damage)}";
                 else desc += $"absolutely no";
@@ -73,7 +73,7 @@ namespace RiskOfBulletstorm.Items
                 desc += $" damage per ";
                 // frequency //
                 desc += $"[1/{Mathf.Clamp(Molotov_Frequency,0f,60f)}]th seconds";
-                desc += $" </style> for <style=cIsDamage>";
+                desc += $"</style> for <style=cIsDamage>";
 
                 //duration
                 if (Molotov_Duration > 0) desc += $"{Molotov_Duration} seconds";

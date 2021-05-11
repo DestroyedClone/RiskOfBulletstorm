@@ -57,7 +57,7 @@ namespace RiskOfBulletstorm.Items
             else desc += $"within a radius of {BlankClearRadius} meters";
             desc += $" <style=cIsUtility>Pushes enemies back</style>, and <style=cIsDamage>deals {Pct(Blank_DamageDealt)} damage</style>";
             if (BlankRadius == BlankClearRadius) desc += $".";
-            else desc += $"within {BlankRadius}";
+            else desc += $" within {BlankRadius}";
             desc += $"\nConsumed on use." +
                 $"\nCooldown: {ConfigBlankCooldown} seconds" +
                 $"\nPress "+BlankButton.ToString()+"/"+BlankButtonGamepad.ToString()+ " to activate";

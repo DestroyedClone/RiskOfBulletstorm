@@ -38,34 +38,26 @@ namespace RiskOfBulletstorm.Shared.Buffs
 
         private static void Charmed_EnableComponent(On.RoR2.CharacterBody.orig_AddBuff_BuffIndex orig, CharacterBody self, BuffIndex buffType)
         {
-            Debug.Log("cock1");
             if (buffType == Charm.buffIndex)
             {
-                Debug.Log("cock2");
                 if (self.isBoss) //prevents adding the buff if it's a boss and the config is disabled
                 {
-                    Debug.Log("cock2 and balls");
                     if (!Config_Charm_Boss)
                     {
-                        Debug.Log("cock2 and balls2");
                         return;
                     }
                 }
 
-                Debug.Log("cock3");
                 if (!self.isPlayerControlled && self.masterObject && self.masterObject.GetComponent<BaseAI>())
                 {
-                    Debug.Log("cock4");
                     var isCharmed = self.gameObject.GetComponent<IsCharmed>();
                     if (!isCharmed)
                     {
-                        Debug.Log("cock5");
                         isCharmed = self.gameObject.AddComponent<IsCharmed>();
                         isCharmed.characterBody = self;
                         isCharmed.baseAI = self.masterObject.GetComponent<BaseAI>();
                         isCharmed.oldTeamIndex = self.teamComponent.teamIndex;
                     }
-                    Debug.Log("cock6");
                     orig(self, buffType); //unneeded?
                     return;
                 }

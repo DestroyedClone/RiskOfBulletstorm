@@ -32,7 +32,7 @@ namespace RiskOfBulletstorm.Items
         {
             return $"{descText}, dealing <style=cIsDamage>" +
                 (Bomb_DamageDealt > 0 ? $"{Pct(Bomb_DamageDealt)}" : "no") +
-                " damage </style>.";
+                " damage</style>.";
         }
 
         protected override string GetLoreString(string langID = null) => "Countless experienced adventurers have brought Bombs to the Gungeon seeking secret doors, only to be foiled by the existence of Blanks. Still, explosives have their place.";

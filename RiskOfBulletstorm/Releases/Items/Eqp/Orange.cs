@@ -346,7 +346,7 @@ localScale = new Vector3(1.4194F, 1.4194F, 1.4194F)
         {
             base.InstallLanguage();
             LanguageAPI.Add(OrangeConsumedDef.nameToken, "Oranges (Consumed)");
-            LanguageAPI.Add(OrangeConsumedDef.descriptionToken, "Per stack, grants <style=cIsHealth>+" + Pct(Orange_HealthMultAdd) + " maximum health</style> and <style=cIsUtility>+" + Pct(Orange_EquipmentReduce) + " reduced equipment recharge rate</style>.");
+            LanguageAPI.Add(OrangeConsumedDef.descriptionToken, "Per stack, grants <style=cIsHealing>+" + Pct(Orange_HealthMultAdd) + " maximum health</style> and <style=cIsUtility>+" + Pct(Orange_EquipmentReduce) + " reduced equipment recharge rate</style>.");
         }
         private float Inventory_CalculateEquipmentCooldownScale(On.RoR2.Inventory.orig_CalculateEquipmentCooldownScale orig, Inventory self)
         {

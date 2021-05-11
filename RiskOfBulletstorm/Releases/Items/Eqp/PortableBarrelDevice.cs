@@ -48,17 +48,17 @@ namespace RiskOfBulletstorm.Items
             {
                 // duration //
                 desc += $"Places a <style=cIsUtility>barrel</style>" +
-                    $"\nthat lasts for ";
+                    $"that lasts for ";
                 if (isLifeLongerThanOne) desc += $"{PortableTableDevice_Lifetime} seconds.";
                 else desc += $" a second.";
 
                 // barrel count //
 
-                desc += $" At most, <style=cIsUtility>";
+                desc += $" up to <style=cIsUtility>";
                 if (PortableTableDevice_MaxBarrelsPerPlayer == 1) desc += $"a single barrel";
                 else if (PortableTableDevice_MaxBarrelsPerPlayer > 1) desc += $"{PortableTableDevice_MaxBarrelsPerPlayer} barrels";
 
-                desc += $"</style> can be placed.";
+                desc += $"</style>.";
             }
             else return $"<style=cIsUtility>Unsuccessfully</style> attempts to place a barrel.";
             return desc;

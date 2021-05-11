@@ -16,7 +16,7 @@ namespace RiskOfBulletstorm.Items
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the name of the item to be given in singleplayer?", AutoConfigFlags.None)]
-        public string FriendshipCookie_ItemIndex { get; private set; } = "Infusion";
+        public string FriendshipCookie_ItemName { get; private set; } = "Infusion";
 
         public override string displayName => "Friendship Cookie";
         public override float cooldown { get; protected set; } = 0f;
@@ -28,7 +28,7 @@ namespace RiskOfBulletstorm.Items
         {
             var desc = $"Upon use, <style=cIsHealing>revives all players</style>." +
             $"\nSINGLEPLAYER: <style=cIsHealing>Gives ";
-            var itemDef = ItemCatalog.GetItemDef(ItemCatalog.FindItemIndex(FriendshipCookie_ItemIndex));
+            var itemDef = ItemCatalog.GetItemDef(ItemCatalog.FindItemIndex(FriendshipCookie_ItemName));
             desc += itemDef == null ? $"nothing" : $"{itemDef.name}";
             desc += " instead.</style>" +
             $" <style=cIsUtility>Consumes</style> on use.";
@@ -58,7 +58,7 @@ namespace RiskOfBulletstorm.Items
                 ItemBodyModelPrefab = modelResource;
                 displayRules = GenerateItemDisplayRules();
             }
-            singleplayerItemDef = ItemCatalog.GetItemDef(ItemCatalog.FindItemIndex(FriendshipCookie_ItemIndex));
+            singleplayerItemDef = ItemCatalog.GetItemDef(ItemCatalog.FindItemIndex(FriendshipCookie_ItemName));
             if (!singleplayerItemDef)
                 singleplayerItemDef = RoR2Content.Items.Infusion;
             base.SetupAttributes();

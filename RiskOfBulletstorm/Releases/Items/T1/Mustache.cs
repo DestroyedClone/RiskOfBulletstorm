@@ -33,7 +33,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetNameString(string langID = null) => displayName;
         protected override string GetPickupString(string langID = null) => "<b>A Familiar Face</b>" +
-            "\n<align=\"center\">Spending money soothes the soul.</align>";
+            "\nSpending money soothes the soul.";
 
         protected override string GetDescString(string langid = null) => $"Upon purchase, increases your regeneration by <style=cIsHealing>{Mustache_RegenAmount} health</style> <style=cStack>(+{Mustache_RegenAmountStack} per stack)</style> for {Mustache_Duration} seconds.";
 

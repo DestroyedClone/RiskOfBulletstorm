@@ -64,7 +64,7 @@ namespace RiskOfBulletstorm.Utils
             return num;
         }
 
-        public static CharacterBody GetPlayerWithMostItemIndex(ItemIndex itemIndex)
+        public static CharacterBody GetPlayerWithMostItemDef(ItemDef itemDef)
         {
             var instances = PlayerCharacterMasterController.instances;
             var largestStack = 0;
@@ -75,7 +75,7 @@ namespace RiskOfBulletstorm.Utils
                 var body = master.GetBody();
                 if (body)
                 {
-                    var invcount = body.inventory.GetItemCount(itemIndex);
+                    var invcount = body.inventory.GetItemCount(itemDef);
                     if (invcount > largestStack)
                     {
                         largestStack = invcount;

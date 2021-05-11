@@ -208,7 +208,7 @@ namespace RiskOfBulletstorm.Items
                 return;
             }
 
-            CharacterBody mostCursedPlayer = HelperUtil.GetPlayerWithMostItemIndex(curseTally.itemIndex);
+            CharacterBody mostCursedPlayer = HelperUtil.GetPlayerWithMostItemDef(curseTally);
             if (!mostCursedPlayer) return;
             int PlayerItemCount = mostCursedPlayer.inventory.GetItemCount(curseTally);
             float RollValue;

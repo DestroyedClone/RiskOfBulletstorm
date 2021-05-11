@@ -26,7 +26,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetNameString(string langID = null) => displayName;
 
-        protected override string GetPickupString(string langID = null) => "<b>Aids The Fiscally Responsible</b>\n<style=cHealth>Increases health substantially.</style> <style=cDeath>Any shrine purchases will shatter a ring.</style>";
+        protected override string GetPickupString(string langID = null) => "<b>Aids The Fiscally Responsible</b>\n<style=cIsHealing>Increases health substantially.</style> <style=cDeath>Any shrine purchases will shatter a ring.</style>";
 
         protected override string GetDescString(string langid = null)
         {
@@ -36,10 +36,10 @@ namespace RiskOfBulletstorm.Items
             if (!incHealth && !incStack)
                 desc += $"It does nothing.";
             if (incHealth)
-                desc += $"Grants <style=cIsHealth>+{Pct(RingMiserlyProtection_HealthBonus)}</style> health.";
+                desc += $"Grants <style=cIsHealth>+{Pct(RingMiserlyProtection_HealthBonus)}</style> health";
             if (incStack)
-                desc += $"<style=cStack>(+{Pct(RingMiserlyProtection_HealthBonusStack)} per stack)</style>";
-            desc += $"\n <style=cDeath>...but shatters upon using a shrine.</style> ";
+                desc += $" <style=cStack>(+{Pct(RingMiserlyProtection_HealthBonusStack)} per stack)</style>";
+            desc += $" <style=cDeath>...but shatters upon using a shrine.</style> ";
 
             return desc;
         }

@@ -15,7 +15,7 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How many seconds should Enraging Photo's buff last with a single stack?", AutoConfigFlags.PreventNetMismatch)]
-        public float EnragingPhoto_BaseDuration { get; private set; } = 2f;
+        public float EnragingPhoto_BaseDuration { get; private set; } = 3f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How many additional seconds of buff should each Enraging Photo after the first give? ", AutoConfigFlags.PreventNetMismatch)]

@@ -43,8 +43,8 @@ namespace RiskOfBulletstorm.Items
 
         private float Scope_SpreadReduction;
         private float Scope_SpreadReductionStack;
-        private ItemIndex ItemIndex_Scope => Scope.instance.catalogIndex;
-        private ItemIndex ItemIndex_SpiceTally => Spice.SpiceTally.itemIndex;
+        private ItemDef itemDef_Scope => Scope.instance.itemDef;
+        private ItemDef itemDef_SpiceTally => Spice.SpiceTally;
 
         private float[,] SpiceBonusesConstant;
         private float[] SpiceBonusesAdditive;
@@ -329,7 +329,7 @@ namespace RiskOfBulletstorm.Items
                                 {
                                     //var oldSpeed = projectileSimple.velocity;
                                     var speedMult = CalculateEnemyProjectileSpeedMultiplier();
-                                    fireProjectileInfo.speedOverride = projectileSimple.velocity * (1f + speedMult);
+                                    fireProjectileInfo.speedOverride = projectileSimple.desiredForwardSpeed * (1f + speedMult);
                                     fireProjectileInfo.useSpeedOverride = true;
                                     //Debug.Log("vel " + projectileSimple.velocity + " speedoverride " + fireProjectileInfo.speedOverride);
                                 }
@@ -344,11 +344,11 @@ namespace RiskOfBulletstorm.Items
 
         private float CalculateEnemyProjectileSpeedMultiplier()
         {
-            var characterBodyWithMostSpice = GetPlayerWithMostItemIndex(ItemIndex_SpiceTally);
+            var characterBodyWithMostSpice = GetPlayerWithMostItemDef(itemDef_SpiceTally);
             float SpiceMult = 0f;
             if (characterBodyWithMostSpice)
             {
-                int ItemCount_Spice = characterBodyWithMostSpice.inventory.GetItemCount(ItemIndex_SpiceTally);
+                int ItemCount_Spice = characterBodyWithMostSpice.inventory.GetItemCount(itemDef_SpiceTally);
 
                 if (ItemCount_Spice > 0)
                 {
@@ -367,8 +367,8 @@ namespace RiskOfBulletstorm.Items
 
         private float CalculateSpreadMultiplier(Inventory inventory, bool isProjectile)
         {
-            int ItemCount_Scope = inventory.GetItemCount(ItemIndex_Scope);
-            int ItemCount_Spice = inventory.GetItemCount(ItemIndex_SpiceTally);
+            int ItemCount_Scope = inventory.GetItemCount(itemDef_Scope);
+            int ItemCount_Spice = inventory.GetItemCount(itemDef_SpiceTally);
             float SpiceMult = 0f;
             float ScopeMult = 0f;
 

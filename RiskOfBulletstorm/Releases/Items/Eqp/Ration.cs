@@ -45,9 +45,9 @@ namespace RiskOfBulletstorm.Items
             var desc = $"Throws away this empty Ration.";
             if (Ration_HealAmount > 0)
             {
-                desc = $"Heals for <style=cIsHealing>{Pct(Ration_HealAmount)} health.</style>";
+                desc = $"Heals for <style=cIsHealing>{Pct(Ration_HealAmount)} health. </style>";
                 if (Ration_SaveFromDeath)
-                    desc += $"\n<style=cIsUtility>Automatically used upon fatal damage. " +
+                    desc += $"<style=cIsUtility>Automatically used</style> upon fatal damage. " +
                             $"<style=cIsUtility>Consumes</style> on use.";
             }
             return desc;

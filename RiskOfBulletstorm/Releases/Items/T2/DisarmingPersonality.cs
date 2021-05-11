@@ -31,7 +31,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetPickupString(string langID = null) => "<b>For You?</b>\nReduces prices at shops";
 
         protected override string GetDescString(string langid = null) => $"<style=cIsUtility>Reduces</style> shop prices by <style=cIsUtility>{Pct(DisarmingPersonality_CostReductionAmount)}</style>" +
-            $" <style=cStack>(+{Pct(DisarmingPersonality_CostReductionAmount)} hyperbolically per stack) up to {Pct(DisarmingPersonality_CostReductionAmountLimit)}</stack>" +
+            $" <style=cStack>(+{Pct(DisarmingPersonality_CostReductionAmount)} hyperbolically per stack) up to {Pct(DisarmingPersonality_CostReductionAmountLimit)}</style>" +
             $" <style=cSub>Chance is shared amongst players.</style>";
 
         protected override string GetLoreString(string langID = null) => "The Pilot is able to talk his way into almost anything, usually gunfights.";

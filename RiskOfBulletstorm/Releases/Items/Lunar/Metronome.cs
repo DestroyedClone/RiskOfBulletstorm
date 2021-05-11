@@ -273,11 +273,8 @@ namespace RiskOfBulletstorm.Items
             {
                 if (characterBody)
                 {
-                    Debug.Log("attempting with characterbody" + characterBody + " " + characterBody.name);
                     HelperUtil.ClearBuffStacks(characterBody, tallyBuff.buffIndex);
                 }
-                else
-                    Debug.Log("no characterbody found!");
             }
 
             public void UpdateKills()
