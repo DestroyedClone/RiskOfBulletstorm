@@ -295,6 +295,13 @@ namespace RiskOfBulletstorm.Items
             // Accuracy //
             On.RoR2.BulletAttack.Fire += AdjustSpreadBullets;
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += ProjectileManager_FireProjectile_FireProjectileInfo;
+            On.EntityStates.GenericBulletBaseState.FireBullet += RedirectDirection;
+        }
+
+        private void RedirectDirection(On.EntityStates.GenericBulletBaseState.orig_FireBullet orig, GenericBulletBaseState self, Ray aimRay)
+        {
+            //something here to tighten spread
+            orig(self,aimRay);
         }
 
         private void CharacterMaster_onStartGlobal(CharacterMaster obj)
@@ -331,6 +338,8 @@ namespace RiskOfBulletstorm.Items
                         else
                         {
                             accuracy *= -1;
+
+
                             //CappedAccMult *= -1;
                             //This is a random dir in cone. USED FOR INACCURACY
                             //TODO
@@ -434,19 +443,20 @@ namespace RiskOfBulletstorm.Items
                         break;
                 }
 
-                idealizedAccuracyStat = ScopeMult + SpiceMult;
+                var accuracy = ScopeMult + SpiceMult;
+                idealizedAccuracyStat = -accuracy;
 
                 // Bullets get better the closer they are to zero starting at a multiplier of 1.0 (since we're multiplying the spread)
                 // Projectiles get better the closer they are to 1 (due to LERP) starting at a multiplier of 0.0
                 // When we get max scope amount, it's a value of ~-1.1
                 // Here with projectiles we get a resulting value of 1.1 rounded to 1.
                 //ResultMult = -ResultMult > 1 ? 1 : -ResultMult;
-                projectileAccuracy = -idealizedAccuracyStat;
+                projectileAccuracy = -accuracy;
 
                 // With bullets we have to start at 1
                 // Then we evaluate it (1 - ~1.1 = -0.1)
-                // We clamp it at zero because a negative multiplier might result in a weird inverse increase in spread.
-                bulletAccuracy = 1 + idealizedAccuracyStat <= 0 ? 0 : 1 + idealizedAccuracyStat;
+                // We clamp it at zero because a negative multiplier converges the spread on itself and actually increases the spread.
+                bulletAccuracy = 1 + accuracy <= 0 ? 0 : 1 + accuracy;
             }
         }
     }

@@ -318,6 +318,22 @@ namespace RiskOfBulletstorm.Utils
 
             return String.Format("{0,21}{1,26}", seconds, timeInterval);
         }
+
+        public static DamageType ProcDamageType(GameObject owner, ItemDef itemDef, DamageType baseDamageType, DamageType newDamageType, float baseProc, float procChance = 1f, float procChanceStack = 1f)
+        {
+            CharacterBody body = owner.GetComponent<CharacterBody>();
+            if (owner && body && body.inventory)
+            {
+                var invCount = body.inventory.GetItemCount(itemDef);
+                var newProcChance = (baseProc * procChance);
+                var test = newProcChance * invCount;
+                if (Util.CheckRoll(test*100f, body.master))
+                {
+                    return baseDamageType |= newDamageType;
+                }
+            }
+            return baseDamageType;
+        }
     }
     public static class CurseUtil
     {
