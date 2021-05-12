@@ -338,7 +338,7 @@ namespace RiskOfBulletstorm.Items
                         else
                         {
                             accuracy *= -1;
-
+                            UpdatedAngle = Quaternion.LerpUnclamped(fireProjectileInfo.rotation, aimDirectionQuaternion, accuracy);
 
                             //CappedAccMult *= -1;
                             //This is a random dir in cone. USED FOR INACCURACY
@@ -373,6 +373,8 @@ namespace RiskOfBulletstorm.Items
                         self.maxSpread = SimpleSpread(self.maxSpread, 1.15f);
 
                         self.minSpread = SimpleSpread(accuracy, self.minSpread);
+
+                        if (body.inputBank) self.aimVector = Vector3.Lerp(self.aimVector, body.inputBank.aimDirection, 1 - accuracy);
 
                         self.spreadPitchScale *= SimpleSpread(accuracy, self.spreadPitchScale);
                         self.spreadYawScale *= SimpleSpread(accuracy, self.spreadYawScale);
