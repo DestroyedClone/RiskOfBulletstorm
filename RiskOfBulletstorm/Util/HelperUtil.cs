@@ -329,7 +329,7 @@ namespace RiskOfBulletstorm.Utils
                     var invCount = body.inventory.GetItemCount(itemDef);
                     var newProcChance = (baseProc * procChance);
                     var test = newProcChance * invCount;
-                    if (Util.CheckRoll(test * 100f, body.master))
+                    if (Util.CheckRoll(test, body.master))
                     {
                         return baseDamageType |= newDamageType;
                     }
