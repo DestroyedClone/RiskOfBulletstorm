@@ -87,6 +87,8 @@ namespace RiskOfBulletstorm.Items
             {
                 Debug.Log("SEARCHME: Failed finding toolbot");
                 ToolbotBodyIndex = (int)SurvivorCatalog.GetBodyIndexFromSurvivorIndex(SurvivorCatalog.FindSurvivorIndex("ToolbotBody"));
+                if (ToolbotBodyIndex <0)
+                    Debug.Log("SEARCHME: Failed finding toolbot, AGAIN");
             }
         }
 

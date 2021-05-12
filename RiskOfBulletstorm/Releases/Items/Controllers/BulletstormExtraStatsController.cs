@@ -310,24 +310,11 @@ namespace RiskOfBulletstorm.Items
             On.RoR2.BulletAttack.Fire += AdjustSpreadBullets;
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += AdjustSpreadProjectiles;
             On.EntityStates.Bandit2.Weapon.FireShotgun2.FireBullet += FireShotgun2_FireBullet;
-            IL.EntityStates.Bandit2.Weapon.FireShotgun2.FireBullet += TightenBandit;
 
             // SPEED //
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += AdjustSpeedEnemyProjectile;
         }
 
-        private void TightenBandit(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-            c.GotoNext(x => x.MatchLdfld<GenericBulletBaseState>("bulletCount"));
-
-            c.Emit(OpCodes.Ldarg_0);
-            var cock = c.EmitDelegate<Func<float, EntityState, float>>((component, entityState) =>
-            {
-                return CalculateSpreadMultiplier(entityState.characterBody.inventory, false);
-            });
-
-        }
 
         private void FireShotgun2_FireBullet(On.EntityStates.Bandit2.Weapon.FireShotgun2.orig_FireBullet orig, EntityStates.Bandit2.Weapon.FireShotgun2 self, Ray aimRay)
         {

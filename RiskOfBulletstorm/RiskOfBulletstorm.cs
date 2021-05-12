@@ -76,6 +76,8 @@ namespace RiskOfBulletstorm
             Shared.Buffs.BuffsController.Init();
 
             R2API.Utils.CommandHelper.AddToConsoleWhenReady();
+
+            Bandit2.Bandit2Main.Init();
         }
 
         private void Start()
