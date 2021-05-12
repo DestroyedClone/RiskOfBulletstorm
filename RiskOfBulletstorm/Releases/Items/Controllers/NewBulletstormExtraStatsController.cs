@@ -301,10 +301,8 @@ namespace RiskOfBulletstorm.Items
         {
             if (obj && obj.inventory && !obj.gameObject.GetComponent<RBSExtraStatsController>())
             {
-                Debug.Log("Added shit");
                 var comp = obj.gameObject.AddComponent<RBSExtraStatsController>();
                 comp.inventory = obj.inventory;
-                comp.UpdateInventory();
             }
         }
 
@@ -399,6 +397,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     inventory.onInventoryChanged += UpdateInventory;
                 }
+                UpdateInventory();
             }
 
             public void UpdateInventory()
