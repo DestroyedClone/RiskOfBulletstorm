@@ -316,10 +316,17 @@ localScale = new Vector3(1F, 1F, 1F)
         {
             base.Install();
 
-            On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += ProjectileManager_FireProjectile_FireProjectileInfo;
-            On.RoR2.BulletAttack.Fire += BulletAttack_Fire;
-            On.RoR2.OverlapAttack.Fire += OverlapAttack_Fire;
-            On.RoR2.BlastAttack.Fire += BlastAttack_Fire;
+            //On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += ProjectileManager_FireProjectile_FireProjectileInfo;
+            //On.RoR2.BulletAttack.Fire += BulletAttack_Fire;
+            //On.RoR2.OverlapAttack.Fire += OverlapAttack_Fire;
+            //On.RoR2.BlastAttack.Fire += BlastAttack_Fire;
+            On.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
+        }
+
+        private void GlobalEventManager_OnHitEnemy(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim)
+        {
+            damageInfo.damageType = ProcDamageType(damageInfo.attacker, itemDef, damageInfo.damageType, damageType, damageInfo.procCoefficient, BatteryBullets_ProcCoefficient, BatteryBullets_ProcCoefficientStack);
+            orig(self, damageInfo, victim);
         }
 
         private BlastAttack.Result BlastAttack_Fire(On.RoR2.BlastAttack.orig_Fire orig, BlastAttack self)
