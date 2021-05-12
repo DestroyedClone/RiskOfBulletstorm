@@ -73,6 +73,7 @@ namespace RiskOfBulletstorm.Items
                 // Commando
             Resources.Load<GameObject>("prefabs/projectiles/CommandoGrenadeProjectile"),
             Resources.Load<GameObject>("Prefabs/Projectiles/FMJ"), //??
+            Resources.Load<GameObject>("Prefabs/Projectiles/FMJRamping"),
 
                 // Engineer
             Resources.Load<GameObject>("Prefabs/Projectiles/EngiHarpoon"),
