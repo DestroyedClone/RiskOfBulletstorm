@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Runtime.CompilerServices;
+using System;
 using RoR2;
 using UnityEngine;
 using TILER2;
@@ -7,6 +9,8 @@ using static RiskOfBulletstorm.Utils.HelperUtil;
 using RoR2.Projectile;
 using static RiskOfBulletstorm.BulletstormPlugin;
 using EntityStates;
+using Mono.Cecil.Cil;
+using MonoMod.Cil;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -306,50 +310,55 @@ namespace RiskOfBulletstorm.Items
             On.RoR2.BulletAttack.Fire += AdjustSpreadBullets;
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += AdjustSpreadProjectiles;
             On.EntityStates.Bandit2.Weapon.FireShotgun2.FireBullet += FireShotgun2_FireBullet;
+            IL.EntityStates.Bandit2.Weapon.FireShotgun2.FireBullet += TightenBandit;
 
             // SPEED //
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += AdjustSpeedEnemyProjectile;
         }
 
+        private void TightenBandit(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+            c.GotoNext(x => x.MatchLdfld<GenericBulletBaseState>("bulletCount"));
+
+            c.Emit(OpCodes.Ldarg_0);
+            var cock = c.EmitDelegate<Func<float, EntityState, float>>((component, entityState) =>
+            {
+                return CalculateSpreadMultiplier(entityState.characterBody.inventory, false);
+            });
+
+        }
+
         private void FireShotgun2_FireBullet(On.EntityStates.Bandit2.Weapon.FireShotgun2.orig_FireBullet orig, EntityStates.Bandit2.Weapon.FireShotgun2 self, Ray aimRay)
         {
-            var characterBody = self.characterBody;
-            if (characterBody)
+            self.StartAimMode(aimRay, 3f, false);
+            self.DoFireEffects();
+            self.PlayFireAnimation();
+            self.AddRecoil(-1f * self.recoilAmplitudeY, -1.5f * self.recoilAmplitudeY, -1f * self.recoilAmplitudeX, 1f * self.recoilAmplitudeX);
+            if (self.isAuthority)
             {
-                var inventory = characterBody.inventory;
-                if (inventory)
+                Vector3 rhs = Vector3.Cross(Vector3.up, aimRay.direction);
+                Vector3 axis = Vector3.Cross(aimRay.direction, rhs);
+                float spreadBloom = self.characterBody.spreadBloomAngle;
+
+                float angle = 0f;
+                float num2 = 0f;
+                if (self.bulletCount > 1)
+                { //here
+                    var ResultMult = CalculateSpreadMultiplier(self.characterBody.inventory, false);
+                    num2 = UnityEngine.Random.Range(SimpleSpread(ResultMult, self.minFixedSpreadYaw + spreadBloom),
+                        SimpleSpread(ResultMult, self.maxFixedSpreadYaw + spreadBloom)) * 2f;
+                    angle = num2 / (self.bulletCount - 1);
+                }
+                Vector3 direction = Quaternion.AngleAxis(-num2 * 0.5f, axis) * aimRay.direction;
+                Quaternion rotation = Quaternion.AngleAxis(angle, axis);
+                Ray aimRay2 = new Ray(aimRay.origin, direction);
+                for (int i = 0; i < self.bulletCount; i++)
                 {
-                    var ResultMult = CalculateSpreadMultiplier(inventory, false);
-
-                    self.StartAimMode(aimRay, 3f, false);
-                    self.DoFireEffects();
-                    self.PlayFireAnimation();
-                    self.AddRecoil(-1f * self.recoilAmplitudeY, -1.5f * self.recoilAmplitudeY, -1f * self.recoilAmplitudeX, 1f * self.recoilAmplitudeX);
-                    if (self.isAuthority)
-                    {
-                        Vector3 rhs = Vector3.Cross(Vector3.up, aimRay.direction);
-                        Vector3 axis = Vector3.Cross(aimRay.direction, rhs);
-                        float spreadBloom = self.characterBody.spreadBloomAngle;
-
-                        float angle = 0f;
-                        float num2 = 0f;
-                        if (self.bulletCount > 1)
-                        { //here
-                            num2 = UnityEngine.Random.Range(SimpleSpread(ResultMult,self.minFixedSpreadYaw + spreadBloom),
-                                SimpleSpread(ResultMult, self.maxFixedSpreadYaw + spreadBloom)) * 2f;
-                            angle = num2 / (self.bulletCount - 1);
-                        }
-                        Vector3 direction = Quaternion.AngleAxis(-num2 * 0.5f, axis) * aimRay.direction;
-                        Quaternion rotation = Quaternion.AngleAxis(angle, axis);
-                        Ray aimRay2 = new Ray(aimRay.origin, direction);
-                        for (int i = 0; i < self.bulletCount; i++)
-                        {
-                            BulletAttack bulletAttack = self.GenerateBulletAttack(aimRay2);
-                            self.ModifyBullet(bulletAttack);
-                            bulletAttack.Fire();
-                            aimRay2.direction = rotation * aimRay2.direction;
-                        }
-                    }
+                    BulletAttack bulletAttack = self.GenerateBulletAttack(aimRay2);
+                    self.ModifyBullet(bulletAttack);
+                    bulletAttack.Fire();
+                    aimRay2.direction = rotation * aimRay2.direction;
                 }
             }
         }

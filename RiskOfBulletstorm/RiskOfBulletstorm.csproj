@@ -117,7 +117,7 @@
       <HintPath>lib\BetterUI.dll</HintPath>
     </Reference>
     <Reference Include="ChensHelpers">
-      <HintPath>lib\ClassicItems.dll</HintPath>
+      <HintPath>lib\ChensHelpers.dll</HintPath>
     </Reference>
     <Reference Include="ClassicItems">
       <HintPath>lib\ClassicItems.dll</HintPath>
@@ -154,6 +154,9 @@
     </Reference>
     <Reference Include="MonoMod.Utils">
       <HintPath>lib\MonoMod.Utils.dll</HintPath>
+    </Reference>
+    <Reference Include="mscorlib">
+      <HintPath>lib\mscorlib.dll</HintPath>
     </Reference>
     <Reference Include="R2API">
       <HintPath>lib\R2API.dll</HintPath>
