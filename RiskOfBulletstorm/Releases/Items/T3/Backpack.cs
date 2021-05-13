@@ -21,6 +21,10 @@ namespace RiskOfBulletstorm.Items
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What button should be pressed down to cycle to the next equipment slot", AutoConfigFlags.None)]
         public KeyCode Backpack_CycleRightButton { get; private set; } = KeyCode.G;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("Should the scrollwheel be used in addition to the cycle buttons?", AutoConfigFlags.None)]
+        public static bool Backpack_UseScrollWheel { get; private set; } = true;
         //https://docs.unity3d.com/ScriptReference/KeyCode.html
         public override string displayName => "Backpack";
         public override ItemTier itemTier => ItemTier.Tier3;
@@ -194,6 +198,12 @@ namespace RiskOfBulletstorm.Items
                             CycleSlot(false);
                         if (Input.GetKeyDown(CycleRightKey_KB))
                             CycleSlot(true);
+
+                        if (Backpack_UseScrollWheel)
+                        {
+                            var scrollDir = Input.mouseScrollDelta.y > 0;
+                            CycleSlot(true);
+                        }
                     }
                 }
             }
