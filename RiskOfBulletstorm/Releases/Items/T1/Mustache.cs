@@ -17,11 +17,11 @@ namespace RiskOfBulletstorm.Items
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the base amount of regen increase?", AutoConfigFlags.PreventNetMismatch)]
-        public float Mustache_RegenAmountStack { get; private set; } = 2f;
+        public float Mustache_RegenAmountStack { get; private set; } = 1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the duration of regen?", AutoConfigFlags.PreventNetMismatch)]
-        public float Mustache_Duration { get; private set; } = 10f;
+        public float Mustache_Duration { get; private set; } = 8f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Should it heal upon using a bloodshrine?", AutoConfigFlags.PreventNetMismatch)]
