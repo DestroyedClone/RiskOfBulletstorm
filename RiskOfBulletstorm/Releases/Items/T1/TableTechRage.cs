@@ -30,7 +30,11 @@ namespace RiskOfBulletstorm.Releases.Items.T1
 "\nChapter two of the \"Tabla Sutra.\" When a table is flipped, does it not feel anger? Does it not feel rage? Understand that feeling, and when you flip the table, be yourself flipped." +
 
 "\n\nMade famous in a duel between the third Flipjutsu Master and a nameless table flipper.";
-
+        public TableTechRage()
+        {
+            modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/SpreadAmmo.prefab");
+            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/SpreadAmmo.png");
+        }
         public override void SetupBehavior()
         {
             base.SetupBehavior();

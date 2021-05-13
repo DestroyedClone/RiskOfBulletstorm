@@ -30,6 +30,12 @@ namespace RiskOfBulletstorm.Releases.Items.T1
         protected override string GetLoreString(string langID = null) => "This ancient technique will trigger a Blank when a table is flipped." +
             "\nChapter four of the \"Tabla Sutra.\" A clear table leads to a clear mind.";
 
+        public TableTechBlank()
+        {
+            modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/SpreadAmmo.prefab");
+            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/SpreadAmmo.png");
+        }
+
         public override void SetupBehavior()
         {
             base.SetupBehavior();

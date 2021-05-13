@@ -28,6 +28,11 @@ namespace RiskOfBulletstorm.Releases.Items.T1
 
         protected override string GetLoreString(string langID = null) => "This ancient technique briefly stuns enemies whenever a table is flipped." +
             "\nChapter one of the \"Tabla Sutra.\" And when a table is masterfully flipped, what a most magnificent sight! Surely all who witness the flip of a true master can only stand transfixed, agog.";
+        public TableTechStun()
+        {
+            modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/SpreadAmmo.prefab");
+            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/SpreadAmmo.png");
+        }
 
         public override void SetupBehavior()
         {
