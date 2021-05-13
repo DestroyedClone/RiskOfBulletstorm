@@ -76,15 +76,62 @@ namespace RiskOfBulletstorm.Items
         public override void Install()
         {
             base.Install();
-            On.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
+            //On.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
             RoR2.Stage.onStageStartGlobal += Stage_onStageStartGlobal;
             On.RoR2.MapZone.TryZoneStart += MapZone_TryZoneStart;
+            GlobalEventManager.onCharacterDeathGlobal += GlobalEventManager_onCharacterDeathGlobal;
+        }
+
+        private void GlobalEventManager_onCharacterDeathGlobal(DamageReport damageReport)
+        {
+            if (!NetworkServer.active || !Stage.instance)
+            {
+                return;
+            }
+            BulletstormPickupsComponent pickupsComponent = Stage.instance.GetComponent<BulletstormPickupsComponent>();
+            if (!pickupsComponent) return;
+            if (CheckIfDoll(damageReport.damageInfo) || damageReport.victimTeamIndex == TeamIndex.Player || damageReport.victimTeamIndex == TeamIndex.None) return;
+            var requiredKills = pickupsComponent.requiredKills;
+            CharacterBody VictimBody = damageReport.victimBody;
+            if (VictimBody)
+            {
+                //int DiffMultAdd = Run.instance.selectedDifficulty; //TODO: Add difficulty scaling?
+                pickupsComponent.globalDeaths++;
+                if (BUP_ShowProgress) _logger.LogMessage(string.Format("[Bulletstorm] Kills/StageRequired: {0}/{1}", pickupsComponent.globalDeaths, requiredKills));
+
+                if (pickupsComponent.globalDeaths % requiredKills == 0)
+                {
+                    Vector3 pickupPosition = EvaluatePickupPosition(pickupsComponent, VictimBody);
+                    pickupPosition += Vector3.up * 2f;
+                    if (BUP_ShowProgress)
+                        _logger.LogMessage(string.Format("Pickups Controller: Resulting Kill Info (setup for roll):" +
+                            "\nwasMapDeath: {0}" +
+                            "\nlastHitAttacker: {1}" +
+                            "\nposition: {2}", pickupsComponent.wasMapDeath, pickupsComponent.lastHitAttacker, pickupPosition));
+
+                    var teamLuck = RiskOfBulletstorm.Utils.HelperUtil.GetPlayersLuck();
+                    if (Util.CheckRoll(BUP_RollChance, teamLuck)) //Roll to spawn pickups
+                    {
+                        //Chat.AddMessage("Pickups: Rolled success.");
+
+                        SpawnPickup(pickupPosition);
+                    }
+                    else
+                    {
+                        if (BUP_ShowProgress)
+                            _logger.LogMessage("[Bulletstorm] Pickups Controller: Roll failed!");
+                    }
+                    pickupsComponent.wasMapDeath = false;
+                    pickupsComponent.lastHitAttacker = null;
+                    pickupsComponent.globalDeaths = 0;
+                }
+            }
         }
 
         public override void Uninstall()
         {
             base.Uninstall();
-            On.RoR2.GlobalEventManager.OnCharacterDeath -= GlobalEventManager_OnCharacterDeath;
+            //On.RoR2.GlobalEventManager.OnCharacterDeath -= GlobalEventManager_OnCharacterDeath;
             RoR2.Stage.onStageStartGlobal -= Stage_onStageStartGlobal;
             On.RoR2.MapZone.TryZoneStart -= MapZone_TryZoneStart;
         }
@@ -117,28 +164,6 @@ namespace RiskOfBulletstorm.Items
             var gameObj = obj.gameObject;
             BulletstormPickupsComponent pickupsComponent = gameObj.GetComponent<BulletstormPickupsComponent>();
             if (!pickupsComponent) pickupsComponent = gameObj.AddComponent<BulletstormPickupsComponent>();
-
-            var stageCount = Run.instance.stageClearCount;
-            var StageMult = (int)(BUP_StageMultiplier * stageCount);
-            if (stageCount < 1) StageMult = 1;
-            var requiredKills = BUP_RequiredKills * StageMult;
-
-            pickupsComponent.requiredKills = (int)requiredKills;
-        }
-
-        private bool CheckIfDoll(DamageInfo dmginfo)
-        {
-            if (!dmginfo.inflictor && dmginfo.procCoefficient == 1 && dmginfo.damageColorIndex == DamageColorIndex.Item && dmginfo.force == Vector3.zero && dmginfo.damageType == DamageType.Generic)
-            {
-                if (BUP_DebugShowDollProc)
-                {
-                    _logger.LogMessage("[RiskOfBulletstorm]Pickups Controller: Forgive Me, Please usage was detected.");
-                    _logger.LogMessage("[RiskOfBulletstorm]Pickups Controller: " + dmginfo);
-                }
-                return true;
-            }
-            else
-                return false;
         }
 
         private void GlobalEventManager_OnCharacterDeath(On.RoR2.GlobalEventManager.orig_OnCharacterDeath orig, GlobalEventManager self, DamageReport damageReport)
@@ -162,79 +187,23 @@ namespace RiskOfBulletstorm.Items
                 //int DiffMultAdd = Run.instance.selectedDifficulty; //TODO: Add difficulty scaling?
                 pickupsComponent.globalDeaths++;
                 if (BUP_ShowProgress)
-                    _logger.LogMessage(string.Format("[Bulletstorm] Kills/StageRequired: {0}/{1}", pickupsComponent.globalDeaths, requiredKills));
+                    _logger.LogMessage(string.Format("Kills/StageRequired: {0}/{1}", pickupsComponent.globalDeaths, requiredKills));
                 if (pickupsComponent.globalDeaths % requiredKills == 0)
                 {
-                    Vector3 PickupPosition = new Vector3();
-                    if (pickupsComponent.wasMapDeath) //If they die off the map
-                    {
-                        if (pickupsComponent.lastHitAttacker) //If it's killed by a player
-                        {
-                            PickupPosition = pickupsComponent.lastHitAttacker.transform.position; //set the position of the pickup to be on the player
-                        }
-                        else
-                        {
-                            var playerSearch = new BullseyeSearch() //let's just get the nearest player
-                            {
-                                viewer = VictimBody,
-                                sortMode = BullseyeSearch.SortMode.Distance,
-                                teamMaskFilter = TeamMask.allButNeutral
-                            };
-                            playerSearch.teamMaskFilter.RemoveTeam(TeamIndex.Monster);
-                            playerSearch.RefreshCandidates();
-                            playerSearch.FilterOutGameObject(VictimBody.gameObject);
-                            var list = playerSearch.GetResults().ToList();
-                            bool success = false;
-                            foreach (var player in list)
-                            {
-                                var body = player.gameObject.GetComponent<CharacterBody>();
-                                if (body)
-                                {
-                                    if (body.isPlayerControlled)
-                                    {
-                                        PickupPosition = body.corePosition;
-                                        success = true;
-                                        break;
-                                    }
-                                }
-                            }
-                            if (!success) //fine just the nearest friendly character, ye bastard.
-                            {
-                                PickupPosition = list.FirstOrDefault().transform.position;
-                            }
-                            // another way of doing it, but this looks unclean so im not sure if i really want it.
-                            //var nearestPlayer = new SphereSearch { origin = VictimBody.transform.position, mask = LayerIndex.entityPrecise.mask }.RefreshCandidates().FilterCandidatesByHurtBoxTeam(TeamMask.GetEnemyTeams(VictimBody.teamComponent.teamIndex)).OrderCandidatesByDistance().FilterCandidatesByDistinctHurtBoxEntities().GetHurtBoxes().FirstOrDefault<HurtBox>();
-                        }
-                    } else
-                    {
-                        PickupPosition = VictimBody.transform.position;
-                    }
-                    PickupPosition += Vector3.up * 2f;
+                    Vector3 pickupPosition = EvaluatePickupPosition(pickupsComponent, VictimBody);
+                    pickupPosition += Vector3.up * 2f;
                     if (BUP_ShowProgress)
-                        _logger.LogMessage(string.Format("[Bulletstorm] Pickups Controller: Resulting Kill Info (setup for roll):" +
+                        _logger.LogMessage(string.Format("Pickups Controller: Resulting Kill Info (setup for roll):" +
                             "\nwasMapDeath: {0}" +
                             "\nlastHitAttacker: {1}" +
-                            "\nposition: {2}", pickupsComponent.wasMapDeath, pickupsComponent.lastHitAttacker, PickupPosition));
+                            "\nposition: {2}", pickupsComponent.wasMapDeath, pickupsComponent.lastHitAttacker, pickupPosition));
 
                     var teamLuck = RiskOfBulletstorm.Utils.HelperUtil.GetPlayersLuck();
                     if (Util.CheckRoll(BUP_RollChance, teamLuck)) //Roll to spawn pickups
                     {
                         //Chat.AddMessage("Pickups: Rolled success.");
 
-                        var randfloat = UnityEngine.Random.Range(0f, 1f);
-                        var dropDef = weightedSelection.Evaluate(randfloat);
-
-                        if (BUP_ShowProgress)
-                        {
-                            _logger.LogMessage(string.Format("[Bulletstorm] Pickups Controller: Roll success! Chosen item {0} {1} {2}",
-                                dropDef.pickupIndex, pickupDef.internalName, Language.GetString(pickupDef.nameToken)));
-                        }
-                        PickupDropletController.CreatePickupDroplet(dropDef.pickupIndex, PickupPosition, Vector3.up * 5);
-
-
-                        EffectManager.SimpleEffect(SpawnedPickupEffect, PickupPosition+Vector3.up*8f, Quaternion.identity, true);
-                        EffectManager.SimpleEffect(SpawnedPickupEffect, PickupPosition, Quaternion.identity, true);
-                        EffectManager.SimpleEffect(SpawnedPickupEffect, PickupPosition+Vector3.down*8f, Quaternion.identity, true);
+                        SpawnPickup(pickupPosition);
                     } else
                     {
                         if (BUP_ShowProgress)
@@ -247,6 +216,89 @@ namespace RiskOfBulletstorm.Items
             }
         }
 
+        private Vector3 EvaluatePickupPosition(BulletstormPickupsComponent pickupsComponent, CharacterBody victimBody)
+        {
+            Vector3 PickupPosition = new Vector3();
+            if (pickupsComponent.wasMapDeath) //If they die from falling off the map
+            {
+                if (pickupsComponent.lastHitAttacker) // get the last attacker
+                {
+                    PickupPosition = pickupsComponent.lastHitAttacker.transform.position; //set the position of the pickup to be on the player
+                }
+                else
+                {
+                    var playerSearch = new BullseyeSearch() //let's just get the nearest player
+                    {
+                        viewer = victimBody,
+                        sortMode = BullseyeSearch.SortMode.Distance,
+                        teamMaskFilter = TeamMask.allButNeutral
+                    };
+                    playerSearch.teamMaskFilter.RemoveTeam(TeamIndex.Monster);
+                    playerSearch.RefreshCandidates();
+                    playerSearch.FilterOutGameObject(victimBody.gameObject);
+                    var list = playerSearch.GetResults().ToList();
+                    bool success = false;
+                    if (list.Count > 0)
+                    {
+                        foreach (var player in list)
+                        {
+                            var body = player.gameObject.GetComponent<CharacterBody>();
+                            if (body)
+                            {
+                                if (body.isPlayerControlled)
+                                {
+                                    PickupPosition = body.corePosition;
+                                    success = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if (!success) //
+                    {
+                        PickupPosition = list.FirstOrDefault().transform.position;
+                    }
+                }
+            }
+            else // If it wasn't a map death
+            {
+                PickupPosition = victimBody.transform.position;
+            }
+            return PickupPosition;
+        }
+
+        private void SpawnPickup(Vector3 pickupPosition)
+        {
+            var randfloat = UnityEngine.Random.Range(0f, 1f);
+            var dropDef = weightedSelection.Evaluate(randfloat);
+
+            if (BUP_ShowProgress)
+            {
+                _logger.LogMessage(string.Format("Pickups Controller: Roll success! Chosen item {0} {1} {2}",
+                    dropDef.pickupIndex, pickupDef.internalName, Language.GetString(pickupDef.nameToken)));
+            }
+            PickupDropletController.CreatePickupDroplet(dropDef.pickupIndex, pickupPosition, Vector3.up * 5);
+
+            EffectManager.SimpleEffect(SpawnedPickupEffect, pickupPosition + Vector3.up * 8f, Quaternion.identity, true);
+            EffectManager.SimpleEffect(SpawnedPickupEffect, pickupPosition, Quaternion.identity, true);
+            EffectManager.SimpleEffect(SpawnedPickupEffect, pickupPosition + Vector3.down * 8f, Quaternion.identity, true);
+        }
+
+        private bool CheckIfDoll(DamageInfo dmginfo)
+        {
+            if (!dmginfo.inflictor && dmginfo.procCoefficient == 1 && dmginfo.damageColorIndex == DamageColorIndex.Item && dmginfo.force == Vector3.zero && dmginfo.damageType == DamageType.Generic)
+            {
+                if (BUP_DebugShowDollProc)
+                {
+                    _logger.LogMessage("[RiskOfBulletstorm]Pickups Controller: Forgive Me, Please usage was detected.");
+                    _logger.LogMessage("[RiskOfBulletstorm]Pickups Controller: " + dmginfo);
+                }
+                return true;
+            }
+            else
+                return false;
+        }
+
 
         public class BulletstormPickupsComponent : MonoBehaviour
         {
@@ -254,6 +306,18 @@ namespace RiskOfBulletstorm.Items
             public int requiredKills = 10;
             public bool wasMapDeath = false;
             public GameObject lastHitAttacker;
+
+            public int stageCount = 0;
+            public float stageMultiplier => BulletstormPickupsController.instance.BUP_StageMultiplier;
+            public int configRequiredKills => instance.BUP_RequiredKills;
+
+
+            public void Awake()
+            {
+                var StageMult = (int)(stageMultiplier * stageCount);
+                if (stageCount < 1) StageMult = 1;
+                requiredKills = configRequiredKills * StageMult;
+            }
         }
 
         public class BulletstormPickupIndicatorTerminator : MonoBehaviour
