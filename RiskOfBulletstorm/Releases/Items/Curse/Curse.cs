@@ -307,6 +307,11 @@ namespace RiskOfBulletstorm.Items
             {
                 //ContactDamageCooldown = ContactDamageCooldownFull;
                 characterBody = gameObject.GetComponent<CharacterBody>();
+                if (!characterBody)
+                {
+                    _logger.LogError("No characterbody found for jammed enemy!");
+                    return;
+                }
                 if (!characterBody.HasBuff(Shared.Buffs.BuffsController.Jammed))
                 {
                     characterBody.AddBuff(Shared.Buffs.BuffsController.Jammed);
@@ -333,7 +338,7 @@ namespace RiskOfBulletstorm.Items
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "UnityEngine")]
             void FixedUpdate()
             {
-                if (characterBody.healthComponent.health <= 0)
+                if (characterBody && characterBody.healthComponent && characterBody.healthComponent.health <= 0)
                 {
                     if (fireEffect)
                     {
