@@ -133,6 +133,7 @@ namespace RiskOfBulletstorm.Items
 
             public void Update()
             {
+                if (!characterBody) return;
                 BlankCooldownTime -= Time.fixedDeltaTime;
 
                 if (BlankCooldownTime <= 0)
