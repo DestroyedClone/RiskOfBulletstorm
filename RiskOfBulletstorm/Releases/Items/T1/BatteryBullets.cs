@@ -320,13 +320,13 @@ localScale = new Vector3(1F, 1F, 1F)
             //On.RoR2.BulletAttack.Fire += BulletAttack_Fire;
             //On.RoR2.OverlapAttack.Fire += OverlapAttack_Fire;
             //On.RoR2.BlastAttack.Fire += BlastAttack_Fire;
-            On.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
+            On.RoR2.SetStateOnHurt.OnTakeDamageServer += SetStateOnHurt_OnTakeDamageServer;
         }
 
-        private void GlobalEventManager_OnHitEnemy(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim)
+        private void SetStateOnHurt_OnTakeDamageServer(On.RoR2.SetStateOnHurt.orig_OnTakeDamageServer orig, SetStateOnHurt self, DamageReport damageReport)
         {
-            damageInfo.damageType = ProcDamageType(damageInfo.attacker, itemDef, damageInfo.damageType, damageType, damageInfo.procCoefficient, BatteryBullets_ProcCoefficient, BatteryBullets_ProcCoefficientStack);
-            orig(self, damageInfo, victim);
+            damageReport.damageInfo.damageType = ProcDamageType(damageReport.attacker, itemDef, damageReport.damageInfo.damageType, damageType, damageReport.damageInfo.procCoefficient, BatteryBullets_ProcCoefficient, BatteryBullets_ProcCoefficientStack);
+            orig(self, damageReport);
         }
 
         private BlastAttack.Result BlastAttack_Fire(On.RoR2.BlastAttack.orig_Fire orig, BlastAttack self)
