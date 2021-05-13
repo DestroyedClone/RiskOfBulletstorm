@@ -201,8 +201,13 @@ namespace RiskOfBulletstorm.Items
 
                         if (Backpack_UseScrollWheel)
                         {
-                            var scrollDir = Input.mouseScrollDelta.y > 0;
-                            CycleSlot(scrollDir);
+                            var dir = Input.mouseScrollDelta.y;
+                            if (dir < 0)
+                                CycleSlot(false);
+                            else if (dir == 0)
+                                return;
+                            else
+                                CycleSlot(true);
                         }
                     }
                 }

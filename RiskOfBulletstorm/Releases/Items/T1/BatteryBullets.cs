@@ -27,7 +27,8 @@ namespace RiskOfBulletstorm.Items
         protected override string GetNameString(string langID = null) => displayName;
         protected override string GetPickupString(string langID = null) => "Zap!\nElectrifies all bullets fired. Increases accuracy.";
 
-        protected override string GetDescString(string langid = null) => $"Your attacks have a <style=cIsDamage>{Pct(BatteryBullets_ProcCoefficient)}</style> <style=cStack>(+{Pct(BatteryBullets_ProcCoefficientStack)} per stack)</style> chance to charge your attacks, <style=cIsUtility>shocking</style> enemies on hit.";
+        protected override string GetDescString(string langid = null) => $"Your attacks have a <style=cIsDamage>{Pct(BatteryBullets_ProcCoefficient)}</style>" +
+            $" <style=cStack>(+{Pct(BatteryBullets_ProcCoefficientStack)} per stack)</style> chance to charge your attacks, <style=cIsUtility>shocking</style> enemies on hit.";
 
         protected override string GetLoreString(string langID = null) => "The shock troops of the Hegemony of Man consist entirely of heartless machines, shielded from voltage attacks. Their victims however, have learned to fear the inevitable sting of their electrified shells.";
 
