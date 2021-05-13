@@ -24,10 +24,10 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("What is the weighted chance to select a Blank?", AutoConfigFlags.PreventNetMismatch)]
         public float BUP_chanceBlank { get; private set; } = 0.45f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the weighted chance to select a Blank?", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the weighted chance to select an Armor?", AutoConfigFlags.PreventNetMismatch)]
         public float BUP_chanceArmor { get; private set; } = 0.15f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the weighted chance to select a Blank?", AutoConfigFlags.PreventNetMismatch)]
+        [AutoConfig("What is the weighted chance to select an Ammo Spread?", AutoConfigFlags.PreventNetMismatch)]
         public float BUP_chanceAmmo { get; private set; } = 0.7f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
@@ -47,9 +47,8 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "";
 
-        public WeightedSelection<PickupIndex> weightedSelection = new WeightedSelection<PickupIndex>(3); //change to 4 when key is fixed
+        public WeightedSelection<PickupDef> weightedSelection = new WeightedSelection<PickupDef>(3); //change to 4 when key is fixed
 
-        private GameObject currentStage;
         private readonly GameObject SpawnedPickupEffect = Resources.Load<GameObject>("prefabs/effects/LevelUpEffect");
 
         public override void SetupBehavior()
@@ -65,9 +64,9 @@ namespace RiskOfBulletstorm.Items
             base.SetupLate();
             //needs to setup late so the indicies can be setup
             //weightedSelection.AddChoice(Key.instance.pickupIndex, 0.15f); currently unused while i rework it
-            weightedSelection.AddChoice(Blank.instance.pickupIndex, BUP_chanceBlank);
-            weightedSelection.AddChoice(Armor.instance.pickupIndex, BUP_chanceArmor);
-            weightedSelection.AddChoice(PickupAmmoSpread.instance.pickupIndex, BUP_chanceAmmo);
+            weightedSelection.AddChoice(Blank.instance.pickupDef, BUP_chanceBlank);
+            weightedSelection.AddChoice(Armor.instance.pickupDef, BUP_chanceArmor);
+            weightedSelection.AddChoice(PickupAmmoSpread.instance.pickupDef, BUP_chanceAmmo);
         }
 
         public override void SetupConfig()
@@ -93,17 +92,16 @@ namespace RiskOfBulletstorm.Items
         private void MapZone_TryZoneStart(On.RoR2.MapZone.orig_TryZoneStart orig, MapZone self, Collider other)
         {
             orig(self, other);
-            if (!currentStage) return;
-            BulletstormPickupsComponent pickupsComponent = currentStage.GetComponent<BulletstormPickupsComponent>();
+            if (!Stage.instance) return;
+            BulletstormPickupsComponent pickupsComponent = Stage.instance.GetComponent<BulletstormPickupsComponent>();
             if (!pickupsComponent) return;
-            MapZone.ZoneType zoneType = self.zoneType;
             CharacterBody characterBody = other.GetComponent<CharacterBody>();
             if (!characterBody) return;
             TeamComponent teamComponent = characterBody.teamComponent;
             if (!teamComponent) return;
             if (teamComponent.teamIndex == TeamIndex.Player) return;
 
-            if (zoneType == MapZone.ZoneType.OutOfBounds)
+            if (self.zoneType == MapZone.ZoneType.OutOfBounds)
             {
                 HealthComponent healthComponent = characterBody.healthComponent;
                 if (healthComponent)
@@ -126,8 +124,6 @@ namespace RiskOfBulletstorm.Items
             var requiredKills = BUP_RequiredKills * StageMult;
 
             pickupsComponent.requiredKills = (int)requiredKills;
-
-            currentStage = gameObj;
         }
 
         private bool CheckIfDoll(DamageInfo dmginfo)
@@ -148,15 +144,15 @@ namespace RiskOfBulletstorm.Items
         private void GlobalEventManager_OnCharacterDeath(On.RoR2.GlobalEventManager.orig_OnCharacterDeath orig, GlobalEventManager self, DamageReport damageReport)
         {
             orig(self, damageReport);
-            if (!NetworkServer.active || !currentStage)
+            if (!NetworkServer.active || !Stage.instance)
             {
                 return;
             }
             var dmginfo = damageReport.damageInfo;
-            BulletstormPickupsComponent pickupsComponent = currentStage.GetComponent<BulletstormPickupsComponent>();
-            if (!currentStage || CheckIfDoll(dmginfo) || damageReport.victimTeamIndex == TeamIndex.Player || damageReport.victimTeamIndex == TeamIndex.None || !pickupsComponent)
+            BulletstormPickupsComponent pickupsComponent = Stage.instance.GetComponent<BulletstormPickupsComponent>();
+            if (!Stage.instance || CheckIfDoll(dmginfo) || damageReport.victimTeamIndex == TeamIndex.Player || damageReport.victimTeamIndex == TeamIndex.None || !pickupsComponent)
             {
-                //Debug.Log("current stage: "+currentStage+"| Doll? "+CheckIfDoll(dmginfo)+"| teamindex: "+damageReport.victimTeamIndex+" pickups component: "+pickupsComponent);
+                //Debug.Log("current stage: "+Stage.instance+"| Doll? "+CheckIfDoll(dmginfo)+"| teamindex: "+damageReport.victimTeamIndex+" pickups component: "+pickupsComponent);
                 return;
             }
             var requiredKills = pickupsComponent.requiredKills;
@@ -226,15 +222,14 @@ namespace RiskOfBulletstorm.Items
                         //Chat.AddMessage("Pickups: Rolled success.");
 
                         var randfloat = UnityEngine.Random.Range(0f, 1f);
-                        PickupIndex dropIndex = weightedSelection.Evaluate(randfloat);
+                        var dropDef = weightedSelection.Evaluate(randfloat);
 
                         if (BUP_ShowProgress)
                         {
-                            var pickupDef = PickupCatalog.GetPickupDef(dropIndex);
                             _logger.LogMessage(string.Format("[Bulletstorm] Pickups Controller: Roll success! Chosen item {0} {1} {2}",
-                                dropIndex, pickupDef.internalName, Language.GetString(pickupDef.nameToken)));
+                                dropDef.pickupIndex, pickupDef.internalName, Language.GetString(pickupDef.nameToken)));
                         }
-                        PickupDropletController.CreatePickupDroplet(dropIndex, PickupPosition, Vector3.up * 5);
+                        PickupDropletController.CreatePickupDroplet(dropDef.pickupIndex, PickupPosition, Vector3.up * 5);
 
 
                         EffectManager.SimpleEffect(SpawnedPickupEffect, PickupPosition+Vector3.up*8f, Quaternion.identity, true);
