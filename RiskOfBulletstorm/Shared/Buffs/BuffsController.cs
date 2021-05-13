@@ -17,6 +17,9 @@ namespace RiskOfBulletstorm.Shared.Buffs
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("CHARM: Should Bosses (including Umbrae) get charmed?", AutoConfigFlags.PreventNetMismatch)]
         public static bool Config_Charm_Boss { get; private set; } = false;
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("ENRAGE: How much extra damage should you deal?", AutoConfigFlags.PreventNetMismatch)]
+        public static float Config_Enrage_Damage { get; private set; } = 1f;
 
         //public static BuffDef Burn { get; private set; } 
         //public static BuffDef Poison { get; private set; }
@@ -90,7 +93,7 @@ namespace RiskOfBulletstorm.Shared.Buffs
 
         private static void StatHooks_GetStatCoefficients(CharacterBody sender, StatHookEventArgs args)
         {
-            if (sender.HasBuff(Anger)) { args.damageMultAdd += EnragingPhoto.instance.EnragingPhoto_DmgBoost; }
+            if (sender.HasBuff(Anger)) { args.damageMultAdd += Config_Enrage_Damage; }
             if (sender.HasBuff(Jammed))
             {
                 args.damageMultAdd += curse.Curse_DamageBoost;

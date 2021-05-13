@@ -96,7 +96,7 @@ namespace RiskOfBulletstorm.Shared.Blanks
 
         }
 
-        public static bool FireBlank(CharacterBody attacker, Vector3 corePosition, float blankRadius, float damageMult, float projectileClearRadius, bool consumeBlank = false, bool playSound = true, bool playEffect = true)
+        public static bool FireBlank(CharacterBody attacker, Vector3 corePosition, float blankAttackRadius, float damageMult, float projectileClearRadius, bool consumeBlank = false, bool playSound = true, bool playEffect = true)
         {
             //var body = attacker.GetComponent<CharacterBody>();
             var blankAmount = attacker.inventory.GetItemCount(Blank.instance.catalogIndex);
@@ -142,7 +142,7 @@ namespace RiskOfBulletstorm.Shared.Blanks
                     baseDamage = attacker.damage * damageMult,
                     damageType = DamageType.Stun1s,
                     //crit = self.RollCrit(),
-                    radius = blankRadius,
+                    radius = blankAttackRadius,
                     teamIndex = teamIndex,
                     baseForce = 900,
                     //baseForce = 2000f,

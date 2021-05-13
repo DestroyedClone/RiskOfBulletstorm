@@ -35,11 +35,13 @@
     <Compile Remove="Releases\Items\Eqp\MultiplayerBuddy.cs" />
     <Compile Remove="Releases\Items\Eqp\SupplyDrop.cs" />
     <Compile Remove="Releases\Items\Eqp\TrustyLockpicks.cs" />
+    <Compile Remove="Releases\Items\LunarEqp\ChestTeleporter.cs" />
     <Compile Remove="Releases\Items\LunarEqp\Spice.cs" />
     <Compile Remove="Releases\Items\Lunar\JokeMod.cs" />
     <Compile Remove="Releases\Items\Pickups\dx.cs" />
     <Compile Remove="Releases\Items\Pickups\GuonStoneGlass.cs" />
     <Compile Remove="Releases\Items\Pickups\Key.cs" />
+    <Compile Remove="Releases\Items\T1\TableTechRocket.cs" />
     <Compile Remove="Releases\Items\T2\BlastHelmet.cs" />
     <Compile Remove="Releases\Items\T3\OrbitalBullets.cs" />
     <Compile Remove="Releases\Items\T3\RingTriggers.cs" />

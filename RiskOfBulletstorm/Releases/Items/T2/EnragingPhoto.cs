@@ -15,7 +15,7 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How many seconds should Enraging Photo's buff last with a single stack?", AutoConfigFlags.PreventNetMismatch)]
-        public float EnragingPhoto_BaseDuration { get; private set; } = 3f;
+        public float EnragingPhoto_BaseDuration { get; private set; } = 5f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How many additional seconds of buff should each Enraging Photo after the first give? ", AutoConfigFlags.PreventNetMismatch)]
@@ -29,9 +29,6 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("Maximum percent of health loss for higher bound? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
         public float EnragingPhoto_HealthThresholdMax { get; private set; } = 0.10f;
 
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("How much should your damage be increased when Enraging Photo activates? (Value: Additive Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float EnragingPhoto_DmgBoost { get; private set; } = 1.00f;
         
         //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         //[AutoConfig("If true, damage to shield and barrier (from e.g. Personal Shield Generator, Topaz Brooch) will not count towards triggering Enraging Photo")]
@@ -45,7 +42,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "<b>\"Don't Believe His Lies\"</b>\nDeal extra damage for a short time after receiving a hit.";
 
-        protected override string GetDescString(string langid = null) => $"Gain a temporary <style=cIsDamage>{Pct(EnragingPhoto_DmgBoost)} damage bonus</style> that can last up to {EnragingPhoto_BaseDuration} seconds <style=cStack>(+{EnragingPhoto_StackDuration} seconds duration per stack).</style>" +
+        protected override string GetDescString(string langid = null) => $"Gain a temporary <style=cIsDamage>{Pct(BuffsController.Config_Enrage_Damage)} damage bonus</style> that can last up to {EnragingPhoto_BaseDuration} seconds <style=cStack>(+{EnragingPhoto_StackDuration} seconds duration per stack).</style>" +
             $"\nThe duration scales from the amount of damage taken, from <style=cIsHealth>{Pct(EnragingPhoto_HealthThresholdMin)} to {Pct(EnragingPhoto_HealthThresholdMax)}</style>.";
 
         protected override string GetLoreString(string langID = null) => "A photo that the Convict brought with her to the Gungeon.\nDeal extra damage for a short time after getting hit.\n\nOn the journey to the Breach, the Pilot once asked her why she always stared at this photo. Later, she was released from the brig.";
@@ -71,7 +68,7 @@ namespace RiskOfBulletstorm.Items
                     (value, inv, master) => { return $"Health Threshold: {Pct(EnragingPhoto_HealthThresholdMin)} to {Pct(EnragingPhoto_HealthThresholdMax)}"; }
                 ));
                 Compat_ItemStats.CreateItemStatDef(itemDef,
-                    ((count, inv, master) => { return EnragingPhoto_DmgBoost; },
+                    ((count, inv, master) => { return BuffsController.Config_Enrage_Damage; },
                     (value, inv, master) => { return $"Damage Boost: +{Pct(value)}"; }
                 ));
             }

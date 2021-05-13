@@ -16,7 +16,7 @@ namespace RiskOfBulletstorm.Items
         //string formattedDisplayName = string.Format("Celestial Master Round", lunarColorString);
         public override string displayName => "Master Round (Lunar)";
         public override ItemTier itemTier => ItemTier.Tier3;
-        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.WorldUnique, ItemTag.AIBlacklist });
+        public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Healing, ItemTag.WorldUnique });
 
         protected override string GetNameString(string langID = null) => displayName;
         private readonly string desc = $"Lunar Chamber\nThis celestial artifact indicates mastery of the planet.";
