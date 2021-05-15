@@ -43,7 +43,10 @@
     <Compile Remove="Releases\Items\Pickups\GuonStoneGlass.cs" />
     <Compile Remove="Releases\Items\Pickups\Key.cs" />
     <Compile Remove="Releases\Items\T1\BatteryBullets.cs" />
+    <Compile Remove="Releases\Items\T1\TableTechBlank.cs" />
+    <Compile Remove="Releases\Items\T1\TableTechRage.cs" />
     <Compile Remove="Releases\Items\T1\TableTechRocket.cs" />
+    <Compile Remove="Releases\Items\T1\TableTechStun.cs" />
     <Compile Remove="Releases\Items\T2\BlastHelmet.cs" />
     <Compile Remove="Releases\Items\T3\OrbitalBullets.cs" />
     <Compile Remove="Releases\Items\T3\RingTriggers.cs" />
