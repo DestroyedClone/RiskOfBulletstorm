@@ -317,17 +317,18 @@ localScale = new Vector3(1F, 1F, 1F)
         {
             base.Install();
 
-            //On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += ProjectileManager_FireProjectile_FireProjectileInfo;
-            //On.RoR2.BulletAttack.Fire += BulletAttack_Fire;
-            //On.RoR2.OverlapAttack.Fire += OverlapAttack_Fire;
-            //On.RoR2.BlastAttack.Fire += BlastAttack_Fire;
-            On.RoR2.SetStateOnHurt.OnTakeDamageServer += SetStateOnHurt_OnTakeDamageServer;
+            On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += ProjectileManager_FireProjectile_FireProjectileInfo;
+            On.RoR2.BulletAttack.Fire += BulletAttack_Fire;
+            On.RoR2.OverlapAttack.Fire += OverlapAttack_Fire;
+            On.RoR2.BlastAttack.Fire += BlastAttack_Fire;
+            On.RoR2.Orbs.Orb.Begin += Orb_Begin;
         }
 
-        private void SetStateOnHurt_OnTakeDamageServer(On.RoR2.SetStateOnHurt.orig_OnTakeDamageServer orig, SetStateOnHurt self, DamageReport damageReport)
+        private void Orb_Begin(On.RoR2.Orbs.Orb.orig_Begin orig, RoR2.Orbs.Orb self)
         {
-            damageReport.damageInfo.damageType = ProcDamageType(damageReport.attacker, itemDef, damageReport.damageInfo.damageType, damageType, damageReport.damageInfo.procCoefficient, BatteryBullets_ProcCoefficient, BatteryBullets_ProcCoefficientStack);
-            orig(self, damageReport);
+            self.damageType = ProcDamageType(self.attacker, itemDef, self.damageType, damageType, self.procCoefficient, BatteryBullets_ProcCoefficient, BatteryBullets_ProcCoefficientStack);
+            self.
+            orig(self);
         }
 
         private BlastAttack.Result BlastAttack_Fire(On.RoR2.BlastAttack.orig_Fire orig, BlastAttack self)

@@ -31,7 +31,20 @@ namespace RiskOfBulletstorm.Items
         public override ItemTier itemTier => ItemTier.Tier1;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Healing, ItemTag.AIBlacklist });
 
-        protected override string GetNameString(string langID = null) => displayName;
+        protected override string[] extraLanguages => new string[]
+        {
+            "fr"
+        };
+        protected override string GetNameString(string langID = null)
+        {
+            switch (langID)
+            {
+                case "fr":
+                    return "Le Moustache";
+                default: // just make english the default so it also covers unknown/untranslated langs
+                    return displayName;
+            }
+        }
         protected override string GetPickupString(string langID = null) => "<b>A Familiar Face</b>" +
             "\nSpending money soothes the soul.";
 

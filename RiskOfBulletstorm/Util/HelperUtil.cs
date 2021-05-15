@@ -66,20 +66,25 @@ namespace RiskOfBulletstorm.Utils
 
         public static CharacterBody GetPlayerWithMostItemDef(ItemDef itemDef)
         {
-            var instances = PlayerCharacterMasterController.instances;
             var largestStack = 0;
             CharacterBody chosenBody = null;
-            foreach (PlayerCharacterMasterController playerCharacterMaster in instances)
+            foreach (PlayerCharacterMasterController playerCharacterMaster in PlayerCharacterMasterController.instances)
             {
                 var master = playerCharacterMaster.master;
-                var body = master.GetBody();
-                if (body)
+                if (master)
                 {
-                    var invcount = body.inventory.GetItemCount(itemDef);
-                    if (invcount > largestStack)
+                    var body = master.GetBody();
+                    if (body)
                     {
-                        largestStack = invcount;
-                        chosenBody = body;
+                        if (body.inventory)
+                        {
+                            var invcount = body.inventory.GetItemCount(itemDef);
+                            if (invcount > largestStack)
+                            {
+                                largestStack = invcount;
+                                chosenBody = body;
+                            }
+                        }
                     }
                 }
             }
@@ -327,11 +332,13 @@ namespace RiskOfBulletstorm.Utils
                 if (body && body.inventory)
                 {
                     var invCount = body.inventory.GetItemCount(itemDef);
-                    var newProcChance = (baseProc * procChance);
-                    var test = newProcChance * invCount;
-                    if (Util.CheckRoll(test, body.master))
+                    if (invCount > 0)
                     {
-                        return baseDamageType |= newDamageType;
+                        var newProcChance = baseProc * (procChance + procChanceStack * (invCount - 1));
+                        if (Util.CheckRoll(newProcChance, body.master))
+                        {
+                            return baseDamageType |= newDamageType;
+                        }
                     }
                 }
             }

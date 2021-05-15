@@ -36,7 +36,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetLoreString(string langID = null) => "A potent gun-enhancing drug from the far reaches of the galaxy. It is known to be extremely addictive, and extremely expensive.";
 
         public static ItemDef SpiceTally { get; private set; }
-        public static ItemDef CurseDef;
+        public static ItemDef CurseDef => CurseController.instance.curseTally;
 
         public static GameObject ItemBodyModelPrefab;
 
@@ -368,7 +368,6 @@ localScale = new Vector3(0.4205F, 0.4205F, 0.4205F)
         public override void SetupLate()
         {
             base.SetupLate();
-            CurseDef = CurseController.curseTally;
         }
         public override void Install()
         {

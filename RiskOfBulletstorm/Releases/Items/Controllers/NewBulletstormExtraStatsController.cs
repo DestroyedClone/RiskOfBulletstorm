@@ -325,7 +325,7 @@ namespace RiskOfBulletstorm.Items
                     float accuracy = comp.projectileAccuracy;
                     Quaternion aimDirectionQuaternion = Util.QuaternionSafeLookRotation(inputBank.aimDirection);
 
-                    if (ShowAnnoyingDebugText) _logger.LogMessage("Projectile Fired: " + fireProjectileInfo.projectilePrefab.name);
+                    //if (ShowAnnoyingDebugText) _logger.LogMessage("Projectile Fired: " + fireProjectileInfo.projectilePrefab.name);
 
                     // projectile check
                     if ((ShotSpread_WhitelistProjectiles && WhitelistedProjectiles.Contains(fireProjectileInfo.projectilePrefab)) || !ShotSpread_WhitelistProjectiles)

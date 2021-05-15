@@ -47,7 +47,10 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "";
 
-        public WeightedSelection<PickupDef> weightedSelection = new WeightedSelection<PickupDef>(3); //change to 4 when key is fixed
+        public WeightedSelection<PickupDef> weightedSelection = new WeightedSelection<PickupDef>(3)
+        {
+
+        }; //change to 4 when key is fixed
 
         private readonly GameObject SpawnedPickupEffect = Resources.Load<GameObject>("prefabs/effects/LevelUpEffect");
 
@@ -62,11 +65,6 @@ namespace RiskOfBulletstorm.Items
         public override void SetupLate()
         {
             base.SetupLate();
-            //needs to setup late so the indicies can be setup
-            //weightedSelection.AddChoice(Key.instance.pickupIndex, 0.15f); currently unused while i rework it
-            weightedSelection.AddChoice(Blank.instance.pickupDef, BUP_chanceBlank);
-            weightedSelection.AddChoice(Armor.instance.pickupDef, BUP_chanceArmor);
-            weightedSelection.AddChoice(PickupAmmoSpread.instance.pickupDef, BUP_chanceAmmo);
         }
 
         public override void SetupConfig()
@@ -80,6 +78,21 @@ namespace RiskOfBulletstorm.Items
             RoR2.Stage.onStageStartGlobal += Stage_onStageStartGlobal;
             On.RoR2.MapZone.TryZoneStart += MapZone_TryZoneStart;
             GlobalEventManager.onCharacterDeathGlobal += GlobalEventManager_onCharacterDeathGlobal;
+            On.RoR2.PickupCatalog.Init += PickupCatalog_Init;
+        }
+
+        private void PickupCatalog_Init(On.RoR2.PickupCatalog.orig_Init orig)
+        {
+            orig();
+            //needs to setup late so the indicies can be setup
+            //weightedSelection.AddChoice(Key.instance.pickupIndex, 0.15f); currently unused while i rework it
+            weightedSelection.AddChoice(Blank.instance.pickupDef, BUP_chanceBlank);
+            weightedSelection.AddChoice(Armor.instance.pickupDef, BUP_chanceArmor);
+            weightedSelection.AddChoice(PickupAmmoSpread.instance.pickupDef, BUP_chanceAmmo);
+            foreach (var sel in weightedSelection.choices)
+            {
+                _logger.LogMessage(sel.weight + "=wt" + Language.GetString(sel.value.nameToken) + "=def " + sel.value.itemIndex + "=itemindex" + sel.value.pickupIndex + "=pickupindex");
+            }
         }
 
         private void GlobalEventManager_onCharacterDeathGlobal(DamageReport damageReport)
@@ -219,14 +232,18 @@ namespace RiskOfBulletstorm.Items
         private Vector3 EvaluatePickupPosition(BulletstormPickupsComponent pickupsComponent, CharacterBody victimBody)
         {
             Vector3 PickupPosition = new Vector3();
+            Debug.Log("Checking if its map death");
             if (pickupsComponent.wasMapDeath) //If they die from falling off the map
             {
+                Debug.Log("Checking if its lasthitattacker");
                 if (pickupsComponent.lastHitAttacker) // get the last attacker
                 {
+                    Debug.Log("setting pickup pos to last hit attacker");
                     PickupPosition = pickupsComponent.lastHitAttacker.transform.position; //set the position of the pickup to be on the player
                 }
                 else
                 {
+                    Debug.Log("searcging");
                     var playerSearch = new BullseyeSearch() //let's just get the nearest player
                     {
                         viewer = victimBody,
@@ -247,6 +264,7 @@ namespace RiskOfBulletstorm.Items
                             {
                                 if (body.isPlayerControlled)
                                 {
+                                    Debug.Log("found body to set the position to");
                                     PickupPosition = body.corePosition;
                                     success = true;
                                     break;
@@ -256,12 +274,14 @@ namespace RiskOfBulletstorm.Items
                     }
                     if (!success) //
                     {
+                        Debug.Log("choosing the first target in the list");
                         PickupPosition = list.FirstOrDefault().transform.position;
                     }
                 }
             }
             else // If it wasn't a map death
             {
+                Debug.Log("chose correct pos");
                 PickupPosition = victimBody.transform.position;
             }
             return PickupPosition;
@@ -269,19 +289,28 @@ namespace RiskOfBulletstorm.Items
 
         private void SpawnPickup(Vector3 pickupPosition)
         {
+            Debug.Log("SpawnPickup: 1");
             var randfloat = UnityEngine.Random.Range(0f, 1f);
+            Debug.Log("SpawnPickup: 2");
             var dropDef = weightedSelection.Evaluate(randfloat);
+            Debug.Log("SpawnPickup: 3");
 
             if (BUP_ShowProgress)
             {
                 _logger.LogMessage(string.Format("Pickups Controller: Roll success! Chosen item {0} {1} {2}",
-                    dropDef.pickupIndex, pickupDef.internalName, Language.GetString(pickupDef.nameToken)));
+                    dropDef.pickupIndex, dropDef.internalName, Language.GetString(dropDef.nameToken)));
             }
-            PickupDropletController.CreatePickupDroplet(dropDef.pickupIndex, pickupPosition, Vector3.up * 5);
+            if (dropDef != null)
+            {
+                PickupDropletController.CreatePickupDroplet(dropDef.pickupIndex, pickupPosition, Vector3.up * 5);
 
-            EffectManager.SimpleEffect(SpawnedPickupEffect, pickupPosition + Vector3.up * 8f, Quaternion.identity, true);
-            EffectManager.SimpleEffect(SpawnedPickupEffect, pickupPosition, Quaternion.identity, true);
-            EffectManager.SimpleEffect(SpawnedPickupEffect, pickupPosition + Vector3.down * 8f, Quaternion.identity, true);
+                EffectManager.SimpleEffect(SpawnedPickupEffect, pickupPosition + Vector3.up * 8f, Quaternion.identity, true);
+                EffectManager.SimpleEffect(SpawnedPickupEffect, pickupPosition, Quaternion.identity, true);
+                EffectManager.SimpleEffect(SpawnedPickupEffect, pickupPosition + Vector3.down * 8f, Quaternion.identity, true);
+            } else
+            {
+                Chat.AddMessage("the dropdef is null yo");
+            }
         }
 
         private bool CheckIfDoll(DamageInfo dmginfo)

@@ -99,7 +99,6 @@ namespace RiskOfBulletstorm.Items
 
         public BuffDef MetronomeBuffTally;
         public static GameObject ItemBodyModelPrefab;
-        public static GameObject ItemFollowerPrefab;
 
         public Metronome()
         {
@@ -130,10 +129,9 @@ namespace RiskOfBulletstorm.Items
         }
         public override void SetupAttributes()
         {
-            if (ItemBodyModelPrefab == null || ItemFollowerPrefab == null)
+            if (ItemBodyModelPrefab == null)
             {
                 ItemBodyModelPrefab = modelResource;
-                ItemFollowerPrefab = modelResource;
                 displayRules = GenerateItemDisplayRules();
             }
 
@@ -150,15 +148,6 @@ namespace RiskOfBulletstorm.Items
         {
             ItemBodyModelPrefab.AddComponent<ItemDisplay>();
             ItemBodyModelPrefab.GetComponent<ItemDisplay>().rendererInfos = ItemHelpers.ItemDisplaySetup(ItemBodyModelPrefab);
-
-            var ItemFollower = ItemBodyModelPrefab.AddComponent<ItemFollower>();
-            ItemFollower.itemDisplay = ItemBodyModelPrefab.AddComponent<RoR2.ItemDisplay>();
-            ItemFollower.itemDisplay.rendererInfos = ItemHelpers.ItemDisplaySetup(ItemBodyModelPrefab);
-            ItemFollower.followerPrefab = ItemFollowerPrefab;
-            ItemFollower.targetObject = ItemBodyModelPrefab;
-            ItemFollower.distanceDampTime = 0.10f;
-            ItemFollower.distanceMaxSpeed = 100;
-            //ItemFollower.SmoothingNumber = 0.25f;
 
             ItemDisplayRuleDict rules = new ItemDisplayRuleDict(new ItemDisplayRule[]
 {

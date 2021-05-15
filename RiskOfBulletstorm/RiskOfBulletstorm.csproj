@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Bandit2\Bandit2Main.cs" />
     <Compile Remove="ConsoleCommands.cs" />
     <Compile Remove="ProperSaveCompatability.cs" />
     <Compile Remove="Releases\Items\Boss\Beetle.cs" />
@@ -41,6 +42,7 @@
     <Compile Remove="Releases\Items\Pickups\dx.cs" />
     <Compile Remove="Releases\Items\Pickups\GuonStoneGlass.cs" />
     <Compile Remove="Releases\Items\Pickups\Key.cs" />
+    <Compile Remove="Releases\Items\T1\BatteryBullets.cs" />
     <Compile Remove="Releases\Items\T1\TableTechRocket.cs" />
     <Compile Remove="Releases\Items\T2\BlastHelmet.cs" />
     <Compile Remove="Releases\Items\T3\OrbitalBullets.cs" />

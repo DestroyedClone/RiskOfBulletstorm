@@ -66,7 +66,7 @@ namespace RiskOfBulletstorm.Items
         //public GameObject curseEffect = Resources.Load<GameObject>("prefabs/effects/ImpSwipeEffect");
         public GameObject jammedFire;
 
-        public static ItemDef curseTally;
+        public ItemDef curseTally;
         //public static ItemIndex curseMax;
         public static ItemDef isJammedItem;
 

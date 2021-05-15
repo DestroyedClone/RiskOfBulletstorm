@@ -13,7 +13,15 @@ using Chen.Helpers.GeneralHelpers;
 using Chen.Helpers.LogHelpers;
 using Chen.Helpers.LogHelpers.Collections;
 using static Chen.Helpers.GeneralHelpers.AssetsManager;
+
 using RiskOfBulletstorm;
+using Mono.Cecil.Cil;
+using MonoMod.Cil;
+using RoR2;
+using System.Collections.Generic;
+using System;
+using EntityStates;
+using RoR2.Skills;
 
 namespace RiskOfBulletstorm
 {
@@ -77,8 +85,6 @@ namespace RiskOfBulletstorm
             Shared.Buffs.BuffsController.Init();
 
             R2API.Utils.CommandHelper.AddToConsoleWhenReady();
-
-            Bandit2.Bandit2Main.Init();
         }
 
         private void Start()
