@@ -29,8 +29,6 @@ namespace RiskOfBulletstorm.Items
             "\nIt is HIGHLY recommended not to disable, because alot of projectiles could break otherwise.", AutoConfigFlags.PreventNetMismatch)]
         public static bool ShotSpread_WhitelistProjectiles { get; private set; } = true;
 
-        private readonly bool ShowAnnoyingDebugText = true;
-
         public override string displayName => "BulletstormExtraStatsController";
         public override ItemTier itemTier => ItemTier.NoTier;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.WorldUnique, ItemTag.AIBlacklist });
@@ -287,7 +285,6 @@ namespace RiskOfBulletstorm.Items
         }
         #endregion
 
-
         public override void Install()
         {
             base.Install();
@@ -297,6 +294,16 @@ namespace RiskOfBulletstorm.Items
             On.RoR2.BulletAttack.Fire += AdjustSpreadBullets;
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += ProjectileManager_FireProjectile_FireProjectileInfo;
             On.EntityStates.GenericBulletBaseState.FireBullet += RedirectDirection;
+        }
+        public override void Uninstall()
+        {
+            base.Uninstall();
+            CharacterMaster.onStartGlobal += CharacterMaster_onStartGlobal;
+
+            // Accuracy //
+            On.RoR2.BulletAttack.Fire -= AdjustSpreadBullets;
+            On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo -= ProjectileManager_FireProjectile_FireProjectileInfo;
+            On.EntityStates.GenericBulletBaseState.FireBullet -= RedirectDirection;
         }
 
         private void RedirectDirection(On.EntityStates.GenericBulletBaseState.orig_FireBullet orig, GenericBulletBaseState self, Ray aimRay)

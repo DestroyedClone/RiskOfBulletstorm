@@ -79,7 +79,7 @@ namespace RiskOfBulletstorm.Items
             var wispMouth = wispBody.transform.Find("Model Base").transform.Find("mdlWisp1Mouth");
             //UnityEngine.Object.Destroy(wispMouth.transform.Find("Sphere.000"));
             //UnityEngine.Object.Destroy(wispMouth.transform.Find("Point light"));
-            var wispFire = wispMouth.transform.Find("WispArmature").transform.Find("ROOT").transform.Find("Base").transform.Find("Fire").gameObject;
+            var wispFire = wispMouth.transform.Find("WispArmature").transform.Find("ROOT/Base/Fire").gameObject;
             jammedFire = wispFire.InstantiateClone("Bulletstorm_JammedFire");
             jammedFire.transform.localPosition = Vector3.zero;
             jammedFire.GetComponent<ParticleSystemRenderer>().material = Resources.Load<Material>("materials/matClayGooDebuff");
@@ -142,6 +142,12 @@ namespace RiskOfBulletstorm.Items
                 On.RoR2.CharacterModel.UpdateOverlays += CharacterModel_UpdateOverlays;
             }
         }
+        public override void Uninstall()
+        {
+            base.Uninstall();
+            CharacterBody.onBodyStartGlobal -= JamEnemy;
+            On.RoR2.CharacterModel.UpdateOverlays -= CharacterModel_UpdateOverlays;
+        }
 
         private void CharacterModel_UpdateOverlays(On.RoR2.CharacterModel.orig_UpdateOverlays orig, CharacterModel self)
         {
@@ -177,19 +183,10 @@ namespace RiskOfBulletstorm.Items
             LanguageAPI.Add(isJammedItem.descriptionToken, "Internal used to show this character is Jammed.");
         }
 
-        public override void Uninstall()
-        {
-            base.Uninstall();
-            if (Curse_Enable)
-            {
-                CharacterBody.onBodyStartGlobal -= JamEnemy;
-                On.RoR2.CharacterModel.UpdateOverlays -= CharacterModel_UpdateOverlays;
-            }
-        }
-
         public override void UninstallLanguage()
         {
             base.UninstallLanguage();
+            //??
         }
 
         private void JamEnemy(CharacterBody obj)
