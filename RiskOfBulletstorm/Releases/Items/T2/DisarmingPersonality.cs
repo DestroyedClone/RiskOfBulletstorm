@@ -5,7 +5,6 @@ using R2API;
 using UnityEngine;
 using TILER2;
 using static TILER2.MiscUtil;
-using static RiskOfBulletstorm.Utils.HelperUtil;
 using static RiskOfBulletstorm.BulletstormPlugin;
 
 namespace RiskOfBulletstorm.Items
@@ -13,15 +12,15 @@ namespace RiskOfBulletstorm.Items
     public class DisarmingPersonality : Item<DisarmingPersonality>
     {
         [AutoConfig("What is the base cost reduction of one Disarming Personality? (Value: Subtractive Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float DisarmingPersonality_CostReductionAmount { get; private set; } = 0.1f;
+        public float CostReductionAmount { get; private set; } = 0.1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the cost reduction per stack? (Value: Subtractive Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float DisarmingPersonality_CostReductionAmountStack { get; private set; } = 0.05f;
+        public float CostReductionAmountPerStack { get; private set; } = 0.05f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the maximum cost reduction? This limit is hyperbolic. (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float DisarmingPersonality_CostReductionAmountLimit { get; private set; } = 0.6f;
+        public float CostReductionAmountLimit { get; private set; } = 0.6f;
 
         public override string displayName => "Disarming Personality";
         public override ItemTier itemTier => ItemTier.Tier2;
@@ -30,8 +29,8 @@ namespace RiskOfBulletstorm.Items
         protected override string GetNameString(string langID = null) => displayName;
         protected override string GetPickupString(string langID = null) => "<b>For You?</b>\nReduces prices at shops";
 
-        protected override string GetDescString(string langid = null) => $"<style=cIsUtility>Reduces</style> shop prices by <style=cIsUtility>{Pct(DisarmingPersonality_CostReductionAmount)}</style>" +
-            $" <style=cStack>(+{Pct(DisarmingPersonality_CostReductionAmount)} hyperbolically per stack) up to {Pct(DisarmingPersonality_CostReductionAmountLimit)}</style>" +
+        protected override string GetDescString(string langid = null) => $"<style=cIsUtility>Reduces</style> shop prices by <style=cIsUtility>{Pct(CostReductionAmount)}</style>" +
+            $" <style=cStack>(+{Pct(CostReductionAmountPerStack)} hyperbolically per stack) up to {Pct(CostReductionAmountLimit)}</style>" +
             $" <style=cSub>Chance is shared amongst players.</style>";
 
         protected override string GetLoreString(string langID = null) => "The Pilot is able to talk his way into almost anything, usually gunfights.";
@@ -291,16 +290,11 @@ localScale = new Vector3(0.6487F, 0.6487F, 0.6487F)
             });
             return rules;
         }
-        public override void SetupConfig()
-        {
-            base.SetupConfig();
-        }
         public override void Install()
         {
             base.Install();
             On.RoR2.PurchaseInteraction.Awake += LowerCosts;
         }
-
 
         public override void Uninstall()
         {
@@ -317,10 +311,10 @@ localScale = new Vector3(0.6487F, 0.6487F, 0.6487F)
             {
                 if (InventoryCount > 0)
                 {
-                    //var ResultMultUnclamp = 1 - DisarmingPersonality_CostReductionAmount + DisarmingPersonality_CostReductionAmountStack * (InventoryCount - 1);
+                    //var ResultMultUnclamp = 1 - CostReductionAmount + CostReductionAmountStack * (InventoryCount - 1);
                     //var ResultMult = Mathf.Max(ResultMultUnclamp, 0);
                         //credit to harb+bord listam
-                    var ResultMult = (DisarmingPersonality_CostReductionAmount + (1 - DisarmingPersonality_CostReductionAmount) * (1 - (DisarmingPersonality_CostReductionAmountLimit / Mathf.Pow(InventoryCount + DisarmingPersonality_CostReductionAmountLimit, DisarmingPersonality_CostReductionAmountStack))));
+                    var ResultMult = (CostReductionAmount + (1 - CostReductionAmount) * (1 - (CostReductionAmountLimit / Mathf.Pow(InventoryCount + CostReductionAmountLimit, CostReductionAmountPerStack))));
                     var ResultAmt = (int)Mathf.Ceil(self.cost * ResultMult);
                     //Chat.AddMessage("Cost of chest reduced from" + self.cost + " to " + ResultAmt + " with multiplier "+ResultMult);
                     self.cost = ResultAmt;

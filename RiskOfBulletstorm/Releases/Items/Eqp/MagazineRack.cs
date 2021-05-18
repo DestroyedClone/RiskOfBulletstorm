@@ -13,11 +13,11 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the radius in meters of the Magazine Rack's zone?", AutoConfigFlags.PreventNetMismatch)]
-        public float MagazineRack_Radius { get; private set; } = 3.5f;
+        public float EffectRadius { get; private set; } = 3.5f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the duration of the Magazine Rack's zone?", AutoConfigFlags.PreventNetMismatch)]
-        public float MagazineRack_Duration { get; private set; } = 2.50f;
+        public float EffectDuration { get; private set; } = 2.50f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the cooldown in seconds?", AutoConfigFlags.PreventNetMismatch)]
@@ -32,8 +32,8 @@ namespace RiskOfBulletstorm.Items
         protected override string GetDescString(string langid = null)
         {
             return  $"Place to create a zone of <style=cIsUtility>infinite ammo</style>" +
-                $" within a radius of <style=cIsUtility>{MagazineRack_Radius} meters</style>" +
-                $" that lasts <style=cIsUtility>{MagazineRack_Duration} seconds</style>.";
+                $" within a radius of <style=cIsUtility>{EffectRadius} meters</style>" +
+                $" that lasts <style=cIsUtility>{EffectDuration} seconds</style>.";
         }
 
         protected override string GetLoreString(string langID = null) => "Often found in gungeon doctors\' offices, this rack displays magazines of all sorts. The clips contained within should prove useful, and plentiful, for even the most inaccurate of Gungeoneers.";
@@ -55,10 +55,10 @@ namespace RiskOfBulletstorm.Items
             MagazinePrefab = warbannerPrefab.InstantiateClone("Bulletstorm_MagazineRackObject");
 
             BuffWard buffWard = MagazinePrefab.GetComponent<BuffWard>();
-            buffWard.Networkradius = MagazineRack_Radius;
-            buffWard.radius = MagazineRack_Radius;
+            buffWard.Networkradius = EffectRadius;
+            buffWard.radius = EffectRadius;
             buffWard.expires = true;
-            buffWard.expireDuration = MagazineRack_Duration;
+            buffWard.expireDuration = EffectDuration;
             buffWard.buffDef = RoR2Content.Buffs.NoCooldowns;
 
             if (MagazinePrefab) PrefabAPI.RegisterNetworkPrefab(MagazinePrefab);
@@ -316,19 +316,6 @@ localScale = new Vector3(0.2666F, 0.2666F, 0.2666F)
                 localScale = new Vector3(0.1436F, 0.1436F, 0.1436F)
             });
             return rules;
-        }
-        public override void SetupConfig()
-        {
-            base.SetupConfig();
-        }
-        public override void Install()
-        {
-            base.Install();
-        }
-
-        public override void Uninstall()
-        {
-            base.Uninstall();
         }
 
         protected override bool PerformEquipmentAction(EquipmentSlot slot)

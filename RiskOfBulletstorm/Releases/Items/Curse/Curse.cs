@@ -16,41 +16,41 @@ namespace RiskOfBulletstorm.Items
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Should the stacks of Curse be shown in the inventory?", AutoConfigFlags.PreventNetMismatch)]
-        public bool Curse_Show { get; private set; } = true;
+        public bool ShowInInventory { get; private set; } = true;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Enable Jammed enemies?", AutoConfigFlags.PreventNetMismatch)]
-        public bool Curse_Enable { get; private set; } = true;
+        public bool JammedEnable { get; private set; } = true;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How much additional damage should a Jammed enemy deal? (Value: Additive Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float Curse_DamageBoost { get; private set; } = 1.00f;
+        public float JammedDamageBoost { get; private set; } = 1.00f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How much additional crit should a Jammed enemy have? (Value: Additive)", AutoConfigFlags.PreventNetMismatch)]
-        public float Curse_CritBoost { get; private set; } = 100f;
+        public float JammedCritBoost { get; private set; } = 100f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How much additional attack speed should a Jammed enemy have? (Value: Additive Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float Curse_AttackSpeedBoost { get; private set; } = 0.2f;
+        public float JammedAttackSpeedBoost { get; private set; } = 0.2f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How much additional move speed should a Jammed enemy have? (Value: Additive Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float Curse_MoveSpeedBoost { get; private set; } = 0.2f;
+        public float JammedMoveSpeedBoost { get; private set; } = 0.2f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How much additional health should a Jammed enemy have? (Value: Additive Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float Curse_HealthBoost { get; private set; } = 0.5f;
+        public float JammedHealthBoost { get; private set; } = 0.5f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Allow bosses to become Jammed?", AutoConfigFlags.PreventNetMismatch)]
-        public bool Curse_AllowBosses { get; private set; } = true;
+        public bool JammedAllowBosses { get; private set; } = true;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Allow umbra(e) to become Jammed?", AutoConfigFlags.PreventNetMismatch)]
-        public bool Curse_AllowUmbra { get; private set; } = true;
+        public bool JammedAllowUmbra { get; private set; } = true;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Allow Happiest Mask ghosts to retain their Jammed status?", AutoConfigFlags.PreventNetMismatch)]
-        public bool Curse_AllowGhost { get; private set; } = false;
+        public bool JammedAllowGhost { get; private set; } = false;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("[Aetherium Support] Allow Unstable Design summons to become Jammed?", AutoConfigFlags.PreventNetMismatch)]
-        public bool Curse_AllowUnstableDesign { get; private set; } = true;
+        public bool JammedAllowUnstableDesign { get; private set; } = true;
 
         public override string displayName => "CurseMasterItem";
         public override ItemTier itemTier => ItemTier.NoTier;
@@ -76,10 +76,7 @@ namespace RiskOfBulletstorm.Items
         {
             base.SetupBehavior();
             GameObject wispBody = Resources.Load<GameObject>("prefabs/characterbodies/WispBody");
-            var wispMouth = wispBody.transform.Find("Model Base").transform.Find("mdlWisp1Mouth");
-            //UnityEngine.Object.Destroy(wispMouth.transform.Find("Sphere.000"));
-            //UnityEngine.Object.Destroy(wispMouth.transform.Find("Point light"));
-            var wispFire = wispMouth.transform.Find("WispArmature").transform.Find("ROOT/Base/Fire").gameObject;
+            var wispFire = wispBody.transform.Find("Model Base/mdlWisp1Mouth/WispArmature/ROOT/Base/Fire").gameObject;
             jammedFire = wispFire.InstantiateClone("Bulletstorm_JammedFire");
             jammedFire.transform.localPosition = Vector3.zero;
             jammedFire.GetComponent<ParticleSystemRenderer>().material = Resources.Load<Material>("materials/matClayGooDebuff");
@@ -93,7 +90,7 @@ namespace RiskOfBulletstorm.Items
 
             // Used to keep track of the player's curse per player //
             curseTally = ScriptableObject.CreateInstance<ItemDef>();
-            curseTally.hidden = !Curse_Show;
+            curseTally.hidden = !ShowInInventory;
             curseTally.name = modInfo.shortIdentifier + "CURSETALLY_NAME";
             curseTally.tier = ItemTier.NoTier;
             curseTally.canRemove = false;
@@ -129,14 +126,10 @@ namespace RiskOfBulletstorm.Items
             }, new ItemDisplayRuleDict(null));
             curseMax = ItemAPI.Add(curseMaxDef);*/
         }
-        public override void SetupConfig()
-        {
-            base.SetupConfig();
-        }
         public override void Install()
         {
             base.Install();
-            if (Curse_Enable)
+            if (JammedEnable)
             {
                 CharacterBody.onBodyStartGlobal += JamEnemy;
                 On.RoR2.CharacterModel.UpdateOverlays += CharacterModel_UpdateOverlays;
@@ -153,24 +146,21 @@ namespace RiskOfBulletstorm.Items
         {
             orig(self);
 
-            if (self)
+            if (self && self.body)
             {
-                if (self.body)
+                var isJammed = self.body.GetComponent<IsJammed>();
+                if (isJammed && !isJammed.Overlay)
                 {
-                    var isJammed = self.body.GetComponent<IsJammed>();
-                    if (isJammed && !isJammed.Overlay)
-                    {
-                        TemporaryOverlay overlay = self.gameObject.AddComponent<TemporaryOverlay>();
-                        overlay.duration = float.PositiveInfinity;
-                        overlay.alphaCurve = AnimationCurve.Constant(0f, 0f, 0.54f);
-                        overlay.animateShaderAlpha = true;
-                        overlay.destroyComponentOnEnd = true;
-                        overlay.originalMaterial = Resources.Load<Material>("Materials/matFullCrit");
-                        overlay.AddToCharacerModel(self);
-                        isJammed.Overlay = overlay;
-                    }
-                    else return;
+                    TemporaryOverlay overlay = self.gameObject.AddComponent<TemporaryOverlay>();
+                    overlay.duration = float.PositiveInfinity;
+                    overlay.alphaCurve = AnimationCurve.Constant(0f, 0f, 0.54f);
+                    overlay.animateShaderAlpha = true;
+                    overlay.destroyComponentOnEnd = true;
+                    overlay.originalMaterial = Resources.Load<Material>("Materials/matFullCrit");
+                    overlay.AddToCharacerModel(self);
+                    isJammed.Overlay = overlay;
                 }
+                return;
             }
         }
 
@@ -199,7 +189,7 @@ namespace RiskOfBulletstorm.Items
 
             // Ghosts inherit their previous inventories which include the isJammedItem //
             // So we can just skip the whole section if it's a ghost //
-            if (CurseUtil.CheckJammedStatus(obj) && Curse_AllowGhost)
+            if (CurseUtil.CheckJammedStatus(obj) && JammedAllowGhost)
             {
                 CurseUtil.JamEnemy(obj, 100);
                 return;
@@ -264,14 +254,14 @@ namespace RiskOfBulletstorm.Items
                     if (inventory.GetItemCount(umbraItemDef) > 0)
                     {
                         // UMBRA CHECK //
-                        if (Curse_AllowUmbra)
+                        if (JammedAllowUmbra)
                         {
                             CurseUtil.JamEnemy(obj, RollValueBosses);
                         }
                     }
                     else
                     {
-                        if (Curse_AllowBosses)
+                        if (JammedAllowBosses)
                         {
                             CurseUtil.JamEnemy(obj, RollValueBosses);
                         }
@@ -283,9 +273,9 @@ namespace RiskOfBulletstorm.Items
                 }
             }
             // AETHERIUM SUPPORT //
-            else if (teamIndex == TeamIndex.Player && Curse_AllowUnstableDesign)
+            else if (teamIndex == TeamIndex.Player && JammedAllowUnstableDesign)
             {
-                bool AetheriumCheck = obj.master.bodyPrefab.name.Contains("Aetherium");
+                bool AetheriumCheck = obj.master.bodyPrefab.name.Contains("UnstableDesignAetherium");
                 if (AetheriumCheck)
                 {
                     CurseUtil.JamEnemy(obj, RollValue);

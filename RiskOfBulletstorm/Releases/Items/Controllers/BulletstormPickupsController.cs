@@ -53,11 +53,6 @@ namespace RiskOfBulletstorm.Items
         }; //change to 4 when key is fixed
 
         private readonly GameObject SpawnedPickupEffect = Resources.Load<GameObject>("prefabs/effects/LevelUpEffect");
-
-        public override void SetupConfig() //TODO
-        {
-            base.SetupConfig();
-        }
         public override void Install()
         {
             base.Install();
@@ -255,15 +250,15 @@ namespace RiskOfBulletstorm.Items
             public GameObject lastHitAttacker;
 
             public int stageCount = 0;
-            public float stageMultiplier => BulletstormPickupsController.instance.BUP_StageMultiplier;
-            public int configRequiredKills => instance.BUP_RequiredKills;
+            public float StageMultiplier => BulletstormPickupsController.instance.BUP_StageMultiplier;
+            public int ConfigRequiredKills => instance.BUP_RequiredKills;
 
 
             public void Awake()
             {
-                var StageMult = (int)(stageMultiplier * stageCount);
+                var StageMult = (int)(StageMultiplier * stageCount);
                 if (stageCount < 1) StageMult = 1;
-                requiredKills = configRequiredKills * StageMult;
+                requiredKills = ConfigRequiredKills * StageMult;
             }
         }
 

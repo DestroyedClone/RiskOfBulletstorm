@@ -14,7 +14,7 @@ using static RiskOfBulletstorm.BulletstormPlugin;
 using R2API;
 using R2API.Utils;
 
-namespace RiskOfBulletstorm.Releases.Items.Boss.MasterRounds
+namespace RiskOfBulletstorm.Items.Boss.MasterRounds
 {
     public class MasterRound1 : Item<MasterRound1>
     {
@@ -56,30 +56,19 @@ namespace RiskOfBulletstorm.Releases.Items.Boss.MasterRounds
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Healing, ItemTag.WorldUnique });
 
         protected override string GetNameString(string langID = null) => displayName;
-        protected override string GetPickupString(string langID = null) => "Increases maximum health." +
-            "\nGiven to those who survive the teleporter event without exceeding a certain amount of blows.";
+        protected override string GetPickupString(string langID = null) => "This rare artifact indicates mastery of the first chamber.";
 
         protected override string GetDescString(string langid = null) => $"Increases <style=cIsHealing>maximum health</style> by <style=cIsHealing>{Pct(MaxHealthAdditiveMultiplier)} health</style> <style=cStack>(+{Pct(MaxHealthAdditiveMultiplier)} per stack)</style>";
 
-        protected override string GetLoreString(string langID = null) => "This rare artifact indicates mastery of the first chamber.\n" +
-            "Apocryphal texts recovered from cultists of the Order indicate that the Gun and the Bullet are linked somehow.";
+        protected override string GetLoreString(string langID = null) => "Apocryphal texts recovered from cultists of the Order indicate that the Gun and the Bullet are linked somehow.";
 
         public BodyIndex BodyIndexLunarGolem;
         public BodyIndex BodyIndexLunarWisp;
         public BodyIndex BodyIndexLunarExploder;
-
-        readonly string announceStartToken = "<color=#c9ab14>[Master Round] Players can take a max of {0} hits!</color>";
-        readonly string playerHitToken = "<color=#ba3f0f>[Master Round] {0} has been hit {1} out of {2} times by {3}!</color>";
-        readonly string playerFailToken = "<color=#ba3f0f>[Master Round] {0} failed by getting hit {1} out of {2} times by {3}!</color>";
-        readonly string playerHitNameFailed = "Someone";
-        //readonly string itemPickupDescToken = numberCapitalized + " Chamber" + "\nThis " + descString + " artifact indicates mastery of the " + numberString + " chamber.";
-        //readonly string itemPickupDescToken = "{0} Chamber \nThis {1} artifact indicates mastery of the {2} chamber.";
-        //readonly string itemPickupDescBannedToken = "You probably dropped this, well no interesting lines here. If you didn't drop this, well... something's wrong.";
-
         public MasterRound1()
         {
             modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/SpreadAmmo.prefab");
-            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/MasterRoundI.png"); //For evolution somehow
+            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/MasterRoundI.png");
         }
 
         public override void SetupBehavior()
@@ -123,7 +112,9 @@ namespace RiskOfBulletstorm.Releases.Items.Boss.MasterRounds
         public override void InstallLanguage()
         {
             base.InstallLanguage();
-            ////
+            LanguageAPI.Add(modInfo.shortIdentifier+"_MASTERROUND_START", "<color=#c9ab14>[MR] Each player can take a max of {0} hits!</color>", "en");
+            LanguageAPI.Add(modInfo.shortIdentifier + "_MASTERROUND_HIT", "<color=#ba3f0f>[MR] {0} has been hit {1} out of {2} times by {3}!</color>", "en");
+            LanguageAPI.Add(modInfo.shortIdentifier + "_MASTERROUND_FAIL", "<color=#ba3f0f>[MR] {0} failed by getting hit {1} out of {2} times by {3}!</color>", "en");
         }
         public override void UninstallLanguage()
         {
@@ -179,13 +170,14 @@ namespace RiskOfBulletstorm.Releases.Items.Boss.MasterRounds
                 if (masterRoundComponent.currentHits <= masterRoundComponent.allowedHits)
                 {
                     var characterBody = victim.GetComponent<CharacterBody>();
-                    string username = characterBody ? characterBody.GetUserName() : playerHitNameFailed;
-                    string token = masterRoundComponent.currentHits < masterRoundComponent.allowedHits ? playerHitToken : playerFailToken;
+                    string victimName = characterBody ? characterBody.GetUserName() : "Someone";
+                    string token = masterRoundComponent.currentHits < masterRoundComponent.allowedHits ? modInfo.shortIdentifier + "_MASTERROUND_HIT" : modInfo.shortIdentifier + "_MASTERROUND_FAIL";
+                    string attackerName = damageInfo.attacker.GetComponent<CharacterBody>().GetDisplayName();
                     Chat.SendBroadcastChat(
                     new SimpleChatMessage
                     {
                         baseToken = token,
-                        paramTokens = new[] { username, masterRoundComponent.currentHits.ToString(), masterRoundComponent.allowedHits.ToString()
+                        paramTokens = new[] { victimName, masterRoundComponent.currentHits.ToString(), masterRoundComponent.allowedHits.ToString(), attackerName
                     }
                     });
                 }
@@ -218,15 +210,14 @@ namespace RiskOfBulletstorm.Releases.Items.Boss.MasterRounds
                 }
             }
             if (EnableAnnounceOnStart)
-                Chat.SendBroadcastChat(new SimpleChatMessage { baseToken = announceStartToken, paramTokens = new[] { maxHits.ToString() } });
+                Chat.SendBroadcastChat(new SimpleChatMessage { baseToken = modInfo.shortIdentifier + "_MASTERROUND_START", paramTokens = new[] { maxHits.ToString() } });
         }
 
         public void CheckMasterRoundEventResult(ItemIndex itemIndex)
         {
             bool success = true;
 
-            var comps = UnityEngine.Object.FindObjectsOfType<MasterRoundComponent>();
-            foreach (var component in comps)
+            foreach (var component in InstanceTracker.GetInstancesList<MasterRoundComponent>())
             {
                 if (component.currentHits > component.allowedHits)
                 {

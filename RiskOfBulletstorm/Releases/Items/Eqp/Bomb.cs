@@ -15,7 +15,7 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How much damage should the Bomb deal upon explosion? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float Bomb_DamageDealt { get; private set; } = 3f;
+        public float PercentDamageDealt { get; private set; } = 3f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the cooldown in seconds?", AutoConfigFlags.PreventNetMismatch)]
@@ -31,7 +31,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetDescString(string langid = null)
         {
             return $"{descText}, dealing <style=cIsDamage>" +
-                (Bomb_DamageDealt > 0 ? $"{Pct(Bomb_DamageDealt)}" : "no") +
+                (PercentDamageDealt > 0 ? $"{Pct(PercentDamageDealt)}" : "no") +
                 " damage</style>.";
         }
 
@@ -330,16 +330,17 @@ localScale = new Vector3(1F, 1F, 1F)
 
             return rules;
         }
-        public override void SetupConfig()
-        {
-            base.SetupConfig();
-        }
         public override void Install()
         {
             base.Install();
             On.RoR2.PurchaseInteraction.GetInteractability += PurchaseInteraction_GetInteractability;
         }
 
+        public override void Uninstall()
+        {
+            base.Uninstall();
+            On.RoR2.PurchaseInteraction.GetInteractability -= PurchaseInteraction_GetInteractability;
+        }
         private Interactability PurchaseInteraction_GetInteractability(On.RoR2.PurchaseInteraction.orig_GetInteractability orig, PurchaseInteraction self, Interactor activator)
         {
             SummonMasterBehavior summonMasterBehavior = self.gameObject.GetComponent<SummonMasterBehavior>();
@@ -357,11 +358,6 @@ localScale = new Vector3(1F, 1F, 1F)
             return orig(self, activator);
         }
 
-        public override void Uninstall()
-        {
-            base.Uninstall();
-            On.RoR2.PurchaseInteraction.GetInteractability -= PurchaseInteraction_GetInteractability;
-        }
         protected override bool PerformEquipmentAction(EquipmentSlot slot)
         {
             CharacterBody body = slot.characterBody;
@@ -392,7 +388,7 @@ localScale = new Vector3(1F, 1F, 1F)
             if (NetworkServer.active)
             {
                 ProjectileManager.instance.FireProjectile(BombPrefab, resultpos, throwAngle,
-                                      gameObject, body.damage * Bomb_DamageDealt,
+                                      gameObject, body.damage * PercentDamageDealt,
                                       0f, Util.CheckRoll(body.crit, body.master),
                                       DamageColorIndex.Item, null, -1f);
             }

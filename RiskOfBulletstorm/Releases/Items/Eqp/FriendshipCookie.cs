@@ -11,12 +11,8 @@ namespace RiskOfBulletstorm.Items
     public class FriendshipCookie : Equipment<FriendshipCookie>
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the duration of immunity after respawning someone?", AutoConfigFlags.None)]
-        public float FriendshipCookie_BaseImmunityTime { get; private set; } = 3f;
-
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What is the name of the item to be given in singleplayer?", AutoConfigFlags.None)]
-        public string FriendshipCookie_ItemName { get; private set; } = "Infusion";
+        [AutoConfig("How long are your allies immune for after respawning?", AutoConfigFlags.None)]
+        public float BaseImmunityTime { get; private set; } = 3f;
 
         public override string displayName => "Friendship Cookie";
         public override float cooldown { get; protected set; } = 0f;
@@ -28,7 +24,7 @@ namespace RiskOfBulletstorm.Items
         {
             var desc = $"Upon use, <style=cIsHealing>revives all players</style>." +
             $"\nSINGLEPLAYER: <style=cIsHealing>Gives ";
-            var itemDef = ItemCatalog.GetItemDef(ItemCatalog.FindItemIndex(FriendshipCookie_ItemName));
+            var itemDef = RoR2Content.Items.Infusion;
             desc += itemDef == null ? $"nothing" : $"{itemDef.name}";
             desc += " instead.</style>" +
             $" <style=cIsUtility>Consumes</style> on use.";
@@ -39,7 +35,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetLoreString(string langID = null) => "Baked fresh every morning by Mom! It's to die for! Or, just maybe, to live for.";
 
         public static GameObject ItemBodyModelPrefab;
-        public static ItemDef singleplayerItemDef;
+        public static ItemDef singleplayerItemDef = RoR2Content.Items.Infusion;
 
         public FriendshipCookie()
         {
@@ -58,9 +54,9 @@ namespace RiskOfBulletstorm.Items
                 ItemBodyModelPrefab = modelResource;
                 displayRules = GenerateItemDisplayRules();
             }
-            singleplayerItemDef = ItemCatalog.GetItemDef(ItemCatalog.FindItemIndex(FriendshipCookie_ItemName));
-            if (!singleplayerItemDef)
-                singleplayerItemDef = RoR2Content.Items.Infusion;
+            //singleplayerItemDef = ItemCatalog.GetItemDef(ItemCatalog.FindItemIndex(FriendshipCookie_ItemName));
+            //if (!singleplayerItemDef)
+                //singleplayerItemDef = RoR2Content.Items.Infusion;
             base.SetupAttributes();
         }
 
@@ -308,25 +304,10 @@ localScale = new Vector3(0.2F, 0.2F, 0.2F)
             });
             return rules;
         }
-        public override void SetupConfig()
-        {
-            base.SetupConfig();
-        }
-        public override void Install()
-        {
-            base.Install();
-        }
-
-        public override void Uninstall()
-        {
-            base.Uninstall();
-        }
         protected override bool PerformEquipmentAction(EquipmentSlot slot)
         {
             CharacterBody body = slot.characterBody;
-            if (!body) return false;
-            HealthComponent health = body.healthComponent;
-            if (!health) return false;
+            if (!body || !body.healthComponent) return false;
             Inventory inventory = body.inventory;
             if (!inventory) return false;
             int revivedPlayers = 0;
@@ -345,7 +326,7 @@ localScale = new Vector3(0.2F, 0.2F, 0.2F)
                     var master = player.master;
                     if (master.IsDeadAndOutOfLivesServer())
                     {
-                        var respawnLength = FriendshipCookie_BaseImmunityTime;
+                        var respawnLength = BaseImmunityTime;
                         //if (EmbryoProc)
                             //respawnLength = FriendshipCookie_EmbryoImmunityTime;
 

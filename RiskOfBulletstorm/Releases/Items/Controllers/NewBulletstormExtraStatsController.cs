@@ -346,7 +346,7 @@ namespace RiskOfBulletstorm.Items
                         else
                         {
                             accuracy *= -1;
-                            UpdatedAngle = Quaternion.LerpUnclamped(fireProjectileInfo.rotation, aimDirectionQuaternion, accuracy);
+                            //UpdatedAngle = Quaternion.LerpUnclamped(fireProjectileInfo.rotation, aimDirectionQuaternion, accuracy);
 
                             //CappedAccMult *= -1;
                             //This is a random dir in cone. USED FOR INACCURACY

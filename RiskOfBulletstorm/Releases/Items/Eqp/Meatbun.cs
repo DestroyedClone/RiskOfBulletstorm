@@ -12,18 +12,18 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What percent of maximum health should the Meatbun heal? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float Meatbun_HealAmount { get; private set; } = 0.33f;
+        public float PercentMaxHealthHealAmount { get; private set; } = 0.33f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How much should the damage be increased by after using the Meatbun? (Value: Additive Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float Meatbun_DamageBonus { get; private set; } = 0.1f;
+        public float AdditivePercentDamageBonus { get; private set; } = 0.1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the max amount of buffs that Meatbun can give?", AutoConfigFlags.PreventNetMismatch)]
-        public int Meatbun_BuffLimit { get; private set; } = 5;
+        public int MaxBuffLimit { get; private set; } = 5;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the minimum percentage of health lost from a single hit to remove the buffs? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float Meatbun_HealthThreshold { get; private set; } = 0.01f;
+        public float LoseBuffMaxHealthPercentage { get; private set; } = 0.01f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the cooldown in seconds?", AutoConfigFlags.PreventNetMismatch)]
@@ -36,8 +36,8 @@ namespace RiskOfBulletstorm.Items
         protected override string GetPickupString(string langID = null)
         {
             var desc = "<b>On A Roll</b>\n";
-            var doHeal = Meatbun_HealAmount > 0;
-            var canBuff = Meatbun_BuffLimit > 0 && Meatbun_DamageBonus > 0;
+            var doHeal = PercentMaxHealthHealAmount > 0;
+            var canBuff = MaxBuffLimit > 0 && AdditivePercentDamageBonus > 0;
             if (!doHeal && !canBuff)
                 return desc + "Does nothing.";
             if (doHeal) desc += "Heals for a small amount. ";
@@ -47,29 +47,29 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetDescString(string langid = null)
         {
-            if (Meatbun_HealAmount <= 0 && Meatbun_BuffLimit <= 0)
+            if (PercentMaxHealthHealAmount <= 0 && MaxBuffLimit <= 0)
                 return $"Does nothing.";
 
             var desc = $"";
             // heal amount //
-            if (Meatbun_HealAmount > 0) desc += $"<style=cIsHealing>Heals for {Pct(Meatbun_HealAmount)} health</style>, and i";
+            if (PercentMaxHealthHealAmount > 0) desc += $"<style=cIsHealing>Heals for {Pct(PercentMaxHealthHealAmount)} health</style>, and i";
             else desc += $"I";
 
             //damage bonus //
-            if (Meatbun_BuffLimit > 0)
+            if (MaxBuffLimit > 0)
             {
-                desc += $"ncreases <style=cIsDamage>damage by +{Pct(Meatbun_DamageBonus)}</style> until damaged";
+                desc += $"ncreases <style=cIsDamage>damage by +{Pct(AdditivePercentDamageBonus)}</style> until damaged";
 
                 // health threshold
-                if (Meatbun_HealthThreshold > 0)
-                    desc += $" by at least {Pct(Meatbun_HealthThreshold)} health";
+                if (LoseBuffMaxHealthPercentage > 0)
+                    desc += $" by at least {Pct(LoseBuffMaxHealthPercentage)} health";
             }
 
             desc += $". ";
 
-            desc += $"<style=cStack>Buff stacks up to {Meatbun_BuffLimit} time{(Meatbun_BuffLimit > 1 ? "s " : "")}</style>";
-            if (Meatbun_BuffLimit > 1)
-                desc += $"for a max of <style=cIsDamage>+{Pct(Meatbun_BuffLimit * Meatbun_DamageBonus)} damage.</style>";
+            desc += $"<style=cStack>Buff stacks up to {MaxBuffLimit} time{(MaxBuffLimit > 1 ? "s " : "")}</style>";
+            if (MaxBuffLimit > 1)
+                desc += $"for a max of <style=cIsDamage>+{Pct(MaxBuffLimit * AdditivePercentDamageBonus)} damage.</style>";
             return desc;
         }
 
@@ -84,10 +84,6 @@ namespace RiskOfBulletstorm.Items
             modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/Meatbun.prefab");
             iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/Meatbun.png");
         }
-        public override void SetupBehavior()
-        {
-            base.SetupBehavior();
-        }
         public override void SetupAttributes()
         {
             if (ItemBodyModelPrefab == null)
@@ -101,7 +97,7 @@ namespace RiskOfBulletstorm.Items
                 true, 
                 false, 
                 "Assets/Textures/Icons/Buffs/Meatbun.png",
-                "<color=black>Meatbun Bonus\n+" + Meatbun_DamageBonus * 100f + "% damage dealt per stack</color>");
+                "<color=black>Meatbun Bonus\n+" + AdditivePercentDamageBonus * 100f + "% damage dealt per stack</color>");
         }
         public override void SetupConfig()
         {
@@ -390,7 +386,7 @@ localScale = new Vector3(0.7244F, 0.7244F, 0.7244F)
                     if (MeatBunBoostCount > 0)
                     {
                         //var olddmg = (float)damageInfo.damage;
-                        damageInfo.damage *= 1 + (MeatBunBoostCount * Meatbun_DamageBonus);
+                        damageInfo.damage *= 1 + (MeatBunBoostCount * AdditivePercentDamageBonus);
                         //RiskOfBulletstorm.RiskofBulletstorm._logger.LogDebug("Meatbun: Increased damage from " + olddmg + " to " + damageInfo.damage + " with " + MeatBunBoostCount + " stacks");
                     }
                 }
@@ -406,7 +402,7 @@ localScale = new Vector3(0.7244F, 0.7244F, 0.7244F)
             var body = self.body;
             if (body)
             {
-                if (healthCompare >= Meatbun_HealthThreshold)
+                if (healthCompare >= LoseBuffMaxHealthPercentage)
                 {
                     int MeatBunBoostCount = body.GetBuffCount(MeatbunBoost);
                     for (int i = 0; i < MeatBunBoostCount; i++) body.RemoveBuff(MeatbunBoost);
@@ -423,12 +419,12 @@ localScale = new Vector3(0.7244F, 0.7244F, 0.7244F)
 
             int MeatBunBoostCount = body.GetBuffCount(MeatbunBoost);
 
-            if (MeatBunBoostCount < Meatbun_BuffLimit)
+            if (MeatBunBoostCount < MaxBuffLimit)
                 body.AddBuff(MeatbunBoost);
 
-            if (Meatbun_HealAmount > 0)
+            if (PercentMaxHealthHealAmount > 0)
             {
-                health.HealFraction(Meatbun_HealAmount, default);
+                health.HealFraction(PercentMaxHealthHealAmount, default);
             }
             return true;
         }

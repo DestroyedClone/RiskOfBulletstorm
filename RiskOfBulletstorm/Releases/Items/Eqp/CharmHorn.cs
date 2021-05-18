@@ -12,11 +12,11 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the radius to charm enemies? (Value: Meters)", AutoConfigFlags.PreventNetMismatch)]
-        public float CharmHorn_Radius { get; private set; } = 20f;
+        public float CharmRadius { get; private set; } = 20f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the duration enemies are charmed?", AutoConfigFlags.PreventNetMismatch)]
-        public float CharmHorn_Duration { get; private set; } = 10f;
+        public float CharmDuration { get; private set; } = 10f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the cooldown in seconds?", AutoConfigFlags.PreventNetMismatch)]
@@ -31,7 +31,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetDescString(string langid = null)
         {
             return $"Upon use, blows the horn to <style=cIsUtility>charm</style> enemies within " +
-                $"<style=cIsUtility>{CharmHorn_Radius} meters</style> for {CharmHorn_Duration} seconds.";
+                $"<style=cIsUtility>{CharmRadius} meters</style> for {CharmDuration} seconds.";
         }
 
         protected override string GetLoreString(string langID = null) => "There are strange inconsistencies in the behavior of the Gundead. Originally thought to be heartless killing machines, they have been known to capture certain invaders for unknown purposes. Furthermore, evidence of a crude religion has been discovered. Perhaps, one day, they could be reasoned with?";
@@ -55,7 +55,7 @@ namespace RiskOfBulletstorm.Items
             BuffWard buffWard = CharmWardPrefab.GetComponent<BuffWard>();
             buffWard.expires = true;
             buffWard.expireDuration = 0.6f;
-            buffWard.buffDuration = CharmHorn_Duration;
+            buffWard.buffDuration = CharmDuration;
             buffWard.invertTeamFilter = true;
             buffWard.animateRadius = false;
             buffWard.floorWard = false;
@@ -318,25 +318,6 @@ localScale = new Vector3(0.05F, 0.05F, 0.05F)
                 localScale = new Vector3(0.2356F, 0.2356F, 0.2356F)
             });
             return rules;
-        }
-        public override void SetupConfig()
-        {
-            base.SetupConfig();
-        }
-        public override void Install()
-        {
-            base.Install();
-        }
-
-        public override void Uninstall()
-        {
-            base.Uninstall();
-        }
-        public override void SetupLate()
-        {
-            base.SetupLate();
-
-
         }
         protected override bool PerformEquipmentAction(EquipmentSlot slot)
         {

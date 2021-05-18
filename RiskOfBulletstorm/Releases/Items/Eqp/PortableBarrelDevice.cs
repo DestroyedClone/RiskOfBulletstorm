@@ -1,5 +1,4 @@
 ﻿using RiskOfBulletstorm.Utils;
-using System.Collections;
 using System.Collections.Generic;
 using R2API;
 using RoR2;
@@ -13,14 +12,14 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How long should the barrel stay around after being spawned?", AutoConfigFlags.PreventNetMismatch)]
-        public static float PortableTableDevice_Lifetime { get; private set; } = 16;
+        public static float Lifetime { get; private set; } = 16;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How long should the barrel stay around after being opened?", AutoConfigFlags.PreventNetMismatch)]
-        public static float PortableTableDevice_UseLifetime { get; private set; } = 3f;
+        public static float LifetimeAfterUse { get; private set; } = 3f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Max barrels per player?", AutoConfigFlags.PreventNetMismatch)]
-        public static int PortableTableDevice_MaxBarrelsPerPlayer { get; private set; } = 20;
+        public static int MaxBarrelsPerPlayer { get; private set; } = 20;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the cooldown in seconds?", AutoConfigFlags.PreventNetMismatch)]
         public override float cooldown { get; protected set; } = 30f;
@@ -32,7 +31,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetPickupString(string langID = null)
         {
             var desc = "<b>Know When To Fold 'Em</b>\n";
-            if (PortableTableDevice_MaxBarrelsPerPlayer > 0 && PortableTableDevice_Lifetime > 0)
+            if (MaxBarrelsPerPlayer > 0 && Lifetime > 0)
                 desc += "Places a barrel.";
             else desc += "Faulty user input prevents this device from functioning.";
             return desc;
@@ -40,23 +39,23 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetDescString(string langid = null)
         {
-            var canBarrel = PortableTableDevice_MaxBarrelsPerPlayer > 0;
-            var canLive = PortableTableDevice_Lifetime > 0;
-            var isLifeLongerThanOne = PortableTableDevice_Lifetime > 1;
+            var canBarrel = MaxBarrelsPerPlayer > 0;
+            var canLive = Lifetime > 0;
+            var isLifeLongerThanOne = Lifetime > 1;
             var desc = $"";
             if (canBarrel && canLive)
             {
                 // duration //
                 desc += $"Places a <style=cIsUtility>barrel</style>" +
                     $"that lasts for ";
-                if (isLifeLongerThanOne) desc += $"{PortableTableDevice_Lifetime} seconds.";
+                if (isLifeLongerThanOne) desc += $"{Lifetime} seconds.";
                 else desc += $" a second.";
 
                 // barrel count //
 
                 desc += $" up to <style=cIsUtility>";
-                if (PortableTableDevice_MaxBarrelsPerPlayer == 1) desc += $"a single barrel";
-                else if (PortableTableDevice_MaxBarrelsPerPlayer > 1) desc += $"{PortableTableDevice_MaxBarrelsPerPlayer} barrels";
+                if (MaxBarrelsPerPlayer == 1) desc += $"a single barrel";
+                else if (MaxBarrelsPerPlayer > 1) desc += $"{MaxBarrelsPerPlayer} barrels";
 
                 desc += $"</style>.";
             }
@@ -91,8 +90,8 @@ namespace RiskOfBulletstorm.Items
             barrelInteraction.expReward = 0;
             barrelInteraction.goldReward = 0;
             BarrelDestroyOnInteraction barrelDestroyOnInteraction = BarrelPrefab.AddComponent<BarrelDestroyOnInteraction>();
-            barrelDestroyOnInteraction.lifetime = PortableTableDevice_Lifetime;
-            barrelDestroyOnInteraction.uselifetime = PortableTableDevice_UseLifetime;
+            barrelDestroyOnInteraction.lifetime = Lifetime;
+            barrelDestroyOnInteraction.uselifetime = LifetimeAfterUse;
             iscBarrelNew.prefab = BarrelPrefab;
 
             if (BarrelPrefab) PrefabAPI.RegisterNetworkPrefab(BarrelPrefab);
@@ -429,7 +428,7 @@ localScale = new Vector3(0.2F, 0.2F, 0.2F)
 
                     if (spawnBarrel.success)
                     {
-                        if (tracker.spawnedBarrels.Count >= PortableTableDevice_MaxBarrelsPerPlayer)
+                        if (tracker.spawnedBarrels.Count >= MaxBarrelsPerPlayer)
                         {
                             UnityEngine.Object.Destroy(tracker.spawnedBarrels[0].gameObject);
                             tracker.spawnedBarrels.RemoveAt(0);
@@ -492,7 +491,7 @@ localScale = new Vector3(0.2F, 0.2F, 0.2F)
         }
         public class BarrelTracker : MonoBehaviour
         {
-            public List<GameObject> spawnedBarrels = new List<GameObject>(PortableTableDevice_MaxBarrelsPerPlayer);
+            public List<GameObject> spawnedBarrels = new List<GameObject>(MaxBarrelsPerPlayer);
         }
     }
 }

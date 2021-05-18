@@ -12,15 +12,15 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What percent of maximum health should the Ration heal? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float Ration_HealAmount { get; private set; } = 0.4f;
+        public float PercentMaxHealthHeal { get; private set; } = 0.4f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Should the Ration be consumed to save the holder from death?", AutoConfigFlags.PreventNetMismatch)]
-        public bool Ration_SaveFromDeath { get; private set; } = true;
+        public bool EnableSaveFromDeath { get; private set; } = true;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Does the Ration need to be active to be consumed to save the holder from death? Requires the previous config value to be enabled.", AutoConfigFlags.PreventNetMismatch)]
-        public bool Ration_SaveFromDeathAnySlot { get; private set; } = true;
+        public bool EnableSaveFromDeathAnySlot { get; private set; } = true;
 
         public override float cooldown { get; protected set; } = 0f;
 
@@ -31,10 +31,10 @@ namespace RiskOfBulletstorm.Items
         protected override string GetPickupString(string langID = null)
         {
             var desc = "Calories, Mate\n";
-            if (Ration_HealAmount > 0)
+            if (PercentMaxHealthHeal > 0)
             {
                 desc += "Provides healing on use. ";
-                if (Ration_SaveFromDeath) desc += "If equipped, will be used automatically upon fatal damage.";
+                if (EnableSaveFromDeath) desc += "If equipped, will be used automatically upon fatal damage.";
             }
             else return "Someone ate this before you did.";
             return desc;
@@ -43,10 +43,10 @@ namespace RiskOfBulletstorm.Items
         protected override string GetDescString(string langid = null)
         {
             var desc = $"Throws away this empty Ration.";
-            if (Ration_HealAmount > 0)
+            if (PercentMaxHealthHeal > 0)
             {
-                desc = $"Heals for <style=cIsHealing>{Pct(Ration_HealAmount)} health. </style>";
-                if (Ration_SaveFromDeath)
+                desc = $"Heals for <style=cIsHealing>{Pct(PercentMaxHealthHeal)} health. </style>";
+                if (EnableSaveFromDeath)
                     desc += $"<style=cIsUtility>Automatically used</style> upon fatal damage. " +
                             $"<style=cIsUtility>Consumes</style> on use.";
             }
@@ -62,10 +62,6 @@ namespace RiskOfBulletstorm.Items
         {
             modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/Ration.prefab");
             iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/Ration.png");
-        }
-        public override void SetupBehavior()
-        {
-            base.SetupBehavior();
         }
         public override void SetupAttributes()
         {
@@ -329,9 +325,9 @@ localScale = new Vector3(0.4916F, 0.4916F, 0.4916F)
         public override void Install()
         {
             base.Install();
-            if (Ration_SaveFromDeath)
+            if (EnableSaveFromDeath)
             {
-                if (Ration_SaveFromDeathAnySlot)
+                if (EnableSaveFromDeathAnySlot)
                     On.RoR2.HealthComponent.TakeDamage += TankHitAnySlot;
                 else
                     On.RoR2.HealthComponent.TakeDamage += TankHit;
@@ -341,13 +337,8 @@ localScale = new Vector3(0.4916F, 0.4916F, 0.4916F)
         public override void Uninstall()
         {
             base.Uninstall();
-            if (Ration_SaveFromDeath)
-            {
-                if (Ration_SaveFromDeathAnySlot)
-                    On.RoR2.HealthComponent.TakeDamage -= TankHitAnySlot;
-                else
-                    On.RoR2.HealthComponent.TakeDamage -= TankHit;
-            }
+            On.RoR2.HealthComponent.TakeDamage -= TankHitAnySlot;
+            On.RoR2.HealthComponent.TakeDamage -= TankHit;
         }
 
         //slightly more expensive because it iterates through the equipment slots
@@ -406,10 +397,10 @@ localScale = new Vector3(0.4916F, 0.4916F, 0.4916F)
 
         private void RationUse(HealthComponent health, Inventory inventory, int equipmentSlot)
         {
-            if (Ration_HealAmount > 0)
+            if (PercentMaxHealthHeal > 0)
             {
                 health.body.AddTimedBuff(RoR2Content.Buffs.Immune, 0.5f);
-                health.HealFraction(Ration_HealAmount, default);
+                health.HealFraction(PercentMaxHealthHeal, default);
             }
             inventory.equipmentStateSlots[equipmentSlot].equipmentIndex = EquipmentIndex.None;
         }

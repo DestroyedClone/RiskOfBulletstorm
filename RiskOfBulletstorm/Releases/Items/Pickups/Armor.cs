@@ -52,10 +52,6 @@ namespace RiskOfBulletstorm.Items
             iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/Armor.png");
         }
 
-        public override void SetupBehavior()
-        {
-            base.SetupBehavior();
-        }
         public override void SetupAttributes()
         {
             if (ItemBodyModelPrefab == null)
@@ -298,10 +294,6 @@ localScale = new Vector3(0.033F, 0.033F, 0.033F)
                 localScale = new Vector3(0.3437F, 0.3437F, 0.3437F)
             });
             return rules;
-        }
-        public override void SetupConfig()
-        {
-            base.SetupConfig();
         }
         public override void Install()
         {

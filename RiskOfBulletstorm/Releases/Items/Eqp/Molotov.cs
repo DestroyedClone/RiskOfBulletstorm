@@ -15,20 +15,20 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How much damage should the Molotov's area of effect deal? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public static float Molotov_Damage { get; private set; } = 0.1f;
+        public static float PercentDamagePerTick { get; private set; } = 0.1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How frequent should each damage tick happen?" +
             "\n(Default: 60 = Every 1/60th of a second) (Minimum: 1, Maximum: 60)", AutoConfigFlags.PreventNetMismatch)]
-        public static float Molotov_Frequency { get; private set; } = 60f;
+        public static float FrequencyOfTicks { get; private set; } = 60f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How long should the Molotov's area of effect last?", AutoConfigFlags.PreventNetMismatch)]
-        public float Molotov_Duration { get; private set; } = 8f;
+        public float DurationAoE { get; private set; } = 8f;
 
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("[ClassicItems Support] Beating Embryo: What is the damage multiplier if it procs? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float Molotov_BeatingEmbryo { get; private set; } = 2.0f;
+        //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        //[AutoConfig("[ClassicItems Support] Beating Embryo: What is the damage multiplier if it procs? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
+        //public float Molotov_BeatingEmbryo { get; private set; } = 2.0f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the cooldown in seconds?", AutoConfigFlags.PreventNetMismatch)]
@@ -37,7 +37,7 @@ namespace RiskOfBulletstorm.Items
         public override string displayName => "Molotov";
         public string descText = "Upon use, throws a Molotov that ";
         public string durationNormal = "ets an area on fire";
-        public string durationZero = "would have set an area on fire if it wasn't empty.";
+        public string durationZero = "would have set an area on fire if it was lit.";
 
         public Molotov()
         {
@@ -49,7 +49,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetPickupString(string langID = null)
         {
             var desc = "<b>Feel the Burn</b>\n";
-            desc += Molotov_Duration <= 0 ? durationZero : "S"+durationNormal;
+            desc += DurationAoE <= 0 ? durationZero : "S"+durationNormal;
             return desc;
         }
 
@@ -58,7 +58,7 @@ namespace RiskOfBulletstorm.Items
         {
             var desc = $"Upon use, throws a molotov that ";
 
-            if (Molotov_Duration == 0)
+            if (DurationAoE == 0)
             {
                 desc += $"{durationZero}";
                 return desc;
@@ -67,16 +67,16 @@ namespace RiskOfBulletstorm.Items
             {
                 desc += $"s{durationNormal} dealing <style=cIsDamage>";
                 // damage //
-                if (Molotov_Damage > 0) desc += $"{Pct(Molotov_Damage)}";
+                if (PercentDamagePerTick > 0) desc += $"{Pct(PercentDamagePerTick)}";
                 else desc += $"absolutely no";
 
                 desc += $" damage per ";
                 // frequency //
-                desc += $"[1/{Mathf.Clamp(Molotov_Frequency,0f,60f)}]th seconds";
+                desc += $"[1/{Mathf.Clamp(FrequencyOfTicks,0f,60f)}]th seconds";
                 desc += $"</style> for <style=cIsDamage>";
 
                 //duration
-                if (Molotov_Duration > 0) desc += $"{Molotov_Duration} seconds";
+                if (DurationAoE > 0) desc += $"{DurationAoE} seconds";
                 else desc += $"a moment in time";
                 desc += $"</style>.";
                 return desc;
@@ -87,7 +87,7 @@ namespace RiskOfBulletstorm.Items
         {
             var desc = "Molotov cocktails aren't guns, and so they are frowned upon by long-dwelling Gungeoneers. They get the job done regardless." +
             "\nKnowing the Hegemony wouldn't let her bring her own weaponry to the Gungeon, the Convict smuggled these few bottles in with the transport's cargo.";
-            if (Molotov_Duration <= 0) desc += "Unfortunately, the Convict brought an empty bottle.";
+            if (DurationAoE <= 0) desc += "Unfortunately, the Convict brought an empty bottle.";
             return desc;
         }
 
@@ -117,9 +117,9 @@ namespace RiskOfBulletstorm.Items
             MolotovDotZonePrefab = sporeGrenadeDotZonePrefab.InstantiateClone("Bulletstorm_MolotovDotZone");
             MolotovDotZonePrefab.GetComponent<ProjectileDamage>().damageType = DamageType.IgniteOnHit;
             ProjectileDotZone projectileDotZone = MolotovDotZonePrefab.GetComponent<ProjectileDotZone>();
-            projectileDotZone.damageCoefficient = Molotov_Damage;
-            projectileDotZone.resetFrequency = Mathf.Clamp(Molotov_Frequency,0f,60f);
-            projectileDotZone.lifetime = Molotov_Duration;
+            projectileDotZone.damageCoefficient = PercentDamagePerTick;
+            projectileDotZone.resetFrequency = Mathf.Clamp(FrequencyOfTicks,0f,60f);
+            projectileDotZone.lifetime = DurationAoE;
             projectileDotZone.impactEffect = GlassBreakEffect;
 
             GameObject sporeGrenadePrefab = Resources.Load<GameObject>("prefabs/projectiles/SporeGrenadeProjectile");
@@ -127,7 +127,7 @@ namespace RiskOfBulletstorm.Items
             MolotovPrefab.GetComponent<ProjectileDamage>().damageColorIndex = DamageColorIndex.Item;
 
             var PIE = MolotovPrefab.GetComponent<ProjectileImpactExplosion>();
-            if (Molotov_Duration > 0) PIE.childrenProjectilePrefab = MolotovDotZonePrefab; 
+            if (DurationAoE > 0) PIE.childrenProjectilePrefab = MolotovDotZonePrefab; 
                 else Object.Destroy(PIE);
             MolotovPrefab.GetComponent<ProjectileSimple>().desiredForwardSpeed = 35; //50
 
@@ -166,7 +166,6 @@ namespace RiskOfBulletstorm.Items
             ItemBodyModelPrefab.AddComponent<ItemDisplay>();
             ItemBodyModelPrefab.GetComponent<ItemDisplay>().rendererInfos = ItemHelpers.ItemDisplaySetup(ItemBodyModelPrefab);
 
-            Vector3 generalScale = new Vector3(0.1f, 0.1f, 0.1f);
             ItemDisplayRuleDict rules = new ItemDisplayRuleDict(new ItemDisplayRule[]
             {
                 new ItemDisplayRule
@@ -432,7 +431,7 @@ localScale = new Vector3(1F, 1F, 1F)
             if (NetworkServer.active)
             {
                 ProjectileManager.instance.FireProjectile(MolotovPrefab, resultpos, throwAngle,
-                                      gameObject, body.damage * Molotov_Damage * damageMultiplier,
+                                      gameObject, body.damage * PercentDamagePerTick * damageMultiplier,
                                       0f, Util.CheckRoll(body.crit, body.master),
                                       DamageColorIndex.Item, null, -1f);
             }

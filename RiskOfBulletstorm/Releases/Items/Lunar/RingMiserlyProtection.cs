@@ -15,11 +15,11 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How much maximum health is multiplied by per Ring of Miserly Protection? (Value: Additive Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float RingMiserlyProtection_HealthBonus { get; private set; } = 1f;
+        public float PercentOfMaxHealthAdded { get; private set; } = 1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How much additional maximum health is multiplied by per subsequent stacks of Ring of Miserly Protection? (Value: Additive Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float RingMiserlyProtection_HealthBonusStack { get; private set; } = 0.5f;
+        public float PercentOfMaxHealthAddedPerStack { get; private set; } = 0.5f;
         public override string displayName => "Ring of Miserly Protection";
         public override ItemTier itemTier => ItemTier.Lunar;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Healing, ItemTag.Cleansable });
@@ -31,14 +31,14 @@ namespace RiskOfBulletstorm.Items
         protected override string GetDescString(string langid = null)
         {
             var desc = $"";
-            var incHealth = RingMiserlyProtection_HealthBonus > 0;
-            var incStack = RingMiserlyProtection_HealthBonusStack > 0;
+            var incHealth = PercentOfMaxHealthAdded > 0;
+            var incStack = PercentOfMaxHealthAddedPerStack > 0;
             if (!incHealth && !incStack)
                 desc += $"It does nothing.";
             if (incHealth)
-                desc += $"Grants <style=cIsHealting>+{Pct(RingMiserlyProtection_HealthBonus)} health</style>";
+                desc += $"Grants <style=cIsHealting>+{Pct(PercentOfMaxHealthAdded)} health</style>";
             if (incStack)
-                desc += $" <style=cStack>(+{Pct(RingMiserlyProtection_HealthBonusStack)} per stack)</style>";
+                desc += $" <style=cStack>(+{Pct(PercentOfMaxHealthAddedPerStack)} per stack)</style>";
             desc += $" <style=cDeath>...but shatters upon using a shrine.</style> ";
 
             return desc;
@@ -71,7 +71,7 @@ namespace RiskOfBulletstorm.Items
             if (Compat_ItemStats.enabled)
             {
                 Compat_ItemStats.CreateItemStatDef(itemDef,
-                ((count, inv, master) => { return RingMiserlyProtection_HealthBonus + RingMiserlyProtection_HealthBonusStack * (count - 1); },
+                ((count, inv, master) => { return PercentOfMaxHealthAdded + PercentOfMaxHealthAddedPerStack * (count - 1); },
                 (value, inv, master) => { return $"Health Multiplier: +{Pct(value)}"; }
                 ));
             }
@@ -308,15 +308,17 @@ localScale = new Vector3(0.2583F, 0.2601F, 0.2583F)
             });
             return rules;
         }
-        public override void SetupConfig()
-        {
-            base.SetupConfig();
-        }
         public override void Install()
         {
             base.Install();
             ShrineChanceBehavior.onShrineChancePurchaseGlobal += ShrineChanceBehavior_onShrineChancePurchaseGlobal;
             GetStatCoefficients += BoostHealth;
+        }
+        public override void Uninstall()
+        {
+            base.Uninstall();
+            ShrineChanceBehavior.onShrineChancePurchaseGlobal -= ShrineChanceBehavior_onShrineChancePurchaseGlobal;
+            GetStatCoefficients -= BoostHealth;
         }
 
         private void ShrineChanceBehavior_onShrineChancePurchaseGlobal(bool gaveItem, Interactor interactor)
@@ -339,17 +341,10 @@ localScale = new Vector3(0.2583F, 0.2601F, 0.2583F)
             }
         }
 
-        public override void Uninstall()
-        {
-            base.Uninstall();
-            ShrineChanceBehavior.onShrineChancePurchaseGlobal -= ShrineChanceBehavior_onShrineChancePurchaseGlobal;
-            GetStatCoefficients -= BoostHealth;
-        }
-
         private void BoostHealth(CharacterBody sender, StatHookEventArgs args)
         {
             var invCount = GetCount(sender);
-            if (invCount > 0) args.healthMultAdd += RingMiserlyProtection_HealthBonus + RingMiserlyProtection_HealthBonusStack * (invCount - 1);
+            if (invCount > 0) args.healthMultAdd += PercentOfMaxHealthAdded + PercentOfMaxHealthAddedPerStack * (invCount - 1);
         }
     }
 }

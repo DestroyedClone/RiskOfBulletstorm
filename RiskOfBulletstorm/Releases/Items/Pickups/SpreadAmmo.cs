@@ -1,12 +1,9 @@
 ﻿using System.Collections.ObjectModel;
-using R2API;
 using RoR2;
 using RoR2.UI;
 using UnityEngine;
-using UnityEngine.Networking;
 using TILER2;
 using System;
-using GenericNotification = On.RoR2.UI.GenericNotification;
 using static RiskOfBulletstorm.BulletstormPlugin;
 
 namespace RiskOfBulletstorm.Items
@@ -29,28 +26,18 @@ namespace RiskOfBulletstorm.Items
             modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/SpreadAmmo.prefab");
             iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/SpreadAmmo.png");
         }
-
-        public override void SetupBehavior()
-        {
-            base.SetupBehavior();
-        }
-        public override void SetupLate()
-        {
-            base.SetupLate();
-        }
-        public override void SetupAttributes()
-        {
-            base.SetupAttributes();
-        }
-        public override void SetupConfig()
-        {
-            base.SetupConfig();
-        }
         public override void Install()
         {
             base.Install();
             On.RoR2.CharacterBody.OnInventoryChanged += CharacterBody_OnInventoryChanged;
             On.RoR2.UI.NotificationQueue.OnItemPickup += NotificationQueue_OnItemPickup;
+        }
+
+        public override void Uninstall()
+        {
+            base.Uninstall();
+            On.RoR2.CharacterBody.OnInventoryChanged -= CharacterBody_OnInventoryChanged;
+            On.RoR2.UI.NotificationQueue.OnItemPickup -= NotificationQueue_OnItemPickup;
         }
 
         private void NotificationQueue_OnItemPickup(On.RoR2.UI.NotificationQueue.orig_OnItemPickup orig, NotificationQueue self, CharacterMaster characterMaster, ItemIndex itemIndex)
@@ -59,13 +46,6 @@ namespace RiskOfBulletstorm.Items
                 return;
 
             orig(self, characterMaster, itemIndex);
-        }
-
-        public override void Uninstall()
-        {
-            base.Uninstall();
-            On.RoR2.CharacterBody.OnInventoryChanged -= CharacterBody_OnInventoryChanged;
-            On.RoR2.UI.NotificationQueue.OnItemPickup -= NotificationQueue_OnItemPickup;
         }
 
         private void CharacterBody_OnInventoryChanged(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self)

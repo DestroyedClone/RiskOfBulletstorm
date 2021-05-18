@@ -17,23 +17,20 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the base chance for the stage to be scanned with one Cartographer's Ring? (Value: Direct Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float CartographerRing_ScanChance { get; private set; } = 10f;
+        public float ScanChance { get; private set; } = 10f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is that chance for additional Cartographer's Ring for stage to scan? (Value: Direct Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float CartographerRing_ScanChanceStack { get; private set; } = 5f;
+        public float ScanChancePerStack { get; private set; } = 5f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How long should the scan last in seconds? (Setting it to zero automatically sets it to 27 hours)", AutoConfigFlags.PreventNetMismatch)]
-        public float CartographerRing_ScanDuration { get; private set; } = 0f;
+        public float ScanDuration { get; private set; } = 0f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Should the Cartographer's Ring continue to pulse scans after the stage starts?", AutoConfigFlags.PreventNetMismatch)]
-        public bool CartographerRing_KeepScanningPastStart { get; private set; } = false;
+        public bool KeepScanningPastStart { get; private set; } = false;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Should the scanners be destroyed upon starting the teleporter?", AutoConfigFlags.PreventNetMismatch)]
-        public bool CartographerRing_DestroyOnTeleporterStart { get; private set; } = false;
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("When scanning the stage, hould indicators on interactables be hidden after using them?", AutoConfigFlags.PreventNetMismatch)]
-        public bool CartographerRing_HideNotif { get; private set; } = true;
+        public bool DestroyOnTeleporterStart { get; private set; } = false;
 
         public override string displayName => "Cartographer's Ring";
         public override ItemTier itemTier => ItemTier.Tier1;
@@ -41,8 +38,8 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetNameString(string langID = null) => displayName;
         protected override string GetPickupString(string langID = null) => "<b>Some Floors Are Familiar</b>\nSometimes reveals the floor.";
-        protected override string GetDescString(string langid = null) => $"Upon starting a stage, there is a <style=cIsUtility>{CartographerRing_ScanChance}% chance</style> of <style=cIsUtility>revealing</style> all interactables" +
-            $" <style=cStack>(+{CartographerRing_ScanChanceStack}% per stack)</style>." +
+        protected override string GetDescString(string langid = null) => $"Upon starting a stage, there is a <style=cIsUtility>{ScanChance}% chance</style> of <style=cIsUtility>revealing</style> all interactables" +
+            $" <style=cStack>(+{ScanChancePerStack}% per stack)</style>." +
             $" <style=cSub>Chance is shared amongst players.</style>";
 
         protected override string GetLoreString(string langID = null) => "The Gungeon is unmappable, but it was not always so. It is said that in his youth, the great cartographer Woban has created four great maps, one for each floor of the Gungeon. While working on the fifth and final map, the walls suddenly began to shift strangely; they continue to do so to this day.";
@@ -69,25 +66,25 @@ namespace RiskOfBulletstorm.Items
             chestRevealer.pulseEffectScale = 0; // a scale of zero should make it invisible
             //chestRevealer.pulseEffectPrefab = null; //throws an error if null
 
-            if (CartographerRing_ScanDuration <= 0)
+            if (ScanDuration <= 0)
             {
                 chestRevealer.revealDuration = 99999; //~27 hours
             }
             else
             {
-                chestRevealer.revealDuration = Mathf.Max(1, CartographerRing_ScanDuration);
+                chestRevealer.revealDuration = Mathf.Max(1, ScanDuration);
             }
 
             DestroyOnTimer destroyOnTimer = PermanentScannerPrefab.GetComponent<DestroyOnTimer>();
 
-            if (CartographerRing_KeepScanningPastStart)
+            if (KeepScanningPastStart)
             {
                 //UnityEngine.Object.Destroy(destroyOnTimer);
                 destroyOnTimer.duration = 99999;
             }
             else
             {
-                destroyOnTimer.duration = CartographerRing_ScanDuration;
+                destroyOnTimer.duration = ScanDuration;
             }
 
             if (PermanentScannerPrefab) PrefabAPI.RegisterNetworkPrefab(PermanentScannerPrefab);
@@ -95,14 +92,14 @@ namespace RiskOfBulletstorm.Items
             if (Compat_ItemStats.enabled)
             {
                 Compat_ItemStats.CreateItemStatDef(itemDef,
-                    ((count, inv, master) => { return CartographerRing_ScanChance + CartographerRing_ScanChanceStack * (count - 1); },
+                    ((count, inv, master) => { return ScanChance + ScanChancePerStack * (count - 1); },
                     (value, inv, master) => { return $"Scan Chance: {Pct(value)}"; }
                 ));
                 Compat_ItemStats.CreateItemStatDef(itemDef,
-                    ((count, inv, master) => { return CartographerRing_ScanDuration; },
+                    ((count, inv, master) => { return ScanDuration; },
                     (value, inv, master) => {
                         string text = $"Scan Duration: ";
-                        text += CartographerRing_ScanDuration == 0 ? $"27:00:00" : $"{GenTimeSpanFromSeconds(value)}";
+                        text += ScanDuration == 0 ? $"27:00:00" : $"{GenTimeSpanFromSeconds(value)}";
                         return text; 
                     }
                 ));
@@ -359,17 +356,8 @@ localScale = new Vector3(0.2583F, 0.2601F, 0.2583F)
             base.Install();
             Stage.onStageStartGlobal += Stage_onStageStartGlobal;
             Stage.onServerStageComplete += StageEnd_DestroyComponent;
-            if (CartographerRing_DestroyOnTeleporterStart)
+            if (DestroyOnTeleporterStart)
                 TeleporterInteraction.onTeleporterBeginChargingGlobal += TeleporterCharged_DestroyComponent;
-            if (CartographerRing_HideNotif)
-                GlobalEventManager.OnInteractionsGlobal += GlobalEventManager_OnInteractionsGlobal;
-        }
-
-        private void GlobalEventManager_OnInteractionsGlobal(Interactor interactor, IInteractable interactable, GameObject gameObject)
-        {
-            var comp = gameObject.GetComponent<ChestRevealer.RevealedObject>();
-            if (comp)
-                comp.enabled = false;
         }
 
         public override void Uninstall()
@@ -377,10 +365,7 @@ localScale = new Vector3(0.2583F, 0.2601F, 0.2583F)
             base.Uninstall();
             Stage.onStageStartGlobal -= Stage_onStageStartGlobal;
             Stage.onServerStageComplete -= StageEnd_DestroyComponent;
-            if (CartographerRing_DestroyOnTeleporterStart)
-                TeleporterInteraction.onTeleporterBeginChargingGlobal -= TeleporterCharged_DestroyComponent;
-            if (CartographerRing_HideNotif)
-                GlobalEventManager.OnInteractionsGlobal -= GlobalEventManager_OnInteractionsGlobal;
+            TeleporterInteraction.onTeleporterBeginChargingGlobal -= TeleporterCharged_DestroyComponent;
         }
 
         private void TeleporterCharged_DestroyComponent(TeleporterInteraction obj)
@@ -411,7 +396,7 @@ localScale = new Vector3(0.2583F, 0.2601F, 0.2583F)
             {
                 int InventoryCount = Util.GetItemCountForTeam(TeamIndex.Player, catalogIndex, true, true);
 
-                var ResultChance = InventoryCount > 0 ? (CartographerRing_ScanChance + CartographerRing_ScanChanceStack * (InventoryCount - 1)) : 0;
+                var ResultChance = InventoryCount > 0 ? (ScanChance + ScanChancePerStack * (InventoryCount - 1)) : 0;
                 if (Util.CheckRoll(ResultChance))
                 {
                     var clone = UnityEngine.Object.Instantiate(PermanentScannerPrefab);

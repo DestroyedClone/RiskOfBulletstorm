@@ -4,7 +4,6 @@ using R2API;
 using RoR2;
 using UnityEngine;
 using TILER2;
-using static TILER2.MiscUtil;
 using static RiskOfBulletstorm.BulletstormPlugin;
 
 namespace RiskOfBulletstorm.Items
@@ -13,11 +12,11 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the base amount of regen increase?", AutoConfigFlags.PreventNetMismatch)]
-        public float Mustache_RegenAmount { get; private set; } = 2f;
+        public float RegenAddAmount { get; private set; } = 2f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the base amount of regen increase?", AutoConfigFlags.PreventNetMismatch)]
-        public float Mustache_RegenAmountStack { get; private set; } = 1f;
+        public float RegenAddAmountPerStack { get; private set; } = 1f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the duration of regen?", AutoConfigFlags.PreventNetMismatch)]
@@ -34,7 +33,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetPickupString(string langID = null) => "<b>A Familiar Face</b>" +
             "\nSpending money soothes the soul.";
 
-        protected override string GetDescString(string langid = null) => $"Upon purchase, increases your regeneration by <style=cIsHealing>{Mustache_RegenAmount} health</style> <style=cStack>(+{Mustache_RegenAmountStack} per stack)</style> for {Mustache_Duration} seconds.";
+        protected override string GetDescString(string langid = null) => $"Upon purchase, increases your regeneration by <style=cIsHealing>{RegenAddAmount} health</style> <style=cStack>(+{RegenAddAmountPerStack} per stack)</style> for {Mustache_Duration} seconds.";
 
         protected override string GetLoreString(string langID = null) => "The power of commerce fills your veins... and your follicles! This mustache vertically integrates your purchasing synergies, giving you a chance to be healed on every transaction.";
 
@@ -53,7 +52,7 @@ namespace RiskOfBulletstorm.Items
             if (Compat_ItemStats.enabled)
             {
                 Compat_ItemStats.CreateItemStatDef(itemDef,
-                    ((count, inv, master) => { return Mustache_RegenAmount + Mustache_RegenAmountStack * (count - 1); },
+                    ((count, inv, master) => { return RegenAddAmount + RegenAddAmountPerStack * (count - 1); },
                     (value, inv, master) => { return $"Regen: +{value} health/second"; }
                 ));
                 Compat_ItemStats.CreateItemStatDef(itemDef,
@@ -325,10 +324,6 @@ localScale = new Vector3(1F, 1F, 1F)
             return rules;
         }
 
-        public override void SetupConfig()
-        {
-            base.SetupConfig();
-        }
         public override void Install()
         {
             base.Install();
@@ -346,13 +341,9 @@ localScale = new Vector3(1F, 1F, 1F)
         private void CharacterBody_RecalculateStats(On.RoR2.CharacterBody.orig_RecalculateStats orig, CharacterBody self)
         {
             orig(self);
-            if (self.inventory)
-            {
-                if (self.HasBuff(MustacheHealBuff))
-                {
-                    self.regen += Mustache_RegenAmount + (Mustache_RegenAmountStack * (GetCount(self)-1));
-                }
-            }
+            if (self.inventory && self.HasBuff(MustacheHealBuff))
+                self.regen += RegenAddAmount + (RegenAddAmountPerStack * (GetCount(self) - 1));
+
         }
 
         private void PurchaseInteraction_OnInteractionBegin(On.RoR2.PurchaseInteraction.orig_OnInteractionBegin orig, PurchaseInteraction self, Interactor activator)

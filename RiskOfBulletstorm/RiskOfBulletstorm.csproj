@@ -30,6 +30,8 @@
     <Compile Remove="Releases\Items\Boss\Beetle.cs" />
     <Compile Remove="Releases\Items\Boss\BeetleNew.cs" />
     <Compile Remove="Releases\Items\Boss\Dog.cs" />
+    <Compile Remove="Releases\Items\Boss\MasterRound.cs" />
+    <Compile Remove="Releases\Items\Boss\MithrixMasterRound.cs" />
     <Compile Remove="Releases\Items\Controllers\BulletstormChestController.cs" />
     <Compile Remove="Releases\Items\Controllers\BulletstormExtraStatsController.cs" />
     <Compile Remove="Releases\Items\Eqp\CoolantLeak.cs" />
@@ -58,7 +60,6 @@
     <Folder Include="Items\" />
     <Folder Include="Items\" />
     <Folder Include="Items\" />
-    <Folder Include="Releases\Items\Boss\NewFodlder\" />
     <None Remove="riskofgungeonassets" />
 	  <Folder Remove="Items" />
   </ItemGroup>

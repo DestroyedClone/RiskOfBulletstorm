@@ -1,12 +1,10 @@
 ﻿using System.Collections.ObjectModel;
 using RoR2;
-using R2API;
 using UnityEngine;
 using UnityEngine.Networking;
 using TILER2;
 using static TILER2.MiscUtil;
 using static RiskOfBulletstorm.Shared.Blanks.MasterBlankItem;
-using RiskOfBulletstorm.Utils;
 using static RiskOfBulletstorm.BulletstormPlugin;
 
 namespace RiskOfBulletstorm.Items
@@ -19,7 +17,7 @@ namespace RiskOfBulletstorm.Items
         //https://docs.unity3d.com/ScriptReference/KeyCode.html
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("What Gamepad button should activate the Blank? (Default: T)", AutoConfigFlags.None)]
+        [AutoConfig("(nonfunctional) What Gamepad button should activate the Blank? (Default: T)", AutoConfigFlags.None)]
         public string BlankButtonGamepad { get; private set; } = "T";
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
@@ -72,7 +70,7 @@ namespace RiskOfBulletstorm.Items
             "\n4:30 PM - [Kyle] Carried a couple in my hand and tripped like an idiot, only one of them activated, fortunately. Unfortunately, my weapon broke when it was launched against the wall. I see the boss chamber up next, so I think I can take it with just these bullets." +
             "\n4:33 PM - [LOG] EmptyMessage: The following transcription was automatically sent without any text." +
             "\n4:55 PM - [LOG] ConnectionFailure: Lost connection to \"KYLE_COMMS\"! Try getting into an area with visible skies, or if unable, thin walls." + 
-            "\n11:52 PM - [LOG] ConnectionSuccess: Succesfully connected to \"KYLE_COMMS\"" + 
+            "\n11:52 PM - [LOG] ConnectionSuccess: Successfully connected to \"KYLE_COMMS\"" + 
             "\n12:00 PM - [Kyle] Was my training supposed to help against a [SWEAR REDACTED] minigun?";
 
         public static GameObject ItemBodyModelPrefab;
@@ -81,18 +79,6 @@ namespace RiskOfBulletstorm.Items
         {
             modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/Blank.prefab");
             iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/Blank.png");
-        }
-        public override void SetupBehavior()
-        {
-            base.SetupBehavior();
-        }
-        public override void SetupAttributes()
-        {
-            base.SetupAttributes();
-        }
-        public override void SetupConfig()
-        {
-            base.SetupConfig();
         }
 
         public override void Install() 

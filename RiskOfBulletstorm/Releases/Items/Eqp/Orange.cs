@@ -12,16 +12,16 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Should the consumed amount of Orange show in your inventory?", AutoConfigFlags.PreventNetMismatch)]
-        public bool Orange_ShowConsumed { get; private set; } = true;
+        public bool EnableShowConsumed { get; private set; } = true;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the percentage of health to heal per use?", AutoConfigFlags.PreventNetMismatch)]
-        public float Orange_HealAmount { get; private set; } = 1f;
+        public float PercentMaxHealthHeal { get; private set; } = 1f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the percentage of max health to increase per use?", AutoConfigFlags.PreventNetMismatch)]
-        public float Orange_HealthMultAdd { get; private set; } = 0.1f;
+        public float PercentMaxHealthAdd { get; private set; } = 0.1f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the equipment recharge reduction per use?", AutoConfigFlags.PreventNetMismatch)]
-        public float Orange_EquipmentReduce { get; private set; } = 0.1f;
+        public float PercentEquipmentRecharge { get; private set; } = 0.1f;
         public override string displayName => "Orange";
         public override float cooldown { get; protected set; } = 0f;
 
@@ -31,7 +31,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetDescString(string langid = null)
         {
-            var desc = $"<style=cIsHealing>Heals for {Pct(Orange_HealAmount)} health,</style> <style=cIsHealth>increases max health by {Pct(Orange_HealthMultAdd)}</style>, and <style=cIsUtility>reduces equipment recharge rate by {Pct(Orange_EquipmentReduce)}</style>. <style=cIsUtility>Consumes</style> on use.";
+            var desc = $"<style=cIsHealing>Heals for {Pct(PercentMaxHealthHeal)} health,</style> <style=cIsHealth>increases max health by {Pct(PercentMaxHealthAdd)}</style>, and <style=cIsUtility>reduces equipment recharge rate by {Pct(PercentEquipmentRecharge)}</style>. <style=cIsUtility>Consumes</style> on use.";
             return desc;
         }
 
@@ -58,7 +58,7 @@ namespace RiskOfBulletstorm.Items
             base.SetupAttributes();
 
             OrangeConsumedDef = ScriptableObject.CreateInstance<ItemDef>();
-            OrangeConsumedDef.hidden = !Orange_ShowConsumed;
+            OrangeConsumedDef.hidden = !EnableShowConsumed;
             OrangeConsumedDef.name = modInfo.shortIdentifier + "ORANGETALLY_NAME";
             OrangeConsumedDef.tier = ItemTier.NoTier;
             OrangeConsumedDef.canRemove = false;
@@ -346,11 +346,11 @@ localScale = new Vector3(1.4194F, 1.4194F, 1.4194F)
         {
             base.InstallLanguage();
             LanguageAPI.Add(OrangeConsumedDef.nameToken, "Oranges (Consumed)");
-            LanguageAPI.Add(OrangeConsumedDef.descriptionToken, "Per stack, grants <style=cIsHealing>+" + Pct(Orange_HealthMultAdd) + " maximum health</style> and <style=cIsUtility>+" + Pct(Orange_EquipmentReduce) + " reduced equipment recharge rate</style>.");
+            LanguageAPI.Add(OrangeConsumedDef.descriptionToken, "Per stack, grants <style=cIsHealing>+" + Pct(PercentMaxHealthAdd) + " maximum health</style> and <style=cIsUtility>+" + Pct(PercentEquipmentRecharge) + " reduced equipment recharge rate</style>.");
         }
         private float Inventory_CalculateEquipmentCooldownScale(On.RoR2.Inventory.orig_CalculateEquipmentCooldownScale orig, Inventory self)
         {
-            return orig(self) * Mathf.Pow(1f-Orange_EquipmentReduce, self.GetItemCount(OrangeConsumedDef));
+            return orig(self) * Mathf.Pow(1f-PercentEquipmentRecharge, self.GetItemCount(OrangeConsumedDef));
         }
 
         private void StatHooks_GetStatCoefficients(CharacterBody sender, StatHooks.StatHookEventArgs args)
@@ -360,7 +360,7 @@ localScale = new Vector3(1.4194F, 1.4194F, 1.4194F)
                 var itemCount = sender.inventory.GetItemCount(OrangeConsumedDef);
                 if (itemCount > 0)
                 {
-                    args.healthMultAdd += Orange_HealthMultAdd * itemCount;
+                    args.healthMultAdd += PercentMaxHealthAdd * itemCount;
                 }
             }
         }

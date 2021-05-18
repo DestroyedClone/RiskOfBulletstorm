@@ -13,10 +13,10 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How much should one Scope reduce spread? (Value: Subtractive Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public static float Scope_SpreadReduction { get; private set; } = 0.10f;
+        public static float SpreadReduction { get; private set; } = 0.10f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How much should each Scope reduce spread by per stack? (Value: Subtractive Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public static float Scope_SpreadReductionStack { get; private set; } = 0.05f;
+        public static float SpreadReductionPerStack { get; private set; } = 0.05f;
         public override string displayName => "Scope";
         public override ItemTier itemTier => ItemTier.Tier1;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Utility });
@@ -24,8 +24,8 @@ namespace RiskOfBulletstorm.Items
         protected override string GetNameString(string langID = null) => displayName;
         protected override string GetPickupString(string langID = null) => "<b>Steady Aim</b>\nA standard scope. Increases accuracy!";
 
-        protected override string GetDescString(string langid = null) => $"Decreases <style=cIsUtility>firing spread</style> by <style=cIsUtility>{Pct(Scope_SpreadReduction)}</style>" +
-            $" <style=cStack>(+{Pct(Scope_SpreadReductionStack)} per stack)</style>";
+        protected override string GetDescString(string langid = null) => $"Decreases <style=cIsUtility>firing spread</style> by <style=cIsUtility>{Pct(SpreadReduction)}</style>" +
+            $" <style=cStack>(+{Pct(SpreadReductionPerStack)} per stack)</style>";
 
         protected override string GetLoreString(string langID = null) => "<style=cStack>DECODING MESSAGE - KATE ****** - G*****N EXPLORATORY TEAM" + 
             "\n [SYS] Filter: [messages from:KATE_OPERATOR sort:chronological date:today] | Showing 6 recent results" + 
@@ -51,7 +51,7 @@ namespace RiskOfBulletstorm.Items
             if (Compat_ItemStats.enabled)
             {
                 Compat_ItemStats.CreateItemStatDef(itemDef,
-                    ((count, inv, master) => { return Scope_SpreadReduction + Scope_SpreadReductionStack * (count - 1); },
+                    ((count, inv, master) => { return SpreadReduction + SpreadReductionPerStack * (count - 1); },
                     (value, inv, master) => { return $"Spread Reduction (Scope): {Pct(value)}"; }
                 ));
             }
@@ -405,19 +405,6 @@ localScale = new Vector3(0.3F, 0.3F, 0.6F)
                 localScale = new Vector3(0.6916F, 0.6916F, 0.6916F)
             });
             return rules;
-        }
-        public override void SetupConfig()
-        {
-            base.SetupConfig();
-        }
-        public override void Install()
-        {
-            base.Install();
-        }
-
-        public override void Uninstall()
-        {
-            base.Uninstall();
         }
     }
 }

@@ -15,23 +15,23 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What are the maximum amount of kills that can be counted by the Metronome?", AutoConfigFlags.PreventNetMismatch)]
-        public static int Metronome_MaxKills { get; private set; } = 75;
+        public static int MaxKills { get; private set; } = 75;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How many additional max kills can be counted by the Metronome per stack?", AutoConfigFlags.PreventNetMismatch)]
-        public static int Metronome_MaxKillsStack { get; private set; } = 25;
+        public static int MaxKillsPerStack { get; private set; } = 25;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How many kills are lost upon using a different ability?", AutoConfigFlags.PreventNetMismatch)]
-        public static int Metronome_KillsLost { get; private set; } = 75;
+        public static int KillsLostOnOtherUse { get; private set; } = 75;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the damage multiplier per kill for the metronome? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public static float Metronome_DmgCoeff { get; private set; } = 0.02f;
+        public static float DamageCoefficientPerStack { get; private set; } = 0.02f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Use styled formatting or descriptive formatting for the description? (Value: Bool)", AutoConfigFlags.PreventNetMismatch)]
-        public static bool Metronome_UseStyleFormat { get; private set; } = true;
+        public static bool EnableUseStyleFormat { get; private set; } = true;
 
         //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         // [AutoConfig("Show stacks of metronome as a buff on screen? Default: true", AutoConfigFlags.PreventNetMismatch)]
@@ -45,44 +45,44 @@ namespace RiskOfBulletstorm.Items
         protected override string GetPickupString(string langID = null)
         {
             var desc = "<b>Better And Better</b>\n";
-            if (Metronome_DmgCoeff == 0 && Metronome_MaxKillsStack <= 0)
+            if (DamageCoefficientPerStack == 0 && MaxKillsPerStack <= 0)
                 return desc + "Does nothing.";
 
-            if (Metronome_DmgCoeff != 0)
+            if (DamageCoefficientPerStack != 0)
             {
-                if (Metronome_DmgCoeff > 0) desc += "<style=cIsDamage>Improves";
-                else if (Metronome_DmgCoeff < 0) desc += "<style=cDeath>Worsens";
+                if (DamageCoefficientPerStack > 0) desc += "<style=cIsDamage>Improves";
+                else if (DamageCoefficientPerStack < 0) desc += "<style=cDeath>Worsens";
                 desc += " your damage with ";
 
                 // I'm losing my mind IDK WHATS GOING ON AAAAAAAAAAAAAAAAAAAAAAAAAAAA
-                if (Metronome_MaxKills > 1 || Metronome_MaxKillsStack > 0)
+                if (MaxKills > 1 || MaxKillsPerStack > 0)
                     desc += "sequential kills";
                 else desc += "one kill";
                 desc += "</style>";
 
-                if (Metronome_KillsLost > 0)
-                    desc += ", <style=cDeath>but loses "+ Metronome_KillsLost +" upon another skill.</style>";
+                if (KillsLostOnOtherUse > 0)
+                    desc += ", <style=cDeath>but loses "+ KillsLostOnOtherUse +" upon another skill.</style>";
             }
             return desc;
         }
 
         protected override string GetDescString(string langid = null)
         {
-            if (Metronome_UseStyleFormat)
+            if (EnableUseStyleFormat)
             {
-                return $"Increases your damage to enemies by <style=cIsDamage>{Pct(Metronome_DmgCoeff)} per kill</style> with the same skill up to " +
-                    $"({Metronome_MaxKills} times (<style=cStack>{(Metronome_MaxKillsStack > 0 ? Metronome_MaxKillsStack + "per stack.<style>" : "")}" +
-                    $" {(Metronome_KillsLost > 0 ? "Upon using a different skill, your bonus <style=cHealth>reduces by " + Metronome_KillsLost + "</style>" : "")}";
+                return $"Increases your damage to enemies by <style=cIsDamage>{Pct(DamageCoefficientPerStack)} per kill</style> with the same skill up to " +
+                    $"({MaxKills} times (<style=cStack>{(MaxKillsPerStack > 0 ? MaxKillsPerStack + "per stack.<style>" : "")}" +
+                    $" {(KillsLostOnOtherUse > 0 ? "Upon using a different skill, your bonus <style=cHealth>reduces by " + KillsLostOnOtherUse + "</style>" : "")}";
             } else
             {
                 var desc = $"";
                 // Nothing Check //
-                if (Metronome_DmgCoeff == 0 && Metronome_MaxKillsStack <= 0)
+                if (DamageCoefficientPerStack == 0 && MaxKillsPerStack <= 0)
                     return desc + "Does nothing.";
 
-                desc += $"Multiplies your damage by <style=cIsDamage>{Pct(Metronome_DmgCoeff)} per kill</style> with the same skill." +
-                $"\n <style=cStack>Max Kills: {Metronome_MaxKills} {(Metronome_MaxKillsStack > 0 ? Metronome_MaxKillsStack + "per stack." : "")}</style>" +
-                $"\n {(Metronome_KillsLost > 0 ? "<style=cDeath>Using a different skill will reset your bonus by " + Metronome_KillsLost + "</style>" : "")}";
+                desc += $"Multiplies your damage by <style=cIsDamage>{Pct(DamageCoefficientPerStack)} per kill</style> with the same skill." +
+                $"\n <style=cStack>Max Kills: {MaxKills} {(MaxKillsPerStack > 0 ? MaxKillsPerStack + "per stack." : "")}</style>" +
+                $"\n {(KillsLostOnOtherUse > 0 ? "<style=cDeath>Using a different skill will reset your bonus by " + KillsLostOnOtherUse + "</style>" : "")}";
 
                 return desc;
             }
@@ -112,16 +112,16 @@ namespace RiskOfBulletstorm.Items
             if (Compat_ItemStats.enabled)
             {
                 Compat_ItemStats.CreateItemStatDef(itemDef,
-                    ((count, inv, master) => { return Metronome_MaxKills + Metronome_MaxKillsStack * (count - 1); },
+                    ((count, inv, master) => { return MaxKills + MaxKillsPerStack * (count - 1); },
                     (value, inv, master) => { return $"Max Stacks: {value}"; }
                 ));
                 Compat_ItemStats.CreateItemStatDef(itemDef,
-                    ((count, inv, master) => { return Metronome_KillsLost; },
+                    ((count, inv, master) => { return KillsLostOnOtherUse; },
                     (value, inv, master) => { return $"Kills Lost On Other Skill Use: {value}"; }
                 ));
                 Compat_ItemStats.CreateItemStatDef(itemDef, //TODO? HOW?
                     ((count, inv, master) => {
-                        return Metronome_DmgCoeff; 
+                        return DamageCoefficientPerStack; 
                     },
                     (value, inv, master) => { return $"Damage Multiplier Per Kill: +{Pct(value)}"; }
                 ));
@@ -164,10 +164,6 @@ namespace RiskOfBulletstorm.Items
             return rules;
         }
 
-        public override void SetupConfig()
-        {
-            base.SetupConfig();
-        }
         public override void Install()
         {
             base.Install();
@@ -225,7 +221,7 @@ namespace RiskOfBulletstorm.Items
             if (InventoryCount > 0)
             {
                 metronomeTrackKills.enabled = true;
-                metronomeTrackKills.maxkills = Metronome_MaxKills + Metronome_MaxKillsStack * InventoryCount;
+                metronomeTrackKills.maxkills = MaxKills + MaxKillsPerStack * InventoryCount;
 
                 metronomeTrackKills.UpdateKills();
             } else
@@ -261,7 +257,7 @@ namespace RiskOfBulletstorm.Items
                 MetronomeTrackKills MetronomeTrackKills = damageInfo.attacker.gameObject.GetComponent<MetronomeTrackKills>();
                 if (MetronomeTrackKills && MetronomeTrackKills.enabled)
                 {
-                    damageInfo.damage *= 1 + (Metronome_DmgCoeff * MetronomeTrackKills.kills);
+                    damageInfo.damage *= 1 + (DamageCoefficientPerStack * MetronomeTrackKills.kills);
                 }
             }
             orig(self, damageInfo);
@@ -286,7 +282,7 @@ namespace RiskOfBulletstorm.Items
             public void UpdateKills()
             {
                 var InventoryCount = characterBody.inventory.GetItemCount(instance.catalogIndex);
-                maxkills = Metronome_MaxKills + Metronome_MaxKillsStack * (InventoryCount - 1);
+                maxkills = MaxKills + MaxKillsPerStack * (InventoryCount - 1);
                 kills = Mathf.Min(kills, maxkills);//this resets it if you have less metronomes from like cleansing
                 UpdateBuffStack();
             }
@@ -300,7 +296,7 @@ namespace RiskOfBulletstorm.Items
                 if (LastSkillSlotUsed != SlotNumber)
                 {
                     LastSkillSlotUsed = SlotNumber;
-                    kills = Math.Max(0, kills - Metronome_KillsLost);
+                    kills = Math.Max(0, kills - KillsLostOnOtherUse);
                     UpdateKills();
                 }
             }

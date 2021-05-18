@@ -12,11 +12,11 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What percent of maximum health should the Medkit heal? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float Medkit_HealAmount { get; private set; } = 0.75f;
+        public float PercentHealAmount { get; private set; } = 0.75f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What percent of barrier should the Meatbun give? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float Medkit_BarrierAmount { get; private set; } = 0.5f;
+        public float PercentBarrierAmount { get; private set; } = 0.5f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the cooldown in seconds?", AutoConfigFlags.PreventNetMismatch)]
@@ -28,25 +28,25 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null)
         {
-            if (Medkit_HealAmount > 0 && Medkit_BarrierAmount > 0) return "<b>Heals</b>\nMedkits provides substantial healing when used.";
+            if (PercentHealAmount > 0 && PercentBarrierAmount > 0) return "<b>Heals</b>\nMedkits provides substantial healing when used.";
             else return "Seems salvaged? There's nothing in it.";
         }
 
         protected override string GetDescString(string langid = null)
         {
-            var canHeal = Medkit_HealAmount > 0;
-            var canBarrier = Medkit_BarrierAmount > 0;
+            var canHeal = PercentHealAmount > 0;
+            var canBarrier = PercentBarrierAmount > 0;
             if (!canHeal && !canBarrier) return $"Everything inside was emptied, it does nothing.";
             var desc = $"";
-            if (canHeal) desc += $"Heals for <style=cIsHealing>{Pct(Medkit_HealAmount)} health</style>. ";
-            if (canBarrier) desc += $"Gives a <style=cIsHealing>temporary barrier</style> for <style=cIsHealing>{Pct(Medkit_BarrierAmount)} of your max health.</style>";
+            if (canHeal) desc += $"Heals for <style=cIsHealing>{Pct(PercentHealAmount)} health</style>. ";
+            if (canBarrier) desc += $"Gives a <style=cIsHealing>temporary barrier</style> for <style=cIsHealing>{Pct(PercentBarrierAmount)} of your max health.</style>";
             return desc;
         }
 
         protected override string GetLoreString(string langID = null)
         {
             var desc = "";
-            desc += (Medkit_HealAmount > 0 ? "Contains" : "Used to contain");
+            desc += (PercentHealAmount > 0 ? "Contains" : "Used to contain");
             desc += " a small piece of fairy." +
                 "\nSeeking a place that would provide a near constant flow of the desperate and injured, Médecins Sans Diplôme recognized the Gungeon as the perfect place to found their practice.";
             return desc;
@@ -350,9 +350,9 @@ localScale = new Vector3(0.7392F, 0.7392F, 0.7392F)
             HealthComponent health = body.healthComponent;
             if (!health) return false;
 
-            var BarrierAmt = health.fullBarrier * Medkit_BarrierAmount;
+            var BarrierAmt = health.fullBarrier * PercentBarrierAmount;
 
-            health.HealFraction(Medkit_HealAmount, default);
+            health.HealFraction(PercentHealAmount, default);
             health.AddBarrier(BarrierAmt);
             return true;
         }
