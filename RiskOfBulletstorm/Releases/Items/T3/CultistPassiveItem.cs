@@ -25,13 +25,13 @@ namespace RiskOfBulletstorm.Items
         protected override string GetLoreString(string langID = null) => "Now that the protagonist is dead, it's time to shine!";
 
         public static GameObject ItemBodyModelPrefab;
-        readonly float baseAttackSpeedAdd = 0.4f;
-        readonly float baseDamageAdd = 10f;
-        readonly float healthMultAdd = 1f;
-        readonly float baseMoveSpeedAdd = 1f;
-        readonly float regenMultAdd = 0.5f;
-        readonly float armorAdd = 8f;
-        readonly float critAdd = 15f;
+        readonly float baseAttackSpeedAdd = 0.2f;
+        readonly float baseDamageAdd = 5f;
+        readonly float healthMultAdd = 0.5f;
+        readonly float baseMoveSpeedAdd = 0.5f;
+        readonly float regenMultAdd = 0.25f;
+        readonly float armorAdd = 4f;
+        readonly float critAdd = 7.5f;
 
         public CultistPassiveItem()
         {
