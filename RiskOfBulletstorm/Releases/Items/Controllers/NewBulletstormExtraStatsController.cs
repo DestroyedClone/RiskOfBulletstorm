@@ -399,8 +399,8 @@ namespace RiskOfBulletstorm.Items
 
         public class RBSExtraStatsController : MonoBehaviour
         {
-            private float Scope_SpreadReduction => Scope.Scope_SpreadReduction;
-            private float Scope_SpreadReductionStack => Scope.Scope_SpreadReductionStack;
+            private float Scope_SpreadReduction => Scope.SpreadReduction;
+            private float Scope_SpreadReductionStack => Scope.SpreadReductionPerStack;
             private float[,] SpiceBonusesConstant => Spice.SpiceBonusesConstant; 
             private float[] SpiceBonusesAdditive => Spice.SpiceBonusesAdditive;
             public Inventory inventory;

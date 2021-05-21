@@ -96,11 +96,11 @@ namespace RiskOfBulletstorm.Shared.Buffs
             if (sender.HasBuff(Anger)) { args.damageMultAdd += Config_Enrage_Damage; }
             if (sender.HasBuff(Jammed))
             {
-                args.damageMultAdd += curse.Curse_DamageBoost;
-                args.critAdd += curse.Curse_CritBoost;
-                args.attackSpeedMultAdd += curse.Curse_AttackSpeedBoost;
-                args.moveSpeedMultAdd += curse.Curse_MoveSpeedBoost;
-                args.baseHealthAdd += curse.Curse_HealthBoost;
+                args.damageMultAdd += curse.JammedDamageBoost;
+                args.critAdd += curse.JammedCritBoost;
+                args.attackSpeedMultAdd += curse.JammedAttackSpeedBoost;
+                args.moveSpeedMultAdd += curse.JammedMoveSpeedBoost;
+                args.baseHealthAdd += curse.JammedHealthBoost;
             }
         }
     }
