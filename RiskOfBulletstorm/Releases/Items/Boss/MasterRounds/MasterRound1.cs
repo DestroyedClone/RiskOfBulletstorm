@@ -143,6 +143,7 @@ namespace RiskOfBulletstorm.Items.Boss.MasterRounds
         {
             orig(self, damageInfo, victim);
             if (!victim && !victim.GetComponent<CharacterBody>()) return; // no victim
+            if (!victim.GetComponent<CharacterBody>().masterObject) return;
             var masterRoundComponent = victim.GetComponent<CharacterBody>().masterObject.GetComponent<MasterRoundComponent>();
             if (!masterRoundComponent || !masterRoundComponent.teleporterCharging) return; // no component aka not a player
             if (damageInfo.rejected || damageInfo.damage < MinimumDamageBeforeInvalidation) return; //minimum damage check
@@ -219,6 +220,7 @@ namespace RiskOfBulletstorm.Items.Boss.MasterRounds
 
             foreach (var component in InstanceTracker.GetInstancesList<MasterRoundComponent>())
             {
+                Chat.AddMessage(component.currentHits+" / "+component.allowedHits);
                 if (component.currentHits > component.allowedHits)
                 {
                     success = false;
