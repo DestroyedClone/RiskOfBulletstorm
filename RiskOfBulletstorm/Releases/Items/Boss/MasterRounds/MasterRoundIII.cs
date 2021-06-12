@@ -18,5 +18,9 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "This exceptional artifact indicates mastery of the third chamber." +
             "\nFew return from the deadly route that leads to the Forge. Yet fewer survive that venture into less-explored territory.";
+        public MasterRoundIII()
+        {
+            iconResource = staticIcon;
+        }
     }
 }

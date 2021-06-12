@@ -18,5 +18,9 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "This extraordinary artifact indicates mastery of the fourth chamber." +
             "\nA monument to the legendary hero greets all who challenge the Gungeon, though their identity has been lost to the ages.";
+        public MasterRoundIV()
+        {
+            iconResource = staticIcon;
+        }
     }
 }

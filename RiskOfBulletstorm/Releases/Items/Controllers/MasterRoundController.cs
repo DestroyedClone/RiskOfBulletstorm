@@ -9,6 +9,7 @@ using RiskOfBulletstorm.Utils;
 using static RoR2.Chat;
 using R2API;
 using static R2API.RecalculateStatsAPI;
+using static RiskOfBulletstorm.BulletstormPlugin;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -64,6 +65,8 @@ namespace RiskOfBulletstorm.Items
         public BodyIndex BodyIndexLunarExploder;
 
         public static ItemDef[] MasterRoundDefs = new ItemDef[0];
+
+        public static Sprite staticIcon = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/MasterRoundI.png");
 
         public override void SetupLate()
         {

@@ -18,5 +18,9 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "This unfathomable artifact indicates mastery of the penultimate chamber." +
             "\nThe legendary hero felled the beast at the heart of the Gungeon with five rounds. According to the myth, the sixth remains unfired.";
+        public MasterRoundV()
+        {
+            iconResource = staticIcon;
+        }
     }
 }
