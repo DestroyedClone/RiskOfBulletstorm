@@ -333,18 +333,6 @@ namespace RiskOfBulletstorm.Items
                     localScale = new Vector3(0.03F, 0.03F, 0.03F)
                 }
             });
-            //rules.Add("mdlSniper", new ItemDisplayRule[] //?
-            //{
-            //    new ItemDisplayRule
-            //    {
-            //        ruleType = ItemDisplayRuleType.ParentedPrefab,
-            //        followerPrefab = ItemBodyModelPrefab,
-            //        childName = "ScopePoint",
-            //        localPos = new Vector3(0.07f, 0.09f, 0.7f),
-            //        localAngles = new Vector3(0f, 0f, 0f),
-            //        localScale = generalScale * 0.5f
-            //    }
-            //});
             rules.Add("mdlClayBruiser", new ItemDisplayRule[]
             {
                 new ItemDisplayRule

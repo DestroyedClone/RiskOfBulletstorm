@@ -98,10 +98,10 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-childName = "ThighR",
-localPos = new Vector3(-0.0621F, -0.0474F, 0.106F),
-localAngles = new Vector3(15.6159F, 257.5474F, 97.0593F),
-localScale = new Vector3(0.05F, 0.05F, 0.05F)
+                    childName = "ThighR",
+                    localPos = new Vector3(-0.0621F, -0.0474F, 0.106F),
+                    localAngles = new Vector3(15.6159F, 257.5474F, 97.0593F),
+                    localScale = new Vector3(0.05F, 0.05F, 0.05F)
                 }
             });
             rules.Add("mdlHuntress", new ItemDisplayRule[]
@@ -110,10 +110,10 @@ localScale = new Vector3(0.05F, 0.05F, 0.05F)
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-childName = "ThighR",
-localPos = new Vector3(-0.0861F, -0.0975F, 0.0275F),
-localAngles = new Vector3(31.9993F, 189.4607F, 98.4429F),
-localScale = new Vector3(0.05F, 0.05F, 0.05F)
+                    childName = "ThighR",
+                    localPos = new Vector3(-0.0861F, -0.0975F, 0.0275F),
+                    localAngles = new Vector3(31.9993F, 189.4607F, 98.4429F),
+                    localScale = new Vector3(0.05F, 0.05F, 0.05F)
                 }
             });
             rules.Add("mdlToolbot", new ItemDisplayRule[]
@@ -234,6 +234,18 @@ childName = "ThighR",
 localPos = new Vector3(-0.0046F, 0.0135F, 0.1629F),
 localAngles = new Vector3(7.5955F, 108.9757F, 81.1478F),
 localScale = new Vector3(0.05F, 0.05F, 0.05F)
+                }
+            });
+            rules.Add("mdlBandit2", new ItemDisplayRule[]
+            {
+                new ItemDisplayRule
+                {
+                    ruleType = ItemDisplayRuleType.ParentedPrefab,
+                    followerPrefab = ItemBodyModelPrefab,
+                    childName = "Pelvis",
+                    localPos = new Vector3(0.07584F, 0.03391F, -0.16145F),
+                    localAngles = new Vector3(323.4154F, 283.8088F, 53.5042F),
+                    localScale = new Vector3(0.05F, 0.05F, 0.05F)
                 }
             });
             rules.Add("mdlClayBruiser", new ItemDisplayRule[]

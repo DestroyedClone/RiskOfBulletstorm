@@ -246,6 +246,18 @@ namespace RiskOfBulletstorm.Items
                     localScale = new Vector3(0.038F, 0.038F, 0.038F)
                 }
             });
+            rules.Add("mdlBandit2", new ItemDisplayRule[]
+            {
+                new ItemDisplayRule
+                {
+                    ruleType = ItemDisplayRuleType.ParentedPrefab,
+                    followerPrefab = ItemBodyModelPrefab,
+                    childName = "Pelvis",
+                    localPos = new Vector3(0.15299F, 0.01409F, -0.11575F),
+                    localAngles = new Vector3(320.7493F, 95.24635F, 151.2675F),
+                    localScale = new Vector3(0.03F, 0.03F, 0.03F)
+                }
+            });
             rules.Add("mdlClayBruiser", new ItemDisplayRule[]
             {
                 new ItemDisplayRule

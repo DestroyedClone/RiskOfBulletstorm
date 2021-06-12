@@ -220,8 +220,20 @@ namespace RiskOfBulletstorm.Items
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
                     childName = "Chest",
-                    localPos = new Vector3(0F, 0.1917F, 0.1773F),
-                    localAngles = new Vector3(358.7213F, 0F, 0F),
+                    localPos = new Vector3(-0.05338F, 0.09002F, 0.17473F),
+                    localAngles = new Vector3(1.31177F, 345.8464F, 5.54727F),
+                    localScale = new Vector3(0.033F, 0.033F, 0.033F)
+                }
+            });
+            rules.Add("mdlBandit2", new ItemDisplayRule[]
+            {
+                new ItemDisplayRule
+                {
+                    ruleType = ItemDisplayRuleType.ParentedPrefab,
+                    followerPrefab = ItemBodyModelPrefab,
+                    childName = "Chest",
+                    localPos = new Vector3(-0.05338F, 0.09002F, 0.17473F),
+                    localAngles = new Vector3(1.31177F, 345.8464F, 5.54727F),
                     localScale = new Vector3(0.033F, 0.033F, 0.033F)
                 }
             });

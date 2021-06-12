@@ -270,10 +270,22 @@ localScale = new Vector3(0.01F, 0.01F, 0.01F)
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-childName = "HandL",
-localPos = new Vector3(0.0489F, 0.1243F, 0.016F),
-localAngles = new Vector3(50F, 10F, 6.6411F),
-localScale = new Vector3(0.0127F, 0.0127F, 0.0127F)
+                    childName = "HandL",
+                    localPos = new Vector3(0.0489F, 0.1243F, 0.016F),
+                    localAngles = new Vector3(50F, 10F, 6.6411F),
+                    localScale = new Vector3(0.0127F, 0.0127F, 0.0127F)
+                }
+            });
+            rules.Add("mdlBandit2", new ItemDisplayRule[]
+            {
+                new ItemDisplayRule
+                {
+                    ruleType = ItemDisplayRuleType.ParentedPrefab,
+                    followerPrefab = ItemBodyModelPrefab,
+                    childName = "HandL",
+                    localPos = new Vector3(-0.00288F, 0.14491F, 0.01657F),
+                    localAngles = new Vector3(42.84074F, 0F, 0F),
+                    localScale = new Vector3(0.01F, 0.01F, 0.01F)
                 }
             });
             rules.Add("mdlClayBruiser", new ItemDisplayRule[]

@@ -238,6 +238,18 @@ localAngles = new Vector3(40F, 26F, 6.6411F),
 localScale = new Vector3(0.0146F, 0.0146F, 0.0147F)
                 }
             });
+            rules.Add("mdlBandit2", new ItemDisplayRule[]
+            {
+                new ItemDisplayRule
+                {
+                    ruleType = ItemDisplayRuleType.ParentedPrefab,
+                    followerPrefab = ItemBodyModelPrefab,
+                    childName = "HandL",
+                    localPos = new Vector3(0.02214F, 0.15092F, -0.00022F),
+                    localAngles = new Vector3(0F, 0F, 353.7676F),
+                    localScale = new Vector3(0.01F, 0.01F, 0.01F)
+                }
+            });
             rules.Add("mdlClayBruiser", new ItemDisplayRule[] //todo new child?
             {
                 new ItemDisplayRule
