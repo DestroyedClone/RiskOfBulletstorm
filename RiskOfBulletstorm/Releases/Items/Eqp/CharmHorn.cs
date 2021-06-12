@@ -50,7 +50,7 @@ namespace RiskOfBulletstorm.Items
             base.SetupBehavior();
 
             GameObject warbannerPrefab = Resources.Load<GameObject>("Prefabs/NetworkedObjects/WarbannerWard");
-            CharmWardPrefab = warbannerPrefab.InstantiateClone("Bulletstorm_CharmHornWard");
+            CharmWardPrefab = warbannerPrefab.InstantiateClone("Bulletstorm_CharmHornWard",true);
 
             BuffWard buffWard = CharmWardPrefab.GetComponent<BuffWard>();
             buffWard.expires = true;

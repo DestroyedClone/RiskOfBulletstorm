@@ -16,6 +16,6 @@ namespace RiskOfBulletstorm.Items
         protected override string GetDescString(string langid = null) => $"";
 
         protected override string GetLoreString(string langID = null) => "This potent artifact indicates mastery of the second chamber." +
-            "\nAny who enter the Gungeon are doomed to remain, living countless lives in an effort to break the cycle.";;
+            "\nAny who enter the Gungeon are doomed to remain, living countless lives in an effort to break the cycle.";
     }
 }

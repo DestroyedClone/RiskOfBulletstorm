@@ -6,7 +6,7 @@ namespace RiskOfBulletstorm.Items
 {
     public class MasterRoundIII : Item<MasterRoundIII>
     {
-        public override string displayName => "Master Round";
+        public override string displayName => "Master Round III";
         public override ItemTier itemTier => ItemTier.Boss;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.AIBlacklist, ItemTag.WorldUnique });
 

@@ -57,7 +57,7 @@ namespace RiskOfBulletstorm.Items
         public override void SetupBehavior()
         {
             base.SetupBehavior();
-            PermanentScannerPrefab = PrefabAPI.InstantiateClone(Resources.Load<GameObject>("Prefabs/NetworkedObjects/ChestScanner"), "Bulletstorm_ChestScanner");
+            PermanentScannerPrefab = PrefabAPI.InstantiateClone(Resources.Load<GameObject>("Prefabs/NetworkedObjects/ChestScanner"), "Bulletstorm_ChestScanner", true);
             ChestRevealer chestRevealer = PermanentScannerPrefab.GetComponent<ChestRevealer>();
             chestRevealer.radius = 1000;
             chestRevealer.pulseTravelSpeed = 1000;

@@ -114,7 +114,7 @@ namespace RiskOfBulletstorm.Items
 
             //needs to be declared first
             GameObject sporeGrenadeDotZonePrefab = Resources.Load<GameObject>("prefabs/projectiles/SporeGrenadeProjectileDotZone");
-            MolotovDotZonePrefab = sporeGrenadeDotZonePrefab.InstantiateClone("Bulletstorm_MolotovDotZone");
+            MolotovDotZonePrefab = sporeGrenadeDotZonePrefab.InstantiateClone("Bulletstorm_MolotovDotZone",true);
             MolotovDotZonePrefab.GetComponent<ProjectileDamage>().damageType = DamageType.IgniteOnHit;
             ProjectileDotZone projectileDotZone = MolotovDotZonePrefab.GetComponent<ProjectileDotZone>();
             projectileDotZone.damageCoefficient = PercentDamagePerTick;
@@ -123,7 +123,7 @@ namespace RiskOfBulletstorm.Items
             projectileDotZone.impactEffect = GlassBreakEffect;
 
             GameObject sporeGrenadePrefab = Resources.Load<GameObject>("prefabs/projectiles/SporeGrenadeProjectile");
-            MolotovPrefab = sporeGrenadePrefab.InstantiateClone("Bulletstorm_Molotov");
+            MolotovPrefab = sporeGrenadePrefab.InstantiateClone("Bulletstorm_Molotov", true);
             MolotovPrefab.GetComponent<ProjectileDamage>().damageColorIndex = DamageColorIndex.Item;
 
             var PIE = MolotovPrefab.GetComponent<ProjectileImpactExplosion>();

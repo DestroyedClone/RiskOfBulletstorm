@@ -85,7 +85,7 @@ namespace RiskOfBulletstorm.Items
             iscBarrel = (InteractableSpawnCard)Resources.Load<SpawnCard>("SpawnCards/InteractableSpawnCard/iscBarrel1");
             iscBarrelNew = UnityEngine.Object.Instantiate(iscBarrel); //remove?
             BarrelPrefab = iscBarrelNew.prefab;
-            BarrelPrefab = BarrelPrefab.InstantiateClone($"Bulletstorm_Barrel");
+            BarrelPrefab = BarrelPrefab.InstantiateClone($"Bulletstorm_Barrel", true);
             BarrelInteraction barrelInteraction = BarrelPrefab.GetComponent<BarrelInteraction>();
             barrelInteraction.expReward = 0;
             barrelInteraction.goldReward = 0;

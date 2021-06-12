@@ -109,6 +109,7 @@ namespace RiskOfBulletstorm.Items
             TeleporterInteraction.onTeleporterBeginChargingGlobal += TeleporterInteraction_onTeleporterBeginChargingGlobal;
             TeleporterInteraction.onTeleporterChargedGlobal += TeleporterInteraction_onTeleporterChargedGlobal;
             On.RoR2.GlobalEventManager.OnHitEnemy += MasterRound_OnHitEnemy;
+            GetStatCoefficients += MasterRoundController_GetStatCoefficients;
         }
 
         public override void Uninstall()
@@ -117,6 +118,21 @@ namespace RiskOfBulletstorm.Items
             TeleporterInteraction.onTeleporterBeginChargingGlobal -= TeleporterInteraction_onTeleporterBeginChargingGlobal;
             TeleporterInteraction.onTeleporterChargedGlobal -= TeleporterInteraction_onTeleporterChargedGlobal;
             On.RoR2.GlobalEventManager.OnHitEnemy -= MasterRound_OnHitEnemy;
+            GetStatCoefficients -= MasterRoundController_GetStatCoefficients;
+        }
+
+        private void MasterRoundController_GetStatCoefficients(CharacterBody sender, StatHookEventArgs args)
+        {
+            if (sender.inventory)
+            {
+                var inv = sender.inventory;
+                var itemCount = 0;
+                foreach (var itemDef in MasterRoundDefs)
+                {
+                    itemCount += inv.GetItemCount(itemDef);
+                }
+                args.damageMultAdd += itemCount * MaxHealthAdditiveMultiplier;
+            }
         }
 
 
@@ -235,7 +251,8 @@ namespace RiskOfBulletstorm.Items
             if (success)
             {
                 var currentStage = Run.instance.stageClearCount;
-                HelperUtil.GiveItemToPlayers(itemIndex, true, 1);
+                var MasterRoundToGive = MasterRoundDefs[GetTrueMasterRoundNumber(currentStage)];
+                HelperUtil.GiveItemToPlayers(MasterRoundToGive.itemIndex, true, 1);
             }
         }
         public class MasterRoundComponent : MonoBehaviour

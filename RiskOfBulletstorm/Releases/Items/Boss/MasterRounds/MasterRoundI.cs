@@ -17,6 +17,5 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "This rare artifact indicates mastery of the first chamber." +
             "\nApocryphal texts recovered from cultists of the Order indicate that the Gun and the Bullet are linked somehow.";
-
     }
 }

@@ -13,29 +13,29 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the base amount of kills required to roll a pickup spawn?", AutoConfigFlags.PreventNetMismatch)]
-        public int BUP_RequiredKills { get; private set; } = 25;
+        public int RequiredKills { get; private set; } = 25;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What value should the required kills be multiplied by per stage?", AutoConfigFlags.PreventNetMismatch)]
-        public float BUP_StageMultiplier { get; private set; } = 1.1f;
+        public float StageMultiplier { get; private set; } = 1.1f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the chance to create a pickup after reaching the required amount of kills? (Value: Direct Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float BUP_RollChance { get; private set; } = 40f;
+        public float RollChance { get; private set; } = 40f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the weighted chance to select a Blank?", AutoConfigFlags.PreventNetMismatch)]
-        public float BUP_chanceBlank { get; private set; } = 0.45f;
+        public float chanceBlank { get; private set; } = 0.45f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the weighted chance to select an Armor?", AutoConfigFlags.PreventNetMismatch)]
-        public float BUP_chanceArmor { get; private set; } = 0.15f;
+        public float chanceArmor { get; private set; } = 0.15f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the weighted chance to select an Ammo Spread?", AutoConfigFlags.PreventNetMismatch)]
-        public float BUP_chanceAmmo { get; private set; } = 0.7f;
+        public float chanceAmmo { get; private set; } = 0.7f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Debugging: Enable to show in console when a Forgive Me, Please was detected with its damageinfo. Use it to test for any false positives.", AutoConfigFlags.PreventNetMismatch)]
-        public bool BUP_DebugShowDollProc { get; private set; } = false;
+        public bool DebugShowDollProc { get; private set; } = false;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Debugging: Enable to show in console the info about the kills, and the info about the final result.", AutoConfigFlags.PreventNetMismatch)]
-        public bool BUP_ShowProgress { get; private set; } = false;
+        public bool ShowProgress { get; private set; } = false;
         public override string displayName => "BulletstormPickupsController";
         public override ItemTier itemTier => ItemTier.NoTier;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.WorldUnique, ItemTag.AIBlacklist });
@@ -75,9 +75,9 @@ namespace RiskOfBulletstorm.Items
             orig();
             //needs to setup late so the indicies can be setup
             //weightedSelection.AddChoice(Key.instance.pickupIndex, 0.15f); currently unused while i rework it
-            weightedSelection.AddChoice(Blank.instance.pickupDef, BUP_chanceBlank);
-            weightedSelection.AddChoice(Armor.instance.pickupDef, BUP_chanceArmor);
-            weightedSelection.AddChoice(PickupAmmoSpread.instance.pickupDef, BUP_chanceAmmo);
+            weightedSelection.AddChoice(Blank.instance.pickupDef, chanceBlank);
+            weightedSelection.AddChoice(Armor.instance.pickupDef, chanceArmor);
+            weightedSelection.AddChoice(PickupAmmoSpread.instance.pickupDef, chanceAmmo);
         }
 
         private void GlobalEventManager_onCharacterDeathGlobal(DamageReport damageReport)
@@ -95,20 +95,20 @@ namespace RiskOfBulletstorm.Items
             {
                 //int DiffMultAdd = Run.instance.selectedDifficulty; //TODO: Add difficulty scaling?
                 pickupsComponent.globalDeaths++;
-                if (BUP_ShowProgress) _logger.LogMessage(string.Format("[Bulletstorm] Kills/StageRequired: {0}/{1}", pickupsComponent.globalDeaths, requiredKills));
+                if (ShowProgress) _logger.LogMessage(string.Format("[Bulletstorm] Kills/StageRequired: {0}/{1}", pickupsComponent.globalDeaths, requiredKills));
 
                 if (pickupsComponent.globalDeaths % requiredKills == 0)
                 {
                     Vector3 pickupPosition = EvaluatePickupPosition(pickupsComponent, VictimBody);
                     pickupPosition += Vector3.up * 2f;
-                    if (BUP_ShowProgress)
+                    if (ShowProgress)
                         _logger.LogMessage(string.Format("Pickups Controller: Resulting Kill Info (setup for roll):" +
                             "\nwasMapDeath: {0}" +
                             "\nlastHitAttacker: {1}" +
                             "\nposition: {2}", pickupsComponent.wasMapDeath, pickupsComponent.lastHitAttacker, pickupPosition));
 
                     var teamLuck = RiskOfBulletstorm.Utils.HelperUtil.GetPlayersLuck();
-                    if (Util.CheckRoll(BUP_RollChance, teamLuck)) //Roll to spawn pickups
+                    if (Util.CheckRoll(RollChance, teamLuck)) //Roll to spawn pickups
                     {
                         //Chat.AddMessage("Pickups: Rolled success.");
 
@@ -116,7 +116,7 @@ namespace RiskOfBulletstorm.Items
                     }
                     else
                     {
-                        if (BUP_ShowProgress)
+                        if (ShowProgress)
                             _logger.LogMessage("[Bulletstorm] Pickups Controller: Roll failed!");
                     }
                     pickupsComponent.wasMapDeath = false;
@@ -211,7 +211,7 @@ namespace RiskOfBulletstorm.Items
             var randfloat = UnityEngine.Random.Range(0f, 1f);
             var dropDef = weightedSelection.Evaluate(randfloat);
 
-            if (BUP_ShowProgress)
+            if (ShowProgress)
             {
                 _logger.LogMessage(string.Format("Pickups Controller: Roll success! Chosen item {0} {1} {2}",
                     dropDef.pickupIndex, dropDef.internalName, Language.GetString(dropDef.nameToken)));
@@ -230,7 +230,7 @@ namespace RiskOfBulletstorm.Items
         {
             if (!dmginfo.inflictor && dmginfo.procCoefficient == 1 && dmginfo.damageColorIndex == DamageColorIndex.Item && dmginfo.force == Vector3.zero && dmginfo.damageType == DamageType.Generic)
             {
-                if (BUP_DebugShowDollProc)
+                if (DebugShowDollProc)
                 {
                     _logger.LogMessage("[RiskOfBulletstorm]Pickups Controller: Forgive Me, Please usage was detected.");
                     _logger.LogMessage("[RiskOfBulletstorm]Pickups Controller: " + dmginfo);
@@ -250,8 +250,8 @@ namespace RiskOfBulletstorm.Items
             public GameObject lastHitAttacker;
 
             public int stageCount = 0;
-            public float StageMultiplier => BulletstormPickupsController.instance.BUP_StageMultiplier;
-            public int ConfigRequiredKills => instance.BUP_RequiredKills;
+            public float StageMultiplier => BulletstormPickupsController.instance.StageMultiplier;
+            public int ConfigRequiredKills => instance.RequiredKills;
 
 
             public void Awake()

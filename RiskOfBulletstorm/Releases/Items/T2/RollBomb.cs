@@ -44,7 +44,7 @@ namespace RiskOfBulletstorm.Items
         public override void SetupBehavior()
         {
             GameObject engiMinePrefab = Resources.Load<GameObject>("prefabs/projectiles/EngiGrenadeProjectile");
-            BombPrefab = engiMinePrefab.InstantiateClone("Bulletstorm_RollBomb");
+            BombPrefab = engiMinePrefab.InstantiateClone("Bulletstorm_RollBomb", true);
             BombPrefab.transform.localScale = new Vector3(2f, 2f, 2f);
             BombPrefab.GetComponent<ProjectileSimple>().desiredForwardSpeed = 1; //default 50
             BombPrefab.GetComponent<ProjectileDamage>().damageColorIndex = DamageColorIndex.Item;

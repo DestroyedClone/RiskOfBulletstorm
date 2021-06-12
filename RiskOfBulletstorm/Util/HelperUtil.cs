@@ -209,12 +209,12 @@ namespace RiskOfBulletstorm.Utils
             //var color = pickupDef.baseColor;
             //var body = characterMaster.GetBody();
 
-            GenericPickupController.SendPickupMessage(characterMaster, pickupIndex);
 
             //Chat.AddPickupMessage(body, nameToken, color, (uint)amount);
             Util.PlaySound("Play_UI_item_pickup", characterMaster.GetBodyObject());
 
             self.GiveItem(itemIndex, amount);
+            GenericPickupController.SendPickupMessage(characterMaster, pickupIndex);
             /*
             for (int i = 0; i < list.Count; i++)
             {

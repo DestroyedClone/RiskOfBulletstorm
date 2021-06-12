@@ -52,7 +52,7 @@ namespace RiskOfBulletstorm.Items
             base.SetupBehavior();
 
             GameObject warbannerPrefab = Resources.Load<GameObject>("Prefabs/NetworkedObjects/WarbannerWard");
-            MagazinePrefab = warbannerPrefab.InstantiateClone("Bulletstorm_MagazineRackObject");
+            MagazinePrefab = warbannerPrefab.InstantiateClone("Bulletstorm_MagazineRackObject", true);
 
             BuffWard buffWard = MagazinePrefab.GetComponent<BuffWard>();
             buffWard.Networkradius = EffectRadius;

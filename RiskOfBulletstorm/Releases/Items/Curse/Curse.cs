@@ -77,7 +77,7 @@ namespace RiskOfBulletstorm.Items
             base.SetupBehavior();
             GameObject wispBody = Resources.Load<GameObject>("prefabs/characterbodies/WispBody");
             var wispFire = wispBody.transform.Find("Model Base/mdlWisp1Mouth/WispArmature/ROOT/Base/Fire").gameObject;
-            jammedFire = wispFire.InstantiateClone("Bulletstorm_JammedFire");
+            jammedFire = wispFire.InstantiateClone("Bulletstorm_JammedFire",true);
             jammedFire.transform.localPosition = Vector3.zero;
             jammedFire.GetComponent<ParticleSystemRenderer>().material = Resources.Load<Material>("materials/matClayGooDebuff");
             // https://discordapp.com/channels/562704639141740588/562704639569428506/810301262432174090

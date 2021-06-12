@@ -56,9 +56,14 @@ namespace RiskOfBulletstorm.Items
                 CycleRightKey_KB = Backpack_CycleRightButton;
             
         }
-        protected override string GetDescString(string langid = null) => $"Grants access to an <style=cIsUtility>extra equipment slot</style> <style=cStack>(+1 per stack)</style>" +
+        protected override string GetDescString(string langid = null)
+        {
+            var desc = $"Grants access to an <style=cIsUtility>extra equipment slot</style> <style=cStack>(+1 per stack)</style>" +
             $"\nHold {ModifierKey_KB} and press 1-0 to switch equipment slots." +
-            $"\nPress {CycleLeftKey_KB}/{CycleLeftKey_GP} or {CycleRightKey_KB}/{CycleRightKey_GP} to cycle slots";
+            $"\nPress {CycleLeftKey_KB} or {CycleRightKey_KB} to cycle to the previous/next slot.";
+            desc += Backpack_UseScrollWheel ? $"Additionally, the scrollwheel can be used." : $"";
+            return desc;
+        }
         public override void SetupBehavior()
         {
             base.SetupBehavior();
