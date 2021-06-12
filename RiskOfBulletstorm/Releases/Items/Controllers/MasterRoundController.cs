@@ -1,27 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Runtime.CompilerServices;
-using System;
 using RoR2;
 using UnityEngine;
 using TILER2;
-using static RiskOfBulletstorm.Utils.HelperUtil;
-using RoR2.Projectile;
-using static RiskOfBulletstorm.BulletstormPlugin;
-using EntityStates;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
 using UnityEngine.Networking;
-using System.Linq;
-using RoR2.UI;
-//using TMPro;
 using static TILER2.MiscUtil;
 using static TILER2.StatHooks;
 using RiskOfBulletstorm.Utils;
 using static RoR2.Chat;
 using R2API;
-using R2API.Utils;
-using static RiskOfBulletstorm.Items.MasterRoundController;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -233,6 +220,16 @@ namespace RiskOfBulletstorm.Items
         {
             int trueStageCont = (stageCount) % MasterRoundDefs.Length;
             return trueStageCont;
+        }
+
+        public static string GetItemDescStr()
+        {
+            return $"Increases maximum health by <style=cIsHealing>+" +Pct(MaxHealthAdditiveMultiplier)+"</style>";
+        }
+
+        public static string GetItemPickupStr()
+        {
+            return $"Increases maximum health.";
         }
 
         public void CheckMasterRoundEventResult()

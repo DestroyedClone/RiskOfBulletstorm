@@ -22,13 +22,13 @@ namespace RiskOfBulletstorm.Items
         public float RollChance { get; private set; } = 40f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the weighted chance to select a Blank?", AutoConfigFlags.PreventNetMismatch)]
-        public float chanceBlank { get; private set; } = 0.45f;
+        public float ChanceBlank { get; private set; } = 0.45f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the weighted chance to select an Armor?", AutoConfigFlags.PreventNetMismatch)]
-        public float chanceArmor { get; private set; } = 0.15f;
+        public float ChanceArmor { get; private set; } = 0.15f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the weighted chance to select an Ammo Spread?", AutoConfigFlags.PreventNetMismatch)]
-        public float chanceAmmo { get; private set; } = 0.7f;
+        public float ChanceAmmo { get; private set; } = 0.7f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Debugging: Enable to show in console when a Forgive Me, Please was detected with its damageinfo. Use it to test for any false positives.", AutoConfigFlags.PreventNetMismatch)]
@@ -75,9 +75,9 @@ namespace RiskOfBulletstorm.Items
             orig();
             //needs to setup late so the indicies can be setup
             //weightedSelection.AddChoice(Key.instance.pickupIndex, 0.15f); currently unused while i rework it
-            weightedSelection.AddChoice(Blank.instance.pickupDef, chanceBlank);
-            weightedSelection.AddChoice(Armor.instance.pickupDef, chanceArmor);
-            weightedSelection.AddChoice(PickupAmmoSpread.instance.pickupDef, chanceAmmo);
+            weightedSelection.AddChoice(Blank.instance.pickupDef, ChanceBlank);
+            weightedSelection.AddChoice(Armor.instance.pickupDef, ChanceArmor);
+            weightedSelection.AddChoice(PickupAmmoSpread.instance.pickupDef, ChanceAmmo);
         }
 
         private void GlobalEventManager_onCharacterDeathGlobal(DamageReport damageReport)

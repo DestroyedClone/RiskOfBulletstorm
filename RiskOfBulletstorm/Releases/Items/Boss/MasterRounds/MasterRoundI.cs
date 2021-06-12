@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using RoR2;
 using TILER2;
+using static RiskOfBulletstorm.Items.MasterRoundController;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -11,9 +12,9 @@ namespace RiskOfBulletstorm.Items
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.AIBlacklist, ItemTag.WorldUnique });
 
         protected override string GetNameString(string langID = null) => displayName;
-        protected override string GetPickupString(string langID = null) => "";
+        protected override string GetPickupString(string langID = null) => GetItemPickupStr();
 
-        protected override string GetDescString(string langid = null) => $"";
+        protected override string GetDescString(string langid = null) => GetItemDescStr();
 
         protected override string GetLoreString(string langID = null) => "This rare artifact indicates mastery of the first chamber." +
             "\nApocryphal texts recovered from cultists of the Order indicate that the Gun and the Bullet are linked somehow.";
