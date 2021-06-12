@@ -12,15 +12,19 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What percent of maximum health should the Medkit heal? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float PercentHealAmount { get; private set; } = 0.75f;
+        public float PercentHealAmount { get; private set; } = 1.00f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What percent of barrier should the Meatbun give? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float PercentBarrierAmount { get; private set; } = 0.5f;
+        public float PercentBarrierAmount { get; private set; } = 1.00f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("How many seconds should the user become immune for?", AutoConfigFlags.PreventNetMismatch)]
+        public float ImmuneDuration { get; private set; } = 3.00f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the cooldown in seconds?", AutoConfigFlags.PreventNetMismatch)]
-        public override float cooldown { get; protected set; } = 100f;
+        public override float cooldown { get; protected set; } = 0f;
 
         public override string displayName => "Medkit";
 
@@ -38,8 +42,9 @@ namespace RiskOfBulletstorm.Items
             var canBarrier = PercentBarrierAmount > 0;
             if (!canHeal && !canBarrier) return $"Everything inside was emptied, it does nothing.";
             var desc = $"";
-            if (canHeal) desc += $"Heals for <style=cIsHealing>{Pct(PercentHealAmount)} health</style>. ";
-            if (canBarrier) desc += $"Gives a <style=cIsHealing>temporary barrier</style> for <style=cIsHealing>{Pct(PercentBarrierAmount)} of your max health.</style>";
+            if (canHeal) desc += $"Heals for <style=cIsHealing>{Pct(PercentHealAmount)} health</style>.";
+            if (canBarrier) desc += $" Gives a <style=cIsHealing>temporary barrier</style> for <style=cIsHealing>{Pct(PercentBarrierAmount)} of your max health.</style>";
+            desc += $" <style=cIsUtility>Consumes</style> on use.";
             return desc;
         }
 
@@ -366,6 +371,7 @@ localScale = new Vector3(0.7392F, 0.7392F, 0.7392F)
 
             health.HealFraction(PercentHealAmount, default);
             health.AddBarrier(BarrierAmt);
+            body.AddTimedBuff(RoR2Content.Buffs.Immune, ImmuneDuration);
             return true;
         }
     }

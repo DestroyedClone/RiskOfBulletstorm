@@ -1,17 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Runtime.CompilerServices;
-using System;
 using RoR2;
 using UnityEngine;
 using TILER2;
-using static RiskOfBulletstorm.Utils.HelperUtil;
 using RoR2.Projectile;
 using static RiskOfBulletstorm.BulletstormPlugin;
 using EntityStates;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using UnityEngine.Networking;
 
 namespace RiskOfBulletstorm.Items
 {

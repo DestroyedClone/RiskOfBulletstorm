@@ -21,7 +21,7 @@ namespace RiskOfBulletstorm.Items
         public float Armor_HealthThreshold { get; private set; } = 0.20f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Should Armor protect against fatal damage? This takes priority over the required minimum amount of damage.")]
-        public bool Armor_ProtectDeath { get; private set; } = false;
+        public bool Armor_ProtectDeath { get; private set; } = true;
 
         public override string displayName => "Armor";
         public string descText = "Prevents a single hit";

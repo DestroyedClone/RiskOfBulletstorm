@@ -220,9 +220,9 @@ namespace RiskOfBulletstorm.Items
             {
                 PickupDropletController.CreatePickupDroplet(dropDef.pickupIndex, pickupPosition, Vector3.up * 5);
 
-                EffectManager.SimpleEffect(SpawnedPickupEffect, pickupPosition + Vector3.up * 8f, Quaternion.identity, true);
+                EffectManager.SimpleEffect(SpawnedPickupEffect, pickupPosition + Vector3.up * 4f, Quaternion.identity, true);
                 EffectManager.SimpleEffect(SpawnedPickupEffect, pickupPosition, Quaternion.identity, true);
-                EffectManager.SimpleEffect(SpawnedPickupEffect, pickupPosition + Vector3.down * 8f, Quaternion.identity, true);
+                EffectManager.SimpleEffect(SpawnedPickupEffect, pickupPosition + Vector3.down * 4f, Quaternion.identity, true);
             } 
         }
 

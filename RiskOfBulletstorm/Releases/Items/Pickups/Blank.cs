@@ -17,10 +17,6 @@ namespace RiskOfBulletstorm.Items
         //https://docs.unity3d.com/ScriptReference/KeyCode.html
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
-        [AutoConfig("(nonfunctional) What Gamepad button should activate the Blank? (Default: T)", AutoConfigFlags.None)]
-        public string BlankButtonGamepad { get; private set; } = "T";
-
-        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the cooldown for activating a Blank?", AutoConfigFlags.PreventNetMismatch)]
         public float ConfigBlankCooldown { get; private set; } = 3f;
 
@@ -58,7 +54,7 @@ namespace RiskOfBulletstorm.Items
             else desc += $" within {BlankRadius}";
             desc += $"\nConsumed on use." +
                 $"\nCooldown: {ConfigBlankCooldown} seconds" +
-                $"\nPress "+BlankButton.ToString()+"/"+BlankButtonGamepad.ToString()+ " to activate";
+                $"\nPress "+BlankButton.ToString()+" to activate";
             return desc;
         }
 
