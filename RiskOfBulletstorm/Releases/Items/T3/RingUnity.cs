@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using RoR2;
 using TILER2;
 using UnityEngine;
-using static TILER2.StatHooks;
+using static R2API.RecalculateStatsAPI;
 using static RiskOfBulletstorm.BulletstormPlugin;
 
 //TY Harb

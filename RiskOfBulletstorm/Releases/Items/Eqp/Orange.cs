@@ -5,6 +5,7 @@ using UnityEngine;
 using TILER2;
 using static TILER2.MiscUtil;
 using static RiskOfBulletstorm.BulletstormPlugin;
+using static R2API.RecalculateStatsAPI;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -350,7 +351,7 @@ localScale = new Vector3(1.4194F, 1.4194F, 1.4194F)
         public override void Install()
         {
             base.Install();
-            StatHooks.GetStatCoefficients += StatHooks_GetStatCoefficients;
+            GetStatCoefficients += StatHooks_GetStatCoefficients;
             On.RoR2.Inventory.CalculateEquipmentCooldownScale += Inventory_CalculateEquipmentCooldownScale;
         }
 
@@ -365,7 +366,7 @@ localScale = new Vector3(1.4194F, 1.4194F, 1.4194F)
             return orig(self) * Mathf.Pow(1f-PercentEquipmentRecharge, self.GetItemCount(OrangeConsumedDef));
         }
 
-        private void StatHooks_GetStatCoefficients(CharacterBody sender, StatHooks.StatHookEventArgs args)
+        private void StatHooks_GetStatCoefficients(CharacterBody sender, StatHookEventArgs args)
         {
             if (sender && sender.inventory)
             {
@@ -380,7 +381,7 @@ localScale = new Vector3(1.4194F, 1.4194F, 1.4194F)
         public override void Uninstall()
         {
             base.Uninstall();
-            StatHooks.GetStatCoefficients -= StatHooks_GetStatCoefficients;
+            GetStatCoefficients -= StatHooks_GetStatCoefficients;
             On.RoR2.Inventory.CalculateEquipmentCooldownScale -= Inventory_CalculateEquipmentCooldownScale;
         }
 

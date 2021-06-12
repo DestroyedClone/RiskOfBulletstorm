@@ -3,12 +3,9 @@ using R2API;
 using RoR2;
 using UnityEngine;
 using TILER2;
-using static TILER2.StatHooks;
-using System;
+using static R2API.RecalculateStatsAPI;
 using RiskOfBulletstorm.Items;
 using static RiskOfBulletstorm.BulletstormPlugin;
-using RiskOfBulletstorm.Utils;
-using static TILER2.MiscUtil;
 
 namespace RiskOfBulletstorm.Shared.Buffs
 {

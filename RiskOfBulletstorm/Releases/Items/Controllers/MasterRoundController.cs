@@ -5,10 +5,10 @@ using UnityEngine;
 using TILER2;
 using UnityEngine.Networking;
 using static TILER2.MiscUtil;
-using static TILER2.StatHooks;
 using RiskOfBulletstorm.Utils;
 using static RoR2.Chat;
 using R2API;
+using static R2API.RecalculateStatsAPI;
 
 namespace RiskOfBulletstorm.Items
 {

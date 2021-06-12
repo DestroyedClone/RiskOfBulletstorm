@@ -3,11 +3,11 @@ using R2API;
 using RoR2;
 using UnityEngine;
 using TILER2;
-using static RiskOfBulletstorm.Utils.HelperUtil;
 using GenericNotification = On.RoR2.UI.GenericNotification;
 using System;
 using UnityEngine.Networking;
 using static RiskOfBulletstorm.BulletstormPlugin;
+using static R2API.RecalculateStatsAPI;
 
 namespace RiskOfBulletstorm.Items
 {
@@ -373,7 +373,7 @@ localScale = new Vector3(0.4205F, 0.4205F, 0.4205F)
         {
             base.Install();
             GenericNotification.SetEquipment += GenericNotification_SetEquipment;
-            StatHooks.GetStatCoefficients += StatHooks_GetStatCoefficients;
+            GetStatCoefficients += StatHooks_GetStatCoefficients;
             On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
             if (SpiceEquipment_Disconnect)
                 On.RoR2.GenericPickupController.AttemptGrant += GenericPickupController_AttemptGrant;
@@ -392,7 +392,7 @@ localScale = new Vector3(0.4205F, 0.4205F, 0.4205F)
         {
             base.Install();
             GenericNotification.SetEquipment -= GenericNotification_SetEquipment;
-            StatHooks.GetStatCoefficients -= StatHooks_GetStatCoefficients;
+            GetStatCoefficients -= StatHooks_GetStatCoefficients;
             On.RoR2.HealthComponent.TakeDamage -= HealthComponent_TakeDamage;
             if (SpiceEquipment_Disconnect)
                 On.RoR2.GenericPickupController.AttemptGrant -= GenericPickupController_AttemptGrant;
@@ -434,7 +434,7 @@ localScale = new Vector3(0.4205F, 0.4205F, 0.4205F)
             orig(self, damageInfo);
         }
 
-        private void StatHooks_GetStatCoefficients(CharacterBody sender, StatHooks.StatHookEventArgs args)
+        private void StatHooks_GetStatCoefficients(CharacterBody sender, StatHookEventArgs args)
         {
             if (sender && sender.inventory)
             {

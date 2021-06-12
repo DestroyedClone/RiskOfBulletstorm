@@ -4,7 +4,6 @@ using R2API;
 using RoR2;
 using UnityEngine;
 using TILER2;
-using static TILER2.StatHooks;
 using static TILER2.MiscUtil;
 using System;
 using static RiskOfBulletstorm.BulletstormPlugin;

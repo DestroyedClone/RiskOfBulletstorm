@@ -1,5 +1,4 @@
 ﻿using RiskOfBulletstorm.Utils;
-using System;
 using System.Collections.ObjectModel;
 using R2API;
 using RoR2;
