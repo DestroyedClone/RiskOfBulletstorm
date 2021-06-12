@@ -96,16 +96,12 @@ namespace RiskOfBulletstorm.Items
             SpiceTally.name = SpiceEquipment_ShowTally ? "SpiceTally" : modInfo.shortIdentifier + "INTERNALSPICECOUNT";
             SpiceTally.tier = ItemTier.NoTier;
             SpiceTally.canRemove = false;
-            SpiceTally.nameToken = "ITEM_SpiceTally_NAME";
-            SpiceTally.pickupToken = "";
+            SpiceTally.descriptionToken = modInfo.shortIdentifier + "_SPICETALLY_DESC";
+            SpiceTally.pickupToken = SpiceTally.descriptionToken;
+            SpiceTally.nameToken = "ITEM_SPICETALLY_NAME";
             SpiceTally.loreToken = "";
-            SpiceTally.descriptionToken = "ITEM_SpiceTally_DESC";
             SpiceTally.pickupIconSprite = iconResource;
             ItemAPI.Add(new CustomItem(SpiceTally, new ItemDisplayRuleDict()));
-        }
-        public override void SetupBehavior()
-        {
-            base.SetupBehavior();
         }
         public static ItemDisplayRuleDict GenerateItemDisplayRules()
         {
@@ -389,10 +385,6 @@ localScale = new Vector3(0.4205F, 0.4205F, 0.4205F)
             });
             return rules;
         }
-        public override void SetupLate()
-        {
-            base.SetupLate();
-        }
         public override void Install()
         {
             base.Install();
@@ -408,8 +400,8 @@ localScale = new Vector3(0.4205F, 0.4205F, 0.4205F)
         public override void InstallLanguage()
         {
             base.InstallLanguage();
-            LanguageAPI.Add("ITEM_SpiceTally_NAME", "Spice (Consumed)");
-            LanguageAPI.Add("ITEM_SpiceTally_DESC", "Grants various stat changes. Most notably, increased damage and reduced accuracy and health.");
+            LanguageAPI.Add("ITEM_SPICETALLY_NAME", "Spice (Consumed)");
+            LanguageAPI.Add("ITEM_SPICETALLY_DESC", "Grants various stat changes. Most notably, increased damage and reduced accuracy and health.");
         }
         
         public override void Uninstall()

@@ -64,9 +64,9 @@ namespace RiskOfBulletstorm.Items
             OrangeConsumedDef.tier = ItemTier.NoTier;
             OrangeConsumedDef.canRemove = false;
             OrangeConsumedDef.nameToken = OrangeConsumedDef.name;
-            OrangeConsumedDef.pickupToken = "";
+            OrangeConsumedDef.descriptionToken = modInfo.shortIdentifier + "_ORANGETALLY_DESC";
+            OrangeConsumedDef.pickupToken = OrangeConsumedDef.descriptionToken;
             OrangeConsumedDef.loreToken = "";
-            OrangeConsumedDef.descriptionToken = modInfo.shortIdentifier + "ORANGETALLY_DESC";
             OrangeConsumedDef.pickupIconSprite = iconResource;
             ItemAPI.Add(new CustomItem(OrangeConsumedDef, new ItemDisplayRuleDict()));
         }
