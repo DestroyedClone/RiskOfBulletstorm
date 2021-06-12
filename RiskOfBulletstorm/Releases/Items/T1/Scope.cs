@@ -78,19 +78,10 @@ namespace RiskOfBulletstorm.Items
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "HandL",
-                    localPos = new Vector3(-0.20307F, 0.36353F, -0.02385F),
-                    localAngles = new Vector3(279.3445F, 255.0025F, 197.1369F),
-                    localScale = new Vector3(0.05F, 0.05F, 0.05F)
-                },
-                new ItemDisplayRule
-                {
-                    ruleType = ItemDisplayRuleType.ParentedPrefab,
-                    followerPrefab = ItemBodyModelPrefab,
-                    childName = "HandR",
-                    localPos = new Vector3(0.16652F, 0.38849F, 0.00585F),
-                    localAngles = new Vector3(280.6462F, 356.0192F, 276.5007F),
-                    localScale = new Vector3(0.05F, 0.05F, 0.05F)
+                    childName = "Head",
+                    localPos = new Vector3(0, 0, 0),
+                    localAngles = new Vector3(0, 0, 0),
+                    localScale = new Vector3(0, 0, 0)
                 },
                 new ItemDisplayRule
                 {

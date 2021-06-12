@@ -102,7 +102,7 @@ namespace RiskOfBulletstorm.Items
                     localScale = new Vector3(0, 0, 0)
                 }
             });
-            rules.Add("mdlCommando", new ItemDisplayRule[]
+            rules.Add("mdlCommandoDualies", new ItemDisplayRule[]
             {
                 new ItemDisplayRule
                 {
