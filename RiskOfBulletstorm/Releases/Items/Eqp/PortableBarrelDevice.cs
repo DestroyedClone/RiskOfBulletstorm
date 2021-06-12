@@ -47,7 +47,7 @@ namespace RiskOfBulletstorm.Items
             {
                 // duration //
                 desc += $"Places a <style=cIsUtility>barrel</style>" +
-                    $"that lasts for ";
+                    $" that lasts for ";
                 if (isLifeLongerThanOne) desc += $"{Lifetime} seconds.";
                 else desc += $" a second.";
 

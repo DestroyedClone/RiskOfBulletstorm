@@ -30,7 +30,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetPickupString(string langID = null) => "<b>For You?</b>\nReduces prices at shops";
 
         protected override string GetDescString(string langid = null) => $"<style=cIsUtility>Reduces</style> shop prices by <style=cIsUtility>{Pct(CostReductionAmount)}</style>" +
-            $" <style=cStack>(+{Pct(CostReductionAmountPerStack)} hyperbolically per stack) up to {Pct(CostReductionAmountLimit)}</style>" +
+            $" <style=cStack>(+{Pct(CostReductionAmountPerStack)} hyperbolically per stack) up to {Pct(CostReductionAmountLimit)}</style>." +
             $" <style=cSub>Chance is shared amongst players.</style>";
 
         protected override string GetLoreString(string langID = null) => "The Pilot is able to talk his way into almost anything, usually gunfights.";
@@ -41,11 +41,6 @@ namespace RiskOfBulletstorm.Items
         {
             modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/DisarmingPersonality.prefab");
             iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/DisarmingPersonality.png");
-        }
-
-        public override void SetupBehavior()
-        {
-
         }
         public override void SetupAttributes()
         {

@@ -61,7 +61,7 @@ namespace RiskOfBulletstorm.Items
             var desc = $"Grants access to an <style=cIsUtility>extra equipment slot</style> <style=cStack>(+1 per stack)</style>" +
             $"\nHold {ModifierKey_KB} and press 1-0 to switch equipment slots." +
             $"\nPress {CycleLeftKey_KB} or {CycleRightKey_KB} to cycle to the previous/next slot.";
-            desc += Backpack_UseScrollWheel ? $"Additionally, the scrollwheel can be used." : $"";
+            desc += Backpack_UseScrollWheel ? $" Additionally, the scrollwheel can be used." : $"";
             return desc;
         }
         public override void SetupBehavior()
@@ -91,13 +91,10 @@ namespace RiskOfBulletstorm.Items
         public override void SetupLate()
         {
             base.SetupLate();
-            ToolbotBodyIndex = (int)SurvivorCatalog.GetBodyIndexFromSurvivorIndex(SurvivorCatalog.FindSurvivorIndex("MUL-T"));
+            ToolbotBodyIndex = (int)SurvivorCatalog.GetBodyIndexFromSurvivorIndex(SurvivorCatalog.FindSurvivorIndex("Toolbot"));
             if (ToolbotBodyIndex < 0)
             {
                 Debug.Log("SEARCHME: Failed finding toolbot");
-                ToolbotBodyIndex = (int)SurvivorCatalog.GetBodyIndexFromSurvivorIndex(SurvivorCatalog.FindSurvivorIndex("ToolbotBody"));
-                if (ToolbotBodyIndex <0)
-                    Debug.Log("SEARCHME: Failed finding toolbot, AGAIN");
             }
         }
 
@@ -128,6 +125,7 @@ namespace RiskOfBulletstorm.Items
             public byte isToolbot = 0;
             public byte selectableSlot = 0;
             public int ToolbotBodyIndex;
+            readonly string equipmentPrefix = "Selected slot ";
             public void OnDisable()
             {
                 if (characterBody)
@@ -223,7 +221,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     return;
                 }
-                Chat.AddMessage("Backpack: Set equipment slot to " + i);
+                Chat.AddMessage(equipmentPrefix + i);
                 inventory.SetActiveEquipmentSlot(i);
             }
             private void CycleSlot(bool cycleRight)
@@ -231,7 +229,7 @@ namespace RiskOfBulletstorm.Items
                 var currentSlot = inventory.activeEquipmentSlot + (cycleRight ? 1 : -1);
                 var newValue = (byte)LoopAround(currentSlot, 0, selectableSlot);
                 inventory.SetActiveEquipmentSlot(newValue);
-                Chat.AddMessage("Backpack: Set equipment slot to " + newValue);
+                Chat.AddMessage(equipmentPrefix + newValue);
             }
         }
     }

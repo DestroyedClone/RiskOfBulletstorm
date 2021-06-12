@@ -21,7 +21,7 @@ namespace RiskOfBulletstorm.Items
         [AutoConfig("What is the cooldown in seconds?", AutoConfigFlags.PreventNetMismatch)]
         public override float cooldown { get; protected set; } = 14.00f;
 
-        public override string displayName => "<b>Bomb</b>";
+        public override string displayName => "Bomb";
         public string descText = "Throws a bomb that explodes after a short delay";
 
         protected override string GetNameString(string langID = null) => displayName;

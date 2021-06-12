@@ -36,7 +36,7 @@ namespace RiskOfBulletstorm.Items
             if (!incHealth && !incStack)
                 desc += $"It does nothing.";
             if (incHealth)
-                desc += $"Grants <style=cIsHealting>+{Pct(PercentOfMaxHealthAdded)} health</style>";
+                desc += $"Grants <style=cIsHealing>+{Pct(PercentOfMaxHealthAdded)} health</style>";
             if (incStack)
                 desc += $" <style=cStack>(+{Pct(PercentOfMaxHealthAddedPerStack)} per stack)</style>";
             desc += $" <style=cDeath>...but shatters upon using a shrine.</style> ";

@@ -69,9 +69,9 @@ namespace RiskOfBulletstorm.Items
         {
             if (EnableUseStyleFormat)
             {
-                return $"Increases your damage to enemies by <style=cIsDamage>{Pct(DamageCoefficientPerStack)} per kill</style> with the same skill up to " +
-                    $"({MaxKills} times (<style=cStack>{(MaxKillsPerStack > 0 ? MaxKillsPerStack + "per stack.<style>" : "")}" +
-                    $" {(KillsLostOnOtherUse > 0 ? "Upon using a different skill, your bonus <style=cHealth>reduces by " + KillsLostOnOtherUse + "</style>" : "")}";
+                return $"Increases your damage to enemies by <style=cIsDamage>+{Pct(DamageCoefficientPerStack)} per kill</style> with the same skill up to " +
+                    $"({MaxKills} times{(MaxKillsPerStack > 0 ? " <style=cStack>("+MaxKillsPerStack+" + per stack)<style>." : ".")}" +
+                    $" {(KillsLostOnOtherUse > 0 ? " Upon using a different skill, your bonus <style=cHealth>reduces by " + KillsLostOnOtherUse + "</style>" : "")}";
             } else
             {
                 var desc = $"";

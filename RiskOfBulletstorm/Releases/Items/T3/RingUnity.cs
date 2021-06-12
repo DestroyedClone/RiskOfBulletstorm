@@ -31,8 +31,8 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "<b>Our Powers Combined</b>\nIncreased combat effectiveness per item.";
 
-        protected override string GetDescString(string langid = null) => $"<style=cIsDamage>+{RingUnity_DamageBonus} base damage</style> per item in inventory." +
-            $"\n<style=cStack>(+{RingUnity_DamageBonusStack} base damage per stack)</style>";
+        protected override string GetDescString(string langid = null) => $"<style=cIsDamage>+{RingUnity_DamageBonus} base damage</style> per item in inventory" +
+            $" <style=cStack>(+{RingUnity_DamageBonusStack} base damage per stack)</style>.";
 
         protected override string GetLoreString(string langID = null) => "This ring takes a small amount of power from each gun carried and adds it to the currently equipped gun.";
 
@@ -321,10 +321,6 @@ namespace RiskOfBulletstorm.Items
                 localScale = new Vector3(0.1112F, 0.1112F, 0.1112F)
             });
             return rules;
-        }
-        public override void SetupConfig()
-        {
-            base.SetupConfig();
         }
         public override void Install()
         {

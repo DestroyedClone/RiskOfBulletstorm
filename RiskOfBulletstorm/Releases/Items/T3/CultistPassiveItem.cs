@@ -36,7 +36,7 @@ namespace RiskOfBulletstorm.Items
         public CultistPassiveItem()
         {
             modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/CultistPassiveItem.prefab");
-            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/CultistPassiveItem.png");
+            iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/CultistPassiveItem");
         }
         public override void SetupAttributes()
         {
@@ -302,10 +302,6 @@ localScale = new Vector3(8.5F, 30F, 7F)
                 localScale = new Vector3(1.9782F, 7.3248F, 2.6485F)
             });
             return rules;
-        }
-        public override void SetupConfig()
-        {
-            base.SetupConfig();
         }
         public override void SetupBehavior()
         {

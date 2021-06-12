@@ -25,7 +25,7 @@ namespace RiskOfBulletstorm.Items
         protected override string GetPickupString(string langID = null) => "<b>Steady Aim</b>\nA standard scope. Increases accuracy!";
 
         protected override string GetDescString(string langid = null) => $"Decreases <style=cIsUtility>firing spread</style> by <style=cIsUtility>{Pct(SpreadReduction)}</style>" +
-            $" <style=cStack>(+{Pct(SpreadReductionPerStack)} per stack)</style>";
+            $" <style=cStack>(+{Pct(SpreadReductionPerStack)} per stack)</style>.";
 
         protected override string GetLoreString(string langID = null) => "<style=cStack>DECODING MESSAGE - KATE ****** - G*****N EXPLORATORY TEAM" + 
             "\n [SYS] Filter: [messages from:KATE_OPERATOR sort:chronological date:today] | Showing 6 recent results" + 

@@ -64,10 +64,6 @@ namespace RiskOfBulletstorm.Items
             modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/Medkit.prefab");
             iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/Medkit.png");
         }
-        public override void SetupBehavior()
-        {
-            base.SetupBehavior();
-        }
         public override void SetupAttributes()
         {
             if (ItemBodyModelPrefab == null)
@@ -359,19 +355,6 @@ localScale = new Vector3(0.7392F, 0.7392F, 0.7392F)
             });
             return rules;
         }
-        public override void SetupConfig()
-        {
-            base.SetupConfig();
-        }
-        public override void Install()
-        {
-            base.Install();
-        }
-
-        public override void Uninstall()
-        {
-            base.Uninstall();
-        }
         protected override bool PerformEquipmentAction(EquipmentSlot slot)
         {
             CharacterBody body = slot.characterBody;
@@ -384,6 +367,7 @@ localScale = new Vector3(0.7392F, 0.7392F, 0.7392F)
             health.HealFraction(PercentHealAmount, default);
             health.AddBarrier(BarrierAmt);
             body.AddTimedBuff(RoR2Content.Buffs.Immune, ImmuneDuration);
+            body.inventory?.SetEquipmentIndex(EquipmentIndex.None); //credit to : Rico
             return true;
         }
     }
