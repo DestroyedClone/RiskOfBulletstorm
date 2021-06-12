@@ -159,25 +159,16 @@ namespace RiskOfBulletstorm.Items
                     localScale = new Vector3(0.1F, 0.1F, 0.1F)
                 }
             });
-            rules.Add("mdlEngiTurret", new ItemDisplayRule[] // todo
+            rules.Add("mdlEngiTurret", new ItemDisplayRule[]
 {
                 new ItemDisplayRule
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
                     childName = "Head",
-                    localPos = new Vector3(0.25f, 0.9f, 0.7f),
-                    localAngles = new Vector3(-90f, 90f, 0f),
-                    localScale = generalScale * 2f
-                },
-                new ItemDisplayRule
-                {
-                    ruleType = ItemDisplayRuleType.ParentedPrefab,
-                    followerPrefab = ItemBodyModelPrefab,
-                    childName = "Head",
-                    localPos = new Vector3(-0.1f, 0.5f, 0.2f),
-                    localAngles = new Vector3(-90f, 90f, 0f),
-                    localScale = generalScale *2f
+                    localPos = new Vector3(0F, 0.83777F, -0.40047F),
+                    localAngles = new Vector3(0F, 0F, 0F),
+                    localScale = new Vector3(0.2F, 0.2F, 0.2F)
                 }
             });
             rules.Add("mdlMage", new ItemDisplayRule[]
@@ -368,7 +359,8 @@ namespace RiskOfBulletstorm.Items
                     localAngles = new Vector3(85.38794F, 0F, 0F),
                     localScale = new Vector3(2F, 2F, 1.8F)
                 }
-            }); rules.Add("mdlBeetle", new ItemDisplayRule
+            });
+            rules.Add("mdlBeetle", new ItemDisplayRule
             {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
                 followerPrefab = ItemBodyModelPrefab,
@@ -395,7 +387,7 @@ namespace RiskOfBulletstorm.Items
                 localAngles = new Vector3(2.51877F, 359.4715F, 178.5113F),
                 localScale = new Vector3(0.1961F, 0.1961F, 0.1961F)
             });
-            // lunar wisp todo
+            // lunar wisp would go here but theres no children
             rules.Add("mdlNullifier", new ItemDisplayRule
             {
                 ruleType = ItemDisplayRuleType.ParentedPrefab,
