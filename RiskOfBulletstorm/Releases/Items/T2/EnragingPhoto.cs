@@ -15,21 +15,23 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How many seconds should Enraging Photo's buff last up to with a single stack?", AutoConfigFlags.PreventNetMismatch)]
-        public float EnragingPhoto_BaseDuration { get; private set; } = 5f;
+        public float BaseDuration { get; private set; } = 5f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How many additional seconds of buff should each Enraging Photo after the first give? ", AutoConfigFlags.PreventNetMismatch)]
-        public float EnragingPhoto_StackDuration { get; private set; } = 0.5f;
+        public float StackDuration { get; private set; } = 0.5f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("What is the minimum amount of seconds that the buff will last for? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
+        public float MinimumDuration { get; private set; } = 1.5f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Minimum percent of health loss for lower bound? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float EnragingPhoto_HealthThresholdMin { get; private set; } = 0.01f;
+        public float HealthThresholdMin { get; private set; } = 0.01f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Maximum percent of health loss for higher bound? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float EnragingPhoto_HealthThresholdMax { get; private set; } = 0.10f;
-
-        
+        public float HealthThresholdMax { get; private set; } = 0.10f;
         //[AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         //[AutoConfig("If true, damage to shield and barrier (from e.g. Personal Shield Generator, Topaz Brooch) will not count towards triggering Enraging Photo")]
         //public bool RequireHealth { get; private set; } = true;
@@ -42,8 +44,8 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "<b>\"Don't Believe His Lies\"</b>\nDeal extra damage for a short time after receiving a hit.";
 
-        protected override string GetDescString(string langid = null) => $"Gain a temporary <style=cIsDamage>{Pct(BuffsController.Config_Enrage_Damage)} damage bonus</style> that can last up to {EnragingPhoto_BaseDuration} seconds <style=cStack>(+{EnragingPhoto_StackDuration} seconds duration per stack).</style>" +
-            $"\nThe duration scales from the amount of damage taken, from <style=cIsHealth>{Pct(EnragingPhoto_HealthThresholdMin)} to {Pct(EnragingPhoto_HealthThresholdMax)}</style>.";
+        protected override string GetDescString(string langid = null) => $"Gain a temporary <style=cIsDamage>+{Pct(BuffsController.Config_Enrage_Damage)} damage bonus</style> that can last between <style=cIsUtility>{MinimumDuration} and {BaseDuration} seconds</style> <style=cStack>(+{StackDuration} seconds duration per stack).</style>" +
+            $" The duration scales from the amount of damage taken, from <style=cIsHealth>{Pct(HealthThresholdMin)} to {Pct(HealthThresholdMax)}</style> of your health.";
 
         protected override string GetLoreString(string langID = null) => "A photo that the Convict brought with her to the Gungeon.\nDeal extra damage for a short time after getting hit.\n\nOn the journey to the Breach, the Pilot once asked her why she always stared at this photo. Later, she was released from the brig.";
 
@@ -60,12 +62,12 @@ namespace RiskOfBulletstorm.Items
             if (Compat_ItemStats.enabled)
             {
                 Compat_ItemStats.CreateItemStatDef(itemDef,
-                    ((count, inv, master) => { return EnragingPhoto_BaseDuration + EnragingPhoto_StackDuration * (count - 1); },
+                    ((count, inv, master) => { return BaseDuration + StackDuration * (count - 1); },
                     (value, inv, master) => { return $"Max Duration: {value} seconds"; }
                 ));
                 Compat_ItemStats.CreateItemStatDef(itemDef,
                     ((count, inv, master) => { return 0; },
-                    (value, inv, master) => { return $"Health Threshold: {Pct(EnragingPhoto_HealthThresholdMin)} to {Pct(EnragingPhoto_HealthThresholdMax)}"; }
+                    (value, inv, master) => { return $"Health Threshold: {Pct(HealthThresholdMin)} to {Pct(HealthThresholdMax)}"; }
                 ));
                 Compat_ItemStats.CreateItemStatDef(itemDef,
                     ((count, inv, master) => { return BuffsController.Config_Enrage_Damage; },
@@ -341,6 +343,7 @@ localScale = new Vector3(2.2747F, 2.2747F, 2.2747F)
         public override void SetupConfig()
         {
             base.SetupConfig();
+            if (MinimumDuration > BaseDuration) MinimumDuration = BaseDuration;
         }
         public override void Install()
         {
@@ -353,7 +356,6 @@ localScale = new Vector3(2.2747F, 2.2747F, 2.2747F)
             base.Uninstall();
             On.RoR2.HealthComponent.TakeDamage -= CalculateDamageReward;
         }
-        //https://math.stackexchange.com/questions/754130/find-what-percent-x-is-between-two-numbers
         private void CalculateDamageReward(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
             var InventoryCount = GetCount(self.body);
@@ -362,15 +364,20 @@ localScale = new Vector3(2.2747F, 2.2747F, 2.2747F)
             
             var healthLost = (oldHealth - self.health) / self.fullHealth;
 
-            if (InventoryCount > 0 && healthLost >= EnragingPhoto_HealthThresholdMin)
+            if (InventoryCount > 0 && healthLost >= HealthThresholdMin)
             {
-                var maxDuration = EnragingPhoto_BaseDuration + EnragingPhoto_StackDuration * (InventoryCount - 1);
-                var scale = Mathf.Min(GetPercentBetweenTwoValues(healthLost, EnragingPhoto_HealthThresholdMin, EnragingPhoto_HealthThresholdMax), EnragingPhoto_HealthThresholdMax);
-                BulletstormPlugin._logger.LogMessage("EnragingPhotoScale = " + scale);
-                self.body.AddTimedBuffAuthority(BuffsController.Anger.buffIndex, maxDuration * scale);
+                var maxDuration = BaseDuration + StackDuration * (InventoryCount - 1);
+                var scale = Mathf.Min(GetPercentBetweenTwoValues(healthLost, HealthThresholdMin, HealthThresholdMax), HealthThresholdMax);
+                var duration = maxDuration * scale;
+
+                duration = Mathf.Min(duration, MinimumDuration);
+
+                BulletstormPlugin._logger.LogMessage("EnragingPhotoScale = " + scale + " duration : "+duration);
+                self.body.AddTimedBuffAuthority(BuffsController.Anger.buffIndex, duration);
             }
         }
 
+        //https://math.stackexchange.com/questions/754130/find-what-percent-x-is-between-two-numbers
         //normalized or not?
         private float GetPercentBetweenTwoValues(float value, float min, float max)
         {

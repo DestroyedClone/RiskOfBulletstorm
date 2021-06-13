@@ -97,7 +97,7 @@ namespace RiskOfBulletstorm.Items
                 true, 
                 false, 
                 "Assets/Textures/Icons/Buffs/Meatbun.png",
-                "<color=black>Meatbun Bonus\n+" + AdditivePercentDamageBonus * 100f + "% damage dealt per stack</color>");
+                "Meatbun Bonus");
         }
         public override void SetupConfig()
         {

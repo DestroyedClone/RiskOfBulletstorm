@@ -16,7 +16,7 @@ namespace RiskOfBulletstorm.Items
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the cost reduction per stack? (Value: Subtractive Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float CostReductionAmountPerStack { get; private set; } = 0.05f;
+        public float CostReductionAmountPerStack { get; private set; } = 0.01f;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What is the maximum cost reduction? This limit is hyperbolic. (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]

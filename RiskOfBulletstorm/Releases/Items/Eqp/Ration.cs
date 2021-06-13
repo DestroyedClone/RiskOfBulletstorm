@@ -342,10 +342,6 @@ localScale = new Vector3(0.4916F, 0.4916F, 0.4916F)
             });
             return rules;
         }
-        public override void SetupConfig()
-        {
-            base.SetupConfig();
-        }
         public override void Install()
         {
             base.Install();

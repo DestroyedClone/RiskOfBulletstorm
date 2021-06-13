@@ -21,6 +21,8 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetLoreString(string langID = null) => "";
 
+        public static GameObject pickupEffect = Resources.Load<GameObject>("prefabs/effects/AmmoPackPickupEffect");
+
         public PickupAmmoSpread()
         {
             modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/SpreadAmmo.prefab");
@@ -62,7 +64,6 @@ namespace RiskOfBulletstorm.Items
 
         public void ApplyAmmoPackToTeam(TeamIndex teamIndex = TeamIndex.Player, bool restoreEquipmentCharges = true, bool restoreOffhandEquipmentCharges = true)
         {
-            var pickupEffect = (GameObject)Resources.Load("prefabs/effects/AmmoPackPickupEffect");
             ReadOnlyCollection<TeamComponent> teamComponents = TeamComponent.GetTeamMembers(teamIndex);
             foreach (TeamComponent teamComponent in teamComponents)
             {

@@ -14,10 +14,10 @@ namespace RiskOfBulletstorm.Items
 	{
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("How many damage should Roll Bomb deal? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float RollBomb_Damage { get; private set; } = 2.0f;
+        public float Damage { get; private set; } = 2.0f;
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Scaled radius of Roll Bomb explosion? (Value: Percentage)", AutoConfigFlags.PreventNetMismatch)]
-        public float RollBomb_Radius { get; private set; } = 3f;
+        public float Radius { get; private set; } = 3f;
 
         public override string displayName => "Roll Bomb";
         public override ItemTier itemTier => ItemTier.Tier2;
@@ -27,8 +27,8 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "<b>Power Charge</b>\nDrop bomb(s) after using your utility skill.";
 
-        protected override string GetDescString(string langid = null) => $"Using your utility <style=cIsUtility>drops 1 bomb</style> for <style=cIsDamage>{Pct(RollBomb_Damage)} damage</style>" +
-            $" <style=cStack>(+1 bomb dropped per stack)</style>.";
+        protected override string GetDescString(string langid = null) => $"Using your utility <style=cIsUtility>drops 1 bomb</style> <style=cStack>(+1 bomb dropped per stack)</style> that explodes for <style=cIsDamage>{Pct(Damage)} damage</style>" +
+            $" within a radius of <style=cIsDamage>{Radius} meters</style>.";
 
         protected override string GetLoreString(string langID = null) => "Produces a bomb when dodge rolling.\nThis strange mechanism dispenses explosives when spun.";
         public static GameObject BombPrefab { get; private set; }
@@ -49,7 +49,7 @@ namespace RiskOfBulletstorm.Items
             BombPrefab.GetComponent<ProjectileSimple>().desiredForwardSpeed = 1; //default 50
             BombPrefab.GetComponent<ProjectileDamage>().damageColorIndex = DamageColorIndex.Item;
             BombPrefab.GetComponent<ProjectileImpactExplosion>().destroyOnEnemy = false; //default True
-            BombPrefab.GetComponent<ProjectileImpactExplosion>().blastRadius *= RollBomb_Radius;
+            BombPrefab.GetComponent<ProjectileImpactExplosion>().blastRadius *= Radius;
             Object.Destroy(BombPrefab.GetComponent<ApplyTorqueOnStart>());
 
             var controller = BombPrefab.GetComponent<ProjectileController>();
@@ -364,7 +364,7 @@ localScale = new Vector3(0.4019F, 0.4019F, 0.4019F)
                         for (int i = 0; i < invCount; i++)
                         {
                             ProjectileManager.instance.FireProjectile(BombPrefab, corePos, RollBombFireDirection(),
-                                              vGameObject, vBody.damage * RollBomb_Damage,
+                                              vGameObject, vBody.damage * Damage,
                                               3f, Util.CheckRoll(vBody.crit, vBody.master),
                                               DamageColorIndex.Item, null, -1f);
                         }

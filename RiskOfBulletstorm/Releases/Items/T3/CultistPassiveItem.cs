@@ -12,6 +12,41 @@ namespace RiskOfBulletstorm.Items
 {
     public class CultistPassiveItem : Item<CultistPassiveItem>
     {
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("For each stack, what additional fraction of the stats should it contribute?", AutoConfigFlags.PreventNetMismatch)]
+        public float StackModifier { get; private set; } = 0.2f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("How much attack speed is added per dead player?", AutoConfigFlags.PreventNetMismatch)]
+        public float BaseAttackSpeedAdd { get; private set; } = 0.2f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("How much base damage is added per dead player?", AutoConfigFlags.PreventNetMismatch)]
+        public float BaseDamageAdd { get; private set; } = 1f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("What percentage of max health is added per dead player?", AutoConfigFlags.PreventNetMismatch)]
+        public float HealthMultAdd { get; private set; } = 0.25f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("How much move speed is added per dead player?", AutoConfigFlags.PreventNetMismatch)]
+        public float BaseMoveSpeedAdd { get; private set; } = 0.25f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("What percentage of regen is added per dead player?", AutoConfigFlags.PreventNetMismatch)]
+        public float RegenMultAdd { get; private set; } = 0.25f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("How much armor is added per dead player?", AutoConfigFlags.PreventNetMismatch)]
+        public float ArmorAdd { get; private set; } = 4f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("How much crit chance is added per dead player?", AutoConfigFlags.PreventNetMismatch)]
+        public float CritAdd { get; private set; } = 7.5f;
+
+        [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
+        [AutoConfig("What percent of health is healed upon another player dying?", AutoConfigFlags.PreventNetMismatch)]
+        public float HealFractionOnDeath { get; private set; } = 0.55f;
 
         public override string displayName => "Number 2";
         public override ItemTier itemTier => ItemTier.Tier3;
@@ -20,18 +55,20 @@ namespace RiskOfBulletstorm.Items
         protected override string GetNameString(string langID = null) => displayName;
         protected override string GetPickupString(string langID = null) => "<b>Sidekick No More</b>\nBoosts stats when alone.";
 
-        protected override string GetDescString(string langid = null) => $"Increases <style=cIsUtility>stats</style> by a certain amount per stack for every dead survivor.";
+        protected override string GetDescString(string langid = null) => $"Increases" +
+            $" <style=cIsDamage>attack speed by +{Pct(BaseAttackSpeedAdd)}</style> <style=cStack>(+{Pct(BaseAttackSpeedAdd*StackModifier)} per stack</style>," +
+            $" <style=cIsDamage>base damage by +{BaseDamageAdd}</style> <style=cStack>(+{BaseDamageAdd*StackModifier} per stack</style>," +
+            $" <style=cIsHealing>multiplies health by +{Pct(HealthMultAdd)}</style> <style=cStack>(+{Pct(HealthMultAdd*StackModifier)} per stack</style>," +
+            $" <style=cIsUtility>increases move speed by +{BaseMoveSpeedAdd}</style> <style=cStack>(+{BaseMoveSpeedAdd*StackModifier} per stack</style>," +
+            $" <style=cIsHealing>multiplies regen by +{Pct(RegenMultAdd)}</style> <style=cStack>(+{Pct(RegenMultAdd*StackModifier)} per stack</style>," +
+            $" <style=cIsDamage>increases armor by +{ArmorAdd} <style=cStack>(+{ArmorAdd*StackModifier} per stack</style>," +
+            $" <style=cIsDamage>increases crit chance by +{CritAdd}%</style> <style=cStack>(+{CritAdd*StackModifier}% per stack</style>" +
+            $" for every dead player." +
+            $" Restores <style=cIsHealing>{Pct(HealFractionOnDeath)} health</style> <style=cStack>(+{Pct(HealFractionOnDeath*StackModifier)} per stack)</style> on a players' death.";
 
         protected override string GetLoreString(string langID = null) => "Now that the protagonist is dead, it's time to shine!";
 
         public static GameObject ItemBodyModelPrefab;
-        readonly float baseAttackSpeedAdd = 0.2f;
-        readonly float baseDamageAdd = 5f;
-        readonly float healthMultAdd = 0.5f;
-        readonly float baseMoveSpeedAdd = 0.5f;
-        readonly float regenMultAdd = 0.25f;
-        readonly float armorAdd = 4f;
-        readonly float critAdd = 7.5f;
 
         public CultistPassiveItem()
         {
@@ -309,35 +346,52 @@ localScale = new Vector3(8.5F, 30F, 7F)
             if (Compat_ItemStats.enabled)
             {
                 Compat_ItemStats.CreateItemStatDef(itemDef,
-                    ((count, inv, master) => { return (baseAttackSpeedAdd * count);},
+                    ((count, inv, master) => { return (BaseAttackSpeedAdd + BaseAttackSpeedAdd * (count - 1) * StackModifier) * GetMasterDeadAmt(master); },
                     (value, inv, master) => { return $"Attack Speed: +{Pct(value)}"; }
                 ));
                 Compat_ItemStats.CreateItemStatDef(itemDef,
-                    ((count, inv, master) => { return (baseDamageAdd * count); },
+                    ((count, inv, master) => { return (BaseDamageAdd + BaseDamageAdd * (count - 1) * StackModifier) * GetMasterDeadAmt(master); },
                     (value, inv, master) => { return $"Base Damage: +{value}"; }
                 ));
                 Compat_ItemStats.CreateItemStatDef(itemDef,
-                    ((count, inv, master) => { return (healthMultAdd * count); },
+                    ((count, inv, master) => { return (HealthMultAdd + HealthMultAdd * (count - 1) * StackModifier) * GetMasterDeadAmt(master); },
                     (value, inv, master) => { return $"Health Multiplier: +{Pct(value)}"; }
                 ));
                 Compat_ItemStats.CreateItemStatDef(itemDef,
-                    ((count, inv, master) => { return (baseMoveSpeedAdd * count); },
+                    ((count, inv, master) => { return (BaseMoveSpeedAdd * BaseMoveSpeedAdd * (count - 1) * StackModifier) * GetMasterDeadAmt(master); },
                     (value, inv, master) => { return $"Move Speed: +{value}"; }
                 ));
                 Compat_ItemStats.CreateItemStatDef(itemDef,
-                    ((count, inv, master) => { return (regenMultAdd * count); },
+                    ((count, inv, master) => { return (RegenMultAdd * RegenMultAdd * (count - 1) * StackModifier) * GetMasterDeadAmt(master); },
                     (value, inv, master) => { return $"Regen Multiplier: +{Pct(value)}"; }
                 ));
                 Compat_ItemStats.CreateItemStatDef(itemDef,
-                    ((count, inv, master) => { return (armorAdd * count); },
+                    ((count, inv, master) => { return (ArmorAdd + ArmorAdd * (count - 1) * StackModifier) * GetMasterDeadAmt(master); },
                     (value, inv, master) => { return $"Armor: +{value}"; }
                 ));
                 Compat_ItemStats.CreateItemStatDef(itemDef,
-                    ((count, inv, master) => { return (critAdd * count); },
+                    ((count, inv, master) => { return (CritAdd + CritAdd * (count - 1) * StackModifier) * GetMasterDeadAmt(master); },
                     (value, inv, master) => { return $"Crit Chance: +{value}%"; }
+                ));
+                Compat_ItemStats.CreateItemStatDef(itemDef,
+                    ((count, inv, master) => { return (GetMasterDeadAmt(master)); },
+                    (value, inv, master) => { return $"Dead Players: {value}"; }
                 ));
             }
         }
+        public int GetMasterDeadAmt(CharacterMaster master)
+        {
+            if (master)
+            {
+                var comp = master.gameObject.GetComponent<CultistPassiveComponent>();
+                if (comp)
+                {
+                    return comp.deadProtagonists;
+                }    
+            }
+            return 0;
+        }
+
         public override void Install()
         {
             base.Install();
@@ -379,18 +433,19 @@ localScale = new Vector3(8.5F, 30F, 7F)
                 {
                     var deadAmt = component.deadProtagonists;
 
-                    //float addAmount = CPI_singleplayer;
-                    //if (component.isMultiplayer) addAmount = CPI_multiplayer;
-                    
-                    float multAmount = deadAmt * InventoryCount;
+                    if (deadAmt > 0)
+                    {
+                        //float addAmount = CPI_singleplayer;
+                        //if (component.isMultiplayer) addAmount = CPI_multiplayer;
 
-                    args.baseAttackSpeedAdd += baseAttackSpeedAdd * multAmount;
-                    args.baseDamageAdd += baseDamageAdd * multAmount;
-                    args.healthMultAdd += healthMultAdd * multAmount;
-                    args.baseMoveSpeedAdd += baseMoveSpeedAdd * multAmount;
-                    args.regenMultAdd += regenMultAdd * multAmount;
-                    args.armorAdd += armorAdd * multAmount;
-                    args.critAdd += critAdd * multAmount;
+                        args.baseAttackSpeedAdd += (BaseAttackSpeedAdd + BaseAttackSpeedAdd * (InventoryCount - 1) * StackModifier) * deadAmt;
+                        args.baseDamageAdd += (BaseDamageAdd + BaseDamageAdd * (InventoryCount - 1) * StackModifier) * deadAmt;
+                        args.healthMultAdd += (HealthMultAdd + HealthMultAdd * (InventoryCount - 1) * StackModifier) * deadAmt;
+                        args.baseMoveSpeedAdd += (BaseMoveSpeedAdd + BaseMoveSpeedAdd * (InventoryCount - 1) * StackModifier) * deadAmt;
+                        args.regenMultAdd += (RegenMultAdd + RegenMultAdd * (InventoryCount - 1) * StackModifier) * deadAmt;
+                        args.armorAdd += (ArmorAdd + ArmorAdd * (InventoryCount - 1) * StackModifier) * deadAmt;
+                        args.critAdd += (CritAdd + CritAdd * (InventoryCount - 1) * StackModifier) * deadAmt;
+                    }
                 }
             }
         }
@@ -438,8 +493,15 @@ localScale = new Vector3(8.5F, 30F, 7F)
                     var passiveComponent = body.GetComponent<CultistPassiveComponent>();
                     if (passiveComponent)
                     {
+                        var previousAmountDead = passiveComponent.deadProtagonists;
                         passiveComponent.deadProtagonists = AmountDead;
                         passiveComponent.isMultiplayer = isMultiplayer;
+
+                        if (body.healthComponent?.alive == true && previousAmountDead != AmountDead)
+                        {
+                            Chat.AddMessage("Healing!");
+                            body.healthComponent.HealFraction(HealFractionOnDeath, default);
+                        }
                     }
                 }
             }

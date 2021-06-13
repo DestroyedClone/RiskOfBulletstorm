@@ -12,19 +12,19 @@ namespace RiskOfBulletstorm.Items
     {
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What button should be held down to choose which slot to select with number keys?", AutoConfigFlags.None)]
-        public KeyCode Backpack_ModifierButton { get; private set; } = KeyCode.LeftShift;
+        public KeyCode ModifierButton { get; private set; } = KeyCode.LeftShift;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What button should be pressed down to cycle to the previous equipment slot?", AutoConfigFlags.None)]
-        public KeyCode Backpack_CycleLeftButton { get; private set; } = KeyCode.F;
+        public KeyCode CycleLeftButton { get; private set; } = KeyCode.F;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("What button should be pressed down to cycle to the next equipment slot", AutoConfigFlags.None)]
-        public KeyCode Backpack_CycleRightButton { get; private set; } = KeyCode.G;
+        public KeyCode CycleRightButton { get; private set; } = KeyCode.G;
 
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("Should the scrollwheel be used in addition to the cycle buttons?", AutoConfigFlags.None)]
-        public static bool Backpack_UseScrollWheel { get; private set; } = true;
+        public static bool UseScrollWheel { get; private set; } = true;
         //https://docs.unity3d.com/ScriptReference/KeyCode.html
         public override string displayName => "Backpack";
         public override ItemTier itemTier => ItemTier.Tier3;
@@ -51,17 +51,17 @@ namespace RiskOfBulletstorm.Items
         public override void SetupConfig()
         {
             base.SetupConfig();
-            ModifierKey_KB = Backpack_ModifierButton;
-                CycleLeftKey_KB = Backpack_CycleLeftButton;
-                CycleRightKey_KB = Backpack_CycleRightButton;
+            ModifierKey_KB = ModifierButton;
+                CycleLeftKey_KB = CycleLeftButton;
+                CycleRightKey_KB = CycleRightButton;
             
         }
         protected override string GetDescString(string langid = null)
         {
             var desc = $"Grants access to an <style=cIsUtility>extra equipment slot</style> <style=cStack>(+1 per stack)</style>" +
-            $"\nHold {ModifierKey_KB} and press 1-0 to switch equipment slots." +
+            $"\nHold {ModifierKey_KB} and press the number row keys to switch equipment slots." +
             $"\nPress {CycleLeftKey_KB} or {CycleRightKey_KB} to cycle to the previous/next slot.";
-            desc += Backpack_UseScrollWheel ? $" Additionally, the scrollwheel can be used." : $"";
+            desc += UseScrollWheel ? $" Additionally, the scrollwheel can be used." : $"";
             return desc;
         }
         public override void SetupBehavior()
@@ -157,7 +157,7 @@ namespace RiskOfBulletstorm.Items
                 {
                     if (inventory && inventory.GetItemCount(instance.catalogIndex) > 0)
                     {
-                        if (Input.GetKey(instance.Backpack_ModifierButton))
+                        if (Input.GetKey(instance.ModifierButton))
                         {
                             for (byte i = 0; i < 10; i++)
                             {
@@ -202,7 +202,7 @@ namespace RiskOfBulletstorm.Items
                         if (Input.GetKeyDown(CycleRightKey_KB))
                             CycleSlot(true);
 
-                        if (Backpack_UseScrollWheel)
+                        if (UseScrollWheel)
                         {
                             var dir = Input.mouseScrollDelta.y;
                             if (dir < 0)

@@ -22,7 +22,7 @@ namespace RiskOfBulletstorm.Items
         [AutoConfigUpdateActions(AutoConfigUpdateActionTypes.InvalidateLanguage)]
         [AutoConfig("By how much will your base damage increase on subsequent stacks?" +
             "\nKeep in mind that this number is MULTIPLIED by the amount of TOTAL items.", AutoConfigFlags.PreventNetMismatch)]
-        public float RingUnity_DamageBonusStack { get; private set; } = 0.04f;
+        public float RingUnity_DamageBonusStack { get; private set; } = 0.05f;
         public override string displayName => "Unity";
         public override ItemTier itemTier => ItemTier.Tier3;
         public override ReadOnlyCollection<ItemTag> itemTags => new ReadOnlyCollection<ItemTag>(new[] { ItemTag.Damage });
@@ -31,8 +31,7 @@ namespace RiskOfBulletstorm.Items
 
         protected override string GetPickupString(string langID = null) => "<b>Our Powers Combined</b>\nIncreased combat effectiveness per item.";
 
-        protected override string GetDescString(string langid = null) => $"<style=cIsDamage>+{RingUnity_DamageBonus} base damage</style> per item in inventory" +
-            $" <style=cStack>(+{RingUnity_DamageBonusStack} base damage per stack)</style>.";
+        protected override string GetDescString(string langid = null) => $"<style=cIsDamage>+{RingUnity_DamageBonus} base damage</style> <style=cStack>(+{RingUnity_DamageBonusStack} base damage per stack)</style> per item in inventory.";
 
         protected override string GetLoreString(string langID = null) => "This ring takes a small amount of power from each gun carried and adds it to the currently equipped gun.";
 
