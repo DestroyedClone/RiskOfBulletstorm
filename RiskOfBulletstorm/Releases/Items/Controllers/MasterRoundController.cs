@@ -176,7 +176,7 @@ namespace RiskOfBulletstorm.Items
                 if (masterRoundComponent.currentHits <= masterRoundComponent.allowedHits)
                 {
                     var characterBody = victim.GetComponent<CharacterBody>();
-                    string victimName = characterBody ? characterBody.GetUserName() : "Someone";
+                    string victimName = characterBody ? characterBody.GetUserName() : characterBody.GetDisplayName();
                     string token = masterRoundComponent.currentHits < masterRoundComponent.allowedHits ? modInfo.shortIdentifier + "_MASTERROUND_HIT" : modInfo.shortIdentifier + "_MASTERROUND_FAIL";
                     string attackerName = damageInfo.attacker.GetComponent<CharacterBody>().GetDisplayName();
                     Chat.SendBroadcastChat(

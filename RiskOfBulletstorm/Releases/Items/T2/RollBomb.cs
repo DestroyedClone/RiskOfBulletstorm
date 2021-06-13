@@ -62,8 +62,12 @@ namespace RiskOfBulletstorm.Items
                     (value, inv, master) => { return $"Additional Bombs: {value}"; }
                 ));
                 Compat_ItemStats.CreateItemStatDef(itemDef,
-                    ((count, inv, master) => { return count; },
+                    ((count, inv, master) => { return Damage; },
                     (value, inv, master) => { return $"Damage: {Pct(value)}"; }
+                ));
+                Compat_ItemStats.CreateItemStatDef(itemDef,
+                    ((count, inv, master) => { return Radius; },
+                    (value, inv, master) => { return $"Radius: {Pct(value)}"; }
                 ));
             }
         }

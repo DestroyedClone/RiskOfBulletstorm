@@ -36,7 +36,7 @@ namespace RiskOfBulletstorm.Items
         {
             string descString = $"<style=cIsUtility>{descText}</style> that would have exceeded <style=cIsDamage>{Pct(Armor_HealthThreshold)} health</style>";
             descString += (Armor_ActivateBlank ? $" and <style=cIsUtility>activates a Blank</style>." : ".");
-            if (Armor_ProtectDeath) descString += $" </style=cIsUtility>Automatically activates upon a <style=cHealth>fatal</style> hit.</style>";
+            if (Armor_ProtectDeath) descString += $" <style=cIsUtility>Automatically activates upon a <style=cHealth>fatal</style> hit.</style>";
             descString += $" <style=cIsUtility>Consumes</style> on use.";
             return descString;
         }

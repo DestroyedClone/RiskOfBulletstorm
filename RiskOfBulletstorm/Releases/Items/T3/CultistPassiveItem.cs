@@ -56,15 +56,15 @@ namespace RiskOfBulletstorm.Items
         protected override string GetPickupString(string langID = null) => "<b>Sidekick No More</b>\nBoosts stats when alone.";
 
         protected override string GetDescString(string langid = null) => $"Increases" +
-            $" <style=cIsDamage>attack speed by +{Pct(BaseAttackSpeedAdd)}</style> <style=cStack>(+{Pct(BaseAttackSpeedAdd*StackModifier)} per stack</style>," +
-            $" <style=cIsDamage>base damage by +{BaseDamageAdd}</style> <style=cStack>(+{BaseDamageAdd*StackModifier} per stack</style>," +
-            $" <style=cIsHealing>multiplies health by +{Pct(HealthMultAdd)}</style> <style=cStack>(+{Pct(HealthMultAdd*StackModifier)} per stack</style>," +
-            $" <style=cIsUtility>increases move speed by +{BaseMoveSpeedAdd}</style> <style=cStack>(+{BaseMoveSpeedAdd*StackModifier} per stack</style>," +
-            $" <style=cIsHealing>multiplies regen by +{Pct(RegenMultAdd)}</style> <style=cStack>(+{Pct(RegenMultAdd*StackModifier)} per stack</style>," +
-            $" <style=cIsDamage>increases armor by +{ArmorAdd} <style=cStack>(+{ArmorAdd*StackModifier} per stack</style>," +
-            $" <style=cIsDamage>increases crit chance by +{CritAdd}%</style> <style=cStack>(+{CritAdd*StackModifier}% per stack</style>" +
-            $" for every dead player." +
-            $" Restores <style=cIsHealing>{Pct(HealFractionOnDeath)} health</style> <style=cStack>(+{Pct(HealFractionOnDeath*StackModifier)} per stack)</style> on a players' death.";
+            $"\n <style=cIsDamage>attack speed by +{Pct(BaseAttackSpeedAdd)}</style> <style=cStack>(+{Pct(BaseAttackSpeedAdd*StackModifier)} per stack)</style>," +
+            $"\n <style=cIsDamage>base damage by {BaseDamageAdd}</style> <style=cStack>(+{BaseDamageAdd*StackModifier} per stack)</style>," +
+            $"\n <style=cIsHealing>health by +{Pct(HealthMultAdd)}</style> <style=cStack>(+{Pct(HealthMultAdd*StackModifier)} per stack)</style>," +
+            $"\n <style=cIsUtility>move speed by +{BaseMoveSpeedAdd}</style> <style=cStack>(+{BaseMoveSpeedAdd*StackModifier} per stack)</style>," +
+            $"\n <style=cIsHealing>multiplies regen by +{Pct(RegenMultAdd)}</style> <style=cStack>(+{Pct(RegenMultAdd*StackModifier)} per stack)</style>," +
+            $"\n <style=cIsDamage>increases armor by +{ArmorAdd} <style=cStack>(+{ArmorAdd*StackModifier} per stack)</style>," +
+            $"\n <style=cIsDamage>increases crit chance by +{CritAdd}%</style> <style=cStack>(+{CritAdd*StackModifier}% per stack)</style>" +
+            $"\n for every dead player." +
+            $"\n Restores <style=cIsHealing>{Pct(HealFractionOnDeath)} health</style> <style=cStack>(+{Pct(HealFractionOnDeath*StackModifier)} per stack)</style> on a players' death.";
 
         protected override string GetLoreString(string langID = null) => "Now that the protagonist is dead, it's time to shine!";
 
@@ -499,7 +499,6 @@ localScale = new Vector3(8.5F, 30F, 7F)
 
                         if (body.healthComponent?.alive == true && previousAmountDead != AmountDead)
                         {
-                            Chat.AddMessage("Healing!");
                             body.healthComponent.HealFraction(HealFractionOnDeath, default);
                         }
                     }
