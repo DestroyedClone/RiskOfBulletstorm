@@ -354,33 +354,6 @@ namespace RiskOfBulletstorm.Items
 
             return rules;
         }
-        public override void Install()
-        {
-            base.Install();
-            On.RoR2.PurchaseInteraction.GetInteractability += PurchaseInteraction_GetInteractability;
-        }
-
-        public override void Uninstall()
-        {
-            base.Uninstall();
-            On.RoR2.PurchaseInteraction.GetInteractability -= PurchaseInteraction_GetInteractability;
-        }
-        private Interactability PurchaseInteraction_GetInteractability(On.RoR2.PurchaseInteraction.orig_GetInteractability orig, PurchaseInteraction self, Interactor activator)
-        {
-            SummonMasterBehavior summonMasterBehavior = self.gameObject.GetComponent<SummonMasterBehavior>();
-            if (summonMasterBehavior && summonMasterBehavior.callOnEquipmentSpentOnPurchase)
-            {
-                CharacterBody characterBody = activator.GetComponent<CharacterBody>();
-                if (characterBody && characterBody.inventory)
-                {
-                    if (characterBody.inventory.currentEquipmentIndex == catalogIndex)
-                    {
-                        return Interactability.ConditionsNotMet;
-                    }
-                }
-            }
-            return orig(self, activator);
-        }
 
         protected override bool PerformEquipmentAction(EquipmentSlot slot)
         {
@@ -388,9 +361,7 @@ namespace RiskOfBulletstorm.Items
             GameObject gameObject = slot.gameObject;
             if (!gameObject || !body) return false;
 
-            Util.PlaySound(FireMines.throwMineSoundString, gameObject);
-
-            var angle = Util.QuaternionSafeLookRotation(slot.GetAimRay().direction);
+            var angle = Util.QuaternionSafeLookRotation(slot.inputBank ? slot.GetAimRay().direction : gameObject.transform.forward);
 
             FireBomb(body, gameObject, angle);
             return true;
@@ -409,6 +380,7 @@ namespace RiskOfBulletstorm.Items
             var newyOffset = Vector3.up * yOffset;
             var resultpos = position + Vector3.up * offset + newyOffset;
 
+            Util.PlaySound(FireMines.throwMineSoundString, gameObject);
             if (NetworkServer.active)
             {
                 ProjectileManager.instance.FireProjectile(BombPrefab, resultpos, throwAngle,

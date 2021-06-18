@@ -437,7 +437,7 @@ localScale = new Vector3(1F, 1F, 1F)
 
             Util.PlaySound(FireMines.throwMineSoundString, gameObject);
             var damageMult = 1f;
-            var angle = Util.QuaternionSafeLookRotation(slot.GetAimRay().direction);
+            var angle = Util.QuaternionSafeLookRotation(slot.inputBank ? slot.GetAimRay().direction : gameObject.transform.forward);
             FireMolotov(body, gameObject, angle, damageMult);
             return true;
         }

@@ -42,11 +42,6 @@ namespace RiskOfBulletstorm.Items
             modelResource = assetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/FriendshipCookie.prefab");
             iconResource = assetBundle.LoadAsset<Sprite>("Assets/Textures/Icons/FriendshipCookie.png");
         }
-
-        public override void SetupBehavior()
-        {
-            base.SetupBehavior();
-        }
         public override void SetupAttributes()
         {
             if (ItemBodyModelPrefab == null)
