@@ -66,11 +66,23 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="lib\0Harmony.xml" />
+    <Content Include="lib\BepInEx.Harmony.xml" />
+    <Content Include="lib\BepInEx.Preloader.xml" />
+    <Content Include="lib\BepInEx.xml" />
+    <Content Include="lib\ChensHelpers.xml" />
+    <Content Include="lib\MonoMod.RuntimeDetour.xml" />
+    <Content Include="lib\MonoMod.Utils.xml" />
+    <Content Include="lib\R2API.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Include="riskofgungeonassets" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="lib\0Harmony.dll" />
+    <None Include="lib\0Harmony20.dll" />
     <None Include="lib\Assembly-CSharp.dll" />
     <None Include="lib\BepInEx.dll" />
     <None Include="lib\BepInEx.Harmony.dll" />
@@ -80,20 +92,27 @@
     <None Include="lib\ChensHelpers.dll" />
     <None Include="lib\ClassicItems.dll" />
     <None Include="lib\EnemyItemDisplays.dll" />
-    <None Include="lib\ExtraSkillSlots.dll" />
+    <None Include="lib\HarmonyXInterop.dll" />
     <None Include="lib\HGCSharpUtils.dll" />
+    <None Include="lib\HGUnityUtils.dll" />
     <None Include="lib\ItemStats.dll" />
     <None Include="lib\MMHOOK_Assembly-CSharp.dll" />
     <None Include="lib\Mono.Cecil.dll" />
     <None Include="lib\Mono.Cecil.Mdb.dll" />
+    <None Include="lib\Mono.Cecil.Mdb.pdb" />
+    <None Include="lib\Mono.Cecil.pdb" />
     <None Include="lib\Mono.Cecil.Pdb.dll" />
+    <None Include="lib\Mono.Cecil.Pdb.pdb" />
     <None Include="lib\Mono.Cecil.Rocks.dll" />
+    <None Include="lib\Mono.Cecil.Rocks.pdb" />
     <None Include="lib\MonoMod.RuntimeDetour.dll" />
     <None Include="lib\MonoMod.Utils.dll" />
+    <None Include="lib\mscorlib.dll" />
     <None Include="lib\R2API.dll" />
     <None Include="lib\Rewired_Core.dll" />
     <None Include="lib\Rewired_CSharp.dll" />
     <None Include="lib\Rewired_Windows_Lib.dll" />
+    <None Include="lib\System.Numerics.dll" />
     <None Include="lib\TILER2.dll" />
     <None Include="lib\Unity.TextMeshPro.dll" />
     <None Include="lib\UnityEngine.AssetBundleModule.dll" />
