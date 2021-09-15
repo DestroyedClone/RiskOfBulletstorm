@@ -68,7 +68,8 @@ namespace RiskOfBulletstorm
 
             Logger.LogDebug("Loading assets...");
 
-            BundleInfo bundleInfo = new BundleInfo("@RiskOfBulletstorm", "RiskOfBulletstorm.riskofgungeonassets", BundleType.UnityAssetBundle);
+            //BundleInfo bundleInfo = new BundleInfo("@RiskOfBulletstorm", "RiskOfBulletstorm.riskofgungeonassets", BundleType.UnityAssetBundle);
+            BundleInfo bundleInfo = new BundleInfo("RiskOfBulletstorm.riskofgungeonassets", BundleType.UnityAssetBundle);
             assetBundle = new AssetsManager(bundleInfo).Register() as AssetBundle;
 
             ConfigFile = new ConfigFile(Path.Combine(Paths.ConfigPath, ModGuid + ".cfg"), true);
