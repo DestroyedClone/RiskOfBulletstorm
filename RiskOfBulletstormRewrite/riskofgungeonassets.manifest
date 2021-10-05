@@ -1,0 +1,174 @@
+ManifestFileVersion: 0
+CRC: 2204417044
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 740c25d6c24a4b95ae36e6b0c2c4d6fd
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 21747e4ee48f36c7a65f9afbfd77f392
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/Textures/Icons/SpreadAmmo.png
+- Assets/Textures/Materials/RWsycsV_10x.png
+- Assets/Textures/Materials/EnragingPhotoTexture.png
+- Assets/Models/Raw Models/Number 2 Worn.fbx
+- Assets/Textures/Materials/Materials/MagazineRackTexture.mat
+- Assets/Models/Prefabs/Armor.prefab
+- Assets/Models/Prefabs/CultistPassiveWorn.prefab
+- Assets/Textures/Materials/2IFNLod_10x.png
+- Assets/Textures/Icons/RollBomb.png
+- Assets/Textures/Icons/Mustache.png
+- Assets/Models/Raw Models/Enraging Photo.fbx
+- Assets/Textures/Icons/Ration.png
+- Assets/Textures/Icons/Backpack.png
+- Assets/Models/Raw Models/battery bullets.fbx
+- Assets/Textures/Icons/Spice.png
+- Assets/Textures/Icons/Medkit.png
+- Assets/Textures/Materials/Materials/UV_CharmHorn.mat
+- Assets/Textures/Materials/FriendshipCookie.mat
+- Assets/Textures/Icons/MasterRoundV.png
+- Assets/Models/Prefabs/Mustache.prefab
+- Assets/Textures/Icons/DisarmingPersonality.png
+- Assets/Textures/Icons/PortableBarrelDevice.png
+- Assets/Models/Raw Models/Armor.fbx
+- Assets/Textures/Materials/Globe.mat
+- Assets/Textures/Materials/Overlays/Charmed.mat
+- Assets/Textures/Materials/Blue.mat
+- Assets/Textures/Icons/Scope.png
+- Assets/Textures/Materials/Meatbun.mat
+- Assets/Textures/Materials/TranslucentGreen.mat
+- Assets/Models/Prefabs/DisarmingPersonality.prefab
+- Assets/Models/Prefabs/Orange.prefab
+- Assets/Models/Prefabs/Projectiles/Molotov.prefab
+- Assets/Shaders/GhostEffect 1.shader
+- Assets/Models/Raw Models/RingMiserlyProtection.fbx
+- Assets/Textures/Materials/New Material.mat
+- Assets/Models/Prefabs/Bomb.prefab
+- Assets/Textures/Materials/MetalGold.mat
+- Assets/Models/Raw Models/MagazineRack.fbx
+- Assets/Models/Prefabs/Medkit.prefab
+- Assets/Models/Prefabs/Ration.prefab
+- Assets/Models/Raw Models/Ration.fbx
+- Assets/Textures/Icons/Buffs/Meatbun.png
+- Assets/Models/Prefabs/BulletsBattery.prefab
+- Assets/Textures/Icons/Orange.png
+- Assets/Textures/Materials/UnityTex.png
+- Assets/Models/Prefabs/EnragingPhoto.prefab
+- Assets/Textures/Materials/EmissionRed.mat
+- Assets/Textures/Materials/Magenta.mat
+- Assets/Textures/Icons/MasterRoundII.png
+- Assets/Models/Prefabs/Scope.prefab
+- Assets/Models/Raw Models/SpiceItem.fbx
+- Assets/Models/Raw Models/Barrel.fbx
+- Assets/Textures/Materials/Brown.mat
+- Assets/Textures/Materials/Materials/tsExLQu_10x.mat
+- Assets/Textures/Materials/Materials/2IFNLod_10x.mat
+- Assets/Textures/Icons/RingMiserlyProtection.png
+- Assets/Textures/Materials/White.mat
+- Assets/Models/Prefabs/Projectiles/Bomb.prefab
+- Assets/Textures/Icons/Meatbun.png
+- Assets/Textures/Materials/Green.mat
+- Assets/Textures/Materials/Materials/7bzQeV8_10x.mat
+- Assets/Models/Raw Models/Scope.fbx
+- Assets/Textures/Icons/Buffs/Jammed.png
+- Assets/Textures/Materials/Pink.mat
+- Assets/Models/Prefabs/CharmHorn.prefab
+- Assets/Textures/Materials/GlassCyan.mat
+- Assets/Models/Prefabs/RingUnity.prefab
+- Assets/Shaders/ToonLit 1.shader
+- Assets/Models/Raw Models/Orange.fbx
+- Assets/Models/Prefabs/Rollbomb.prefab
+- Assets/Textures/Icons/Buffs/Charmed.png
+- Assets/Models/Raw Models/Molotov.fbx
+- Assets/Models/Prefabs/FriendshipCookie.prefab
+- Assets/Textures/Icons/MasterRoundXVII.png
+- Assets/Textures/Materials/Materials/UV_Orange.mat
+- Assets/Textures/Materials/Glass.mat
+- Assets/Models/Prefabs/Meatbun.prefab
+- Assets/Models/Prefabs/Metronome.prefab
+- Assets/Textures/Materials/Blank.mat
+- Assets/Models/Raw Models/Spread Ammo.fbx
+- Assets/Models/Prefabs/Molotov.prefab
+- Assets/Textures/Materials/Materials/EnragingPhotoTexture.mat
+- Assets/Textures/Icons/RingCartographer.png
+- Assets/Models/Raw Models/Metronome.fbx
+- Assets/Models/Raw Models/Number 2 Item.fbx
+- Assets/Textures/Materials/UV_Orange.png
+- Assets/Models/Prefabs/Spice.prefab
+- Assets/Textures/Icons/MasterRoundI.png
+- Assets/Textures/Icons/FriendshipCookie.png
+- Assets/Textures/Materials/Materials/shitty map.mat
+- Assets/Textures/Materials/Orange.mat
+- Assets/Models/Raw Models/Blank.fbx
+- Assets/Models/Raw Models/Medkit.fbx
+- Assets/Models/Raw Models/RingUnity.fbx
+- Assets/Models/Prefabs/MagazineRack.prefab
+- Assets/Models/Prefabs/RingMiserlyProtection.prefab
+- Assets/Textures/Materials/FlatWhite.mat
+- Assets/Textures/Icons/RingUnity.png
+- Assets/Models/Raw Models/RingCartographer.fbx
+- Assets/Textures/Materials/MetalD.Grey.mat
+- Assets/Textures/Materials/AkgUi2q_10x.png
+- Assets/Textures/Icons/MagazineRack.png
+- Assets/Textures/Icons/MasterRoundIV.png
+- Assets/Models/Raw Models/Friendship Cookie.fbx
+- Assets/Textures/Icons/Bomb.png
+- Assets/Textures/Icons/CharmHorn.png
+- Assets/Textures/Icons/Metronome.png
+- Assets/Textures/Materials/Materials/UnityTex.mat
+- Assets/Textures/Materials/shitty map.png
+- Assets/Models/Raw Models/Rollbomb.fbx
+- Assets/Textures/Materials/UV_AmmoSpread.png
+- Assets/Models/Raw Models/Bomb.fbx
+- Assets/Textures/Icons/Molotov.png
+- Assets/Textures/Materials/Materials/UV_AmmoSpread.mat
+- Assets/Textures/Materials/MagazineRackTexture.png
+- Assets/Models/Prefabs/RingCartographer.prefab
+- Assets/Textures/Icons/EnragingPhoto.png
+- Assets/Textures/Materials/EmissionMagenta.mat
+- Assets/Models/Prefabs/RingMiserlyProtectionWorn.prefab
+- Assets/Models/Prefabs/Backpack.prefab
+- Assets/Models/Prefabs/Blank.prefab
+- Assets/Textures/Materials/MetalGrey.mat
+- Assets/Textures/Materials/Materials/RWsycsV_10x.mat
+- Assets/Models/Raw Models/Charm Horn.fbx
+- Assets/Textures/Materials/Materials/AkgUi2q_10x.mat
+- Assets/Models/Prefabs/CultistPassiveItem.prefab
+- Assets/Textures/Icons/Buffs/Enraged.png
+- Assets/Textures/Materials/tsExLQu_10x.png
+- Assets/Models/Raw Models/Meatbun.fbx
+- Assets/Models/Raw Models/DisarmingPersonality.fbx
+- Assets/Models/Prefabs/PortableBarrelDevice.prefab
+- Assets/Textures/Icons/MasterRoundIII.png
+- Assets/Textures/Icons/Buffs/Metronome.png
+- Assets/Textures/Icons/CultistPassive.png
+- Assets/Models/Raw Models/Mustache.fbx
+- Assets/Textures/Materials/7bzQeV8_10x.png
+- Assets/Textures/Icons/Blank.png
+- Assets/Models/Prefabs/SpreadAmmo.prefab
+- Assets/Textures/Icons/Armor.png
+- Assets/Textures/Materials/DisarmingPersonality_Yellow.mat
+- Assets/Textures/Materials/UV_CharmHorn.png
+- Assets/Models/Raw Models/backpackcube.fbx
+- Assets/Textures/Materials/Bomb.mat
+Dependencies: []
