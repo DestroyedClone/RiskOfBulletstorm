@@ -5,6 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="riskofgungeonassets" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="riskofgungeonassets" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="libs\" />
   </ItemGroup>
 

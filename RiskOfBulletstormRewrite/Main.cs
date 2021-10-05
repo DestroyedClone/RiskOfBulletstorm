@@ -19,9 +19,11 @@ namespace RiskOfBulletstormRewrite
     [R2APISubmoduleDependency(nameof(ItemAPI), nameof(LanguageAPI), nameof(ArtifactAPI), nameof(EliteAPI))]
     public class Main : BaseUnityPlugin
     {
-        public const string ModGuid = "com.MyUsername.MyModName";
-        public const string ModName = "My Mod's Title and if we see this exact name on Thunderstore we will deprecate your mod";
+        public const string ModGuid = "com.DestroyedClone.RiskOfBulletstorm";
+        public const string ModName = "Risk of Bulletstorm";
         public const string ModVer = "0.0.1";
+
+        internal static BepInEx.Logging.ManualLogSource _logger;
 
         public static AssetBundle MainAssets;
 
@@ -32,13 +34,16 @@ namespace RiskOfBulletstormRewrite
 
         private void Awake()
         {
+            _logger = Logger;
             // Don't know how to create/use an asset bundle, or don't have a unity project set up?
             // Look here for info on how to set these up: https://github.com/KomradeSpectre/AetheriumMod/blob/rewrite-master/Tutorials/Item%20Mod%20Creation.md#unity-project
 
-            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("RiskOfBulletstormRewrite.my_assetbundlefile"))
+            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("RiskOfBulletstormRewrite.riskofgungeonassets"))
             {
                 MainAssets = AssetBundle.LoadFromStream(stream);
             }
+
+            Utils.Buffs.CreateBuffs();
 
             //This section automatically scans the project for all artifacts
             var ArtifactTypes = Assembly.GetExecutingAssembly().GetTypes().Where(type => !type.IsAbstract && type.IsSubclassOf(typeof(ArtifactBase)));
