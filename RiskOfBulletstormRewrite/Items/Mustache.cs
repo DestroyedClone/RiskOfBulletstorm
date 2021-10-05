@@ -1,13 +1,13 @@
 ﻿using BepInEx.Configuration;
 using R2API;
+using RiskOfBulletstormRewrite.Utils;
 using RoR2;
 using UnityEngine;
 using static RiskOfBulletstormRewrite.Main;
-using RiskOfBulletstormRewrite.Utils;
 
 namespace RiskOfBulletstormRewrite.Items
 {
-    public class Mustache : ItemBase<ExampleItem>
+    public class Mustache : ItemBase<Mustache>
     {
         public static ConfigEntry<float> RegenAmount;
         public static ConfigEntry<float> RegenAmountPerStack;
@@ -26,9 +26,9 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override ItemTier Tier => ItemTier.Tier1;
 
-        public override GameObject ItemModel => MainAssets.LoadAsset<GameObject>("ExampleItemPrefab.prefab");
+        public override GameObject ItemModel => MainAssets.LoadAsset<GameObject>("Assets/Models/Prefabs/Mustache.prefab");
 
-        public override Sprite ItemIcon => MainAssets.LoadAsset<Sprite>("ExampleItemIcon.png");
+        public override Sprite ItemIcon => MainAssets.LoadAsset<Sprite>("Assets/Textures/Icons/Mustache.png");
 
         public static GameObject ItemBodyModelPrefab;
 
@@ -327,8 +327,10 @@ localScale = new Vector3(1F, 1F, 1F)
 
         private void Mustache_StatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            if (sender && sender.HasBuff(Buffs.MustacheBuff.BuffDef))
+            if (sender && sender.HasBuff(Buffs.MustacheBuff))
             {
+                _logger.LogMessage(GetCount(sender));
+                _logger.LogMessage(RegenAmount.Value + RegenAmountPerStack.Value * (GetCount(sender) - 1));
                 args.baseRegenAdd += RegenAmount.Value + RegenAmountPerStack.Value * (GetCount(sender) - 1);
             }
         }
@@ -344,9 +346,10 @@ localScale = new Vector3(1F, 1F, 1F)
                 if (itemCount > 0)
                 {
                     var isBloodShrine = self.costType == CostTypeIndex.PercentHealth;
-                    if ((isBloodShrine && HealOnBloodShrineUse.Value) || !isBloodShrine)
+                    var isCost = self.costType > CostTypeIndex.None;
+                    if (isCost)
                     {
-                        if (HealOnBloodShrineUse.Value)
+                        if ((isBloodShrine && HealOnBloodShrineUse.Value) || !isBloodShrine)
                         {
                             Heal(characterBody);
                         }
@@ -355,11 +358,11 @@ localScale = new Vector3(1F, 1F, 1F)
             }
         }
 
-        private void Heal(CharacterBody characterBody)
+        private static void Heal(CharacterBody characterBody)
         {
             if (characterBody.healthComponent)
             {
-                characterBody.AddTimedBuff(Buffs.MustacheBuff.BuffDef, Duration.Value);
+                characterBody.AddTimedBuff(Buffs.MustacheBuff, Duration.Value);
             }
         }
     }
