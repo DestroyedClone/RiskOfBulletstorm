@@ -329,8 +329,6 @@ localScale = new Vector3(1F, 1F, 1F)
         {
             if (sender && sender.HasBuff(Buffs.MustacheBuff))
             {
-                _logger.LogMessage(GetCount(sender));
-                _logger.LogMessage(RegenAmount.Value + RegenAmountPerStack.Value * (GetCount(sender) - 1));
                 args.baseRegenAdd += RegenAmount.Value + RegenAmountPerStack.Value * (GetCount(sender) - 1);
             }
         }

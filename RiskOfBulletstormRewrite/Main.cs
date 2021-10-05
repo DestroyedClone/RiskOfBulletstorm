@@ -16,7 +16,7 @@ namespace RiskOfBulletstormRewrite
     [BepInPlugin(ModGuid, ModName, ModVer)]
     [BepInDependency(R2API.R2API.PluginGUID, R2API.R2API.PluginVersion)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.EveryoneNeedSameModVersion)]
-    [R2APISubmoduleDependency(nameof(ItemAPI), nameof(LanguageAPI), nameof(ArtifactAPI), nameof(EliteAPI), nameof(ProjectileAPI), nameof(BuffAPI))]
+    [R2APISubmoduleDependency(nameof(ItemAPI), nameof(LanguageAPI), nameof(ArtifactAPI), nameof(EliteAPI), nameof(ProjectileAPI), nameof(BuffAPI), nameof(RecalculateStatsAPI))]
     public class Main : BaseUnityPlugin
     {
         public const string ModGuid = "com.DestroyedClone.RiskOfBulletstorm";
