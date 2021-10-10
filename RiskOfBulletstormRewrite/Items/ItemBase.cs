@@ -43,6 +43,14 @@ namespace RiskOfBulletstormRewrite.Items
 
         public virtual bool AIBlacklisted { get; set; } = false;
 
+        public string ConfigCategory
+        {
+            get
+            {
+                return "Item: " + ItemName;
+            }
+        }
+
         /// <summary>
         /// This method structures your code execution of this class. An example implementation inside of it would be:
         /// <para>CreateConfig(config);</para>

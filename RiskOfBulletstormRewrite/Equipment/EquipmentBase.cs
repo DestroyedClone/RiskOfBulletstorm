@@ -46,6 +46,14 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public EquipmentDef EquipmentDef;
 
+        public string ConfigCategory
+        {
+            get
+            {
+                return "Equipment: " + EquipmentName;
+            }
+        }
+
         public abstract ItemDisplayRuleDict CreateItemDisplayRules();
 
         /// <summary>
