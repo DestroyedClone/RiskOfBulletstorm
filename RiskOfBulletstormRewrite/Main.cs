@@ -121,8 +121,8 @@ namespace RiskOfBulletstormRewrite
         /// <param name="itemList">The list you would like to add this to if it passes the config check.</param>
         public bool ValidateItem(ItemBase item, List<ItemBase> itemList)
         {
-            var enabled = Config.Bind<bool>("Item: " + item.ItemName, "Enable Item?", true, "Should this item appear in runs?").Value;
-            var aiBlacklist = Config.Bind<bool>("Item: " + item.ItemName, "Blacklist Item from AI Use?", false, "Should the AI not be able to obtain this item?").Value;
+            var enabled = Config.Bind<bool>(item.ConfigCategory, "Enable Item?", true, "Should this item appear in runs?").Value;
+            var aiBlacklist = Config.Bind<bool>(item.ConfigCategory, "Blacklist Item from AI Use?", false, "Should the AI not be able to obtain this item?").Value;
             if (enabled)
             {
                 itemList.Add(item);
@@ -141,7 +141,7 @@ namespace RiskOfBulletstormRewrite
         /// <param name="equipmentList">The list you would like to add this to if it passes the config check.</param>
         public bool ValidateEquipment(EquipmentBase equipment, List<EquipmentBase> equipmentList)
         {
-            if (Config.Bind<bool>("Equipment: " + equipment.EquipmentName, "Enable Equipment?", true, "Should this equipment appear in runs?").Value)
+            if (Config.Bind<bool>(equipment.ConfigCategory, "Enable Equipment?", true, "Should this equipment appear in runs?").Value)
             {
                 equipmentList.Add(equipment);
                 return true;
