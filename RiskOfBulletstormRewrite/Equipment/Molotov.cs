@@ -57,7 +57,7 @@ namespace RiskOfBulletstormRewrite.Equipment
             projectileDotZone.damageCoefficient = PercentDamagePerTick;
             projectileDotZone.resetFrequency = Mathf.Clamp(FrequencyOfTicks, 0f, 60f);
             projectileDotZone.lifetime = DurationAoE;
-            projectileDotZone.impactEffect = GlassBreakEffect;
+            //projectileDotZone.impactEffect = GlassBreakEffect;
 
             GameObject sporeGrenadePrefab = Resources.Load<GameObject>("prefabs/projectiles/SporeGrenadeProjectile");
             MolotovPrefab = sporeGrenadePrefab.InstantiateClone("Bulletstorm_Molotov", true);
@@ -89,10 +89,10 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         protected override void CreateConfig(ConfigFile config)
         {
-            PercentDamagePerTick = config.Bind("EQUIPMENT: " + EquipmentName, "Percent Damage Per Tick", 0.1f, "How much damage should the Molotov's area of effect deal? (Value: Percentage)").Value;
-            FrequencyOfTicks = config.Bind("EQUIPMENT: " + EquipmentName, "Tick Frequency", 60f, "How frequently should each damage tick happen?" +
+            PercentDamagePerTick = config.Bind(ConfigCategory, "Percent Damage Per Tick", 0.1f, "How much damage should the Molotov's area of effect deal? (Value: Percentage)").Value;
+            FrequencyOfTicks = config.Bind(ConfigCategory, "Tick Frequency", 60f, "How frequently should each damage tick happen?" +
                 "\n(60 = Every 1/60th of a second)").Value;
-            DurationAoE = config.Bind("EQUIPMENT: " + EquipmentName, "Duration", 8f, "How long should the Molotov's area of effect last?").Value;
+            DurationAoE = config.Bind(ConfigCategory, "Duration", 8f, "How long should the Molotov's area of effect last?").Value;
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
