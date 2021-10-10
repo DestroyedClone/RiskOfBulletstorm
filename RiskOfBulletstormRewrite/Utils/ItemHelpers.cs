@@ -46,5 +46,10 @@ namespace RiskOfBulletstormRewrite.Utils
 
             return renderInfos;
         }
+
+        public static string Pct(float value)
+        {
+            return $"{100 * value}%";
+        }
     }
 }
