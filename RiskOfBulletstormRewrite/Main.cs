@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
+using System.IO;
 
 namespace RiskOfBulletstormRewrite
 {
@@ -32,9 +33,16 @@ namespace RiskOfBulletstormRewrite
         public List<EquipmentBase> Equipments = new List<EquipmentBase>();
         public List<EliteEquipmentBase> EliteEquipments = new List<EliteEquipmentBase>();
 
+        public static string LocationOfProgram;
+
         private void Awake()
         {
             _logger = Logger;
+            LocationOfProgram = Path.GetDirectoryName(Info.Location);
+            //_logger.LogMessage($"Directory: {LocationOfProgram}");
+            RiskOfBulletstormRewrite.Controllers.BulletstormExtraStatsController.Init(Config);
+
+
             // Don't know how to create/use an asset bundle, or don't have a unity project set up?
             // Look here for info on how to set these up: https://github.com/KomradeSpectre/AetheriumMod/blob/rewrite-master/Tutorials/Item%20Mod%20Creation.md#unity-project
 
