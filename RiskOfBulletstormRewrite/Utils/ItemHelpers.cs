@@ -2,6 +2,9 @@
 using RoR2;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using System.Collections.ObjectModel;
+using RoR2.UI;
 
 namespace RiskOfBulletstormRewrite.Utils
 {
@@ -50,6 +53,60 @@ namespace RiskOfBulletstormRewrite.Utils
         public static string Pct(float value)
         {
             return $"{100 * value}%";
+        }
+
+        public static void GiveItemToPlayers(ItemDef itemDef, bool showInChat = true, int amount = 1)
+        {
+            var instances = PlayerCharacterMasterController.instances;
+            foreach (PlayerCharacterMasterController playerCharacterMaster in instances)
+            {
+                var master = playerCharacterMaster.master;
+                if (master)
+                {
+                    var body = playerCharacterMaster.body;
+                    if (body)
+                    {
+                        var inventory = master.inventory;
+
+                        if (inventory)
+                        {
+                            if (showInChat) SimulatePickup(master, itemDef, amount);
+                            else inventory.GiveItem(itemDef, amount);
+                        }
+                    }
+                }
+            }
+        }
+
+
+        public static void SimulatePickup(CharacterMaster characterMaster, ItemDef itemDef, int amount = 1, bool showNotif = true)
+        {
+            var self = characterMaster.inventory;
+            var pickupIndex = PickupCatalog.FindPickupIndex(itemDef.itemIndex);
+            //var pickupDef = PickupCatalog.GetPickupDef(pickupIndex);
+            //var nameToken = pickupDef.nameToken;
+            //var color = pickupDef.baseColor;
+            //var body = characterMaster.GetBody();
+
+            if (pickupIndex > PickupIndex.none)
+            {
+                //Chat.AddPickupMessage(body, nameToken, color, (uint)amount);
+                Util.PlaySound("Play_UI_item_pickup", characterMaster.GetBodyObject());
+
+                self.GiveItem(itemDef, amount);
+                GenericPickupController.SendPickupMessage(characterMaster, pickupIndex);
+
+                if (showNotif)
+                {
+                    var list = NotificationQueue.instancesList;
+                    list[0].OnPickup(characterMaster, pickupIndex);
+                    /*for (int i = 0; i < list.Count; i++)
+                    {
+                        list[i].OnPickup(characterMaster, pickupIndex);
+                    }*/
+                }
+            }
+
         }
     }
 }
