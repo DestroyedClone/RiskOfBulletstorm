@@ -5,6 +5,7 @@ using RiskOfBulletstormRewrite.Artifact;
 using RiskOfBulletstormRewrite.Equipment;
 using RiskOfBulletstormRewrite.Equipment.EliteEquipment;
 using RiskOfBulletstormRewrite.Items;
+using RiskOfBulletstormRewrite.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,8 +51,6 @@ namespace RiskOfBulletstormRewrite
             _logger = Logger;
             LocationOfProgram = Path.GetDirectoryName(Info.Location);
             //_logger.LogMessage($"Directory: {LocationOfProgram}");
-            RiskOfBulletstormRewrite.Controllers.BulletstormExtraStatsController.Init(Config);
-            Controllers.MasterRoundController.Init(Config);
 
 
             // Don't know how to create/use an asset bundle, or don't have a unity project set up?
@@ -111,6 +110,15 @@ namespace RiskOfBulletstormRewrite
                     eliteEquipment.Init(Config);
 
                 }
+            }
+
+            //this section automatically scans the project for all elite equipment
+            var ControllerTypes = Assembly.GetExecutingAssembly().GetTypes().Where(type => !type.IsAbstract && type.IsSubclassOf(typeof(ControllerBase)));
+
+            foreach (var controllerType in ControllerTypes)
+            {
+                ControllerBase controllerBase = (ControllerBase)System.Activator.CreateInstance(controllerType);
+                controllerBase.Init(Config);
             }
 
         }
