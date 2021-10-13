@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Equipment\ExampleEquipment.cs" />
+    <Compile Remove="Equipment\ExampleEquipWithTargeting.cs" />
+    <Compile Remove="Items\ExampleItem.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="riskofgungeonassets" />
   </ItemGroup>
 
@@ -22,6 +28,12 @@
     </Reference>
     <Reference Include="BepInEx">
       <HintPath>libs\BepInEx.dll</HintPath>
+    </Reference>
+    <Reference Include="HGCSharpUtils">
+      <HintPath>libs\HGCSharpUtils.dll</HintPath>
+    </Reference>
+    <Reference Include="HGUnityUtils">
+      <HintPath>libs\HGUnityUtils.dll</HintPath>
     </Reference>
     <Reference Include="MMHOOK_Assembly-CSharp">
       <HintPath>libs\MMHOOK_Assembly-CSharp.dll</HintPath>
