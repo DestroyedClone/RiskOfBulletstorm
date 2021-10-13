@@ -11,7 +11,17 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using System.IO;
+using RoR2;
+using BepInEx.Configuration;
+using Path = System.IO.Path;
+using R2API.Networking;
 
+using Mono.Cecil.Cil;
+using MonoMod.Cil;
+using EntityStates;
+using RoR2.Skills;
+
+[assembly: HG.Reflection.SearchableAttribute.OptIn]
 namespace RiskOfBulletstormRewrite
 {
     [BepInPlugin(ModGuid, ModName, ModVer)]
@@ -41,6 +51,7 @@ namespace RiskOfBulletstormRewrite
             LocationOfProgram = Path.GetDirectoryName(Info.Location);
             //_logger.LogMessage($"Directory: {LocationOfProgram}");
             RiskOfBulletstormRewrite.Controllers.BulletstormExtraStatsController.Init(Config);
+            Controllers.MasterRoundController.Init(Config);
 
 
             // Don't know how to create/use an asset bundle, or don't have a unity project set up?
