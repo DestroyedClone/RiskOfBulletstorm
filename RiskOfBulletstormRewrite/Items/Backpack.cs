@@ -18,12 +18,6 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override string ItemLangTokenName => "BACKPACK";
 
-        public override string ItemPickupDesc => "Grants an extra equipment slot.";
-
-        public override string ItemFullDescription => "Grants access to an <style=cIsUtility>extra equipment slot</style> <style=cStack>(+1 per stack)</style>.";
-
-        public override string ItemLore => "";
-
         public override ItemTier Tier => ItemTier.Tier3;
         public override ItemTag[] ItemTags => new[] { ItemTag.Utility, ItemTag.EquipmentRelated, ItemTag.AIBlacklist };
 
