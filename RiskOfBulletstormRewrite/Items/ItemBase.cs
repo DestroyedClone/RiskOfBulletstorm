@@ -27,9 +27,8 @@ namespace RiskOfBulletstormRewrite.Items
     {
         public abstract string ItemName { get; }
         public abstract string ItemLangTokenName { get; }
-        public abstract string ItemPickupDesc { get; }
-        public abstract string ItemFullDescription { get; }
-        public abstract string ItemLore { get; }
+        public virtual string[] ItemPickupDescParams { get; }
+        public virtual string[] ItemFullDescriptionParams { get; }
 
         public abstract ItemTier Tier { get; }
         public virtual ItemTag[] ItemTags { get; set; } = new ItemTag[] { };
@@ -50,6 +49,21 @@ namespace RiskOfBulletstormRewrite.Items
                 return "Item: " + ItemName;
             }
         }
+        public string ItemPickupToken
+        {
+            get
+            {
+                return "ITEM_" + ItemLangTokenName + "_PICKUP";
+            }
+        }
+
+        public string ItemDescriptionToken
+        {
+            get
+            {
+                return "ITEM_" + ItemLangTokenName + "_DESCRIPTION";
+            }
+        }
 
         /// <summary>
         /// This method structures your code execution of this class. An example implementation inside of it would be:
@@ -65,13 +79,44 @@ namespace RiskOfBulletstormRewrite.Items
 
         public virtual void CreateConfig(ConfigFile config) { }
 
-        protected virtual void CreateLang()
+        private void DeferToken(string token, string lang, params string[] args)
         {
+            RiskOfBulletstormRewrite.Language.langTokenValues.Add(new Language.LangTokenValue() { token = token, lang = lang, strings = args });
+        }
+        protected virtual void CreateLang() //create lang (addtokens for nwo) -> modify lang (this will be kept later)
+        {
+            bool formatPickup = ItemPickupDescParams != null;
+            bool formatDescription = ItemFullDescriptionParams != null;
+            if (!formatDescription && !formatPickup)
+                return;
+            
+            foreach (var lang in RoR2.Language.steamLanguageTable)
+            {
+                var langName = lang.Value.webApiName;
+               // Main._logger.LogMessage($"[{langName}]Modifying {ItemLangTokenName}");
+
+                if (formatPickup)
+                {
+                    DeferToken(ItemPickupToken, langName, ItemPickupDescParams);
+                }
+
+                if (formatDescription)
+                {
+                    DeferToken(ItemDescriptionToken, langName, ItemFullDescriptionParams);
+                }
+            }
+            /*
             LanguageAPI.Add("ITEM_" + ItemLangTokenName + "_NAME", ItemName);
             LanguageAPI.Add("ITEM_" + ItemLangTokenName + "_PICKUP", ItemPickupDesc);
             LanguageAPI.Add("ITEM_" + ItemLangTokenName + "_DESCRIPTION", ItemFullDescription);
-            LanguageAPI.Add("ITEM_" + ItemLangTokenName + "_LORE", ItemLore);
+            LanguageAPI.Add("ITEM_" + ItemLangTokenName + "_LORE", ItemLore);*/
+        
         }
+
+        #region language shit
+
+
+        #endregion
 
         public abstract ItemDisplayRuleDict CreateItemDisplayRules();
         protected void CreateItem()
