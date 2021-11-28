@@ -17,12 +17,12 @@ namespace RiskOfBulletstormRewrite.Items
         public override string ItemName => "Mustache";
 
         public override string ItemLangTokenName => "MUSTACHE";
-
-        public override string ItemPickupDesc => "A Familiar Face\nSpending money soothes the soul.";
-
-        public override string ItemFullDescription => $"Upon purchase, increases your regeneration by <style=cIsHealing>{RegenAmount} health</style> <style=cStack>(+{RegenAmountPerStack} per stack)</style> for {Duration} seconds.";
-
-        public override string ItemLore => "The power of commerce fills your veins... and your follicles! This mustache vertically integrates your purchasing synergies, giving you a chance to be healed on every transaction.";
+        public override string[] ItemFullDescriptionParams => new string[]
+        {
+            RegenAmount.Value.ToString(),
+            RegenAmountPerStack.Value.ToString(),
+            Duration.Value.ToString()
+        };
 
         public override ItemTier Tier => ItemTier.Tier1;
 
@@ -43,7 +43,7 @@ namespace RiskOfBulletstormRewrite.Items
         public override void CreateConfig(ConfigFile config)
         {
             RegenAmount = config.Bind(ConfigCategory, "Regen Amount", 2f, "The amount of regen to gain with one stack.");
-            RegenAmountPerStack = config.Bind(ConfigCategory, "Regen Amount (Stack)", 1f, "The amount of regen to gain with per stack.");
+            RegenAmountPerStack = config.Bind(ConfigCategory, "Regen Amount (Stack)", 1f, "The amount of regen to gain per stack.");
             Duration = config.Bind(ConfigCategory, "Duration", 8f, "The amount of time the buff lasts for.");
             HealOnBloodShrineUse = config.Bind(ConfigCategory, "Heal on Health Cost", false, "If true, then the buff will be applied upon purchase of anything that costs health, such as Blood Shrines.");
         }

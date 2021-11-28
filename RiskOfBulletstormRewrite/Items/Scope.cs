@@ -4,32 +4,17 @@ using RiskOfBulletstormRewrite.Utils;
 using RoR2;
 using UnityEngine;
 using static RiskOfBulletstormRewrite.Main;
-using static RiskOfBulletstormRewrite.Utils.ItemHelpers;
 
 namespace RiskOfBulletstormRewrite.Items
 {
     public class Scope : ItemBase<Scope>
     {
-        public static float SpreadReduction { get; private set; } = 0.10f;
-        public static float SpreadReductionPerStack { get; private set; } = 0.05f;
+        public static ConfigEntry<float> SpreadReduction;
+        public static ConfigEntry<float> SpreadReductionPerStack;
 
         public override string ItemName => "Scope";
 
         public override string ItemLangTokenName => "SCOPE";
-
-        public override string ItemPickupDesc => "Steady Aim\nA standard scope. Increases accuracy!";
-
-        public override string ItemFullDescription => $"Decreases <style=cIsUtility>firing spread</style> by <style=cIsUtility>{Pct(SpreadReduction)}</style>" +
-            $" <style=cStack>(+{Pct(SpreadReductionPerStack)} per stack)</style>.";
-
-        public override string ItemLore => "<style=cStack>DECODING MESSAGE - KATE ****** - G*****N EXPLORATORY TEAM" +
-            "\n [SYS] Filter: [messages from:KATE_OPERATOR sort:chronological date:today] | Showing 6 recent results" +
-            "\n\n4:44 - [Kate] Found this scope in a chest, reporting back. It's got a green lens, and looks like a sniper scope." +
-            "\n4:55 - [Kate] Seems to work whether it's attached or not, but I can't really look through it if it's not actually attached. Decision: attaching it." +
-            "\n5:20 - [Kate] Not really sure it fits this place, since its just a scope. Then again, there was some duct tape in a chest, so maybe its not that weird..." +
-            "\n6:00 - [Kate] I'm requesting a possible analysis sometime, I don't think this is just a scope. I'm hitting a lot more of my shots. Maybe I'm just more focused." +
-            "\n6:02 - [Kate] Scratch that, this is ACTUALLY reducing the spread of bullets. I'm kinda curious how it works, but I'll study it at the shop." +
-            "\n3:00 - [Kate] I am now back in the Breach. The shopkeeper did not like me testing the scope.";
 
         public override ItemTier Tier => ItemTier.Tier1;
 
@@ -44,13 +29,12 @@ namespace RiskOfBulletstormRewrite.Items
             CreateConfig(config);
             CreateLang();
             CreateItem();
-            Hooks();
         }
 
         public override void CreateConfig(ConfigFile config)
         {
-            SpreadReduction = config.Bind(ConfigCategory, "How much should one Scope reduce spread? (Value: Subtractive Percentage)", 0.1f, "").Value;
-            SpreadReductionPerStack = config.Bind(ConfigCategory, "How much should each Scope reduce spread by per stack? (Value: Subtractive Percentage)", 0.05f, "").Value;
+            SpreadReduction = config.Bind(ConfigCategory, "How much should one Scope reduce spread? (Value: Subtractive Percentage)", 0.1f, "");
+            SpreadReductionPerStack = config.Bind(ConfigCategory, "How much should each Scope reduce spread by per stack? (Value: Subtractive Percentage)", 0.05f, "");
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
@@ -322,11 +306,6 @@ localScale = new Vector3(1F, 1F, 1F)
                 localScale = new Vector3(0.425F, 0.425F, 0.425F)
             });
             return rules;
-        }
-
-        public override void Hooks()
-        {
-
         }
     }
 }
