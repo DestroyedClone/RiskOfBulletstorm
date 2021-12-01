@@ -4,6 +4,7 @@ using RoR2;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace RiskOfBulletstormRewrite.Items
 {
@@ -85,9 +86,12 @@ namespace RiskOfBulletstormRewrite.Items
         }
         protected virtual void CreateLang() //create lang (addtokens for nwo) -> modify lang (this will be kept later)
         {
-            bool formatPickup = ItemPickupDescParams != null;
-            bool formatDescription = ItemFullDescriptionParams != null;
-            if (!formatDescription && !formatPickup)
+            //Main._logger.LogMessage("ItemName CreateLang()");
+            bool formatPickup = ItemPickupDescParams?.Length > 0;
+            //Main._logger.LogMessage("pickupCheck");
+            bool formatDescription = ItemFullDescriptionParams?.Length > 0; //https://stackoverflow.com/a/41596301
+            //Main._logger.LogMessage("descCheck");
+            if (formatDescription && formatPickup)
                 return;
             
             foreach (var lang in RoR2.Language.steamLanguageTable)
@@ -112,11 +116,6 @@ namespace RiskOfBulletstormRewrite.Items
             LanguageAPI.Add("ITEM_" + ItemLangTokenName + "_LORE", ItemLore);*/
         
         }
-
-        #region language shit
-
-
-        #endregion
 
         public abstract ItemDisplayRuleDict CreateItemDisplayRules();
         protected void CreateItem()
