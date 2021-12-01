@@ -21,12 +21,7 @@ namespace RiskOfBulletstormRewrite.Controllers
     public abstract class ControllerBase
     {
 
-        public abstract GameObject ItemModel { get; }
-        public abstract Sprite ItemIcon { get; }
-
-        public ItemDef ItemDef;
-
-        public abstract string ConfigCategory { get; }
+        public virtual string ConfigCategory { get; }
 
         /// <summary>
         /// This method structures your code execution of this class. An example implementation inside of it would be:
