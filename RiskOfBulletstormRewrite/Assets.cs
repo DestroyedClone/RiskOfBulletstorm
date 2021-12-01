@@ -5,7 +5,7 @@ using System.Text;
 
 namespace RiskOfBulletstormRewrite
 {
-    class Assets //Meant to be used to hold assetbundle shit... this mod does not use that, though, but still
+    class Assets
     {
         internal static string assemblyDir
         {
