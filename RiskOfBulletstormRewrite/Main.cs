@@ -2,30 +2,21 @@
 using R2API;
 using R2API.Utils;
 using RiskOfBulletstormRewrite.Artifact;
+using RiskOfBulletstormRewrite.Controllers;
 using RiskOfBulletstormRewrite.Equipment;
 using RiskOfBulletstormRewrite.Equipment.EliteEquipment;
 using RiskOfBulletstormRewrite.Items;
-using RiskOfBulletstormRewrite.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
-using System.IO;
-using RoR2;
-using BepInEx.Configuration;
-using Path = System.IO.Path;
-using R2API.Networking;
-
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using EntityStates;
-using RoR2.Skills;
-
 using Zio;
 using Zio.FileSystems;
+using Path = System.IO.Path;
 
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
+
 namespace RiskOfBulletstormRewrite
 {
     [BepInPlugin(ModGuid, ModName, ModVer)]
@@ -51,6 +42,7 @@ namespace RiskOfBulletstormRewrite
 
         //https://github.com/Moffein/RiskyMod/blob/2240ef850d2f8d79aa3678de8ab9fa740d9a1b28/RiskyMod/RiskyMod.cs
         public static FileSystem fileSystem { get; private set; }
+
         public static PluginInfo pluginInfo;
 
         private void Awake()
@@ -62,7 +54,6 @@ namespace RiskOfBulletstormRewrite
             LocationOfProgram = Path.GetDirectoryName(Info.Location);
             //_logger.LogMessage($"Directory: {LocationOfProgram}");
 
-
             // Don't know how to create/use an asset bundle, or don't have a unity project set up?
             // Look here for info on how to set these up: https://github.com/KomradeSpectre/AetheriumMod/blob/rewrite-master/Tutorials/Item%20Mod%20Creation.md#unity-project
 
@@ -73,19 +64,10 @@ namespace RiskOfBulletstormRewrite
 
             Utils.Buffs.CreateBuffs();
 
-
             FunnyLanguage();
 
             AddToAssembly();
             RiskOfBulletstormRewrite.Language.Initialize();
-
-            On.RoR2.Run.Start += Run_Start;
-        }
-
-        private void Run_Start(On.RoR2.Run.orig_Start orig, Run self)
-        {
-            orig(self);
-            Main._logger.LogMessage("NEW String" + RoR2.Language.GetString(Mustache.instance.ItemDescriptionToken, "en"));
         }
 
         public void AddToAssembly()
@@ -135,7 +117,6 @@ namespace RiskOfBulletstormRewrite
                 if (ValidateEliteEquipment(eliteEquipment, EliteEquipments))
                 {
                     eliteEquipment.Init(Config);
-
                 }
             }
 
@@ -159,14 +140,15 @@ namespace RiskOfBulletstormRewrite
                 {
                     list.Add(fileSystem.GetDirectoryEntry("/language/"));
                 };
-            } else
+            }
+            else
             {
                 _logger.LogWarning("Language directory is missing!");
             }
         }
 
-
         #region Validators
+
         /// <summary>
         /// A helper to easily set up and initialize an artifact from your artifact classes if the user has it enabled in their configuration files.
         /// </summary>
@@ -236,6 +218,7 @@ namespace RiskOfBulletstormRewrite
             }
             return false;
         }
-        #endregion
+
+        #endregion Validators
     }
 }
