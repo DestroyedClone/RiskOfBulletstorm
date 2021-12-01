@@ -147,7 +147,7 @@ namespace RiskOfBulletstormRewrite.Items
                                             var eqp = equipmentStateSlots[i];
                                             if (eqp.equipmentIndex != EquipmentIndex.None)
                                             {
-                                                eqpName = Language.GetString(eqp.equipmentDef.nameToken);
+                                                eqpName = RoR2.Language.GetString(eqp.equipmentDef.nameToken);
                                             }
                                             charges = eqp.charges;
                                             cooldown = eqp.isPerfomingRecharge ? Mathf.Max((int)eqp.chargeFinishTime.timeUntil, 0) : cooldown;
