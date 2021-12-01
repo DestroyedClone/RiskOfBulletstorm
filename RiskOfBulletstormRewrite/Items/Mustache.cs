@@ -43,8 +43,8 @@ namespace RiskOfBulletstormRewrite.Items
         public override void CreateConfig(ConfigFile config)
         {
             RegenAmount = config.Bind(ConfigCategory, "Regen Amount", 2f, "The amount of regen to gain with one stack.");
-            RegenAmountPerStack = config.Bind(ConfigCategory, "Regen Amount (Stack)", 1f, "The amount of regen to gain per stack.");
-            Duration = config.Bind(ConfigCategory, "Duration", 8f, "The amount of time the buff lasts for.");
+            RegenAmountPerStack = config.Bind(ConfigCategory, "Regen Amount (Stack)", 1f, "The amount of regen to gain with per stack.");
+            Duration = config.Bind(ConfigCategory, "Duration", 8f, "The amount of time in seconds the buff lasts for.");
             HealOnBloodShrineUse = config.Bind(ConfigCategory, "Heal on Health Cost", false, "If true, then the buff will be applied upon purchase of anything that costs health, such as Blood Shrines.");
         }
 
