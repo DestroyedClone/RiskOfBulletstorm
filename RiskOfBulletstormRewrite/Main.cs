@@ -22,6 +22,9 @@ using MonoMod.Cil;
 using EntityStates;
 using RoR2.Skills;
 
+using Zio;
+using Zio.FileSystems;
+
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
 namespace RiskOfBulletstormRewrite
 {
@@ -33,7 +36,7 @@ namespace RiskOfBulletstormRewrite
     {
         public const string ModGuid = "com.DestroyedClone.RiskOfBulletstorm";
         public const string ModName = "Risk of Bulletstorm";
-        public const string ModVer = "0.0.1";
+        public const string ModVer = "2.0.0";
 
         internal static BepInEx.Logging.ManualLogSource _logger;
 
@@ -46,9 +49,16 @@ namespace RiskOfBulletstormRewrite
 
         public static string LocationOfProgram;
 
+        //https://github.com/Moffein/RiskyMod/blob/2240ef850d2f8d79aa3678de8ab9fa740d9a1b28/RiskyMod/RiskyMod.cs
+        public static FileSystem fileSystem { get; private set; }
+        public static PluginInfo pluginInfo;
+
         private void Awake()
         {
             _logger = Logger;
+            pluginInfo = Info;
+            Language.config = Config;
+
             LocationOfProgram = Path.GetDirectoryName(Info.Location);
             //_logger.LogMessage($"Directory: {LocationOfProgram}");
 
@@ -63,6 +73,23 @@ namespace RiskOfBulletstormRewrite
 
             Utils.Buffs.CreateBuffs();
 
+
+            FunnyLanguage();
+
+            AddToAssembly();
+            RiskOfBulletstormRewrite.Language.Initialize();
+
+            On.RoR2.Run.Start += Run_Start;
+        }
+
+        private void Run_Start(On.RoR2.Run.orig_Start orig, Run self)
+        {
+            orig(self);
+            Main._logger.LogMessage("NEW String" + RoR2.Language.GetString(Mustache.instance.ItemDescriptionToken, "en"));
+        }
+
+        public void AddToAssembly()
+        {
             //This section automatically scans the project for all artifacts
             var ArtifactTypes = Assembly.GetExecutingAssembly().GetTypes().Where(type => !type.IsAbstract && type.IsSubclassOf(typeof(ArtifactBase)));
 
@@ -120,10 +147,26 @@ namespace RiskOfBulletstormRewrite
                 ControllerBase controllerBase = (ControllerBase)System.Activator.CreateInstance(controllerType);
                 controllerBase.Init(Config);
             }
+        }
 
+        private void FunnyLanguage()
+        {
+            PhysicalFileSystem physicalFileSystem = new PhysicalFileSystem();
+            Main.fileSystem = new SubFileSystem(physicalFileSystem, physicalFileSystem.ConvertPathFromInternal(Assets.assemblyDir), true);
+            if (fileSystem.DirectoryExists("/language/")) //Uh, it exists and we make sure to not shit up R2Api
+            {
+                RoR2.Language.collectLanguageRootFolders += delegate (List<DirectoryEntry> list)
+                {
+                    list.Add(fileSystem.GetDirectoryEntry("/language/"));
+                };
+            } else
+            {
+                _logger.LogWarning("Language directory is missing!");
+            }
         }
 
 
+        #region Validators
         /// <summary>
         /// A helper to easily set up and initialize an artifact from your artifact classes if the user has it enabled in their configuration files.
         /// </summary>
@@ -193,5 +236,6 @@ namespace RiskOfBulletstormRewrite
             }
             return false;
         }
+        #endregion
     }
 }
