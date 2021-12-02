@@ -12,12 +12,6 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override string ItemLangTokenName => "DEPRECATE_ME_ITEM";
 
-        public override string ItemPickupDesc => "";
-
-        public override string ItemFullDescription => "";
-
-        public override string ItemLore => "";
-
         public override ItemTier Tier => ItemTier.Tier1;
 
         public override GameObject ItemModel => MainAssets.LoadAsset<GameObject>("ExampleItemPrefab.prefab");
