@@ -69,7 +69,8 @@ namespace RiskOfBulletstormRewrite.Items
                         var oldHeal = amount;
                         amount *= multiplier;
                         _logger.LogMessage($"roll won: {oldHeal} -> {amount}");
-                    } else
+                    }
+                    else
                     {
                         _logger.LogMessage("roll failed");
                     }
