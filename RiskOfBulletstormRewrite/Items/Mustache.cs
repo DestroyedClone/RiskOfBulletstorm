@@ -30,6 +30,8 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override Sprite ItemIcon => MainAssets.LoadAsset<Sprite>("Assets/Textures/Icons/Mustache.png");
 
+        public override ItemTag[] ItemTags => new ItemTag[] { ItemTag.Any, ItemTag.Healing };
+
         public static GameObject ItemBodyModelPrefab;
 
         public override void Init(ConfigFile config)
