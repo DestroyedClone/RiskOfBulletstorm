@@ -82,17 +82,21 @@ namespace RiskOfBulletstormRewrite.Items
 
         private void DeferToken(string token, string lang, params string[] args)
         {
+            Main._logger.LogMessage($"Deferring {token} w/ lang {lang}");
             RiskOfBulletstormRewrite.Language.langTokenValues.Add(new Language.LangTokenValue() { token = token, lang = lang, strings = args });
         }
         protected virtual void CreateLang() //create lang (addtokens for nwo) -> modify lang (this will be kept later)
         {
-            //Main._logger.LogMessage("ItemName CreateLang()");
+            Main._logger.LogMessage($"{ItemName} CreateLang()");
             bool formatPickup = ItemPickupDescParams?.Length > 0;
             //Main._logger.LogMessage("pickupCheck");
             bool formatDescription = ItemFullDescriptionParams?.Length > 0; //https://stackoverflow.com/a/41596301
             //Main._logger.LogMessage("descCheck");
             if (formatDescription && formatPickup)
+            {
+                //Main._logger.LogMessage("Nothing to format.");
                 return;
+            }
             
             foreach (var lang in RoR2.Language.steamLanguageTable)
             {
@@ -115,6 +119,11 @@ namespace RiskOfBulletstormRewrite.Items
             LanguageAPI.Add("ITEM_" + ItemLangTokenName + "_DESCRIPTION", ItemFullDescription);
             LanguageAPI.Add("ITEM_" + ItemLangTokenName + "_LORE", ItemLore);*/
         
+        }
+
+        public string GetChance(ConfigEntry<float> configEntry)
+        {
+            return (configEntry.Value * 100).ToString();
         }
 
         public abstract ItemDisplayRuleDict CreateItemDisplayRules();
