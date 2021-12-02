@@ -23,9 +23,8 @@ namespace RiskOfBulletstormRewrite.Equipment
     {
         public abstract string EquipmentName { get; }
         public abstract string EquipmentLangTokenName { get; }
-        public abstract string EquipmentPickupDesc { get; }
-        public abstract string EquipmentFullDescription { get; }
-        public abstract string EquipmentLore { get; }
+        public virtual string[] EquipmentPickupDescParams { get; }
+        public virtual string[] EquipmentFullDescriptionParams { get; }
 
         public abstract GameObject EquipmentModel { get; }
         public abstract Sprite EquipmentIcon { get; }
@@ -53,6 +52,25 @@ namespace RiskOfBulletstormRewrite.Equipment
                 return "Equipment: " + EquipmentName;
             }
         }
+        public string EquipmentPickupToken
+        {
+            get
+            {
+                return "EQUIPMENT_" + EquipmentLangTokenName + "_PICKUP";
+            }
+        }
+
+        public string EquipmentDescriptionToken
+        {
+            get
+            {
+                return "EQUIPMENT_" + EquipmentLangTokenName + "_DESCRIPTION";
+            }
+        }
+        public string GetChance(ConfigEntry<float> configEntry)
+        {
+            return (configEntry.Value * 100).ToString();
+        }
 
         public abstract ItemDisplayRuleDict CreateItemDisplayRules();
 
@@ -76,10 +94,37 @@ namespace RiskOfBulletstormRewrite.Equipment
         /// </summary>
         protected virtual void CreateLang()
         {
-            LanguageAPI.Add("EQUIPMENT_" + EquipmentLangTokenName + "_NAME", EquipmentName);
-            LanguageAPI.Add("EQUIPMENT_" + EquipmentLangTokenName + "_PICKUP", EquipmentPickupDesc);
-            LanguageAPI.Add("EQUIPMENT_" + EquipmentLangTokenName + "_DESCRIPTION", EquipmentFullDescription);
-            LanguageAPI.Add("EQUIPMENT_" + EquipmentLangTokenName + "_LORE", EquipmentLore);
+            Main._logger.LogMessage($"{EquipmentName} CreateLang()");
+            bool formatPickup = EquipmentPickupDescParams?.Length > 0;
+            //Main._logger.LogMessage("pickupCheck");
+            bool formatDescription = EquipmentFullDescriptionParams?.Length > 0; //https://stackoverflow.com/a/41596301
+            //Main._logger.LogMessage("descCheck");
+            if (formatDescription && formatPickup)
+            {
+                //Main._logger.LogMessage("Nothing to format.");
+                return;
+            }
+
+            foreach (var lang in RoR2.Language.steamLanguageTable)
+            {
+                var langName = lang.Value.webApiName;
+                // Main._logger.LogMessage($"[{langName}]Modifying {ItemLangTokenName}");
+
+                if (formatPickup)
+                {
+                    DeferToken(EquipmentPickupToken, langName, EquipmentPickupDescParams);
+                }
+
+                if (formatDescription)
+                {
+                    DeferToken(EquipmentDescriptionToken, langName, EquipmentFullDescriptionParams);
+                }
+            }
+        }
+        private void DeferToken(string token, string lang, params string[] args)
+        {
+            Main._logger.LogMessage($"Deferring {token} w/ lang {lang}");
+            RiskOfBulletstormRewrite.Language.langTokenValues.Add(new Language.LangTokenValue() { token = token, lang = lang, strings = args });
         }
 
         protected void CreateEquipment()
