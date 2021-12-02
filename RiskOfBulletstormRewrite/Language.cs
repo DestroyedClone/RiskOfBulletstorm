@@ -49,6 +49,10 @@ namespace RiskOfBulletstormRewrite
             {
                 var newString = FormatToken(langTokenValue.token, langTokenValue.lang, langTokenValue.strings);
                 LanguageAPI.Add(langTokenValue.token, newString, langTokenValue.lang);
+                /*if (langTokenValue.lang == "en")
+                {
+                    Main._logger.LogMessage($"{langTokenValue.token} {newString}");
+                }*/
             }
         }
 
@@ -56,7 +60,7 @@ namespace RiskOfBulletstormRewrite
         {
             return RoR2.Language.GetString(token, RoR2.Language.currentLanguageName);
         }
-
+        /*
         private static void SetupConfigLanguage(ConfigFile config)
         {
             Action<ConfigFile> action = Language.onConfigLoaded;
@@ -65,6 +69,6 @@ namespace RiskOfBulletstormRewrite
                 return;
             }
             action(config);
-        }
+        }*/
     }
 }
