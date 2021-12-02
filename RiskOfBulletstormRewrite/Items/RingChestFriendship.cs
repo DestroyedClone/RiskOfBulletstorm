@@ -17,8 +17,8 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override string[] ItemFullDescriptionParams => new string[]
         {
-            (cfgCreditMultiplier.Value * 100).ToString(),
-            (cfgCreditMultiplierPerStack.Value * 100).ToString()
+            GetChance(cfgCreditMultiplier),
+            GetChance(cfgCreditMultiplierPerStack)
         };
 
         public override ItemTier Tier => ItemTier.Tier2;
@@ -26,6 +26,8 @@ namespace RiskOfBulletstormRewrite.Items
         public override GameObject ItemModel => MainAssets.LoadAsset<GameObject>("ExampleItemPrefab.prefab");
 
         public override Sprite ItemIcon => MainAssets.LoadAsset<Sprite>("ExampleItemIcon.png");
+
+        public override ItemTag[] ItemTags => new ItemTag[] { ItemTag.Any, ItemTag.AIBlacklist, ItemTag.Utility };
 
         public override void Init(ConfigFile config)
         {
@@ -37,8 +39,8 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void CreateConfig(ConfigFile config)
         {
-            cfgCreditMultiplier = config.Bind(ConfigCategory, "Config Credit Multiplier", 0.5f, "");
-            cfgCreditMultiplierPerStack = config.Bind(ConfigCategory, "Config Credit Multiplier", 0.25f, "");
+            cfgCreditMultiplier = config.Bind(ConfigCategory, "Config Credit Multiplier", 0.5f, "How much should the credits be increased by?");
+            cfgCreditMultiplierPerStack = config.Bind(ConfigCategory, "Config Credit Multiplier Per Stack", 0.25f, "How much should the credits be increased by per stack?");
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
@@ -58,7 +60,7 @@ namespace RiskOfBulletstormRewrite.Items
             if (itemCount > 0)
             {
                 var value = 1 + (cfgCreditMultiplier.Value + cfgCreditMultiplierPerStack.Value * (itemCount - 1));
-                var oldValue = arg1.SceneDirectorInteractableCredits;
+                //var oldValue = arg1.SceneDirectorInteractableCredits;
                 arg1.SceneDirectorInteractableCredits = Mathf.RoundToInt(arg1.SceneDirectorInteractableCredits * value);
                 //_logger.LogMessage($"Credits increased from {oldValue} to {arg1.SceneDirectorInteractableCredits}");
             }
