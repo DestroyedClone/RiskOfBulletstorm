@@ -25,9 +25,9 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override ItemTier Tier => ItemTier.Tier1;
 
-        public override GameObject ItemModel => MainAssets.LoadAsset<GameObject>("ExampleItemPrefab.prefab");
+        public override GameObject ItemModel => RoR2Content.Items.SprintBonus.pickupModelPrefab;
 
-        public override Sprite ItemIcon => MainAssets.LoadAsset<Sprite>("ExampleItemIcon.png");
+        public override Sprite ItemIcon => RoR2Content.Items.SprintBonus.pickupIconSprite;
 
         public override ItemTag[] ItemTags => new ItemTag[] { ItemTag.Any, ItemTag.Healing };
 
@@ -58,6 +58,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         private float HealthComponent_Heal(On.RoR2.HealthComponent.orig_Heal orig, HealthComponent self, float amount, ProcChainMask procChainMask, bool nonRegen)
         {
+            _logger.LogMessage($"Heal: regen: {nonRegen}");
             if (nonRegen)
             {
                 if (GetCount(self.body) > 0)
