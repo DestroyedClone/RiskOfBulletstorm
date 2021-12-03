@@ -28,7 +28,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public int GetStackCountForMaxEffect(float baseAmount, float stackAmount)
         {
-            var result = ((100 - baseAmount) / stackAmount) + 1;
+            var result = ((1 - baseAmount) / stackAmount) + 1;
             return Mathf.CeilToInt(result);
         }
 
