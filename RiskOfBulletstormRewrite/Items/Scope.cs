@@ -9,12 +9,28 @@ namespace RiskOfBulletstormRewrite.Items
 {
     public class Scope : ItemBase<Scope>
     {
-        public static ConfigEntry<float> SpreadReduction;
-        public static ConfigEntry<float> SpreadReductionPerStack;
+        public static ConfigEntry<float> cfgSpreadReduction;
+        public static ConfigEntry<float> cfgSpreadReductionPerStack;
+        public static int expectedMaxStacks = 0;
+        public static ConfigEntry<float> cfgDamageMultiplierPerStack;
 
         public override string ItemName => "Scope";
 
         public override string ItemLangTokenName => "SCOPE";
+
+        public override string[] ItemFullDescriptionParams => new string[]
+        {
+            GetChance(cfgSpreadReduction),
+            GetChance(cfgSpreadReductionPerStack),
+            expectedMaxStacks.ToString(),
+            GetChance(cfgDamageMultiplierPerStack) //technically the same as getting percentage.
+        };
+
+        public int GetStackCountForMaxEffect(float baseAmount, float stackAmount)
+        {
+            var result = ((100 - baseAmount) / stackAmount) + 1;
+            return Mathf.CeilToInt(result);
+        }
 
         public override ItemTier Tier => ItemTier.Tier1;
 
@@ -22,19 +38,38 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override Sprite ItemIcon => MainAssets.LoadAsset<Sprite>("Assets/Textures/Icons/Scope.png");
 
+        public override ItemTag[] ItemTags => new ItemTag[] { ItemTag.Any, ItemTag.Utility };
+
         public static GameObject ItemBodyModelPrefab;
 
         public override void Init(ConfigFile config)
         {
             CreateConfig(config);
+            expectedMaxStacks = GetStackCountForMaxEffect(cfgSpreadReduction.Value, cfgSpreadReductionPerStack.Value);
             CreateLang();
             CreateItem();
+            Hooks();
         }
 
         public override void CreateConfig(ConfigFile config)
         {
-            SpreadReduction = config.Bind(ConfigCategory, "How much should one Scope reduce spread? (Value: Subtractive Percentage)", 0.1f, "");
-            SpreadReductionPerStack = config.Bind(ConfigCategory, "How much should each Scope reduce spread by per stack? (Value: Subtractive Percentage)", 0.05f, "");
+            cfgSpreadReduction = config.Bind(ConfigCategory, "Spread Reduction", 0.2f, "How much should one Scope reduce spread? (Value: Subtractive Percentage)");
+            cfgSpreadReductionPerStack = config.Bind(ConfigCategory, "Spread Reduction per Stack", 0.02f, "How much should each Scope reduce spread by per stack? (Value: Subtractive Percentage)");
+            cfgDamageMultiplierPerStack = config.Bind(ConfigCategory, "Damage Multiplier Past Max Stacks", 0.01f, "How much should the damage be multiplied per stack past max stacks?");
+        }
+
+        public override void Hooks()
+        {
+            R2API.RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
+        }
+
+        private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        {
+            var resolvedItemCount = GetCount(sender) - expectedMaxStacks;
+            if (resolvedItemCount > 0)
+            {
+                args.damageMultAdd += resolvedItemCount * cfgDamageMultiplierPerStack.Value;
+            }
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
