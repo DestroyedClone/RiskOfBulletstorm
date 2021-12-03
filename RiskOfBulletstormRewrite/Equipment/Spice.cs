@@ -23,13 +23,6 @@ namespace RiskOfBulletstormRewrite.Equipment
         public override string EquipmentName => "Spice";
 
         public override string EquipmentLangTokenName => "SPICE";
-
-        public override string EquipmentPickupDesc => "<style=cIsUtility>Increases combat prowess</style>, <style=cDeath>with absolutely no downside!</style>";
-
-        public override string EquipmentFullDescription => "Progressively gives stat <style=cIsUtility>bonuses</style> and <style=cDeath>downsides</style>. <style=cIsUtility>Consumes</style> on use.";
-
-        public override string EquipmentLore => "A potent gun-enhancing drug from the far reaches of the galaxy. It is known to be extremely addictive, and extremely expensive.";
-
         public override GameObject EquipmentModel => MainAssets.LoadAsset<GameObject>("Assets/Models/Prefabs/Spice.prefab");
 
         public override Sprite EquipmentIcon => MainAssets.LoadAsset<Sprite>("Assets/Textures/Icons/Spice.png");
