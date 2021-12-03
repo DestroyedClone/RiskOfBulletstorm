@@ -2,6 +2,11 @@
 	strings:
 	{
 		//[TIER1]
+		"ITEM_ANTIBODY_NAME": "Antibody",
+		"ITEM_ANTIBODY_PICKUP": "Heals Up\nChance to improve healing receieved.",
+		"ITEM_ANTIBODY_DESCRIPTION": "Upon <style=cIsHealing>healing</style>, gain a {0}% chance to heal for +{1}% more healing <style=cStack>(+{2}% more healing per stack)</style>.",
+		"ITEM_ANTIBODY_LORE": "An experimental treatment administered by the Gungeon's medical unit.",
+		
 		"ITEM_MUSTACHE_NAME": "Mustache",
 		"ITEM_MUSTACHE_PICKUP": "A Familiar Face\nSpending money soothes the soul.",
 		"ITEM_MUSTACHE_DESCRIPTION": "Upon purchase, increases your regeneration by <style=cIsHealing>{0} health</style> <style=cStack>(+{1} per stack)</style> for {2} seconds.",
@@ -9,7 +14,7 @@
 
 		"ITEM_SCOPE_NAME": "Scope",
 		"ITEM_SCOPE_PICKUP": "Steady Aim\nA standard scope. Increases accuracy!",
-		"ITEM_SCOPE_DESCRIPTION": "Decreases <style=cIsUtility>firing spread</style> by <style=cIsUtility>{0}%</style> <style=cStack>(+{1}% per stack)</style>",
+		"ITEM_SCOPE_DESCRIPTION": "Decreases <style=cIsUtility>firing spread</style> by <style=cIsUtility>{0}%</style> <style=cStack>(+{1}% per stack)</style>. Each stack past the max of {2} will increase your <style=cIsDamage>damage by {3}%</style>.",
 		"ITEM_SCOPE_LORE": "<style=cStack>DECODING MESSAGE - KATE ****** - G*****N EXPLORATORY TEAM\n[SYS] Filter: [messages from:KATE_OPERATOR sort:chronological date:today] | Showing 6 recent results\n\n4:44 - [Kate] Found this scope in a chest, reporting back. It's got a green lens, and looks like a sniper scope.\n4:55 - [Kate] Seems to work whether it's attached or not, but I can't really look through it if it's not actually attached. Decision: attaching it.\n5:20 - [Kate] Not really sure it fits this place, since its just a scope. Then again, there was some duct tape in a chest, so maybe its not that weird...\n6:00 - [Kate] I'm requesting a possible analysis sometime, I don't think this is just a scope. I'm hitting a lot more of my shots. Maybe I'm just more focused.\n6:02 - [Kate] Scratch that, this is ACTUALLY reducing the spread of bullets. I'm kinda curious how it works, but I'll study it at the shop.\n3:00 - [Kate] I am now back in the Breach. The shopkeeper did not like me testing the scope.",
 		
 		"ITEM_SPICETALLY_NAME": "Spice (Consumed)",
@@ -23,11 +28,6 @@
 		"ITEM_RINGOFCHESTFRIENDSHIP_DESCRIPTION": "Increases the amount of <style=cIsUtility>chest credit</style> by +{0}% <style=cStack>(+{1}% per stack)</style>.",
 		"ITEM_RINGOFCHESTFRIENDSHIP_LORE": "This ring was first given to Winchester, largely due to a naming mix-up. With little use for treasure, Winchester eventually gave it away as a prize in one of his strange games.",
 		
-		"ITEM_ANTIBODY_NAME": "Antibody",
-		"ITEM_ANTIBODY_PICKUP": "Heals Up\nChance to improve healing receieved.",
-		"ITEM_ANTIBODY_DESCRIPTION": "Upon <style=cIsHealing>healing</style>, gain a {0}% chance to heal for +{1}% more healing <style=cStack>(+{2}% more healing per stack)</style>.",
-		"ITEM_ANTIBODY_LORE": "An experimental treatment administered by the Gungeon's medical unit.",
-		
 		//[TIER3]
 		"ITEM_BACKPACK_NAME": "Backpack",
 		"ITEM_BACKPACK_PICKUP": "Grants an extra equipment slot.",
@@ -37,7 +37,7 @@
 		//[TIERBOSS]
 		"ITEM_CLOWNMASK_NAME": "Clown Mask",
 		"ITEM_CLOWNMASK_PICKUP": "Anonymity Aid\nAnonymous helpers aid you in combat.",
-		"ITEM_CLOWNMASK_DESCRIPTION": "Every {0} seconds <style=cStack>(-{1} seconds up to {2} seconds), you are <style=cIsUtility>helped</style>.\nThe <style=cIsUtility>help</style> increases with each stack, up to <style=cIsUtility>3</style>.\nWolf: A random enemy within {3} meters is <style=cIsUtility>tased</style>.\nHouston: Nearby projectiles within <style=cIsUtility>{4}</style> meters are <style=cIsUtility>erased</style>.\nChains: A nearby enemy is shotgunned for <style=cIsDamage>{5}x{6}% damage.</style>",
+		"ITEM_CLOWNMASK_DESCRIPTION": "Every {0} seconds <style=cStack>(-{1} seconds up to {2} seconds)</style>, you are <style=cIsUtility>helped</style>.\nThe <style=cIsUtility>help</style> increases with each stack, up to <style=cIsUtility>3</style>.\nWolf: A random enemy within {3} meters is <style=cIsUtility>tased</style>.\nHouston: Nearby projectiles within <style=cIsUtility>{4}</style> meters are <style=cIsUtility>erased</style>.\nChains: A nearby enemy is shotgunned for <style=cIsDamage>{5}x{6}% damage.</style>",
 		"ITEM_CLOWNMASK_LORE": "Masks of this design were used to explore primitive Gungeon-like structures filled with money, now referred to as "Mungeons". Anonymity was important to Mungeoneers of this time. The friendly clown design is thought to have helped Mungeoneers make peace with the native inhabitants.",
 		
 		"ITEM__NAME": "",
