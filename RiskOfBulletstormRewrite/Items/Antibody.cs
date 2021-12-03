@@ -60,7 +60,7 @@ namespace RiskOfBulletstormRewrite.Items
         {
             if (nonRegen)
             {
-                if (self.body?.inventory?.GetItemCount(ItemDef) > 0)
+                if (GetCount(self.body) > 0)
                 {
                     if (Util.CheckRoll(cfgChance.Value, self.body.master))
                     {
