@@ -110,7 +110,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         protected override void CreateConfig(ConfigFile config)
         {
-            cfgRange = config.Bind(ConfigCategory, "Range", 45f, "Radius of the activation");
+            cfgRange = config.Bind(ConfigCategory, "Range", 75f, "Radius of the activation");
             cfgTarDamageMultiplier = config.Bind(ConfigCategory, "Tar-based Enemy Damage", 2f, "Percentage of your damage dealt against this enemy type.");
             cfgJellyfishDamageMultiplier = config.Bind(ConfigCategory, "Jellyfish Damage", 3f, "Percentage of your damage dealt against this enemy type.");
             cfgVagrantDamageMultiplier = config.Bind(ConfigCategory, "Wandering Vagrant Damage", 1f, "Percentage of your damage dealt against this enemy type.");
