@@ -13,6 +13,12 @@
 		"EQUIPMENT_CHESTTELEPORTER_LORE": "This unusual adventuring tool moves a chest forward in the timestream, causing it to age and possibly level up!",
 
 		//[LUNAR]
+		"EQUIPMENT_TRUSTYLOCKPICKS_NAME": "Trusty Lockpicks",
+		"EQUIPMENT_TRUSTYLOCKPICKS_PICKUP": "Who needs keys? Chance to pick chest locks.",
+		"EQUIPMENT_TRUSTYLOCKPICKS_DESCRIPTION": "<style=cIsUtility>Using the lockpicks has a {0}% chance to unlock a chest</style> <style=cDeath>...failing prevents lockpicking and increases the cost by {1}%.</style>",
+		"EQUIPMENT_TRUSTYLOCKPICKS_LORE": "These lockpicks have never let the Pilot down, except for the many times they did.",
+		
+		
 		"EQUIPMENT__NAME": "",
 		"EQUIPMENT__PICKUP": "",
 		"EQUIPMENT__DESCRIPTION": "",
