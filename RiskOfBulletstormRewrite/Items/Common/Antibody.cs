@@ -6,7 +6,7 @@ using static RiskOfBulletstormRewrite.Main;
 
 namespace RiskOfBulletstormRewrite.Items
 {
-    public class ExampleItem : ItemBase<ExampleItem>
+    public class Antibody : ItemBase<Antibody>
     {
         public static ConfigEntry<float> cfgChance;
         public static ConfigEntry<float> cfgMultiplier;
