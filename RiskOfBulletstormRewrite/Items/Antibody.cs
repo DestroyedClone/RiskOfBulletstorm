@@ -41,9 +41,9 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void CreateConfig(ConfigFile config)
         {
-            cfgChance = config.Bind(ConfigCategory, "Heal Chance", 0.25f, "What is the chance in percent of the item activating?");
+            cfgChance = config.Bind(ConfigCategory, "Heal Chance", 25f, "What is the chance in percent of the item activating?");
             cfgMultiplier = config.Bind(ConfigCategory, "Multiplier", 0.33f, "What is the amount of healing increased by?");
-            cfgMultiplierPerStack = config.Bind(ConfigCategory, "Multiplier per stack", 0.07f, "What is the amount of healing increased by per stack?");
+            cfgMultiplierPerStack = config.Bind(ConfigCategory, "Multiplier per stack", 0.11f, "What is the amount of healing increased by per stack?");
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
@@ -58,11 +58,12 @@ namespace RiskOfBulletstormRewrite.Items
 
         private float HealthComponent_Heal(On.RoR2.HealthComponent.orig_Heal orig, HealthComponent self, float amount, ProcChainMask procChainMask, bool nonRegen)
         {
-            _logger.LogMessage($"Heal: regen: {nonRegen}");
+            //_logger.LogMessage($"Heal: regen: {nonRegen}");
             if (nonRegen)
             {
                 if (GetCount(self.body) > 0)
                 {
+                    //timothy: 0.25f chance = 0.0025% chance. 25f = 25% chance. got it?
                     if (Util.CheckRoll(cfgChance.Value, self.body.master))
                     {
                         var itemCount = self.body.inventory.GetItemCount(ItemDef);
