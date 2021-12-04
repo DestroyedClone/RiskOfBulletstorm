@@ -6,11 +6,18 @@ using static RiskOfBulletstormRewrite.Main;
 
 namespace RiskOfBulletstormRewrite.Equipment
 {
-    public class ExampleEquipment : EquipmentBase
+    public class ExampleEquipment : EquipmentBase<>
     {
+        public static ConfigEntry<float> cfg;
+
         public override string EquipmentName => "Deprecate Me Equipment";
 
         public override string EquipmentLangTokenName => "DEPRECATE_ME_EQUIPMENT";
+
+        public override string[] EquipmentFullDescriptionParams => new string[]
+        {
+
+        };
 
         public override GameObject EquipmentModel => MainAssets.LoadAsset<GameObject>("ExampleEquipmentPrefab.prefab");
 
