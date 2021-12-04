@@ -40,6 +40,13 @@
 		"ITEM_CLOWNMASK_DESCRIPTION": "Every {0} seconds <style=cStack>(-{1} seconds up to {2} seconds)</style>, you are <style=cIsUtility>helped</style>.\nThe <style=cIsUtility>help</style> increases with each stack, up to <style=cIsUtility>3</style>.\nWolf: A random enemy within {3} meters is <style=cIsUtility>tased</style>.\nHouston: Nearby projectiles within <style=cIsUtility>{4}</style> meters are <style=cIsUtility>erased</style>.\nChains: A nearby enemy is shotgunned for <style=cIsDamage>{5}x{6}% damage.</style>",
 		"ITEM_CLOWNMASK_LORE": "Masks of this design were used to explore primitive Gungeon-like structures filled with money, now referred to as "Mungeons". Anonymity was important to Mungeoneers of this time. The friendly clown design is thought to have helped Mungeoneers make peace with the native inhabitants.",
 		
+		//[TIERLUNAR]
+		"ITEM_BULLETHEAVY_NAME": "Heavy Bullets",
+		"ITEM_BULLETHEAVY_PICKUP": "Thunk!\nIncreases damage at the cost of bullet velocity.",
+		"ITEM_BULLETHEAVY_DESCRIPTION": "<style=cIsHealing>Damage and size increased by {0}%</style> <style=cStack>({1}% per stack)</style>, <style=cDeath>projectile size increased by {0}%</style>",
+		"ITEM_BULLETHEAVY_LORE": "These faceted bullets glitter with colors unseen in the depths of the Gungeon.",
+		
+		
 		"ITEM__NAME": "",
 		"ITEM__PICKUP": "",
 		"ITEM__DESCRIPTION": "",
