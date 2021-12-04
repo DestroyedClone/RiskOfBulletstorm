@@ -18,6 +18,11 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override Sprite ItemIcon => MainAssets.LoadAsset<Sprite>("ExampleItemIcon.png");
 
+        public override ItemTag[] ItemTags => new ItemTag[]
+        {
+
+        };
+
         public override void Init(ConfigFile config)
         {
             CreateConfig(config);
