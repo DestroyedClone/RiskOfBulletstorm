@@ -57,6 +57,65 @@ namespace RiskOfBulletstormRewrite.Equipment
             return purchaseInteraction && (purchaseInteraction.costType == CostTypeIndex.Money && purchaseInteraction.cost > 0) && purchaseInteraction.available;
         }
 
+        public override void Hooks()
+        {
+            //On.RoR2.Interactor.PerformInteraction += Interactor_PerformInteraction;
+        }
+
+        private void Interactor_PerformInteraction(On.RoR2.Interactor.orig_PerformInteraction orig, Interactor self, GameObject interactableObject)
+        {
+            PurchaseInteraction purchaseInteraction = interactableObject.GetComponent<PurchaseInteraction>();
+
+            orig(self, interactableObject);
+        }
+
+        protected override bool ActivateEquipment(EquipmentSlot slot)
+        {
+            //var interactor = slot.GetComponent<Interactor>();
+            var interactionDriver = slot.characterBody.GetComponent<InteractionDriver>();
+            if (interactionDriver)
+            {
+                var bestInteractable = interactionDriver.FindBestInteractableObject();
+                if (bestInteractable)
+                {
+                    IInteractable component3 = bestInteractable.GetComponent<IInteractable>();
+                    if (component3 != null && ((MonoBehaviour)component3).isActiveAndEnabled)
+                    {
+                        var purchaseInteraction = bestInteractable.GetComponent<PurchaseInteraction>();
+                        if (purchaseInteraction)
+                        {
+                            var keyAmount = GetKeyAmount(purchaseInteraction);
+                            if (keyAmount > 0)
+                            {
+                                ScrapChest(purchaseInteraction, keyAmount);
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        private int GetKeyAmount(PurchaseInteraction purchaseInteraction)
+        {
+            int keyAmount = -1;
+            switch (purchaseInteraction.displayNameToken)
+            {
+                case "CHEST1_NAME":
+                case "CHEST1_STEALTHED_NAME":
+                    keyAmount = cfgNormalKeys.Value;
+                    break;
+                case "CHEST2_NAME":
+                    keyAmount = cfgMediumKeys.Value;
+                    break;
+                case "GOLDCHEST_NAME":
+                    keyAmount = cfgLegendaryKeys.Value;
+                    break;
+            };
+            return keyAmount;
+        }
+
+        /*
         protected override bool ActivateEquipment(EquipmentSlot slot)
         {
             //Hacking Main State
@@ -111,10 +170,10 @@ namespace RiskOfBulletstormRewrite.Equipment
 
             return false;
         }
-
+        */
         private void ScrapChest(PurchaseInteraction purchaseInteraction, int keyAmount)
         {
-            purchaseInteraction.Networkavailable = false;
+            purchaseInteraction.SetAvailable(false);
 
             PickupIndex pickupIndex2 = PickupCatalog.FindPickupIndex(RoR2Content.Items.TreasureCache.itemIndex);
 
@@ -122,6 +181,11 @@ namespace RiskOfBulletstormRewrite.Equipment
             {
                 PickupDropletController.CreatePickupDroplet(pickupIndex2, purchaseInteraction.transform.position, Vector3.up * i);
             }
+        }
+
+        private class ChestScrapperComponent : MonoBehaviour
+        {
+
         }
 
     }
