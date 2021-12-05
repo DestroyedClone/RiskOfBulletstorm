@@ -67,6 +67,9 @@ namespace RiskOfBulletstormRewrite
             FunnyLanguage();
 
             AddToAssembly();
+
+            //todo enemy essembly thing
+            //Enemies.LordofTheJammedMonster.CreatePrefab();
             RiskOfBulletstormRewrite.Language.Initialize();
         }
 
