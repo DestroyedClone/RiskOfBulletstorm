@@ -19,7 +19,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public override string[] EquipmentFullDescriptionParams => new string[]
         {
-            GetChance(cfgUnlockChance),
+            cfgUnlockChance.Value.ToString(), //direct percentage so...
             GetChance(cfgPriceMultiplier)
         };
 
