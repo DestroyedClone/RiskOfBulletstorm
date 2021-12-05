@@ -11,6 +11,11 @@
 		"EQUIPMENT_CHESTTELEPORTER_PICKUP": "Consumes a chest for Rusted Keys.",
 		"EQUIPMENT_CHESTTELEPORTER_DESCRIPTION": "Upon use, the nearest chest will get <style=cIsUtility>consumed</style>, spawning a <style=cIsUtility>Rusted Key</style>. Regular chests give {0}, Large chests give {1}, and Legendary Chests give {2}.",
 		"EQUIPMENT_CHESTTELEPORTER_LORE": "This unusual adventuring tool moves a chest forward in the timestream, causing it to age and possibly level up!",
+		
+		"EQUIPMENT_MOLOTOV_NAME": "Molotov",
+		"EQUIPMENT_MOLOTOV_PICKUP": "Feel The Burn\nUpon use, throws a molotov that sets an area on fire.",
+		"EQUIPMENT_MOLOTOV_DESCRIPTION": "Throws a <style=cIsDamage>molotov</style> that <style=cIsDamage>explodes</style> into a <style=cIsDamage>burning</style> zone dealing <style=cIsDamage>{0} every {1} second for {2} seconds</style>.",
+		"EQUIPMENT_MOLOTOV_LORE": "Molotov cocktails aren't guns, and so they are frowned upon by long-dwelling Gungeoneers. They get the job done regardless.\nKnowing the Hegemony wouldn't let her bring her own weaponry to the Gungeon, the Convict smuggled these few bottles in with the transport's cargo.",
 
 		//[LUNAR]
 		"EQUIPMENT_TRUSTYLOCKPICKS_NAME": "Trusty Lockpicks",
