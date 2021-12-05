@@ -49,6 +49,19 @@ namespace RiskOfBulletstormRewrite
             {
                 var newString = FormatToken(langTokenValue.token, langTokenValue.lang, langTokenValue.strings);
                 LanguageAPI.Add(langTokenValue.token, newString, langTokenValue.lang);
+/*
+                try
+                {
+
+                }catch
+                {
+                    Main._logger.LogError($"Failed setting up token \"{langTokenValue.token}\" for language {langTokenValue.lang}." +
+                        $"\nFollowing parameters where given:");
+                    foreach (var str in langTokenValue.strings)
+                    {
+                        Main._logger.LogMessage(str);
+                    }
+                }*/
                 /*if (langTokenValue.lang == "en")
                 {
                     Main._logger.LogMessage($"{langTokenValue.token} {newString}");
