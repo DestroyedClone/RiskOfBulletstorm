@@ -82,7 +82,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         private void DeferToken(string token, string lang, params string[] args)
         {
-            Main._logger.LogMessage($"Deferring {token} w/ lang {lang}");
+            //Main._logger.LogMessage($"Deferring {token} w/ lang {lang}");
             RiskOfBulletstormRewrite.Language.langTokenValues.Add(new Language.LangTokenValue() { token = token, lang = lang, strings = args });
         }
         protected virtual void CreateLang() //create lang (addtokens for nwo) -> modify lang (this will be kept later)

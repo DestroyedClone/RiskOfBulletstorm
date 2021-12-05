@@ -123,7 +123,7 @@ namespace RiskOfBulletstormRewrite.Equipment
         }
         private void DeferToken(string token, string lang, params string[] args)
         {
-            Main._logger.LogMessage($"Deferring {token} w/ lang {lang}");
+            //Main._logger.LogMessage($"Deferring {token} w/ lang {lang}");
             RiskOfBulletstormRewrite.Language.langTokenValues.Add(new Language.LangTokenValue() { token = token, lang = lang, strings = args });
         }
 
