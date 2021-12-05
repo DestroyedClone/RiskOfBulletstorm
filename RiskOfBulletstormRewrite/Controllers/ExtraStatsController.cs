@@ -103,6 +103,7 @@ namespace RiskOfBulletstormRewrite.Controllers
             Resources.Load<GameObject>("prefabs/projectiles/SuperRoboBallProjectile"), //idk??
                 // Scavenger
             Resources.Load<GameObject>("prefabs/projectiles/ScavEnergyCannonProjectile"),
+            //TODO: Get thqiwbbs
                 // Malachite Urchin
             Resources.Load<GameObject>("prefabs/projectiles/UrchinSeekingProjectile"),
                 // Wandering Vagrant
@@ -403,8 +404,8 @@ namespace RiskOfBulletstormRewrite.Controllers
 
         public class RBSExtraStatsController : MonoBehaviour
         {
-            private float Scope_SpreadReduction => Items.Scope.SpreadReduction.Value;
-            private float Scope_SpreadReductionStack => Items.Scope.SpreadReductionPerStack.Value;
+            private float Scope_SpreadReduction => Items.Scope.cfgSpreadReduction.Value;
+            private float Scope_SpreadReductionStack => Items.Scope.cfgSpreadReductionPerStack.Value;
             private float[,] SpiceBonusesConstant => Equipment.Spice.SpiceBonusesConstant;
             private float[] SpiceBonusesAdditive => Equipment.Spice.SpiceBonusesAdditive;
             public Inventory inventory;
