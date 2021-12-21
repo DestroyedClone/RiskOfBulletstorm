@@ -23,7 +23,7 @@ namespace RiskOfBulletstormRewrite.Equipment
             GetChance(cfgPriceMultiplier)
         };
 
-        public override GameObject EquipmentModel => RoR2Content.Items.TreasureCache.pickupModelPrefab;
+        public override GameObject EquipmentModel => Assets.NullModel;
 
         public override Sprite EquipmentIcon => RoR2Content.Items.TreasureCache.pickupIconSprite;
 
@@ -42,7 +42,8 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         protected override void CreateConfig(ConfigFile config)
         {
-            cfgUnlockChance = config.Bind(ConfigCategory, "Chest Unlock Chance", 50f, "What is the chance to unlock the chest? (Exact Percentage)");
+            cfgUnlockChance = config.Bind(ConfigCategory, "Chest Unlock Chance", 50f, "What is the chance to unlock the chest?" +
+                "\n50 = 50%, 0.5 = 0.5%");
             cfgPriceMultiplier = config.Bind(ConfigCategory, "Fail Cost Multiplier", 2f, "If you fail to unlock the chest, what will the price be multiplied by?");
         }
 
@@ -130,9 +131,9 @@ namespace RiskOfBulletstormRewrite.Equipment
                 }
                 else
                 {
-                    purchaseInteraction.cost = Mathf.CeilToInt(purchaseInteraction.cost * cfgPriceMultiplier.Value);
-                    //https://discord.com/channels/562704639141740588/562704639569428506/916819003064864788
-                    purchaseInteraction.Networkcost = purchaseInteraction.cost; //weaver generated shit ^
+                    var newCost = Mathf.CeilToInt(purchaseInteraction.cost * cfgPriceMultiplier.Value);
+                    //purchaseInteraction.cost = newCost;
+                    purchaseInteraction.Networkcost = newCost;
                     selectedEffect = Fail_LockEffect;
 
                     //purchaseInteraction.displayNameToken = (prefix + purchaseInteraction.displayNameToken);
