@@ -23,9 +23,9 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override ItemTier Tier => ItemTier.Tier2;
 
-        public override GameObject ItemModel => RoR2Content.Items.IceRing.pickupModelPrefab;
+        public override GameObject ItemModel => Assets.NullModel;
 
-        public override Sprite ItemIcon => RoR2Content.Items.IceRing.pickupIconSprite;
+        public override Sprite ItemIcon => Assets.NullSprite;
 
         public override ItemTag[] ItemTags => new ItemTag[] { ItemTag.Any, ItemTag.AIBlacklist, ItemTag.Utility };
 

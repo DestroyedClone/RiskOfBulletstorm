@@ -25,9 +25,9 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override ItemTier Tier => ItemTier.Tier1;
 
-        public override GameObject ItemModel => RoR2Content.Items.SprintBonus.pickupModelPrefab;
+        public override GameObject ItemModel => Assets.NullModel;
 
-        public override Sprite ItemIcon => RoR2Content.Items.SprintBonus.pickupIconSprite;
+        public override Sprite ItemIcon => Assets.NullSprite;
 
         public override ItemTag[] ItemTags => new ItemTag[] { ItemTag.Any, ItemTag.Healing };
 
@@ -68,13 +68,13 @@ namespace RiskOfBulletstormRewrite.Items
                     {
                         var itemCount = self.body.inventory.GetItemCount(ItemDef);
                         var multiplier = 1f + cfgMultiplier.Value + cfgMultiplierPerStack.Value * (itemCount - 1);
-                        var oldHeal = amount;
+                        //var oldHeal = amount;
                         amount *= multiplier;
-                        _logger.LogMessage($"roll won: {oldHeal} -> {amount}");
+                        //_logger.LogMessage($"roll won: {oldHeal} -> {amount}");
                     }
                     else
                     {
-                        _logger.LogMessage("roll failed");
+                        //_logger.LogMessage("roll failed");
                     }
                 }
             }
