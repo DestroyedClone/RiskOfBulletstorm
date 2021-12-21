@@ -11,11 +11,19 @@ namespace RiskOfBulletstormRewrite.Equipment
 {
     public class BombCompanionApp : EquipmentBase<BombCompanionApp>
     {
+        // TODO: Add Visualizer for explosion radius
+        // Add more effects for use
+        // Adjust damage and cooldown
+        // Add assets (model, idrs, sound)
+        // 
+        public static ConfigEntry<float> cfgCooldown;
         public static ConfigEntry<float> cfgRange;
         public static ConfigEntry<float> cfgTarDamageMultiplier;
         public static ConfigEntry<float> cfgJellyfishDamageMultiplier;
         public static ConfigEntry<float> cfgVagrantDamageMultiplier;
         public static ConfigEntry<float> cfgDunestriderDamageMultiplier;
+
+        public override float Cooldown => cfgCooldown.Value;
 
         public override string EquipmentName => "iBomb Companion App";
 
@@ -110,6 +118,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         protected override void CreateConfig(ConfigFile config)
         {
+            cfgCooldown = config.Bind(ConfigCategory, "Cooldown", 90f, "What is the cooldown of this equipment?");
             cfgRange = config.Bind(ConfigCategory, "Range", 75f, "Radius of the activation");
             cfgTarDamageMultiplier = config.Bind(ConfigCategory, "Tar-based Enemy Damage", 2f, "Percentage of your damage dealt against this enemy type.");
             cfgJellyfishDamageMultiplier = config.Bind(ConfigCategory, "Jellyfish Damage", 3f, "Percentage of your damage dealt against this enemy type.");
