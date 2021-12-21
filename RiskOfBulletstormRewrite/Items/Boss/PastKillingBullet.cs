@@ -56,7 +56,7 @@ namespace RiskOfBulletstormRewrite.Items
             if (self.pickupIndex != PickupCatalog.FindPickupIndex(PastKillingBullet.instance.ItemDef.itemIndex))
                 orig(self, other);
             else
-                orig(self, null);
+                return;
         }
     }
 }
