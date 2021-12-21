@@ -155,9 +155,6 @@
     <Reference Include="EnemyItemDisplays">
       <HintPath>lib\EnemyItemDisplays.dll</HintPath>
     </Reference>
-    <Reference Include="ExtraSkillSlots">
-      <HintPath>lib\ExtraSkillSlots.dll</HintPath>
-    </Reference>
     <Reference Include="HGCSharpUtils">
       <HintPath>lib\HGCSharpUtils.dll</HintPath>
     </Reference>
@@ -184,9 +181,6 @@
     </Reference>
     <Reference Include="MonoMod.Utils">
       <HintPath>lib\MonoMod.Utils.dll</HintPath>
-    </Reference>
-    <Reference Include="mscorlib">
-      <HintPath>lib\mscorlib.dll</HintPath>
     </Reference>
     <Reference Include="R2API">
       <HintPath>lib\R2API.dll</HintPath>
