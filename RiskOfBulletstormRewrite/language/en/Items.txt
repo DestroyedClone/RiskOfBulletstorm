@@ -51,6 +51,11 @@
 		"ITEM_BULLETHEAVY_DESCRIPTION": "<style=cIsHealing>Damage and size increased by {0}%</style> <style=cStack>({1}% per stack)</style>, <style=cDeath>projectile size increased by {0}%</style>",
 		"ITEM_BULLETHEAVY_LORE": "These faceted bullets glitter with colors unseen in the depths of the Gungeon.",
 		
+		"ITEM_RINGMISERLYPROTECTION_NAME": "Ring of Miserly Protection",
+		"ITEM_RINGMISERLYPROTECTION_PICKUP": "<b>Aids The Fiscally Responsible</b>\n<style=cIsHealing>Increases health substantially.</style> <style=cDeath>Gambling at a chance shrine will shatter the ring.</style>",
+		"ITEM_RINGMISERLYPROTECTION_DESCRIPTION": "Grants <style=cIsHealing>+{0} health</style> <style=cStack>(+{1} per stack)</style> <style=cDeath>...but shatters upon using a chance shrine.</style>",
+		"ITEM_RINGMISERLYPROTECTION_LORE": "Before the Shopkeep opened his shop, he was an avaricious and miserly man. He remains careful about any expenditures, but through capitalism he has purged himself of negative emotion.",
+		
 		//[NOTIER]
 		
 		"ITEM_LORDOFTHEJAMMEDITEM_NAME": "Lord of The Jammed",
