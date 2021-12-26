@@ -27,7 +27,7 @@ namespace RiskOfBulletstormRewrite
     {
         public const string ModGuid = "com.DestroyedClone.RiskOfBulletstorm";
         public const string ModName = "Risk of Bulletstorm";
-        public const string ModVer = "2.0.0";
+        public const string ModVer = "1.2.0";
 
         internal static BepInEx.Logging.ManualLogSource _logger;
 
