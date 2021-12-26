@@ -17,8 +17,8 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override string[] ItemFullDescriptionParams => new string[]
         {
-            cfgMaxHealthPctAdded.Value.ToString(),
-            cfgMaxHealthPctAddedStack.Value.ToString()
+            Utils.ItemHelpers.Pct(cfgMaxHealthPctAdded.Value),
+            Utils.ItemHelpers.Pct(cfgMaxHealthPctAddedStack.Value)
         };
 
         public override ItemTier Tier => ItemTier.Lunar;
