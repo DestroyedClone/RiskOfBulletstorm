@@ -7,6 +7,11 @@
 		"EQUIPMENT_BOMBCOMPANIONAPP_DESCRIPTION": "Upon use, all explosives <style=cStack>(pots, bombs, mines, grenades, etc)</style> within <style=cIsUtility>{0}m</style> detonate. <style=cIsDamage>Tar-based</style> enemies take <style=cIsDamage>{1}% damage</style>, <style=cIsDamage>Jellyfish</style> take <style=cIsDamage>{2}% damage</style>, <style=cIsDamage>Wandering Vagrants</style> take <style=cIsDamage>{3}% damage</style>, and <style=cIsDamage>Dunestriders</style> take <style=cIsDamage>{4}% damage</style>.",
 		"EQUIPMENT_BOMBCOMPANIONAPP_LORE": "Kids these days can detonate explosives from their phones. In the early days of the Gungeon, some form of shooting was required.",
 		
+		"EQUIPMENT_BRICKOFCASH_NAME": "Brick of Cash",
+		"EQUIPMENT_BRICKOFCASH_PICKUP": "Reveals cloaked chests",
+		"EQUIPMENT_BRICKOFCASH_DESCRIPTION": "Upon use, cloaked chests are revealed.",
+		"EQUIPMENT_BRICKOFCASH_LORE": "This can be used to pay off unscrupulous Snitch Bricks, who are willing to betray their mortared brethren for cold, hard cash. Not legal tender.",
+		
 		"EQUIPMENT_CHESTTELEPORTER_NAME": "Chest Teleporter",
 		"EQUIPMENT_CHESTTELEPORTER_PICKUP": "Consumes a chest for Rusted Keys.",
 		"EQUIPMENT_CHESTTELEPORTER_DESCRIPTION": "Upon use, the nearest chest will get <style=cIsUtility>consumed</style>, spawning a <style=cIsUtility>Rusted Key</style>. Regular chests give {0}, Large chests give {1}, and Legendary Chests give {2}.",
