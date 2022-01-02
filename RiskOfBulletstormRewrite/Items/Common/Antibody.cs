@@ -18,7 +18,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override string[] ItemFullDescriptionParams => new string[]
         {
-            GetChance(cfgChance),
+            cfgChance.Value.ToString(),
             GetChance(cfgMultiplier),
             GetChance(cfgMultiplierPerStack)
         };
