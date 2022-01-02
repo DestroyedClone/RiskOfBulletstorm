@@ -27,6 +27,11 @@ namespace RiskOfBulletstormRewrite.Items
             ItemTag.Healing
         };
 
+        public override string[] ItemFullDescriptionParams => new string[]
+        {
+            GetChance(cfgBaseResist)
+        };
+
         public static GameObject fireTrailSegmentPrefab = null;
 
         public override void Init(ConfigFile config)
@@ -45,6 +50,11 @@ namespace RiskOfBulletstormRewrite.Items
             {
                 fireTrailSegmentPrefab = fireTrailGameObject.GetComponent<DamageTrail>().segmentPrefab;
             }
+        }
+
+        private float GetMultiplier(int itemCount)
+        {
+            return 1 - (Utils.ItemHelpers.GetHyperbolicValue(cfgBaseResist.Value, itemCount));
         }
 
         public override void CreateConfig(ConfigFile config)
@@ -118,10 +128,9 @@ namespace RiskOfBulletstormRewrite.Items
                                         if (healthComponent.body)
                                         {
                                             var itemCount = GetCount(healthComponent.body);
-                                            var multiplier = Utils.ItemHelpers.GetHyperbolicValue(cfgBaseResist.Value, itemCount);
                                             if (itemCount > 0)
                                             {
-                                                damageInfo.damage *= (1 - multiplier);
+                                                damageInfo.damage *= GetMultiplier(itemCount);
                                             }
                                             healthComponent.TakeDamage(damageInfo);
                                         }
@@ -133,7 +142,8 @@ namespace RiskOfBulletstormRewrite.Items
                     b = position;
                 }
             }
-            orig(self);
+            else
+                orig(self);
         }
 
         private void ReduceFireDot(On.RoR2.DotController.orig_InflictDot_GameObject_GameObject_DotIndex_float_float orig, GameObject victimObject, GameObject attackerObject, DotController.DotIndex dotIndex, float duration, float damageMultiplier)
@@ -146,9 +156,8 @@ namespace RiskOfBulletstormRewrite.Items
                     var itemCount = GetCount(characterBody);
                     if (itemCount > 0)
                     {
-                        var multiplier = Utils.ItemHelpers.GetHyperbolicValue(cfgBaseResist.Value, itemCount);
+                        damageMultiplier *= GetMultiplier(itemCount);
                         //_logger.LogMessage($"DoT: dmgMult({damageMultiplier})   reduction({1-multiplier:F2})");
-                        damageMultiplier *= (1 - multiplier);
                     }
                 }
             }
