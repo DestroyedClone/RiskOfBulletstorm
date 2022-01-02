@@ -96,15 +96,21 @@ namespace RiskOfBulletstormRewrite.Items
                 }
                 if (allDead && peopleWithClones.Count > 0)
                 {
-                    peopleWithClones[0].inventory.RemoveItem(ItemDef);
-                    isCloneRestarting = true;
-                    Run.instance.SetRunStopwatch(0);
-                    TeamManager.instance.SetTeamLevel(TeamIndex.Monster, 1);
-                    SceneDef[] choices = Run.instance.startingScenes;
-                    Run.instance.PickNextStageScene(choices);
-                    Run.instance.AdvanceStage(Run.instance.nextStageScene);
+                    PseudoRestartRun(peopleWithClones[0]);
                 }
             }
+        }
+
+        private void PseudoRestartRun(CharacterMaster masterWithClone)
+        {
+            masterWithClone.inventory.RemoveItem(ItemDef);
+            isCloneRestarting = true;
+            Run.instance.SetRunStopwatch(0);
+            Run.instance.NetworkstageClearCount = -1;
+            TeamManager.instance.SetTeamLevel(TeamIndex.Monster, 1);
+            SceneDef[] choices = Run.instance.startingScenes;
+            Run.instance.PickNextStageScene(choices);
+            Run.instance.AdvanceStage(Run.instance.nextStageScene);
         }
     }
 }
