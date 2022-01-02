@@ -63,7 +63,7 @@ namespace RiskOfBulletstormRewrite
             }
 
             Utils.Buffs.CreateBuffs();
-
+            //On.RoR2.Language.LoadTokensFromFile += Language_LoadTokensFromFile;
             FunnyLanguage();
 
             AddToAssembly();
@@ -71,6 +71,18 @@ namespace RiskOfBulletstormRewrite
             //todo enemy essembly thing
             //Enemies.LordofTheJammedMonster.CreatePrefab();
             RiskOfBulletstormRewrite.Language.Initialize();
+        }
+
+        private void Language_LoadTokensFromFile(On.RoR2.Language.orig_LoadTokensFromFile orig, FileEntry file, List<KeyValuePair<string, string>> output)
+        {
+            try
+            {
+                orig(file, output);
+            }
+            catch
+            {
+                _logger.LogWarning($"Failed Language: {file.Directory} {file.Path}");
+            }
         }
 
         public void AddToAssembly()
