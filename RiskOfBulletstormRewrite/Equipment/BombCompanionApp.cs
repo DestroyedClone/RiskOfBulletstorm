@@ -199,6 +199,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
                 //DefenseMatrixOn
                 DeleteNearbyProjectile(slot.characterBody);
+                slot.subcooldownTimer += 2.5f;
                 return true;
             }
             return false;
