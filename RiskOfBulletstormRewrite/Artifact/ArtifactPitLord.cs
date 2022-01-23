@@ -17,7 +17,7 @@ namespace RiskOfBulletstormRewrite.Artifact
 
         public override string ArtifactLangTokenName => "ARTIFACT_OF_PITLORD";
 
-        public override string ArtifactDescription => $"When enabled, players {(cfgAffectMonsters.Value ? "and monsters" : "")} don't take damage from falling off stage.";
+        public override string ArtifactDescription => $"When enabled, monsters don't take damage from falling off stage.";
 
         public override Sprite ArtifactEnabledIcon => RoR2Content.Items.FallBoots.pickupIconSprite;
 
@@ -25,15 +25,9 @@ namespace RiskOfBulletstormRewrite.Artifact
 
         public override void Init(ConfigFile config)
         {
-            CreateConfig(config);
             CreateLang();
             CreateArtifact();
             Hooks();
-        }
-
-        private void CreateConfig(ConfigFile config)
-        {
-            cfgAffectMonsters = config.Bind("Artifact: " + ArtifactName, "Monsters Included", false, "If true, then monsters will be teleported back on stage like players do.");
         }
 
         public override void Hooks()
@@ -48,10 +42,7 @@ namespace RiskOfBulletstormRewrite.Artifact
             {
                 return;
             }
-            if (!cfgAffectMonsters.Value)
-                On.RoR2.MapZone.TryZoneStart -= PlayerNoFallDamage;
-            else
-                On.RoR2.MapZone.TryZoneStart -= AllNoFallDamage;
+            On.RoR2.MapZone.TryZoneStart -= AllNoFallDamage;
         }
 
         private void RunArtifactManager_onArtifactEnabledGlobal([JetBrains.Annotations.NotNull] RunArtifactManager runArtifactManager, [JetBrains.Annotations.NotNull] ArtifactDef artifactDef)
@@ -61,15 +52,30 @@ namespace RiskOfBulletstormRewrite.Artifact
                 _logger.LogMessage($"Artifact {artifactDef} (ID:{artifactDef.artifactIndex}) does not equal {ArtifactDef} (ID:{ArtifactDef.artifactIndex})");
                 return;
             }
-            if (!cfgAffectMonsters.Value)
-                On.RoR2.MapZone.TryZoneStart += PlayerNoFallDamage;
-            else
-                On.RoR2.MapZone.TryZoneStart += AllNoFallDamage;
+            On.RoR2.MapZone.TryZoneStart += AllNoFallDamage;
         }
 
-        private bool CharacterBodyCanTakeFallDamage(CharacterBody body)
+        public static bool CharacterBodyCanTakeFallDamage(CharacterBody body)
         {
             return (body.bodyFlags & CharacterBody.BodyFlags.IgnoreFallDamage) == CharacterBody.BodyFlags.None;
+        }
+
+        //https://github.com/KomradeSpectre/AetheriumMod/blob/rewrite-master/Aetherium/Items/UnstableDesign.cs#L505-L520
+        public static void PlayerNoFallDamage(On.RoR2.MapZone.orig_TryZoneStart orig, MapZone self, Collider other)
+        {
+            CharacterBody body = other.GetComponent<CharacterBody>();
+            if (body && body.teamComponent && body.teamComponent.teamIndex == TeamIndex.Player)
+            {
+                //GEM.Oncharacterhitground
+                if (CharacterBodyCanTakeFallDamage(body))
+                {
+                    body.bodyFlags &= CharacterBody.BodyFlags.IgnoreFallDamage;
+                    orig(self, other);
+                    body.bodyFlags |= CharacterBody.BodyFlags.IgnoreFallDamage;
+                    return;
+                }
+            }
+            orig(self, other);
         }
 
         private void AllNoFallDamage(On.RoR2.MapZone.orig_TryZoneStart orig, MapZone self, Collider other)
@@ -89,24 +95,6 @@ namespace RiskOfBulletstormRewrite.Artifact
                 teamComponent.teamIndex = oldTeamIndex; //Now make it hostile again. Thanks Obama.
                 if (canTakeFallDamage) body.bodyFlags |= CharacterBody.BodyFlags.IgnoreFallDamage;
                 return;
-            }
-            orig(self, other);
-        }
-
-        //https://github.com/KomradeSpectre/AetheriumMod/blob/rewrite-master/Aetherium/Items/UnstableDesign.cs#L505-L520
-        private void PlayerNoFallDamage(On.RoR2.MapZone.orig_TryZoneStart orig, MapZone self, Collider other)
-        {
-            CharacterBody body = other.GetComponent<CharacterBody>();
-            if (body && body.teamComponent && body.teamComponent.teamIndex == TeamIndex.Player)
-            {
-                //GEM.Oncharacterhitground
-                if (CharacterBodyCanTakeFallDamage(body))
-                {
-                    body.bodyFlags &= CharacterBody.BodyFlags.IgnoreFallDamage;
-                    orig(self, other);
-                    body.bodyFlags |= CharacterBody.BodyFlags.IgnoreFallDamage;
-                    return;
-                }
             }
             orig(self, other);
         }
