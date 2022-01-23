@@ -86,6 +86,7 @@ namespace RiskOfBulletstormRewrite.Equipment
                         var purchaseInteraction = bestInteractableObject.GetComponent<PurchaseInteraction>();
                         if (purchaseInteraction)
                         {
+                            if (!purchaseInteraction.GetComponent<ShopTerminalBehavior>())
                             if (AttemptUnlock(bestInteractableObject, interactionDriver, cfgUnlockChance.Value))
                             {
                                 return true;
@@ -105,7 +106,6 @@ namespace RiskOfBulletstormRewrite.Equipment
             if (!highlight || !purchaseInteraction) return false;
             BulletstormChestInteractorComponent chestComponent = chestObject.GetComponent<BulletstormChestInteractorComponent>();
             if (chestComponent && chestComponent.hasUsedLockpicks) return false;
-
             GameObject selectedEffect = UnlockEffect;
             Vector3 offset = Vector3.up * 1f;
 

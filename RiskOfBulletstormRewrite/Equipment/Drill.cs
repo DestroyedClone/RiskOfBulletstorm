@@ -57,7 +57,8 @@ namespace RiskOfBulletstormRewrite.Equipment
                     if (bestInteractableObject)
                     {
                         var purchaseInteraction = bestInteractableObject.GetComponent<PurchaseInteraction>();
-                        if (purchaseInteraction)
+                        if (!purchaseInteraction.GetComponent<ShopTerminalBehavior>())
+                            if (purchaseInteraction)
                         {
                             if (UnlockChest(bestInteractableObject, interactionDriver))
                             {
