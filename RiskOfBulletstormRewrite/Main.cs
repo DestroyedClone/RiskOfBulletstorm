@@ -11,8 +11,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
-using Zio;
-using Zio.FileSystems;
 using Path = System.IO.Path;
 
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
@@ -22,7 +20,7 @@ namespace RiskOfBulletstormRewrite
     [BepInPlugin(ModGuid, ModName, ModVer)]
     [BepInDependency(R2API.R2API.PluginGUID, R2API.R2API.PluginVersion)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.EveryoneNeedSameModVersion)]
-    [R2APISubmoduleDependency(nameof(ItemAPI), nameof(LanguageAPI), nameof(ArtifactAPI), nameof(EliteAPI), nameof(ProjectileAPI), nameof(BuffAPI), nameof(RecalculateStatsAPI), nameof(DirectorAPI))]
+    [R2APISubmoduleDependency(nameof(ItemAPI), nameof(LanguageAPI), nameof(ContentAddition), nameof(EliteAPI), nameof(RecalculateStatsAPI), nameof(DirectorAPI))]
     public class Main : BaseUnityPlugin
     {
         public const string ModGuid = "com.DestroyedClone.RiskOfBulletstorm";
@@ -40,9 +38,6 @@ namespace RiskOfBulletstormRewrite
 
         public static string LocationOfProgram;
 
-        //https://github.com/Moffein/RiskyMod/blob/2240ef850d2f8d79aa3678de8ab9fa740d9a1b28/RiskyMod/RiskyMod.cs
-        public static FileSystem fileSystem { get; private set; }
-
         public static PluginInfo pluginInfo;
 
         private void Awake()
@@ -52,7 +47,6 @@ namespace RiskOfBulletstormRewrite
             Language.config = Config;
 
             LocationOfProgram = Path.GetDirectoryName(Info.Location);
-            //_logger.LogMessage($"Directory: {LocationOfProgram}");
 
             // Don't know how to create/use an asset bundle, or don't have a unity project set up?
             // Look here for info on how to set these up: https://github.com/KomradeSpectre/AetheriumMod/blob/rewrite-master/Tutorials/Item%20Mod%20Creation.md#unity-project
@@ -64,25 +58,12 @@ namespace RiskOfBulletstormRewrite
 
             Utils.Buffs.CreateBuffs();
             //On.RoR2.Language.LoadTokensFromFile += Language_LoadTokensFromFile;
-            FunnyLanguage();
 
             AddToAssembly();
 
             //todo enemy essembly thing
             //Enemies.LordofTheJammedMonster.CreatePrefab();
             RiskOfBulletstormRewrite.Language.Initialize();
-        }
-
-        private void Language_LoadTokensFromFile(On.RoR2.Language.orig_LoadTokensFromFile orig, FileEntry file, List<KeyValuePair<string, string>> output)
-        {
-            try
-            {
-                orig(file, output);
-            }
-            catch
-            {
-                _logger.LogWarning($"Failed Language: {file.Directory} {file.Path}");
-            }
         }
 
         public void AddToAssembly()
@@ -145,22 +126,6 @@ namespace RiskOfBulletstormRewrite
             }
         }
 
-        private void FunnyLanguage()
-        {
-            PhysicalFileSystem physicalFileSystem = new PhysicalFileSystem();
-            Main.fileSystem = new SubFileSystem(physicalFileSystem, physicalFileSystem.ConvertPathFromInternal(Assets.assemblyDir), true);
-            if (fileSystem.DirectoryExists("/language/")) //Uh, it exists and we make sure to not shit up R2Api
-            {
-                RoR2.Language.collectLanguageRootFolders += delegate (List<DirectoryEntry> list)
-                {
-                    list.Add(fileSystem.GetDirectoryEntry("/language/"));
-                };
-            }
-            else
-            {
-                _logger.LogWarning("Language directory is missing!");
-            }
-        }
 
         #region Validators
 

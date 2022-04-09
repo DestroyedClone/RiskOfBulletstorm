@@ -9,7 +9,7 @@
 		
 		"EQUIPMENT_BRICKOFCASH_NAME": "Brick of Cash",
 		"EQUIPMENT_BRICKOFCASH_PICKUP": "Reveals cloaked chests",
-		"EQUIPMENT_BRICKOFCASH_DESCRIPTION": "Upon use, cloaked chests are revealed.",
+		"EQUIPMENT_BRICKOFCASH_DESCRIPTION": "Upon use, all cloaked chests are revealed.",
 		"EQUIPMENT_BRICKOFCASH_LORE": "This can be used to pay off unscrupulous Snitch Bricks, who are willing to betray their mortared brethren for cold, hard cash. Not legal tender.",
 		
 		"EQUIPMENT_CHESTTELEPORTER_NAME": "Chest Teleporter",
@@ -23,6 +23,11 @@
 		"EQUIPMENT_MOLOTOV_LORE": "Molotov cocktails aren't guns, and so they are frowned upon by long-dwelling Gungeoneers. They get the job done regardless.\nKnowing the Hegemony wouldn't let her bring her own weaponry to the Gungeon, the Convict smuggled these few bottles in with the transport's cargo.",
 
 		//[LUNAR]
+		"EQUIPMENT_DRILL_NAME": "Drill",
+		"EQUIPMENT_DRILL_PICKUP": "Opens locked chests. Loud.",
+		"EQUIPMENT_DRILL_DESCRIPTION": "<style=cIsUtility>Upon use,</style> the <style=cIsUtility>selected chest</style> will be <style=cIsUtility>unlocked</style> <style=cIsDeath>...but will spawn enemies depending on chest quality</style>.",
+		"EQUIPMENT_DRILL_LORE": "A device once used to access the innermost chambers of ancient currency reliquaries. Cheaply constructed and prone to breaking. In ancient texts, the word \"drill\" is commonly preceeded [sic] or followed by expletives.",
+		
 		"EQUIPMENT_TRUSTYLOCKPICKS_NAME": "Trusty Lockpicks",
 		"EQUIPMENT_TRUSTYLOCKPICKS_PICKUP": "Who needs keys? Chance to pick chest locks.",
 		"EQUIPMENT_TRUSTYLOCKPICKS_DESCRIPTION": "<style=cIsUtility>Using the lockpicks has a {0}% chance to unlock a chest</style> <style=cDeath>...failing prevents lockpicking and increases the cost by {1}%.</style>",
