@@ -229,7 +229,7 @@ namespace RiskOfBulletstormRewrite.Equipment.EliteEquipment
             EliteAPI.Add(new CustomElite(EliteDef, CanAppearInEliteTiers));
 
             EliteBuffDef.eliteDef = EliteDef;
-            BuffAPI.Add(new CustomBuff(EliteBuffDef));
+            ContentAddition.AddBuffDef(EliteBuffDef);
         }
 
 

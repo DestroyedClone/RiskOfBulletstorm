@@ -53,7 +53,7 @@ namespace RiskOfBulletstormRewrite.Artifact
             ArtifactDef.smallIconSelectedSprite = ArtifactEnabledIcon;
             ArtifactDef.smallIconDeselectedSprite = ArtifactDisabledIcon;
 
-            ArtifactAPI.Add(ArtifactDef);
+            ContentAddition.AddArtifactDef(ArtifactDef);
         }
 
         public abstract void Hooks();

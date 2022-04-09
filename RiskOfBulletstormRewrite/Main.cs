@@ -40,7 +40,7 @@ namespace RiskOfBulletstormRewrite
 
         public static PluginInfo pluginInfo;
 
-        private void Awake()
+        private void Start()
         {
             _logger = Logger;
             pluginInfo = Info;
