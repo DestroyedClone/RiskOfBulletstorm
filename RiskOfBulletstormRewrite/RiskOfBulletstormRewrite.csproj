@@ -3,11 +3,35 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
+	
 
   <ItemGroup>
+    <Compile Remove="Enemies\**" />
+    <EmbeddedResource Remove="Enemies\**" />
+    <None Remove="Enemies\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Artifact\ArtifactPitLordPlayer.cs" />
+    <Compile Remove="Artifact\ExampleArtifact.cs" />
+    <Compile Remove="Controllers\MasterRoundController.cs" />
+    <Compile Remove="Equipment\ChestTeleporter.cs" />
+    <Compile Remove="Equipment\EliteEquipment\ExampleEliteEquipment.cs" />
     <Compile Remove="Equipment\ExampleEquipment.cs" />
     <Compile Remove="Equipment\ExampleEquipWithTargeting.cs" />
+    <Compile Remove="Equipment\Lunar\Spice.cs" />
+    <Compile Remove="Equipment\Molotov.cs" />
+    <Compile Remove="Equipment\Ration.cs" />
+    <Compile Remove="Items\Backpack.cs" />
+    <Compile Remove="Items\Boss\ClownMask.cs" />
+    <Compile Remove="Items\Boss\PastKillingBullet.cs" />
+    <Compile Remove="Items\Boss\RatBoots.cs" />
+    <Compile Remove="Items\ClownMask.cs" />
     <Compile Remove="Items\ExampleItem.cs" />
+    <Compile Remove="Items\Boss\MasterRounds\MasterRoundI.cs" />
+    <Compile Remove="Items\Lunar\Metronome.cs" />
+    <Compile Remove="Items\NoTier\LordOfTheJammedItem.cs" />
+    <Compile Remove="Items\Uncommon\HeavyBullets.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,67 +43,28 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Items\Boss\MasterRounds\" />
+    <Folder Include="Items\NoTier\" />
     <Folder Include="libs\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>libs\Assembly-CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="BepInEx">
-      <HintPath>libs\BepInEx.dll</HintPath>
-    </Reference>
-    <Reference Include="HGCSharpUtils">
-      <HintPath>libs\HGCSharpUtils.dll</HintPath>
-    </Reference>
-    <Reference Include="HGUnityUtils">
-      <HintPath>libs\HGUnityUtils.dll</HintPath>
-    </Reference>
-    <Reference Include="MMHOOK_Assembly-CSharp">
-      <HintPath>libs\MMHOOK_Assembly-CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Cecil">
-      <HintPath>libs\Mono.Cecil.dll</HintPath>
-    </Reference>
-    <Reference Include="MonoMod.RuntimeDetour">
-      <HintPath>libs\MonoMod.RuntimeDetour.dll</HintPath>
-    </Reference>
-    <Reference Include="MonoMod.Utils">
-      <HintPath>libs\MonoMod.Utils.dll</HintPath>
-    </Reference>
-    <Reference Include="R2API">
-      <HintPath>libs\R2API.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Postprocessing.Runtime">
-      <HintPath>libs\Unity.Postprocessing.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.TextMeshPro">
-      <HintPath>libs\Unity.TextMeshPro.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine">
-      <HintPath>libs\UnityEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.AssetBundleModule">
-      <HintPath>libs\UnityEngine.AssetBundleModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>libs\UnityEngine.CoreModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.Networking">
-      <HintPath>libs\UnityEngine.Networking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.ParticleSystemModule">
-      <HintPath>libs\UnityEngine.ParticleSystemModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.PhysicsModule">
-      <HintPath>libs\UnityEngine.PhysicsModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>libs\UnityEngine.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="Wwise">
-      <HintPath>libs\Wwise.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+	<ItemGroup>
+		<Reference Include="MMHOOK_RoR2">
+			<HintPath>lib\MMHOOK_RoR2.dll</HintPath>
+		</Reference>
+		<Reference Include="R2API">
+			<HintPath>lib\R2API.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="BepInEx.Analyzers" Version="1.0.*">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="BepInEx.Core" Version="5.4.19" />
+		<PackageReference Include="RiskOfRain2.GameLibs" Version="1.2.1-r.1" />
+		<PackageReference Include="UnityEngine.Modules" Version="2019.4.26" />
+	</ItemGroup>
 
 </Project>
