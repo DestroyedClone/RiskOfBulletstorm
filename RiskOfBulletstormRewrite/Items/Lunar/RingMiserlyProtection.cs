@@ -33,7 +33,7 @@ namespace RiskOfBulletstormRewrite.Items
             ItemTag.Cleansable
         };
 
-        private readonly GameObject ShatterEffect = Resources.Load<GameObject>("prefabs/effects/ShieldBreakEffect");
+        private readonly GameObject ShatterEffect = LegacyResourcesAPI.Load<GameObject>("prefabs/effects/ShieldBreakEffect");
 
         public override void Init(ConfigFile config)
         {

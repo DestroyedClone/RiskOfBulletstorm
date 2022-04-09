@@ -19,9 +19,9 @@ namespace RiskOfBulletstormRewrite.Artifact
 
         public override string ArtifactDescription => $"When enabled, monsters don't take damage from falling off stage.";
 
-        public override Sprite ArtifactEnabledIcon => RoR2Content.Items.FallBoots.pickupIconSprite;
+        public override Sprite ArtifactEnabledIcon => Assets.NullSprite;
 
-        public override Sprite ArtifactDisabledIcon => RoR2Content.Items.FallBoots.pickupIconSprite;
+        public override Sprite ArtifactDisabledIcon => Assets.NullSprite;
 
         public override void Init(ConfigFile config)
         {

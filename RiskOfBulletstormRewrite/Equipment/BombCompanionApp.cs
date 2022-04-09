@@ -45,54 +45,54 @@ namespace RiskOfBulletstormRewrite.Equipment
         public static GameObject[] explosiveProjectiles = new GameObject[]
         {
             // Arti
-			Resources.Load<GameObject>("Prefabs/Projectiles/MageFireboltBasic"),
-            Resources.Load<GameObject>("Prefabs/Projectiles/MageLightningboltBasic"),
-            Resources.Load<GameObject>("Prefabs/Projectiles/MageLightningBombProjectile"),
-            Resources.Load<GameObject>("Prefabs/Projectiles/MageIceBombProjectile"),
+			LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/MageFireboltBasic"),
+            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/MageLightningboltBasic"),
+            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/MageLightningBombProjectile"),
+            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/MageIceBombProjectile"),
 
 			//Cap
-			Resources.Load<GameObject>("Prefabs/Projectiles/CaptainTazer"),
+			LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/CaptainTazer"),
 
 			//Commando
-            Resources.Load<GameObject>("prefabs/projectiles/CommandoGrenadeProjectile"),
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/CommandoGrenadeProjectile"),
 
             // Engineer
-            Resources.Load<GameObject>("Prefabs/Projectiles/EngiHarpoon"),
-            Resources.Load<GameObject>("Prefabs/Projectiles/EngiGrenadeProjectile"),
-            Resources.Load<GameObject>("Prefabs/Projectiles/EngiMine"),
-            Resources.Load<GameObject>("Prefabs/Projectiles/SpiderMine"),
+            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/EngiHarpoon"),
+            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/EngiGrenadeProjectile"),
+            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/EngiMine"),
+            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/SpiderMine"),
 
 			// MUL-T
-            Resources.Load<GameObject>("prefabs/projectiles/ToolbotGrenadeLauncherProjectile"), // Scrap Launcher
-            Resources.Load<GameObject>("prefabs/projectiles/CryoCanisterProjectile"), // Secondary bomb
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/ToolbotGrenadeLauncherProjectile"), // Scrap Launcher
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/CryoCanisterProjectile"), // Secondary bomb
 
 			// Clay Dunestrider
-            Resources.Load<GameObject>("Prefabs/Projectiles/Tarball"),
+            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/Tarball"),
             EntityStates.ClayBoss.ClayBossWeapon.FireBombardment.projectilePrefab,
 
 			// Grovetender
-			Resources.Load<GameObject>("GravekeeperTrackingFireball"),
+			LegacyResourcesAPI.Load<GameObject>("GravekeeperTrackingFireball"),
 
                 // Elder Lemurian
-            Resources.Load<GameObject>("prefabs/projectiles/LemurianBigFireball"),
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LemurianBigFireball"),
                 // Void Reaver
-            Resources.Load<GameObject>("prefabs/projectiles/NullifierBombProjectile"),
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/NullifierBombProjectile"),
 
                 // Scavenger
-            Resources.Load<GameObject>("prefabs/projectiles/ScavEnergyCannonProjectile"),
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/ScavEnergyCannonProjectile"),
 			//get thqiwbbs too
 
                 // Wandering Vagrant
             EntityStates.VagrantMonster.Weapon.JellyBarrage.projectilePrefab,
                 // Hermit Crab
-            Resources.Load<GameObject>("prefabs/projectiles/HermitCrabBombProjectile"),
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/HermitCrabBombProjectile"),
                 // Void Reaver
-            Resources.Load<GameObject>("prefabs/projectiles/NullifierPreBombProjectile"),
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/NullifierPreBombProjectile"),
                 // Greater Wisp
-            Resources.Load<GameObject>("prefabs/projectiles/WispCannon"),
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/WispCannon"),
 
                 //other
-            Resources.Load<GameObject>("Prefabs/Projectiles/MissileProjectile"),
+            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/MissileProjectile"),
         };
 
         public override void Init(ConfigFile config)
@@ -233,7 +233,7 @@ namespace RiskOfBulletstormRewrite.Equipment
                 {
                     result = true;
                     Vector3 position = isExplosiveProjectile2.transform.position;
-                    EffectManager.SpawnEffect(Resources.Load<GameObject>("Prefabs/Effects/OmniEffect/OmniExplosionVFXQuick"), new EffectData
+                    EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/OmniEffect/OmniExplosionVFXQuick"), new EffectData
                     {
                         origin = position,
                         scale = 3f,

@@ -11,9 +11,19 @@ namespace RiskOfBulletstormRewrite.Utils
     {
         public static BuffDef MustacheBuff;
 
+        public static BuffDef MetronomeTrackerBuff;
+
         public static void CreateBuffs()
         {
-            MustacheBuff = AddBuff("Power of Commerce", Resources.Load<Sprite>(""), Color.yellow, false, true);
+            //Buffs
+            MustacheBuff = AddBuff("Power of Commerce", LegacyResourcesAPI.Load<Sprite>(""), Color.yellow, false, true);
+
+            //Trackers
+            MetronomeTrackerBuff = AddBuff("Metronome Stacks (Display)",
+                Main.MainAssets.LoadAsset<Sprite>("Assets/Textures/Icons/Buffs/Metronome.png"),
+                Color.blue,
+                false,
+                true);
         }
 
         public static BuffDef AddBuff(string name, Sprite iconSprite, Color buffColor, bool isDebuff = false, bool canStack = false)
@@ -26,7 +36,7 @@ namespace RiskOfBulletstormRewrite.Utils
             customBuff.isDebuff = isDebuff;
             customBuff.iconSprite = iconSprite;
 
-            BuffAPI.Add(new CustomBuff(customBuff));
+            ContentAddition.AddBuffDef(customBuff);
             return customBuff;
         }
     }

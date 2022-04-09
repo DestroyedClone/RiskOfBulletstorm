@@ -128,7 +128,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         private void SpawnCombat(Interactor interactor, Transform effectTransform, float creditMultiplier = 1f)
         {
-            GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/NetworkedObjects/Encounters/MonstersOnShrineUseEncounter"), effectTransform.position, Quaternion.identity);
+            GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(LegacyResourcesAPI.Load<GameObject>("Prefabs/NetworkedObjects/Encounters/MonstersOnShrineUseEncounter"), effectTransform.position, Quaternion.identity);
             NetworkServer.Spawn(gameObject);
             CombatDirector component5 = gameObject.GetComponent<CombatDirector>();
             float monsterCredit = 40f * Stage.instance.entryDifficultyCoefficient * creditMultiplier;
@@ -141,7 +141,7 @@ namespace RiskOfBulletstormRewrite.Equipment
                     origin = effectTransform.position,
                     rotation = effectTransform.rotation
                 };
-                EffectManager.SpawnEffect(Resources.Load<GameObject>("Prefabs/Effects/MonstersOnShrineUse"), effectData, true);
+                EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/MonstersOnShrineUse"), effectData, true);
                 return;
             }
             NetworkServer.Destroy(gameObject);

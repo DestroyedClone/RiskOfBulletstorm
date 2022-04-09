@@ -21,118 +21,118 @@ namespace RiskOfBulletstormRewrite.Controllers
         public static List<GameObject> WhitelistedProjectiles = new List<GameObject>
         {
             // Equipment/Items
-            Resources.Load<GameObject>("Prefabs/Projectiles/Sawmerang"), // Saw
-            Resources.Load<GameObject>("Prefabs/Projectiles/LunarNeedleProjectile"), // Visions of Heresy
-            Resources.Load<GameObject>("prefabs/projectiles/LunarSecondaryProjectile"), // Hooks of Heresy
-            Resources.Load<GameObject>("prefabs/projectiles/LunarMissileProjectile"), // Perfected
+            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/Sawmerang"), // Saw
+            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/LunarNeedleProjectile"), // Visions of Heresy
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LunarSecondaryProjectile"), // Hooks of Heresy
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LunarMissileProjectile"), // Perfected
 
             // Survivors
                 // Acrid
-            Resources.Load<GameObject>("prefabs/projectiles/CrocoSpit"), // Ranged Secondary
-            Resources.Load<GameObject>("prefabs/projectiles/CrocoDiseaseProjectile"), // Special
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/CrocoSpit"), // Ranged Secondary
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/CrocoDiseaseProjectile"), // Special
                 // Artificer
-            Resources.Load<GameObject>("Prefabs/Projectiles/MageFireboltBasic"),
-            Resources.Load<GameObject>("Prefabs/Projectiles/MageLightningboltBasic"),
-            Resources.Load<GameObject>("Prefabs/Projectiles/MageLightningBombProjectile"),
-            Resources.Load<GameObject>("Prefabs/Projectiles/MageIceBombProjectile"),
-            Resources.Load<GameObject>("Prefabs/Projectiles/MageIcewallWalkerProjectile"),
+            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/MageFireboltBasic"),
+            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/MageLightningboltBasic"),
+            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/MageLightningBombProjectile"),
+            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/MageIceBombProjectile"),
+            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/MageIcewallWalkerProjectile"),
             //MageIcewallPillarProjectile ??
                 
                 // Bandit2
-            Resources.Load<GameObject>("prefabs/projectiles/Bandit2ShivProjectile"),
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/Bandit2ShivProjectile"),
 
 
                 // Captain
-            Resources.Load<GameObject>("Prefabs/Projectiles/CaptainTazer"),
+            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/CaptainTazer"),
 
                 // Commando
-            Resources.Load<GameObject>("prefabs/projectiles/CommandoGrenadeProjectile"),
-            Resources.Load<GameObject>("Prefabs/Projectiles/FMJ"), //??
-            Resources.Load<GameObject>("Prefabs/Projectiles/FMJRamping"),
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/CommandoGrenadeProjectile"),
+            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/FMJ"), //??
+            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/FMJRamping"),
 
                 // Engineer
-            Resources.Load<GameObject>("Prefabs/Projectiles/EngiHarpoon"),
-            Resources.Load<GameObject>("Prefabs/Projectiles/EngiGrenadeProjectile"),
-            Resources.Load<GameObject>("Prefabs/Projectiles/EngiMine"),
-            Resources.Load<GameObject>("Prefabs/Projectiles/SpiderMine"),
-            Resources.Load<GameObject>("prefabs/projectiles/EngiBubbleShield"),
+            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/EngiHarpoon"),
+            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/EngiGrenadeProjectile"),
+            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/EngiMine"),
+            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/SpiderMine"),
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/EngiBubbleShield"),
 
                 // Huntress
             EntityStates.Huntress.HuntressWeapon.FireGlaive.projectilePrefab,
 
                 // Loader
-            Resources.Load<GameObject>("prefabs/projectiles/LoaderZapCone"), //It's a projectile, go figure.
-            Resources.Load<GameObject>("prefabs/projectiles/LoaderPylon"),
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LoaderZapCone"), //It's a projectile, go figure.
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LoaderPylon"),
 
                 // Merc
-            Resources.Load<GameObject>("prefabs/projectiles/EvisProjectile"), // Ranged special
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/EvisProjectile"), // Ranged special
 
                 // MUL-T
-            Resources.Load<GameObject>("prefabs/projectiles/ToolbotGrenadeLauncherProjectile"), // Scrap Launcher
-            Resources.Load<GameObject>("prefabs/projectiles/CryoCanisterProjectile"), // Secondary bomb
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/ToolbotGrenadeLauncherProjectile"), // Scrap Launcher
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/CryoCanisterProjectile"), // Secondary bomb
 
                 // REX
-            Resources.Load<GameObject>("prefabs/projectiles/SyringeProjectile"),
-            Resources.Load<GameObject>("prefabs/projectiles/SyringeProjectileHealing"), // Third syringe shot
-            Resources.Load<GameObject>("prefabs/projectiles/TreebotMortarRain"),
-            Resources.Load<GameObject>("prefabs/projectiles/TreebotMortar2"),
-            Resources.Load<GameObject>("prefabs/projectiles/TreebotFlowerSeed"),
-            Resources.Load<GameObject>("prefabs/projectiles/TreebotFruitSeedProjectile"),
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/SyringeProjectile"),
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/SyringeProjectileHealing"), // Third syringe shot
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/TreebotMortarRain"),
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/TreebotMortar2"),
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/TreebotFlowerSeed"),
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/TreebotFruitSeedProjectile"),
 
             // Enemies
                 // Beetle Queen
-            Resources.Load<GameObject>("prefabs/projectiles/BeetleQueenSpit"), // Beetle Spit
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/BeetleQueenSpit"), // Beetle Spit
                 // Mithrix
-            Resources.Load<GameObject>("prefabs/projectiles/LunarShardProjectile"),
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LunarShardProjectile"),
                 // Clay Dunestrider
-            Resources.Load<GameObject>("Prefabs/Projectiles/Tarball"),
+            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/Tarball"),
             EntityStates.ClayBoss.ClayBossWeapon.FireBombardment.projectilePrefab, //
                 // Grovetender
-            Resources.Load<GameObject>("prefabs/projectiles/GravekeeperHookProjectile"), //not used?
-            Resources.Load<GameObject>("prefabs/projectiles/GravekeeperHookProjectileSimple"), //????
-            Resources.Load<GameObject>("GravekeeperTrackingFireball"),
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/GravekeeperHookProjectile"), //not used?
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/GravekeeperHookProjectileSimple"), //????
+            LegacyResourcesAPI.Load<GameObject>("GravekeeperTrackingFireball"),
                 // Imp + Imp Overlord
-            Resources.Load<GameObject>("prefabs/projectiles/ImpVoidspikeProjectile"),
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/ImpVoidspikeProjectile"),
             EntityStates.ImpMonster.FireSpines.projectilePrefab, 
                 // Elder Lemurian
-            Resources.Load<GameObject>("prefabs/projectiles/LemurianBigFireball"), 
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LemurianBigFireball"), 
                 // Void Reaver
-            Resources.Load<GameObject>("prefabs/projectiles/NullifierBombProjectile"),
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/NullifierBombProjectile"),
                 // Alloy Worship Unit / Solus Control Unit
-            Resources.Load<GameObject>("prefabs/projectiles/RoboBallProjectile"),
-            Resources.Load<GameObject>("prefabs/projectiles/SuperRoboBallProjectile"), //idk??
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/RoboBallProjectile"),
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/SuperRoboBallProjectile"), //idk??
                 // Scavenger
-            Resources.Load<GameObject>("prefabs/projectiles/ScavEnergyCannonProjectile"),
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/ScavEnergyCannonProjectile"),
             //TODO: Get thqiwbbs
                 // Malachite Urchin
-            Resources.Load<GameObject>("prefabs/projectiles/UrchinSeekingProjectile"),
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/UrchinSeekingProjectile"),
                 // Wandering Vagrant
             EntityStates.VagrantMonster.Weapon.JellyBarrage.projectilePrefab,
                 // Alloy Vulture
-            Resources.Load<GameObject>("prefabs/projectiles/WindbladeProjectile"), 
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/WindbladeProjectile"), 
                 // Beetle Guard
-            Resources.Load<GameObject>("prefabs/projectiles/Sunder"), 
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/Sunder"), 
                 // Brass Contraption
-            Resources.Load<GameObject>("prefabs/projectiles/BellBall"), 
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/BellBall"), 
                 // Lemurian
-            Resources.Load<GameObject>("prefabs/projectiles/Fireball"), //fireball
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/Fireball"), //fireball
                 // Hermit Crab
-            Resources.Load<GameObject>("prefabs/projectiles/HermitCrabBombProjectile"), 
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/HermitCrabBombProjectile"), 
                 // Lunar Golem
-            Resources.Load<GameObject>("prefabs/projectiles/LunarGolemTwinShotProjectile"), 
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LunarGolemTwinShotProjectile"), 
                 // Lunar Wisp
-            Resources.Load<GameObject>("prefabs/projectiles/LunarWispTrackingBomb"), 
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LunarWispTrackingBomb"), 
                 // Lunar Exploder
-            Resources.Load<GameObject>("prefabs/projectiles/LunarExploderShardProjectile"),
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LunarExploderShardProjectile"),
                 // Mini Mushrum
-            Resources.Load<GameObject>("prefabs/projectiles/SporeGrenadeProjectile"), 
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/SporeGrenadeProjectile"), 
                 // Void Reaver
-            Resources.Load<GameObject>("prefabs/projectiles/NullifierPreBombProjectile"), 
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/NullifierPreBombProjectile"), 
                 // Greater Wisp
-            Resources.Load<GameObject>("prefabs/projectiles/WispCannon"),
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/WispCannon"),
                 // Grandparent
-            Resources.Load<GameObject>("prefabs/projectiles/GrandparentBoulder"),
-            Resources.Load<GameObject>("prefabs/projectiles/GrandparentGravSphere"),
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/GrandparentBoulder"),
+            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/GrandparentGravSphere"),
         };
 
         public static List<string> ModdedWhitelistedProjectiles = new List<string>();
@@ -141,9 +141,9 @@ namespace RiskOfBulletstormRewrite.Controllers
 
         private const string projectileAddress = "https://raw.githubusercontent.com/DestroyedClone/RiskOfBulletstorm/master/RiskOfBulletstormRewrite/Controllers/ModdedProjectileNames.txt";
 
-        //private static readonly GameObject DisposableMissileLauncherPrefab = Resources.Load<GameObject>("Prefabs/Projectiles/MissileProjectile");
-        //private static readonly GameObject LoaderHookPrefab = Resources.Load<GameObject>("prefabs/projectiles/LoaderHook");
-        //private static readonly GameObject LoaderYankHookPrefab = Resources.Load<GameObject>("prefabs/projectiles/LoaderYankHook");
+        //private static readonly GameObject DisposableMissileLauncherPrefab = LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/MissileProjectile");
+        //private static readonly GameObject LoaderHookPrefab = LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LoaderHook");
+        //private static readonly GameObject LoaderYankHookPrefab = LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LoaderYankHook");
         public static float SimpleSpread(float accuracy, float originalValue, float multiplier = 1f)
         {
             return originalValue == 0 ? accuracy * multiplier : originalValue * accuracy;
@@ -153,6 +153,7 @@ namespace RiskOfBulletstormRewrite.Controllers
         {
             SetupConfig(config);
             Hooks();
+            SetupModdedProjectiles();
         }
 
         public void SetupModdedProjectiles()
@@ -278,15 +279,15 @@ namespace RiskOfBulletstormRewrite.Controllers
                 true, "If enabled, then the mod will autodownload the latest modded projectile names on startup. These are added manually.").Value;
 
             if (ShotSpread_EnableDML)
-                WhitelistedProjectiles.Add(Resources.Load<GameObject>("Prefabs/Projectiles/MissileProjectile"));
+                WhitelistedProjectiles.Add(LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/MissileProjectile"));
             if (ShotSpread_EnableLoader)
             {
-                WhitelistedProjectiles.Add(Resources.Load<GameObject>("prefabs/projectiles/LoaderHook"));
-                WhitelistedProjectiles.Add(Resources.Load<GameObject>("prefabs/projectiles/LoaderYankHook"));
+                WhitelistedProjectiles.Add(LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LoaderHook"));
+                WhitelistedProjectiles.Add(LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LoaderYankHook"));
             }
             if (AutoDownloadUpdates)
             {
-                DownloadNewProjectileNames();
+                //DownloadNewProjectileNames();
             }
         }
 
@@ -406,8 +407,8 @@ namespace RiskOfBulletstormRewrite.Controllers
         {
             private float Scope_SpreadReduction => Items.Scope.cfgSpreadReduction.Value;
             private float Scope_SpreadReductionStack => Items.Scope.cfgSpreadReductionPerStack.Value;
-            private float[,] SpiceBonusesConstant => Equipment.Spice.SpiceBonusesConstant;
-            private float[] SpiceBonusesAdditive => Equipment.Spice.SpiceBonusesAdditive;
+            //private float[,] SpiceBonusesConstant => Equipment.Spice.SpiceBonusesConstant;
+            //private float[] SpiceBonusesAdditive => Equipment.Spice.SpiceBonusesAdditive;
             public Inventory inventory;
             public int itemCount_Scope = 0;
             public int itemCount_Spice = 0;
@@ -453,13 +454,13 @@ namespace RiskOfBulletstormRewrite.Controllers
                         break;
                     case 3:
                     case 4:
-                        SpiceMult -= SpiceBonusesConstant[itemCount_Spice, 2];
+                        //SpiceMult -= SpiceBonusesConstant[itemCount_Spice, 2];
                         break;
                     case 5: //fuck IT GOES FROM 0.15 to -0.2 WHYYYYYYYYYYYYYYY hardcoded stopgap time
                         SpiceMult -= 0f;
                         break;
                     default:
-                        SpiceMult -= SpiceBonusesConstant[5, 2] + SpiceBonusesAdditive[2] * (itemCount_Spice - 4);
+                        //SpiceMult -= SpiceBonusesConstant[5, 2] + SpiceBonusesAdditive[2] * (itemCount_Spice - 4);
                         break;
                 }
 
