@@ -1,11 +1,11 @@
 ﻿using BepInEx.Configuration;
 using R2API;
 using RoR2;
-using UnityEngine;
-using static RiskOfBulletstormRewrite.Main;
+using System;
 using System.Collections.Generic;
-using UnityEngine.Networking;
 using System.Collections.ObjectModel;
+using UnityEngine;
+using UnityEngine.Networking;
 
 namespace RiskOfBulletstormRewrite.Items
 {
@@ -38,7 +38,6 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void CreateConfig(ConfigFile config)
         {
-
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
@@ -85,7 +84,8 @@ namespace RiskOfBulletstormRewrite.Items
                             // If there's a player alive, end the loop early.
                             allDead = false;
                             break;
-                        } else
+                        }
+                        else
                         {
                             if (GetCount(playerCharacterMasterController.master) > 0)
                             {
@@ -103,13 +103,39 @@ namespace RiskOfBulletstormRewrite.Items
 
         private void PseudoRestartRun(CharacterMaster masterWithClone)
         {
+            if (!masterWithClone) return;
             masterWithClone.inventory.RemoveItem(ItemDef);
             isCloneRestarting = true;
             Run.instance.SetRunStopwatch(0);
             Run.instance.NetworkstageClearCount = -1;
+            TeamManager.instance.SetTeamLevel(TeamIndex.Player, 1);
             TeamManager.instance.SetTeamLevel(TeamIndex.Monster, 1);
-            SceneDef[] choices = Run.instance.startingScenes;
-            Run.instance.PickNextStageScene(choices);
+            WeightedSelection<SceneDef> weightedSelection = new WeightedSelection<SceneDef>(8);
+
+            string @string = Run.cvRunSceneOverride.GetString();
+            if (@string != "")
+            {
+                weightedSelection.AddChoice(SceneCatalog.GetSceneDefFromSceneName(@string), 1f);
+            }
+            else if (Run.instance.startingSceneGroup)
+            {
+                Run.instance.startingSceneGroup.AddToWeightedSelection(weightedSelection, new Func<SceneDef, bool>(Run.instance.CanPickStage));
+            }
+            else
+            {
+                for (int j = 0; j < Run.instance.startingScenes.Length; j++)
+                {
+                    if (Run.instance.CanPickStage(Run.instance.startingScenes[j]))
+                    {
+                        weightedSelection.AddChoice(Run.instance.startingScenes[j], 1f);
+                    }
+                }
+            }
+            Run.instance.PickNextStageScene(weightedSelection);
+
+            //var choices = Run.instance.startingSceneGroup;
+
+            Run.instance.PickNextStageScene(weightedSelection);
             Run.instance.AdvanceStage(Run.instance.nextStageScene);
         }
     }
