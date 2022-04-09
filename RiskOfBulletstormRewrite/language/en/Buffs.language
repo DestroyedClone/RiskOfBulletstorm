@@ -1,0 +1,10 @@
+﻿{
+	strings:
+	{
+		//[NORMAL]
+		"RISKOFBULLETSTORM_BUFFMUSTACHE_NAME": "Power of Commerce",
+		"RISKOFBULLETSTORM_BUFFMUSTACHE_DESC": "+2 regen per stack",
+		"RISKOFBULLETSTORM_BUFF_NAME": "",
+		"RISKOFBULLETSTORM_BUFF_DESC": "",
+	}
+}
