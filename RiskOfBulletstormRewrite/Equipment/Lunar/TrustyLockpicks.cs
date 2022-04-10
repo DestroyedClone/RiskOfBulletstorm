@@ -101,6 +101,8 @@ namespace RiskOfBulletstormRewrite.Equipment
         private bool AttemptUnlock(GameObject chestObject, InteractionDriver interactionDriver, float UnlockChance)
         {
             if (!interactionDriver) return false;
+            var chestBehavior = chestObject.GetComponent<ChestBehavior>();
+            if (!chestBehavior) return false;
             Highlight highlight = chestObject.GetComponent<Highlight>();
             PurchaseInteraction purchaseInteraction = chestObject.GetComponent<PurchaseInteraction>();
             if (!highlight || !purchaseInteraction) return false;
@@ -108,7 +110,6 @@ namespace RiskOfBulletstormRewrite.Equipment
             if (chestComponent && chestComponent.hasUsedLockpicks) return false;
             GameObject selectedEffect = UnlockEffect;
             Vector3 offset = Vector3.up * 1f;
-
 
             if (!purchaseInteraction.isShrine && purchaseInteraction.available && purchaseInteraction.costType == CostTypeIndex.Money)
             {
@@ -119,7 +120,7 @@ namespace RiskOfBulletstormRewrite.Equipment
                     purchaseInteraction.SetAvailable(false);
                     //purchaseInteraction.Networkavailable = false;
 
-                    purchaseInteraction.gameObject.GetComponent<ChestBehavior>().Open();
+                    chestBehavior.Open();
 
                     //purchaseInteraction.cost = 0;
                     //purchaseInteraction.Networkcost = 0;
