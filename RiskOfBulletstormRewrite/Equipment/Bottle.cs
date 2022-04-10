@@ -70,8 +70,9 @@ namespace RiskOfBulletstormRewrite.Equipment
         private void HealthComponent_onCharacterHealServer(HealthComponent healthComponent, float amount, ProcChainMask procChainMask)
         {
             var comp = healthComponent.gameObject.GetComponent<BottleStorageController>();
-            if (comp && comp.equipmentSlot && comp.equipmentSlot.cooldownTimer <= 0)
+            if (comp && comp.equipmentSlot && comp.equipmentSlot.stock > 0)
             {
+                Chat.AddMessage($"Bottle: {amount * cfgExcessHealingPercentage.Value} / {healthComponent.fullHealth * cfgMaxHealthPercentagePool.Value}");
                 comp.AddReserve(amount * cfgExcessHealingPercentage.Value, healthComponent.fullHealth*cfgMaxHealthPercentagePool.Value);
             }
         }
