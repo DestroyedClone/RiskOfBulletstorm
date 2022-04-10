@@ -25,7 +25,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public override GameObject EquipmentModel => Assets.NullModel;
 
-        public override Sprite EquipmentIcon => RoR2Content.Items.TreasureCache.pickupIconSprite;
+        public override Sprite EquipmentIcon => Assets.NullSprite;
 
         private readonly string UnlockSound = EntityStates.Engi.EngiWeapon.FireMines.throwMineSoundString;
         private readonly GameObject UnlockEffect = LegacyResourcesAPI.Load<GameObject>("prefabs/effects/LevelUpEffect");
