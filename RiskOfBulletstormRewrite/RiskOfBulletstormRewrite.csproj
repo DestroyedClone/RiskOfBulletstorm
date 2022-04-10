@@ -14,7 +14,6 @@
   <ItemGroup>
     <Compile Remove="Artifact\ArtifactPitLordPlayer.cs" />
     <Compile Remove="Artifact\ExampleArtifact.cs" />
-    <Compile Remove="Controllers\BabyMimicBodyBehavior.cs" />
     <Compile Remove="Controllers\MasterRoundController.cs" />
     <Compile Remove="Equipment\ChestTeleporter.cs" />
     <Compile Remove="Equipment\EliteEquipment\ExampleEliteEquipment.cs" />
@@ -30,12 +29,9 @@
     <Compile Remove="Items\ClownMask.cs" />
     <Compile Remove="Items\ExampleItem.cs" />
     <Compile Remove="Items\Boss\MasterRounds\MasterRoundI.cs" />
-    <Compile Remove="Items\Legendary\BabyGoodMimic.cs" />
-    <Compile Remove="Items\Legendary\RingTriggers.cs" />
     <Compile Remove="Items\Lunar\Metronome.cs" />
     <Compile Remove="Items\NoTier\LordOfTheJammedItem.cs" />
     <Compile Remove="Items\Uncommon\HeavyBullets.cs" />
-    <Compile Remove="Items\Uncommon\RingFireResistance.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,20 +44,11 @@
 
   <ItemGroup>
     <Folder Include="Items\Boss\MasterRounds\" />
-    <Folder Include="Items\VoidBoss\" />
-    <Folder Include="Items\VoidLegendary\" />
-    <Folder Include="Items\VoidUncommon\" />
-    <Folder Include="Items\VoidCommon\" />
     <Folder Include="Items\NoTier\" />
+    <Folder Include="libs\" />
   </ItemGroup>
 
 	<ItemGroup>
-		<Reference Include="BetterUI">
-		  <HintPath>libs\BetterUI.dll</HintPath>
-		</Reference>
-		<Reference Include="BetterUnityPlugin">
-		  <HintPath>libs\BetterUnityPlugin.dll</HintPath>
-		</Reference>
 		<Reference Include="MMHOOK_RoR2">
 			<HintPath>lib\MMHOOK_RoR2.dll</HintPath>
 		</Reference>
