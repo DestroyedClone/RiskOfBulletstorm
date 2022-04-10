@@ -70,6 +70,10 @@ namespace RiskOfBulletstormRewrite.Equipment
             LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/Tarball"),
             EntityStates.ClayBoss.ClayBossWeapon.FireBombardment.projectilePrefab,
 
+            // Clay Apothecary (DLC)
+            LegacyResourcesAPI.Load<GameObject>("RoR2/DLC1/ClayGrenadier/ClayGrenadierMortarProjectile"),
+            LegacyResourcesAPI.Load<GameObject>("RoR2/DLC1/ClayGrenadier/ClayGrenadierBarrelProjectile"),
+
 			// Grovetender
 			LegacyResourcesAPI.Load<GameObject>("GravekeeperTrackingFireball"),
 
@@ -161,6 +165,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
                             case "CLAYBRUISER_BODY_NAME":
                             case "CLAY_BODY_NAME":
+                            case "CLAYGRENADIER_BODY_NAME":
                                 damageMultiplier = cfgTarDamageMultiplier.Value;
                                 break;
 
