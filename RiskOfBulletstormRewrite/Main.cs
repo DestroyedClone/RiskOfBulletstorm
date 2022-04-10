@@ -19,13 +19,14 @@ namespace RiskOfBulletstormRewrite
 {
     [BepInPlugin(ModGuid, ModName, ModVer)]
     [BepInDependency(R2API.R2API.PluginGUID, R2API.R2API.PluginVersion)]
+    [BepInDependency("com.xoxfaby.BetterUI", BepInDependency.DependencyFlags.SoftDependency)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.EveryoneNeedSameModVersion)]
     [R2APISubmoduleDependency(nameof(ItemAPI), nameof(LanguageAPI), nameof(ContentAddition), nameof(EliteAPI), nameof(RecalculateStatsAPI), nameof(DirectorAPI))]
     public class Main : BaseUnityPlugin
     {
         public const string ModGuid = "com.DestroyedClone.RiskOfBulletstorm";
         public const string ModName = "Risk of Bulletstorm";
-        public const string ModVer = "1.2.0";
+        public const string ModVer = "1.2.1";
 
         internal static BepInEx.Logging.ManualLogSource _logger;
 
@@ -45,6 +46,7 @@ namespace RiskOfBulletstormRewrite
             _logger = Logger;
             pluginInfo = Info;
             Language.config = Config;
+            ModSupport.CheckForModSupport();
 
             LocationOfProgram = Path.GetDirectoryName(Info.Location);
 
@@ -65,6 +67,8 @@ namespace RiskOfBulletstormRewrite
             //Enemies.LordofTheJammedMonster.CreatePrefab();
             RiskOfBulletstormRewrite.Language.Initialize();
         }
+
+
 
         public void AddToAssembly()
         {

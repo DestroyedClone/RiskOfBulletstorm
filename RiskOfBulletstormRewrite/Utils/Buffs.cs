@@ -24,6 +24,11 @@ namespace RiskOfBulletstormRewrite.Utils
                 Color.blue,
                 false,
                 true);
+
+            if (ModSupport.betterUILoaded)
+            {
+                ModSupport.BetterUICompat();
+            }
         }
 
         public static BuffDef AddBuff(string name, Sprite iconSprite, Color buffColor, bool isDebuff = false, bool canStack = false)
