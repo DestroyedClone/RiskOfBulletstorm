@@ -54,7 +54,7 @@ namespace RiskOfBulletstormRewrite.Items
         {
             get
             {
-                return "ITEM_" + ItemLangTokenName + "_PICKUP";
+                return "RISKOFBULLETSTORM_ITEM_" + ItemLangTokenName + "_PICKUP";
             }
         }
 
@@ -62,7 +62,7 @@ namespace RiskOfBulletstormRewrite.Items
         {
             get
             {
-                return "ITEM_" + ItemLangTokenName + "_DESCRIPTION";
+                return "RISKOFBULLETSTORM_ITEM_" + ItemLangTokenName + "_DESCRIPTION";
             }
         }
 
@@ -134,12 +134,13 @@ namespace RiskOfBulletstormRewrite.Items
                 ItemTags = new List<ItemTag>(ItemTags) { ItemTag.AIBlacklist }.ToArray();
             }
 
+            var prefix = "RISKOFBULLETSTORM_ITEM_";
             ItemDef = ScriptableObject.CreateInstance<ItemDef>();
-            ItemDef.name = "ITEM_" + ItemLangTokenName;
-            ItemDef.nameToken = "ITEM_" + ItemLangTokenName + "_NAME";
-            ItemDef.pickupToken = "ITEM_" + ItemLangTokenName + "_PICKUP";
-            ItemDef.descriptionToken = "ITEM_" + ItemLangTokenName + "_DESCRIPTION";
-            ItemDef.loreToken = "ITEM_" + ItemLangTokenName + "_LORE";
+            ItemDef.name = prefix + ItemLangTokenName;
+            ItemDef.nameToken = prefix + ItemLangTokenName + "_NAME";
+            ItemDef.pickupToken = prefix + ItemLangTokenName + "_PICKUP";
+            ItemDef.descriptionToken = prefix + ItemLangTokenName + "_DESCRIPTION";
+            ItemDef.loreToken = prefix + ItemLangTokenName + "_LORE";
             ItemDef.pickupModelPrefab = ItemModel;
             ItemDef.pickupIconSprite = ItemIcon;
             ItemDef.hidden = false;

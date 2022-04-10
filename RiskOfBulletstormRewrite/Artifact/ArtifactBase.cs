@@ -24,14 +24,27 @@ namespace RiskOfBulletstormRewrite.Artifact
         public abstract string ArtifactName { get; }
 
         public abstract string ArtifactLangTokenName { get; }
-
-        public abstract string ArtifactDescription { get; }
+        public virtual string[] ArtifactFullDescriptionParams { get; }
 
         public abstract Sprite ArtifactEnabledIcon { get; }
 
         public abstract Sprite ArtifactDisabledIcon { get; }
 
         public ArtifactDef ArtifactDef;
+        public string ConfigCategory
+        {
+            get
+            {
+                return "Artifact: " + ArtifactName;
+            }
+        }
+        public string ArtifactDescriptionToken
+        {
+            get
+            {
+                return "RISKOFBULLETSTORM_ARTIFACT_" + ArtifactLangTokenName + "_DESCRIPTION";
+            }
+        }
 
         //For use only after the run has started.
         public bool ArtifactEnabled => RunArtifactManager.instance.IsArtifactEnabled(ArtifactDef);
@@ -40,16 +53,40 @@ namespace RiskOfBulletstormRewrite.Artifact
 
         protected void CreateLang()
         {
-            LanguageAPI.Add("ARTIFACT_" + ArtifactLangTokenName + "_NAME", ArtifactName);
-            LanguageAPI.Add("ARTIFACT_" + ArtifactLangTokenName + "_DESCRIPTION", ArtifactDescription);
+            Main._logger.LogMessage($"{ArtifactName} CreateLang()");
+            bool formatDescription = ArtifactFullDescriptionParams?.Length > 0; //https://stackoverflow.com/a/41596301
+            //Main._logger.LogMessage("descCheck");
+            if (formatDescription)
+            {
+                //Main._logger.LogMessage("Nothing to format.");
+                return;
+            }
+
+            foreach (var lang in RoR2.Language.steamLanguageTable)
+            {
+                var langName = lang.Value.webApiName;
+                // Main._logger.LogMessage($"[{langName}]Modifying {ItemLangTokenName}");
+
+                if (formatDescription)
+                {
+                    DeferToken(ArtifactDescriptionToken, langName, ArtifactFullDescriptionParams);
+                }
+            }
+        }
+
+        private void DeferToken(string token, string lang, params string[] args)
+        {
+            //Main._logger.LogMessage($"Deferring {token} w/ lang {lang}");
+            RiskOfBulletstormRewrite.Language.langTokenValues.Add(new Language.LangTokenValue() { token = token, lang = lang, strings = args });
         }
 
         protected void CreateArtifact()
         {
+            var prefix = "RISKOFBULLETSTORM_ARTIFACT_";
             ArtifactDef = ScriptableObject.CreateInstance<ArtifactDef>();
-            ArtifactDef.cachedName = "ARTIFACT_" + ArtifactLangTokenName;
-            ArtifactDef.nameToken = "ARTIFACT_" + ArtifactLangTokenName + "_NAME";
-            ArtifactDef.descriptionToken = "ARTIFACT_" + ArtifactLangTokenName + "_DESCRIPTION";
+            ArtifactDef.cachedName = prefix + ArtifactLangTokenName;
+            ArtifactDef.nameToken = prefix + ArtifactLangTokenName + "_NAME";
+            ArtifactDef.descriptionToken = prefix + ArtifactLangTokenName + "_DESCRIPTION";
             ArtifactDef.smallIconSelectedSprite = ArtifactEnabledIcon;
             ArtifactDef.smallIconDeselectedSprite = ArtifactDisabledIcon;
 

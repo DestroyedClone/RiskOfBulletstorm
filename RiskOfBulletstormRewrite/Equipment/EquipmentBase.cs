@@ -56,7 +56,7 @@ namespace RiskOfBulletstormRewrite.Equipment
         {
             get
             {
-                return "EQUIPMENT_" + EquipmentLangTokenName + "_PICKUP";
+                return "RISKOFBULLETSTORM_EQUIPMENT_" + EquipmentLangTokenName + "_PICKUP";
             }
         }
 
@@ -64,7 +64,7 @@ namespace RiskOfBulletstormRewrite.Equipment
         {
             get
             {
-                return "EQUIPMENT_" + EquipmentLangTokenName + "_DESCRIPTION";
+                return "RISKOFBULLETSTORM_EQUIPMENT_" + EquipmentLangTokenName + "_DESCRIPTION";
             }
         }
         public string GetChance(ConfigEntry<float> configEntry)
@@ -129,12 +129,13 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         protected void CreateEquipment()
         {
+            var prefix = "RISKOFBULLETSTORM_EQUIPMENT_";
             EquipmentDef = ScriptableObject.CreateInstance<EquipmentDef>();
-            EquipmentDef.name = "EQUIPMENT_" + EquipmentLangTokenName;
-            EquipmentDef.nameToken = "EQUIPMENT_" + EquipmentLangTokenName + "_NAME";
-            EquipmentDef.pickupToken = "EQUIPMENT_" + EquipmentLangTokenName + "_PICKUP";
-            EquipmentDef.descriptionToken = "EQUIPMENT_" + EquipmentLangTokenName + "_DESCRIPTION";
-            EquipmentDef.loreToken = "EQUIPMENT_" + EquipmentLangTokenName + "_LORE";
+            EquipmentDef.name = prefix + EquipmentLangTokenName;
+            EquipmentDef.nameToken = prefix + EquipmentLangTokenName + "_NAME";
+            EquipmentDef.pickupToken = prefix + EquipmentLangTokenName + "_PICKUP";
+            EquipmentDef.descriptionToken = prefix + EquipmentLangTokenName + "_DESCRIPTION";
+            EquipmentDef.loreToken = prefix + EquipmentLangTokenName + "_LORE";
             EquipmentDef.pickupModelPrefab = EquipmentModel;
             EquipmentDef.pickupIconSprite = EquipmentIcon;
             EquipmentDef.appearsInSinglePlayer = AppearsInSinglePlayer;
