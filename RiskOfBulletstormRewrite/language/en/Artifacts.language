@@ -1,0 +1,10 @@
+﻿{
+	strings:
+	{
+		//[NORMAL]
+		"RISKOFBULLETSTORM_ARTIFACT_PITLORD_NAME": "Artifact of the Pit Lord",
+		"RISKOFBULLETSTORM_ARTIFACT_PITLORD_DESCRIPTION": "Monsters teleport back after falling off-stage.",
+		"RISKOFBULLETSTORM_ARTIFACT__NAME": "",
+		"RISKOFBULLETSTORM_ARTIFACT__DESCRIPTION": "",
+	}
+}

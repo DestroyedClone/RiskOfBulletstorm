@@ -3,13 +3,18 @@
 	{
 		//[NORMAL]
 		"RISKOFBULLETSTORM_EQUIPMENT_BOMBCOMPANIONAPP_NAME": "IBomb Companion App",
-		"RISKOFBULLETSTORM_EQUIPMENT_BOMBCOMPANIONAPP_PICKUP": "One For That\nDetonates explosive objects around you.",
+		"RISKOFBULLETSTORM_EQUIPMENT_BOMBCOMPANIONAPP_PICKUP": "<b>One For That</b>\nDetonates explosive objects around you.",
 		"RISKOFBULLETSTORM_EQUIPMENT_BOMBCOMPANIONAPP_DESCRIPTION": "Upon use, all explosives <style=cStack>(pots, bombs, mines, grenades, etc)</style> within <style=cIsUtility>{0}m</style> detonate. <style=cIsDamage>Tar-based</style> enemies take <style=cIsDamage>{1}% damage</style>, <style=cIsDamage>Jellyfish</style> take <style=cIsDamage>{2}% damage</style>, <style=cIsDamage>Wandering Vagrants</style> take <style=cIsDamage>{3}% damage</style>, and <style=cIsDamage>Dunestriders</style> take <style=cIsDamage>{4}% damage</style>.",
 		"RISKOFBULLETSTORM_EQUIPMENT_BOMBCOMPANIONAPP_LORE": "Kids these days can detonate explosives from their phones. In the early days of the Gungeon, some form of shooting was required.",
 		
+		"RISKOFBULLETSTORM_EQUIPMENT_BOTTLE_NAME": "Bottle",
+		"RISKOFBULLETSTORM_EQUIPMENT_BOTTLE_PICKUP": "Heart Container",
+		"RISKOFBULLETSTORM_EQUIPMENT_BOTTLE_DESCRIPTION": "While off cooldown, {0}% of excess healing will be stored, up to {1}% of your maximum health. Upon use, <style=cIsHealing>heal</style>for your stored healing.",
+		"RISKOFBULLETSTORM_EQUIPMENT_BOTTLE_LORE": "",
+		
 		"RISKOFBULLETSTORM_EQUIPMENT_BRICKOFCASH_NAME": "Brick of Cash",
-		"RISKOFBULLETSTORM_EQUIPMENT_BRICKOFCASH_PICKUP": "Reveals cloaked chests",
-		"RISKOFBULLETSTORM_EQUIPMENT_BRICKOFCASH_DESCRIPTION": "Upon use, all cloaked chests are revealed.",
+		"RISKOFBULLETSTORM_EQUIPMENT_BRICKOFCASH_PICKUP": "<b>Secrets Of The Masons</b>\nReveals secrets.",
+		"RISKOFBULLETSTORM_EQUIPMENT_BRICKOFCASH_DESCRIPTION": "Holding this <style=cIsUtility>reveals pressure plates and cloaked chests</style>.\nActivate to throw, can press pressure plates.",
 		"RISKOFBULLETSTORM_EQUIPMENT_BRICKOFCASH_LORE": "This can be used to pay off unscrupulous Snitch Bricks, who are willing to betray their mortared brethren for cold, hard cash. Not legal tender.",
 		
 		"RISKOFBULLETSTORM_EQUIPMENT_CHESTTELEPORTER_NAME": "Chest Teleporter",
@@ -25,7 +30,7 @@
 		//[LUNAR]
 		"RISKOFBULLETSTORM_EQUIPMENT_DRILL_NAME": "Drill",
 		"RISKOFBULLETSTORM_EQUIPMENT_DRILL_PICKUP": "Opens locked chests. Loud.",
-		"RISKOFBULLETSTORM_EQUIPMENT_DRILL_DESCRIPTION": "<style=cIsUtility>Upon use,</style> the <style=cIsUtility>selected chest</style> will be <style=cIsUtility>unlocked</style> <style=cIsDeath>...but will spawn enemies depending on chest quality</style>.",
+		"RISKOFBULLETSTORM_EQUIPMENT_DRILL_DESCRIPTION": "<style=cIsUtility>Upon use,</style> the <style=cIsUtility>selected chest</style> will be <style=cIsUtility>unlocked</style> <style=cDeath>...but will spawn enemies depending on chest quality</style>.",
 		"RISKOFBULLETSTORM_EQUIPMENT_DRILL_LORE": "A device once used to access the innermost chambers of ancient currency reliquaries. Cheaply constructed and prone to breaking. In ancient texts, the word \"drill\" is commonly preceeded [sic] or followed by expletives.",
 		
 		"RISKOFBULLETSTORM_EQUIPMENT_TRUSTYLOCKPICKS_NAME": "Trusty Lockpicks",

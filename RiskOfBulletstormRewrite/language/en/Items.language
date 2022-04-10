@@ -23,6 +23,11 @@
 		"RISKOFBULLETSTORM_ITEM_SPICETALLY_LORE": "Message DestroyedClone if you see this, because you shouldn't...",
 		
 		//[TIER2]
+		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_NAME": "Battle Standard",
+		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_PICKUP": "<b>Set Your Own!<b>/nImproves the effectiveness of companions and charmed enemies.",
+		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_DESCRIPTION": "Increases base damage of companions and charmed enemies by {0}% <style=cStack>+{1}% per stack</style>.",
+		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_LORE": "Before the advancement of Gundead society, belligerent bands of Bullet Kin would rally around these banners before their raids upon the upper chambers.",
+		
 		"RISKOFBULLETSTORM_ITEM_RINGOFCHESTFRIENDSHIP_NAME": "Ring of Chest Friendship",
 		"RISKOFBULLETSTORM_ITEM_RINGOFCHESTFRIENDSHIP_PICKUP": "Chest Friends Forever\nIncreases the chance of finding chests.",
 		"RISKOFBULLETSTORM_ITEM_RINGOFCHESTFRIENDSHIP_DESCRIPTION": "Increases the amount of <style=cIsUtility>chest credit</style> by +{0}% <style=cStack>(+{1}% per stack)</style>.",
@@ -44,6 +49,11 @@
 		"RISKOFBULLETSTORM_ITEM_CLONE_DESCRIPTION": "<style=cIsUtility>Upon death of all players</style>, this item will be <style=cIsUtility>consumed</style> and send <style=cIsUtility>all players</style> to the first stage with <style=cIsUtility>items and equipment</style> intact.",
 		"RISKOFBULLETSTORM_ITEM_CLONE_LORE": "An uncomfortable answer to an uncomfortable truth. This clone can replace a single Gungeoneer upon their death, with almost no lapse in memory.",
 		
+		"RISKOFBULLETSTORM_ITEM_RINGTRIGGERS_NAME": "Ring of Triggers",
+		"RISKOFBULLETSTORM_ITEM_RINGTRIGGERS_PICKUP": "<b>Items == Guns</b>\nSummons bullets on equipment use.",
+		"RISKOFBULLETSTORM_ITEM_RINGTRIGGERS_DESCRIPTION": "Activating your equipment <style=cIsDamage>fires an attack related to your character in 8 directions</style>. Can be activated every <style=cIsUtility>{0} seconds</style> <style=cStack>(-{1}% per stack)</style>.",
+		"RISKOFBULLETSTORM_ITEM_RINGTRIGGERS_LORE": "This ring bestows upon its bearer the now obvious knowledge that within the walls of the Gungeon all items are actually guns in strange, distorted form. An artifact of the Order's belief in transgunstantiation.",
+		
 		//[TIERBOSS]
 		"RISKOFBULLETSTORM_ITEM_CLOWNMASK_NAME": "Clown Mask",
 		"RISKOFBULLETSTORM_ITEM_CLOWNMASK_PICKUP": "Anonymity Aid\nAnonymous helpers aid you in combat.",
@@ -56,10 +66,25 @@
 		"RISKOFBULLETSTORM_ITEM_PASTKILLINGBULLET_LORE": "A bullet that can kill the past. You're not sure what will happen when you fire it, but you feel exhilarated!",
 		
 		//[TIERLUNAR]
+		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_NAME": "Bloodied Scarf",
+		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_PICKUP": "<b>Blink Away</b>\nDodge roll is replaced with a blink.",
+		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_DESCRIPTION": "<style=cIsUtility>Replace your Utility Skill</style> with <style=cIsUtility>Bloodied Teleport</style>.",
+		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_LORE": "This simple scarf was once worn by a skilled assassin. Betrayed by his brothers and assumed dead...",
+		
 		"RISKOFBULLETSTORM_ITEM_BULLETHEAVY_NAME": "Heavy Bullets",
 		"RISKOFBULLETSTORM_ITEM_BULLETHEAVY_PICKUP": "Thunk!\nIncreases damage at the cost of bullet velocity.",
 		"RISKOFBULLETSTORM_ITEM_BULLETHEAVY_DESCRIPTION": "<style=cIsHealing>Damage and size increased by {0}%</style> <style=cStack>({1}% per stack)</style>, <style=cDeath>projectile size increased by {0}%</style>",
 		"RISKOFBULLETSTORM_ITEM_BULLETHEAVY_LORE": "These faceted bullets glitter with colors unseen in the depths of the Gungeon.",
+		
+		"RISKOFBULLETSTORM_ITEM_DODGEROLLUTILITYREPLACEMENT_NAME": "Teachings of Dodge Roll",
+		"RISKOFBULLETSTORM_ITEM_DODGEROLLUTILITYREPLACEMENT_PICKUP": "Bestows the player the blessing of the Dodge Roll.",
+		"RISKOFBULLETSTORM_ITEM_DODGEROLLUTILITYREPLACEMENT_DESCRIPTION": "<style=cIsUtility>Replace your Utility Skill</style> with <style=cIsUtility>Dodge Roll</style>.",
+		"RISKOFBULLETSTORM_ITEM_DODGEROLLUTILITYREPLACEMENT_LORE": "\"What I don't understand is why the bullets weren't hitting you. It really looks like they should.\" - Blockner",
+		
+		"RISKOFBULLETSTORM_ITEM_HIPHOLSTER_NAME": "Hip Holster",
+		"RISKOFBULLETSTORM_ITEM_HIPHOLSTER_PICKUP": "<b>Quickdraw</b>\nYour skills have a chance to activate for free upon recharging a stock.",
+		"RISKOFBULLETSTORM_ITEM_HIPHOLSTER_DESCRIPTION": "Your skills have a <style=cIsUtility>{0}% chance</style> <style=cStack>(+{1}% chance per stack, hyperbolically)</style> to activate for free upon recharging a stock.",
+		"RISKOFBULLETSTORM_ITEM_HIPHOLSTER_LORE": "It's hip to hug chirr.",
 		
 		"RISKOFBULLETSTORM_ITEM_RINGMISERLYPROTECTION_NAME": "Ring of Miserly Protection",
 		"RISKOFBULLETSTORM_ITEM_RINGMISERLYPROTECTION_PICKUP": "<b>Aids The Fiscally Responsible</b>\n<style=cIsHealing>Increases health substantially.</style> <style=cDeath>Gambling at a chance shrine will shatter the ring.</style>",
