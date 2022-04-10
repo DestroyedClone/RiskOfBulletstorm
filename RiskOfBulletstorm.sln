@@ -5,7 +5,12 @@ VisualStudioVersion = 16.0.30517.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RiskOfBulletstorm", "RiskOfBulletstorm\RiskOfBulletstorm.csproj", "{080705A1-CEED-4300-9029-5AD8A2578ABF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RiskOfBulletstormRewrite", "RiskOfBulletstormRewrite\RiskOfBulletstormRewrite.csproj", "{A2BE8261-EB93-4D6F-941B-33C42EAFE10A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RiskOfBulletstormRewrite", "RiskOfBulletstormRewrite\RiskOfBulletstormRewrite.csproj", "{A2BE8261-EB93-4D6F-941B-33C42EAFE10A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BB01E2BC-76E7-418A-96EC-B865C43B49AE}"
+	ProjectSection(SolutionItems) = preProject
+		nuget.config = nuget.config
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
