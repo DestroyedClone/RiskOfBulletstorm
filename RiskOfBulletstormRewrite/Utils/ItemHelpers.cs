@@ -98,8 +98,9 @@ namespace RiskOfBulletstormRewrite.Utils
 
                 if (showNotif)
                 {
-                    var list = NotificationQueue.instancesList;
-                    list[0].OnPickup(characterMaster, pickupIndex);
+                    //TODO: Re-add
+                    //var list = NotificationQueue.instancesList;
+                    //list[0].OnPickup(characterMaster, pickupIndex);
                     /*for (int i = 0; i < list.Count; i++)
                     {
                         list[i].OnPickup(characterMaster, pickupIndex);
@@ -107,6 +108,47 @@ namespace RiskOfBulletstormRewrite.Utils
                 }
             }
 
+        }
+
+        public static float GetHyperbolicValue(float baseAmount, float stackAmount)
+        {
+            return 1 - 1 / (1 + baseAmount * stackAmount);
+        }
+
+        public static int GetEquipmentCountForTeam(TeamIndex teamIndex, EquipmentIndex equipmentIndex, bool requiresAlive, bool requiresConnected = true)
+        {
+            int num = 0;
+            ReadOnlyCollection<CharacterMaster> readOnlyInstancesList = CharacterMaster.readOnlyInstancesList;
+            int i = 0;
+            int count = readOnlyInstancesList.Count;
+            while (i < count)
+            {
+                CharacterMaster characterMaster = readOnlyInstancesList[i];
+                if (characterMaster.teamIndex == teamIndex && (!requiresAlive || characterMaster.hasBody) && (!requiresConnected || !characterMaster.playerCharacterMasterController || characterMaster.playerCharacterMasterController.isConnected))
+                {
+                    //if (characterMaster.inventory.eq
+                }
+                i++;
+            }
+            return num;
+        }
+
+        public static bool GetAtLeastOneEquipmentForTeam(TeamIndex teamIndex, EquipmentIndex equipmentIndex, bool requiresAlive, bool requiresConnected = true)
+        {
+            ReadOnlyCollection<CharacterMaster> readOnlyInstancesList = CharacterMaster.readOnlyInstancesList;
+            int i = 0;
+            int count = readOnlyInstancesList.Count;
+            while (i < count)
+            {
+                CharacterMaster characterMaster = readOnlyInstancesList[i];
+                if (characterMaster.teamIndex == teamIndex && (!requiresAlive || characterMaster.hasBody) && (!requiresConnected || !characterMaster.playerCharacterMasterController || characterMaster.playerCharacterMasterController.isConnected))
+                {
+                    if (characterMaster.inventory && characterMaster.inventory.currentEquipmentIndex == equipmentIndex)
+                        return true;
+                }
+                i++;
+            }
+            return false;
         }
     }
 }
