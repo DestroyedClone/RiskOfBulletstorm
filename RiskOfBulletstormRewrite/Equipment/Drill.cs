@@ -97,18 +97,21 @@ namespace RiskOfBulletstormRewrite.Equipment
 
                 switch (purchaseInteraction.displayNameToken)
                 {
-                    case "CHEST1_STEALTHED":
-                    case "CHEST1":
-                    case "CATEGORYCHEST_HEALING":
-                    case "CATEGORYCHEST_DAMAGE":
-                    case "CATEGORYCHEST_UTILITY":
-                    case "EQUIPMENTBARREL":
+                    case "CHEST1_STEALTHED_NAME":
+                    case "CHEST1_NAME":
+                    case "CATEGORYCHEST_HEALING_NAME":
+                    case "CATEGORYCHEST_DAMAGE_NAME":
+                    case "CATEGORYCHEST_UTILITY_NAME":
+                    case "EQUIPMENTBARREL_NAME":
                         creditMultiplier = cfgChestCostCommon.Value;
                         break;
-                    case "CHEST2":
+                    case "CHEST2_NAME":
+                    case "CATEGORYCHEST2_HEALING_NAME":
+                    case "CATEGORYCHEST2_DAMAGE_NAME":
+                    case "CreateSpawner_NAME":
                         creditMultiplier = cfgChestCostUncommon.Value;
                         break;
-                    case "GOLDCHEST":
+                    case "GOLDCHEST_NAME":
                         creditMultiplier = cfgChestCostLegendary.Value;
                         break;
 
