@@ -11,9 +11,7 @@ namespace RiskOfBulletstormRewrite.Artifact
 
         public override string ArtifactName => "Artifact of the Pit Lord";
 
-        public override string ArtifactLangTokenName => "ARTIFACT_OF_PITLORD";
-
-        public override string ArtifactDescription => $"When enabled, monsters don't take damage from falling off stage.";
+        public override string ArtifactLangTokenName => "PITLORD";
 
         public override Sprite ArtifactEnabledIcon => Assets.NullSprite;
 
