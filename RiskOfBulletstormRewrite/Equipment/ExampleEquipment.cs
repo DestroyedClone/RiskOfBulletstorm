@@ -19,9 +19,9 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         };
 
-        public override GameObject EquipmentModel => MainAssets.LoadAsset<GameObject>("ExampleEquipmentPrefab.prefab");
+        public override GameObject EquipmentModel => Assets.NullModel;
 
-        public override Sprite EquipmentIcon => MainAssets.LoadAsset<Sprite>("ExampleEquipmentIcon.png");
+        public override Sprite EquipmentIcon => Assets.NullSprite;
 
         public override void Init(ConfigFile config)
         {
