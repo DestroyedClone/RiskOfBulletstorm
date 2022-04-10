@@ -8,7 +8,7 @@
 		"RISKOFBULLETSTORM_EQUIPMENT_BOMBCOMPANIONAPP_LORE": "Kids these days can detonate explosives from their phones. In the early days of the Gungeon, some form of shooting was required.",
 		
 		"RISKOFBULLETSTORM_EQUIPMENT_BOTTLE_NAME": "Bottle",
-		"RISKOFBULLETSTORM_EQUIPMENT_BOTTLE_PICKUP": "Heart Container",
+		"RISKOFBULLETSTORM_EQUIPMENT_BOTTLE_PICKUP": "<b>Heart Container</b>\nStores excess healing for use later.",
 		"RISKOFBULLETSTORM_EQUIPMENT_BOTTLE_DESCRIPTION": "While off cooldown, {0}% of excess healing will be stored, up to {1}% of your maximum health. Upon use, <style=cIsHealing>heal</style>for your stored healing.",
 		"RISKOFBULLETSTORM_EQUIPMENT_BOTTLE_LORE": "",
 		
@@ -29,12 +29,12 @@
 
 		//[LUNAR]
 		"RISKOFBULLETSTORM_EQUIPMENT_DRILL_NAME": "Drill",
-		"RISKOFBULLETSTORM_EQUIPMENT_DRILL_PICKUP": "Opens locked chests. Loud.",
+		"RISKOFBULLETSTORM_EQUIPMENT_DRILL_PICKUP": "<b>Sawgeant</b>\nOpens locked chests. Loud.",
 		"RISKOFBULLETSTORM_EQUIPMENT_DRILL_DESCRIPTION": "<style=cIsUtility>Upon use,</style> the <style=cIsUtility>selected chest</style> will be <style=cIsUtility>unlocked</style> <style=cDeath>...but will spawn enemies depending on chest quality</style>.",
 		"RISKOFBULLETSTORM_EQUIPMENT_DRILL_LORE": "A device once used to access the innermost chambers of ancient currency reliquaries. Cheaply constructed and prone to breaking. In ancient texts, the word \"drill\" is commonly preceeded [sic] or followed by expletives.",
 		
 		"RISKOFBULLETSTORM_EQUIPMENT_TRUSTYLOCKPICKS_NAME": "Trusty Lockpicks",
-		"RISKOFBULLETSTORM_EQUIPMENT_TRUSTYLOCKPICKS_PICKUP": "Who needs keys? Chance to pick chest locks.",
+		"RISKOFBULLETSTORM_EQUIPMENT_TRUSTYLOCKPICKS_PICKUP": "<b>Who needs keys?</b>\nChance to pick chest locks.",
 		"RISKOFBULLETSTORM_EQUIPMENT_TRUSTYLOCKPICKS_DESCRIPTION": "<style=cIsUtility>Using the lockpicks has a {0}% chance to unlock a chest</style> <style=cDeath>...failing prevents lockpicking and increases the cost by {1}%.</style>",
 		"RISKOFBULLETSTORM_EQUIPMENT_TRUSTYLOCKPICKS_LORE": "These lockpicks have never let the Pilot down, except for the many times they did.",
 		

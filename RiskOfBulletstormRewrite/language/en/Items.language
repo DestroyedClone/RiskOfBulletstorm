@@ -3,17 +3,17 @@
 	{
 		//[TIER1]
 		"RISKOFBULLETSTORM_ITEM_ANTIBODY_NAME": "Antibody",
-		"RISKOFBULLETSTORM_ITEM_ANTIBODY_PICKUP": "Heals Up\nChance to improve healing receieved.",
-		"RISKOFBULLETSTORM_ITEM_ANTIBODY_DESCRIPTION": "Upon <style=cIsHealing>healing</style>, gain a {0}% chance to heal for +{1}% more healing <style=cStack>(+{2}% more healing per stack)</style>.",
+		"RISKOFBULLETSTORM_ITEM_ANTIBODY_PICKUP": "<b>Heals Up</b>\nChance to improve healing receieved.",
+		"RISKOFBULLETSTORM_ITEM_ANTIBODY_DESCRIPTION": "Upon <style=cIsHealing>healing</style>, gain a <style=cIsUtility{0}% chance</style> to <style=cIsHealing>heal for +{1}% more healing</style> <style=cStack>(+{2}% more healing per stack)</style>.",
 		"RISKOFBULLETSTORM_ITEM_ANTIBODY_LORE": "An experimental treatment administered by the Gungeon's medical unit.",
 		
 		"RISKOFBULLETSTORM_ITEM_MUSTACHE_NAME": "Mustache",
-		"RISKOFBULLETSTORM_ITEM_MUSTACHE_PICKUP": "A Familiar Face\nSpending money soothes the soul.",
-		"RISKOFBULLETSTORM_ITEM_MUSTACHE_DESCRIPTION": "Upon purchase, increases your regeneration by <style=cIsHealing>{0} health</style> <style=cStack>(+{1} per stack)</style> for {2} seconds.",
+		"RISKOFBULLETSTORM_ITEM_MUSTACHE_PICKUP": "<b>A Familiar Face</b>\nSpending money soothes the soul.",
+		"RISKOFBULLETSTORM_ITEM_MUSTACHE_DESCRIPTION": "Upon <style=cIsDamage>purchase</style>, increases your <style=cIsHealing>regeneration</style> by <style=cIsHealing>{0} health</style> <style=cStack>(+{1} per stack)</style> for {2} seconds.",
 		"RISKOFBULLETSTORM_ITEM_MUSTACHE_LORE": "The power of commerce fills your veins... and your follicles! This mustache vertically integrates your purchasing synergies, healing you on every transaction.",
 
 		"RISKOFBULLETSTORM_ITEM_SCOPE_NAME": "Scope",
-		"RISKOFBULLETSTORM_ITEM_SCOPE_PICKUP": "Steady Aim\nA standard scope. Increases accuracy!",
+		"RISKOFBULLETSTORM_ITEM_SCOPE_PICKUP": "<b>Steady Aim</b>\nA standard scope. Increases accuracy!",
 		"RISKOFBULLETSTORM_ITEM_SCOPE_DESCRIPTION": "Decreases <style=cIsUtility>firing spread</style> by <style=cIsUtility>{0}%</style> <style=cStack>(+{1}% per stack)</style>. Each stack past the max of {2} will increase your <style=cIsDamage>damage by {3}%</style>.",
 		"RISKOFBULLETSTORM_ITEM_SCOPE_LORE": "<style=cStack>DECODING MESSAGE - KATE ****** - G*****N EXPLORATORY TEAM\n[SYS] Filter: [messages from:KATE_OPERATOR sort:chronological date:today] | Showing 6 recent results\n\n4:44 - [Kate] Found this scope in a chest, reporting back. It's got a green lens, and looks like a sniper scope.\n4:55 - [Kate] Seems to work whether it's attached or not, but I can't really look through it if it's not actually attached. Decision: attaching it.\n5:20 - [Kate] Not really sure it fits this place, since its just a scope. Then again, there was some duct tape in a chest, so maybe its not that weird...\n6:00 - [Kate] I'm requesting a possible analysis sometime, I don't think this is just a scope. I'm hitting a lot more of my shots. Maybe I'm just more focused.\n6:02 - [Kate] Scratch that, this is ACTUALLY reducing the spread of bullets. I'm kinda curious how it works, but I'll study it at the shop.\n3:00 - [Kate] I am now back in the Breach. The shopkeeper did not like me testing the scope.",
 		
@@ -25,11 +25,11 @@
 		//[TIER2]
 		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_NAME": "Battle Standard",
 		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_PICKUP": "<b>Set Your Own!<b>/nImproves the effectiveness of companions and charmed enemies.",
-		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_DESCRIPTION": "Increases base damage of companions and charmed enemies by {0}% <style=cStack>+{1}% per stack</style>.",
+		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_DESCRIPTION": "Increases damage of companions and charmed enemies by {0}% <style=cStack>+{1}% per stack</style>.",
 		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_LORE": "Before the advancement of Gundead society, belligerent bands of Bullet Kin would rally around these banners before their raids upon the upper chambers.",
 		
 		"RISKOFBULLETSTORM_ITEM_RINGOFCHESTFRIENDSHIP_NAME": "Ring of Chest Friendship",
-		"RISKOFBULLETSTORM_ITEM_RINGOFCHESTFRIENDSHIP_PICKUP": "Chest Friends Forever\nIncreases the chance of finding chests.",
+		"RISKOFBULLETSTORM_ITEM_RINGOFCHESTFRIENDSHIP_PICKUP": "<b>Chest Friends Forever</b>\nIncreases the chance of finding chests.",
 		"RISKOFBULLETSTORM_ITEM_RINGOFCHESTFRIENDSHIP_DESCRIPTION": "Increases the amount of <style=cIsUtility>chest credit</style> by +{0}% <style=cStack>(+{1}% per stack)</style>.",
 		"RISKOFBULLETSTORM_ITEM_RINGOFCHESTFRIENDSHIP_LORE": "This ring was first given to Winchester, largely due to a naming mix-up. With little use for treasure, Winchester eventually gave it away as a prize in one of his strange games.",
 		
@@ -40,12 +40,12 @@
 		
 		//[TIER3]
 		"RISKOFBULLETSTORM_ITEM_BACKPACK_NAME": "Backpack",
-		"RISKOFBULLETSTORM_ITEM_BACKPACK_PICKUP": "Grants an extra equipment slot.",
+		"RISKOFBULLETSTORM_ITEM_BACKPACK_PICKUP": "<b>Equipment Capacity Up!</b>Grants an extra equipment slot.",
 		"RISKOFBULLETSTORM_ITEM_BACKPACK_DESCRIPTION": "Grants access to an <style=cIsUtility>extra equipment slot</style> <style=cStack>(+1 per stack)</style>.",
 		"RISKOFBULLETSTORM_ITEM_BACKPACK_LORE": "While backpacks may seem to be useless once you use spatial compression technology, reports have come in demonstrating that a certain common backpack exceeds this. Most spatial compression technologies can only capture a specific form or type of item or structure. Sure, in this regard the structure capturing is superior, but its significantly different than the current features observed using backpacks. While not conclusive, reports have stated that some users have up to 2304 solid blocks of 1m cubed in volume. We've even heard reports that they've been able to store and deploy highly dense crystals that seem to explode when fractured. The current technologies can only compress about 25% of the reported backpack capacity, while keeping that capacity lowers the decompression quality down to a staggering 92%! Truly, we must strive to reach these heights. - Report by Minnie Raria, 2XXX",
 		
 		"RISKOFBULLETSTORM_ITEM_CLONE_NAME": "Clone",
-		"RISKOFBULLETSTORM_ITEM_CLONE_PICKUP": "Extra Life",
+		"RISKOFBULLETSTORM_ITEM_CLONE_PICKUP": "<b>Extra Life</b>\nRespawn at first stage once out of lives.",
 		"RISKOFBULLETSTORM_ITEM_CLONE_DESCRIPTION": "<style=cIsUtility>Upon death of all players</style>, this item will be <style=cIsUtility>consumed</style> and send <style=cIsUtility>all players</style> to the first stage with <style=cIsUtility>items and equipment</style> intact.",
 		"RISKOFBULLETSTORM_ITEM_CLONE_LORE": "An uncomfortable answer to an uncomfortable truth. This clone can replace a single Gungeoneer upon their death, with almost no lapse in memory.",
 		
@@ -56,14 +56,19 @@
 		
 		//[TIERBOSS]
 		"RISKOFBULLETSTORM_ITEM_CLOWNMASK_NAME": "Clown Mask",
-		"RISKOFBULLETSTORM_ITEM_CLOWNMASK_PICKUP": "Anonymity Aid\nAnonymous helpers aid you in combat.",
+		"RISKOFBULLETSTORM_ITEM_CLOWNMASK_PICKUP": "<b>Anonymity Aid</b>\nAnonymous helpers aid you in combat.",
 		"RISKOFBULLETSTORM_ITEM_CLOWNMASK_DESCRIPTION": "Every {0} seconds <style=cStack>(-{1} seconds up to {2} seconds)</style>, you are <style=cIsUtility>helped</style>.\nThe <style=cIsUtility>help</style> increases with each stack, up to <style=cIsUtility>3</style>.\nWolf: A random enemy within {3} meters is <style=cIsUtility>tased</style>.\nHouston: Nearby projectiles within <style=cIsUtility>{4}</style> meters are <style=cIsUtility>erased</style>.\nChains: A nearby enemy is shotgunned for <style=cIsDamage>{5}x{6}% damage.</style>",
 		"RISKOFBULLETSTORM_ITEM_CLOWNMASK_LORE": "Masks of this design were used to explore primitive Gungeon-like structures filled with money, now referred to as \"Mungeons\". Anonymity was important to Mungeoneers of this time. The friendly clown design is thought to have helped Mungeoneers make peace with the native inhabitants",
 		
 		"RISKOFBULLETSTORM_ITEM_PASTKILLINGBULLET_NAME": "Bullet That Can Kill The Past",
-		"RISKOFBULLETSTORM_ITEM_PASTKILLINGBULLET_PICKUP": "Don't Miss",
+		"RISKOFBULLETSTORM_ITEM_PASTKILLINGBULLET_PICKUP": "<b>Don't Miss</b>",
 		"RISKOFBULLETSTORM_ITEM_PASTKILLINGBULLET_DESCRIPTION": "A bullet that can only be fed into a special gun to unlock one's past.",
 		"RISKOFBULLETSTORM_ITEM_PASTKILLINGBULLET_LORE": "A bullet that can kill the past. You're not sure what will happen when you fire it, but you feel exhilarated!",
+		
+		"RISKOFBULLETSTORM_ITEM_RATBOOTS_NAME": "Rat Boots",
+		"RISKOFBULLETSTORM_ITEM_RATBOOTS_PICKUP": "<b>Hover Craft</b>\nGrants temporary invulnerability and flight when the wearer walks out over a pit.",
+		"RISKOFBULLETSTORM_ITEM_RATBOOTS_DESCRIPTION": "",
+		"RISKOFBULLETSTORM_ITEM_RATBOOTS_LORE": "The Resourceful Rat's prolific thievery is legendary - and these boots helped him do it. Stolen off a hapless pointy-eared adventurer.",
 		
 		//[TIERLUNAR]
 		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_NAME": "Bloodied Scarf",
@@ -72,7 +77,7 @@
 		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_LORE": "This simple scarf was once worn by a skilled assassin. Betrayed by his brothers and assumed dead...",
 		
 		"RISKOFBULLETSTORM_ITEM_BULLETHEAVY_NAME": "Heavy Bullets",
-		"RISKOFBULLETSTORM_ITEM_BULLETHEAVY_PICKUP": "Thunk!\nIncreases damage at the cost of bullet velocity.",
+		"RISKOFBULLETSTORM_ITEM_BULLETHEAVY_PICKUP": "<b>Thunk!</b>\nIncreases damage at the cost of bullet velocity.",
 		"RISKOFBULLETSTORM_ITEM_BULLETHEAVY_DESCRIPTION": "<style=cIsHealing>Damage and size increased by {0}%</style> <style=cStack>({1}% per stack)</style>, <style=cDeath>projectile size increased by {0}%</style>",
 		"RISKOFBULLETSTORM_ITEM_BULLETHEAVY_LORE": "These faceted bullets glitter with colors unseen in the depths of the Gungeon.",
 		
