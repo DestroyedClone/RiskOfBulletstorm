@@ -54,7 +54,8 @@ namespace RiskOfBulletstormRewrite.Items
 
         private CharacterBody CharacterMaster_SpawnBody(On.RoR2.CharacterMaster.orig_SpawnBody orig, CharacterMaster self, Vector3 position, Quaternion rotation)
         {
-            isCloneRestarting = false;
+            if (self.playerCharacterMasterController)
+                isCloneRestarting = false;
             return orig(self, position, rotation);
         }
 
