@@ -84,10 +84,10 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void Hooks()
         {
-            CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
+            CharacterBody.onBodyInventoryChangedGlobal += onBodyInventoryChangedGlobal;
         }
 
-        private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody characterBody)
+        private void onBodyInventoryChangedGlobal(CharacterBody characterBody)
         {
             if (characterBody.skillLocator)
             {
@@ -113,143 +113,143 @@ namespace RiskOfBulletstormRewrite.Items
             Teleport.projectilePrefab = PrepWall.projectilePrefab;
             Teleport.damageCoefficient = PrepWall.damageCoefficient;
             Teleport.blinkPrefab = BlinkState.blinkPrefab;
-            characterBody.duration = Teleport.baseDuration / characterBody.attackSpeedStat;
-            base.characterBody.SetAimTimer(characterBody.duration + 2f);
-            characterBody.cachedCrosshairPrefab = base.characterBody.defaultCrosshairPrefab;
-            base.PlayAnimation("Gesture, Additive", "PrepWall", "PrepWall.playbackRate", characterBody.duration);
+            duration = Teleport.baseDuration / attackSpeedStat;
+            base.characterBody.SetAimTimer(duration + 2f);
+            cachedCrosshairPrefab = base.characterBody.defaultCrosshairPrefab;
+            base.PlayAnimation("Gesture, Additive", "PrepWall", "PrepWall.playbackRate", duration);
             Util.PlaySound(Teleport.teleportSoundString, base.gameObject);
-            characterBody.areaIndicatorInstance = UnityEngine.Object.Instantiate<GameObject>(ArrowRain.areaIndicatorPrefab);
-            characterBody.areaIndicatorInstance.transform.localScale = new Vector3(1f, 3f, 1f);
-            characterBody.UpdateAreaIndicator();
+            areaIndicatorInstance = UnityEngine.Object.Instantiate<GameObject>(ArrowRain.areaIndicatorPrefab);
+            areaIndicatorInstance.transform.localScale = new Vector3(1f, 3f, 1f);
+            UpdateAreaIndicator();
         }
 
         private void UpdateAreaIndicator()
         {
-            characterBody.goodPlacement = false;
-            characterBody.areaIndicatorInstance.SetActive(true);
-            bool areaIndicatorExists = characterBody.areaIndicatorInstance;
+            goodPlacement = false;
+            areaIndicatorInstance.SetActive(true);
+            bool areaIndicatorExists = areaIndicatorInstance;
             if (areaIndicatorExists)
             {
                 float num = Teleport.maxDistance;
                 Ray aimRay = base.GetAimRay();
-                bool flag2 = Physics.Raycast(CameraRigController.ModifyAimRayIfApplicable(aimRay, base.gameObject, out float num2), out characterBody.raycastHit, num + num2, LayerIndex.world.mask);
+                bool flag2 = Physics.Raycast(CameraRigController.ModifyAimRayIfApplicable(aimRay, base.gameObject, out float num2), out raycastHit, num + num2, LayerIndex.world.mask);
                 if (flag2)
                 {
-                    characterBody.areaIndicatorInstance.transform.position = characterBody.raycastHit.point;
-                    characterBody.areaIndicatorInstance.transform.up = characterBody.raycastHit.normal;
-                    characterBody.areaIndicatorInstance.transform.forward = -aimRay.direction;
-                    characterBody.goodPlacement = (Vector3.Angle(Vector3.up, characterBody.raycastHit.normal) < Teleport.maxSlopeAngle);
+                    areaIndicatorInstance.transform.position = raycastHit.point;
+                    areaIndicatorInstance.transform.up = raycastHit.normal;
+                    areaIndicatorInstance.transform.forward = -aimRay.direction;
+                    goodPlacement = (Vector3.Angle(Vector3.up, raycastHit.normal) < Teleport.maxSlopeAngle);
                 }
-                if (areaIndicatorExists != characterBody.goodPlacement || characterBody.crosshairOverrideRequest == null)
+                if (areaIndicatorExists != goodPlacement || crosshairOverrideRequest == null)
                 {
-                    CrosshairUtils.OverrideRequest overrideRequest = characterBody.crosshairOverrideRequest;
+                    CrosshairUtils.OverrideRequest overrideRequest = crosshairOverrideRequest;
                     if (overrideRequest != null)
                     {
                         overrideRequest.Dispose();
                     }
-                    characterBody.crosshairOverrideRequest = CrosshairUtils.RequestOverrideForBody(base.characterBody, characterBody.goodPlacement ? Teleport.goodCrosshairPrefab : Teleport.badCrosshairPrefab, CrosshairUtils.OverridePriority.Skill);
+                    crosshairOverrideRequest = CrosshairUtils.RequestOverrideForBody(base.characterBody, goodPlacement ? Teleport.goodCrosshairPrefab : Teleport.badCrosshairPrefab, CrosshairUtils.OverridePriority.Skill);
                 }
             }
-            characterBody.areaIndicatorInstance.SetActive(characterBody.goodPlacement);
+            areaIndicatorInstance.SetActive(goodPlacement);
         }
 
         public override void Update()
         {
             base.Update();
-            characterBody.UpdateAreaIndicator();
+            UpdateAreaIndicator();
         }
 
         public override void FixedUpdate()
         {
             base.FixedUpdate();
-            characterBody.stopwatch += Time.fixedDeltaTime;
-            bool flag = characterBody.stopwatch >= characterBody.duration && !base.inputBank.skill3.down && base.isAuthority;
+            stopwatch += Time.fixedDeltaTime;
+            bool flag = stopwatch >= duration && !base.inputBank.skill3.down && base.isAuthority;
             if (flag)
             {
-                characterBody.outer.SetNextStateToMain();
+                outer.SetNextStateToMain();
             }
         }
 
         public override void OnExit()
         {
-            bool flag = !characterBody.outer.destroying;
+            bool flag = !outer.destroying;
             if (flag)
             {
-                bool flag2 = characterBody.goodPlacement;
+                bool flag2 = goodPlacement;
                 if (flag2)
                 {
                     base.PlayAnimation("Gesture, Additive", "FireWall");
                     Util.PlaySound(Teleport.fireSoundString, base.gameObject);
-                    bool flag3 = characterBody.areaIndicatorInstance && base.isAuthority;
+                    bool flag3 = areaIndicatorInstance && base.isAuthority;
                     if (flag3)
                     {
                         EffectManager.SimpleMuzzleFlash(Teleport.muzzleflashEffect, base.gameObject, "MuzzleLeft", true);
                         EffectManager.SimpleMuzzleFlash(Teleport.muzzleflashEffect, base.gameObject, "MuzzleRight", true);
-                        Vector3 forward = characterBody.areaIndicatorInstance.transform.forward;
+                        Vector3 forward = areaIndicatorInstance.transform.forward;
                         forward.y = 0f;
                         forward.Normalize();
                         Vector3 vector = Vector3.Cross(Vector3.up, forward);
-                        bool flag4 = Util.CheckRoll(characterBody.critStat, base.characterBody.master);
-                        characterBody.modelTransform = base.GetModelTransform();
-                        bool flag5 = characterBody.modelTransform;
+                        bool flag4 = Util.CheckRoll(critStat, base.characterBody.master);
+                        modelTransform = base.GetModelTransform();
+                        bool flag5 = modelTransform;
                         if (flag5)
                         {
-                            characterBody.characterModel = characterBody.modelTransform.GetComponent<CharacterModel>();
-                            characterBody.hurtboxGroup = characterBody.modelTransform.GetComponent<HurtBoxGroup>();
+                            characterModel = modelTransform.GetComponent<CharacterModel>();
+                            hurtboxGroup = modelTransform.GetComponent<HurtBoxGroup>();
                         }
-                        bool flag6 = characterBody.characterModel;
+                        bool flag6 = characterModel;
                         if (flag6)
                         {
-                            characterBody.characterModel.invisibilityCount++;
+                            characterModel.invisibilityCount++;
                         }
-                        bool flag7 = characterBody.hurtboxGroup;
+                        bool flag7 = hurtboxGroup;
                         if (flag7)
                         {
-                            HurtBoxGroup hurtBoxGroup = characterBody.hurtboxGroup;
+                            HurtBoxGroup hurtBoxGroup = hurtboxGroup;
                             int hurtBoxesDeactivatorCounter = hurtBoxGroup.hurtBoxesDeactivatorCounter + 1;
                             hurtBoxGroup.hurtBoxesDeactivatorCounter = hurtBoxesDeactivatorCounter;
                         }
-                        characterBody.CreateBlinkEffect(Util.GetCorePosition(base.gameObject));
+                        CreateBlinkEffect(Util.GetCorePosition(base.gameObject));
                         bool flag8 = base.characterMotor;
                         if (flag8)
                         {
                             base.characterMotor.velocity = Vector3.zero;
-                            base.characterMotor.Motor.SetFieldValue("_internalTransientPosition", characterBody.areaIndicatorInstance.transform.position + characterBody.raycastHit.normal);
+                            base.characterMotor.Motor.SetFieldValue("_internalTransientPosition", areaIndicatorInstance.transform.position + raycastHit.normal);
                         }
-                        bool flag9 = !characterBody.outer.destroying;
+                        bool flag9 = !outer.destroying;
                         if (flag9)
                         {
-                            Util.PlaySound(characterBody.endSoundString, base.gameObject);
-                            characterBody.CreateBlinkEffect(Util.GetCorePosition(base.gameObject));
-                            characterBody.modelTransform = base.GetModelTransform();
-                            bool flag10 = characterBody.modelTransform;
+                            Util.PlaySound(endSoundString, base.gameObject);
+                            CreateBlinkEffect(Util.GetCorePosition(base.gameObject));
+                            modelTransform = base.GetModelTransform();
+                            bool flag10 = modelTransform;
                             if (flag10)
                             {
-                                TemporaryOverlay temporaryOverlay = characterBody.modelTransform.gameObject.AddComponent<TemporaryOverlay>();
+                                TemporaryOverlay temporaryOverlay = modelTransform.gameObject.AddComponent<TemporaryOverlay>();
                                 temporaryOverlay.duration = 0.6f;
                                 temporaryOverlay.animateShaderAlpha = true;
                                 temporaryOverlay.alphaCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 0f);
                                 temporaryOverlay.destroyComponentOnEnd = true;
-                                temporaryOverlay.originalMaterial = Resources.Load<Material>("Materials/matHuntressFlashBright");
-                                temporaryOverlay.AddToCharacerModel(characterBody.modelTransform.GetComponent<CharacterModel>());
-                                TemporaryOverlay temporaryOverlay2 = characterBody.modelTransform.gameObject.AddComponent<TemporaryOverlay>();
+                                temporaryOverlay.originalMaterial = LegacyResourcesAPI.Load<Material>("Materials/matHuntressFlashBright");
+                                temporaryOverlay.AddToCharacerModel(modelTransform.GetComponent<CharacterModel>());
+                                TemporaryOverlay temporaryOverlay2 = modelTransform.gameObject.AddComponent<TemporaryOverlay>();
                                 temporaryOverlay2.duration = 0.7f;
                                 temporaryOverlay2.animateShaderAlpha = true;
                                 temporaryOverlay2.alphaCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 0f);
                                 temporaryOverlay2.destroyComponentOnEnd = true;
-                                temporaryOverlay2.originalMaterial = Resources.Load<Material>("Materials/matHuntressFlashExpanded");
-                                temporaryOverlay2.AddToCharacerModel(characterBody.modelTransform.GetComponent<CharacterModel>());
+                                temporaryOverlay2.originalMaterial = LegacyResourcesAPI.Load<Material>("Materials/matHuntressFlashExpanded");
+                                temporaryOverlay2.AddToCharacerModel(modelTransform.GetComponent<CharacterModel>());
                             }
                         }
-                        bool flag11 = characterBody.characterModel;
+                        bool flag11 = characterModel;
                         if (flag11)
                         {
-                            characterBody.characterModel.invisibilityCount--;
+                            characterModel.invisibilityCount--;
                         }
-                        bool flag12 = characterBody.hurtboxGroup;
+                        bool flag12 = hurtboxGroup;
                         if (flag12)
                         {
-                            HurtBoxGroup hurtBoxGroup2 = characterBody.hurtboxGroup;
+                            HurtBoxGroup hurtBoxGroup2 = hurtboxGroup;
                             int hurtBoxesDeactivatorCounter2 = hurtBoxGroup2.hurtBoxesDeactivatorCounter - 1;
                             hurtBoxGroup2.hurtBoxesDeactivatorCounter = hurtBoxesDeactivatorCounter2;
                         }
@@ -261,8 +261,8 @@ namespace RiskOfBulletstormRewrite.Items
                     base.PlayCrossfade("Gesture, Additive", "BufferEmpty", 0.2f);
                 }
             }
-            EntityState.Destroy(characterBody.areaIndicatorInstance.gameObject);
-            CrosshairUtils.OverrideRequest overrideRequest = characterBody.crosshairOverrideRequest;
+            EntityState.Destroy(areaIndicatorInstance.gameObject);
+            CrosshairUtils.OverrideRequest overrideRequest = crosshairOverrideRequest;
             if (overrideRequest != null)
             {
                 overrideRequest.Dispose();
@@ -273,7 +273,7 @@ namespace RiskOfBulletstormRewrite.Items
         private void CreateBlinkEffect(Vector3 origin)
         {
             EffectData effectData = new EffectData();
-            effectData.rotation = Util.QuaternionSafeLookRotation(characterBody.blinkVector);
+            effectData.rotation = Util.QuaternionSafeLookRotation(blinkVector);
             effectData.origin = origin;
             EffectManager.SpawnEffect(Teleport.blinkPrefab, effectData, false);
         }
