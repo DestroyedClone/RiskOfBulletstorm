@@ -9,7 +9,10 @@
 		
 		//[SKILLS]
 		"RISKOFBULLETSTORM_SKILL_TELEPORT_NAME": "Bloodied Teleport",
-		"RISKOFBULLETSTORM_SKILL_TELEPORT_DESCRIPTION": "Teleport across the map.",
+		"RISKOFBULLETSTORM_SKILL_TELEPORT_DESCRIPTION": "<style=cIsUtility>Teleport</style> up to <style=cIsUtility>{0}m </style> <style=cStack>(+{1}m per stack)</style>.\nAfter teleporting, <style=cIsDeath>take +{2}% more damage <style=cStack(+{3}% per stack)</style> for {4} second.</style>.",
+		
+		"RISKOFBULLETSTORM_SKILL_DODGEROLL_NAME": "Dodge Roll",
+		"RISKOFBULLETSTORM_SKILL_DODGEROLL_DESCRIPTION": "<style=cIsUtility>Roll</style> a short distance. For the first {0}% and last {0}% of the roll <style=cStack>(-{1}% per stack)</style>, take <style=cIsHealth>+{2}% more damage</style> <style=cStack>({3}% per stack)</style>. Become <style=cIsUtility>intangible</style> between the <style=cIsHealth>vulnerability</style> periods.",
 		
 	}
 }

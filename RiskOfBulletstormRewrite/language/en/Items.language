@@ -4,7 +4,7 @@
 		//[TIER1]
 		"RISKOFBULLETSTORM_ITEM_ANTIBODY_NAME": "Antibody",
 		"RISKOFBULLETSTORM_ITEM_ANTIBODY_PICKUP": "<b>Heals Up</b>\nChance to improve healing receieved.",
-		"RISKOFBULLETSTORM_ITEM_ANTIBODY_DESCRIPTION": "Upon <style=cIsHealing>healing</style>, gain a <style=cIsUtility{0}% chance</style> to <style=cIsHealing>heal for +{1}% more healing</style> <style=cStack>(+{2}% more healing per stack)</style>.",
+		"RISKOFBULLETSTORM_ITEM_ANTIBODY_DESCRIPTION": "Upon <style=cIsHealing>healing</style>, gain a <style=cIsUtility>{0}% chance</style> to <style=cIsHealing>heal for +{1}% more healing</style> <style=cStack>(+{2}% more healing per stack)</style>.",
 		"RISKOFBULLETSTORM_ITEM_ANTIBODY_LORE": "An experimental treatment administered by the Gungeon's medical unit.",
 		
 		"RISKOFBULLETSTORM_ITEM_MUSTACHE_NAME": "Mustache",
@@ -24,8 +24,8 @@
 		
 		//[TIER2]
 		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_NAME": "Battle Standard",
-		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_PICKUP": "<b>Set Your Own!<b>/nImproves the effectiveness of companions and charmed enemies.",
-		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_DESCRIPTION": "Increases damage of companions and charmed enemies by {0}% <style=cStack>+{1}% per stack</style>.",
+		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_PICKUP": "<b>Set Your Own!</b>/nImproves the effectiveness of companions and charmed enemies.",
+		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_DESCRIPTION": "Increases damage of companions and charmed enemies by {0}% <style=cStack>(+{1}% per stack)</style>.",
 		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_LORE": "Before the advancement of Gundead society, belligerent bands of Bullet Kin would rally around these banners before their raids upon the upper chambers.",
 		
 		"RISKOFBULLETSTORM_ITEM_RINGOFCHESTFRIENDSHIP_NAME": "Ring of Chest Friendship",
@@ -46,7 +46,7 @@
 		
 		"RISKOFBULLETSTORM_ITEM_CLONE_NAME": "Clone",
 		"RISKOFBULLETSTORM_ITEM_CLONE_PICKUP": "<b>Extra Life</b>\nRespawn at first stage once out of lives.",
-		"RISKOFBULLETSTORM_ITEM_CLONE_DESCRIPTION": "<style=cIsUtility>Upon death of all players</style>, this item will be <style=cIsUtility>consumed</style> and send <style=cIsUtility>all players</style> to the first stage with <style=cIsUtility>items and equipment</style> intact.",
+		"RISKOFBULLETSTORM_ITEM_CLONE_DESCRIPTION": "<style=cIsUtility>Upon death of all players</style>, this item will be <style=cIsUtility>consumed</style> and send <style=cIsUtility>all players</style> to the first stage with <style=cIsUtility>items and equipment</style> intact. Consumed on use. Limited to one per run.",
 		"RISKOFBULLETSTORM_ITEM_CLONE_LORE": "An uncomfortable answer to an uncomfortable truth. This clone can replace a single Gungeoneer upon their death, with almost no lapse in memory.",
 		
 		"RISKOFBULLETSTORM_ITEM_RINGTRIGGERS_NAME": "Ring of Triggers",
@@ -72,8 +72,9 @@
 		
 		//[TIERLUNAR]
 		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_NAME": "Bloodied Scarf",
-		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_PICKUP": "<b>Blink Away</b>\nDodge roll is replaced with a blink.",
+		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_PICKUP": "<b>Blink Away</b>\nUtility is replaced with a blink with vulnerability afterwards..",
 		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_DESCRIPTION": "<style=cIsUtility>Replace your Utility Skill</style> with <style=cIsUtility>Bloodied Teleport</style>.",
+		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_LOGBOOK_DESCRIPTION": "<style=cIsUtility>Replace your Utility Skill</style> with <style=cIsUtility>Bloodied Teleport</style>. LOGBOOK TEST",
 		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_LORE": "This simple scarf was once worn by a skilled assassin. Betrayed by his brothers and assumed dead...",
 		
 		"RISKOFBULLETSTORM_ITEM_BULLETHEAVY_NAME": "Heavy Bullets",
