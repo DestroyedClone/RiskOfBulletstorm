@@ -14,9 +14,9 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override ItemTier Tier => ItemTier.Boss;
 
-        public override GameObject ItemModel => Resources.Load<GameObject>("prefabs/nullmodel");
+        public override GameObject ItemModel => Assets.NullModel;
 
-        public override Sprite ItemIcon => Resources.Load<Sprite>("textures/itemicons/texnullicon");
+        public override Sprite ItemIcon => Assets.NullSprite;
 
         public override ItemTag[] ItemTags => new ItemTag[]
         {
@@ -25,6 +25,7 @@ namespace RiskOfBulletstormRewrite.Items
             ItemTag.BrotherBlacklist,
             ItemTag.CannotCopy,
             ItemTag.CannotSteal,
+            ItemTag.CannotDuplicate,
             ItemTag.WorldUnique
         };
 
