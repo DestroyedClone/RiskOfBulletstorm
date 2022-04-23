@@ -115,6 +115,14 @@ namespace RiskOfBulletstormRewrite.Utils
             return 1 - 1 / (1 + baseAmount * stackAmount);
         }
 
+        public static float GetHyperbolicValue(float baseAmount, float stackAmount, int itemCount)
+        {
+            if (itemCount == 0)
+                return 0;
+
+            return 1 - 1 / (1 + baseAmount * (stackAmount * (itemCount-1)));
+        }
+
         public static int GetEquipmentCountForTeam(TeamIndex teamIndex, EquipmentIndex equipmentIndex, bool requiresAlive, bool requiresConnected = true)
         {
             int num = 0;
