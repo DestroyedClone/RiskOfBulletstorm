@@ -44,9 +44,14 @@
 		"RISKOFBULLETSTORM_ITEM_BACKPACK_DESCRIPTION": "Grants access to an <style=cIsUtility>extra equipment slot</style> <style=cStack>(+1 per stack)</style>.",
 		"RISKOFBULLETSTORM_ITEM_BACKPACK_LORE": "While backpacks may seem to be useless once you use spatial compression technology, reports have come in demonstrating that a certain common backpack exceeds this. Most spatial compression technologies can only capture a specific form or type of item or structure. Sure, in this regard the structure capturing is superior, but its significantly different than the current features observed using backpacks. While not conclusive, reports have stated that some users have up to 2304 solid blocks of 1m cubed in volume. We've even heard reports that they've been able to store and deploy highly dense crystals that seem to explode when fractured. The current technologies can only compress about 25% of the reported backpack capacity, while keeping that capacity lowers the decompression quality down to a staggering 92%! Truly, we must strive to reach these heights. - Report by Minnie Raria, 2XXX",
 		
+		"OLD_RISKOFBULLETSTORM_ITEM_CLONE_NAME": "Clone",
+		"OLD_RISKOFBULLETSTORM_ITEM_CLONE_PICKUP": "<b>Extra Life</b>\nRespawn at first stage once out of lives.",
+		"OLD_RISKOFBULLETSTORM_ITEM_CLONE_DESCRIPTION": "<style=cIsUtility>Upon death of all players</style>, this item will be <style=cIsUtility>consumed</style> and send <style=cIsUtility>all players</style> to the first stage with <style=cIsUtility>items and equipment</style> intact. Consumed on use. Limited to one per run.",
+		"OLD_RISKOFBULLETSTORM_ITEM_CLONE_LORE": "An uncomfortable answer to an uncomfortable truth. This clone can replace a single Gungeoneer upon their death, with almost no lapse in memory.",
+		
 		"RISKOFBULLETSTORM_ITEM_CLONE_NAME": "Clone",
-		"RISKOFBULLETSTORM_ITEM_CLONE_PICKUP": "<b>Extra Life</b>\nRespawn at first stage once out of lives.",
-		"RISKOFBULLETSTORM_ITEM_CLONE_DESCRIPTION": "<style=cIsUtility>Upon death of all players</style>, this item will be <style=cIsUtility>consumed</style> and send <style=cIsUtility>all players</style> to the first stage with <style=cIsUtility>items and equipment</style> intact. Consumed on use. Limited to one per run.",
+		"RISKOFBULLETSTORM_ITEM_CLONE_PICKUP": "<b>Extra Life</b>\nRestart the run with some items.",
+		"RISKOFBULLETSTORM_ITEM_CLONE_DESCRIPTION": "<style=cIsUtility>Upon death of all players</style>, this item will be <style=cIsUtility>consumed</style> and send <style=cIsUtility>all players</style> to the first stage with <style=cIsUtility>{0} items</style> <style=cStack>(+{1} items per stack)</style> intact. <style=cDeath>All stacks consumed on death</style>.",
 		"RISKOFBULLETSTORM_ITEM_CLONE_LORE": "An uncomfortable answer to an uncomfortable truth. This clone can replace a single Gungeoneer upon their death, with almost no lapse in memory.",
 		
 		"RISKOFBULLETSTORM_ITEM_RINGTRIGGERS_NAME": "Ring of Triggers",
