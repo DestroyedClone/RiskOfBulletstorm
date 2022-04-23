@@ -5,14 +5,24 @@ using UnityEngine;
 using UnityEngine.Networking;
 using static RiskOfBulletstormRewrite.Main;
 using RoR2.Skills;
+using System.Collections.Generic;
 
 namespace RiskOfBulletstormRewrite.Items
 {
     public class HipHolster : ItemBase<HipHolster>
     {
+        public static ConfigEntry<float> cfgFreeStockChance;
+        public static ConfigEntry<float> cfgFreeStockChancePerStack;
+
         public override string ItemName => "Hip Holster";
 
         public override string ItemLangTokenName => "HIPHOLSTER";
+
+        public override string[] ItemFullDescriptionParams => new string[]
+        {
+            GetChance(cfgFreeStockChance),
+            GetChance(cfgFreeStockChancePerStack)
+        };
 
         public override ItemTier Tier => ItemTier.Lunar;
 
@@ -35,7 +45,8 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void CreateConfig(ConfigFile config)
         {
-
+            cfgFreeStockChance = config.Bind(ConfigCategory, "Chance of Free Shot", 0.1f, "");
+            cfgFreeStockChancePerStack = config.Bind(ConfigCategory, "Chance of Free Shot Per Stack", 0.1f, "Hyperbolic");
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
@@ -58,13 +69,12 @@ namespace RiskOfBulletstormRewrite.Items
                 {
                     if (flag)
                     {
-                        comp = obj.gameObject.AddComponent<HipHolsterController>();
                         if (obj.skillLocator)
                         {
-                            if (obj.skillLocator.special)
-                            {
-                                comp.specialSkill = obj.skillLocator.special;
-                            }
+                            comp = obj.gameObject.AddComponent<HipHolsterController>();
+                            comp.skillLocator = obj.skillLocator;
+                            comp.inventory = obj.inventory;
+                            comp.characterBody = obj;
                         }
                         return;
                     }
@@ -75,22 +85,59 @@ namespace RiskOfBulletstormRewrite.Items
 
         public class HipHolsterController : MonoBehaviour
         {
-            //public GenericSkill[] genericSkills;
-            //public int[] lastStocks;
-            public GenericSkill specialSkill;
-            public int lastStock = -1;
+            public CharacterBody characterBody;
+            public Inventory inventory;
+            public SkillLocator skillLocator;
+            public GenericSkill[] genericSkills;
+            public int[] lastStocks;
+
+            public void Start()
+            {
+                List<GenericSkill> genericSkillsList = new List<GenericSkill>();
+                List<int> lastStockList = new List<int>();
+                if (skillLocator.primary)
+                {
+                    genericSkillsList.Add(skillLocator.primary);
+                    lastStockList.Add(skillLocator.primary.stock);
+                }
+                if (skillLocator.secondary)
+                {
+                    genericSkillsList.Add(skillLocator.secondary);
+                    lastStockList.Add(skillLocator.secondary.stock);
+                }
+                if (skillLocator.utility)
+                {
+                    genericSkillsList.Add(skillLocator.utility);
+                    lastStockList.Add(skillLocator.utility.stock);
+                }
+                if (skillLocator.special)
+                {
+                    genericSkillsList.Add(skillLocator.special);
+                    lastStockList.Add(skillLocator.special.stock);
+                }
+                genericSkills = genericSkillsList.ToArray();
+                lastStocks = lastStockList.ToArray();
+            }
 
             public void FixedUpdate()
             {
-
-                if (lastStock != specialSkill.stock)
+                int i = 0;
+                while (i < genericSkills.Length)
                 {
-                    if (lastStock < specialSkill.stock)
+                    var gs = genericSkills[i];
+                    if (gs)
                     {
-                        specialSkill.stock += specialSkill.skillDef.requiredStock;
-                        specialSkill.ExecuteIfReady();
+                        if (lastStocks[i] < gs.stock)
+                        {
+                            if (RoR2.Util.CheckRoll(Utils.ItemHelpers.GetHyperbolicValue(cfgFreeStockChance.Value, cfgFreeStockChancePerStack.Value, HipHolster.instance.GetCount(characterBody))))
+                            {
+                                gs.stock += gs.skillDef.requiredStock;
+                                gs.ExecuteIfReady();
+                            }
+                        }
+                        lastStocks[i] = gs.stock;
                     }
-                    lastStock = specialSkill.stock;
+                    i++;
                 }
             }
         }
