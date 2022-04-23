@@ -13,26 +13,24 @@ using System.Reflection;
 using UnityEngine;
 using Path = System.IO.Path;
 using RiskOfBulletstormRewrite.Utils;
+using RoR2;
 
 namespace RiskOfBulletstormRewrite
 {
     internal class ModSupport
     {
         internal static bool betterUILoaded = false;
-        internal static bool itemStatsLoaded = false;
         internal static void CheckForModSupport()
         {
             if (BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.xoxfaby.BetterUI"))
             {
                 betterUILoaded = true;
-            }
-            if (BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("dev.ontrigger.itemstats"))
-            {
-                itemStatsLoaded = true;
+                BetterUICompat_StatsDisplay();
             }
         }
 
-        internal static void BetterUICompat()
+        // Called by Buffs.cs
+        internal static void BetterUICompat_Buffs()
         {
             var prefix = "RISKOFBULLETSTORM_BUFF_";
             void RegisterBuffInfo(RoR2.BuffDef buffDef, string nameToken = null, string descToken = null)
@@ -41,6 +39,72 @@ namespace RiskOfBulletstormRewrite
             }
             RegisterBuffInfo(Buffs.MustacheBuff, "MUSTACHE_NAME", "MUSTACHE_DESC");
             RegisterBuffInfo(Buffs.MetronomeTrackerBuff, "METRONOME_NAME", "METRONOME_DESC");
+        }
+
+        internal static void BetterUICompat_StatsDisplay()
+        {
+            BetterUI.StatsDisplay.AddStatsDisplay("$accuracy", (BetterUI.StatsDisplay.DisplayCallback)GetAccuracy);
+        }
+
+        private static string GetAccuracy(CharacterBody body)
+        {
+            string value = null;
+            var extraStatsController = body.GetComponent<Controllers.ExtraStatsController.RBSExtraStatsController>();
+            if (extraStatsController)
+            {
+                return $"{extraStatsController.idealizedAccuracyStat * 100f}%";
+            }
+
+            return value;
+        }
+
+        internal static void BetterUICompat_ItemStats()
+        {
+            var prefix = "RISKOFBULLETSTORM_STAT_";
+            // Common
+            BetterUI.ItemStats.RegisterStat(Items.Antibody.instance.ItemDef,
+                prefix + "ANTIBODY_HEALCHANCE",
+                Antibody.cfgChance.Value,
+                null,
+                BetterUI.ItemStats.StatFormatter.LuckChance);
+            BetterUI.ItemStats.RegisterStat(Antibody.instance.ItemDef,
+                prefix + "ANTIBODY_HEALAMOUNT",
+                Antibody.cfgMultiplier.Value,
+                Antibody.cfgMultiplierPerStack.Value,
+                BetterUI.ItemStats.LinearStacking,
+                BetterUI.ItemStats.StatFormatter.Percent);
+            BetterUI.ItemStats.RegisterStat(Mustache.instance.ItemDef,
+                prefix + "MUSTACHE_DURATION",
+                Mustache.cfgDuration.Value,
+                null);
+            BetterUI.ItemStats.RegisterStat(Mustache.instance.ItemDef,
+                prefix + "MUSTACHE_REGEN",
+                Mustache.cfgRegenAmount.Value,
+                Mustache.cfgRegenAmountPerStack.Value,
+                BetterUI.ItemStats.LinearStacking,
+                BetterUI.ItemStats.StatFormatter.Regen,
+                BetterUI.ItemStats.ItemTag.Healing);
+            //Scope
+
+            //Uncommon
+            BetterUI.ItemStats.RegisterStat(RingChestFriendship.instance.ItemDef,
+                prefix + "RINGCHESTFRIENDSHIP_CREDITMULTIPLIER",
+                RingChestFriendship.cfgCreditMultiplier.Value,
+                RingChestFriendship.cfgCreditMultiplierPerStack.Value,
+                BetterUI.ItemStats.LinearStacking,
+                BetterUI.ItemStats.StatFormatter.Percent);
+
+            //Legendary
+            BetterUI.ItemStats.RegisterStat(Backpack.instance.ItemDef,
+                prefix + "BACKPACK_SLOTS",
+                1,
+                BetterUI.ItemStats.LinearStacking,
+                BetterUI.ItemStats.StatFormatter.Charges,
+                null);
+            //Clone
+
+            // Lunar
+
         }
     }
 }

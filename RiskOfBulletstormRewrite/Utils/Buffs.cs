@@ -27,7 +27,7 @@ namespace RiskOfBulletstormRewrite.Utils
 
             if (ModSupport.betterUILoaded)
             {
-                ModSupport.BetterUICompat();
+                ModSupport.BetterUICompat_Buffs();
             }
         }
 
