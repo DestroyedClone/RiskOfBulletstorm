@@ -31,6 +31,8 @@ namespace RiskOfBulletstormRewrite.Items
         public virtual string[] ItemPickupDescParams { get; }
         public virtual string[] ItemFullDescriptionParams { get; }
 
+        public virtual bool ItemDescriptionLogbookOverride { get; } = false;
+
         public abstract ItemTier Tier { get; }
         public virtual ItemTag[] ItemTags { get; set; } = new ItemTag[] { };
 
@@ -66,6 +68,14 @@ namespace RiskOfBulletstormRewrite.Items
             }
         }
 
+        public string ItemDescriptionLogbookToken
+        {
+            get
+            {
+                return "RISKOFBULLETSTORM_ITEM_" + ItemLangTokenName + "_LOGBOOK_DESCRIPTION";
+            }
+        }
+
         /// <summary>
         /// This method structures your code execution of this class. An example implementation inside of it would be:
         /// <para>CreateConfig(config);</para>
@@ -80,7 +90,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public virtual void CreateConfig(ConfigFile config) { }
 
-        private void DeferToken(string token, string lang, params string[] args)
+        public void DeferToken(string token, string lang, params string[] args)
         {
             //Main._logger.LogMessage($"Deferring {token} w/ lang {lang}");
             RiskOfBulletstormRewrite.Language.langTokenValues.Add(new Language.LangTokenValue() { token = token, lang = lang, strings = args });
@@ -112,6 +122,11 @@ namespace RiskOfBulletstormRewrite.Items
                 {
                     DeferToken(ItemDescriptionToken, langName, ItemFullDescriptionParams);
                 }
+            }
+
+            if (ItemDescriptionLogbookOverride)
+            {
+                Language.logbookTokenOverrideDict.Add(ItemDescriptionToken, ItemDescriptionLogbookToken);
             }
             /*
             LanguageAPI.Add("ITEM_" + ItemLangTokenName + "_NAME", ItemName);

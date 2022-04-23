@@ -2,6 +2,7 @@
 using R2API;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace RiskOfBulletstormRewrite
 {
@@ -22,9 +23,18 @@ namespace RiskOfBulletstormRewrite
 
         public static List<Type> configEntries = new List<Type>();
 
+        public static Dictionary<string, string> logbookTokenOverrideDict = new Dictionary<string, string>();
+
         public static void Initialize()
         {
             On.RoR2.UI.MainMenu.MainMenuController.Start += FinalizeLanguage;
+            On.RoR2.UI.LogBook.LogBookController.Start += LogBookController_Start;
+        }
+
+        private static void LogBookController_Start(On.RoR2.UI.LogBook.LogBookController.orig_Start orig, RoR2.UI.LogBook.LogBookController self)
+        {
+            orig(self);
+            self.gameObject.AddComponent<RBS_DestroyLogbookHookOnDestroy>();
         }
 
         private static void FinalizeLanguage(On.RoR2.UI.MainMenu.MainMenuController.orig_Start orig, RoR2.UI.MainMenu.MainMenuController self)
@@ -83,5 +93,28 @@ namespace RiskOfBulletstormRewrite
             }
             action(config);
         }*/
+
+        public class RBS_DestroyLogbookHookOnDestroy : MonoBehaviour
+        {
+            public void Start()
+            {
+                On.RoR2.Language.GetString_string += OverrideGetStringLogbook;
+            }
+
+            private string OverrideGetStringLogbook(On.RoR2.Language.orig_GetString_string orig, string token)
+            {
+                if (logbookTokenOverrideDict.TryGetValue(token, out string overrideToken))
+                {
+                    token = overrideToken;
+                }
+                return orig(token);
+            }
+
+            public void OnDestroy()
+            {
+                On.RoR2.Language.GetString_string -= OverrideGetStringLogbook;
+            }
+        }
+
     }
 }
