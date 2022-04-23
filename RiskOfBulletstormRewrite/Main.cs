@@ -120,7 +120,7 @@ namespace RiskOfBulletstormRewrite
                 }
             }
 
-            //this section automatically scans the project for all elite equipment
+            //this section automatically scans the project for all controllers
             var ControllerTypes = Assembly.GetExecutingAssembly().GetTypes().Where(type => !type.IsAbstract && type.IsSubclassOf(typeof(ControllerBase)));
 
             foreach (var controllerType in ControllerTypes)
