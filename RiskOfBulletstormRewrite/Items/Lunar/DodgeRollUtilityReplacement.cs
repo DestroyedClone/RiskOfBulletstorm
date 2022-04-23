@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 using static RiskOfBulletstormRewrite.Main;
 using RoR2.Skills;
 using EntityStates;
+using UnityEngine.AddressableAssets;
 
 namespace RiskOfBulletstormRewrite.Items
 {
@@ -42,7 +43,7 @@ namespace RiskOfBulletstormRewrite.Items
         {
             rollSkillDef = ScriptableObject.CreateInstance<SkillDef>();
             rollSkillDef.activationState = new SerializableEntityStateType(typeof(EntityStates.Commando.CombatDodge));
-            rollSkillDef.activationStateMachineName = "Body";
+            rollSkillDef.activationStateMachineName = "Slide";
             rollSkillDef.baseMaxStock = 1;
             rollSkillDef.baseRechargeInterval = 12;
             rollSkillDef.beginSkillCooldownOnSkillEnd = true;
@@ -62,10 +63,10 @@ namespace RiskOfBulletstormRewrite.Items
             rollSkillDef.rechargeStock = 1;
             rollSkillDef.requiredStock = 1;
             rollSkillDef.resetCooldownTimerOnUse = true;
-            rollSkillDef.skillDescriptionToken = "RISKOFBULLETSTORM_SKILL_TELEPORT_DESCRIPTION";
-            rollSkillDef.skillName = "RiskOfBulletstormTeleport";
-            rollSkillDef.skillNameToken = "RISKOFBULLETSTORM_SKILL_TELEPORT_NAME";
-            (rollSkillDef as ScriptableObject).name = "RiskOfBulletstormTeleport";
+            rollSkillDef.skillDescriptionToken = "RISKOFBULLETSTORM_SKILL_DODGEROLL_DESCRIPTION";
+            rollSkillDef.skillName = "RiskOfBulletstorm_DodgeRoll";
+            rollSkillDef.skillNameToken = "RISKOFBULLETSTORM_SKILL_DODGEROLL_NAME";
+            (rollSkillDef as ScriptableObject).name = rollSkillDef.skillName;
             rollSkillDef.stockToConsume = 1;
 
             ContentAddition.AddSkillDef(rollSkillDef);
