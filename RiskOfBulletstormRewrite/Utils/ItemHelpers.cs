@@ -5,6 +5,7 @@ using UnityEngine;
 using System;
 using System.Collections.ObjectModel;
 using RoR2.UI;
+using UnityEngine.AddressableAssets;
 
 namespace RiskOfBulletstormRewrite.Utils
 {
@@ -157,6 +158,13 @@ namespace RiskOfBulletstormRewrite.Utils
                 i++;
             }
             return false;
+        }
+
+
+        public static T Load<T>(string assetPath)
+        {
+            var loadedAsset = Addressables.LoadAssetAsync<T>(assetPath).WaitForCompletion();
+            return loadedAsset;
         }
     }
 }

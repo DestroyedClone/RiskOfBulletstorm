@@ -8,6 +8,7 @@ using BepInEx;
 using BepInEx.Configuration;
 using static RiskOfBulletstormRewrite.Main;
 using System.Net;
+using static RiskOfBulletstormRewrite.Utils.ItemHelpers;
 
 namespace RiskOfBulletstormRewrite.Controllers
 {
@@ -21,118 +22,149 @@ namespace RiskOfBulletstormRewrite.Controllers
         public static List<GameObject> WhitelistedProjectiles = new List<GameObject>
         {
             // Equipment/Items
-            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/Sawmerang"), // Saw
-            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/LunarNeedleProjectile"), // Visions of Heresy
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LunarSecondaryProjectile"), // Hooks of Heresy
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LunarMissileProjectile"), // Perfected
+            Load<GameObject>("RoR2/Base/Saw/Sawmerang.prefab"), //Sawmerang
+            Load<GameObject>("RoR2/Base/LunarSkillReplacements/LunarNeedleProjectile.prefab"), // Visions of Heresy
+            Load<GameObject>("RoR2/Base/LunarSkillReplacements/LunarSecondaryProjectile.prefab"), // Hooks of Heresy
+            Load<GameObject>("RoR2/Base/EliteLunar/LunarMissileProjectile.prefab"), // Perfected
+            Load<GameObject>("RoR2/DLC1/PrimarySkillShuriken/ShurikenProjectile.prefab"),
+            Load<GameObject>("RoR2/DLC1/LunarSun/LunarSunProjectile.prefab"),
+            Load<GameObject>("RoR2/DLC1/Molotov/MolotovClusterProjectile.prefab"),
+            Load<GameObject>("RoR2/DLC1/Molotov/MolotovSingleProjectile.prefab"),
 
             // Survivors
                 // Acrid
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/CrocoSpit"), // Ranged Secondary
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/CrocoDiseaseProjectile"), // Special
+            Load<GameObject>("RoR2/Base/Croco/CrocoSpit.prefab"), // Ranged Secondary
+            Load<GameObject>("RoR2/Base/Croco/CrocoDiseaseProjectile.prefab"), // Special
                 // Artificer
-            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/MageFireboltBasic"),
-            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/MageLightningboltBasic"),
-            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/MageLightningBombProjectile"),
-            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/MageIceBombProjectile"),
-            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/MageIcewallWalkerProjectile"),
+            Load<GameObject>("RoR2/Base/Mage/MageFireboltBasic.prefab"),
+            Load<GameObject>("RoR2/Base/Mage/MageLightningboltBasic.prefab"),
+            Load<GameObject>("RoR2/Base/Mage/MageLightningBombProjectile.prefabe"),
+            Load<GameObject>("RoR2/Base/Mage/MageIceBombProjectile.prefab"),
+            Load<GameObject>("RoR2/Base/Mage/MageIcewallWalkerProjectile.prefab"),
             //MageIcewallPillarProjectile ??
                 
                 // Bandit2
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/Bandit2ShivProjectile"),
+            Load<GameObject>("RoR2/Base/Bandit2/Bandit2ShivProjectile.prefab"),
 
 
                 // Captain
-            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/CaptainTazer"),
+            Load<GameObject>("RoR2/Base/Captain/CaptainTazer.prefab"),
 
                 // Commando
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/CommandoGrenadeProjectile"),
-            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/FMJ"), //??
-            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/FMJRamping"),
+            Load<GameObject>("RoR2/Base/Commando/CommandoGrenadeProjectile.prefab"),
+            //Load<GameObject>("Prefabs/Projectiles/FMJ"), //??
+            Load<GameObject>("RoR2/Base/Commando/FMJRamping.prefab"),
 
                 // Engineer
-            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/EngiHarpoon"),
-            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/EngiGrenadeProjectile"),
-            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/EngiMine"),
-            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/SpiderMine"),
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/EngiBubbleShield"),
+            Load<GameObject>("RoR2/Base/Engi/EngiHarpoon.prefab"),
+            Load<GameObject>("RoR2/Base/Engi/EngiGrenadeProjectile.prefab"),
+            Load<GameObject>("RoR2/Base/Engi/EngiMine.prefab"),
+            Load<GameObject>("RoR2/Base/Engi/SpiderMine.prefab"),
+            Load<GameObject>("RoR2/Base/Engi/EngiBubbleShield.prefab"),
 
                 // Huntress
-            EntityStates.Huntress.HuntressWeapon.FireGlaive.projectilePrefab,
+            //EntityStates.Huntress.HuntressWeapon.FireGlaive.projectilePrefab, //Glaive's an orb, so this isnt used
 
                 // Loader
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LoaderZapCone"), //It's a projectile, go figure.
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LoaderPylon"),
+            Load<GameObject>("RoR2/Base/Loader/LoaderZapCone.prefab"), //It's a projectile, go figure.
+            Load<GameObject>("RoR2/Base/Loader/LoaderPylon.prefab"),
 
                 // Merc
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/EvisProjectile"), // Ranged special
+            Load<GameObject>("RoR2/Base/Merc/EvisProjectile.prefab"), // Ranged special
 
                 // MUL-T
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/ToolbotGrenadeLauncherProjectile"), // Scrap Launcher
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/CryoCanisterProjectile"), // Secondary bomb
+            Load<GameObject>("RoR2/Base/Toolbot/ToolbotGrenadeLauncherProjectile.prefab"), // Scrap Launcher
+            Load<GameObject>("RoR2/Base/Toolbot/CryoCanisterProjectile.prefab"), // Secondary bomb
+
+                // Railgunner
+            Load<GameObject>("RoR2/DLC1/Railgunner/RailgunnerPistolProjectile.prefab"),
+            Load<GameObject>("RoR2/DLC1/Railgunner/RailgunnerMine.prefab"),
+            Load<GameObject>("RoR2/DLC1/Railgunner/RailgunnerMineAlt.prefab"),
 
                 // REX
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/SyringeProjectile"),
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/SyringeProjectileHealing"), // Third syringe shot
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/TreebotMortarRain"),
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/TreebotMortar2"),
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/TreebotFlowerSeed"),
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/TreebotFruitSeedProjectile"),
+            Load<GameObject>("RoR2/Base/Treebot/SyringeProjectile.prefab"),
+            Load<GameObject>("RoR2/Base/Treebot/SyringeProjectileHealing.prefab"), // Third syringe shot
+            Load<GameObject>("RoR2/Base/Treebot/TreebotMortarRain.prefab"),
+            Load<GameObject>("RoR2/Base/Treebot/TreebotMortar2.prefab"),
+            Load<GameObject>("RoR2/Base/Treebot/TreebotFlowerSeed.prefab"),
+            Load<GameObject>("RoR2/Base/Treebot/TreebotFruitSeedProjectile.prefab"),
+
+                // Void Fiend
+            Load<GameObject>("RoR2/DLC1/VoidSurvivor/VoidSurvivorMegaBlasterSmallProjectile.prefab"),
+            Load<GameObject>("RoR2/DLC1/VoidSurvivor/VoidSurvivorMegaBlasterBigProjectile.prefab"),
+            Load<GameObject>("RoR2/DLC1/VoidSurvivor/VoidSurvivorMegaBlasterBigProjectileCorrupted.prefab"),
 
             // Enemies
                 // Beetle Queen
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/BeetleQueenSpit"), // Beetle Spit
+            Load<GameObject>("RoR2/Base/Beetle/BeetleQueenSpit.prefab"), // Beetle Spit
                 // Mithrix
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LunarShardProjectile"),
+            Load<GameObject>("RoR2/Base/Brother/LunarShardProjectile.prefab"),
                 // Clay Dunestrider
-            LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/Tarball"),
-            EntityStates.ClayBoss.ClayBossWeapon.FireBombardment.projectilePrefab, //
+            Load<GameObject>("RoR2/Junk/ClayBoss/TarBall.prefab"), //junk?
+            Load<GameObject>("RoR2/Base/ClayBoss/ClayPotProjectile.prefab"),
+            //EntityStates.ClayBoss.ClayBossWeapon.FireBombardment.projectilePrefab, //
                 // Grovetender
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/GravekeeperHookProjectile"), //not used?
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/GravekeeperHookProjectileSimple"), //????
-            LegacyResourcesAPI.Load<GameObject>("GravekeeperTrackingFireball"),
+            //Load<GameObject>("prefabs/projectiles/GravekeeperHookProjectile"), //not used? used for HAND
+            Load<GameObject>("RoR2/Base/Gravekeeper/GravekeeperHookProjectileSimple.prefab"), //????
+            Load<GameObject>("RoR2/Base/Gravekeeper/GravekeeperTrackingFireball.prefab"),
                 // Imp + Imp Overlord
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/ImpVoidspikeProjectile"),
+            Load<GameObject>("RoR2/Base/ImpBoss/ImpVoidspikeProjectile.prefab"),
             EntityStates.ImpMonster.FireSpines.projectilePrefab, 
                 // Elder Lemurian
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LemurianBigFireball"), 
+            Load<GameObject>("RoR2/Base/LemurianBruiser/LemurianBigFireball.prefab"), 
                 // Void Reaver
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/NullifierBombProjectile"),
+            Load<GameObject>("RoR2/Base/Nullifier/NullifierBombProjectile.prefab"),
                 // Alloy Worship Unit / Solus Control Unit
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/RoboBallProjectile"),
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/SuperRoboBallProjectile"), //idk??
+            Load<GameObject>("RoR2/Base/RoboBallBoss/RoboBallProjectile.prefab"),
+            Load<GameObject>("RoR2/Base/RoboBallBoss/SuperRoboBallProjectile.prefab"), //idk??
                 // Scavenger
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/ScavEnergyCannonProjectile"),
-            //TODO: Get thqiwbbs
+            Load<GameObject>("RoR2/Base/Scav/ScavEnergyCannonProjectile.prefab"),
+            Load<GameObject>("RoR2/Base/Scav/ScavSackProjectile.prefab"), //thqibbs
                 // Malachite Urchin
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/UrchinSeekingProjectile"),
+            Load<GameObject>("RoR2/Base/ElitePoison/UrchinSeekingProjectile.prefab"),
                 // Wandering Vagrant
             EntityStates.VagrantMonster.Weapon.JellyBarrage.projectilePrefab,
                 // Alloy Vulture
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/WindbladeProjectile"), 
+            Load<GameObject>("RoR2/Base/Vulture/WindbladeProjectile.prefab"), 
                 // Beetle Guard
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/Sunder"), 
+            Load<GameObject>("RoR2/Base/Beetle/Sunder.prefab"), 
                 // Brass Contraption
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/BellBall"), 
+            Load<GameObject>("RoR2/Base/Bell/BellBall.prefab"), 
                 // Lemurian
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/Fireball"), //fireball
+            Load<GameObject>("RoR2/Base/Lemurian/Fireball.prefab"), //fireball
                 // Hermit Crab
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/HermitCrabBombProjectile"), 
+            //Load<GameObject>("RoR2/Base/HermitCrab/HermitCrabBombProjectile.prefab"), 
                 // Lunar Golem
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LunarGolemTwinShotProjectile"), 
+            Load<GameObject>("RoR2/Base/LunarGolem/LunarGolemTwinShotProjectile.prefab"), //check stick 
                 // Lunar Wisp
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LunarWispTrackingBomb"), 
+            Load<GameObject>("RoR2/Base/LunarWisp/LunarWispTrackingBomb.prefab"), 
                 // Lunar Exploder
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LunarExploderShardProjectile"),
+            Load<GameObject>("RoR2/Base/LunarExploder/LunarExploderShardProjectile.prefab"),
                 // Mini Mushrum
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/SporeGrenadeProjectile"), 
+            Load<GameObject>("RoR2/Base/MiniMushroom/SporeGrenadeProjectile.prefab"), 
                 // Void Reaver
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/NullifierPreBombProjectile"), 
+            Load<GameObject>("RoR2/Base/Nullifier/NullifierPreBombProjectile.prefab"), 
                 // Greater Wisp
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/WispCannon"),
+            Load<GameObject>("RoR2/Base/GreaterWisp/WispCannon.prefab"),
                 // Grandparent
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/GrandparentBoulder"),
-            LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/GrandparentGravSphere"),
+            Load<GameObject>("RoR2/Base/Grandparent/GrandparentBoulder.prefab"),
+            Load<GameObject>("RoR2/Base/Grandparent/GrandparentGravSphere.prefab"),
+
+            Load<GameObject>("RoR2/DLC1/MajorAndMinorConstruct/MinorConstructProjectile.prefab"),
+
+            Load<GameObject>("RoR2/DLC1/FlyingVermin/VerminSpitProjectile.prefab"),
+
+            Load<GameObject>("RoR2/DLC1/ClayGrenadier/ClayGrenadierMortarProjectile.prefab"),
+            Load<GameObject>("RoR2/DLC1/ClayGrenadier/ClayGrenadierBarrelProjectile.prefab"),
+
+            Load<GameObject>("RoR2/DLC1/VoidBarnacle/VoidBarnacleBullet.prefab"),
+
+            Load<GameObject>("RoR2/DLC1/VoidJailer/VoidJailerDart.prefab"),
+
+            Load<GameObject>("RoR2/DLC1/VoidMegaCrab/MegaCrabWhiteCannonProjectile.prefab"),
+            Load<GameObject>("RoR2/DLC1/VoidMegaCrab/MegaCrabBlackCannonProjectile.prefab"),
+            Load<GameObject>("RoR2/DLC1/VoidMegaCrab/MissileVoidBigProjectile.prefab"),
+            Load<GameObject>("RoR2/DLC1/VoidRaidCrab/VoidRaidCrabMissileProjectile.prefab"),
         };
 
         public static List<string> ModdedWhitelistedProjectiles = new List<string>();
@@ -141,9 +173,9 @@ namespace RiskOfBulletstormRewrite.Controllers
 
         private const string projectileAddress = "https://raw.githubusercontent.com/DestroyedClone/RiskOfBulletstorm/master/RiskOfBulletstormRewrite/Controllers/ModdedProjectileNames.txt";
 
-        //private static readonly GameObject DisposableMissileLauncherPrefab = LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/MissileProjectile");
-        //private static readonly GameObject LoaderHookPrefab = LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LoaderHook");
-        //private static readonly GameObject LoaderYankHookPrefab = LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LoaderYankHook");
+        //private static readonly GameObject DisposableMissileLauncherPrefab = Load<GameObject>("Prefabs/Projectiles/MissileProjectile");
+        //private static readonly GameObject LoaderHookPrefab = Load<GameObject>("prefabs/projectiles/LoaderHook");
+        //private static readonly GameObject LoaderYankHookPrefab = Load<GameObject>("prefabs/projectiles/LoaderYankHook");
         public static float SimpleSpread(float accuracy, float originalValue, float multiplier = 1f)
         {
             return originalValue == 0 ? accuracy * multiplier : originalValue * accuracy;
@@ -279,11 +311,11 @@ namespace RiskOfBulletstormRewrite.Controllers
                 true, "If enabled, then the mod will autodownload the latest modded projectile names on startup. These are added manually.").Value;
 
             if (ShotSpread_EnableDML)
-                WhitelistedProjectiles.Add(LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/MissileProjectile"));
+                WhitelistedProjectiles.Add(Load<GameObject>("RoR2/Base/Common/MissileProjectile.prefab"));
             if (ShotSpread_EnableLoader)
             {
-                WhitelistedProjectiles.Add(LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LoaderHook"));
-                WhitelistedProjectiles.Add(LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LoaderYankHook"));
+                WhitelistedProjectiles.Add(Load<GameObject>("RoR2/Base/Loader/LoaderHook.prefab"));
+                WhitelistedProjectiles.Add(Load<GameObject>("RoR2/Base/Loader/LoaderYankHook.prefab"));
             }
             if (AutoDownloadUpdates)
             {
