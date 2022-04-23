@@ -59,7 +59,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void CreateConfig(ConfigFile config)
         {
-            cfgBaseResist = config.Bind(ConfigCategory, "Fire Resistance", 0.1f, "Uses Hyperbolic stacking, see the ror2 wiki.");
+            cfgBaseResist = config.Bind(ConfigCategory, "Fire Resistance Per Stack (Hyperbolic)", 0.1f, "Uses Hyperbolic stacking.");
             //cfgStackResist = config.Bind(ConfigCategory, "Hyperbolic Stack Fire Resistance", 0.25f, "");
         }
 
