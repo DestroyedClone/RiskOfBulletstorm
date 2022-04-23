@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.AddressableAssets;
 
 namespace RiskOfBulletstormRewrite.Items
 {
@@ -17,7 +18,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override ItemTier Tier => ItemTier.Tier3;
 
-        public override GameObject ItemModel => Assets.NullModel;
+        public override GameObject ItemModel => GetPickupModel();
 
         public override Sprite ItemIcon => Assets.NullSprite;
 
@@ -27,6 +28,23 @@ namespace RiskOfBulletstormRewrite.Items
         };
 
         public static bool isCloneRestarting = false;
+
+        public static GameObject GetPickupModel()
+        {
+            var bearItemDef = Addressables.LoadAssetAsync<ItemDef>("RoR2/Base/ExtraLife/ExtraLife.asset").WaitForCompletion();
+            var bearPMP = bearItemDef.pickupModelPrefab;
+            var clonePMP = PrefabAPI.InstantiateClone(bearPMP, "ClonePickupModelPrefab", false);
+            var cloneMeshRenderer = clonePMP.GetComponent<MeshRenderer>();
+            if (cloneMeshRenderer)
+            {
+                var mushroomMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/Mushroom/matMushroom.mat").WaitForCompletion();
+                for (int i = 0; i < cloneMeshRenderer.materials.Length; i++)
+                {
+                    cloneMeshRenderer.materials[i] = mushroomMat;
+                }
+            }
+            return clonePMP;
+        }
 
         public override void Init(ConfigFile config)
         {
