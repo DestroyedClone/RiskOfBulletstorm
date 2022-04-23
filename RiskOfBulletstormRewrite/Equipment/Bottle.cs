@@ -38,7 +38,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         protected override void CreateConfig(ConfigFile config)
         {
-            cfgExcessHealingPercentage = config.Bind(ConfigCategory, "Excess Healing Percentage", 0.05f, "Percentage of excess healing to try to store.");
+            cfgExcessHealingPercentage = config.Bind(ConfigCategory, "Excess Healing Percentage", 0.01f, "Percentage of healing to try to store.");
             cfgMaxHealthPercentagePool = config.Bind(ConfigCategory, "Max Health Percentage", 10f, "Percentage of max health stored in healing.");
         }
 
@@ -72,7 +72,7 @@ namespace RiskOfBulletstormRewrite.Equipment
             var comp = healthComponent.gameObject.GetComponent<BottleStorageController>();
             if (comp && comp.equipmentSlot && comp.equipmentSlot.stock > 0)
             {
-                Chat.AddMessage($"Bottle: {amount * cfgExcessHealingPercentage.Value} / {healthComponent.fullHealth * cfgMaxHealthPercentagePool.Value}");
+                //Chat.AddMessage($"Bottle: {amount * cfgExcessHealingPercentage.Value} / {healthComponent.fullHealth * cfgMaxHealthPercentagePool.Value}");
                 comp.AddReserve(amount * cfgExcessHealingPercentage.Value, healthComponent.fullHealth*cfgMaxHealthPercentagePool.Value);
             }
         }
