@@ -39,6 +39,7 @@ namespace RiskOfBulletstormRewrite
             }
             RegisterBuffInfo(Buffs.MustacheBuff, "MUSTACHE_NAME", "MUSTACHE_DESC");
             RegisterBuffInfo(Buffs.MetronomeTrackerBuff, "METRONOME_NAME", "METRONOME_DESC");
+            RegisterBuffInfo(Buffs.BloodiedScarfBuff, "BLOODIEDSCARF_NAME", "BLOODIEDSCARF_DESC");
         }
 
         internal static void BetterUICompat_StatsDisplay()

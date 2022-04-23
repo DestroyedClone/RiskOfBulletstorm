@@ -13,6 +13,12 @@ namespace RiskOfBulletstormRewrite.Items
 {
     public class BloodiedScarf : ItemBase<BloodiedScarf>
     {
+        public static ConfigEntry<float> cfgTeleportRange;
+        public static ConfigEntry<float> cfgTeleportRangePerStack;
+        public static ConfigEntry<float> cfgDamageVulnerabilityMultiplier;
+        public static ConfigEntry<float> cfgDamageVulnerabilityMultiplierPerStack;
+        public static ConfigEntry<float> cfgDamageVulnerabilityDuration;
+
         public override string ItemName => "Bloodied Scarf";
 
         public override string ItemLangTokenName => "BLOODIEDSCARF";
@@ -31,19 +37,28 @@ namespace RiskOfBulletstormRewrite.Items
 
         public static SkillDef teleportSkillDef;
 
+        public static string[] teleportSkillDefParams = new string[]
+        {
+            instance.GetChance(cfgTeleportRange),
+            instance.GetChance(cfgTeleportRangePerStack),
+            instance.GetChance(cfgDamageVulnerabilityMultiplier),
+            instance.GetChance(cfgDamageVulnerabilityMultiplierPerStack),
+            cfgDamageVulnerabilityDuration.Value.ToString()
+        };
+
         public override void Init(ConfigFile config)
         {
             CreateConfig(config);
-            CreateLang();
             CreateItem();
             Hooks();
             CreateSkillDef();
+            CreateLang();
         }
 
         public void CreateSkillDef()
         {
             teleportSkillDef = ScriptableObject.CreateInstance<SkillDef>();
-            teleportSkillDef.activationState = new SerializableEntityStateType(typeof(Teleport));
+            teleportSkillDef.activationState = new SerializableEntityStateType(typeof(TeleportUtilitySkillState));
             teleportSkillDef.activationStateMachineName = "Weapon";
             teleportSkillDef.baseMaxStock = 1;
             teleportSkillDef.baseRechargeInterval = 12;
@@ -73,8 +88,24 @@ namespace RiskOfBulletstormRewrite.Items
             ContentAddition.AddSkillDef(teleportSkillDef);
         }
 
+        protected override void CreateLang()
+        {
+            base.CreateLang();
+            
+            foreach (var lang in RoR2.Language.steamLanguageTable)
+            {
+                var langName = lang.Value.webApiName;
+                DeferToken(teleportSkillDef.skillDescriptionToken, langName, ItemPickupDescParams);
+            }
+        }
+
         public override void CreateConfig(ConfigFile config)
         {
+            cfgTeleportRange = config.Bind(ConfigCategory, "Teleport Range", 5f, "Distance in meters");
+            cfgTeleportRangePerStack = config.Bind(ConfigCategory, "Teleport Range Per Stack", 2.5f, "Distance in meters");
+            cfgDamageVulnerabilityMultiplier = config.Bind(ConfigCategory, "Damage Vulnerability Multiplier", .2f, "");
+            cfgDamageVulnerabilityMultiplierPerStack = config.Bind(ConfigCategory, "Damage Vulnerability Multiplier Per Stack", .1f, "");
+            cfgDamageVulnerabilityDuration = config.Bind(ConfigCategory, "Damage Vulnerability Duration", 1f, "");
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
@@ -96,6 +127,8 @@ namespace RiskOfBulletstormRewrite.Items
         }
     }
 
+    #region oldTeleportDef
+    /*
     //https://thunderstore.io/package/bongopd/ArtificerRangeTeleport/
     public class Teleport : BaseState
     {
@@ -337,5 +370,6 @@ namespace RiskOfBulletstormRewrite.Items
         private CharacterModel characterModel;
 
         private HurtBoxGroup hurtboxGroup;
-    }
+    }*/
+    #endregion
 }
