@@ -129,7 +129,7 @@ namespace RiskOfBulletstormRewrite.Items
                     {
                         if (lastStocks[i] < gs.stock)
                         {
-                            if (RoR2.Util.CheckRoll(Utils.ItemHelpers.GetHyperbolicValue(cfgFreeStockChance.Value, cfgFreeStockChancePerStack.Value, HipHolster.instance.GetCount(characterBody))))
+                            if (RoR2.Util.CheckRoll(100 * Utils.ItemHelpers.GetHyperbolicValue(cfgFreeStockChance.Value, cfgFreeStockChancePerStack.Value, HipHolster.instance.GetCount(characterBody))))
                             {
                                 gs.stock += gs.skillDef.requiredStock;
                                 gs.ExecuteIfReady();
