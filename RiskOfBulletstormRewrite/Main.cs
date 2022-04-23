@@ -62,6 +62,7 @@ namespace RiskOfBulletstormRewrite
             //On.RoR2.Language.LoadTokensFromFile += Language_LoadTokensFromFile;
 
             AddToAssembly();
+            ModSupport.BetterUICompat_ItemStats();
 
             //todo enemy essembly thing
             //Enemies.LordofTheJammedMonster.CreatePrefab();
