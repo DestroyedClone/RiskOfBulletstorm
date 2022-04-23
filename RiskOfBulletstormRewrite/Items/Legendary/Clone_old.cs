@@ -12,8 +12,6 @@ namespace RiskOfBulletstormRewrite.Items
 {
     public class Clone : ItemBase<Clone>
     {
-        public static ConfigEntry<int> cfgItemsToKeep;
-        public static ConfigEntry<int> cfgItemsToKeepPerStack;
         public override string ItemName => "Clone";
 
         public override string ItemLangTokenName => "CLONE";
@@ -95,8 +93,6 @@ namespace RiskOfBulletstormRewrite.Items
                 ReadOnlyCollection<PlayerCharacterMasterController> instances = PlayerCharacterMasterController.instances;
                 bool allDead = true;
                 List<CharacterMaster> peopleWithClones = new List<CharacterMaster>();
-
-                int playerItemCount = 0;
                 for (int i = 0; i < instances.Count; i++)
                 {
                     PlayerCharacterMasterController playerCharacterMasterController = instances[i];
@@ -119,59 +115,15 @@ namespace RiskOfBulletstormRewrite.Items
                 }
                 if (allDead && peopleWithClones.Count > 0)
                 {
-                    var cloneObject = new GameObject();
-                    var controller = cloneObject.AddComponent<BulletstormCloneController>();
+                    PseudoRestartRun(peopleWithClones[0]);
                 }
-            }
-        }
-
-        public class BulletstormCloneController : MonoBehaviour
-        {
-            //public Xoroshiro128Plus rng;
-            public Dictionary<NetworkUser, Inventory> playerInventories = new Dictionary<NetworkUser, Inventory>();
-
-            public void Start()
-            {
-                //rng = new Xoroshiro128Plus(Run.instance.seed);
-            }
-
-            public void GiveItemsToPlayers()
-            {
-                foreach (var playerInv in playerInventories)
-                {
-
-                }
-            }
-
-            public List<KeyValuePair<ItemIndex, int>> GetRandomItemsFromInventory(Inventory inventory, int cloneCount)
-            {
-                List<KeyValuePair<ItemIndex, int>> list = new List<KeyValuePair<ItemIndex, int>>();
-
-                for (int i = 0; i < inventory.itemAcquisitionOrder.Count; i++)
-                {
-                    var currentItemIndex = inventory.itemAcquisitionOrder[i];
-                    if (ItemCatalog.GetItemDef(currentItemIndex)?.hidden == true)
-                    {
-                        list.Add(new KeyValuePair<ItemIndex, int>(currentItemIndex, 1));
-                        continue;
-                    }
-
-                    var itemCount = UnityEngine.Random.RandomRangeInt(0, Mathf.Min(inventory.GetItemCount(currentItemIndex), cloneCount));
-                    cloneCount -= itemCount;
-                    list.Add(new KeyValuePair<ItemIndex, int>((ItemIndex)i, itemCount));
-                    if (cloneCount <= 0)
-                    {
-                        break;
-                    }
-                }
-
-                return list;
             }
         }
 
         private void PseudoRestartRun(CharacterMaster masterWithClone)
         {
             if (!masterWithClone) return;
+            masterWithClone.inventory.RemoveItem(ItemDef);
             isCloneRestarting = true;
             Run.instance.SetRunStopwatch(0);
             Run.instance.NetworkstageClearCount = -1;
