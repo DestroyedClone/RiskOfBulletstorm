@@ -9,19 +9,19 @@ namespace RiskOfBulletstormRewrite.Items
 {
     public class Mustache : ItemBase<Mustache>
     {
-        public static ConfigEntry<float> RegenAmount;
-        public static ConfigEntry<float> RegenAmountPerStack;
-        public static ConfigEntry<float> Duration;
-        public static ConfigEntry<bool> HealOnBloodShrineUse;
+        public static ConfigEntry<float> cfgRegenAmount;
+        public static ConfigEntry<float> cfgRegenAmountPerStack;
+        public static ConfigEntry<float> cfgDuration;
+        public static ConfigEntry<bool> cfgHealOnBloodShrineUse;
 
         public override string ItemName => "Mustache";
 
         public override string ItemLangTokenName => "MUSTACHE";
         public override string[] ItemFullDescriptionParams => new string[]
         {
-            RegenAmount.Value.ToString(),
-            RegenAmountPerStack.Value.ToString(),
-            Duration.Value.ToString()
+            cfgRegenAmount.Value.ToString(),
+            cfgRegenAmountPerStack.Value.ToString(),
+            cfgDuration.Value.ToString()
         };
 
         public override ItemTier Tier => ItemTier.Tier1;
@@ -44,10 +44,10 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void CreateConfig(ConfigFile config)
         {
-            RegenAmount = config.Bind(ConfigCategory, "Regen Amount", 2f, "The amount of regen to gain with one stack.");
-            RegenAmountPerStack = config.Bind(ConfigCategory, "Regen Amount (Stack)", 1f, "The amount of regen to gain with per stack.");
-            Duration = config.Bind(ConfigCategory, "Duration", 8f, "The amount of time in seconds the buff lasts for.");
-            HealOnBloodShrineUse = config.Bind(ConfigCategory, "Heal on Health Cost", false, "If true, then the buff will be applied upon purchase of anything that costs health, such as Blood Shrines.");
+            cfgRegenAmount = config.Bind(ConfigCategory, "Regen Amount", 2f, "The amount of regen to gain with one stack.");
+            cfgRegenAmountPerStack = config.Bind(ConfigCategory, "Regen Amount (Stack)", 1f, "The amount of regen to gain with per stack.");
+            cfgDuration = config.Bind(ConfigCategory, "Duration", 8f, "The amount of time in seconds the buff lasts for.");
+            cfgHealOnBloodShrineUse = config.Bind(ConfigCategory, "Heal on Health Cost", false, "If true, then the buff will be applied upon purchase of anything that costs health, such as Blood Shrines.");
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
@@ -331,7 +331,7 @@ localScale = new Vector3(1F, 1F, 1F)
         {
             if (sender && sender.HasBuff(Buffs.MustacheBuff))
             {
-                args.baseRegenAdd += RegenAmount.Value + RegenAmountPerStack.Value * (GetCount(sender) - 1);
+                args.baseRegenAdd += cfgRegenAmount.Value + cfgRegenAmountPerStack.Value * (GetCount(sender) - 1);
             }
         }
 
@@ -349,7 +349,7 @@ localScale = new Vector3(1F, 1F, 1F)
                     var isCost = self.costType > CostTypeIndex.None;
                     if (isCost)
                     {
-                        if ((isBloodShrine && HealOnBloodShrineUse.Value) || !isBloodShrine)
+                        if ((isBloodShrine && cfgHealOnBloodShrineUse.Value) || !isBloodShrine)
                         {
                             Heal(characterBody);
                         }
@@ -362,7 +362,7 @@ localScale = new Vector3(1F, 1F, 1F)
         {
             if (characterBody.healthComponent)
             {
-                characterBody.AddTimedBuff(Buffs.MustacheBuff, Duration.Value);
+                characterBody.AddTimedBuff(Buffs.MustacheBuff, cfgDuration.Value);
             }
         }
     }
