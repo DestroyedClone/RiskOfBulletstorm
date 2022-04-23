@@ -38,7 +38,7 @@ namespace RiskOfBulletstormRewrite.Controllers
                 // Artificer
             Load<GameObject>("RoR2/Base/Mage/MageFireboltBasic.prefab"),
             Load<GameObject>("RoR2/Base/Mage/MageLightningboltBasic.prefab"),
-            Load<GameObject>("RoR2/Base/Mage/MageLightningBombProjectile.prefabe"),
+            Load<GameObject>("RoR2/Base/Mage/MageLightningBombProjectile.prefab"),
             Load<GameObject>("RoR2/Base/Mage/MageIceBombProjectile.prefab"),
             Load<GameObject>("RoR2/Base/Mage/MageIcewallWalkerProjectile.prefab"),
             //MageIcewallPillarProjectile ??
