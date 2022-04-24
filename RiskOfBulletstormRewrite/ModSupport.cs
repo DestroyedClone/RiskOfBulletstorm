@@ -115,6 +115,13 @@ namespace RiskOfBulletstormRewrite
                 BetterUI.ItemStats.LinearStacking,
                 BetterUI.ItemStats.StatFormatter.Percent);
 
+            BetterUI.ItemStats.RegisterStat(CoinCrown.instance.ItemDef,
+                prefix + "COINCROWN_MONEYMULTADD",
+                CoinCrown.cfgCashMultiplier.Value,
+                CoinCrown.cfgCashMultiplierPerStack.Value,
+                BetterUI.ItemStats.LinearStacking,
+                BetterUI.ItemStats.StatFormatter.Percent);
+
             //Legendary
             BetterUI.ItemStats.RegisterStat(Backpack.instance.ItemDef,
                 prefix + "BACKPACK_SLOTS",

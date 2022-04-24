@@ -26,6 +26,11 @@
 		"RISKOFBULLETSTORM_EQUIPMENT_MOLOTOV_PICKUP": "Feel The Burn\nUpon use, throws a molotov that sets an area on fire.",
 		"RISKOFBULLETSTORM_EQUIPMENT_MOLOTOV_DESCRIPTION": "Throws a <style=cIsDamage>molotov</style> that <style=cIsDamage>explodes</style> into a <style=cIsDamage>burning</style> zone dealing <style=cIsDamage>{0} every {1} second for {2} seconds</style>.",
 		"RISKOFBULLETSTORM_EQUIPMENT_MOLOTOV_LORE": "Molotov cocktails aren't guns, and so they are frowned upon by long-dwelling Gungeoneers. They get the job done regardless.\nKnowing the Hegemony wouldn't let her bring her own weaponry to the Gungeon, the Convict smuggled these few bottles in with the transport's cargo.",
+		
+		"RISKOFBULLETSTORM_EQUIPMENT_JARBEES_NAME": "Jar of Bees",
+		"RISKOFBULLETSTORM_EQUIPMENT_JARBEES_PICKUP": "<b>The Pain!</b>\nThrow a jar of bees that shatters on contact.",
+		"RISKOFBULLETSTORM_EQUIPMENT_JARBEES_DESCRIPTION": "<style=cIsUtility>Throw</style> a <style=cIsDamage>jar of bees</style> that shatters into <style=cIsDamage>{0} bees</style> that deal <style=cIsDamage>{1}% damage</style> with a <style=cIsDamage>{2} proc coefficient</style>.",
+		"RISKOFBULLETSTORM_EQUIPMENT_JARBEES_LORE": "These bees have been carefully trained to hunt down enemy munitions... and destroy them.",
 
 		//[LUNAR]
 		"RISKOFBULLETSTORM_EQUIPMENT_DRILL_NAME": "Drill",
@@ -43,6 +48,10 @@
 		"RISKOFBULLETSTORM_EQUIPMENT_IRONCOIN_DESCRIPTION": "<style=cIsUtility>Kills all enemies</style> <style=cDeath>...but gain no rewards. Consumed on use.</style>",
 		"RISKOFBULLETSTORM_EQUIPMENT_IRONCOIN_LORE": "A payment for services rendered. This mysterious coin vanishes when tossed into the air.",
 		
+		"RISKOFBULLETSTORM_EQUIPMENT_IRONCOINCONSUMED_NAME": "Iron Coin (Spent)",
+		"RISKOFBULLETSTORM_EQUIPMENT_IRONCOINCONSUMED_PICKUP": "<b>Valar Morgunis</b>\nDeed has been paid...",
+		"RISKOFBULLETSTORM_EQUIPMENT_IRONCOINCONSUMED_DESCRIPTION": "It looks neat, that's about it.",
+		"RISKOFBULLETSTORM_EQUIPMENT_IRONCOINCONSUMED_LORE": "A payment for services rendered.",
 		
 		"RISKOFBULLETSTORM_EQUIPMENT__NAME": "",
 		"RISKOFBULLETSTORM_EQUIPMENT__PICKUP": "",
