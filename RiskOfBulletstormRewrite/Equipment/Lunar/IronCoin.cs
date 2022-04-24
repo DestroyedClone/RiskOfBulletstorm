@@ -18,6 +18,8 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public override Sprite EquipmentIcon => Assets.NullSprite;
 
+        public override bool IsLunar => true;
+
         public override void Init(ConfigFile config)
         {
             CreateConfig(config);
@@ -62,12 +64,19 @@ namespace RiskOfBulletstormRewrite.Equipment
                     {
                         charMaster.inventory.RemoveItem(RoR2Content.Items.InvadingDoppelganger, itemCount);
                     }
+                    var bossGroups = InstanceTracker.GetInstancesList<BossGroup>();
+                    /*foreach (var bossGroup in bossGroups)
+                    {
+                        bossGroup.bossMemories[0].
+                    }*/
                     charMaster.TrueKill(attackerGameObject, attackerGameObject, DamageType.Generic);
                 }
             }
             if (enemiesKilled > 0)
             {
-                slot.equipmentIndex = EquipmentIndex.None;
+
+                CharacterMasterNotificationQueue.PushEquipmentTransformNotification(slot.characterBody.master, slot.characterBody.inventory.currentEquipmentIndex, IronCoinConsumed.instance.EquipmentDef.equipmentIndex, CharacterMasterNotificationQueue.TransformationType.Default);
+                slot.inventory.SetEquipmentIndex(IronCoinConsumed.instance.EquipmentDef.equipmentIndex);
                 return true;
             }
             return false;
