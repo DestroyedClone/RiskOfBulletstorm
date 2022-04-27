@@ -42,8 +42,11 @@ namespace RiskOfBulletstormRewrite.Equipment
         {
             int enemiesKilled = 0;
             var attackerGameObject = slot.characterBody.gameObject;
-            foreach (var charMaster in CharacterMaster.instancesList)
+            foreach (var charMaster in CharacterMaster.readOnlyInstancesList)
             {
+                if (charMaster.playerCharacterMasterController)
+                    continue;
+
                 var body = charMaster.GetBody();
                 if (charMaster.inventory && body && body.healthComponent && body.healthComponent.alive && charMaster.teamIndex != slot.teamComponent.teamIndex)
                 {
@@ -64,7 +67,7 @@ namespace RiskOfBulletstormRewrite.Equipment
                     {
                         charMaster.inventory.RemoveItem(RoR2Content.Items.InvadingDoppelganger, itemCount);
                     }
-                    var bossGroups = InstanceTracker.GetInstancesList<BossGroup>();
+                    //var bossGroups = InstanceTracker.GetInstancesList<BossGroup>();
                     /*foreach (var bossGroup in bossGroups)
                     {
                         bossGroup.bossMemories[0].
@@ -74,7 +77,6 @@ namespace RiskOfBulletstormRewrite.Equipment
             }
             if (enemiesKilled > 0)
             {
-
                 CharacterMasterNotificationQueue.PushEquipmentTransformNotification(slot.characterBody.master, slot.characterBody.inventory.currentEquipmentIndex, IronCoinConsumed.instance.EquipmentDef.equipmentIndex, CharacterMasterNotificationQueue.TransformationType.Default);
                 slot.inventory.SetEquipmentIndex(IronCoinConsumed.instance.EquipmentDef.equipmentIndex);
                 return true;
