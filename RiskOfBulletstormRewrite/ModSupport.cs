@@ -14,6 +14,7 @@ using UnityEngine;
 using Path = System.IO.Path;
 using RiskOfBulletstormRewrite.Utils;
 using RoR2;
+using System.Runtime.CompilerServices;
 
 namespace RiskOfBulletstormRewrite
 {
@@ -26,10 +27,12 @@ namespace RiskOfBulletstormRewrite
             {
                 betterUILoaded = true;
                 BetterUICompat_StatsDisplay();
+                BetterUICompat_ItemStats();
+                ModSupport.BetterUICompat_Buffs();
             }
         }
 
-        // Called by Buffs.cs
+        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
         internal static void BetterUICompat_Buffs()
         {
             var prefix = "RISKOFBULLETSTORM_BUFF_";
@@ -42,6 +45,7 @@ namespace RiskOfBulletstormRewrite
             RegisterBuffInfo(Buffs.BloodiedScarfBuff, "BLOODIEDSCARF_NAME", "BLOODIEDSCARF_DESC");
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
         internal static void BetterUICompat_StatsDisplay()
         {
             BetterUI.StatsDisplay.AddStatsDisplay("$accuracy", (BetterUI.StatsDisplay.DisplayCallback)GetAccuracy);
@@ -63,7 +67,7 @@ namespace RiskOfBulletstormRewrite
             return Mathf.Max(0, (stacks+1) - Scope.expectedMaxStacks) * value;
         }
 
-        //Called in Main, after itemdefs are registed.
+        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
         internal static void BetterUICompat_ItemStats()
         {
             var prefix = "RISKOFBULLETSTORM_STAT_";
@@ -147,8 +151,6 @@ namespace RiskOfBulletstormRewrite
                 BetterUI.ItemStats.LinearStacking,
                 BetterUI.ItemStats.StatFormatter.Percent,
                 BetterUI.ItemStats.ItemTag.MaxHealth);
-
-
         }
     }
 }

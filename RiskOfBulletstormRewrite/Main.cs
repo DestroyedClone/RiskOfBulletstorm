@@ -46,7 +46,6 @@ namespace RiskOfBulletstormRewrite
             _logger = Logger;
             pluginInfo = Info;
             Language.config = Config;
-            ModSupport.CheckForModSupport();
 
             LocationOfProgram = Path.GetDirectoryName(Info.Location);
 
@@ -62,7 +61,8 @@ namespace RiskOfBulletstormRewrite
             //On.RoR2.Language.LoadTokensFromFile += Language_LoadTokensFromFile;
 
             AddToAssembly();
-            ModSupport.BetterUICompat_ItemStats();
+
+            ModSupport.CheckForModSupport();
 
             //todo enemy essembly thing
             //Enemies.LordofTheJammedMonster.CreatePrefab();
