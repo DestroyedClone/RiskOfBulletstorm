@@ -56,16 +56,20 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void Hooks()
         {
-            TeleporterInteraction.onTeleporterFinishGlobal += TeleporterInteraction_onTeleporterFinishGlobal;
+            TeleporterInteraction.onTeleporterChargedGlobal += TeleporterInteraction_onTeleporterChargedGlobal;
         }
 
-        private void TeleporterInteraction_onTeleporterFinishGlobal(TeleporterInteraction teleporterInteraction)
+        private void TeleporterInteraction_onTeleporterChargedGlobal(TeleporterInteraction teleporterInteraction)
         {
             foreach (var pcmc in PlayerCharacterMasterController.instances)
             {
-                var itemCount = GetCount(pcmc.master.GetBody());
+                var itemCount = GetCount(pcmc.master);
                 if (itemCount > 0)
-                    pcmc.master.GiveMoney((uint)(pcmc.master.money * (cfgCashMultiplier.Value + cfgCashMultiplierPerStack.Value * (itemCount - 1))));
+                {
+                    uint moneyToGive = (uint)(pcmc.master.money * (cfgCashMultiplier.Value + cfgCashMultiplierPerStack.Value * (itemCount - 1)));
+                    Chat.AddMessage("Gave money: " + moneyToGive);
+                    pcmc.master.GiveMoney(moneyToGive);
+                }
             }
         }
     }
