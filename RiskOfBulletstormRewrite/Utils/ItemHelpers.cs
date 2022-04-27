@@ -1,10 +1,10 @@
 ﻿using RiskOfBulletstormRewrite.Utils.Components;
 using RoR2;
+using RoR2.Orbs;
 using System.Collections.Generic;
-using UnityEngine;
-using System;
 using System.Collections.ObjectModel;
-using RoR2.UI;
+using System.Linq;
+using UnityEngine;
 using UnityEngine.AddressableAssets;
 
 namespace RiskOfBulletstormRewrite.Utils
@@ -20,7 +20,6 @@ namespace RiskOfBulletstormRewrite.Utils
         /// <returns>Returns an array full of RendererInfos for GameObject.</returns>
         public static CharacterModel.RendererInfo[] ItemDisplaySetup(GameObject obj, bool debugmode = false)
         {
-
             List<Renderer> AllRenderers = new List<Renderer>();
 
             var meshRenderers = obj.GetComponentsInChildren<MeshRenderer>();
@@ -79,7 +78,6 @@ namespace RiskOfBulletstormRewrite.Utils
             }
         }
 
-
         public static void SimulatePickup(CharacterMaster characterMaster, ItemDef itemDef, int amount = 1, bool showNotif = true)
         {
             var self = characterMaster.inventory;
@@ -108,7 +106,6 @@ namespace RiskOfBulletstormRewrite.Utils
                     }*/
                 }
             }
-
         }
 
         public static float GetHyperbolicValue(float baseAmount, float stackAmount)
@@ -121,7 +118,7 @@ namespace RiskOfBulletstormRewrite.Utils
             if (itemCount == 0)
                 return 0;
 
-            return 1 - 1 / (1 + baseAmount * (stackAmount * (itemCount-1)));
+            return 1 - 1 / (1 + baseAmount * (stackAmount * (itemCount - 1)));
         }
 
         public static int GetEquipmentCountForTeam(TeamIndex teamIndex, EquipmentIndex equipmentIndex, bool requiresAlive, bool requiresConnected = true)
@@ -160,6 +157,42 @@ namespace RiskOfBulletstormRewrite.Utils
             return false;
         }
 
+        //Squid.FireSpine
+        public static void FireSquidShot(CharacterBody ownerBody, Vector3 origin, float damageCoefficient, float procCoefficient = 1)
+        {
+            BullseyeSearch enemyFinder = new BullseyeSearch();
+            enemyFinder.viewer = ownerBody;
+            enemyFinder.maxDistanceFilter = float.PositiveInfinity;
+            enemyFinder.searchOrigin = origin;
+            enemyFinder.searchDirection = Vector3.up;
+            enemyFinder.sortMode = BullseyeSearch.SortMode.Distance;
+            enemyFinder.teamMaskFilter = TeamMask.allButNeutral;
+            enemyFinder.minDistanceFilter = 0f;
+            enemyFinder.maxAngleFilter = 180;
+            enemyFinder.filterByLoS = true;
+            if (FriendlyFireManager.friendlyFireMode != FriendlyFireManager.FriendlyFireMode.Off)
+            {
+                enemyFinder.teamMaskFilter.RemoveTeam(ownerBody.teamComponent.teamIndex);
+            }
+            enemyFinder.RefreshCandidates();
+            HurtBox hurtBox = enemyFinder.GetResults().FirstOrDefault<HurtBox>();
+            if (hurtBox)
+            {
+                SquidOrb squidOrb = new SquidOrb();
+                squidOrb.damageValue = ownerBody.damage * damageCoefficient;
+                squidOrb.isCrit = Util.CheckRoll(ownerBody.crit, ownerBody.master);
+                squidOrb.teamIndex = TeamComponent.GetObjectTeam(ownerBody.gameObject);
+                squidOrb.attacker = ownerBody.gameObject;
+                squidOrb.procCoefficient = procCoefficient;
+                HurtBox hurtBox2 = hurtBox;
+                if (hurtBox2)
+                {
+                    squidOrb.origin = origin;
+                    squidOrb.target = hurtBox2;
+                    OrbManager.instance.AddOrb(squidOrb);
+                }
+            }
+        }
 
         public static T Load<T>(string assetPath)
         {
