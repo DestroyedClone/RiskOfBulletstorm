@@ -3,7 +3,14 @@
 	{
 		//[NORMAL]
 		"RISKOFBULLETSTORM_ARTIFACT_PITLORD_NAME": "Artifact of the Pit Lord",
-		"RISKOFBULLETSTORM_ARTIFACT_PITLORD_DESCRIPTION": "Monsters teleport back after falling off-stage.",
+		"RISKOFBULLETSTORM_ARTIFACT_PITLORD_DESCRIPTION": "Players and monsters teleport back on stage with no fall damage.",
+		
+		"RISKOFBULLETSTORM_ARTIFACT_DAMAGEEQUIPMENTRECHARGE_NAME": "Artifact of the Linked Equipment",
+		"RISKOFBULLETSTORM_ARTIFACT_DAMAGEEQUIPMENTRECHARGE_RECHARGEONHIT_DESCRIPTION": "Equipment only recharges based off damage dealt.",
+		
+		"RISKOFBULLETSTORM_ARTIFACT_ADAPTIVEARMORBOSSES_NAME": "Artifact of the Adaptive Armor",
+		"RISKOFBULLETSTORM_ARTIFACT_ADAPTIVEARMORBOSSES_DESCRIPTION": "All teleporter bosses gain the Final Boss's adaptive armor.",
+		
 		"RISKOFBULLETSTORM_ARTIFACT__NAME": "",
 		"RISKOFBULLETSTORM_ARTIFACT__DESCRIPTION": "",
 	}

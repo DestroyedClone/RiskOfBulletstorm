@@ -7,8 +7,6 @@ namespace RiskOfBulletstormRewrite.Artifact
 {
     internal class ArtifactPitLord : ArtifactBase<ArtifactPitLord>
     {
-        public static ConfigEntry<bool> cfgAffectMonsters;
-
         public override string ArtifactName => "Artifact of the Pit Lord";
 
         public override string ArtifactLangTokenName => "PITLORD";
@@ -43,7 +41,7 @@ namespace RiskOfBulletstormRewrite.Artifact
         {
             if (artifactDef != ArtifactDef)
             {
-                _logger.LogMessage($"Artifact {artifactDef} (ID:{artifactDef.artifactIndex}) does not equal {ArtifactDef} (ID:{ArtifactDef.artifactIndex})");
+                //_logger.LogMessage($"Artifact {artifactDef} (ID:{artifactDef.artifactIndex}) does not equal {ArtifactDef} (ID:{ArtifactDef.artifactIndex})");
                 return;
             }
             On.RoR2.MapZone.TryZoneStart += AllNoFallDamage;
