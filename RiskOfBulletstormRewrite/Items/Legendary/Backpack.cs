@@ -4,6 +4,8 @@ using RoR2;
 using UnityEngine;
 using static RiskOfBulletstormRewrite.Main;
 using UnityEngine.Networking;
+using System.Text;
+using RoR2.UI;
 
 namespace RiskOfBulletstormRewrite.Items
 {
@@ -64,6 +66,52 @@ namespace RiskOfBulletstormRewrite.Items
         public override void Hooks()
         {
             CharacterBody.onBodyStartGlobal += CharacterBody_onBodyStartGlobal;
+            On.RoR2.UI.EquipmentIcon.Update += EquipmentIcon_Update;
+        }
+
+        private void EquipmentIcon_Update(On.RoR2.UI.EquipmentIcon.orig_Update orig, EquipmentIcon self)
+        {
+            orig(self);
+            if (self.targetInventory)
+            {
+                var itemCount = self.targetInventory.GetItemCount(ItemDef);
+                if (itemCount > 0)
+                {
+                    self.stockText.gameObject.SetActive(true);
+                    StringBuilder stringBuilder2 = HG.StringBuilderPool.RentStringBuilder();
+                    var equipmentSlotCount = self.targetInventory.GetEquipmentSlotCount();
+                    if (self.displayAlternateEquipment)
+                    {
+                        uint nextSlot = LoopAround(self.targetEquipmentSlot.activeEquipmentSlot++, 0, (uint)(equipmentSlotCount - 1));
+                        self.currentDisplayData.equipmentDef = self.targetInventory.equipmentStateSlots[nextSlot].equipmentDef;
+                        stringBuilder2.Append($"[{nextSlot}/{equipmentSlotCount}]\n");
+                        stringBuilder2.AppendInt(self.currentDisplayData.stock, 1U, uint.MaxValue);
+
+                        Texture texture = null;
+                        Color color = Color.clear;
+                        if (self.currentDisplayData.equipmentDef != null)
+                        {
+                            color = ((self.currentDisplayData.stock > 0) ? Color.white : Color.gray);
+                            texture = self.currentDisplayData.equipmentDef.pickupIconTexture;
+                        }
+                        self.iconImage.texture = texture;
+                        self.iconImage.color = color;
+                    } else
+                    {
+                        stringBuilder2.Append($"[{self.targetEquipmentSlot.activeEquipmentSlot + 1}/{equipmentSlotCount}]\n");
+                        stringBuilder2.AppendInt(self.currentDisplayData.stock, 1U, uint.MaxValue);
+                    }
+                    self.stockText.SetText(stringBuilder2);
+                    HG.StringBuilderPool.ReturnStringBuilder(stringBuilder2);
+                }
+            }
+        }
+
+        public static uint LoopAround(uint value, uint min, uint max)
+        {
+            if (value < min) value = max;
+            else if (value > max) value = min;
+            return value;
         }
 
         private void CharacterBody_onBodyStartGlobal(CharacterBody obj)
@@ -188,7 +236,7 @@ namespace RiskOfBulletstormRewrite.Items
                 {
                     return;
                 }
-                Chat.AddMessage(equipmentPrefix + i);
+                //Chat.AddMessage(equipmentPrefix + i);
                 inventory.SetActiveEquipmentSlot(i);
             }
             private void CycleSlot(bool cycleRight)
@@ -196,7 +244,7 @@ namespace RiskOfBulletstormRewrite.Items
                 var currentSlot = inventory.activeEquipmentSlot + (cycleRight ? 1 : -1);
                 var newValue = (byte)LoopAround(currentSlot, 0, selectableSlot);
                 inventory.SetActiveEquipmentSlot(newValue);
-                Chat.AddMessage(equipmentPrefix + newValue);
+                //Chat.AddMessage(equipmentPrefix + newValue);
             }
             public static float LoopAround(float value, float min, float max)
             {
