@@ -91,6 +91,7 @@ namespace RiskOfBulletstormRewrite.Equipment
         {
             public ProjectileController projectileController;
             public CharacterMaster ownerMaster;
+            public float baseInaccuracyDegrees = 5f;
 
             public void Start()
             {
@@ -106,12 +107,15 @@ namespace RiskOfBulletstormRewrite.Equipment
                 }
                 for (int i = 0; i < cfgBeeCount.Value; i++)
                 {
-                    ProjectileManager.instance.FireProjectile(railgunnerPistolShotPrefab, impactInfo.estimatedPointOfImpact, Quaternion.Euler(impactInfo.estimatedImpactNormal), projectileController.owner, cfgBeeDamageCoefficient.Value, 0, RoR2.Util.CheckRoll(projectileController.owner.GetComponent<CharacterBody>().crit, ownerMaster));
+                    Quaternion rhs = Quaternion.AngleAxis((float)UnityEngine.Random.Range(0, 360), Vector3.forward);
+                    Quaternion rhs2 = Quaternion.AngleAxis(UnityEngine.Random.Range(0f, this.baseInaccuracyDegrees), Vector3.up);
+                    Quaternion rotation = Util.QuaternionSafeLookRotation(Vector3.up) * rhs * rhs2;
+                    ProjectileManager.instance.FireProjectile(railgunnerPistolShotPrefab, impactInfo.estimatedPointOfImpact, rotation, projectileController.owner, cfgBeeDamageCoefficient.Value * projectileController.owner.GetComponent<CharacterBody>().damage, 0, RoR2.Util.CheckRoll(projectileController.owner.GetComponent<CharacterBody>().crit, ownerMaster));
                 }
 
                 if (NetworkServer.active)
                 {
-                    GlobalEventManager.instance.OnHitAll(new DamageInfo() {attacker = body.gameObject}, impactInfo.collider.gameObject);
+                    GlobalEventManager.instance.OnHitAll(new DamageInfo() {attacker = body.gameObject, inflictor = body.gameObject, position = impactInfo.estimatedPointOfImpact}, impactInfo.collider.gameObject);
                 }
                 Destroy(gameObject);
             }
