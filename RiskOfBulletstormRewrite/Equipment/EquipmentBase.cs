@@ -43,6 +43,8 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public virtual bool IsLunar { get; } = false;
 
+        public virtual bool CanBeRandomlyTriggered { get; } = true;
+
         public EquipmentDef EquipmentDef;
 
         public string ConfigCategory
@@ -145,6 +147,8 @@ namespace RiskOfBulletstormRewrite.Equipment
             EquipmentDef.enigmaCompatible = EnigmaCompatible;
             EquipmentDef.isBoss = IsBoss;
             EquipmentDef.isLunar = IsLunar;
+            EquipmentDef.canBeRandomlyTriggered = CanBeRandomlyTriggered;
+            //EquipmentDef.colorIndex
 
             ItemAPI.Add(new CustomEquipment(EquipmentDef, CreateItemDisplayRules()));
             On.RoR2.EquipmentSlot.PerformEquipmentAction += PerformEquipmentAction;
