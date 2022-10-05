@@ -34,6 +34,7 @@ namespace RiskOfBulletstormRewrite.Artifact
             {
                 return;
             }
+            CharacterBody.onBodyStartGlobal -= GiveOobTeleport;
             On.RoR2.MapZone.TryZoneStart -= AllNoFallDamage;
         }
 
@@ -44,7 +45,13 @@ namespace RiskOfBulletstormRewrite.Artifact
                 //_logger.LogMessage($"Artifact {artifactDef} (ID:{artifactDef.artifactIndex}) does not equal {ArtifactDef} (ID:{ArtifactDef.artifactIndex})");
                 return;
             }
+            CharacterBody.onBodyStartGlobal += GiveOobTeleport;
             On.RoR2.MapZone.TryZoneStart += AllNoFallDamage;
+        }
+
+        public void GiveOobTeleport(CharacterBody body)
+        {
+            body.inventory.GiveItem(RoR2Content.Items.TeleportWhenOob);
         }
 
         public static bool CharacterBodyCanTakeFallDamage(CharacterBody body)
@@ -59,15 +66,15 @@ namespace RiskOfBulletstormRewrite.Artifact
             if (body)
             {
                 bool canTakeFallDamage = CharacterBodyCanTakeFallDamage(body);
-                var teamComponent = body.teamComponent;
-                var oldTeamIndex = teamComponent.teamIndex;
+                //var teamComponent = body.teamComponent;
+                //var oldTeamIndex = teamComponent.teamIndex;
 
-                teamComponent.teamIndex = TeamIndex.Player; //Set the team of it to player to avoid it dying when it falls into a hellzone.
+                //teamComponent.teamIndex = TeamIndex.Player; //Set the team of it to player to avoid it dying when it falls into a hellzone.
                 if (canTakeFallDamage) body.bodyFlags &= CharacterBody.BodyFlags.IgnoreFallDamage;
 
                 orig(self, other); //Run the effect of whatever zone it is in on it. Since it is of the Player team, it obviously gets teleported back into the zone.
 
-                teamComponent.teamIndex = oldTeamIndex; //Now make it hostile again. Thanks Obama.
+                //teamComponent.teamIndex = oldTeamIndex; //Now make it hostile again. Thanks Obama.
                 if (canTakeFallDamage) body.bodyFlags |= CharacterBody.BodyFlags.IgnoreFallDamage;
                 return;
             }
