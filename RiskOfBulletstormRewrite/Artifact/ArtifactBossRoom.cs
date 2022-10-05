@@ -36,6 +36,7 @@ namespace RiskOfBulletstormRewrite.Artifact
                 return;
             }
             TeleporterInteraction.onTeleporterBeginChargingGlobal -= ClearSpawns;
+            CharacterBody.onBodyStartGlobal -= BuffBoss;
         }
 
 
@@ -47,6 +48,7 @@ namespace RiskOfBulletstormRewrite.Artifact
             }
             //teleporter interaction
             TeleporterInteraction.onTeleporterBeginChargingGlobal += ClearSpawns;
+            CharacterBody.onBodyStartGlobal += BuffBoss;
         }
 
         public void ClearSpawns(TeleporterInteraction self)
@@ -65,6 +67,16 @@ namespace RiskOfBulletstormRewrite.Artifact
                     }
                 }
                 self.bonusDirector.enabled = false;
+            }
+        }
+
+        public void BuffBoss(CharacterBody characterBody)
+        {
+            if (NetworkServer.active && characterBody.isBoss && characterBody.inventory)
+            {
+                characterBody.inventory.GiveItem(RoR2Content.Items.Hoof); //14% spd
+                characterBody.inventory.GiveItem(RoR2Content.Items.Syringe); //15%atk
+                characterBody.inventory.GiveItem(RoR2Content.Items.Pearl, 5); //+50% health
             }
         }
     }
