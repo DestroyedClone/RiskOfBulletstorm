@@ -14,6 +14,9 @@
 		"RISKOFBULLETSTORM_ARTIFACT_BOSSCHAMBER_NAME": "Artifact of the Boss Chamber",
 		"RISKOFBULLETSTORM_ARTIFACT_BOSSCHAMBER_DESCRIPTION": "Natural spawns are cleared when starting the boss fight, but the boss is stronger.",
 		
+		"RISKOFBULLETSTORM_ARTIFACT_UPSPEEDOOC_NAME": "Artifact of the Swift Post-Battle",
+		"RISKOFBULLETSTORM_ARTIFACT_UPSPEEDOOC_DESCRIPTION": "After killing the teleporter boss, all players gain a speed boost.",
+		
 		"RISKOFBULLETSTORM_ARTIFACT__NAME": "",
 		"RISKOFBULLETSTORM_ARTIFACT__DESCRIPTION": "",
 	}
