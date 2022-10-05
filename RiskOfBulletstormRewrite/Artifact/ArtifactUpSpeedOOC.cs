@@ -34,7 +34,7 @@ namespace RiskOfBulletstormRewrite.Artifact
             {
                 return;
             }
-            RoR2.CharacterBody.onBodyStartGlobal -= CharacterBody_onBodyStartGlobal;
+            TeleporterInteraction.onTeleporterFinishGlobal -= TrackTeleporterDone;
         }
 
 
@@ -59,16 +59,6 @@ namespace RiskOfBulletstormRewrite.Artifact
                         body.AddBuff(RoR2Content.Buffs.CloakSpeed);
                     }
                 }
-            }
-        }
-
-
-
-        private void CharacterBody_onBodyStartGlobal(CharacterBody characterBody)
-        {
-            if (NetworkServer.active && characterBody.isBoss && characterBody.inventory && characterBody.inventory.GetItemCount(RoR2Content.Items.AdaptiveArmor) <= 0)
-            {
-                characterBody.inventory.GiveItem(RoR2Content.Items.AdaptiveArmor);
             }
         }
     }
