@@ -12,12 +12,14 @@ namespace RiskOfBulletstormRewrite.Utils
         public static BuffDef MustacheBuff;
         public static BuffDef MetronomeTrackerBuff;
         public static BuffDef BloodiedScarfBuff;
+        public static BuffDef AlphaBulletBuff;
 
         public static void CreateBuffs()
         {
             //Buffs
             MustacheBuff = AddBuff("Power of Commerce", Assets.NullSprite, Color.yellow, false, true);
             BloodiedScarfBuff = AddBuff("", Assets.NullSprite, Color.red, true, true);
+            AlphaBulletBuff = AddBuff("Alpha Bullet Damage", Assets.NullSprite, Color.yellow, false, true);
 
             //Trackers
             MetronomeTrackerBuff = AddBuff("Metronome Stacks (Display)",
