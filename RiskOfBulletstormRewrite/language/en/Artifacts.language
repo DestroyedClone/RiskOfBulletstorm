@@ -17,6 +17,9 @@
 		"RISKOFBULLETSTORM_ARTIFACT_UPSPEEDOOC_NAME": "Artifact of the Swift Post-Battle",
 		"RISKOFBULLETSTORM_ARTIFACT_UPSPEEDOOC_DESCRIPTION": "After completing the teleporter event, all players gain a speed boost.",
 		
+		"RISKOFBULLETSTORM_ARTIFACT_GUNGEONSPOOF_NAME": "Artifact of Gungeon Mimic",
+		"RISKOFBULLETSTORM_ARTIFACT_GUNGEONSPOOF_DESCRIPTION": "WIP - Modifies the game to act similar to Gungeon.",
+		
 		"RISKOFBULLETSTORM_ARTIFACT__NAME": "",
 		"RISKOFBULLETSTORM_ARTIFACT__DESCRIPTION": "",
 	}
