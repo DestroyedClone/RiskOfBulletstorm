@@ -45,6 +45,10 @@ namespace RiskOfBulletstormRewrite.Items
 
         public virtual bool AIBlacklisted { get; set; } = false;
 
+        //public virtual RoR2.ExpansionManagement.ExpansionDef ExpansionDef { get; } = null;
+
+        public virtual ItemDef ContagiousOwnerItemDef { get; } = null;
+
         public string ConfigCategory
         {
             get
@@ -162,6 +166,19 @@ namespace RiskOfBulletstormRewrite.Items
             ItemDef.canRemove = CanRemove;
             //ItemDef.tier = Tier;
             ItemDef.deprecatedTier = Tier;
+            if (Tier == ItemTier.VoidTier1
+            || Tier == ItemTier.VoidTier2
+            || Tier == ItemTier.VoidTier3
+            || Tier == ItemTier.VoidBoss)
+            {
+                ItemDef.requiredExpansion = Utils.ItemHelpers.GetSOTVExpansionDef();
+                if (!ContagiousOwnerItemDef)
+                {
+                    Main._logger.LogWarning($"Void Item {ItemDef.name} does not have an associated ItemDef to convert from!");
+                } else {
+                    Main.voidConversions.Add(ContagiousOwnerItemDef, ItemDef);
+                }
+            }
 
             if (ItemTags.Length > 0) { ItemDef.tags = ItemTags; }
 

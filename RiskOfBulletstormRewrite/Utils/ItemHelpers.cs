@@ -199,5 +199,14 @@ namespace RiskOfBulletstormRewrite.Utils
             var loadedAsset = Addressables.LoadAssetAsync<T>(assetPath).WaitForCompletion();
             return loadedAsset;
         }
+
+        public static RoR2.ExpansionManagement.ExpansionDef sotvExpansionDef;
+
+        public static RoR2.ExpansionManagement.ExpansionDef GetSOTVExpansionDef()
+        {
+            if (!sotvExpansionDef)
+                sotvExpansionDef = RoR2.ExpansionManagement.ExpansionCatalog.expansionDefs.FirstOrDefault(def => def.nameToken == "DLC1_NAME");
+            return sotvExpansionDef;
+        }
     }
 }

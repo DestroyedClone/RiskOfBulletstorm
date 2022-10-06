@@ -12,9 +12,14 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using Path = System.IO.Path;
+using RoR2.Items;
+using RoR2;
+using static RoR2.Util;
+using HarmonyLib;
 
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
 
+////dotnet build --configuration Release
 namespace RiskOfBulletstormRewrite
 {
     [BepInPlugin(ModGuid, ModName, ModVer)]
@@ -61,6 +66,7 @@ namespace RiskOfBulletstormRewrite
             //On.RoR2.Language.LoadTokensFromFile += Language_LoadTokensFromFile;
 
             AddToAssembly();
+            SetupVoid();
 
             ModSupport.CheckForModSupport();
 
@@ -69,7 +75,30 @@ namespace RiskOfBulletstormRewrite
             RiskOfBulletstormRewrite.Language.Initialize();
         }
 
+        public static Dictionary<ItemDef, ItemDef> voidConversions = new Dictionary<ItemDef, ItemDef>();
 
+        public void SetupVoid()
+        {
+            
+            On.RoR2.Items.ContagiousItemManager.Init += MethodNameHere;
+        }
+
+
+
+        private void MethodNameHere(On.RoR2.Items.ContagiousItemManager.orig_Init orig)
+        {
+            foreach (var itemPair in voidConversions)
+            {
+                RoR2.ItemDef.Pair transformation = new RoR2.ItemDef.Pair()
+                {
+                    itemDef1 = itemPair.Key,
+                    itemDef2 = itemPair.Value
+                };
+                RoR2.ItemCatalog.itemRelationships[RoR2.DLC1Content.ItemRelationshipTypes.ContagiousItem] = ItemCatalog.itemRelationships[DLC1Content.ItemRelationshipTypes.ContagiousItem].AddToArray(transformation);
+            }
+            
+            orig();
+        }
 
         public void AddToAssembly()
         {
