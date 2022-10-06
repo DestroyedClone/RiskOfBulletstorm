@@ -191,5 +191,14 @@ namespace RiskOfBulletstormRewrite.Items
 
             return body.inventory.GetItemCount(itemDef);
         }
+
+        public float GetStack(float initialValue, float stackValue, int itemCount)
+        {
+            return initialValue + stackValue * (itemCount - 1);
+        }
+        public float GetStack(ConfigEntry<float> initialValue, ConfigEntry<float> stackValue, int itemCount)
+        {
+            return GetStack(initialValue.Value, stackValue.Value, itemCount);
+        }
     }
 }
