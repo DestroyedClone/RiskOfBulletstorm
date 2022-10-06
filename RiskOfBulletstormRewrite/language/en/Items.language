@@ -36,7 +36,7 @@
 		
 		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_NAME": "Battle Standard",
 		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_PICKUP": "<b>Set Your Own!</b>/nImproves the effectiveness of companions and charmed enemies.",
-		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_DESCRIPTION": "Increases damage of companions and charmed enemies by 10% <style=cStack>(+10% per stack)</style>.",
+		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_DESCRIPTION": "Increases damage of companions and charmed enemies by {0}% <style=cStack>(+{0}% per stack)</style>.",
 		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_LORE": "Before the advancement of Gundead society, belligerent bands of Bullet Kin would rally around these banners before their raids upon the upper chambers.",
 		
 		"RISKOFBULLETSTORM_ITEM_RINGOFCHESTFRIENDSHIP_NAME": "Ring of Chest Friendship",
@@ -84,6 +84,11 @@
 		"RISKOFBULLETSTORM_ITEM_RINGTRIGGERS_PICKUP": "<b>Items == Guns</b>\nSummons bullets on equipment use.",
 		"RISKOFBULLETSTORM_ITEM_RINGTRIGGERS_DESCRIPTION": "Activating your equipment <style=cIsDamage>fires an attack related to your character in 8 directions</style>. Can be activated every <style=cIsUtility>{0} seconds</style> <style=cStack>(-{1}% per stack)</style>.",
 		"RISKOFBULLETSTORM_ITEM_RINGTRIGGERS_LORE": "This ring bestows upon its bearer the now obvious knowledge that within the walls of the Gungeon all items are actually guns in strange, distorted form. An artifact of the Order's belief in transgunstantiation.",
+		
+		"RISKOFBULLETSTORM_ITEM_BABYGOODMIMIC_NAME": "Baby Good Mimic",
+		"RISKOFBULLETSTORM_ITEM_BABYGOODMIMIC_PICKUP": "<b>Imitation Love</b>\nImitates an ally.",
+		"RISKOFBULLETSTORM_ITEM_BABYGOODMIMIC_DESCRIPTION": "Every 30 seconds, <style=cIsUtility>summon a mimic</style> that <style=cIsUtility>mimics an ally</style>. Can have up to <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> mimics at a time.",
+		"RISKOFBULLETSTORM_ITEM_BABYGOODMIMIC_LORE": "This abandoned baby mimic misses its siblings, and imprints on the first follower it sees.",
 		
 		//[TIERBOSS]
 		"RISKOFBULLETSTORM_ITEM_CLOWNMASK_NAME": "Clown Mask",
@@ -151,12 +156,29 @@
 		"RISKOFBULLETSTORM_ITEM_RINGMISERLYPROTECTION_DESCRIPTION": "Grants <style=cIsHealing>+{0} health</style> <style=cStack>(+{1} per stack)</style> <style=cDeath>...but shatters upon using a chance shrine.</style>",
 		"RISKOFBULLETSTORM_ITEM_RINGMISERLYPROTECTION_LORE": "Before the Shopkeep opened his shop, he was an avaricious and miserly man. He remains careful about any expenditures, but through capitalism he has purged himself of negative emotion.",
 		
+		//[VOIDUNCOMMON]
+		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARDVOID_NAME": "Leader's Standard",
+		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARDVOID_PICKUP": "<b>Set My Own!</b>/nCompanions increase your damage.",
+		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARDVOID_DESCRIPTION": "For every companion, increases your <style=cIsDamage>damage by {0}%</style> <style=cStack>(+{0}% per stack)</style>. <style=cIsVoid>Corrupts all Battle Standards</style>.",
+		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARDVOID_LORE": "At the advancement of Gungeoneer society, some self-appointed Gungeoneer Leaders would adorn a flag onto themselves, advancing upon the lower chambers by rallies of their fellow Gungeoneers.",
+		
+		"RISKOFBULLETSTORM_ITEM_COINCROWNVOID_NAME": "Crown For Fools",
+		"RISKOFBULLETSTORM_ITEM_COINCROWNVOID_PICKUP": "<b>Play Long, Get Rich</b>\nIncreases gold gain during the teleporter event.",
+		"RISKOFBULLETSTORM_ITEM_COINCROWNVOID_DESCRIPTION": "During a teleporter event, increases your <style=cIsUtility>gold from kills</style> by <style=cIsUtility>+{0}</style> <style=cStack>(+{1} per stack)</style>. <style=cIsVoid>Corrupts all Coin Crowns</style>.",
+		"RISKOFBULLETSTORM_ITEM_COINCROWNVOID_LORE": "A pre-Gungeon relic.",
+		
+		
 		//[NOTIER]
 		
 		"RISKOFBULLETSTORM_ITEM_LORDOFTHEJAMMEDITEM_NAME": "Lord of The Jammed",
 		"RISKOFBULLETSTORM_ITEM_LORDOFTHEJAMMEDITEM_PICKUP": "The screams of the jammed reach a fevered pitch.",
 		"RISKOFBULLETSTORM_ITEM_LORDOFTHEJAMMEDITEM_DESCRIPTION": "The screams of the jammed reach a fevered pitch.",
 		"RISKOFBULLETSTORM_ITEM_LORDOFTHEJAMMEDITEM_LORE": "",
+		
+		"RISKOFBULLETSTORM_ITEM_PERMANENTCURSE_NAME": "Cursed",
+		"RISKOFBULLETSTORM_ITEM_PERMANENTCURSE_PICKUP": "You've offended the Gungeon",
+		"RISKOFBULLETSTORM_ITEM_PERMANENTCURSE_DESCRIPTION": "",
+		"RISKOFBULLETSTORM_ITEM_PERMANENTCURSE_LORE": "",
 		
 		"RISKOFBULLETSTORM_ITEM__NAME": "",
 		"RISKOFBULLETSTORM_ITEM__PICKUP": "",
