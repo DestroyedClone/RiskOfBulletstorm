@@ -161,7 +161,7 @@ namespace RiskOfBulletstormRewrite.Items
                 comp.ownerBody = ownerBody;
                 //comp.targetBody = targetMinion;
                 comp.targetMaster = targetMinion.master;
-                
+                mimics.Add(copy.master);
             }
         }
 
