@@ -6,6 +6,7 @@ using RiskOfBulletstormRewrite.Controllers;
 using RiskOfBulletstormRewrite.Equipment;
 using RiskOfBulletstormRewrite.Equipment.EliteEquipment;
 using RiskOfBulletstormRewrite.Items;
+using RiskOfBulletstormRewrite.Enemies;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ using RoR2.Items;
 using RoR2;
 using static RoR2.Util;
 using HarmonyLib;
+using R2API.ContentManagement;
 
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
 
@@ -26,7 +28,12 @@ namespace RiskOfBulletstormRewrite
     [BepInDependency(R2API.R2API.PluginGUID, R2API.R2API.PluginVersion)]
     [BepInDependency("com.xoxfaby.BetterUI", BepInDependency.DependencyFlags.SoftDependency)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.EveryoneNeedSameModVersion)]
-    [R2APISubmoduleDependency(nameof(ItemAPI), nameof(LanguageAPI), nameof(ContentAddition), nameof(EliteAPI), nameof(RecalculateStatsAPI), nameof(DirectorAPI))]
+    [R2APISubmoduleDependency(nameof(ItemAPI), 
+    nameof(LanguageAPI), 
+    nameof(ContentAddition), 
+    nameof(EliteAPI), 
+    nameof(RecalculateStatsAPI), 
+    nameof(DirectorAPI))]
     public class Main : BaseUnityPlugin
     {
         public const string ModGuid = "com.DestroyedClone.RiskOfBulletstorm";
@@ -41,10 +48,15 @@ namespace RiskOfBulletstormRewrite
         public List<ItemBase> Items = new List<ItemBase>();
         public List<EquipmentBase> Equipments = new List<EquipmentBase>();
         public List<EliteEquipmentBase> EliteEquipments = new List<EliteEquipmentBase>();
-
+        public static R2API.ScriptableObjects.R2APISerializableContentPack ContentPack { get; private set; }
         public static string LocationOfProgram;
 
         public static PluginInfo pluginInfo;
+
+        private void Awake()
+        {
+            ContentPack = R2API.ContentManagement.R2APIContentManager.ReserveSerializableContentPack();
+        }
 
         private void Start()
         {
@@ -158,6 +170,15 @@ namespace RiskOfBulletstormRewrite
                 ControllerBase controllerBase = (ControllerBase)System.Activator.CreateInstance(controllerType);
                 controllerBase.Init(Config);
             }
+
+            //this section automatically scans the project for all monsters
+            var MonsterTypes = Assembly.GetExecutingAssembly().GetTypes().Where(type => !type.IsAbstract && type.IsSubclassOf(typeof(MonsterBase)));
+
+            foreach (var monsterType in MonsterTypes)
+            {
+                ControllerBase monsterBase = (ControllerBase)System.Activator.CreateInstance(monsterType);
+                monsterBase.Init(Config);
+            }
         }
 
 
@@ -187,6 +208,10 @@ namespace RiskOfBulletstormRewrite
         /// <param name="itemList">The list you would like to add this to if it passes the config check.</param>
         public bool ValidateItem(ItemBase item, List<ItemBase> itemList)
         {
+            if (item.Tier == ItemTier.NoTier)
+            {
+                return true;
+            }
             var enabled = Config.Bind<bool>(item.ConfigCategory, "Enable Item?", true, "Should this item appear in runs?").Value;
             var aiBlacklist = Config.Bind<bool>(item.ConfigCategory, "Blacklist Item from AI Use?", false, "Should the AI not be able to obtain this item?").Value;
             if (enabled)
