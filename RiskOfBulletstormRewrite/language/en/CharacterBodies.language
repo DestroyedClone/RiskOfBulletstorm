@@ -1,11 +1,44 @@
 ﻿{
 	strings:
 	{
-		//[NORMAL]
+		//[ENEMIES]
 		"RISKOFBULLETSTORM_LORDOFTHEJAMMED_BODY_NAME": "Lord of the Jammed",
 		"RISKOFBULLETSTORM_LORDOFTHEJAMMED_BODY_SUBTITLE": "Ceaseless",
-		"RISKOFBULLETSTORM_BODY_NAME": "",
-		"RISKOFBULLETSTORM_BODY_SUBTITLE": "",
+		"RISKOFBULLETSTORM_LORDOFTHEJAMMED_BODY_LORE": "",
+		
+		//[ENEMIES - MIMICS]
+		//mims generally share the same subtitle
+		//lore's the same, should probs change tho
+		"RISKOFBULLETSTORM_CHEST1MIMIC_BODY_NAME": "Common Chest Mimic",
+		"RISKOFBULLETSTORM_CHEST1MIMIC_BODY_SUBTITLE": "Deceiver",
+		"RISKOFBULLETSTORM_CHEST1MIMIC_BODY_LORE": "Mimics are very dangerous, as many Gungeoneers foolishly drop their guard around treasure chests.\nSome experts argue that the Mimic is the true master of any dungeon, as no monster is more at home than the Mimic.",
+		
+		"RISKOFBULLETSTORM_CHEST2MIMIC_BODY_NAME": "Uncommon Chest Mimic",
+		"RISKOFBULLETSTORM_CHEST2MIMIC_BODY_SUBTITLE": "Deceiver",
+		"RISKOFBULLETSTORM_CHEST2MIMIC_BODY_LORE": "Mimics are very dangerous, as many Gungeoneers foolishly drop their guard around treasure chests.\nSome experts argue that the Mimic is the true master of any dungeon, as no monster is more at home than the Mimic.",
+		
+		"RISKOFBULLETSTORM_CHEST3MIMIC_BODY_NAME": "Legendary Chest Mimic",
+		"RISKOFBULLETSTORM_CHEST3MIMIC_BODY_SUBTITLE": "Deceiver",
+		"RISKOFBULLETSTORM_CHEST3MIMIC_BODY_LORE": "Mimics are very dangerous, as many Gungeoneers foolishly drop their guard around treasure chests.\nSome experts argue that the Mimic is the true master of any dungeon, as no monster is more at home than the Mimic.",
+		
+		"RISKOFBULLETSTORM_LUNARCHESTMIMIC_BODY_NAME": "Lunar Pod Mimic",
+		"RISKOFBULLETSTORM_LUNARCHESTMIMIC_BODY_SUBTITLE": "Lunar Deceiver",
+		"RISKOFBULLETSTORM_LUNARCHESTMIMIC_BODY_LORE": "Mimics are very dangerous, as many Gungeoneers foolishly drop their guard around treasure chests.\nSome experts argue that the Mimic is the true master of any dungeon, as no monster is more at home than the Mimic.",
+		
+		"RISKOFBULLETSTORM_EQUIPMIMIC_BODY_NAME": "Equipment Barrel Mimic",
+		"RISKOFBULLETSTORM_EQUIP1MIMIC_BODY_SUBTITLE": "Deceiver",
+		"RISKOFBULLETSTORM_EQUIP1MIMIC_BODY_LORE": "Mimics are very dangerous, as many Gungeoneers foolishly drop their guard around treasure chests.\nSome experts argue that the Mimic is the true master of any dungeon, as no monster is more at home than the Mimic.",
+		
+		//[ALLIES]
+		"RISKOFBULLETSTORM_BABYGOODMIMIC_BODY_NAME": "Baby Good Mimic",
+		"RISKOFBULLETSTORM_BABYGOODMIMIC_BODY_OVERRIDE_NAME": "{0} (Mimic)",
+		"RISKOFBULLETSTORM_BABYGOODMIMIC_BODY_SUBTITLE": "Imitator",
+		"RISKOFBULLETSTORM_BABYGOODMIMIC_BODY_LORE": "This abandoned baby mimic misses its siblings, and imprints on the first follower it sees.",
+		
+		"RISKOFBULLETSTORM__BODY_NAME": "",
+		"RISKOFBULLETSTORM__BODY_SUBTITLE": "",
+		"RISKOFBULLETSTORM__BODY_DESCRIPTION": "",
+		"RISKOFBULLETSTORM__BODY_LORE": "",
 		
 		//[SKILLS]
 		"RISKOFBULLETSTORM_SKILL_TELEPORT_NAME": "Bloodied Teleport",
