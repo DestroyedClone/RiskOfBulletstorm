@@ -10,18 +10,19 @@ using UnityEngine.AddressableAssets;
 
 namespace RiskOfBulletstormRewrite.Items
 {
-    public class Clone : ItemBase<Clone>
+    public class CloneVoid : ItemBase<CloneVoid>
     {
-        public static ConfigEntry<int> cfgItemsToKeep;
-        public static ConfigEntry<int> cfgItemsToKeepPerStack;
-        public override string ItemName => "Clone";
+        public static ConfigEntry<int> cfgStageCount;
+        public static ConfigEntry<int> cfgItemsToGet;
+        public static ConfigEntry<int> cfgItemsToGetPerStack;
+        public override string ItemName => "Prototype";
 
-        public override string ItemLangTokenName => "CLONE";
-
+        public override string ItemLangTokenName => "CLONEVOID";
         public override string[] ItemFullDescriptionParams => new string[]
         {
-            cfgItemsToKeep.Value.ToString(),
-            cfgItemsToKeepPerStack.Value.ToString()
+            cfgStageCount.Value.ToString(),
+            cfgItemsToGet.Value.ToString(),
+            cfgItemsToGetPerStack.Value.ToString()
         };
 
         public override ItemTier Tier => ItemTier.Tier3;
@@ -38,6 +39,8 @@ namespace RiskOfBulletstormRewrite.Items
             ItemTag.CannotDuplicate,
             ItemTag.CannotSteal
         };
+
+        public override ItemDef ContagiousOwnerItemDef => Clone.instance.ItemDef;
 
         public static bool isCloneRestarting = false;
 
@@ -68,8 +71,9 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void CreateConfig(ConfigFile config)
         {
-            cfgItemsToKeep = config.Bind(ConfigCategory, "Items To Keep", 5);
-            cfgItemsToKeepPerStack = config.Bind(ConfigCategory, "Items To Keep Per Stack", 5);
+            cfgStageCount = config.Bind(ConfigCategory, "Stage Count", 5, "");
+            cfgItemsToGet = config.Bind(ConfigCategory, "Items To Get", 5);
+            cfgItemsToGetPerStack = config.Bind(ConfigCategory, "Items To Get Per Stack", 5);
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
@@ -132,87 +136,97 @@ namespace RiskOfBulletstormRewrite.Items
                 if (allDead && peopleWithClones.Count > 0)
                 {
                     isCloneRestarting = true;
-                    //var cloneObject = new GameObject();
-                    Stage.instance.gameObject.AddComponent<RBS_CloneController>();
-                    //UnityEngine.Object.DontDestroyOnLoad(cloneObject);
+                    var cloneObject = new GameObject();
+                    var controller = cloneObject.AddComponent<RBS_CloneVoidController>();
+                    UnityEngine.Object.DontDestroyOnLoad(cloneObject);
+                    Stage.instance.gameObject.AddComponent<RBS_CloneVoidController>();
                     PseudoRestartRun();
                 }
             }
         }
 
-        public class RBS_CloneController : MonoBehaviour
+        public class RBS_CloneVoidController : MonoBehaviour
         {
-            //public Xoroshiro128Plus rng;
-            public Dictionary<NetworkUser, Inventory> playerInventories = new Dictionary<NetworkUser, Inventory>();
-            public Dictionary<PlayerCharacterMasterController, List<KeyValuePair<ItemIndex, int>>> itemsToGive = new Dictionary<PlayerCharacterMasterController, List<KeyValuePair<ItemIndex, int>>>();
-            public bool hasGivenItems = false;
+            public int itemInstancesLeftToGive = cfgStageCount.Value;
+            public int itemCountPerInstance = -1;
 
             public void Awake()
             {
-                //rng = new Xoroshiro128Plus(Run.instance.seed);
-                AcquireItemsToReturn();
+                if (itemCountPerInstance < 0)
+                {
+                    itemCountPerInstance = Util.GetItemCountForTeam(TeamIndex.Player, instance.ItemDef.itemIndex, false);
+                }
+            }
+
+            public void OnEnable()
+            {
                 Stage.onServerStageBegin += OnServerStageBegin;
             }
 
-            public void OnDestroy()
+            public void OnDisable()
             {
                 Stage.onServerStageBegin -= OnServerStageBegin;
+                Destroy(this);
             }
 
             public void OnServerStageBegin(Stage stage)
             {
-                if (hasGivenItems) return;
-                hasGivenItems = true;
-
-                GiveItemsToPlayers();
-            }
-
-            public void AcquireItemsToReturn()
-            {
-                var cloneCount = Util.GetItemCountForTeam(TeamIndex.Player, instance.ItemDef.itemIndex, false);
+                if (itemInstancesLeftToGive < 0)
+                {
+                    enabled = false;
+                    return;
+                }
+                var itemGift = GetRandomItems(itemCountPerInstance, false, false);
                 foreach (var player in PlayerCharacterMasterController.instances)
                 {
-                    GetRandomItemsFromInventory(player.master.inventory, cloneCount);
+                    foreach (var item in itemGift)
+                    {
+                        player.master.inventory.GiveItem(item);
+                    }
                 }
+                itemInstancesLeftToGive--;
             }
 
-            public void GiveItemsToPlayers()
+            public List<ItemIndex> GetRandomItems(int count, bool lunarEnabled, bool voidEnabled)
             {
-                foreach (var pair in itemsToGive)
+                if (!NetworkServer.active)
                 {
-                    foreach (var itemAmt in pair.Value)
+                    Debug.LogWarning("[Server] function 'CloneVoid::GiveRandomItems(System.Int32,System.Boolean,System.Boolean)' called on client");
+                    return null;
+                }
+                List<ItemIndex> valueToReturn = new List<ItemIndex>();
+                try
+                {
+                    if (count > 0)
                     {
-                        pair.Key.master.inventory.GiveItem(itemAmt.Key, itemAmt.Value);
+                        
+                        WeightedSelection<List<PickupIndex>> weightedSelection = new WeightedSelection<List<PickupIndex>>(8);
+                        weightedSelection.AddChoice(Run.instance.availableTier1DropList, 100f);
+                        weightedSelection.AddChoice(Run.instance.availableTier2DropList, 60f);
+                        weightedSelection.AddChoice(Run.instance.availableTier3DropList, 4f);
+                        if (lunarEnabled)
+                        {
+                            weightedSelection.AddChoice(Run.instance.availableLunarItemDropList, 4f);
+                        }
+                        if (voidEnabled)
+                        {
+                            weightedSelection.AddChoice(Run.instance.availableVoidTier1DropList, 4f);
+                            weightedSelection.AddChoice(Run.instance.availableVoidTier1DropList, 2.3999999f);
+                            weightedSelection.AddChoice(Run.instance.availableVoidTier1DropList, 0.16f);
+                        }
+                        for (int i = 0; i < count; i++)
+                        {
+                            List<PickupIndex> list = weightedSelection.Evaluate(UnityEngine.Random.value);
+                            PickupDef pickupDef = PickupCatalog.GetPickupDef(list[UnityEngine.Random.Range(0, list.Count)]);
+                            var resolvedItemIndex = (pickupDef != null) ? pickupDef.itemIndex : ItemIndex.None;
+                            valueToReturn.Add(resolvedItemIndex);
+                        }
                     }
                 }
-                Destroy(this);
-            }
-
-            //basically an inventory
-            public List<KeyValuePair<ItemIndex, int>> GetRandomItemsFromInventory(Inventory inventory, int cloneCount)
-            {
-                List<KeyValuePair<ItemIndex, int>> list = new List<KeyValuePair<ItemIndex, int>>();
-
-                for (int i = 0; i < inventory.itemAcquisitionOrder.Count; i++)
+                catch (ArgumentException)
                 {
-                    var currentItemIndex = inventory.itemAcquisitionOrder[i];
-                    //keeping hidden items are important: difficulty modifier items
-                    if (ItemCatalog.GetItemDef(currentItemIndex)?.hidden == true)
-                    {
-                        list.Add(new KeyValuePair<ItemIndex, int>(currentItemIndex, 1));
-                        continue;
-                    }
-
-                    var itemCount = UnityEngine.Random.RandomRangeInt(0, Mathf.Min(inventory.GetItemCount(currentItemIndex), cloneCount));
-                    cloneCount -= itemCount;
-                    list.Add(new KeyValuePair<ItemIndex, int>((ItemIndex)i, itemCount));
-                    if (cloneCount <= 0)
-                    {
-                        break;
-                    }
                 }
-
-                return list;
+                return valueToReturn;
             }
         }
 

@@ -167,6 +167,11 @@
 		"RISKOFBULLETSTORM_ITEM_COINCROWNVOID_DESCRIPTION": "During a teleporter event, increases your <style=cIsUtility>gold from kills</style> by <style=cIsUtility>+{0}</style> <style=cStack>(+{1} per stack)</style>. <style=cIsVoid>Corrupts all Coin Crowns</style>.",
 		"RISKOFBULLETSTORM_ITEM_COINCROWNVOID_LORE": "A pre-Gungeon relic.",
 		
+		//[VOIDLEGENDARY]
+		"RISKOFBULLETSTORM_ITEM_CLONEVOID_NAME": "Prototype",
+		"RISKOFBULLETSTORM_ITEM_CLONEVOID_PICKUP": "<b>Extra Quarter</b>\nRestarts the run, but gain extra items every stage.",
+		"RISKOFBULLETSTORM_ITEM_CLONEVOID_DESCRIPTION": "<style=cIsUtility>Upon death of all players</style>, this item will be <style=cIsUtility>consumed</style> and send <style=cIsUtility>all players</style> to the first stage with no items. For <style=cIsUtility>{0} stages</style> <style=cStack>(+{1} stages per stack)</style> gain <style=cIsUtility>{2} random items</style> per stage. <style=cDeath>All stacks consumed on death</style>.",
+		"RISKOFBULLETSTORM_ITEM_CLONEVOID_LORE": "An uncomfortable answer to an uncomfortable truth. This clone can replace a single Gungeoneer upon their death, with almost no lapse in memory.",
 		
 		//[NOTIER]
 		
@@ -179,6 +184,16 @@
 		"RISKOFBULLETSTORM_ITEM_PERMANENTCURSE_PICKUP": "You've offended the Gungeon",
 		"RISKOFBULLETSTORM_ITEM_PERMANENTCURSE_DESCRIPTION": "",
 		"RISKOFBULLETSTORM_ITEM_PERMANENTCURSE_LORE": "",
+		
+		"RISKOFBULLETSTORM_ITEM_CLONECONSUMED_NAME": "Clone (Consumed)",
+		"RISKOFBULLETSTORM_ITEM_CLONECONSUMED_PICKUP": "<b>Shell Of Former Self</b>\nDoes nothing.",
+		"RISKOFBULLETSTORM_ITEM_CLONECONSUMED_DESCRIPTION": "Does nothing.",
+		"RISKOFBULLETSTORM_ITEM_CLONECONSUMED_LORE": "Consumed result of Clone.",
+		
+		"RISKOFBULLETSTORM_ITEM_CLONEVOIDCONSUMED_NAME": "Clone (Consumed)",
+		"RISKOFBULLETSTORM_ITEM_CLONEVOIDCONSUMED_PICKUP": "<b>Shell Of Former Self</b>\nDoes nothing.",
+		"RISKOFBULLETSTORM_ITEM_CLONEVOIDCONSUMED_DESCRIPTION": "Does nothing.",
+		"RISKOFBULLETSTORM_ITEM_CLONEVOIDCONSUMED_LORE": "Consumed result of Clone.",
 		
 		"RISKOFBULLETSTORM_ITEM__NAME": "",
 		"RISKOFBULLETSTORM_ITEM__PICKUP": "",
