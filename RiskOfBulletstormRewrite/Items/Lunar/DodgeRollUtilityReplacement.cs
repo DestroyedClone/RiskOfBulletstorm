@@ -25,7 +25,8 @@ namespace RiskOfBulletstormRewrite.Items
         public override ItemTag[] ItemTags => new ItemTag[]
         {
             ItemTag.Cleansable,
-            ItemTag.Utility
+            ItemTag.Utility,
+            ItemTag.AIBlacklist //AI can't use it effectively
         };
 
         public static SkillDef rollSkillDef;
@@ -43,9 +44,9 @@ namespace RiskOfBulletstormRewrite.Items
         {
             rollSkillDef = ScriptableObject.CreateInstance<SkillDef>();
             rollSkillDef.activationState = new SerializableEntityStateType(typeof(EntityStates.Commando.CombatDodge));
-            rollSkillDef.activationStateMachineName = "Slide";
+            rollSkillDef.activationStateMachineName = "Body";
             rollSkillDef.baseMaxStock = 1;
-            rollSkillDef.baseRechargeInterval = 12;
+            rollSkillDef.baseRechargeInterval = 8;
             rollSkillDef.beginSkillCooldownOnSkillEnd = true;
             rollSkillDef.canceledFromSprinting = false;
             rollSkillDef.cancelSprintingOnActivation = false;
@@ -69,6 +70,7 @@ namespace RiskOfBulletstormRewrite.Items
             (rollSkillDef as ScriptableObject).name = rollSkillDef.skillName;
             rollSkillDef.stockToConsume = 1;
 
+            HG.ArrayUtils.ArrayAppend(ref Main.ContentPack.entityStateTypes, rollSkillDef.activationState);
             ContentAddition.AddSkillDef(rollSkillDef);
         }
 

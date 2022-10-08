@@ -109,6 +109,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
             public void ConsumeReserve()
             {
+                Util.PlaySound("item_use_blackhole_suckin_01", gameObject);
                 healthComponent.Heal(reserve, default);
                 reserve = 0;
             }
