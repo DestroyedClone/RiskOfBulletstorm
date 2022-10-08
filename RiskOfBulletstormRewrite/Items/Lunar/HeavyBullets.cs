@@ -1,4 +1,4 @@
-﻿using BepInEx.Configuration;
+using BepInEx.Configuration;
 using R2API;
 using RoR2;
 using UnityEngine;
@@ -6,7 +6,7 @@ using static RiskOfBulletstormRewrite.Main;
 
 namespace RiskOfBulletstormRewrite.Items
 {
-    public class HeavyBullets : ItemBase<HeavyBullets>
+    public class HeavyBbullets : ItemBase<HeavyBullets>
     {
         public static ConfigEntry<float> cfgBaseDamageMultiplier;
         public static ConfigEntry<float> cfgStackDamageMultiplier;
@@ -31,6 +31,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void Init(ConfigFile config)
         {
+            return;
             CreateConfig(config);
             CreateLang();
             CreateItem();
@@ -39,9 +40,9 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void CreateConfig(ConfigFile config)
         {
-            cfgBaseDamageMultiplier = config.Bind(ConfigCategory, "Damage Multiplier", 0.25f, "");
-            cfgStackDamageMultiplier = config.Bind(ConfigCategory, "Damage Multiplier Per Stack", 0.25f, "");
-            cfgProjectileSpeedReduction = config.Bind(ConfigCategory, "Projectile Speed Reduction Multiplier", 0.25f, "");
+            cfgBaseDamageMultiplier = config.Bind(ConfigCategory, "Damage Multiplier", 0.2f, "");
+            cfgStackDamageMultiplier = config.Bind(ConfigCategory, "Damage Multiplier Per Stack", 0.1f, "");
+            cfgProjectileSpeedReduction = config.Bind(ConfigCategory, "Projectile Speed Reduction Multiplier", 0.2f, "");
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()

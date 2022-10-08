@@ -7,12 +7,6 @@
 	
 
   <ItemGroup>
-    <Compile Remove="Enemies\**" />
-    <EmbeddedResource Remove="Enemies\**" />
-    <None Remove="Enemies\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Remove="Artifact\ArtifactPitLordPlayer.cs" />
     <Compile Remove="Artifact\ExampleArtifact.cs" />
     <Compile Remove="Controllers\BabyMimicBodyBehavior.cs" />
@@ -30,21 +24,17 @@
     <Compile Remove="Equipment\Molotov.cs" />
     <Compile Remove="Equipment\Orange.cs" />
     <Compile Remove="Equipment\Ration.cs" />
-    <Compile Remove="Items\Backpack.cs" />
     <Compile Remove="Items\Boss\ClownMask.cs" />
     <Compile Remove="Items\Boss\PastKillingBulletBanPickup.cs" />
     <Compile Remove="Items\Boss\RatBoots.cs" />
     <Compile Remove="Items\ClownMask.cs" />
     <Compile Remove="Items\ExampleItem.cs" />
     <Compile Remove="Items\Boss\MasterRounds\MasterRoundI.cs" />
-    <Compile Remove="Items\Legendary\Clone.cs" />
     <Compile Remove="Items\Legendary\Clone_old.cs" />
     <Compile Remove="Items\Legendary\RingTriggers.cs" />
     <Compile Remove="Items\Lunar\BloodiedScarf.cs" />
-    <Compile Remove="Items\Lunar\DodgeRollUtilityReplacement.cs" />
     <Compile Remove="Items\Lunar\Metronome.cs" />
     <Compile Remove="Items\Lunar\TeleportSkillState.cs" />
-    <Compile Remove="Items\NoTier\LordOfTheJammedItem.cs" />
   </ItemGroup>
 
   <ItemGroup>

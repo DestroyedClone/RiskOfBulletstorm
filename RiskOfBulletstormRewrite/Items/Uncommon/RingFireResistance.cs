@@ -70,8 +70,28 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void Hooks()
         {
-            On.RoR2.DotController.InflictDot_GameObject_GameObject_DotIndex_float_float += ReduceFireDot;
+            On.RoR2.DotController.InflictDot_refInflictDotInfo += ReduceFire;
             On.RoR2.DamageTrail.DoDamage += DamageTrail_DoDamage;
+        }
+
+        public void ReduceFire(On.RoR2.DotController.orig_InflictDot_refInflictDotInfo orig, ref InflictDotInfo info)
+        {
+            float damageMultiplierReduction = 0;
+            var victimObj = info.victimObject;
+            if (victimObj)
+            {
+                var cb = victimObj.GetComponent<CharacterBody>();
+                if (cb)
+                {
+                    var fireRingCount = GetCount(cb);
+                    if (fireRingCount > 0)
+                    {
+                        damageMultiplierReduction *= GetMultiplier(fireRingCount);
+                    }
+                }
+            }
+            info.damageMultiplier *= damageMultiplierReduction;
+            orig(ref info);
         }
 
         private void DamageTrail_DoDamage(On.RoR2.DamageTrail.orig_DoDamage orig, DamageTrail self)
@@ -146,7 +166,7 @@ namespace RiskOfBulletstormRewrite.Items
                 orig(self);
         }
 
-        private void ReduceFireDot(On.RoR2.DotController.orig_InflictDot_GameObject_GameObject_DotIndex_float_float orig, GameObject victimObject, GameObject attackerObject, DotController.DotIndex dotIndex, float duration, float damageMultiplier)
+        private void ReduceFireDot(On.RoR2.DotController.orig_InflictDot_GameObject_GameObject_DotIndex_float_float_Nullable1 orig, GameObject victimObject, GameObject attackerObject, DotController.DotIndex dotIndex, float duration, float damageMultiplier, bool Nullable1)
         {
             if (dotIndex == DotController.DotIndex.PercentBurn || dotIndex == DotController.DotIndex.Burn)
             {
@@ -161,7 +181,7 @@ namespace RiskOfBulletstormRewrite.Items
                     }
                 }
             }
-            orig(victimObject, attackerObject, dotIndex, duration, damageMultiplier);
+            //orig(victimObject, attackerObject, dotIndex, duration, damageMultiplier);
         }
     }
 }

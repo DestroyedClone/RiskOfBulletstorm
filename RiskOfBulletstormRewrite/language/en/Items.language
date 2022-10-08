@@ -142,14 +142,14 @@
 		"RISKOFBULLETSTORM_ITEM_BULLETHEAVY_LORE": "These faceted bullets glitter with colors unseen in the depths of the Gungeon.",
 		
 		"RISKOFBULLETSTORM_ITEM_DODGEROLLUTILITYREPLACEMENT_NAME": "Teachings of Dodge Roll",
-		"RISKOFBULLETSTORM_ITEM_DODGEROLLUTILITYREPLACEMENT_PICKUP": "Bestows the player the blessing of the Dodge Roll.",
+		"RISKOFBULLETSTORM_ITEM_DODGEROLLUTILITYREPLACEMENT_PICKUP": "<b>Roll Out!</b>\nBestows the player the blessing of the Dodge Roll.",
 		"RISKOFBULLETSTORM_ITEM_DODGEROLLUTILITYREPLACEMENT_DESCRIPTION": "<style=cIsUtility>Replace your Utility Skill</style> with <style=cIsUtility>Dodge Roll</style>.",
 		"RISKOFBULLETSTORM_ITEM_DODGEROLLUTILITYREPLACEMENT_LORE": "\"What I don't understand is why the bullets weren't hitting you. It really looks like they should.\" - Blockner",
 		
 		"RISKOFBULLETSTORM_ITEM_HIPHOLSTER_NAME": "Hip Holster",
 		"RISKOFBULLETSTORM_ITEM_HIPHOLSTER_PICKUP": "<b>Quickdraw</b>\nYour skills have a chance to activate for free upon recharging a stock.",
 		"RISKOFBULLETSTORM_ITEM_HIPHOLSTER_DESCRIPTION": "Your skills have a <style=cIsUtility>{0}% chance</style> <style=cStack>(+{1}% chance per stack, hyperbolically)</style> to activate for free upon recharging a stock.",
-		"RISKOFBULLETSTORM_ITEM_HIPHOLSTER_LORE": "It's hip to hug chirr.",
+		"RISKOFBULLETSTORM_ITEM_HIPHOLSTER_LORE": "<style=cMono>INTERCEPTING TRANSMISSION...</style>\n\nIn '87, Huey released this; Fore!, their most accomplished album. I think their undisputed masterpiece is \"Hip To Be Square\". A song so catchy, most people probably don't listen to the lyrics. But they should, because it's not just about the pleasures of conformity and the importance of trends. It's also a personal statement about the band itself. Hey, Paul!\n<style=cMono>TRANSMISSION STOPPED ABRUPTLY, ATTEMPTING TO RECONNECT...\n\n</style>",
 		
 		"RISKOFBULLETSTORM_ITEM_RINGMISERLYPROTECTION_NAME": "Ring of Miserly Protection",
 		"RISKOFBULLETSTORM_ITEM_RINGMISERLYPROTECTION_PICKUP": "<b>Aids The Fiscally Responsible</b>\n<style=cIsHealing>Increases health substantially.</style> <style=cDeath>Gambling at a chance shrine will shatter the ring.</style>",
@@ -175,10 +175,10 @@
 		
 		//[NOTIER]
 		
-		"RISKOFBULLETSTORM_ITEM_LORDOFTHEJAMMEDITEM_NAME": "Lord of The Jammed",
-		"RISKOFBULLETSTORM_ITEM_LORDOFTHEJAMMEDITEM_PICKUP": "The screams of the jammed reach a fevered pitch.",
-		"RISKOFBULLETSTORM_ITEM_LORDOFTHEJAMMEDITEM_DESCRIPTION": "The screams of the jammed reach a fevered pitch.",
-		"RISKOFBULLETSTORM_ITEM_LORDOFTHEJAMMEDITEM_LORE": "",
+		"RISKOFBULLETSTORM_ITEM_LORDOFTHEJAMMED_NAME": "Lord of The Jammed",
+		"RISKOFBULLETSTORM_ITEM_LORDOFTHEJAMMED_PICKUP": "The screams of the jammed reach a fevered pitch.",
+		"RISKOFBULLETSTORM_ITEM_LORDOFTHEJAMMED_DESCRIPTION": "The screams of the jammed reach a fevered pitch.",
+		"RISKOFBULLETSTORM_ITEM_LORDOFTHEJAMMED_LORE": "",
 		
 		"RISKOFBULLETSTORM_ITEM_PERMANENTCURSE_NAME": "Cursed",
 		"RISKOFBULLETSTORM_ITEM_PERMANENTCURSE_PICKUP": "You've offended the Gungeon",
@@ -190,10 +190,15 @@
 		"RISKOFBULLETSTORM_ITEM_CLONECONSUMED_DESCRIPTION": "Does nothing.",
 		"RISKOFBULLETSTORM_ITEM_CLONECONSUMED_LORE": "Consumed result of Clone.",
 		
-		"RISKOFBULLETSTORM_ITEM_CLONEVOIDCONSUMED_NAME": "Clone (Consumed)",
-		"RISKOFBULLETSTORM_ITEM_CLONEVOIDCONSUMED_PICKUP": "<b>Shell Of Former Self</b>\nDoes nothing.",
+		"RISKOFBULLETSTORM_ITEM_CLONEVOIDCONSUMED_NAME": "Prototype (Consumed)",
+		"RISKOFBULLETSTORM_ITEM_CLONEVOIDCONSUMED_PICKUP": "<b>Casing Of Former Self</b>\nDoes nothing.",
 		"RISKOFBULLETSTORM_ITEM_CLONEVOIDCONSUMED_DESCRIPTION": "Does nothing.",
 		"RISKOFBULLETSTORM_ITEM_CLONEVOIDCONSUMED_LORE": "Consumed result of Clone.",
+		
+		"RISKOFBULLETSTORM_ITEM_ORANGECONSUMED_NAME": "Orange (Consumed)",
+		"RISKOFBULLETSTORM_ITEM_ORANGECONSUMED_PICKUP": "<b>With The Peel Too?</b>\nBoosts stats.",
+		"RISKOFBULLETSTORM_ITEM_ORANGECONSUMED_DESCRIPTION": "Does nothing.",
+		"RISKOFBULLETSTORM_ITEM_ORANGECONSUMED_LORE": "Consumed result of Clone.",
 		
 		"RISKOFBULLETSTORM_ITEM__NAME": "",
 		"RISKOFBULLETSTORM_ITEM__PICKUP": "",

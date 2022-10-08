@@ -10,11 +10,11 @@
 		"RISKOFBULLETSTORM_EQUIPMENT_BOTTLE_NAME": "Bottle",
 		"RISKOFBULLETSTORM_EQUIPMENT_BOTTLE_PICKUP": "<b>Heart Container</b>\nStores excess healing for use later.",
 		"RISKOFBULLETSTORM_EQUIPMENT_BOTTLE_DESCRIPTION": "While off cooldown, <style=cIsHealing>{0}% of healing</style> will be <style=cIsUtility>stored</style>, up to <style=cIsHealing>{1}%</style> of your <style=cIsHealing>maximum health</style>. Upon use, <style=cIsHealing>heal</style> for your stored <style=cIsHealing>healing</style>.",
-		"RISKOFBULLETSTORM_EQUIPMENT_BOTTLE_LORE": "",
+		"RISKOFBULLETSTORM_EQUIPMENT_BOTTLE_LORE": "\"A glass bottle! Woo!\"\n\"Woo? It's just a bottle... What's to like? We have way more impressive equipment- er... actives. Don't you think slowing down time is way better?\"\n\"Well, I had nothing prior to this. But even so, I will be able to pick up a heart for later.\"\n\"Still seems useless. The shop has the machine for that.\"\n\"I'm happy with this. Come, let's go to the next room, I think there's a miniboss ahead.\"",
 		
 		"RISKOFBULLETSTORM_EQUIPMENT_BRICKOFCASH_NAME": "Brick of Cash",
 		"RISKOFBULLETSTORM_EQUIPMENT_BRICKOFCASH_PICKUP": "<b>Secrets Of The Masons</b>\nReveals secrets.",
-		"RISKOFBULLETSTORM_EQUIPMENT_BRICKOFCASH_DESCRIPTION": "Holding this <style=cIsUtility>reveals pressure plates and cloaked chests</style>.\nActivate to throw, can press pressure plates.",
+		"RISKOFBULLETSTORM_EQUIPMENT_BRICKOFCASH_DESCRIPTION": "Holding this <style=cIsUtility>reveals pressure plates and cloaked chests</style>.",
 		"RISKOFBULLETSTORM_EQUIPMENT_BRICKOFCASH_LORE": "This can be used to pay off unscrupulous Snitch Bricks, who are willing to betray their mortared brethren for cold, hard cash. Not legal tender.",
 		
 		"RISKOFBULLETSTORM_EQUIPMENT_CHESTTELEPORTER_NAME": "Chest Teleporter",
@@ -27,10 +27,20 @@
 		"RISKOFBULLETSTORM_EQUIPMENT_MOLOTOV_DESCRIPTION": "Throws a <style=cIsDamage>molotov</style> that <style=cIsDamage>explodes</style> into a <style=cIsDamage>burning</style> zone dealing <style=cIsDamage>{0} every {1} second for {2} seconds</style>.",
 		"RISKOFBULLETSTORM_EQUIPMENT_MOLOTOV_LORE": "Molotov cocktails aren't guns, and so they are frowned upon by long-dwelling Gungeoneers. They get the job done regardless.\nKnowing the Hegemony wouldn't let her bring her own weaponry to the Gungeon, the Convict smuggled these few bottles in with the transport's cargo.",
 		
+		"RISKOFBULLETSTORM_EQUIPMENT_ORANGE_NAME": "Orange",
+		"RISKOFBULLETSTORM_EQUIPMENT_ORANGE_PICKUP": "<b>You're not Alexander</b>\nHeals on use, increases max health.",
+		"RISKOFBULLETSTORM_EQUIPMENT_ORANGE_DESCRIPTION": "",
+		"RISKOFBULLETSTORM_EQUIPMENT_ORANGE_LORE": "With this orange, your style... it's impetuous. Your defense, impregnable.",
+		
 		"RISKOFBULLETSTORM_EQUIPMENT_JARBEES_NAME": "Jar of Bees",
 		"RISKOFBULLETSTORM_EQUIPMENT_JARBEES_PICKUP": "<b>The Pain!</b>\nThrow a jar of bees that shatters on contact.",
 		"RISKOFBULLETSTORM_EQUIPMENT_JARBEES_DESCRIPTION": "<style=cIsUtility>Throw</style> a <style=cIsDamage>jar of bees</style> that shatters into <style=cIsDamage>{0} bees</style> that deal <style=cIsDamage>{1}% damage</style> with a <style=cIsDamage>{2} proc coefficient</style>.",
 		"RISKOFBULLETSTORM_EQUIPMENT_JARBEES_LORE": "These bees have been carefully trained to hunt down enemy munitions... and destroy them.",
+		
+		"RISKOFBULLETSTORM_EQUIPMENT_WEIRDEGG_NAME": "Weird Egg",
+		"RISKOFBULLETSTORM_EQUIPMENT_WEIRDEGG_PICKUP": "<b>Miracle of Gun</b>\nGestates over time. Use to acquire... something.",
+		"RISKOFBULLETSTORM_EQUIPMENT_WEIRDEGG_DESCRIPTION": "Eat egg = heal 100%. burn egg? make drugs. make cumga mithy be buga strong ooha oggsaasda yato",
+		"RISKOFBULLETSTORM_EQUIPMENT_WEIRDEGG_LORE": "A strange egg found in the Gungeon. High in protein.",
 
 		//[LUNAR]
 		"RISKOFBULLETSTORM_EQUIPMENT_DRILL_NAME": "Drill",

@@ -13,7 +13,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override string ItemLangTokenName => "COINCROWN";
 
-        public override ItemTier Tier => ItemTier.Tier1;
+        public override ItemTier Tier => ItemTier.Tier2;
 
         public override GameObject ItemModel => Assets.NullModel;
 
@@ -67,7 +67,7 @@ namespace RiskOfBulletstormRewrite.Items
                 if (itemCount > 0)
                 {
                     uint moneyToGive = (uint)(pcmc.master.money * (cfgCashMultiplier.Value + cfgCashMultiplierPerStack.Value * (itemCount - 1)));
-                    Chat.AddMessage("Gave money: " + moneyToGive);
+                    //Chat.AddMessage("Gave money: " + moneyToGive);
                     pcmc.master.GiveMoney(moneyToGive);
                 }
             }
