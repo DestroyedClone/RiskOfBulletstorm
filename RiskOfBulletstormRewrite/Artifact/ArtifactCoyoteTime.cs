@@ -37,7 +37,7 @@ namespace RiskOfBulletstormRewrite.Artifact
             {
                 return;
             }
-            RoR2.CharacterBody.onBodyStartGlobal -= CharacterBody_onBodyStartGlobal;
+            On.RoR2.CharacterMotor.OnLeaveStableGround -= OnLeaveStableGround;
         }
 
 
@@ -47,18 +47,22 @@ namespace RiskOfBulletstormRewrite.Artifact
             {
                 return;
             }
-            RoR2.CharacterBody.onBodyStartGlobal += CharacterBody_onBodyStartGlobal;
             On.RoR2.CharacterMotor.OnLeaveStableGround += OnLeaveStableGround;
         }
 
         private void OnLeaveStableGround(On.RoR2.CharacterMotor.orig_OnLeaveStableGround orig, CharacterMotor self)
         {
-            var comp = self.gameObject.GetComponent<RBS_CoyoteTime>();
-            if (!comp)
+            int initJumpCount = self.jumpCount;
+            orig(self);
+            if (self.jumpCount != initJumpCount)
             {
-                comp = self.gameObject.AddComponent<RBS_CoyoteTime>();
-                comp.characterMotor = self;
-                comp.jumpCountOnStart = self.jumpCount;
+                var comp = self.gameObject.GetComponent<RBS_CoyoteTime>();
+                if (!comp)
+                {
+                    comp = self.gameObject.AddComponent<RBS_CoyoteTime>();
+                    comp.characterMotor = self;
+                    comp.jumpCountOnStart = self.jumpCount;
+                }
             }
         }
 
@@ -92,14 +96,6 @@ namespace RiskOfBulletstormRewrite.Artifact
                         characterMotor.jumpCount += 1;
                     }
                 }
-            }
-        }
-
-        private void CharacterBody_onBodyStartGlobal(CharacterBody characterBody)
-        {
-            if (NetworkServer.active && characterBody.isBoss && characterBody.inventory && characterBody.inventory.GetItemCount(RoR2Content.Items.AdaptiveArmor) <= 0)
-            {
-                characterBody.inventory.GiveItem(RoR2Content.Items.AdaptiveArmor);
             }
         }
     }
