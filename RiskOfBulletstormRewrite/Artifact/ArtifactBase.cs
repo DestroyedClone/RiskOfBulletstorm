@@ -19,18 +19,43 @@ namespace RiskOfBulletstormRewrite.Artifact
         }
     }
 
+    ///<summary> 
+    ///Abstract class responsible for Artifacts.
+    ///</summary>
     public abstract class ArtifactBase
     {
+        ///<summary>
+        ///English name of the artifact.
+        ///</summary>
         public abstract string ArtifactName { get; }
 
+        ///<summary>
+        ///Language Token responsible for the localization.
+        ///</summary>
         public abstract string ArtifactLangTokenName { get; }
+        ///<summary>
+        ///Parameters for formatting the description language token.
+        ///</summary>
         public virtual string[] ArtifactFullDescriptionParams { get; }
 
+        ///<summary>
+        ///The icon to use for the artifact when it's enabled.
+        ///</summary>
         public abstract Sprite ArtifactEnabledIcon { get; }
 
+        ///<summary>
+        ///The icon to use for the artifact when it's disabled.
+        ///</summary>
         public abstract Sprite ArtifactDisabledIcon { get; }
 
+        ///<summary>
+        ///The ArtifactDef for the Artifact.
+        ///</summary>
         public ArtifactDef ArtifactDef;
+
+        ///<summary>
+        ///The auto-generated category for the config.
+        ///</summary>
         public string ConfigCategory
         {
             get
@@ -38,6 +63,10 @@ namespace RiskOfBulletstormRewrite.Artifact
                 return "Artifact: " + ArtifactName;
             }
         }
+
+        ///<summary>
+        ///The auto-generated token for the description.
+        ///</summary>
         public string ArtifactDescriptionToken
         {
             get
@@ -47,10 +76,20 @@ namespace RiskOfBulletstormRewrite.Artifact
         }
 
         //For use only after the run has started.
+        
+        ///<summary>
+        ///Boolean for checking whether the artifact is enabled. Run only.
+        ///</summary>
         public bool ArtifactEnabled => RunArtifactManager.instance.IsArtifactEnabled(ArtifactDef);
 
+        ///<summary>
+        ///The main method executed for setting up the class.
+        ///</summary>
         public abstract void Init(ConfigFile config);
 
+        ///<summary>
+        ///Method responsible for creating and deferring the language tokens.
+        ///</summary>
         protected void CreateLang()
         {
             Main._logger.LogMessage($"{ArtifactName} CreateLang()");
@@ -74,12 +113,18 @@ namespace RiskOfBulletstormRewrite.Artifact
             }
         }
 
+        ///<summary>
+        ///Helper method to defer language tokens.
+        ///</summary>
         private void DeferToken(string token, string lang, params string[] args)
         {
             //Main._logger.LogMessage($"Deferring {token} w/ lang {lang}");
             RiskOfBulletstormRewrite.Language.langTokenValues.Add(new Language.LangTokenValue() { token = token, lang = lang, strings = args });
         }
 
+        ///<summary>
+        ///Method to create the artifact.
+        ///</summary>
         protected void CreateArtifact()
         {
             var prefix = "RISKOFBULLETSTORM_ARTIFACT_";
@@ -93,6 +138,9 @@ namespace RiskOfBulletstormRewrite.Artifact
             ContentAddition.AddArtifactDef(ArtifactDef);
         }
 
+        ///<summary>
+        ///Method for calling hooks.
+        ///</summary>
         public abstract void Hooks();
     }
 }

@@ -57,7 +57,7 @@ namespace RiskOfBulletstormRewrite.Artifact
             {
                 foreach (var enemy in CharacterMaster.readOnlyInstancesList)
                 {
-                    if (enemy.teamIndex == TeamIndex.Monster)
+                    if (!enemy.isBoss && enemy.teamIndex == TeamIndex.Monster)
                     {
                         var body = enemy.GetBody();
                         if (body && body.healthComponent && !body.isBoss)
