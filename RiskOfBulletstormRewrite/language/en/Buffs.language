@@ -3,11 +3,13 @@
 	{
 		//[NORMAL]
 		"RISKOFBULLETSTORM_BUFF_MUSTACHE_NAME": "Power of Commerce",
-		"RISKOFBULLETSTORM_BUFF_MUSTACHE_DESC": "+2 regen per stack",
+		"RISKOFBULLETSTORM_BUFF_MUSTACHE_DESC": "<style=cIsHealing>+{0} regen</style> <style=cIsHealing>regeneration</style> <style=cStack>(+{1} per stack)</style>",
 		"RISKOFBULLETSTORM_BUFF_METRONOME_NAME": "Metronome Stacks (Display)",
 		"RISKOFBULLETSTORM_BUFF_METRONOME_DESC": "Extra damage per stack",
 		"RISKOFBULLETSTORM_BUFF_BLOODIEDSCARF_NAME": "Betrayal",
 		"RISKOFBULLETSTORM_BUFF_BLOODIEDSCARF_DESC": "Damage vulnerability",
+		"RISKOFBULLETSTORM_BUFF_ALPHABULLET_NAME": "Alpha Bullet Damage",
+		"RISKOFBULLETSTORM_BUFF_ALPHABULLET_DESC": "For each skill <style=cIsDamage>off cooldown</style>, grants <style=cIsDamage>+{0}% damage</style> <style=cStack>{1}% per stack</style> per buff.",
 		"RISKOFBULLETSTORM_BUFF__NAME": "",
 		"RISKOFBULLETSTORM_BUFF__DESC": "",
 	}

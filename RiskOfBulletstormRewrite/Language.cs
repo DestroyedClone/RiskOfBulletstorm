@@ -19,6 +19,12 @@ namespace RiskOfBulletstormRewrite
             public string[] strings;
         }
 
+        public static void DeferToken(string token, string lang, params string[] args)
+        {
+            //Main._logger.LogMessage($"Deferring {token} w/ lang {lang}");
+            RiskOfBulletstormRewrite.Language.langTokenValues.Add(new Language.LangTokenValue() { token = token, lang = lang, strings = args });
+        }
+
         public static List<LangTokenValue> langTokenValues = new List<LangTokenValue>();
 
         public static List<Type> configEntries = new List<Type>();
