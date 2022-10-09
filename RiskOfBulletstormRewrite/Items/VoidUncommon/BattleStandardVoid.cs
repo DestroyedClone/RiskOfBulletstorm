@@ -12,7 +12,7 @@ namespace RiskOfBulletstormRewrite.Items
     {
         public static ConfigEntry<float> cfgDamage;
 
-        public override string ItemName => "Leader's Standard";
+        public override string ItemName => "Leaders Standard";
 
         public override string ItemLangTokenName => "BATTLESTANDARDVOID";
 

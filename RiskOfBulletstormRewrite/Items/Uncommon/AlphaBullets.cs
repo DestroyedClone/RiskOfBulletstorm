@@ -117,6 +117,8 @@ namespace RiskOfBulletstormRewrite.Items
 
             public int Inc(GenericSkill gs)
             {
+                if (!gs)
+                    return 0;
                 return gs.stock >= gs.maxStock ? 1 : 0;
             }
         }

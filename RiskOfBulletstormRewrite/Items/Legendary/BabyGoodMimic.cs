@@ -46,7 +46,6 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void Hooks()
         {
-            Inventory.onServerItemGiven += ReplaceMimicItem;
             Inventory.onInventoryChangedGlobal += OnInventoryChangedGlobal;
         }
 
@@ -59,12 +58,14 @@ namespace RiskOfBulletstormRewrite.Items
                 {
                     if (!comp)
                     {
+                        Chat.AddMessage("Mimic giving component");
                         comp = inventory.gameObject.AddComponent<RBS_BabyMimicBehaviour>();
                         comp.ownerMaster = inventory.GetComponent<CharacterMaster>();
                     }
                 } else {
                     if (comp)
                     {
+                        Chat.AddMessage("Mimic removing component");
                         UnityEngine.Object.Destroy(comp);
                     }
                 }
@@ -73,10 +74,6 @@ namespace RiskOfBulletstormRewrite.Items
 
         //down, right, down, up, down, up
         //died to FUCKING rat
-        public void ReplaceMimicItem(Inventory inventory, ItemIndex itemIndex, int count)
-        {
-
-        }
 
         public class RBS_BabyMimicBehaviour : MonoBehaviour
         {

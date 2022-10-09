@@ -30,12 +30,12 @@
 		
 		//[TIER2]
 		"RISKOFBULLETSTORM_ITEM_AMMOBELT_NAME": "Ammo Belt",
-		"RISKOFBULLETSTORM_ITEM_AMMOBELT_PICKUP": "<b>Ammo Capacity Up!</b>/nAmmo capacity increased.",
+		"RISKOFBULLETSTORM_ITEM_AMMOBELT_PICKUP": "<b>Ammo Capacity Up!</b>\nAmmo capacity increased.",
 		"RISKOFBULLETSTORM_ITEM_AMMOBELT_DESCRIPTION": "Increases <style=cIsUtility>stock</style> of all skills by <style=cIsUtility>+{0}%</style> <style=cStack>(+{0}% per stack)</style>.",
 		"RISKOFBULLETSTORM_ITEM_AMMOBELT_LORE": "Yeah, I've got tons of ammunition in my packs. I pick up every single thing that can be fired out of a gun. Let's see here... Musket Balls, Meteor Shots, Silver Bullets, Crystal Bullets, Cursed Bullets, Blessed Bullets, Uncursed Bullets, Unblessed bullets, Bullets, Tungsten Bullets, Burning Bullets, Wet Bullets, Bullet Bullets, Party Bull- Oh you want something specific? Just name it, and I'll have it quicker than Velocity Bulle-... What the fuck is a nine melee meter?",
 		
 		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_NAME": "Battle Standard",
-		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_PICKUP": "<b>Set Your Own!</b>/nImproves the effectiveness of companions and charmed enemies.",
+		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_PICKUP": "<b>Set Your Own!</b>\nImproves the effectiveness of companions and charmed enemies.",
 		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_DESCRIPTION": "Increases damage of companions and charmed enemies by {0}% <style=cStack>(+{0}% per stack)</style>.",
 		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_LORE": "Before the advancement of Gundead society, belligerent bands of Bullet Kin would rally around these banners before their raids upon the upper chambers.",
 		
@@ -60,7 +60,7 @@
 		"RISKOFBULLETSTORM_ITEM_COINCROWN_LORE": "A pre-Gungeon relic.",
 		
 		"RISKOFBULLETSTORM_ITEM_GHOSTBULLETS_NAME": "Ghost Bullets",
-		"RISKOFBULLETSTORM_ITEM_GHOSTBULLETS_PICKUP": "<b>Shoot Through<b>\nGrants piercing on some projectiles.",
+		"RISKOFBULLETSTORM_ITEM_GHOSTBULLETS_PICKUP": "<b>Shoot Through</b>\nGrants piercing on some projectiles.",
 		"RISKOFBULLETSTORM_ITEM_GHOSTBULLETS_DESCRIPTION": "Projectiles that <style=cIsDamage>hit an enemy</style> are <style=cIsDamage>re-fired</style> for <style=cHealth>half damage</style> up to <style=cIsUtility>1 times</style> <style=cStack>(+1 times per stack)</style>.",
 		"RISKOFBULLETSTORM_ITEM_GHOSTBULLETS_LORE": "It's been theorised whether or not the Gundead are fired that way, or are a result of traveling through chambers. With these bullets, it makes it even more confusing. Gun-scholars are elated though.",
 		

@@ -8,7 +8,7 @@ using UnityEngine.Networking;
 namespace RiskOfBulletstormRewrite.Items
 {
     //pillaged from CHEFMod
-    public class RodgeRollState : BaseSkillState
+    public class DodgeRollState : BaseSkillState
     {
 		public static float baseDuration = 1.5f;
 		private float duration;

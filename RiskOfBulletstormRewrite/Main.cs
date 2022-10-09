@@ -170,15 +170,15 @@ namespace RiskOfBulletstormRewrite
                 ControllerBase controllerBase = (ControllerBase)System.Activator.CreateInstance(controllerType);
                 controllerBase.Init(Config);
             }
-
+            /*
             //this section automatically scans the project for all monsters
             var MonsterTypes = Assembly.GetExecutingAssembly().GetTypes().Where(type => !type.IsAbstract && type.IsSubclassOf(typeof(MonsterBase)));
 
             foreach (var monsterType in MonsterTypes)
             {
                 ControllerBase monsterBase = (ControllerBase)System.Activator.CreateInstance(monsterType);
-                monsterBase.Init(Config);
-            }
+                //monsterBase.Init(Config);
+            }*/
         }
 
 

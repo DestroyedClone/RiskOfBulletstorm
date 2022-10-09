@@ -38,7 +38,7 @@ namespace RiskOfBulletstormRewrite.Items
         public override void CreateConfig(ConfigFile config)
         {
             cfgChance = config.Bind(ConfigCategory, "Chance", 0.05f, "");
-            cfgChance = config.Bind(ConfigCategory, "Chance Per Stack", 0.02f, "");
+            cfgChanceStack = config.Bind(ConfigCategory, "Chance Per Stack", 0.02f, "");
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()

@@ -108,7 +108,7 @@ namespace RiskOfBulletstormRewrite.Items
                 bool allDead = true;
                 List<CharacterMaster> peopleWithClones = new List<CharacterMaster>();
 
-                int playerItemCount = 0;
+                //int playerItemCount = 0;
                 for (int i = 0; i < instances.Count; i++)
                 {
                     PlayerCharacterMasterController playerCharacterMasterController = instances[i];
@@ -167,12 +167,27 @@ namespace RiskOfBulletstormRewrite.Items
                 GiveItemsToPlayers();
             }
 
+            //todo optimize
             public void AcquireItemsToReturn()
             {
                 var cloneCount = Util.GetItemCountForTeam(TeamIndex.Player, instance.ItemDef.itemIndex, false);
                 foreach (var player in PlayerCharacterMasterController.instances)
                 {
-                    GetRandomItemsFromInventory(player.master.inventory, cloneCount);
+                    var inv = player.master.inventory;
+                    itemsToGive.Add(player, GetRandomItemsFromInventory(inv, cloneCount));
+                    var ownItemCount = inv.GetItemCount(instance.ItemDef);
+                    var tempInvGameObject = new GameObject();
+                    inv.CopyItemsFrom(tempInvGameObject.AddComponent<Inventory>());
+                    Destroy(tempInvGameObject);
+                    
+                    if (ownItemCount > 0)
+                    {
+                        //remove isnt needed since 
+                        //inv.RemoveItem(instance.ItemDef, ownItemCount);
+                        inv.GiveItem(CloneConsumed.instance.ItemDef, ownItemCount);
+                        //since the stage changes it might not show up for hte player... todo check
+                        CharacterMasterNotificationQueue.PushItemTransformNotification(player.master, instance.ItemDef.itemIndex, CloneConsumed.instance.ItemDef.itemIndex, CharacterMasterNotificationQueue.TransformationType.Default);
+                    }
                 }
             }
 
@@ -196,8 +211,15 @@ namespace RiskOfBulletstormRewrite.Items
                 for (int i = 0; i < inventory.itemAcquisitionOrder.Count; i++)
                 {
                     var currentItemIndex = inventory.itemAcquisitionOrder[i];
+                    if (currentItemIndex == instance.ItemDef.itemIndex)
+                        continue;
+                    //no infinite clones, bozo
+                    var currentItemDef = ItemCatalog.GetItemDef(currentItemIndex);
+                    if (!currentItemDef)
+                        continue;
                     //keeping hidden items are important: difficulty modifier items
-                    if (ItemCatalog.GetItemDef(currentItemIndex)?.hidden == true)
+                    //so are NoTiers, usually
+                    if (currentItemDef?.hidden == true || currentItemDef.tier == ItemTier.Tier1)
                     {
                         list.Add(new KeyValuePair<ItemIndex, int>(currentItemIndex, 1));
                         continue;

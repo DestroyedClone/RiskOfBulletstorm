@@ -26,7 +26,8 @@ namespace RiskOfBulletstormRewrite.Items
         {
             ItemTag.Cleansable,
             ItemTag.Utility,
-            ItemTag.AIBlacklist //AI can't use it effectively
+            ItemTag.AIBlacklist, //AI can't use it effectively,
+            ItemTag.CannotCopy
         };
 
         public static SkillDef rollSkillDef;
@@ -42,8 +43,8 @@ namespace RiskOfBulletstormRewrite.Items
 
         public void CreateSkillDef()
         {
-            rollSkillDef = ScriptableObject.CreateInstance<SkillDef>();
-            rollSkillDef.activationState = new SerializableEntityStateType(typeof(EntityStates.Commando.CombatDodge));
+            rollSkillDef = ScriptableObject.CreateInstance<GroundedSkillDef>();
+            rollSkillDef.activationState = new SerializableEntityStateType(typeof(DodgeRollState));
             rollSkillDef.activationStateMachineName = "Body";
             rollSkillDef.baseMaxStock = 1;
             rollSkillDef.baseRechargeInterval = 8;
@@ -72,6 +73,7 @@ namespace RiskOfBulletstormRewrite.Items
 
             HG.ArrayUtils.ArrayAppend(ref Main.ContentPack.entityStateTypes, rollSkillDef.activationState);
             ContentAddition.AddSkillDef(rollSkillDef);
+            ContentAddition.AddEntityState<DodgeRollState>(out bool wasAdded);
         }
 
         public override void CreateConfig(ConfigFile config)
@@ -96,6 +98,6 @@ namespace RiskOfBulletstormRewrite.Items
                 characterBody.ReplaceSkillIfItemPresent(characterBody.skillLocator.utility, ItemDef.itemIndex, rollSkillDef);
             }
         }
-
+        
     }
 }

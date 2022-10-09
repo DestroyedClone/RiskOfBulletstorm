@@ -6,7 +6,7 @@
 		"RISKOFBULLETSTORM_ARTIFACT_PITLORD_DESCRIPTION": "Players and monsters teleport back on stage with no fall damage.",
 		
 		"RISKOFBULLETSTORM_ARTIFACT_DAMAGEEQUIPMENTRECHARGE_NAME": "Artifact of the Equipment Battery",
-		"RISKOFBULLETSTORM_ARTIFACT_DAMAGEEQUIPMENTRECHARGE_RECHARGEONHIT_DESCRIPTION": "Equipment only recharges based off damage dealt. Scales over time.",
+		"RISKOFBULLETSTORM_ARTIFACT_DAMAGEEQUIPMENTRECHARGE_DESCRIPTION": "Equipment only recharges based off damage dealt. Scales over time.",
 		
 		"RISKOFBULLETSTORM_ARTIFACT_ADAPTIVEARMORBOSSES_NAME": "Artifact of the Adaptive Armor",
 		"RISKOFBULLETSTORM_ARTIFACT_ADAPTIVEARMORBOSSES_DESCRIPTION": "All teleporter bosses gain the Final Boss's adaptive armor.",
