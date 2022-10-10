@@ -25,7 +25,7 @@ namespace RiskOfBulletstormRewrite.Items
             cfgItemsToGetPerStack.Value.ToString()
         };
 
-        public override ItemTier Tier => ItemTier.Tier3;
+        public override ItemTier Tier => ItemTier.VoidTier3;
 
         public override GameObject ItemModel => GetPickupModel();
 

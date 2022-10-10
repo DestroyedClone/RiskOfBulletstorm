@@ -447,6 +447,8 @@ namespace RiskOfBulletstormRewrite.Controllers
             public float idealizedAccuracyStat = 1f;
             public float bulletAccuracy = 1f;
             public float projectileAccuracy = 1f;
+            public float itemCount_Curse = 0f;
+            public float curse = 0;
 
             public void Start()
             {
@@ -466,7 +468,19 @@ namespace RiskOfBulletstormRewrite.Controllers
             {
                 itemCount_Scope = inventory.GetItemCount(Items.Scope.instance.ItemDef);
                 itemCount_Spice = inventory.GetItemCount(Items.SpiceTally.instance.ItemDef);
+                itemCount_Curse = inventory.GetItemCount(Items.CurseTally.instance.ItemDef);
                 RecalculateAccuracy();
+                RecalculateCurse();
+            }
+
+            public void RecalculateCurse()
+            {
+                curse = 0f;
+                //curse addition
+                curse += itemCount_Curse * 0.5f;
+
+                //curse removal
+                //curse -= itemCount_CurseReduction * 0.5f;
             }
 
             private void RecalculateAccuracy()

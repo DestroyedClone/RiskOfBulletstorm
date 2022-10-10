@@ -67,7 +67,11 @@ namespace RiskOfBulletstormRewrite
         [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
         internal static void BetterUICompat_StatsDisplay()
         {
-            BetterUI.StatsDisplay.AddStatsDisplay("$accuracy", (BetterUI.StatsDisplay.DisplayCallback)GetAccuracy);
+            var prefix = "RISKOFBULLETSTORM_STATDISPLAY_";
+            //used to be $accuracy, this doesn't auto display right?
+            //todo add auto display?????
+            BetterUI.StatsDisplay.AddStatsDisplay(prefix+"ACCURACY", (BetterUI.StatsDisplay.DisplayCallback)GetAccuracy);
+            BetterUI.StatsDisplay.AddStatsDisplay(prefix+"CURSE", (BetterUI.StatsDisplay.DisplayCallback)GetCurse);
         }
 
         private static string GetAccuracy(CharacterBody body)
@@ -77,6 +81,18 @@ namespace RiskOfBulletstormRewrite
             if (extraStatsController)
             {
                 return $"{extraStatsController.idealizedAccuracyStat * 100f}%";
+            }
+
+            return value;
+        }
+        //this duplicate is kinda goofy, is this unoptimized?
+        private static string GetCurse(CharacterBody body)
+        {
+            string value = null;
+            var extraStatsController = body.GetComponent<Controllers.ExtraStatsController.RBSExtraStatsController>();
+            if (extraStatsController)
+            {
+                return extraStatsController.curse.ToString();
             }
 
             return value;
