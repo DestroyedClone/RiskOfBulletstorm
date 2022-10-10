@@ -97,6 +97,24 @@ namespace RiskOfBulletstormRewrite.Equipment
 
                 //other
             LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/MissileProjectile"),
+
+                //SOTV
+                //Railgunner
+                //mines
+
+                //Void Fiend
+                //flood
+                //corrupted flood
+
+                //Void Devastator
+                //black and white bombs
+
+                //Voidling?
+                //Larva?
+                //Void Jailer's death bomb?
+
+                //Spare Drone Parts: Missile
+                //Egocentrism? molotov?
         };
 
         public override void Init(ConfigFile config)
@@ -138,12 +156,14 @@ namespace RiskOfBulletstormRewrite.Equipment
         public static BodyIndex[] destructableBodyIndices = new BodyIndex[]
         {
             BodyCatalog.FindBodyIndex("Pot2Body"),
+            //fusioncellbody
         };
 
         protected override bool ActivateEquipment(EquipmentSlot slot)
         {
             if (slot.characterBody)
             {
+                Util.PlaySound("drone_attack_v2_03", slot.gameObject);
                 //HelfireController
                 Collider[] array = Physics.OverlapSphere(slot.characterBody.corePosition, cfgRange.Value, LayerIndex.entityPrecise.mask, QueryTriggerInteraction.Collide);
                 GameObject[] array2 = new GameObject[array.Length];

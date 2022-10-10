@@ -25,16 +25,40 @@ namespace RiskOfBulletstormRewrite.Controllers
         
         public override void Init(ConfigFile config)
         {
-            SetupConfig(config);
+            CreateConfig(config);
+            Hooks();
         }
 
-        public static void SetupConfig(ConfigFile config)
+        public override void Hooks()
+        {
+            base.Hooks();
+            On.RoR2.BazaarController.OnStartServer += BazaarOnStartServer;
+        }
+
+        public void BazaarOnStartServer(On.RoR2.BazaarController.orig_OnStartServer orig, BazaarController self)
+        {
+            orig(self);
+            foreach (var player in PlayerCharacterMasterController.instances)
+            {
+                if (CraftShell(player.master.GetBody(), self.seerStations[0].transform.position))
+                {
+                    Chat.SendBroadcastChat(new Chat.SimpleChatMessage()
+                    {
+                        baseToken = "Gunsmith: Here's your bullet."
+                    });
+                    break;
+                }
+            }
+        }
+
+        public override void CreateConfig(ConfigFile config)
         {
             
         }
-        public void CraftShell(CharacterBody steve)
+
+        public bool CraftShell(CharacterBody steve, Vector3 position)
         {
-            if (steve.inventory)
+            if (steve && steve.inventory)
             {
                 bool hasItem(ItemDef itemDef)
                 {
@@ -50,9 +74,16 @@ namespace RiskOfBulletstormRewrite.Controllers
                     steve.inventory.RemoveItem(gunpowderDef);
                     steve.inventory.RemoveItem(leadDef);
                     steve.inventory.RemoveItem(casingDef);
-                    steve.inventory.GiveItem(Items.PastKillingBullet.instance.ItemDef);
+                    //steve.inventory.GiveItem(Items.PastKillingBullet.instance.ItemDef);
+                    PickupDropletController.CreatePickupDroplet(
+                        PickupCatalog.itemIndexToPickupIndex[(int)Items.PastKillingBullet.instance.ItemDef.itemIndex],
+                        position,
+                        Vector3.zero
+                    );
+                    return true;
                 }
             }
+            return false;
         }
 
     }

@@ -51,12 +51,15 @@ namespace RiskOfBulletstormRewrite.Artifact
         {
             if (NetworkServer.active)
             {
-                foreach (var cm in CharacterMaster._readOnlyInstancesList)
+                foreach (var player in PlayerCharacterMasterController.instances)
                 {
-                    var body = cm.GetBody();
-                    if (body && cm.teamIndex == TeamIndex.Player)
+                    if (player.master)
                     {
-                        body.AddBuff(RoR2Content.Buffs.CloakSpeed);
+                        var body = player.master.GetBody();
+                        if (body)
+                        {
+                            body.AddBuff(RoR2Content.Buffs.CloakSpeed);
+                        }
                     }
                 }
             }

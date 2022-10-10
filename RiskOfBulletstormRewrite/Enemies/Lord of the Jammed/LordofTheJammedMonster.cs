@@ -91,6 +91,9 @@ namespace RiskOfBulletstormRewrite.Enemies
 
         public override void SetupSecondary()
         {
+            CreateAndSetNewSkillFamily(MonsterSkillLocator.secondary, "SECONDARY");
+
+
             var mySkillDef = ScriptableObject.CreateInstance<SkillDef>();
             mySkillDef.activationState = new SerializableEntityStateType(typeof(LOTJSlash));
             mySkillDef.activationStateMachineName = "Weapon";

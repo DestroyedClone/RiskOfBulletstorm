@@ -75,7 +75,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public void AddComp(CharacterBody body)
         {
-            if (NetworkServer.active)
+            if (NetworkServer.active && body.inventory)
             {
                 body.gameObject.AddComponent<RBS_AlphaBullet>();
             }
@@ -106,6 +106,23 @@ namespace RiskOfBulletstormRewrite.Items
                     secondary = sk.secondary;
                     utility = sk.utility;
                     special = sk.special;
+                }
+                body.onInventoryChanged += OnInventoryChanged;
+            }
+
+            public void OnDestroy()
+            {
+                body.onInventoryChanged -= OnInventoryChanged;
+            }
+
+            public void OnInventoryChanged()
+            {
+                if (body.inventory.GetItemCount(instance.ItemDef) > 0)
+                {
+                    enabled = true;
+                } else {
+                    body.SetBuffCount(Utils.Buffs.AlphaBulletBuff.buffIndex, 0);
+                    enabled = false;
                 }
             }
 

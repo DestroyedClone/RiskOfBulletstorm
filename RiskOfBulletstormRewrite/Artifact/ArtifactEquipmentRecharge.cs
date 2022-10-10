@@ -34,8 +34,33 @@ namespace RiskOfBulletstormRewrite.Artifact
             {
                 return;
             }
-            On.RoR2.EquipmentSlot.UpdateInventory += EquipmentSlot_UpdateInventory;
+            //On.RoR2.EquipmentSlot.UpdateInventory += EquipmentSlot_UpdateInventory;
             GlobalEventManager.onServerDamageDealt += ReduceWaitOnDamage;
+            CharacterBody.onBodyStartGlobal += GiveComponent;
+            On.RoR2.Inventory.DeductActiveEquipmentCooldown += DeductFromComponent;
+        }
+
+        private void RunArtifactManager_onArtifactDisabledGlobal([JetBrains.Annotations.NotNull] RunArtifactManager runArtifactManager, [JetBrains.Annotations.NotNull] ArtifactDef artifactDef)
+        {
+            if (artifactDef != ArtifactDef)
+            {
+                return;
+            }
+            //On.RoR2.EquipmentSlot.UpdateInventory -= EquipmentSlot_UpdateInventory;
+            GlobalEventManager.onServerDamageDealt -= ReduceWaitOnDamage;
+            CharacterBody.onBodyStartGlobal -= GiveComponent;
+            On.RoR2.Inventory.DeductActiveEquipmentCooldown -= DeductFromComponent;
+        }
+        
+        public void DeductFromComponent(On.RoR2.Inventory.orig_DeductActiveEquipmentCooldown orig, Inventory self, float seconds)
+        {
+            orig(self, seconds);
+        }
+
+        public void GiveComponent(CharacterBody characterBody)
+        {
+            if (characterBody.inventory && characterBody.equipmentSlot)
+                characterBody.gameObject.AddComponent<RBS_ArtifactEquipmentRechargeComponent>().inventory = characterBody.inventory;
         }
 
         public void ReduceWaitOnDamage(DamageReport damageReport)
@@ -47,7 +72,8 @@ namespace RiskOfBulletstormRewrite.Artifact
                 var damageDealt = damageReport.damageDealt;
                 //test: 100 damage = 1s of charge
                 var resultingCooldownReduction = damageDealt / 100f;
-                body.inventory.DeductActiveEquipmentCooldown(resultingCooldownReduction);
+                body.GetComponent<RBS_ArtifactEquipmentRechargeComponent>()?.DeductCooldown(resultingCooldownReduction);
+                //body.inventory.DeductActiveEquipmentCooldown(resultingCooldownReduction);
             }
         }
 
@@ -64,22 +90,38 @@ namespace RiskOfBulletstormRewrite.Artifact
             orig(self);
         }
 
-        private void RunArtifactManager_onArtifactDisabledGlobal([JetBrains.Annotations.NotNull] RunArtifactManager runArtifactManager, [JetBrains.Annotations.NotNull] ArtifactDef artifactDef)
+        public class RBS_ArtifactEquipmentRechargeComponent : MonoBehaviour
         {
-            if (artifactDef != ArtifactDef)
-            {
-                return;
-            }
-            
-        }
+            public Inventory inventory = null;
+            //public EquipmentState primaryEquipment = default;
+            public float remainingDuration = 0;
 
-        public class EquipmentSlotHolder : MonoBehaviour
-        {
-            public EquipmentSlot equipmentSlot;
+            public void DeductCooldown(float duration)
+            {
+                remainingDuration -= duration;
+                inventory.HandleInventoryChanged();
+            }
+
+            public void Start()
+            {
+                //primaryEquipment = inventory.GetEquipment((uint)inventory.activeEquipmentSlot);
+            }
 
             public void FixedUpdate()
             {
-
+                EquipmentState equipment = inventory.GetEquipment((uint)inventory.activeEquipmentSlot);
+                if (remainingDuration <= 1)
+                {
+                    remainingDuration = equipment.chargeFinishTime.timeUntil;
+                }
+                else //if (remainingDuration > 0)
+                {
+			        
+                    inventory.SetEquipment(new EquipmentState(equipment.equipmentIndex, 
+                    Run.FixedTimeStamp.now + remainingDuration,
+                    equipment.charges), (uint)inventory.activeEquipmentSlot);
+                }
+                    //primaryEquipment.chargeFinishTime = Run.FixedTimeStamp.now + remainingDuration;
             }
         }
 

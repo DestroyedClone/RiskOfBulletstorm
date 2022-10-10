@@ -150,6 +150,14 @@ namespace RiskOfBulletstormRewrite.Enemies
             //Then call base
             //
         }
+        public void CreateAndSetNewSkillFamily(GenericSkill skillSlot, string slotName)
+        {
+            SkillFamily skillFamily = ScriptableObject.CreateInstance<SkillFamily>();
+            (skillFamily as ScriptableObject).name = MonsterLangTokenName+"_"+slotName+"_SKILLFAMILY";
+            skillSlot._skillFamily = skillFamily;
+            skillFamily.variants = new SkillFamily.Variant[0];
+            ContentAddition.AddSkillFamily(skillFamily);
+        }
 
         private void AddSkillToSkillFamily(SkillDef skillDef, SkillFamily skillFamily)
         {

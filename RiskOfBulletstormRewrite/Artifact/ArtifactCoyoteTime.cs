@@ -16,7 +16,7 @@ namespace RiskOfBulletstormRewrite.Artifact
         public override Sprite ArtifactDisabledIcon => Assets.NullSprite;
 
         //public static ConfigEntry<float> cfgWindowOfTime;
-        public const float windowOfTime = 0.3f;
+        public const float windowOfTime = 0.8f;
 
         public override void Init(ConfigFile config)
         {
@@ -73,6 +73,15 @@ namespace RiskOfBulletstormRewrite.Artifact
             private float age = 0;
             private float duration => windowOfTime;
 
+            public void Awake()
+            {
+                if (!characterMotor)
+                {
+                    characterMotor = gameObject.GetComponent<CharacterMotor>();
+                }
+                characterMotor.useGravity = false;
+            }
+
             public void FixedUpdate()
             {
                 age += Time.fixedDeltaTime;
@@ -85,6 +94,11 @@ namespace RiskOfBulletstormRewrite.Artifact
                     ConsumeJump();
                     Destroy(this);
                 }
+            }
+
+            public void OnDestroy()
+            {
+                characterMotor.useGravity = characterMotor.gravityParameters.CheckShouldUseGravity();
             }
 
             public void ConsumeJump()

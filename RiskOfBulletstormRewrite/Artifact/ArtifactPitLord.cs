@@ -2,6 +2,7 @@
 using RoR2;
 using UnityEngine;
 using static RiskOfBulletstormRewrite.Main;
+using UnityEngine.Networking;
 
 namespace RiskOfBulletstormRewrite.Artifact
 {
@@ -51,7 +52,8 @@ namespace RiskOfBulletstormRewrite.Artifact
 
         public void GiveOobTeleport(CharacterBody body)
         {
-            body.inventory.GiveItem(RoR2Content.Items.TeleportWhenOob);
+            if (NetworkServer.active)
+                body.inventory?.GiveItem(RoR2Content.Items.TeleportWhenOob);
         }
 
         public static bool CharacterBodyCanTakeFallDamage(CharacterBody body)

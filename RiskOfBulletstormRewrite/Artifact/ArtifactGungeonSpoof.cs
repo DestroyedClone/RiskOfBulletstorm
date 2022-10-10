@@ -21,7 +21,16 @@ namespace RiskOfBulletstormRewrite.Artifact
         {
             CreateLang();
             CreateArtifact();
+            CreateConfig(config);
             Hooks();
+        }
+
+        public static ConfigEntry<float> cfgIFrameDuration;
+        public static ConfigEntry<float> cfgStatDivider;
+        public override void CreateConfig(ConfigFile config)
+        {
+            cfgIFrameDuration = config.Bind(ConfigCategory, "I-Frames Duration", 1f, "The amount of seconds of immunity after getting hit.");
+            cfgStatDivider = config.Bind(ConfigCategory, "Health and Damage Division Coefficient", 8f, "The value that the body's maxHealth and baseDamage are divided by.");
         }
 
         public override void Hooks()
@@ -58,9 +67,10 @@ namespace RiskOfBulletstormRewrite.Artifact
             Run.onRunStartGlobal += StartRun;
             if (NetworkServer.active)
             {
-                RunArtifactManager.instance.SetArtifactEnabledServer(ArtifactAdaptiveArmor.instance.ArtifactDef, true);
-                RunArtifactManager.instance.SetArtifactEnabledServer(ArtifactEquipmentRecharge.instance.ArtifactDef, true);
-                RunArtifactManager.instance.SetArtifactEnabledServer(ArtifactUpSpeedOOC.instance.ArtifactDef, true);
+                //RunArtifactManager.instance.SetArtifactEnabledServer(ArtifactAdaptiveArmor.instance.ArtifactDef, true);
+                //RunArtifactManager.instance.SetArtifactEnabledServer(ArtifactEquipmentRecharge.instance.ArtifactDef, true);
+                //RunArtifactManager.instance.SetArtifactEnabledServer(ArtifactUpSpeedOOC.instance.ArtifactDef, true);
+                //RunArtifactManager.instance.SetArtifactEnabledServer(ArtifactCoyoteTime.instance.ArtifactDef, true);
             }
             R2API.RecalculateStatsAPI.GetStatCoefficients += Mustache_StatCoefficients;
         }
@@ -115,47 +125,51 @@ namespace RiskOfBulletstormRewrite.Artifact
         {
             bool modified = false;
             var body = self.body;
-            if (body && !damageInfo.rejected)
+            if (NetworkServer.active)
             {
-                if (body.isPlayerControlled)
+                if (body && !damageInfo.rejected)
                 {
-                    //this it to make sure it stays between
-                    //0-2 damage (0hearts to 1 heart)
-                    damageInfo.damage = Mathf.RoundToInt(damageInfo.damage);
-                    
-                    if (damageInfo.damage < 1)
+                    if (body.isPlayerControlled)
                     {
-                        damageInfo.rejected = true;
-                    } else {
-                        if (damageInfo.crit)
+                        //this it to make sure it stays between
+                        //0-2 damage (0hearts to 1 heart)
+                        damageInfo.damage = Mathf.RoundToInt(damageInfo.damage);
+                        
+                        if (damageInfo.damage < 1)
                         {
-                            damageInfo.damage = 1;
+                            damageInfo.rejected = true;
                         } else {
-                            damageInfo.damage = 2;
+                            if (damageInfo.crit)
+                            {
+                                damageInfo.damage = 1;
+                            } else {
+                                damageInfo.damage = 2;
+                            }
                         }
+                        foreach (var dt in new DamageType[]{
+                            DamageType.BleedOnHit,
+                            DamageType.BlightOnHit,
+                            DamageType.BonusToLowHealth,
+                            DamageType.BypassArmor,
+                            DamageType.BypassBlock,
+                            DamageType.BypassOneShotProtection,
+                            DamageType.IgniteOnHit,
+                            DamageType.PercentIgniteOnHit,
+                            DamageType.PoisonOnHit,
+                            DamageType.SuperBleedOnCrit
+                        })
+                        { //stackoverflow unsetting an enum flag
+                            damageInfo.damageType &= ~dt;
+                        }
+                        modified = true;
                     }
-                    foreach (var dt in new DamageType[]{
-                        DamageType.BleedOnHit,
-                        DamageType.BlightOnHit,
-                        DamageType.BonusToLowHealth,
-                        DamageType.BypassArmor,
-                        DamageType.BypassBlock,
-                        DamageType.BypassOneShotProtection,
-                        DamageType.IgniteOnHit,
-                        DamageType.PercentIgniteOnHit,
-                        DamageType.PoisonOnHit,
-                        DamageType.SuperBleedOnCrit
-                    })
-                    {
-                        damageInfo.damageType |= dt;
-                    }
-                    modified = true;
                 }
             }
+            
             orig(self, damageInfo);
-            if (modified)
+            if (NetworkServer.active && modified)
             {
-                self.body.AddTimedBuff(RoR2Content.Buffs.Immune, 1f);
+                self.body.AddTimedBuff(RoR2Content.Buffs.Immune, cfgIFrameDuration.Value);
             }
         }
 
@@ -172,9 +186,12 @@ namespace RiskOfBulletstormRewrite.Artifact
             }
         }
 
+        [Server] //>using something you dont know what its for
         private void ApplyBodyModifier(CharacterBody body)
         {
-            body.baseMaxHealth = Mathf.RoundToInt(body.baseMaxHealth / 4);
+            float armorToConvertToBarrier = 0;
+            
+            body.baseMaxHealth = Mathf.RoundToInt(body.baseMaxHealth / cfgStatDivider.Value);
             body.levelMaxHealth = 0;
             body.healthComponent.health = body.baseMaxHealth;
             body.baseRegen = 0;
@@ -184,9 +201,16 @@ namespace RiskOfBulletstormRewrite.Artifact
             body.baseArmor = 0;
             body.levelArmor = 0;
 
-            body.baseDamage = Mathf.RoundToInt(body.baseDamage / 4);
+            body.baseDamage = Mathf.RoundToInt(body.baseDamage / cfgStatDivider.Value);
             body.levelDamage = 0;
+            body.autoCalculateLevelStats = false;
             body.RecalculateStats();
+
+            if (armorToConvertToBarrier > 0 && body.healthComponent)
+            {
+                var evaluatedBarrier = Mathf.RoundToInt(armorToConvertToBarrier / cfgStatDivider.Value);
+                body.healthComponent.AddBarrier(evaluatedBarrier);
+            }
         }
     }
 }

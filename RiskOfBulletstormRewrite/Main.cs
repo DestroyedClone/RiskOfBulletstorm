@@ -101,6 +101,7 @@ namespace RiskOfBulletstormRewrite
         {
             foreach (var itemPair in voidConversions)
             {
+                _logger.LogMessage($"Adding conversion: {itemPair.Key.nameToken} to {itemPair.Value.nameToken}");
                 RoR2.ItemDef.Pair transformation = new RoR2.ItemDef.Pair()
                 {
                     itemDef1 = itemPair.Key,

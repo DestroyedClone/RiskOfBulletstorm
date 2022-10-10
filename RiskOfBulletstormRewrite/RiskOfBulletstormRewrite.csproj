@@ -22,7 +22,6 @@
     <Compile Remove="Equipment\JarBees.cs" />
     <Compile Remove="Equipment\Lunar\Spice.cs" />
     <Compile Remove="Equipment\Molotov.cs" />
-    <Compile Remove="Equipment\Orange.cs" />
     <Compile Remove="Equipment\Ration.cs" />
     <Compile Remove="Items\Boss\ClownMask.cs" />
     <Compile Remove="Items\Boss\PastKillingBulletBanPickup.cs" />

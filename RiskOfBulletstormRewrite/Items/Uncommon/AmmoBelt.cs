@@ -68,7 +68,7 @@ namespace RiskOfBulletstormRewrite.Items
                 var itemCount = GetCount(characterBody);
                 if (itemCount > 0)
                 {
-                    var stocksToGive = (int)Mathf.Min(1, itemCount * cfgPercentageStockAdditive.Value);
+                    var stocksToGive = (int)Mathf.Max(1, itemCount * cfgPercentageStockAdditive.Value);
                     newBonusStockFromBody += stocksToGive;
                 }
             }

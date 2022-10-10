@@ -86,6 +86,7 @@ namespace RiskOfBulletstormRewrite.Artifact
         ///The main method executed for setting up the class.
         ///</summary>
         public abstract void Init(ConfigFile config);
+        public virtual void CreateConfig(ConfigFile config) { }
 
         ///<summary>
         ///Method responsible for creating and deferring the language tokens.

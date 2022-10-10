@@ -87,16 +87,12 @@ namespace RiskOfBulletstormRewrite.Items
 
             public List<CharacterMaster> mimics = new List<CharacterMaster>();
 
-            public void Awake()
-            {
-                minionGroup = MinionOwnership.MinionGroup.FindGroup(ownerBody.master.netId);
-            }   
-
             public void OnEnable()
             {
                 inventory = ownerBody.inventory;
                 inventory.onInventoryChanged += UpdateItemCount;
                 ownerMaster.onBodyStart += OnOwnerBodyStart;
+                minionGroup = MinionOwnership.MinionGroup.FindGroup(ownerBody.master.netId);
             }
 
             public void OnDisable()

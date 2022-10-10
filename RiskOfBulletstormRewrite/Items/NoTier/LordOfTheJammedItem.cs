@@ -3,6 +3,7 @@ using R2API;
 using RoR2;
 using UnityEngine;
 using static RiskOfBulletstormRewrite.Main;
+using RoR2.CharacterAI;
 
 namespace RiskOfBulletstormRewrite.Items
 {
@@ -10,9 +11,9 @@ namespace RiskOfBulletstormRewrite.Items
     {
         public override string ItemName => "Lord of the Jammed";
 
-        public override string ItemLangTokenName => "LORDOFTHEJAMMEDITEM";
+        public override string ItemLangTokenName => "LORDOFTHEJAMMED";
 
-        public override ItemTier Tier => ItemTier.Tier1;
+        public override ItemTier Tier => ItemTier.NoTier;
 
         public override GameObject ItemModel => MainAssets.LoadAsset<GameObject>("ExampleItemPrefab.prefab");
 
@@ -25,6 +26,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void Init(ConfigFile config)
         {
+            return;
             CreateConfig(config);
             CreateLang();
             CreateItem();
@@ -59,25 +61,43 @@ namespace RiskOfBulletstormRewrite.Items
 
         public class LOTJTracker : MonoBehaviour
         {
+            public CharacterBody ownerBody = null;
             public CharacterBody bossBody = null;
             public CharacterMaster bossMaster = null;
             public RoR2.CharacterAI.BaseAI baseAI;
 
             public void Start()
             {
+                ownerBody = gameObject.GetComponent<CharacterBody>();
                 if (!bossMaster)
                 {
                     var masterSummon = new MasterSummon()
                     {
                         ignoreTeamMemberLimit = true,
-                        masterPrefab = Enemies.LordofTheJammedMonster.masterPrefab,
-                        position = transform.position,
+                        //masterPrefab = Enemies.LordofTheJammedMonster.masterPrefab,
+                        masterPrefab = MasterCatalog.FindMasterPrefab("BrotherBody"),
+                        position = TeleporterInteraction.instance 
+                        ? TeleporterInteraction.instance.transform.position
+                        : transform.position,
                         teamIndexOverride = TeamIndex.Monster
                     };
 
                     bossMaster = masterSummon.Perform();
+                    bossMaster.inventory.GiveItem(RoR2Content.Items.Ghost.itemIndex);
+                    bossMaster.inventory.GiveItem(RoR2Content.Items.SummonedEcho);
                     bossBody = bossMaster.GetBody();
+                    baseAI = bossMaster.GetComponent<BaseAI>();
                 }
+            }
+
+            public void FixedUpdate()
+            {
+                RedirectAttention();
+            }
+
+            public void RedirectAttention()
+            {
+                baseAI.customTarget.characterBody = ownerBody;
             }
 
             public void OnDestroy()
