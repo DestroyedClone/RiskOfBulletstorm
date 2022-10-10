@@ -140,7 +140,7 @@ namespace RiskOfBulletstormRewrite.Items
                     var controller = cloneObject.AddComponent<RBS_CloneVoidController>();
                     UnityEngine.Object.DontDestroyOnLoad(cloneObject);
                     Stage.instance.gameObject.AddComponent<RBS_CloneVoidController>();
-                    PseudoRestartRun();
+                    Clone.instance.PseudoRestartRun();
                 }
             }
         }
@@ -228,45 +228,6 @@ namespace RiskOfBulletstormRewrite.Items
                 }
                 return valueToReturn;
             }
-        }
-
-        private void PseudoRestartRun()//(CharacterMaster masterWithClone)
-        {
-            //if (!masterWithClone) return;
-            isCloneRestarting = true;
-            Run.instance.SetRunStopwatch(0);
-            Run.instance.NetworkstageClearCount = -1;
-            TeamManager.instance.SetTeamLevel(TeamIndex.Player, 0);
-            TeamManager.instance.SetTeamLevel(TeamIndex.Monster, 0);
-            TeamManager.instance.SetTeamLevel(TeamIndex.Lunar, 0);
-            TeamManager.instance.SetTeamLevel(TeamIndex.Void, 0);
-            WeightedSelection<SceneDef> weightedSelection = new WeightedSelection<SceneDef>(8);
-
-            string @string = Run.cvRunSceneOverride.GetString();
-            if (@string != "")
-            {
-                weightedSelection.AddChoice(SceneCatalog.GetSceneDefFromSceneName(@string), 1f);
-            }
-            else if (Run.instance.startingSceneGroup)
-            {
-                Run.instance.startingSceneGroup.AddToWeightedSelection(weightedSelection, new Func<SceneDef, bool>(Run.instance.CanPickStage));
-            }
-            else
-            {
-                for (int j = 0; j < Run.instance.startingScenes.Length; j++)
-                {
-                    if (Run.instance.CanPickStage(Run.instance.startingScenes[j]))
-                    {
-                        weightedSelection.AddChoice(Run.instance.startingScenes[j], 1f);
-                    }
-                }
-            }
-            Run.instance.PickNextStageScene(weightedSelection);
-
-            //var choices = Run.instance.startingSceneGroup;
-
-            //Run.instance.PickNextStageScene(weightedSelection);
-            Run.instance.AdvanceStage(Run.instance.nextStageScene);
         }
     }
 }

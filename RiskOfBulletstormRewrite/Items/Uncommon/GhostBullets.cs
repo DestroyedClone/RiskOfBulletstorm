@@ -119,13 +119,20 @@ namespace RiskOfBulletstormRewrite.Items
             {
                 projectileController = gameObject.GetComponent<ProjectileController>();
                 projectileDamage = gameObject.GetComponent<ProjectileDamage>();
+                if (!projectileController || !projectileDamage)
+                {
+                    enabled = false;
+                    return;
+                }
+                
                 projectileTargetComponent = gameObject.GetComponent<ProjectileTargetComponent>();
                 GetPasses();
             }
 
             public void GetPasses()
             {
-                remainingShots = GhostBullets.instance.GetCount(projectileController.owner.GetComponent<CharacterBody>());
+                if (projectileController && projectileController.owner)
+                    remainingShots = GhostBullets.instance.GetCount(projectileController.owner.GetComponent<CharacterBody>());
             }
 
             public void OnProjectileImpact(ProjectileImpactInfo impactInfo)
@@ -161,7 +168,7 @@ namespace RiskOfBulletstormRewrite.Items
                             projectileDamage.force * cfgDamageReduction.Value,
                             projectileDamage.crit,
                             projectileDamage.damageColorIndex,
-                            target.gameObject);
+                            target ? target.gameObject : null);
                             Destroy(gameObject);
                         }
                     }

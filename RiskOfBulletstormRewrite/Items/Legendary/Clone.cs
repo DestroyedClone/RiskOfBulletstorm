@@ -140,6 +140,33 @@ namespace RiskOfBulletstormRewrite.Items
             }
         }
 
+        public class RBS_RunTracker : MonoBehaviour
+        {
+            public SceneDef firstStageSceneDef = null;
+            public static RBS_RunTracker instance = null;
+
+            public void Awake()
+            {
+                SceneCatalog.onMostRecentSceneDefChanged += this.HandleMostRecentSceneDefChanged;
+                instance = this;
+            }
+
+            public void OnDestroy()
+            {
+                SceneCatalog.onMostRecentSceneDefChanged -= this.HandleMostRecentSceneDefChanged;
+                instance = null;
+            }
+
+            private void HandleMostRecentSceneDefChanged(SceneDef newSceneDef)
+		    {
+                if (!firstStageSceneDef)
+                {
+                    firstStageSceneDef = newSceneDef;
+                    SceneCatalog.onMostRecentSceneDefChanged -= this.HandleMostRecentSceneDefChanged;
+                }
+            }
+        }
+
         public class RBS_CloneController : MonoBehaviour
         {
             //public Xoroshiro128Plus rng;
@@ -238,36 +265,41 @@ namespace RiskOfBulletstormRewrite.Items
             }
         }
 
-        private void PseudoRestartRun()//(CharacterMaster masterWithClone)
-        {
+        public void PseudoRestartRun()//(CharacterMaster masterWithClone)
+        {//
             //if (!masterWithClone) return;
             isCloneRestarting = true;
             Run.instance.SetRunStopwatch(0);
-            Run.instance.NetworkstageClearCount = -1;
+            Run.instance.NetworkstageClearCount = 0;
             TeamManager.instance.SetTeamLevel(TeamIndex.Player, 0);
             TeamManager.instance.SetTeamLevel(TeamIndex.Monster, 0);
             TeamManager.instance.SetTeamLevel(TeamIndex.Lunar, 0);
             TeamManager.instance.SetTeamLevel(TeamIndex.Void, 0);
             WeightedSelection<SceneDef> weightedSelection = new WeightedSelection<SceneDef>(8);
 
-            string @string = Run.cvRunSceneOverride.GetString();
-            if (@string != "")
+            if (!RBS_RunTracker.instance || !RBS_RunTracker.instance.firstStageSceneDef)
             {
-                weightedSelection.AddChoice(SceneCatalog.GetSceneDefFromSceneName(@string), 1f);
-            }
-            else if (Run.instance.startingSceneGroup)
-            {
-                Run.instance.startingSceneGroup.AddToWeightedSelection(weightedSelection, new Func<SceneDef, bool>(Run.instance.CanPickStage));
-            }
-            else
-            {
-                for (int j = 0; j < Run.instance.startingScenes.Length; j++)
+                string @string = Run.cvRunSceneOverride.GetString();
+                if (@string != "")
                 {
-                    if (Run.instance.CanPickStage(Run.instance.startingScenes[j]))
+                    weightedSelection.AddChoice(SceneCatalog.GetSceneDefFromSceneName(@string), 1f);
+                }
+                else if (Run.instance.startingSceneGroup)
+                {
+                    Run.instance.startingSceneGroup.AddToWeightedSelection(weightedSelection, new Func<SceneDef, bool>(Run.instance.CanPickStage));
+                }
+                else
+                {
+                    for (int j = 0; j < Run.instance.startingScenes.Length; j++)
                     {
-                        weightedSelection.AddChoice(Run.instance.startingScenes[j], 1f);
+                        if (Run.instance.CanPickStage(Run.instance.startingScenes[j]))
+                        {
+                            weightedSelection.AddChoice(Run.instance.startingScenes[j], 1f);
+                        }
                     }
                 }
+            } else {
+                weightedSelection.AddChoice(RBS_RunTracker.instance.firstStageSceneDef, 1f);
             }
             Run.instance.PickNextStageScene(weightedSelection);
 

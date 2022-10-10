@@ -17,20 +17,33 @@ namespace RiskOfBulletstormRewrite.Items
 		private Vector3 idealDirection;
 		private ChildLocator childLocator;
         private Animator animator;
-        private GameObject modelRoot;
+        private Transform modelRoot;
+        private Vector3 modelRootOldScale = Vector3.one;
+        private Quaternion modelRootOldRot = Quaternion.identity;
+        private float calculatedRotationValue = 1;
 
         public override void OnEnter()
         {
             base.OnEnter();
 
             this.duration = baseDuration;
+            calculatedRotationValue = 360/duration;
 			childLocator = base.GetModelChildLocator();
             animator = base.GetModelAnimator();
-
+            modelRoot = base.GetModelBaseTransform();
+            if (modelRoot)
+            {
+                modelRootOldScale = modelRoot.localScale;
+                modelRootOldRot = modelRoot.localRotation;
+            }
             if (base.isAuthority)
             {
 				base.gameObject.layer = LayerIndex.fakeActor.intVal;
 				base.characterMotor.Motor.RebuildCollidableLayers();
+            }
+            if (NetworkServer.active)
+            {
+                characterBody.AddBuff(RoR2Content.Buffs.Intangible);
             }
 			if (!base.characterMotor.isGrounded) base.characterMotor.velocity.y = 15f; 
             if (animator)
@@ -41,6 +54,14 @@ namespace RiskOfBulletstormRewrite.Items
         {
             base.FixedUpdate();
 
+            if (modelRoot)
+            {
+                var addedRot = Vector3.one * calculatedRotationValue;
+                addedRot *= this.duration/(base.fixedAge+0.1f);
+                var newRotation = modelRootOldRot.eulerAngles + addedRot;
+                modelRoot.localRotation = Quaternion.Euler(newRotation);
+            }
+            
             if (base.fixedAge >= this.duration)
 			{
 				this.outer.SetNextStateToMain();
@@ -63,17 +84,19 @@ namespace RiskOfBulletstormRewrite.Items
 					}
                 }
             }
-            if (NetworkServer.active)
-            {
-                characterBody.AddBuff(RoR2Content.Buffs.Intangible);
-            }
         }
 
         public override void OnExit()
         {
+            if (modelRoot)
+            {
+                modelRoot.localScale = modelRootOldScale;
+                modelRoot.localRotation = modelRootOldRot;
+            }
             base.gameObject.layer = LayerIndex.defaultLayer.intVal;
 			base.characterMotor.Motor.RebuildCollidableLayers();
-            animator.enabled = true;
+            if (animator)
+                animator.enabled = true;
             if (NetworkServer.active)
             {
                 characterBody.RemoveBuff(RoR2Content.Buffs.Intangible);
