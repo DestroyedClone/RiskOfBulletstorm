@@ -29,6 +29,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void Init(ConfigFile config)
         {
+            return;
             CreateConfig(config);
             CreateLang();
             CreateItem();

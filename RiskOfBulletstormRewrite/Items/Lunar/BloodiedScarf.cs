@@ -32,36 +32,38 @@ namespace RiskOfBulletstormRewrite.Items
         public override ItemTag[] ItemTags => new ItemTag[]
         {
             ItemTag.CannotSteal,
-            ItemTag.Cleansable
+            ItemTag.Cleansable,
+            ItemTag.AIBlacklist,
+            ItemTag.CannotCopy
         };
 
         public static SkillDef teleportSkillDef;
 
-        public static string[] teleportSkillDefParams = new string[]
-        {
-            instance.GetChance(cfgTeleportRange),
-            instance.GetChance(cfgTeleportRangePerStack),
-            instance.GetChance(cfgDamageVulnerabilityMultiplier),
-            instance.GetChance(cfgDamageVulnerabilityMultiplierPerStack),
-            cfgDamageVulnerabilityDuration.Value.ToString()
-        };
-
         public override void Init(ConfigFile config)
         {
             CreateConfig(config);
-            CreateItem();
-            Hooks();
             CreateSkillDef();
             CreateLang();
+            CreateItem();
+            Hooks();
         }
+
+        public string[] teleportSkillDefParams => new string[]
+        {
+            GetChance(cfgTeleportRange),
+            GetChance(cfgTeleportRangePerStack),
+            GetChance(cfgDamageVulnerabilityMultiplier),
+            GetChance(cfgDamageVulnerabilityMultiplierPerStack),
+            cfgDamageVulnerabilityDuration.Value.ToString()
+        };
 
         public void CreateSkillDef()
         {
             teleportSkillDef = ScriptableObject.CreateInstance<SkillDef>();
             teleportSkillDef.activationState = new SerializableEntityStateType(typeof(TeleportUtilitySkillState));
-            teleportSkillDef.activationStateMachineName = "Weapon";
+            teleportSkillDef.activationStateMachineName = "Body";
             teleportSkillDef.baseMaxStock = 1;
-            teleportSkillDef.baseRechargeInterval = 12;
+            teleportSkillDef.baseRechargeInterval = 8;
             teleportSkillDef.beginSkillCooldownOnSkillEnd = true;
             teleportSkillDef.canceledFromSprinting = false;
             teleportSkillDef.cancelSprintingOnActivation = false;
@@ -86,6 +88,7 @@ namespace RiskOfBulletstormRewrite.Items
             teleportSkillDef.stockToConsume = 1;
 
             ContentAddition.AddSkillDef(teleportSkillDef);
+            ContentAddition.AddEntityState<TeleportUtilitySkillState>(out bool wasAdded);
         }
 
         protected override void CreateLang()
@@ -95,7 +98,7 @@ namespace RiskOfBulletstormRewrite.Items
             foreach (var lang in RoR2.Language.steamLanguageTable)
             {
                 var langName = lang.Value.webApiName;
-                DeferToken(teleportSkillDef.skillDescriptionToken, langName, ItemPickupDescParams);
+                DeferToken(teleportSkillDef.skillDescriptionToken, langName, teleportSkillDefParams);
             }
         }
 

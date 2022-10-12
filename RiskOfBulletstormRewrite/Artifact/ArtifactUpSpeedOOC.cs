@@ -34,7 +34,7 @@ namespace RiskOfBulletstormRewrite.Artifact
             {
                 return;
             }
-            TeleporterInteraction.onTeleporterFinishGlobal -= TrackTeleporterDone;
+            TeleporterInteraction.onTeleporterChargedGlobal -= OnTeleporterCharged;
         }
 
 
@@ -44,25 +44,29 @@ namespace RiskOfBulletstormRewrite.Artifact
             {
                 return;
             }
-            TeleporterInteraction.onTeleporterFinishGlobal += TrackTeleporterDone;
+            TeleporterInteraction.onTeleporterChargedGlobal += OnTeleporterCharged;
         }
 
-        public void TrackTeleporterDone(TeleporterInteraction self)
+        public void OnTeleporterCharged(TeleporterInteraction self)
         {
             if (NetworkServer.active)
-            {
-                foreach (var player in PlayerCharacterMasterController.instances)
                 {
-                    if (player.master)
+                    //Chat.AddMessage("speedup 1");
+                    foreach (var player in PlayerCharacterMasterController.instances)
                     {
-                        var body = player.master.GetBody();
-                        if (body)
+                    //Chat.AddMessage($"speedup: {player.GetDisplayName()}");
+                        if (player.master)
                         {
-                            body.AddBuff(RoR2Content.Buffs.CloakSpeed);
+                            //Chat.AddMessage("speedup: has master");
+                            var body = player.master.GetBody();
+                            if (body)
+                            {
+                                //Chat.AddMessage("speedup: has body");
+                                body.AddBuff(RoR2Content.Buffs.CloakSpeed);
+                            }
                         }
                     }
                 }
-            }
         }
     }
 }

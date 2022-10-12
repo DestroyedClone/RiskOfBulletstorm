@@ -26,11 +26,11 @@ namespace RiskOfBulletstormRewrite.Items
         {
             base.OnEnter();
 
-            this.duration = baseDuration;
+            this.duration = GetDuration();
             calculatedRotationValue = 360/duration;
 			childLocator = base.GetModelChildLocator();
             animator = base.GetModelAnimator();
-            modelRoot = base.GetModelBaseTransform();
+            modelRoot = base.GetModelTransform().GetComponentInChildren<SkinnedMeshRenderer>()?.rootBone;
             if (modelRoot)
             {
                 modelRootOldScale = modelRoot.localScale;
@@ -48,6 +48,14 @@ namespace RiskOfBulletstormRewrite.Items
 			if (!base.characterMotor.isGrounded) base.characterMotor.velocity.y = 15f; 
             if (animator)
                 animator.enabled = false;
+            if (characterMotor)
+                characterMotor.useGravity = false;
+        }
+
+        public float GetDuration()
+        {
+            //eventually cloranthy ring
+            return baseDuration;
         }
 
         public override void FixedUpdate()
@@ -60,6 +68,7 @@ namespace RiskOfBulletstormRewrite.Items
                 addedRot *= this.duration/(base.fixedAge+0.1f);
                 var newRotation = modelRootOldRot.eulerAngles + addedRot;
                 modelRoot.localRotation = Quaternion.Euler(newRotation);
+                modelRoot.localScale = Vector3.one*0.7f;
             }
             
             if (base.fixedAge >= this.duration)
@@ -101,6 +110,8 @@ namespace RiskOfBulletstormRewrite.Items
             {
                 characterBody.RemoveBuff(RoR2Content.Buffs.Intangible);
             }
+            if (characterMotor)
+                characterMotor.useGravity = characterMotor.gravityParameters.CheckShouldUseGravity();
             base.OnExit();
         }
         private void UpdateDirection()

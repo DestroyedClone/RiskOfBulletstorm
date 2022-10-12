@@ -149,7 +149,7 @@
 		"RISKOFBULLETSTORM_ITEM_HIPHOLSTER_NAME": "Hip Holster",
 		"RISKOFBULLETSTORM_ITEM_HIPHOLSTER_PICKUP": "<b>Quickdraw</b>\nYour skills have a chance to activate for free upon recharging a stock.",
 		"RISKOFBULLETSTORM_ITEM_HIPHOLSTER_DESCRIPTION": "Your skills have a <style=cIsUtility>{0}% chance</style> <style=cStack>(+{1}% chance per stack, hyperbolically)</style> to activate for free upon recharging a stock.",
-		"RISKOFBULLETSTORM_ITEM_HIPHOLSTER_LORE": "<style=cMono>INTERCEPTING TRANSMISSION...</style>\n\nIn '87, Huey released this; Fore!, their most accomplished album. I think their undisputed masterpiece is \"Hip To Be Square\". A song so catchy, most people probably don't listen to the lyrics. But they should, because it's not just about the pleasures of conformity and the importance of trends. It's also a personal statement about the band itself. Hey, Paul!\n<style=cMono>TRANSMISSION STOPPED ABRUPTLY, ATTEMPTING TO RECONNECT...\n\n</style>",
+		"RISKOFBULLETSTORM_ITEM_HIPHOLSTER_LORE": "<style=cMono>INTERCEPTING TRANSMISSION...</style>\n\nIn '87, Huey released this; Fore!, their most accomplished album. I think their undisputed masterpiece is \"Hip To Be Square\". A song so catchy, most people probably don't listen to the lyrics. But they should, because it's not just about the pleasures of conformity and the importance of trends. It's also a personal statement about the band itself. Hey, Paul!\n\n<style=cMono>TRANSMISSION STOPPED ABRUPTLY, ATTEMPTING TO RECONNECT...\n\n</style>",
 		
 		"RISKOFBULLETSTORM_ITEM_RINGMISERLYPROTECTION_NAME": "Ring of Miserly Protection",
 		"RISKOFBULLETSTORM_ITEM_RINGMISERLYPROTECTION_PICKUP": "<b>Aids The Fiscally Responsible</b>\n<style=cIsHealing>Increases health substantially.</style> <style=cDeath>Gambling at a chance shrine will shatter the ring.</style>",
@@ -188,7 +188,7 @@
 		"RISKOFBULLETSTORM_ITEM_CURSEREDUCTIONTALLY_NAME": "Cleansed Curse",
 		"RISKOFBULLETSTORM_ITEM_CURSEREDUCTIONTALLY_PICKUP": "<b>Relief</b>\nResult of an act that cleanses the act of darkness.",
 		"RISKOFBULLETSTORM_ITEM_CURSEREDUCTIONTALLY_DESCRIPTION": "",
-		"RISKOFBULLETSTORM_ITEM_CURSEREDUCTIONTALLY_LORE": "",
+		"RISKOFBULLETSTORM_ITEM_CURSEREDUCTIONTALLY_LORE": "Result of interacting with a curse cleanse shrine",
 		
 		"RISKOFBULLETSTORM_ITEM_CLONECONSUMED_NAME": "Clone (Consumed)",
 		"RISKOFBULLETSTORM_ITEM_CLONECONSUMED_PICKUP": "<b>Shell Of Former Self</b>\nDoes nothing.",
@@ -198,7 +198,7 @@
 		"RISKOFBULLETSTORM_ITEM_CLONEVOIDCONSUMED_NAME": "Prototype (Consumed)",
 		"RISKOFBULLETSTORM_ITEM_CLONEVOIDCONSUMED_PICKUP": "<b>Casing Of Former Self</b>\nDoes nothing.",
 		"RISKOFBULLETSTORM_ITEM_CLONEVOIDCONSUMED_DESCRIPTION": "Does nothing.",
-		"RISKOFBULLETSTORM_ITEM_CLONEVOIDCONSUMED_LORE": "Consumed result of CloneVoid.",
+		"RISKOFBULLETSTORM_ITEM_CLONEVOIDCONSUMED_LORE": "Consumed result of Prototype.",
 		
 		"RISKOFBULLETSTORM_ITEM_ORANGECONSUMED_NAME": "Orange (Consumed)",
 		"RISKOFBULLETSTORM_ITEM_ORANGECONSUMED_PICKUP": "<b>With The Peel Too?</b>\nBoosts stats.",

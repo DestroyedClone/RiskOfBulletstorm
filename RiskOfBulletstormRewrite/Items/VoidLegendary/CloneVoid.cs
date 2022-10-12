@@ -136,7 +136,7 @@ namespace RiskOfBulletstormRewrite.Items
                 if (allDead && peopleWithClones.Count > 0)
                 {
                     isCloneRestarting = true;
-                    Stage.instance.gameObject.AddComponent<RBS_CloneVoidController>();
+                    Run.instance.gameObject.AddComponent<RBS_CloneVoidController>();
                     Clone.instance.PseudoRestartRun();
                 }
             }

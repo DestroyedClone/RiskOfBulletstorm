@@ -6,7 +6,7 @@ using static RiskOfBulletstormRewrite.Main;
 
 namespace RiskOfBulletstormRewrite.Items
 {
-    public class HeavyBbullets : ItemBase<HeavyBullets>
+    public class HeavyBbullets : ItemBase<HeavyBbullets>
     {
         public static ConfigEntry<float> cfgBaseDamageMultiplier;
         public static ConfigEntry<float> cfgStackDamageMultiplier;

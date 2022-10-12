@@ -60,8 +60,9 @@ namespace RiskOfBulletstormRewrite.Items
                     {
                         //Chat.AddMessage("Mimic giving component");
                         comp = inventory.gameObject.AddComponent<RBS_BabyMimicBehaviour>();
-                        comp.ownerMaster = inventory.GetComponent<CharacterMaster>();
-                        comp.ownerBody = comp.ownerMaster.GetBody();
+                        //comp.ownerMaster = inventory.GetComponent<CharacterMaster>();
+                        //comp.ownerBody = comp.ownerMaster.GetBody();
+                        //comp.inventory = inventory;
                     }
                 } else {
                     if (comp)
@@ -90,11 +91,10 @@ namespace RiskOfBulletstormRewrite.Items
 
             public void OnEnable()
             {
-                if (!ownerBody)
-                {
-                    ownerBody = ownerMaster.GetBody();
-                }
+                ownerMaster = gameObject.GetComponent<CharacterMaster>();
+                OnOwnerBodyStart(ownerMaster.GetBody());
                 inventory = ownerMaster.inventory;
+                
                 inventory.onInventoryChanged += UpdateItemCount;
                 ownerMaster.onBodyStart += OnOwnerBodyStart;
                 minionGroup = MinionOwnership.MinionGroup.FindGroup(ownerBody.master.netId);
@@ -133,17 +133,24 @@ namespace RiskOfBulletstormRewrite.Items
             {
                 int minionsToCopy = itemCount - mimics.Count;
 
-                foreach (var minion in minionGroup.members)
+                if (minionsToCopy > 0)
                 {
-                    var cb = minion.GetComponent<CharacterBody>();
-                    if (cb && cb.healthComponent && cb.healthComponent.alive
-                    && cb.inventory && cb.master 
-                    && cb.inventory.GetItemCount(RoR2Content.Items.Ghost) == 0
-                    && !cb.bodyFlags.HasFlag(CharacterBody.BodyFlags.Mechanical))
+                    foreach (var minion in minionGroup.members)
                     {
-                        AssignMinion(cb);
-                        break;
+                        var cb = minion.GetComponent<CharacterBody>();
+                        if (cb && cb.healthComponent && cb.healthComponent.alive
+                        && cb.inventory && cb.master 
+                        && cb.inventory.GetItemCount(RoR2Content.Items.Ghost) == 0
+                        && !cb.bodyFlags.HasFlag(CharacterBody.BodyFlags.Mechanical))
+                        {
+                            AssignMinion(cb);
+                            minionsToCopy--;
+                        }
+                        if (minionsToCopy <= 0)
+                            break;
                     }
+                } else {
+                    stopwatch += 5;
                 }
             }
 
@@ -154,25 +161,31 @@ namespace RiskOfBulletstormRewrite.Items
                 copy.inventory.RemoveItem(RoR2Content.Items.HealthDecay, 10);
                 copy.baseNameToken = "RISKOFBULLETSTORM_BABYGOODMIMIC_BODY_NAME";
                 copy.subtitleNameToken = "RISKOFBULLETSTORM_BABYGOODMIMIC_BODY_SUBTITLE";
+                //copy.portraitIcon = 
                 TeleportHelper.TeleportBody(copy, ownerBody.footPosition);
 
                 var comp = copy.gameObject.AddComponent<RBS_BabyMimicPairing>();
-                comp.myBody = copy;
+                //comp.myBody = copy;
                 comp.ownerBody = ownerBody;
                 //comp.targetBody = targetMinion;
                 comp.targetMaster = targetMinion.master;
+                comp.ownerComponent = this;
                 mimics.Add(copy.master);
             }
         }
 
         public class RBS_BabyMimicPairing : MonoBehaviour
         {
+            public CharacterMaster myMaster;
             public CharacterBody ownerBody;
-            public CharacterBody myBody;
+            //public CharacterBody myBody;
             public CharacterMaster targetMaster;
+            public RBS_BabyMimicBehaviour ownerComponent;
 
             public void OnEnable()
             {
+                myMaster = gameObject.GetComponent<CharacterMaster>();
+                //myBody = myMaster.GetBody();
                 targetMaster.onBodyDestroyed += OnBodyDestroyed;
             }
 
@@ -183,7 +196,11 @@ namespace RiskOfBulletstormRewrite.Items
 
             public void OnBodyDestroyed(CharacterBody characterBody)
             {
-                myBody.master.TrueKill();
+                if (ownerComponent)
+                {
+                    ownerComponent.mimics.Remove(myMaster);
+                }
+                myMaster.TrueKill();
             }
         }
 

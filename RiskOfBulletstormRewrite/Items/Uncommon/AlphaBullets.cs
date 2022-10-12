@@ -108,6 +108,7 @@ namespace RiskOfBulletstormRewrite.Items
                     special = sk.special;
                 }
                 body.onInventoryChanged += OnInventoryChanged;
+                OnInventoryChanged();
             }
 
             public void OnDestroy()

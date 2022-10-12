@@ -3,6 +3,7 @@ using R2API;
 using RoR2;
 using UnityEngine;
 using static RiskOfBulletstormRewrite.Main;
+using System.Text;
 
 namespace RiskOfBulletstormRewrite.Items
 {
@@ -31,6 +32,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void Init(ConfigFile config)
         {
+            return;
             CreateConfig(config);
             CreateLang();
             CreateItem();
@@ -57,12 +59,26 @@ namespace RiskOfBulletstormRewrite.Items
         {
             var itemCount = Util.GetItemCountForTeam(TeamIndex.Player, ItemDef.itemIndex, false, true);
             //_logger.LogMessage($"Item Count: {itemCount}");
-            if (itemCount > 0)
+            if (true || itemCount > 0)
             {
-                var value = 1 + (cfgCreditMultiplier.Value + cfgCreditMultiplierPerStack.Value * (itemCount - 1));
+                //var value = 1 + (cfgCreditMultiplier.Value + cfgCreditMultiplierPerStack.Value * (itemCount - 1));
                 //var oldValue = arg1.SceneDirectorInteractableCredits;
-                arg1.SceneDirectorInteractableCredits = Mathf.RoundToInt(arg1.SceneDirectorInteractableCredits * value);
+                //arg1.SceneDirectorInteractableCredits = Mathf.RoundToInt(arg1.SceneDirectorInteractableCredits * value);
                 //_logger.LogMessage($"Credits increased from {oldValue} to {arg1.SceneDirectorInteractableCredits}");
+                StringBuilder stringBuilder = new StringBuilder();
+                foreach (var dcc in arg1.InteractableCategoryWeightsPerDccs)
+                {
+                    stringBuilder.AppendLine($"{dcc.Key}");
+                    foreach (var cat in dcc.Key.categories)
+                    {
+                        stringBuilder.AppendLine($"{cat.name} : wt. {cat.selectionWeight}");
+                        foreach (var card in cat.cards)
+                        {
+                            stringBuilder.AppendLine($"prefab: {card.spawnCard.prefab.name}");
+                        }
+                    }
+                }
+                _logger.LogMessage(stringBuilder.ToString());
             }
         }
     }

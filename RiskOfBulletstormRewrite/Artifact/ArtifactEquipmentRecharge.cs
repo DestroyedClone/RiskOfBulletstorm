@@ -101,7 +101,7 @@ namespace RiskOfBulletstormRewrite.Artifact
             public Inventory inventory = null;
             //public EquipmentState primaryEquipment = default;
             //public float remainingDuration = 0;
-            List<float> remainingDurations = new List<float>();
+            public List<float> remainingDurations = new List<float>();
 
 
             public void DeductCooldown(float duration)
@@ -109,9 +109,9 @@ namespace RiskOfBulletstormRewrite.Artifact
                 for (int i = 0; i < remainingDurations.Count; i++)
                 {
                     if (i == inventory.activeEquipmentSlot)
-                        remainingDurations[i] -= duration;
+                        remainingDurations[i] = Mathf.Max(remainingDurations[i] - duration, 0);
                     else
-                        remainingDurations[i] -=  duration * alternateEquipmentDecreaseMultiplier;
+                        remainingDurations[i] = Mathf.Max(remainingDurations[i] - duration * alternateEquipmentDecreaseMultiplier, 0);
                 }
                 inventory.HandleInventoryChanged();
             }
@@ -119,12 +119,37 @@ namespace RiskOfBulletstormRewrite.Artifact
             public void Start()
             {
                 //primaryEquipment = inventory.GetEquipment((uint)inventory.activeEquipmentSlot);
+                inventory.onInventoryChanged += UpdateInventory;
+                UpdateInventory();
+            }
+
+            public void UpdateInventory()
+            {
+            }
+
+            public void OnDestroy()
+            {
+                inventory.onInventoryChanged -= UpdateInventory;
             }
 
             public void FixedUpdate()
             {
+                if (inventory.equipmentStateSlots == null)
+                {
+                    return;
+                }
+                
+                var invlength = inventory.equipmentStateSlots.Length;
+                
+                //for matching the equipment list
+                var durlength = remainingDurations.Count;
+                while (durlength < invlength)
+                {
+                    remainingDurations.Add(inventory.equipmentStateSlots[durlength++].chargeFinishTime.timeUntil);
+                }
+
                 float normalCooldownMax = 1;
-                for (int i = 0; i < remainingDurations.Count; i++)
+                for (int i = 0; i < durlength; i++)
                 {
                     EquipmentState equipment = inventory.GetEquipment((uint)i);
                     if (remainingDurations[i] <= normalCooldownMax)

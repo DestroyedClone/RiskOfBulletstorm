@@ -35,7 +35,7 @@ namespace RiskOfBulletstormRewrite.Items
         public KeyCode CycleRightKey_GP = KeyCode.None;
 
         public static GameObject ItemBodyModelPrefab;
-        public static int ToolbotBodyIndex;
+        public static BodyIndex ToolbotBodyIndex;
 
         public override void Init(ConfigFile config)
         {
@@ -65,10 +65,32 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void Hooks()
         {
-            CharacterBody.onBodyStartGlobal += CharacterBody_onBodyStartGlobal;
-            On.RoR2.UI.EquipmentIcon.Update += EquipmentIcon_Update;
+            CharacterMaster.onStartGlobal += GiveComponent;
+            //On.RoR2.UI.EquipmentIcon.Update += EquipmentIcon_Update;
+            On.RoR2.BodyCatalog.Init += GetBodyIndex;
         }
 
+        public void GetBodyIndex(On.RoR2.BodyCatalog.orig_Init orig)
+        {
+            orig();
+            ToolbotBodyIndex = BodyCatalog.FindBodyIndex("ToolbotBody");
+        }
+
+        private void GiveComponent(CharacterMaster characterMaster)
+        {
+            if (characterMaster.hasAuthority && characterMaster.playerCharacterMasterController)
+            {
+                BackpackComponent backpackComponent = characterMaster.GetComponent<BackpackComponent>();
+                if (!backpackComponent) { backpackComponent = characterMaster.gameObject.AddComponent<BackpackComponent>(); }
+                //backpackComponent.characterBody = characterMaster.GetBody();
+                backpackComponent.localUser = LocalUserManager.readOnlyLocalUsersList[0];
+                backpackComponent.inventory = characterMaster.inventory;
+                backpackComponent.characterMaster = characterMaster;
+                backpackComponent.RunOnce();
+            }
+        }
+
+        //fuck this
         private void EquipmentIcon_Update(On.RoR2.UI.EquipmentIcon.orig_Update orig, EquipmentIcon self)
         {
             orig(self);
@@ -84,7 +106,7 @@ namespace RiskOfBulletstormRewrite.Items
                     {
                         uint nextSlot = LoopAround(self.targetEquipmentSlot.activeEquipmentSlot++, 0, (uint)(equipmentSlotCount - 1));
                         self.currentDisplayData.equipmentDef = self.targetInventory.equipmentStateSlots[nextSlot].equipmentDef;
-                        stringBuilder2.Append($"[{nextSlot}/{equipmentSlotCount}]\n");
+                        stringBuilder2.Append($"[Slot:{nextSlot}/Ct:{equipmentSlotCount}]\n");
                         stringBuilder2.AppendInt(self.currentDisplayData.stock, 1U, uint.MaxValue);
 
                         Texture texture = null;
@@ -98,7 +120,7 @@ namespace RiskOfBulletstormRewrite.Items
                         self.iconImage.color = color;
                     } else
                     {
-                        stringBuilder2.Append($"[{self.targetEquipmentSlot.activeEquipmentSlot + 1}/{equipmentSlotCount}]\n");
+                        stringBuilder2.Append($"[Slot:{self.targetEquipmentSlot.activeEquipmentSlot}]\n");
                         stringBuilder2.AppendInt(self.currentDisplayData.stock, 1U, uint.MaxValue);
                     }
                     self.stockText.SetText(stringBuilder2);
@@ -114,57 +136,52 @@ namespace RiskOfBulletstormRewrite.Items
             return value;
         }
 
-        private void CharacterBody_onBodyStartGlobal(CharacterBody obj)
-        {
-            if (NetworkServer.active && obj.isPlayerControlled)
-            {
-                var masterObj = obj.masterObject;
-                BackpackComponent backpackComponent = masterObj.GetComponent<BackpackComponent>();
-                if (!backpackComponent) { backpackComponent = masterObj.AddComponent<BackpackComponent>(); }
-                backpackComponent.ToolbotBodyIndex = ToolbotBodyIndex;
-                backpackComponent.characterBody = obj;
-                backpackComponent.localUser = LocalUserManager.readOnlyLocalUsersList[0];
-                backpackComponent.inventory = obj.inventory;
-                backpackComponent.UpdateToolbot(obj);
-                backpackComponent.Subscribe();
-                backpackComponent.CharacterBody_onInventoryChanged();
-            }
-        }
-
         public class BackpackComponent : MonoBehaviour
         {
             public LocalUser localUser;
+            public CharacterMaster characterMaster;
             public CharacterBody characterBody;
             public Inventory inventory;
-            public byte inventoryCount = 0;
-            public byte isToolbot = 0;
+            private byte itemCount = 0;
+            private byte extraSlotCount = 0;
             public byte selectableSlot = 0;
-            public int ToolbotBodyIndex;
             readonly string equipmentPrefix = "Selected slot ";
-            public void OnDisable()
+
+            public void RunOnce()
             {
-                if (characterBody)
-                    characterBody.onInventoryChanged -= CharacterBody_onInventoryChanged;
+                Subscribe();
+                OnInventoryChanged();
+                OnBodyStart(characterMaster.GetBody());
             }
+
             public void Subscribe()
             {
-                if (characterBody)
-                    characterBody.onInventoryChanged += CharacterBody_onInventoryChanged;
+                inventory.onInventoryChanged += OnInventoryChanged;
+                characterMaster.onBodyStart += OnBodyStart;
             }
-            public void UpdateToolbot(CharacterBody characterBody)
+
+            public void OnDestroy()
             {
-                isToolbot = (byte)((int)characterBody.bodyIndex == ToolbotBodyIndex ? 1 : 0);
+                inventory.onInventoryChanged -= OnInventoryChanged;
+                characterMaster.onBodyStart -= OnBodyStart;
             }
-            public void UpdateCount()
-            {
-                inventoryCount = (byte)inventory.GetItemCount(Backpack.instance.ItemDef);
-                selectableSlot = (byte)(inventoryCount + isToolbot);
-            }
-            public void CharacterBody_onInventoryChanged()
+            
+            public void OnInventoryChanged()
             {
                 UpdateCount();
                 if (inventory.activeEquipmentSlot > selectableSlot)
                     inventory.SetActiveEquipmentSlot(selectableSlot);
+            }
+
+            public void OnBodyStart(CharacterBody characterBody)
+            {
+                if (characterBody)
+                    extraSlotCount = (byte)(characterBody.bodyIndex == ToolbotBodyIndex ? 1 : 0);
+            }
+            public void UpdateCount()
+            {
+                itemCount = (byte)inventory.GetItemCount(Backpack.instance.ItemDef);
+                selectableSlot = (byte)(itemCount + extraSlotCount);
             }
             public void Update()
             {
@@ -230,6 +247,7 @@ namespace RiskOfBulletstormRewrite.Items
                     }
                 }
             }
+            
             private void SetEquipmentSlot(byte i)
             {
                 if (i > selectableSlot)

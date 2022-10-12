@@ -31,9 +31,7 @@
     <Compile Remove="Items\Boss\MasterRounds\MasterRoundI.cs" />
     <Compile Remove="Items\Legendary\Clone_old.cs" />
     <Compile Remove="Items\Legendary\RingTriggers.cs" />
-    <Compile Remove="Items\Lunar\BloodiedScarf.cs" />
     <Compile Remove="Items\Lunar\Metronome.cs" />
-    <Compile Remove="Items\Lunar\TeleportSkillState.cs" />
   </ItemGroup>
 
   <ItemGroup>

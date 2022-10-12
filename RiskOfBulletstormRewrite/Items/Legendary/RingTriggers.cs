@@ -4,6 +4,7 @@ using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
 using static RiskOfBulletstormRewrite.Main;
+using System.Collections.Generic;
 
 namespace RiskOfBulletstormRewrite.Items
 {
@@ -27,6 +28,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void Init(ConfigFile config)
         {
+            return;
             CreateConfig(config);
             CreateLang();
             CreateItem();
@@ -43,6 +45,8 @@ namespace RiskOfBulletstormRewrite.Items
             return new ItemDisplayRuleDict();
         }
 
+        
+
         public override void Hooks()
         {
             EquipmentSlot.onServerEquipmentActivated += EquipmentSlot_onServerEquipmentActivated;
@@ -53,7 +57,7 @@ namespace RiskOfBulletstormRewrite.Items
             var triggerCount = GetCount(equipmentSlot.characterBody);
             if (triggerCount > 0)
             {
-
+                
             }
         }
     }

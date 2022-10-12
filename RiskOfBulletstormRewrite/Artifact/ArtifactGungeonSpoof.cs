@@ -163,7 +163,7 @@ namespace RiskOfBulletstormRewrite.Artifact
                             DamageType.BleedOnHit,
                             DamageType.BlightOnHit,
                             DamageType.BonusToLowHealth,
-                            //DamageType.BypassArmor, armor's disabled
+                            DamageType.BypassArmor,
                             DamageType.BypassBlock, //needs to not pierce IFrames
                             DamageType.BypassOneShotProtection,
                             DamageType.IgniteOnHit,

@@ -60,7 +60,7 @@ namespace RiskOfBulletstormRewrite.Items
         {
             public CharacterMotor characterMotor;
             public float age;
-            public float
+            public float duration;
 
             public void Start()
             {

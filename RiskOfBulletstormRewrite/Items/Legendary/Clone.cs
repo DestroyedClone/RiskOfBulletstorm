@@ -133,7 +133,7 @@ namespace RiskOfBulletstormRewrite.Items
                 {
                     isCloneRestarting = true;
                     //var cloneObject = new GameObject();
-                    Stage.instance.gameObject.AddComponent<RBS_CloneController>();
+                    Run.instance.gameObject.AddComponent<RBS_CloneController>();
                     //UnityEngine.Object.DontDestroyOnLoad(cloneObject);
                     PseudoRestartRun();
                 }
@@ -204,10 +204,13 @@ namespace RiskOfBulletstormRewrite.Items
                     Main._logger.LogMessage($"Checking player: {player.GetDisplayName()}");
                     var inv = player.master.inventory;
                     itemsToGive.Add(player, GetRandomItemsFromInventory(inv, cloneCount));
+                    Main._logger.LogMessage("Got items");
                     var ownItemCount = inv.GetItemCount(instance.ItemDef);
+                    Main._logger.LogMessage("Clearing items");
                     var tempInvGameObject = new GameObject();
                     inv.CopyItemsFrom(tempInvGameObject.AddComponent<Inventory>());
                     Destroy(tempInvGameObject);
+                    Main._logger.LogMessage("Items cleared");
                     
                     if (ownItemCount > 0)
                     {

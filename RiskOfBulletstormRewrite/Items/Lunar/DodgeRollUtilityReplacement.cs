@@ -71,7 +71,7 @@ namespace RiskOfBulletstormRewrite.Items
             (rollSkillDef as ScriptableObject).name = rollSkillDef.skillName;
             rollSkillDef.stockToConsume = 1;
 
-            HG.ArrayUtils.ArrayAppend(ref Main.ContentPack.entityStateTypes, rollSkillDef.activationState);
+            //HG.ArrayUtils.ArrayAppend(ref Main.ContentPack.entityStateTypes, rollSkillDef.activationState);
             ContentAddition.AddSkillDef(rollSkillDef);
             ContentAddition.AddEntityState<DodgeRollState>(out bool wasAdded);
         }

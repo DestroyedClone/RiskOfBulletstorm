@@ -16,7 +16,7 @@ namespace RiskOfBulletstormRewrite.Artifact
         public override Sprite ArtifactDisabledIcon => Assets.NullSprite;
 
         //public static ConfigEntry<float> cfgWindowOfTime;
-        public const float windowOfTime = 0.8f;
+        public const float windowOfTime = 0.2f;
 
         public override void Init(ConfigFile config)
         {
@@ -60,9 +60,14 @@ namespace RiskOfBulletstormRewrite.Artifact
                 var comp = self.gameObject.GetComponent<RBS_CoyoteTime>();
                 if (!comp)
                 {
-                    comp = self.gameObject.AddComponent<RBS_CoyoteTime>();
-                    comp.characterMotor = self;
-                    comp.jumpCountOnStart = initJumpCount;
+                    var bodyESM = EntityStateMachine.FindByCustomName(self.gameObject, "Body");
+
+                    if (bodyESM && bodyESM.IsInMainState())
+                    {
+                        comp = self.gameObject.AddComponent<RBS_CoyoteTime>();
+                        comp.characterMotor = self;
+                        comp.jumpCountOnStart = initJumpCount;
+                    }
                 }
             }
         }

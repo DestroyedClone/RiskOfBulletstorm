@@ -85,6 +85,7 @@ namespace RiskOfBulletstormRewrite
             //todo enemy essembly thing
             //Enemies.LordofTheJammedMonster.CreatePrefab();
             RiskOfBulletstormRewrite.Language.Initialize();
+            Commands.Initialize();
         }
 
         public static Dictionary<ItemDef, ItemDef> voidConversions = new Dictionary<ItemDef, ItemDef>();
