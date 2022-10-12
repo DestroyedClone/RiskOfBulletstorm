@@ -50,7 +50,8 @@ namespace RiskOfBulletstormRewrite.Artifact
             On.RoR2.HealthComponent.TakeDamage -= OnTakeDamage;
             //On.RoR2.HealthComponent.Heal -= OnHeal;
             Run.onRunStartGlobal -= StartRun;
-            R2API.RecalculateStatsAPI.GetStatCoefficients -= Mustache_StatCoefficients;
+            R2API.RecalculateStatsAPI.GetStatCoefficients -= GungeonMimic_StatCoefficients;
+            On.RoR2.HealthComponent.ServerFixedUpdate -= PreventBarrierLoss;
         }
 
 
@@ -72,23 +73,33 @@ namespace RiskOfBulletstormRewrite.Artifact
                 //RunArtifactManager.instance.SetArtifactEnabledServer(ArtifactUpSpeedOOC.instance.ArtifactDef, true);
                 //RunArtifactManager.instance.SetArtifactEnabledServer(ArtifactCoyoteTime.instance.ArtifactDef, true);
             }
-            R2API.RecalculateStatsAPI.GetStatCoefficients += Mustache_StatCoefficients;
+            R2API.RecalculateStatsAPI.GetStatCoefficients += GungeonMimic_StatCoefficients;
+            On.RoR2.HealthComponent.ServerFixedUpdate += PreventBarrierLoss;
+        }
+
+        private void PreventBarrierLoss(On.RoR2.HealthComponent.orig_ServerFixedUpdate orig, HealthComponent self)
+        {
+            self.body.barrierDecayRate = 0;
+            orig(self);
         }
         
-        private void Mustache_StatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        private void GungeonMimic_StatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (sender && sender.inventory)
             {
-                var inventory = sender.inventory;
-                int steakCount = inventory.GetItemCount(RoR2Content.Items.FlatHealth);
-                if (steakCount > 0)
+                if (sender.inventory)
                 {
-                    args.baseHealthAdd -= 24 * steakCount;
-                }
-                int slugCount = inventory.GetItemCount(RoR2Content.Items.HealWhileSafe);
-                if (slugCount > 0 && sender.outOfCombat)
-                {
-                    args.baseRegenAdd -= 2;
+                    var inventory = sender.inventory;
+                    int steakCount = inventory.GetItemCount(RoR2Content.Items.FlatHealth);
+                    if (steakCount > 0)
+                    {
+                        args.baseHealthAdd -= 24 * steakCount;
+                    }
+                    int slugCount = inventory.GetItemCount(RoR2Content.Items.HealWhileSafe);
+                    if (slugCount > 0 && sender.outOfCombat)
+                    {
+                        args.baseRegenAdd -= 2;
+                    }
                 }
             }
         }
@@ -129,7 +140,7 @@ namespace RiskOfBulletstormRewrite.Artifact
             {
                 if (body && !damageInfo.rejected)
                 {
-                    if (body.isPlayerControlled)
+                    if (body.isPlayerControlled && !body.HasBuff(RoR2Content.Buffs.Immune))
                     {
                         //this it to make sure it stays between
                         //0-2 damage (0hearts to 1 heart)
@@ -146,12 +157,14 @@ namespace RiskOfBulletstormRewrite.Artifact
                                 damageInfo.damage = 2;
                             }
                         }
+                        //temporary unsetting this so we dont have to deal with
+                        //weird DoTs
                         foreach (var dt in new DamageType[]{
                             DamageType.BleedOnHit,
                             DamageType.BlightOnHit,
                             DamageType.BonusToLowHealth,
-                            DamageType.BypassArmor,
-                            DamageType.BypassBlock,
+                            //DamageType.BypassArmor, armor's disabled
+                            DamageType.BypassBlock, //needs to not pierce IFrames
                             DamageType.BypassOneShotProtection,
                             DamageType.IgniteOnHit,
                             DamageType.PercentIgniteOnHit,
@@ -198,6 +211,7 @@ namespace RiskOfBulletstormRewrite.Artifact
             body.levelRegen = 0;
             body.barrierDecayRate = 0;
             body.crit = 0;
+            armorToConvertToBarrier = body.baseArmor;
             body.baseArmor = 0;
             body.levelArmor = 0;
 

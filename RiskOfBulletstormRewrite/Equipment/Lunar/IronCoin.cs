@@ -48,7 +48,7 @@ namespace RiskOfBulletstormRewrite.Equipment
                     continue;
 
                 var body = charMaster.GetBody();
-                if (charMaster.inventory && body && body.healthComponent && body.healthComponent.alive && charMaster.teamIndex != slot.teamComponent.teamIndex)
+                if (charMaster.inventory && body && body.healthComponent && !body.isBoss && body.healthComponent.alive && charMaster.teamIndex != slot.teamComponent.teamIndex)
                 {
                     enemiesKilled++;
 

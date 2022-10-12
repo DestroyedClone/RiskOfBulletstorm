@@ -40,7 +40,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void CreateConfig(ConfigFile config)
         {
-            cfgPercentageStockAdditive = config.Bind(ConfigCategory, "Percentage", 0.05f, "");
+            cfgPercentageStockAdditive = config.Bind(ConfigCategory, "Percentage", 0.09f, "");
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()

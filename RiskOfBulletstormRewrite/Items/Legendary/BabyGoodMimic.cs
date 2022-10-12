@@ -58,14 +58,15 @@ namespace RiskOfBulletstormRewrite.Items
                 {
                     if (!comp)
                     {
-                        Chat.AddMessage("Mimic giving component");
+                        //Chat.AddMessage("Mimic giving component");
                         comp = inventory.gameObject.AddComponent<RBS_BabyMimicBehaviour>();
                         comp.ownerMaster = inventory.GetComponent<CharacterMaster>();
+                        comp.ownerBody = comp.ownerMaster.GetBody();
                     }
                 } else {
                     if (comp)
                     {
-                        Chat.AddMessage("Mimic removing component");
+                        //Chat.AddMessage("Mimic removing component");
                         UnityEngine.Object.Destroy(comp);
                     }
                 }
@@ -89,10 +90,16 @@ namespace RiskOfBulletstormRewrite.Items
 
             public void OnEnable()
             {
-                inventory = ownerBody.inventory;
+                if (!ownerBody)
+                {
+                    ownerBody = ownerMaster.GetBody();
+                }
+                inventory = ownerMaster.inventory;
                 inventory.onInventoryChanged += UpdateItemCount;
                 ownerMaster.onBodyStart += OnOwnerBodyStart;
                 minionGroup = MinionOwnership.MinionGroup.FindGroup(ownerBody.master.netId);
+                if (minionGroup == null)
+                    enabled = false;
             }
 
             public void OnDisable()

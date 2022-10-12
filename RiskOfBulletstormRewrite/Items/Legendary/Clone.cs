@@ -197,9 +197,11 @@ namespace RiskOfBulletstormRewrite.Items
             //todo optimize
             public void AcquireItemsToReturn()
             {
+                Main._logger.LogMessage("Acquiring items to return");
                 var cloneCount = Util.GetItemCountForTeam(TeamIndex.Player, instance.ItemDef.itemIndex, false);
                 foreach (var player in PlayerCharacterMasterController.instances)
                 {
+                    Main._logger.LogMessage($"Checking player: {player.GetDisplayName()}");
                     var inv = player.master.inventory;
                     itemsToGive.Add(player, GetRandomItemsFromInventory(inv, cloneCount));
                     var ownItemCount = inv.GetItemCount(instance.ItemDef);
@@ -233,8 +235,9 @@ namespace RiskOfBulletstormRewrite.Items
             //basically an inventory
             public List<KeyValuePair<ItemIndex, int>> GetRandomItemsFromInventory(Inventory inventory, int cloneCount)
             {
+                Main._logger.LogMessage($"Getting random items from {inventory.GetComponent<PlayerCharacterMasterController>().GetDisplayName()}");
                 List<KeyValuePair<ItemIndex, int>> list = new List<KeyValuePair<ItemIndex, int>>();
-
+                var givenItemCount = cfgItemsToKeep.Value + (cloneCount - 1) * cfgItemsToKeepPerStack.Value;
                 for (int i = 0; i < inventory.itemAcquisitionOrder.Count; i++)
                 {
                     var currentItemIndex = inventory.itemAcquisitionOrder[i];
@@ -248,14 +251,19 @@ namespace RiskOfBulletstormRewrite.Items
                     //so are NoTiers, usually
                     if (currentItemDef?.hidden == true || currentItemDef.tier == ItemTier.Tier1)
                     {
-                        list.Add(new KeyValuePair<ItemIndex, int>(currentItemIndex, 1));
+                        var hiddenItemCount = inventory.GetItemCount(currentItemDef);
+                        list.Add(new KeyValuePair<ItemIndex, int>(currentItemIndex, hiddenItemCount));
+                        
+                        Main._logger.LogMessage($"Added item: {currentItemDef.nameToken} x{hiddenItemCount}");
                         continue;
                     }
 
                     var itemCount = UnityEngine.Random.RandomRangeInt(0, Mathf.Min(inventory.GetItemCount(currentItemIndex), cloneCount));
-                    cloneCount -= itemCount;
+                    givenItemCount -= itemCount;
                     list.Add(new KeyValuePair<ItemIndex, int>((ItemIndex)i, itemCount));
-                    if (cloneCount <= 0)
+                    
+                        Main._logger.LogMessage($"Added item: {currentItemDef.nameToken} x{itemCount}");
+                    if (givenItemCount <= 0)
                     {
                         break;
                     }
@@ -270,7 +278,8 @@ namespace RiskOfBulletstormRewrite.Items
             //if (!masterWithClone) return;
             isCloneRestarting = true;
             Run.instance.SetRunStopwatch(0);
-            Run.instance.NetworkstageClearCount = 0;
+            //set it to -1 so that when we do Advance() it goes to 0.
+            Run.instance.NetworkstageClearCount = -1;
             TeamManager.instance.SetTeamLevel(TeamIndex.Player, 0);
             TeamManager.instance.SetTeamLevel(TeamIndex.Monster, 0);
             TeamManager.instance.SetTeamLevel(TeamIndex.Lunar, 0);

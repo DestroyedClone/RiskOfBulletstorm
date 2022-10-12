@@ -48,7 +48,7 @@ namespace RiskOfBulletstormRewrite.Items
         {
             var bearItemDef = Addressables.LoadAssetAsync<ItemDef>("RoR2/Base/ExtraLife/ExtraLife.asset").WaitForCompletion();
             var bearPMP = bearItemDef.pickupModelPrefab;
-            var clonePMP = PrefabAPI.InstantiateClone(bearPMP, "ClonePickupModelPrefab", false);
+            var clonePMP = PrefabAPI.InstantiateClone(bearPMP, "PrototypePickupModelPrefab", false);
             var cloneMeshRenderer = clonePMP.GetComponent<MeshRenderer>();
             if (cloneMeshRenderer)
             {
@@ -71,7 +71,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void CreateConfig(ConfigFile config)
         {
-            cfgStageCount = config.Bind(ConfigCategory, "Stage Count", 5, "");
+            cfgStageCount = config.Bind(ConfigCategory, "Stage Count", 5, "The amount of stages this item gives items for.");
             cfgItemsToGet = config.Bind(ConfigCategory, "Items To Get", 5);
             cfgItemsToGetPerStack = config.Bind(ConfigCategory, "Items To Get Per Stack", 5);
         }
@@ -112,7 +112,7 @@ namespace RiskOfBulletstormRewrite.Items
                 bool allDead = true;
                 List<CharacterMaster> peopleWithClones = new List<CharacterMaster>();
 
-                int playerItemCount = 0;
+                //int playerItemCount = 0;
                 for (int i = 0; i < instances.Count; i++)
                 {
                     PlayerCharacterMasterController playerCharacterMasterController = instances[i];
@@ -136,9 +136,6 @@ namespace RiskOfBulletstormRewrite.Items
                 if (allDead && peopleWithClones.Count > 0)
                 {
                     isCloneRestarting = true;
-                    var cloneObject = new GameObject();
-                    var controller = cloneObject.AddComponent<RBS_CloneVoidController>();
-                    UnityEngine.Object.DontDestroyOnLoad(cloneObject);
                     Stage.instance.gameObject.AddComponent<RBS_CloneVoidController>();
                     Clone.instance.PseudoRestartRun();
                 }

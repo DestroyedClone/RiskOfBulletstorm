@@ -2,6 +2,8 @@
 using RoR2;
 using UnityEngine;
 using static RiskOfBulletstormRewrite.Main;
+using UnityEngine.Networking;
+using System.Collections.Generic;
 
 namespace RiskOfBulletstormRewrite.Artifact
 {
@@ -22,6 +24,8 @@ namespace RiskOfBulletstormRewrite.Artifact
             Hooks();
         }
 
+        public const float alternateEquipmentDecreaseMultiplier = 0.5f;
+
         public override void Hooks()
         {
             RunArtifactManager.onArtifactEnabledGlobal += RunArtifactManager_onArtifactEnabledGlobal;
@@ -36,7 +40,7 @@ namespace RiskOfBulletstormRewrite.Artifact
             }
             //On.RoR2.EquipmentSlot.UpdateInventory += EquipmentSlot_UpdateInventory;
             GlobalEventManager.onServerDamageDealt += ReduceWaitOnDamage;
-            CharacterBody.onBodyStartGlobal += GiveComponent;
+            CharacterMaster.onStartGlobal += GiveComponent;
             On.RoR2.Inventory.DeductActiveEquipmentCooldown += DeductFromComponent;
         }
 
@@ -48,32 +52,34 @@ namespace RiskOfBulletstormRewrite.Artifact
             }
             //On.RoR2.EquipmentSlot.UpdateInventory -= EquipmentSlot_UpdateInventory;
             GlobalEventManager.onServerDamageDealt -= ReduceWaitOnDamage;
-            CharacterBody.onBodyStartGlobal -= GiveComponent;
+            CharacterMaster.onStartGlobal -= GiveComponent;
             On.RoR2.Inventory.DeductActiveEquipmentCooldown -= DeductFromComponent;
         }
         
         public void DeductFromComponent(On.RoR2.Inventory.orig_DeductActiveEquipmentCooldown orig, Inventory self, float seconds)
         {
+            self.GetComponent<RBS_ArtifactEquipmentRechargeComponent>()?.DeductCooldown(seconds);
             orig(self, seconds);
         }
 
-        public void GiveComponent(CharacterBody characterBody)
+        public void GiveComponent(CharacterMaster characterMaster)
         {
-            if (characterBody.inventory && characterBody.equipmentSlot)
-                characterBody.gameObject.AddComponent<RBS_ArtifactEquipmentRechargeComponent>().inventory = characterBody.inventory;
+            if (characterMaster.inventory)
+            {
+                var comp = characterMaster.gameObject.AddComponent<RBS_ArtifactEquipmentRechargeComponent>();
+                comp.inventory = characterMaster.inventory;
+            }
+                
         }
 
         public void ReduceWaitOnDamage(DamageReport damageReport)
         {
-            if (damageReport.attackerBody && damageReport.attackerBody.inventory && damageReport.attackerBody.equipmentSlot)
+            if (damageReport.attackerMaster && damageReport.attackerMaster.inventory)
             {
-                var body = damageReport.attackerBody;
-                //var activeEqp = body.inventory.GetEquipment((uint)body.inventory.activeEquipmentSlot);
                 var damageDealt = damageReport.damageDealt;
                 //test: 100 damage = 1s of charge
                 var resultingCooldownReduction = damageDealt / 100f;
-                body.GetComponent<RBS_ArtifactEquipmentRechargeComponent>()?.DeductCooldown(resultingCooldownReduction);
-                //body.inventory.DeductActiveEquipmentCooldown(resultingCooldownReduction);
+                damageReport.attackerMaster.GetComponent<RBS_ArtifactEquipmentRechargeComponent>()?.DeductCooldown(resultingCooldownReduction);
             }
         }
 
@@ -94,11 +100,19 @@ namespace RiskOfBulletstormRewrite.Artifact
         {
             public Inventory inventory = null;
             //public EquipmentState primaryEquipment = default;
-            public float remainingDuration = 0;
+            //public float remainingDuration = 0;
+            List<float> remainingDurations = new List<float>();
+
 
             public void DeductCooldown(float duration)
             {
-                remainingDuration -= duration;
+                for (int i = 0; i < remainingDurations.Count; i++)
+                {
+                    if (i == inventory.activeEquipmentSlot)
+                        remainingDurations[i] -= duration;
+                    else
+                        remainingDurations[i] -=  duration * alternateEquipmentDecreaseMultiplier;
+                }
                 inventory.HandleInventoryChanged();
             }
 
@@ -109,19 +123,22 @@ namespace RiskOfBulletstormRewrite.Artifact
 
             public void FixedUpdate()
             {
-                EquipmentState equipment = inventory.GetEquipment((uint)inventory.activeEquipmentSlot);
-                if (remainingDuration <= 1)
+                float normalCooldownMax = 1;
+                for (int i = 0; i < remainingDurations.Count; i++)
                 {
-                    remainingDuration = equipment.chargeFinishTime.timeUntil;
+                    EquipmentState equipment = inventory.GetEquipment((uint)i);
+                    if (remainingDurations[i] <= normalCooldownMax)
+                    {
+                        remainingDurations[i] = equipment.chargeFinishTime.timeUntil;
+                    }
+                    else {
+                        inventory.SetEquipment(
+                            new EquipmentState(equipment.equipmentIndex,
+                            Run.FixedTimeStamp.now + remainingDurations[i],
+                            equipment.charges), (uint)i
+                        );
+                    }
                 }
-                else //if (remainingDuration > 0)
-                {
-			        
-                    inventory.SetEquipment(new EquipmentState(equipment.equipmentIndex, 
-                    Run.FixedTimeStamp.now + remainingDuration,
-                    equipment.charges), (uint)inventory.activeEquipmentSlot);
-                }
-                    //primaryEquipment.chargeFinishTime = Run.FixedTimeStamp.now + remainingDuration;
             }
         }
 

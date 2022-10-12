@@ -68,8 +68,8 @@ namespace RiskOfBulletstormRewrite.Items
                 {
                     //var minions = CharacterMaster.readOnlyInstancesList.Where(el => el.minionOwnership.ownerMaster == sender.master);
                     var minionGroup = MinionOwnership.MinionGroup.FindGroup(sender.master.netId);
-                    
-                    args.damageMultAdd += count * cfgDamage.Value * minionGroup.memberCount;
+                    if (minionGroup != null)
+                        args.damageMultAdd += count * cfgDamage.Value * minionGroup.memberCount;
                 }
             }
         }

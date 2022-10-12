@@ -158,7 +158,7 @@
 		
 		//[VOIDUNCOMMON]
 		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARDVOID_NAME": "Leader's Standard",
-		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARDVOID_PICKUP": "<b>Set My Own!</b>/nCompanions increase your damage.",
+		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARDVOID_PICKUP": "<b>Set My Own!</b>\nCompanions increase your damage.",
 		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARDVOID_DESCRIPTION": "For every companion, increases your <style=cIsDamage>damage by {0}%</style> <style=cStack>(+{0}% per stack)</style>. <style=cIsVoid>Corrupts all Battle Standards</style>.",
 		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARDVOID_LORE": "At the advancement of Gungeoneer society, some self-appointed Gungeoneer Leaders would adorn a flag onto themselves, advancing upon the lower chambers by rallies of their fellow Gungeoneers.",
 		

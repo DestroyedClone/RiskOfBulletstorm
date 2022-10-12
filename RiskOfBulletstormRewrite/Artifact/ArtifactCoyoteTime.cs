@@ -56,12 +56,13 @@ namespace RiskOfBulletstormRewrite.Artifact
             orig(self);
             if (self.jumpCount != initJumpCount)
             {
+                self.jumpCount = initJumpCount;
                 var comp = self.gameObject.GetComponent<RBS_CoyoteTime>();
                 if (!comp)
                 {
                     comp = self.gameObject.AddComponent<RBS_CoyoteTime>();
                     comp.characterMotor = self;
-                    comp.jumpCountOnStart = self.jumpCount;
+                    comp.jumpCountOnStart = initJumpCount;
                 }
             }
         }
