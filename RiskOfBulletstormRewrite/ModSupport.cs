@@ -118,12 +118,12 @@ namespace RiskOfBulletstormRewrite
                 BetterUI.ItemStats.LinearStacking,
                 BetterUI.ItemStats.StatFormatter.Percent,
                 BetterUI.ItemStats.ItemTag.Healing);
-            BetterUI.ItemStats.RegisterStat(IrradiatedLead.instance.ItemDef,
+            /*BetterUI.ItemStats.RegisterStat(IrradiatedLead.instance.ItemDef,
                 prefix + "IRRADIATEDLEAD_POISONCHANCE",
                 IrradiatedLead.cfgChance.Value,
                 IrradiatedLead.cfgChanceStack.Value,
                 BetterUI.ItemStats.LinearStacking,
-                BetterUI.ItemStats.StatFormatter.Percent);
+                BetterUI.ItemStats.StatFormatter.Percent);*/
             BetterUI.ItemStats.RegisterStat(Mustache.instance.ItemDef,
                 prefix + "MUSTACHE_DURATION",
                 Mustache.cfgDuration.Value,
@@ -162,11 +162,11 @@ namespace RiskOfBulletstormRewrite
                 BetterUI.ItemStats.ItemTag.Damage);
             //todo get stat for buff count * damage
 
-            BetterUI.ItemStats.RegisterStat(AmmoBelt.instance.ItemDef,
+            /* BetterUI.ItemStats.RegisterStat(AmmoBelt.instance.ItemDef,
                 prefix + "AMMOBELT_EXTRASTOCKS",
                 AmmoBelt.cfgPercentageStockAdditive.Value,
                 BetterUI.ItemStats.LinearStacking,
-                BetterUI.ItemStats.StatFormatter.Percent);
+                BetterUI.ItemStats.StatFormatter.Percent); */
                 
             BetterUI.ItemStats.RegisterStat(BattleStandard.instance.ItemDef,
                 prefix + "BATTLESTANDARD_DAMAGEBONUS",
@@ -175,7 +175,7 @@ namespace RiskOfBulletstormRewrite
                 BetterUI.ItemStats.StatFormatter.Percent,
                 BetterUI.ItemStats.ItemTag.Damage);
                 
-            BetterUI.ItemStats.RegisterStat(GhostBullets.instance.ItemDef,
+            /* BetterUI.ItemStats.RegisterStat(GhostBullets.instance.ItemDef,
                 prefix + "GHOSTBULLETS_DAMAGEREDUCTION",
                 GhostBullets.cfgDamageReduction.Value,
                 BetterUI.ItemStats.NoStacking,
@@ -184,14 +184,14 @@ namespace RiskOfBulletstormRewrite
                 prefix + "GHOSTBULLETS_PIERCECOUNT",
                 1,
                 BetterUI.ItemStats.LinearStacking,
-                BetterUI.ItemStats.StatFormatter.Charges);
+                BetterUI.ItemStats.StatFormatter.Charges); */
             
-            BetterUI.ItemStats.RegisterStat(RingChestFriendship.instance.ItemDef,
+            /* BetterUI.ItemStats.RegisterStat(RingChestFriendship.instance.ItemDef,
                 prefix + "RINGCHESTFRIENDSHIP_CREDITMULTIPLIER",
                 RingChestFriendship.cfgCreditMultiplier.Value,
                 RingChestFriendship.cfgCreditMultiplierPerStack.Value,
                 BetterUI.ItemStats.LinearStacking,
-                BetterUI.ItemStats.StatFormatter.Percent);
+                BetterUI.ItemStats.StatFormatter.Percent); */
                 
             BetterUI.ItemStats.RegisterStat(RingFireResistance.instance.ItemDef,
                 prefix + "RINGFIRERESISTANCE_REDUCTION",
@@ -258,13 +258,13 @@ namespace RiskOfBulletstormRewrite
             #endregion
             #region NoTier
             BetterUI.ItemStats.RegisterStat(OrangeConsumed.instance.ItemDef,
-                prefix + "RINGMISERLYPROTECTION_HEALTH",
+                prefix + "ORANGECONSUMED_MAXHEALTHADD",
                 Orange.cfgMaxHealthIncrease.Value,
                 BetterUI.ItemStats.LinearStacking,
                 BetterUI.ItemStats.StatFormatter.Percent,
                 BetterUI.ItemStats.ItemTag.MaxHealth);
             BetterUI.ItemStats.RegisterStat(OrangeConsumed.instance.ItemDef,
-                prefix + "RINGMISERLYPROTECTION_HEALTH",
+                prefix + "ORANGECONSUMED_HEAL",
                 Orange.cfgHealPercentage.Value,
                 BetterUI.ItemStats.LinearStacking,
                 BetterUI.ItemStats.StatFormatter.Percent,
