@@ -23,6 +23,9 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override string ItemLangTokenName => "BLOODIEDSCARF";
 
+        public override bool ItemDescriptionLogbookOverride => true;
+        public override string[] ItemLogbookDescriptionParams => teleportSkillDefParams;
+
         public override ItemTier Tier => ItemTier.Lunar;
 
         public override GameObject ItemModel => Assets.NullModel;

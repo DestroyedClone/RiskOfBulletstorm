@@ -3,7 +3,7 @@
 	{
 		//[TIER1]
 		"RISKOFBULLETSTORM_ITEM_ANTIBODY_NAME": "Antibody",
-		"RISKOFBULLETSTORM_ITEM_ANTIBODY_PICKUP": "<b>Heals Up</b>\nChance to improve healing receieved.",
+		"RISKOFBULLETSTORM_ITEM_ANTIBODY_PICKUP": "<align="center"><b>Heals Up</b>\nChance to improve healing receieved.</align>",
 		"RISKOFBULLETSTORM_ITEM_ANTIBODY_DESCRIPTION": "Upon <style=cIsHealing>healing</style>, gain a <style=cIsUtility>{0}% chance</style> to <style=cIsHealing>heal for +{1}% more healing</style> <style=cStack>(+{2}% more healing per stack)</style>.",
 		"RISKOFBULLETSTORM_ITEM_ANTIBODY_LORE": "An experimental treatment administered by the Gungeon's medical unit.",
 		
@@ -133,7 +133,7 @@
 		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_NAME": "Bloodied Scarf",
 		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_PICKUP": "<b>Blink Away</b>\nUtility is replaced with a blink with vulnerability afterwards..",
 		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_DESCRIPTION": "<style=cIsUtility>Replace your Utility Skill</style> with <style=cIsUtility>Bloodied Teleport</style>.",
-		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_LOGBOOK_DESCRIPTION": "<style=cIsUtility>Replace your Utility Skill</style> with <style=cIsUtility>Bloodied Teleport</style>. LOGBOOK TEST",
+		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_LOGBOOK_DESCRIPTION": "<style=cIsUtility>Replace your Utility Skill</style> with <style=cIsUtility>Bloodied Teleport</style>.\n\n<b>Bloodied Teleport</b>\n<style=cIsUtility>Cooldown: 8f</style>\n<style=cIsUtility>Teleport</style> up to <style=cIsUtility>{0}m </style> <style=cStack>(+{1}m per stack)</style>.\nAfter teleporting, <style=cIsDeath>take +{2}% more damage <style=cStack(+{3}% per stack)</style> for {4} seconds.</style>.",
 		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_LORE": "This simple scarf was once worn by a skilled assassin. Betrayed by his brothers and assumed dead...",
 		
 		"RISKOFBULLETSTORM_ITEM_BULLETHEAVY_NAME": "Heavy Bullets",
@@ -144,12 +144,13 @@
 		"RISKOFBULLETSTORM_ITEM_DODGEROLLUTILITYREPLACEMENT_NAME": "Teachings of Dodge Roll",
 		"RISKOFBULLETSTORM_ITEM_DODGEROLLUTILITYREPLACEMENT_PICKUP": "<b>Roll Out!</b>\nBestows the player the blessing of the Dodge Roll.",
 		"RISKOFBULLETSTORM_ITEM_DODGEROLLUTILITYREPLACEMENT_DESCRIPTION": "<style=cIsUtility>Replace your Utility Skill</style> with <style=cIsUtility>Dodge Roll</style>.",
+		"RISKOFBULLETSTORM_ITEM_DODGEROLLUTILITYREPLACEMENT_LOGBOOK_DESCRIPTION": "<style=cIsUtility>Replace your Utility Skill</style> with <style=cIsUtility>Dodge Roll</style>.\n\n<b>Dodge Roll</b>\n<style=cIsUtility>Roll</style> a short distance. For the first {0}% and last {0}% of the roll <style=cStack>(-{1}% per stack)</style>, take <style=cIsHealth>+{2}% more damage</style> <style=cStack>({3}% per stack)</style>. Become <style=cIsUtility>intangible</style> between the <style=cIsHealth>vulnerability</style> periods.",
 		"RISKOFBULLETSTORM_ITEM_DODGEROLLUTILITYREPLACEMENT_LORE": "\"What I don't understand is why the bullets weren't hitting you. It really looks like they should.\" - Blockner",
 		
 		"RISKOFBULLETSTORM_ITEM_HIPHOLSTER_NAME": "Hip Holster",
 		"RISKOFBULLETSTORM_ITEM_HIPHOLSTER_PICKUP": "<b>Quickdraw</b>\nYour skills have a chance to activate for free upon recharging a stock.",
 		"RISKOFBULLETSTORM_ITEM_HIPHOLSTER_DESCRIPTION": "Your skills have a <style=cIsUtility>{0}% chance</style> <style=cStack>(+{1}% chance per stack, hyperbolically)</style> to activate for free upon recharging a stock.",
-		"RISKOFBULLETSTORM_ITEM_HIPHOLSTER_LORE": "<style=cMono>INTERCEPTING TRANSMISSION...</style>\n\nIn '87, Huey released this; Fore!, their most accomplished album. I think their undisputed masterpiece is \"Hip To Be Square\". A song so catchy, most people probably don't listen to the lyrics. But they should, because it's not just about the pleasures of conformity and the importance of trends. It's also a personal statement about the band itself. Hey, Paul!\n\n<style=cMono>TRANSMISSION STOPPED ABRUPTLY, ATTEMPTING TO RECONNECT...\n\n</style>",
+		"RISKOFBULLETSTORM_ITEM_HIPHOLSTER_LORE": "<style=cMono>INTERCEPTING TRANSMISSION...</style>\n\nIn '87, Huey released this; Fore!, their most accomplished album. I think their undisputed masterpiece is \"Hip To Be Square\". A song so catchy, most people probably don't listen to the lyrics. But they should, because- \n\n<style=cMono>TRANSMISSION STOPPED ABRUPTLY, ATTEMPTING TO RECONNECT...\n\n</style>",
 		
 		"RISKOFBULLETSTORM_ITEM_RINGMISERLYPROTECTION_NAME": "Ring of Miserly Protection",
 		"RISKOFBULLETSTORM_ITEM_RINGMISERLYPROTECTION_PICKUP": "<b>Aids The Fiscally Responsible</b>\n<style=cIsHealing>Increases health substantially.</style> <style=cDeath>Gambling at a chance shrine will shatter the ring.</style>",

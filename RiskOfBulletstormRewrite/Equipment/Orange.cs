@@ -22,14 +22,15 @@ namespace RiskOfBulletstormRewrite.Equipment
         public override string[] EquipmentFullDescriptionParams => new string[]
         {
             GetChance(cfgMaxHealthIncrease),
-            GetChance(cfgHealPercentage)
+            GetChance(cfgHealPercentage),
+            GetChance(cfgChargeRateReduction)
         };
 
         public override GameObject EquipmentModel => Assets.NullModel;
 
         public override Sprite EquipmentIcon => LoadSprite();
 
-        public override float Cooldown => 15f;
+        public override float Cooldown => 45f;
 
         public override void Init(ConfigFile config)
         {
@@ -43,6 +44,7 @@ namespace RiskOfBulletstormRewrite.Equipment
         {
             cfgMaxHealthIncrease = config.Bind(ConfigCategory, "Max Health Increase", 0.1f);
             cfgHealPercentage = config.Bind(ConfigCategory, "Heal Percentage", 1f);
+            cfgChargeRateReduction = config.Bind(ConfigCategory, "Equipment Charge Rate Reduction", 0.1f);
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()

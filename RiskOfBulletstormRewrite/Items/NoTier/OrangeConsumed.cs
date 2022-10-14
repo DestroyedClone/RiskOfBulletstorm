@@ -46,6 +46,12 @@ namespace RiskOfBulletstormRewrite.Items
         public override void Hooks()
         {
             R2API.RecalculateStatsAPI.GetStatCoefficients += Orange_StatCoefficients;
+            On.RoR2.Inventory.CalculateEquipmentCooldownScale += ReduceCooldowns;
+        }
+
+        private float ReduceCooldowns(On.RoR2.Inventory.orig_CalculateEquipmentCooldownScale orig, Inventory self)
+        {
+            return orig(self) * Mathf.Pow(1f-Equipment.Orange.cfgChargeRateReduction.Value, self.GetItemCount(ItemDef));
         }
 
         private void Orange_StatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)

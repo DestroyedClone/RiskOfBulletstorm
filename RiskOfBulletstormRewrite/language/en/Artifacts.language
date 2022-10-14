@@ -3,7 +3,7 @@
 	{
 		//[NORMAL]
 		"RISKOFBULLETSTORM_ARTIFACT_PITLORD_NAME": "Artifact of the Pit Lord",
-		"RISKOFBULLETSTORM_ARTIFACT_PITLORD_DESCRIPTION": "Players and monsters teleport back on stage with no fall damage.",
+		"RISKOFBULLETSTORM_ARTIFACT_PITLORD_DESCRIPTION": "Players and monsters land safely back on stage after falling off.",
 		
 		"RISKOFBULLETSTORM_ARTIFACT_DAMAGEEQUIPMENTRECHARGE_NAME": "Artifact of the Equipment Battery",
 		"RISKOFBULLETSTORM_ARTIFACT_DAMAGEEQUIPMENTRECHARGE_DESCRIPTION": "Equipment only recharges based off damage dealt. Scales over time.",
@@ -12,16 +12,16 @@
 		"RISKOFBULLETSTORM_ARTIFACT_ADAPTIVEARMORBOSSES_DESCRIPTION": "All teleporter bosses gain the Final Boss's adaptive armor.",
 		
 		"RISKOFBULLETSTORM_ARTIFACT_BOSSCHAMBER_NAME": "Artifact of the Boss Chamber",
-		"RISKOFBULLETSTORM_ARTIFACT_BOSSCHAMBER_DESCRIPTION": "Natural spawns are cleared when starting the boss fight, but the boss is stronger.",
+		"RISKOFBULLETSTORM_ARTIFACT_BOSSCHAMBER_DESCRIPTION": "<style=cIsHealing>(+) Natural spawns are cleared.\n(+) Enemy projectiles disappear after boss death.\n(+) Teleporter charges by 100% divided per Focused Convergence.</style>\n<style=cHealth>(-) Boss is stronger.</style>",
 		
 		"RISKOFBULLETSTORM_ARTIFACT_UPSPEEDOOC_NAME": "Artifact of the Swift Post-Battle",
 		"RISKOFBULLETSTORM_ARTIFACT_UPSPEEDOOC_DESCRIPTION": "After completing the teleporter event, all players gain a speed boost.",
 		
 		"RISKOFBULLETSTORM_ARTIFACT_GUNGEONSPOOF_NAME": "Artifact of Gungeon Mimic",
-		"RISKOFBULLETSTORM_ARTIFACT_GUNGEONSPOOF_DESCRIPTION": "WIP - Modifies the game to act similar to Gungeon.",
+		"RISKOFBULLETSTORM_ARTIFACT_GUNGEONSPOOF_DESCRIPTION": "Modifies the game to act similar to Gungeon.\nReduced health and damage, i-frames after getting hit.",
 		
 		"RISKOFBULLETSTORM_ARTIFACT_COYOTETIME_NAME": "Artifact of Canis Duration",
-		"RISKOFBULLETSTORM_ARTIFACT_COYOTETIME_DESCRIPTION": "Restores one jump when falling off a platform after 0.3s.",
+		"RISKOFBULLETSTORM_ARTIFACT_COYOTETIME_DESCRIPTION": "Allowed to jump within 0.3s of falling off a platform.",
 		
 		"RISKOFBULLETSTORM_ARTIFACT__NAME": "",
 		"RISKOFBULLETSTORM_ARTIFACT__DESCRIPTION": "",

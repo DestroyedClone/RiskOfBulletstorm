@@ -30,6 +30,7 @@ namespace RiskOfBulletstormRewrite.Items
         public abstract string ItemLangTokenName { get; }
         public virtual string[] ItemPickupDescParams { get; }
         public virtual string[] ItemFullDescriptionParams { get; }
+        public virtual string[] ItemLogbookDescriptionParams { get; }
 
         public virtual bool ItemDescriptionLogbookOverride { get; } = false;
 
@@ -72,7 +73,7 @@ namespace RiskOfBulletstormRewrite.Items
             }
         }
 
-        public string ItemDescriptionLogbookToken
+        public virtual string ItemDescriptionLogbookToken
         {
             get
             {
@@ -94,19 +95,15 @@ namespace RiskOfBulletstormRewrite.Items
 
         public virtual void CreateConfig(ConfigFile config) { }
 
-        public void DeferToken(string token, string lang, params string[] args)
-        {
-            //Main._logger.LogMessage($"Deferring {token} w/ lang {lang}");
-            RiskOfBulletstormRewrite.Language.langTokenValues.Add(new Language.LangTokenValue() { token = token, lang = lang, strings = args });
-        }
         protected virtual void CreateLang() //create lang (addtokens for nwo) -> modify lang (this will be kept later)
         {
-            Main._logger.LogMessage($"{ItemName} CreateLang()");
+            //Main._logger.LogMessage($"{ItemName} CreateLang()");
             bool formatPickup = ItemPickupDescParams?.Length > 0;
             //Main._logger.LogMessage("pickupCheck");
             bool formatDescription = ItemFullDescriptionParams?.Length > 0; //https://stackoverflow.com/a/41596301
             //Main._logger.LogMessage("descCheck");
-            if (formatDescription && formatPickup)
+            bool formatLogbook = ItemLogbookDescriptionParams?.Length > 0;
+            if (!formatDescription && !formatPickup && !formatLogbook)
             {
                 //Main._logger.LogMessage("Nothing to format.");
                 return;
@@ -119,12 +116,17 @@ namespace RiskOfBulletstormRewrite.Items
 
                 if (formatPickup)
                 {
-                    DeferToken(ItemPickupToken, langName, ItemPickupDescParams);
+                    Language.DeferToken(ItemPickupToken, langName, ItemPickupDescParams);
                 }
 
                 if (formatDescription)
                 {
-                    DeferToken(ItemDescriptionToken, langName, ItemFullDescriptionParams);
+                    Language.DeferToken(ItemDescriptionToken, langName, ItemFullDescriptionParams);
+                }
+
+                if (formatLogbook)
+                {
+                    Language.DeferToken(ItemDescriptionLogbookToken, langName, ItemLogbookDescriptionParams);
                 }
             }
 

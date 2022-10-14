@@ -10,7 +10,7 @@
 		"RISKOFBULLETSTORM_EQUIPMENT_BOTTLE_NAME": "Bottle",
 		"RISKOFBULLETSTORM_EQUIPMENT_BOTTLE_PICKUP": "<b>Heart Container</b>\nStores excess healing for use later.",
 		"RISKOFBULLETSTORM_EQUIPMENT_BOTTLE_DESCRIPTION": "While off cooldown, <style=cIsHealing>{0}% of healing</style> will be <style=cIsUtility>stored</style>, up to <style=cIsHealing>{1}%</style> of your <style=cIsHealing>maximum health</style>. Upon use, <style=cIsHealing>heal</style> for your stored <style=cIsHealing>healing</style>.",
-		"RISKOFBULLETSTORM_EQUIPMENT_BOTTLE_LORE": "\"A glass bottle! Woo!\"\n\"Woo? It's just a bottle... What's to like? We have way more impressive equipment- er... actives. Don't you think slowing down time is way better?\"\n\"Well, I had nothing prior to this. But even so, I will be able to pick up a heart for later.\"\n\"Still seems useless. The shop has the machine for that.\"\n\"I'm happy with this. Come, let's go to the next room, I think there's a miniboss ahead.\"",
+		"RISKOFBULLETSTORM_EQUIPMENT_BOTTLE_LORE": "\"A glass bottle! Woo!\"\n\"Woo? It's just a bottle... What's to like? We have way more impressive equipment- er... actives. Don't you think slowing down time is way better?\"\n\"Well, I had nothing before this. But now, I can pick up a heart for later.\"\n\"Still seems useless. The shop has the machine for that.\"\n\"I'm happy with this. Come, let's go to the next room, I think there's a miniboss ahead.\"",
 		
 		"RISKOFBULLETSTORM_EQUIPMENT_BRICKOFCASH_NAME": "Brick of Cash",
 		"RISKOFBULLETSTORM_EQUIPMENT_BRICKOFCASH_PICKUP": "<b>Secrets Of The Masons</b>\nReveals secrets.",
@@ -29,8 +29,15 @@
 		
 		"RISKOFBULLETSTORM_EQUIPMENT_ORANGE_NAME": "Orange",
 		"RISKOFBULLETSTORM_EQUIPMENT_ORANGE_PICKUP": "<b>You're not Alexander</b>\nHeals on use, increases max health.",
-		"RISKOFBULLETSTORM_EQUIPMENT_ORANGE_DESCRIPTION": "",
+		"RISKOFBULLETSTORM_EQUIPMENT_ORANGE_DESCRIPTION": "<style=cIsUtility>Eat</style> to <style=cIsHealing>increase maximum health by {0}%</style>, <style=cIsHealing>heal for {0}% health, and <style=cIsUtility>reduce equipment cooldown by {2}%</style>.",
 		"RISKOFBULLETSTORM_EQUIPMENT_ORANGE_LORE": "With this orange, your style... it's impetuous. Your defense, impregnable.",
+		
+		//same as item
+		//for the sake of a stat errors
+		"RISKOFBULLETSTORM_EQUIPMENT_ORANGECONSUMED_NAME": "Orange (Consumed)",
+		"RISKOFBULLETSTORM_EQUIPMENT_ORANGECONSUMED_PICKUP": "<b>Peel or No Peel</b>\n",
+		"RISKOFBULLETSTORM_EQUIPMENT_ORANGECONSUMED_DESCRIPTION": "<style=cIsUtility>Eat</style> to <style=cIsHealing>increase maximum health by {0}%</style>, <style=cIsHealing>heal for {0}% health, and <style=cIsUtility>reduce equipment cooldown by {2}%</style>.",
+		"RISKOFBULLETSTORM_EQUIPMENT_ORANGECONSUMED_LORE": "Formerly with style, now a disgrace...",
 		
 		"RISKOFBULLETSTORM_EQUIPMENT_JARBEES_NAME": "Jar of Bees",
 		"RISKOFBULLETSTORM_EQUIPMENT_JARBEES_PICKUP": "<b>The Pain!</b>\nThrow a jar of bees that shatters on contact.",
@@ -55,7 +62,7 @@
 		
 		"RISKOFBULLETSTORM_EQUIPMENT_IRONCOIN_NAME": "Iron Coin",
 		"RISKOFBULLETSTORM_EQUIPMENT_IRONCOIN_PICKUP": "<b>Valar Morgunis</b>\nPay this coin to kill all enemies with no reward.",
-		"RISKOFBULLETSTORM_EQUIPMENT_IRONCOIN_DESCRIPTION": "<style=cIsUtility>Kills all enemies</style> <style=cDeath>...but gain no rewards. Consumed on use.</style>",
+		"RISKOFBULLETSTORM_EQUIPMENT_IRONCOIN_DESCRIPTION": "<style=cIsUtility>Kills ALL enemies</style> <style=cDeath>...but gain no rewards. Consumed on use.</style>",
 		"RISKOFBULLETSTORM_EQUIPMENT_IRONCOIN_LORE": "A payment for services rendered. This mysterious coin vanishes when tossed into the air.",
 		
 		"RISKOFBULLETSTORM_EQUIPMENT_IRONCOINCONSUMED_NAME": "Iron Coin (Spent)",
