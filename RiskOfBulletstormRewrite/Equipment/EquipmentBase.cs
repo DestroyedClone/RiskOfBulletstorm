@@ -170,6 +170,15 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public virtual void Hooks() { }
 
+        
+        public Sprite LoadSprite()
+        {
+            return Assets.LoadNewSprite(
+            Assets.assemblyDir + "\\Assets\\EQUIPMENT_"+EquipmentLangTokenName
+            + ".png"
+            );
+        }
+
         #region Targeting Setup
         //Targeting Support
         public virtual bool UseTargeting { get; } = false;

@@ -40,7 +40,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public override GameObject EquipmentModel => LegacyResourcesAPI.Load<GameObject>("RoR2/Base/QuestVolatileBattery/PickupBatteryArray");
 
-        public override Sprite EquipmentIcon => Assets.NullSprite;
+        public override Sprite EquipmentIcon => LoadSprite();
 
         public static GameObject[] explosiveProjectiles = new GameObject[]
         {

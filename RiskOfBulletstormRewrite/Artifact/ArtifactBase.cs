@@ -143,5 +143,13 @@ namespace RiskOfBulletstormRewrite.Artifact
         ///Method for calling hooks.
         ///</summary>
         public abstract void Hooks();
+
+        public Sprite LoadSprite(bool enabled)
+        {
+            return Assets.LoadNewSprite(
+            Assets.assemblyDir + "\\Assets\\ARTIFACT_"+ArtifactLangTokenName
+            + (enabled ? "_ENABLED" : "_DISABLED") + ".png"
+            );
+        }
     }
 }

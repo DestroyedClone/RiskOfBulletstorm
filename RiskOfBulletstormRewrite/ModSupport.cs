@@ -28,7 +28,7 @@ namespace RiskOfBulletstormRewrite
                 betterUILoaded = true;
                 BetterUICompat_StatsDisplay();
                 BetterUICompat_ItemStats();
-                ModSupport.BetterUICompat_Buffs();
+                BetterUICompat_Buffs();
             }
         }
 
@@ -67,8 +67,7 @@ namespace RiskOfBulletstormRewrite
         [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
         internal static void BetterUICompat_StatsDisplay()
         {
-            var prefix = "RISKOFBULLETSTORM_STATDISPLAY_";
-            //used to be $accuracy, this doesn't auto display right?
+            var prefix = "$RISKOFBULLETSTORM_STATDISPLAY_";
             //todo add auto display?????
             BetterUI.StatsDisplay.AddStatsDisplay(prefix+"ACCURACY", (BetterUI.StatsDisplay.DisplayCallback)GetAccuracy);
             BetterUI.StatsDisplay.AddStatsDisplay(prefix+"CURSE", (BetterUI.StatsDisplay.DisplayCallback)GetCurse);

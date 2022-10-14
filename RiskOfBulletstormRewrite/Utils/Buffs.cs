@@ -17,9 +17,16 @@ namespace RiskOfBulletstormRewrite.Utils
         public static void CreateBuffs()
         {
             //Buffs
-            MustacheBuff = AddBuff("Power of Commerce", Assets.NullSprite, Color.yellow, false, true);
-            BloodiedScarfBuff = AddBuff("", Assets.NullSprite, Color.red, true, true);
-            AlphaBulletBuff = AddBuff("Alpha Bullet Damage", Assets.NullSprite, Color.yellow, false, true);
+            MustacheBuff = AddBuff("Power of Commerce", 
+            Assets.LoadSprite("BUFF_MUSTACHE"), 
+            Color.yellow, false, true);
+
+            BloodiedScarfBuff = AddBuff("Vulnerable", 
+            Assets.LoadSprite("BUFF_BLOODIEDSCARF"), 
+            Color.red, true, true);
+            AlphaBulletBuff = AddBuff("Alpha Bullet Damage", 
+            Assets.LoadSprite("BUFF_ALPHABULLET"), 
+            Color.yellow, false, true);
 
             //Trackers
             MetronomeTrackerBuff = AddBuff("Metronome Stacks (Display)",

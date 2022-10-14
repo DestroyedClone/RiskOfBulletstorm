@@ -22,7 +22,8 @@ namespace RiskOfBulletstormRewrite.Items
         {
         };
 
-        public override Sprite ItemIcon => Assets.NullSprite;
+
+        public override Sprite ItemIcon => LoadSprite();
 
         public override ItemTag[] ItemTags => new ItemTag[]
         {

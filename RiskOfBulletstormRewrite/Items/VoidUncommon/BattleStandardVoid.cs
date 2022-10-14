@@ -25,7 +25,8 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override GameObject ItemModel => Assets.NullModel;
 
-        public override Sprite ItemIcon => Assets.NullSprite;
+
+        public override Sprite ItemIcon => LoadSprite();
 
         public override ItemDef ContagiousOwnerItemDef => Items.BattleStandard.instance.ItemDef;
 

@@ -11,9 +11,9 @@ namespace RiskOfBulletstormRewrite.Artifact
 
         public override string ArtifactLangTokenName => "ADAPTIVEARMORBOSSES";
 
-        public override Sprite ArtifactEnabledIcon => Assets.NullSprite;
+        public override Sprite ArtifactEnabledIcon => LoadSprite(true);
 
-        public override Sprite ArtifactDisabledIcon => Assets.NullSprite;
+        public override Sprite ArtifactDisabledIcon => LoadSprite(false);
 
         public override void Init(ConfigFile config)
         {

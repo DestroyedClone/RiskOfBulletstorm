@@ -27,7 +27,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override GameObject ItemModel => Assets.NullModel;
 
-        public override Sprite ItemIcon => Assets.NullSprite;
+        public override Sprite ItemIcon => LoadSprite();
 
         public override ItemTag[] ItemTags => new ItemTag[]
         {
@@ -70,8 +70,8 @@ namespace RiskOfBulletstormRewrite.Items
             teleportSkillDef.dontAllowPastMaxStocks = false;
             teleportSkillDef.forceSprintDuringState = true;
             teleportSkillDef.fullRestockOnAssign = true;
-            teleportSkillDef.icon = Assets.NullSprite;
-            teleportSkillDef.interruptPriority = InterruptPriority.Pain;
+            teleportSkillDef.icon = Assets.LoadSprite("SKILL_BLOODIEDSCARF");
+            teleportSkillDef.interruptPriority = InterruptPriority.Vehicle;
             teleportSkillDef.isCombatSkill = false;
             teleportSkillDef.keywordTokens = new string[]
             {

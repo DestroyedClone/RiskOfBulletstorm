@@ -28,7 +28,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override GameObject ItemModel => GetPickupModel();
 
-        public override Sprite ItemIcon => Assets.NullSprite;
+        public override Sprite ItemIcon => LoadSprite();
 
         public override ItemTag[] ItemTags => new ItemTag[]
         {

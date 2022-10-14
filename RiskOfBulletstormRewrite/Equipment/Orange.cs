@@ -27,7 +27,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public override GameObject EquipmentModel => Assets.NullModel;
 
-        public override Sprite EquipmentIcon => Assets.NullSprite;
+        public override Sprite EquipmentIcon => LoadSprite();
 
         public override float Cooldown => 15f;
 

@@ -20,7 +20,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override GameObject ItemModel => Assets.NullModel;
 
-        public override Sprite ItemIcon => Assets.NullSprite;
+        public override Sprite ItemIcon => LoadSprite();
 
         public override ItemTag[] ItemTags => new ItemTag[]
         {
@@ -54,8 +54,8 @@ namespace RiskOfBulletstormRewrite.Items
             rollSkillDef.dontAllowPastMaxStocks = false;
             rollSkillDef.forceSprintDuringState = true;
             rollSkillDef.fullRestockOnAssign = true;
-            rollSkillDef.icon = Assets.NullSprite;
-            rollSkillDef.interruptPriority = InterruptPriority.Pain;
+            rollSkillDef.icon = Assets.LoadSprite("SKILL_DODGEROLL");
+            rollSkillDef.interruptPriority = InterruptPriority.Vehicle;
             rollSkillDef.isCombatSkill = false;
             rollSkillDef.keywordTokens = new string[]
             {
