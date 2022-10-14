@@ -1,9 +1,7 @@
 ﻿using BepInEx.Configuration;
 using RoR2;
-using UnityEngine;
-using static RiskOfBulletstormRewrite.Main;
-using UnityEngine.Networking;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace RiskOfBulletstormRewrite.Artifact
 {

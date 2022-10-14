@@ -1,7 +1,7 @@
-﻿using System;
+﻿using EntityStates;
 using RoR2;
+using System;
 using UnityEngine.Networking;
-using EntityStates;
 
 namespace RiskOfBulletstormRewrite.Controllers.Pasts
 {

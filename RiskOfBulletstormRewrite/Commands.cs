@@ -1,6 +1,5 @@
-using RoR2;
-using UnityEngine;
 using RiskOfBulletstormRewrite.Items;
+using RoR2;
 
 namespace RiskOfBulletstormRewrite
 {

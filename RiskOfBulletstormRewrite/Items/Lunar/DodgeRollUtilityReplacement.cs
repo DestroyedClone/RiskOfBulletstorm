@@ -1,12 +1,9 @@
-﻿using BepInEx.Configuration;
+﻿using EntityStates;
+using BepInEx.Configuration;
 using R2API;
 using RoR2;
-using UnityEngine;
-using UnityEngine.Networking;
-using static RiskOfBulletstormRewrite.Main;
 using RoR2.Skills;
-using EntityStates;
-using UnityEngine.AddressableAssets;
+using UnityEngine;
 
 namespace RiskOfBulletstormRewrite.Items
 {

@@ -1,4 +1,6 @@
 ﻿using BepInEx;
+using HarmonyLib;
+using Path = System.IO.Path;
 using R2API;
 using R2API.Utils;
 using RiskOfBulletstormRewrite.Artifact;
@@ -7,17 +9,12 @@ using RiskOfBulletstormRewrite.Equipment;
 using RiskOfBulletstormRewrite.Equipment.EliteEquipment;
 using RiskOfBulletstormRewrite.Items;
 using RiskOfBulletstormRewrite.Enemies;
+using RoR2;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
-using Path = System.IO.Path;
-using RoR2.Items;
-using RoR2;
-using static RoR2.Util;
-using HarmonyLib;
-using R2API.ContentManagement;
 
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
 

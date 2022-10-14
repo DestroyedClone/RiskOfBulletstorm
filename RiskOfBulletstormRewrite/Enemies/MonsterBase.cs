@@ -1,29 +1,11 @@
 ﻿using BepInEx;
+using BepInEx.Configuration;
 using R2API;
-using R2API.Utils;
-using RiskOfBulletstormRewrite.Artifact;
-using RiskOfBulletstormRewrite.Controllers;
-using RiskOfBulletstormRewrite.Equipment;
-using RiskOfBulletstormRewrite.Equipment.EliteEquipment;
-using RiskOfBulletstormRewrite.Items;
+using RoR2;
+using RoR2.Skills;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using UnityEngine;
-using Path = System.IO.Path;
-using RoR2;
-using EntityStates;
-using RoR2.Skills;
-using System.Collections.ObjectModel;
-using System.Text;
-using UnityEngine.Networking;
-using EntityStates.ScavMonster;
-using EntityStates.Engi.EngiWeapon;
-//using Aetherium.Utils;
-using RoR2.CharacterAI;
-using System.Net;
-using BepInEx.Configuration;
 
 namespace RiskOfBulletstormRewrite.Enemies
 {

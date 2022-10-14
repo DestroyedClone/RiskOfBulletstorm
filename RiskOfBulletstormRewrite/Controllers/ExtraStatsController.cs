@@ -1,14 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using BepInEx.Configuration;
+using static RiskOfBulletstormRewrite.Main;
+using static RiskOfBulletstormRewrite.Utils.ItemHelpers;
 using RoR2;
-using UnityEngine;
 using RoR2.Projectile;
 using System;
-using BepInEx;
-using BepInEx.Configuration;
-using static RiskOfBulletstormRewrite.Main;
+using System.Collections.Generic;
 using System.Net;
-using static RiskOfBulletstormRewrite.Utils.ItemHelpers;
+using UnityEngine;
 
 namespace RiskOfBulletstormRewrite.Controllers
 {

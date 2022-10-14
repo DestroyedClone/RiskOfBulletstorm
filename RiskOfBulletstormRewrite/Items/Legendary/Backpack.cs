@@ -1,11 +1,10 @@
 ﻿using BepInEx.Configuration;
 using R2API;
 using RoR2;
+using RoR2.UI;
+using System.Text;
 using UnityEngine;
 using static RiskOfBulletstormRewrite.Main;
-using UnityEngine.Networking;
-using System.Text;
-using RoR2.UI;
 
 namespace RiskOfBulletstormRewrite.Items
 {

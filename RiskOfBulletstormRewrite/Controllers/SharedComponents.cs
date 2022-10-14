@@ -1,7 +1,4 @@
-﻿using BepInEx.Configuration;
-using R2API;
-using RoR2;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace RiskOfBulletstormRewrite.Controllers
 {

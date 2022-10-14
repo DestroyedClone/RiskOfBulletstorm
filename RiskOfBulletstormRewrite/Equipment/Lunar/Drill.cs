@@ -2,9 +2,8 @@
 using R2API;
 using RoR2;
 using UnityEngine;
-using static RiskOfBulletstormRewrite.Main;
-using static RiskOfBulletstormRewrite.Controllers.SharedComponents;
 using UnityEngine.Networking;
+using static RiskOfBulletstormRewrite.Controllers.SharedComponents;
 
 namespace RiskOfBulletstormRewrite.Equipment
 {

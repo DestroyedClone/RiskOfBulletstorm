@@ -5,7 +5,6 @@ using RoR2.Projectile;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static RiskOfBulletstormRewrite.Main;
 
 namespace RiskOfBulletstormRewrite.Equipment
 {

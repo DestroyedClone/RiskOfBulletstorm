@@ -1,12 +1,6 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using UnityEngine;
+﻿using BepInEx.Configuration;
 using RoR2;
-using RoR2.Items;
-using RiskOfBulletstormRewrite;
-using BepInEx.Configuration;
-using System.Collections.Generic;
-using System.Linq;
+using UnityEngine;
 
 namespace RiskOfBulletstormRewrite.Controllers
 {

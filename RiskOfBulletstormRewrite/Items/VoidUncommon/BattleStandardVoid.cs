@@ -2,9 +2,6 @@
 using R2API;
 using RoR2;
 using UnityEngine;
-using UnityEngine.Networking;
-using static RiskOfBulletstormRewrite.Main;
-using System.Linq;
 
 namespace RiskOfBulletstormRewrite.Items
 {

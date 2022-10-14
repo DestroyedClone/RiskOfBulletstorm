@@ -1,12 +1,8 @@
 ﻿using BepInEx.Configuration;
 using EntityStates;
-using EntityStates.Huntress;
-using EntityStates.Mage.Weapon;
 using R2API;
-using R2API.Utils;
 using RoR2;
 using RoR2.Skills;
-using RoR2.UI;
 using UnityEngine;
 
 namespace RiskOfBulletstormRewrite.Items
@@ -101,7 +97,7 @@ namespace RiskOfBulletstormRewrite.Items
             foreach (var lang in RoR2.Language.steamLanguageTable)
             {
                 var langName = lang.Value.webApiName;
-                DeferToken(teleportSkillDef.skillDescriptionToken, langName, teleportSkillDefParams);
+                Language.DeferToken(teleportSkillDef.skillDescriptionToken, langName, teleportSkillDefParams);
             }
         }
 

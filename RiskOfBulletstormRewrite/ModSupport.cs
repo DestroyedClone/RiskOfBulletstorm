@@ -1,20 +1,9 @@
-﻿using BepInEx;
-using R2API;
-using R2API.Utils;
-using RiskOfBulletstormRewrite.Artifact;
-using RiskOfBulletstormRewrite.Controllers;
-using RiskOfBulletstormRewrite.Equipment;
-using RiskOfBulletstormRewrite.Equipment.EliteEquipment;
+﻿using RiskOfBulletstormRewrite.Equipment;
 using RiskOfBulletstormRewrite.Items;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using UnityEngine;
-using Path = System.IO.Path;
 using RiskOfBulletstormRewrite.Utils;
 using RoR2;
 using System.Runtime.CompilerServices;
+using UnityEngine;
 
 namespace RiskOfBulletstormRewrite
 {
@@ -257,13 +246,13 @@ namespace RiskOfBulletstormRewrite
             #region Boss
             #endregion
             #region NoTier
-            BetterUI.ItemStats.RegisterStat(OrangeConsumed.instance.ItemDef,
+            BetterUI.ItemStats.RegisterStat(Items.OrangeConsumed.instance.ItemDef,
                 prefix + "ORANGECONSUMED_MAXHEALTHADD",
                 Orange.cfgMaxHealthIncrease.Value,
                 BetterUI.ItemStats.LinearStacking,
                 BetterUI.ItemStats.StatFormatter.Percent,
                 BetterUI.ItemStats.ItemTag.MaxHealth);
-            BetterUI.ItemStats.RegisterStat(OrangeConsumed.instance.ItemDef,
+            BetterUI.ItemStats.RegisterStat(Items.OrangeConsumed.instance.ItemDef,
                 prefix + "ORANGECONSUMED_HEAL",
                 Orange.cfgHealPercentage.Value,
                 BetterUI.ItemStats.LinearStacking,

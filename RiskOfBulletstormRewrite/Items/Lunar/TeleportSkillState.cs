@@ -1,19 +1,7 @@
-﻿using System;
-using RoR2;
-using RoR2.Projectile;
-using UnityEngine;
-using UnityEngine.Networking;
-using EntityStates;
+﻿using EntityStates;
 using EntityStates.Huntress;
 using EntityStates.Mage.Weapon;
-using BepInEx.Configuration;
-using EntityStates;
-using EntityStates.Huntress;
-using EntityStates.Mage.Weapon;
-using R2API;
-using R2API.Utils;
 using RoR2;
-using RoR2.Skills;
 using RoR2.UI;
 using UnityEngine;
 

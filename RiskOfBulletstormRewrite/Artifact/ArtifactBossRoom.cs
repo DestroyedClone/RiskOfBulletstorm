@@ -1,7 +1,7 @@
 ﻿using BepInEx.Configuration;
 using RoR2;
+using RoR2.Projectile;
 using UnityEngine;
-using static RiskOfBulletstormRewrite.Main;
 using UnityEngine.Networking;
 
 namespace RiskOfBulletstormRewrite.Artifact
@@ -35,8 +35,9 @@ namespace RiskOfBulletstormRewrite.Artifact
             {
                 return;
             }
-            TeleporterInteraction.onTeleporterBeginChargingGlobal -= ClearSpawns;
             CharacterBody.onBodyStartGlobal -= BuffBoss;
+            TeleporterInteraction.onTeleporterBeginChargingGlobal -= ClearSpawns;
+            On.RoR2.TeleporterInteraction.ChargingState.FixedUpdate -= ChargeTeleporterOnBossKill;
         }
 
 
@@ -46,9 +47,45 @@ namespace RiskOfBulletstormRewrite.Artifact
             {
                 return;
             }
-            //teleporter interaction
-            TeleporterInteraction.onTeleporterBeginChargingGlobal += ClearSpawns;
             CharacterBody.onBodyStartGlobal += BuffBoss;
+            TeleporterInteraction.onTeleporterBeginChargingGlobal += ClearSpawns;
+            On.RoR2.TeleporterInteraction.ChargingState.FixedUpdate += ChargeTeleporterOnBossKill;
+        }
+
+        private void ChargeTeleporterOnBossKill(On.RoR2.TeleporterInteraction.ChargingState.orig_FixedUpdate orig, EntityStates.BaseState self)
+        {
+            orig(self);
+            var sub = (TeleporterInteraction.ChargingState)self;
+            if (NetworkServer.active)
+            {
+                if (sub.teleporterInteraction.monstersCleared)
+                {
+                    var itemCount = Util.GetItemCountForTeam(TeamIndex.Player, RoR2Content.Items.FocusConvergence.itemIndex, true);
+                    var durationToAdd = 1f/itemCount;
+                    sub.teleporterInteraction.holdoutZoneController.charge += durationToAdd;
+                    ClearBossResiduals(sub.teleporterInteraction);
+                }
+            }
+        }
+
+
+        public void ClearBossResiduals(TeleporterInteraction self)
+        {
+            foreach (var projectile in InstanceTracker.GetInstancesList<ProjectileController>())
+            {
+                if (projectile?.teamFilter?.teamIndex != TeamIndex.Player)
+                {
+                    UnityEngine.Object.Destroy(projectile);
+                }
+            }
+            
+            /* foreach (var minion in CharacterBody.instancesList)
+            {
+                if (minion && minion.isBoss)
+                {
+                    
+                }
+            } */
         }
 
         public void ClearSpawns(TeleporterInteraction self)
@@ -67,6 +104,7 @@ namespace RiskOfBulletstormRewrite.Artifact
                     }
                 }
                 self.bonusDirector.enabled = false;
+                self.bossDirector.enabled = false;
             }
         }
 

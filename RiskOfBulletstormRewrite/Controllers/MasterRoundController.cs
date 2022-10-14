@@ -1,17 +1,17 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using BepInEx;
+using BepInEx.Configuration;
+using R2API;
+using static RiskOfBulletstormRewrite.Main;
+using static R2API.RecalculateStatsAPI;
 using RoR2;
-using UnityEngine;
+using static RoR2.Chat;
 using RoR2.Projectile;
 using System;
-using BepInEx;
-using BepInEx.Configuration;
-using static RiskOfBulletstormRewrite.Main;
+using System.Collections.Generic;
 using System.Net;
-using R2API;
-using static R2API.RecalculateStatsAPI;
+using System.Collections.ObjectModel;
+using UnityEngine;
 using UnityEngine.Networking;
-using static RoR2.Chat;
 
 namespace RiskOfBulletstormRewrite.Controllers
 {
