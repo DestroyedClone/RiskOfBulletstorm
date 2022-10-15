@@ -37,7 +37,7 @@ namespace RiskOfBulletstormRewrite.Equipment
             GetChance(cfgDunestriderDamageMultiplier)
         };
 
-        public override GameObject EquipmentModel => LegacyResourcesAPI.Load<GameObject>("RoR2/Base/QuestVolatileBattery/PickupBatteryArray");
+        public override GameObject EquipmentModel => Assets.NullModel;
 
         public override Sprite EquipmentIcon => LoadSprite();
 

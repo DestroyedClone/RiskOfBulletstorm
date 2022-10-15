@@ -20,9 +20,12 @@ namespace RiskOfBulletstormRewrite.Items
         public override string ItemLangTokenName => "BLOODIEDSCARF";
 
         public override bool ItemDescriptionLogbookOverride => true;
+        public override string[] ItemFullDescriptionParams => teleportSkillDefParams;
         public override string[] ItemLogbookDescriptionParams => teleportSkillDefParams;
 
         public override ItemTier Tier => ItemTier.Lunar;
+
+        public override bool IsSkillReplacement => true;
 
         public override GameObject ItemModel => Assets.NullModel;
 
@@ -49,8 +52,8 @@ namespace RiskOfBulletstormRewrite.Items
 
         public string[] teleportSkillDefParams => new string[]
         {
-            GetChance(cfgTeleportRange),
-            GetChance(cfgTeleportRangePerStack),
+            cfgTeleportRange.Value.ToString(),
+            cfgTeleportRangePerStack.Value.ToString(),
             GetChance(cfgDamageVulnerabilityMultiplier),
             GetChance(cfgDamageVulnerabilityMultiplierPerStack),
             cfgDamageVulnerabilityDuration.Value.ToString()
@@ -118,6 +121,17 @@ namespace RiskOfBulletstormRewrite.Items
         public override void Hooks()
         {
             CharacterBody.onBodyInventoryChangedGlobal += onBodyInventoryChangedGlobal;
+            On.RoR2.HealthComponent.TakeDamage += TakeDamage;
+        }
+
+        private void TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
+        {
+            if (self.body && self.body.HasBuff(Utils.Buffs.DodgeRollBuff))
+            {
+                damageInfo.damage *= 1 + 
+                GetStack(cfgDamageVulnerabilityMultiplier, cfgDamageVulnerabilityMultiplierPerStack, GetCount(self.body));
+            }
+            orig(self, damageInfo);
         }
 
         private void onBodyInventoryChangedGlobal(CharacterBody characterBody)

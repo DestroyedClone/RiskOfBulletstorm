@@ -52,7 +52,8 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         protected override bool ActivateEquipment(EquipmentSlot slot)
         {
-            slot.equipmentIndex = EquipmentIndex.None;
+            CharacterMasterNotificationQueue.PushEquipmentTransformNotification(slot.characterBody.master, slot.characterBody.inventory.currentEquipmentIndex, OrangeConsumed.instance.EquipmentDef.equipmentIndex, CharacterMasterNotificationQueue.TransformationType.Default);
+            slot.inventory.SetEquipmentIndex(OrangeConsumed.instance.EquipmentDef.equipmentIndex);
             slot.inventory.GiveItem(Items.OrangeConsumed.instance.ItemDef);
             slot.healthComponent.HealFraction(cfgHealPercentage.Value, default);
             return true;

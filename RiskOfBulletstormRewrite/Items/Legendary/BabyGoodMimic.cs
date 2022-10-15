@@ -19,6 +19,8 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override Sprite ItemIcon => LoadSprite();
 
+        public static Sprite mimicIcon => Assets.LoadSprite("BODY_BABYGOODMIMIC");
+
         public override ItemTag[] ItemTags => new ItemTag[]
         {
             ItemTag.AIBlacklist,
@@ -84,7 +86,8 @@ namespace RiskOfBulletstormRewrite.Items
             public MinionOwnership.MinionGroup minionGroup;
             public float stopwatch = 0;
             float duration = 30f;
-            int itemCount = 0;
+            float subduration = 5f;
+            public int itemCount = 0;
 
             public List<CharacterMaster> mimics = new List<CharacterMaster>();
 
@@ -93,12 +96,13 @@ namespace RiskOfBulletstormRewrite.Items
                 ownerMaster = gameObject.GetComponent<CharacterMaster>();
                 OnOwnerBodyStart(ownerMaster.GetBody());
                 inventory = ownerMaster.inventory;
+                UpdateItemCount();
                 
                 inventory.onInventoryChanged += UpdateItemCount;
                 ownerMaster.onBodyStart += OnOwnerBodyStart;
-                minionGroup = MinionOwnership.MinionGroup.FindGroup(ownerBody.master.netId);
-                if (minionGroup == null)
-                    enabled = false;
+                //minionGroup = MinionOwnership.MinionGroup.FindGroup(ownerBody.master.netId);
+                //if (minionGroup == null)
+                    //enabled = false;
             }
 
             public void OnDisable()
@@ -119,6 +123,11 @@ namespace RiskOfBulletstormRewrite.Items
 
             public void FixedUpdate()
             {
+                if (minionGroup == null)
+                {
+                    minionGroup = MinionOwnership.MinionGroup.FindGroup(ownerBody.master.netId);
+                    return;
+                }
                 stopwatch += Time.fixedDeltaTime;
                 if (stopwatch >= duration)
                 {
@@ -136,11 +145,13 @@ namespace RiskOfBulletstormRewrite.Items
                 {
                     foreach (var minion in minionGroup.members)
                     {
+                        Chat.AddMessage($"checking {minion.gameObject.name}");
                         var cb = minion.GetComponent<CharacterBody>();
                         if (cb && cb.healthComponent && cb.healthComponent.alive
                         && cb.inventory && cb.master 
                         && cb.inventory.GetItemCount(RoR2Content.Items.Ghost) == 0
-                        && !cb.bodyFlags.HasFlag(CharacterBody.BodyFlags.Mechanical))
+                        && !cb.bodyFlags.HasFlag(CharacterBody.BodyFlags.Mechanical)
+                        && !cb.GetComponent<RBS_BabyMimicPairing>())
                         {
                             AssignMinion(cb);
                             minionsToCopy--;
@@ -149,20 +160,22 @@ namespace RiskOfBulletstormRewrite.Items
                             break;
                     }
                 } else {
-                    stopwatch += 5;
+                    stopwatch += subduration;
                 }
             }
 
             public void AssignMinion(CharacterBody targetMinion)
             {
+                Chat.AddMessage($"Mimic is copying {targetMinion.GetDisplayName()}");
                 var copy = Util.TryToCreateGhost(targetMinion, ownerBody, 10);
                 copy.inventory.RemoveItem(RoR2Content.Items.Ghost);
                 copy.inventory.RemoveItem(RoR2Content.Items.HealthDecay, 10);
                 copy.baseNameToken = "RISKOFBULLETSTORM_BABYGOODMIMIC_BODY_NAME";
                 copy.subtitleNameToken = "RISKOFBULLETSTORM_BABYGOODMIMIC_BODY_SUBTITLE";
-                //copy.portraitIcon = 
+                copy.portraitIcon = mimicIcon.texture;
                 TeleportHelper.TeleportBody(copy, ownerBody.footPosition);
 
+                Chat.AddMessage("Mimic is now adding component.");
                 var comp = copy.gameObject.AddComponent<RBS_BabyMimicPairing>();
                 //comp.myBody = copy;
                 comp.ownerBody = ownerBody;

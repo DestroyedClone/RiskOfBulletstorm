@@ -2,24 +2,29 @@ using EntityStates;
 using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
+using static RiskOfBulletstormRewrite.Items.DodgeRollUtilityReplacement;
 
 
 namespace RiskOfBulletstormRewrite.Items
 {
     //pillaged from CHEFMod
+    //( | | | | | | |) <---- baguette as tribute
     public class DodgeRollState : BaseSkillState
     {
-		public static float baseDuration = 1.5f;
+		public static float baseDuration = 0.75f;
 		private float duration;
 		public float speedMultiplier = 2f;
         
 		private Vector3 idealDirection;
 		private ChildLocator childLocator;
         private Animator animator;
+        //this is really gay (derogatory) and doesnt work (fake)
         private Transform modelRoot;
         private Vector3 modelRootOldScale = Vector3.one;
         private Quaternion modelRootOldRot = Quaternion.identity;
         private float calculatedRotationValue = 1;
+
+        private float calcPercentageToApplyVulnerability = 0.5f;
 
         public override void OnEnter()
         {
@@ -49,6 +54,13 @@ namespace RiskOfBulletstormRewrite.Items
                 animator.enabled = false;
             if (characterMotor)
                 characterMotor.useGravity = false;
+            UpdateDirection();
+            calcPercentageToApplyVulnerability = 
+                Utils.ItemHelpers.GetHyperbolicValue(DodgeRollUtilityReplacement.cfgVulnDuration.Value, DodgeRollUtilityReplacement.instance.GetCount(base.characterBody));
+            /* (Utils.ItemHelpers.GetHyperbolicValue(
+                DodgeRollUtilityReplacement.cfgVulnDuration.Value,
+                DodgeRollUtilityReplacement.cfgVulnDurationReduction.Value,
+                DodgeRollUtilityReplacement.instance.GetCount(base.characterBody))); */
         }
 
         public float GetDuration()
@@ -70,6 +82,7 @@ namespace RiskOfBulletstormRewrite.Items
                 modelRoot.localScale = Vector3.one*0.7f;
             }
             
+
             if (base.fixedAge >= this.duration)
 			{
 				this.outer.SetNextStateToMain();
@@ -81,8 +94,16 @@ namespace RiskOfBulletstormRewrite.Items
                 if (base.characterBody)
                 {
                     base.characterBody.isSprinting = true;
+
+                    if (base.fixedAge < calcPercentageToApplyVulnerability 
+                    || base.fixedAge > calcPercentageToApplyVulnerability)
+                    {
+                        base.characterBody.AddBuff(Utils.Buffs.DodgeRollBuff);
+                    } else {
+                        base.characterBody.RemoveBuff(Utils.Buffs.DodgeRollBuff);
+                    }
                 }
-                this.UpdateDirection();
+                //this.UpdateDirection();
                 if (base.characterDirection)
                 {
 					base.characterDirection.moveVector = this.idealDirection;
@@ -103,6 +124,8 @@ namespace RiskOfBulletstormRewrite.Items
             }
             base.gameObject.layer = LayerIndex.defaultLayer.intVal;
 			base.characterMotor.Motor.RebuildCollidableLayers();
+            if (base.isAuthority)
+                base.characterBody.RemoveBuff(Utils.Buffs.DodgeRollBuff);
             if (animator)
                 animator.enabled = true;
             if (NetworkServer.active)
@@ -128,7 +151,19 @@ namespace RiskOfBulletstormRewrite.Items
 
 		private Vector3 GetIdealVelocity()
 		{
-			return base.characterDirection.forward * base.characterBody.moveSpeed * this.speedMultiplier;// Mathf.Pow((base.characterBody.moveSpeed * base.characterBody.moveSpeed) + 300f, 0.5f); //base.characterBody.moveSpeed * this.speedMultiplier;
+			var baseSpeed = base.characterDirection.forward * base.characterBody.moveSpeed * this.speedMultiplier;
+            //full speed 85% then taper down rapidly
+            var modifiedSpeed = baseSpeed;
+
+            if (fixedAge >= baseDuration * 0.75f)
+            {
+                modifiedSpeed = base.characterDirection.forward * 
+                Mathf.Lerp(base.characterBody.moveSpeed * this.speedMultiplier,
+                 characterBody.moveSpeed * 0.25f, 
+                 (fixedAge/baseDuration));
+            }
+
+            return modifiedSpeed;
 		}
     }
 }

@@ -44,7 +44,11 @@ namespace RiskOfBulletstormRewrite
             RegisterBuffInfo(Buffs.BloodiedScarfBuff, "BLOODIEDSCARF", new string[]{});
             RegisterBuffInfo(Buffs.BloodiedScarfBuff, "ALPHABULLET", new string[]{
                 GetFloat(AlphaBullets.cfgDamage),
-                GetFloat(AlphaBullets.cfgDamageStack)
+                GetFloat(AlphaBullets.cfgDamageStack)});
+            RegisterBuffInfo(Buffs.DodgeRollBuff, "DODGEROLL",
+            new string[]{
+                GetFloat(DodgeRollUtilityReplacement.cfgVulnDamageMultiplier),
+                GetFloat(DodgeRollUtilityReplacement.cfgVulnDamageMultiplierStack)
             });
         }
 
@@ -97,7 +101,7 @@ namespace RiskOfBulletstormRewrite
             #region Common
             BetterUI.ItemStats.RegisterStat(Items.Antibody.instance.ItemDef,
                 prefix + "ANTIBODY_HEALCHANCE",
-                Antibody.cfgChance.Value,
+                Antibody.cfgChance.Value/100, //divided by 100 because the rollchacne is 25f
                 BetterUI.ItemStats.NoStacking,
                 BetterUI.ItemStats.StatFormatter.Chance);
             BetterUI.ItemStats.RegisterStat(Antibody.instance.ItemDef,
@@ -225,7 +229,35 @@ namespace RiskOfBulletstormRewrite
                 null);
 #endregion
             #region Lunar
-            //todo: dodgeroll
+            BetterUI.ItemStats.RegisterStat(BloodiedScarf.instance.ItemDef,
+                prefix + "BLOODIEDSCARF_DISTANCE",
+                BloodiedScarf.cfgTeleportRange.Value,
+                BloodiedScarf.cfgTeleportRangePerStack.Value,
+                BetterUI.ItemStats.LinearStacking,
+                BetterUI.ItemStats.StatFormatter.Range);
+            BetterUI.ItemStats.RegisterStat(BloodiedScarf.instance.ItemDef,
+                prefix + "BLOODIEDSCARF_DAMAGEVULNERABILITY",
+                BloodiedScarf.cfgDamageVulnerabilityMultiplier.Value,
+                BloodiedScarf.cfgDamageVulnerabilityMultiplierPerStack.Value,
+                BetterUI.ItemStats.LinearStacking,
+                BetterUI.ItemStats.StatFormatter.Percent);
+            BetterUI.ItemStats.RegisterStat(BloodiedScarf.instance.ItemDef,
+                prefix + "BLOODIEDSCARF_VULNERABILITYDURATION",
+                BloodiedScarf.cfgDamageVulnerabilityDuration.Value,
+                BetterUI.ItemStats.NoStacking,
+                BetterUI.ItemStats.StatFormatter.Seconds);
+
+            BetterUI.ItemStats.RegisterStat(DodgeRollUtilityReplacement.instance.ItemDef,
+                prefix + "DODGEROLLUTILITYREPLACEMENT_VULNERABILITYPERIOD",
+                DodgeRollUtilityReplacement.cfgVulnDuration.Value,
+                BetterUI.ItemStats.HyperbolicStacking,
+                BetterUI.ItemStats.StatFormatter.Percent);
+            BetterUI.ItemStats.RegisterStat(DodgeRollUtilityReplacement.instance.ItemDef,
+                prefix + "DODGEROLLUTILITYREPLACEMENT_VULNERABILITYDAMAGE",
+                DodgeRollUtilityReplacement.cfgVulnDamageMultiplier.Value,
+                DodgeRollUtilityReplacement.cfgVulnDamageMultiplierStack.Value,
+                BetterUI.ItemStats.LinearStacking,
+                BetterUI.ItemStats.StatFormatter.Percent);
 
             BetterUI.ItemStats.RegisterStat(HipHolster.instance.ItemDef,
                 prefix + "HIPHOLSTER_CHANCE",
@@ -277,6 +309,12 @@ namespace RiskOfBulletstormRewrite
                 BetterUI.ItemStats.LinearStacking,
                 BetterUI.ItemStats.StatFormatter.Percent,
                 BetterUI.ItemStats.ItemTag.Damage);
+            BetterUI.ItemStats.RegisterStat(CoinCrownVoid.instance.ItemDef,
+                prefix + "EXTRACASHPERKILL",
+                CoinCrownVoid.cfgCashAdder.Value,
+                CoinCrownVoid.cfgCashAdderStack.Value,
+                BetterUI.ItemStats.LinearStacking,
+                BetterUI.ItemStats.StatFormatter.Charges);
             #endregion
             #region Void Legendary
             BetterUI.ItemStats.RegisterStat(CloneVoid.instance.ItemDef,

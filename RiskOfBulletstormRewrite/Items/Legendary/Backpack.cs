@@ -2,6 +2,7 @@
 using R2API;
 using RoR2;
 using RoR2.UI;
+using System;
 using System.Text;
 using UnityEngine;
 using static RiskOfBulletstormRewrite.Main;
@@ -67,6 +68,29 @@ namespace RiskOfBulletstormRewrite.Items
             CharacterMaster.onStartGlobal += GiveComponent;
             //On.RoR2.UI.EquipmentIcon.Update += EquipmentIcon_Update;
             On.RoR2.BodyCatalog.Init += GetBodyIndex;
+            On.RoR2.UI.EquipmentIcon.Update += ShowCurrentSlot;
+        }
+
+        private void ShowCurrentSlot(On.RoR2.UI.EquipmentIcon.orig_Update orig, EquipmentIcon self)
+        {
+            orig(self);
+            if (self.targetInventory)
+            {
+                var itemCount = self.targetInventory.GetItemCount(ItemDef);
+                if (itemCount > 0)
+                {
+                    self.stockText.gameObject.SetActive(true);
+                    StringBuilder stringBuilder2 = HG.StringBuilderPool.RentStringBuilder();
+                    var equipmentSlotCount = self.targetInventory.GetEquipmentSlotCount();
+                    if (!self.displayAlternateEquipment) //aka main
+                    {
+                        stringBuilder2.Append($"[{self.targetEquipmentSlot.activeEquipmentSlot}] : ");
+                        stringBuilder2.AppendInt(self.currentDisplayData.stock, 1U, uint.MaxValue);
+                    }
+                    self.stockText.SetText(stringBuilder2);
+                    HG.StringBuilderPool.ReturnStringBuilder(stringBuilder2);
+                }
+            }
         }
 
         public void GetBodyIndex(On.RoR2.BodyCatalog.orig_Init orig)

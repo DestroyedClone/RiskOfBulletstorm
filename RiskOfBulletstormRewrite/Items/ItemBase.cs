@@ -42,6 +42,7 @@ namespace RiskOfBulletstormRewrite.Items
         public ItemDef ItemDef;
 
         public virtual bool CanRemove { get; } = true;
+        public virtual bool IsSkillReplacement { get; } = false;
 
         public virtual bool AIBlacklisted { get; set; } = false;
 

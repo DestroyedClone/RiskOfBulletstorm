@@ -117,6 +117,8 @@ namespace RiskOfBulletstormRewrite.Utils
         {
             if (itemCount == 0)
                 return 0;
+            if (itemCount == 1)
+                return baseAmount;
 
             return 1 - 1 / (1 + baseAmount * (stackAmount * (itemCount - 1)));
         }

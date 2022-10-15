@@ -2,7 +2,7 @@
 	strings:
 	{
 		//[TIER1]
-		"RISKOFBULLETSTORM_ITEM_ANTIBODY_NAME": "Antibody",
+		"RISKOFBULLETSTORM_ITEM_ANTIBODY_NAME": "<align="center">Antibody</align>",
 		"RISKOFBULLETSTORM_ITEM_ANTIBODY_PICKUP": "<align="center"><b>Heals Up</b>\nChance to improve healing receieved.</align>",
 		"RISKOFBULLETSTORM_ITEM_ANTIBODY_DESCRIPTION": "Upon <style=cIsHealing>healing</style>, gain a <style=cIsUtility>{0}% chance</style> to <style=cIsHealing>heal for +{1}% more healing</style> <style=cStack>(+{2}% more healing per stack)</style>.",
 		"RISKOFBULLETSTORM_ITEM_ANTIBODY_LORE": "An experimental treatment administered by the Gungeon's medical unit.",
@@ -51,7 +51,7 @@
 		
 		"RISKOFBULLETSTORM_ITEM_ALPHABULLET_NAME": "Alpha Bullet",
 		"RISKOFBULLETSTORM_ITEM_ALPHABULLET_PICKUP": "<b>First!</b>\nGrants extra damage at full stocks.",
-		"RISKOFBULLETSTORM_ITEM_ALPHABULLET_DESCRIPTION": "For each skill <style=cIsDamage>off cooldown</style>, grants <style=cIsDamage>+{0}% damage</style> <style=cStack>{1}% per stack</style>.",
+		"RISKOFBULLETSTORM_ITEM_ALPHABULLET_DESCRIPTION": "For each skill <style=cIsDamage>off cooldown</style>, grants <style=cIsDamage>+{0}% damage</style> <style=cStack>({1}% per stack)</style>.",
 		"RISKOFBULLETSTORM_ITEM_ALPHABULLET_LORE": "One of a pair of artifact bullets forged by Edwin's daughter as part of her journeyman's trial.",
 		
 		"RISKOFBULLETSTORM_ITEM_COINCROWN_NAME": "Coin Crown",
@@ -132,8 +132,8 @@
 		//[TIERLUNAR]
 		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_NAME": "Bloodied Scarf",
 		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_PICKUP": "<b>Blink Away</b>\nUtility is replaced with a blink with vulnerability afterwards..",
-		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_DESCRIPTION": "<style=cIsUtility>Replace your Utility Skill</style> with <style=cIsUtility>Bloodied Teleport</style>.",
-		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_LOGBOOK_DESCRIPTION": "<style=cIsUtility>Replace your Utility Skill</style> with <style=cIsUtility>Bloodied Teleport</style>.\n\n<b>Bloodied Teleport</b>\n<style=cIsUtility>Cooldown: 8f</style>\n<style=cIsUtility>Teleport</style> up to <style=cIsUtility>{0}m </style> <style=cStack>(+{1}m per stack)</style>.\nAfter teleporting, <style=cIsDeath>take +{2}% more damage <style=cStack(+{3}% per stack)</style> for {4} seconds.</style>.",
+		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_DESCRIPTION": "<style=cIsUtility>Replace your Utility Skill</style> with <style=cIsUtility>Bloodied Teleport</style>. <style=cIsUtility>Teleport</style> up to <style=cIsUtility>{0}m </style> <style=cStack>(+{1}m per stack)</style>.\nAfter teleporting, <style=cDeath>take +{2}% more damage <style=cStack(+{3}% per stack)</style> for {4} seconds.</style>.",
+		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_LOGBOOK_DESCRIPTION": "<style=cIsUtility>Replace your Utility Skill</style> with <style=cIsUtility>Bloodied Teleport</style>.\n\n<b>Bloodied Teleport</b>\n<style=cIsUtility>Cooldown: 8f</style>\n<style=cIsUtility>Teleport</style> up to <style=cIsUtility>{0}m </style> <style=cStack>(+{1}m per stack)</style>.\nAfter teleporting, <style=cDeath>take +{2}% more damage <style=cStack(+{3}% per stack)</style> for {4} seconds.</style>.",
 		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_LORE": "This simple scarf was once worn by a skilled assassin. Betrayed by his brothers and assumed dead...",
 		
 		"RISKOFBULLETSTORM_ITEM_BULLETHEAVY_NAME": "Heavy Bullets",
@@ -143,8 +143,8 @@
 		
 		"RISKOFBULLETSTORM_ITEM_DODGEROLLUTILITYREPLACEMENT_NAME": "Teachings of Dodge Roll",
 		"RISKOFBULLETSTORM_ITEM_DODGEROLLUTILITYREPLACEMENT_PICKUP": "<b>Roll Out!</b>\nBestows the player the blessing of the Dodge Roll.",
-		"RISKOFBULLETSTORM_ITEM_DODGEROLLUTILITYREPLACEMENT_DESCRIPTION": "<style=cIsUtility>Replace your Utility Skill</style> with <style=cIsUtility>Dodge Roll</style>.",
-		"RISKOFBULLETSTORM_ITEM_DODGEROLLUTILITYREPLACEMENT_LOGBOOK_DESCRIPTION": "<style=cIsUtility>Replace your Utility Skill</style> with <style=cIsUtility>Dodge Roll</style>.\n\n<b>Dodge Roll</b>\n<style=cIsUtility>Roll</style> a short distance. For the first {0}% and last {0}% of the roll <style=cStack>(-{1}% per stack)</style>, take <style=cIsHealth>+{2}% more damage</style> <style=cStack>({3}% per stack)</style>. Become <style=cIsUtility>intangible</style> between the <style=cIsHealth>vulnerability</style> periods.",
+		"RISKOFBULLETSTORM_ITEM_DODGEROLLUTILITYREPLACEMENT_DESCRIPTION": "<style=cIsUtility>Replace your Utility Skill</style> with <style=cIsUtility>Dodge Roll</style>. <style=cIsUtility>Roll</style> a short distance. For the first {0}% and last {0}% of the roll <style=cStack>(-{1}% per stack, hyperbolicly)</style>, take <style=cIsHealth>+{2}% more damage</style> <style=cStack>({3}% per stack)</style>. Become <style=cIsUtility>intangible</style> between the <style=cIsHealth>vulnerability</style> periods.",
+		"RISKOFBULLETSTORM_ITEM_DODGEROLLUTILITYREPLACEMENT_LOGBOOK_DESCRIPTION": "<style=cIsUtility>Replace your Utility Skill</style> with <style=cIsUtility>Dodge Roll</style>.\n\n<b>Dodge Roll</b>\n<style=cIsUtility>Roll</style> a short distance. For the first {0}% and last {0}% of the roll <style=cStack>(-{0}% per stack, hyperbolicly)</style>, take <style=cIsHealth>+{2}% more damage</style> <style=cStack>({3}% per stack)</style>. Become <style=cIsUtility>intangible</style> between the <style=cIsHealth>vulnerability</style> periods.",
 		"RISKOFBULLETSTORM_ITEM_DODGEROLLUTILITYREPLACEMENT_LORE": "\"What I don't understand is why the bullets weren't hitting you. It really looks like they should.\" - Blockner",
 		
 		"RISKOFBULLETSTORM_ITEM_HIPHOLSTER_NAME": "Hip Holster",

@@ -16,6 +16,10 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
+using MonoMod.RuntimeDetour;
+using MonoMod.Cil;
+using Mono.Cecil.Cil;
+
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
 
 ////dotnet build --configuration Release
@@ -83,7 +87,25 @@ namespace RiskOfBulletstormRewrite
             //Enemies.LordofTheJammedMonster.CreatePrefab();
             RiskOfBulletstormRewrite.Language.Initialize();
             Commands.Initialize();
+            Tweaks.Init(Config);
+            /* stupidlanguageshit(); */
         }
+
+        /* private static ILHook _ilHook;
+        public static void stupidlanguageshit()
+        {
+            var ilHookConfig = new ILHookConfig { ManualApply = true };
+            _ilHook = new ILHook(
+                typeof(R2API.LanguageAPI).GetMethod(nameof(R2API.LanguageAPI.Add),(System.Reflection.BindingFlags)(-1)),
+                borpa,
+                ref ilHookConfig
+            );
+        }
+
+        private static void borpa(ILContext il)
+        {
+
+        } */
 
         public static Dictionary<ItemDef, ItemDef> voidConversions = new Dictionary<ItemDef, ItemDef>();
 
@@ -210,6 +232,10 @@ namespace RiskOfBulletstormRewrite
             if (item.Tier == ItemTier.NoTier)
             {
                 return true;
+            }
+            if (item.IsSkillReplacement)
+            {
+
             }
             var enabled = Config.Bind<bool>(item.ConfigCategory, "Enable Item?", true, "Should this item appear in runs?").Value;
             var aiBlacklist = Config.Bind<bool>(item.ConfigCategory, "Blacklist Item from AI Use?", false, "Should the AI not be able to obtain this item?").Value;

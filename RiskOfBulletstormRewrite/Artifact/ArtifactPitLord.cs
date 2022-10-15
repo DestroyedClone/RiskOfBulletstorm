@@ -77,6 +77,11 @@ namespace RiskOfBulletstormRewrite.Artifact
 
                 //teamComponent.teamIndex = oldTeamIndex; //Now make it hostile again. Thanks Obama.
                 if (canTakeFallDamage) body.bodyFlags |= CharacterBody.BodyFlags.IgnoreFallDamage;
+                if (body.master && body.master.TryGetComponent<RoR2.CharacterAI.BaseAI>(out RoR2.CharacterAI.BaseAI baseAI))
+                {
+                    if (baseAI.currentEnemy == null)
+                        baseAI.ForceAcquireNearestEnemyIfNoCurrentEnemy();
+                }
                 return;
             }
             orig(self, other);

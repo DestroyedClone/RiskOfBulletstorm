@@ -22,7 +22,16 @@ namespace RiskOfBulletstormRewrite.Artifact
             Hooks();
         }
 
+        public const float damagePerSecond = 75f;
         public const float alternateEquipmentDecreaseMultiplier = 0.5f;
+        public float stageDamagePerSecond
+        {
+            get
+            {
+                return Mathf.Max(damagePerSecond *
+                Run.instance.stageClearCount, damagePerSecond);
+            }
+        }
 
         public override void Hooks()
         {
@@ -75,8 +84,7 @@ namespace RiskOfBulletstormRewrite.Artifact
             if (damageReport.attackerMaster && damageReport.attackerMaster.inventory)
             {
                 var damageDealt = damageReport.damageDealt;
-                //test: 100 damage = 1s of charge
-                var resultingCooldownReduction = damageDealt / 100f;
+                var resultingCooldownReduction = damageDealt / stageDamagePerSecond;
                 damageReport.attackerMaster.GetComponent<RBS_ArtifactEquipmentRechargeComponent>()?.DeductCooldown(resultingCooldownReduction);
             }
         }
@@ -143,7 +151,9 @@ namespace RiskOfBulletstormRewrite.Artifact
                 var durlength = remainingDurations.Count;
                 while (durlength < invlength)
                 {
-                    remainingDurations.Add(inventory.equipmentStateSlots[durlength++].chargeFinishTime.timeUntil);
+                    //var timeLeft = inventory.equipmentStateSlots[durlength++].chargeFinishTime.timeUntil;
+                    durlength++;
+                    remainingDurations.Add(1);
                 }
 
                 float normalCooldownMax = 1;

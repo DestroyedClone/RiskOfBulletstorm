@@ -36,7 +36,7 @@
 		//for the sake of a stat errors
 		"RISKOFBULLETSTORM_EQUIPMENT_ORANGECONSUMED_NAME": "Orange (Consumed)",
 		"RISKOFBULLETSTORM_EQUIPMENT_ORANGECONSUMED_PICKUP": "<b>Peel or No Peel</b>\n",
-		"RISKOFBULLETSTORM_EQUIPMENT_ORANGECONSUMED_DESCRIPTION": "<style=cIsUtility>Eat</style> to <style=cIsHealing>increase maximum health by {0}%</style>, <style=cIsHealing>heal for {0}% health, and <style=cIsUtility>reduce equipment cooldown by {2}%</style>.",
+		"RISKOFBULLETSTORM_EQUIPMENT_ORANGECONSUMED_DESCRIPTION": "Increase <style=cIsHealing>maximum health by {0}%</style> <style=cStack>(+{0}% per stack)</style> and <style=cIsUtility>reduce equipment cooldown by {2}%</style> <style=cStack>(+{2}% per stack)</style>.",
 		"RISKOFBULLETSTORM_EQUIPMENT_ORANGECONSUMED_LORE": "Formerly with style, now a disgrace...",
 		
 		"RISKOFBULLETSTORM_EQUIPMENT_JARBEES_NAME": "Jar of Bees",

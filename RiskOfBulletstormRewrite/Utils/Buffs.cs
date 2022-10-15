@@ -10,6 +10,7 @@ namespace RiskOfBulletstormRewrite.Utils
         public static BuffDef MetronomeTrackerBuff;
         public static BuffDef BloodiedScarfBuff;
         public static BuffDef AlphaBulletBuff;
+        public static BuffDef DodgeRollBuff;
 
         public static void CreateBuffs()
         {
@@ -20,10 +21,14 @@ namespace RiskOfBulletstormRewrite.Utils
 
             BloodiedScarfBuff = AddBuff("Vulnerable", 
             Assets.LoadSprite("BUFF_BLOODIEDSCARF"), 
-            Color.red, true, true);
+            Color.red, true, false);
             AlphaBulletBuff = AddBuff("Alpha Bullet Damage", 
             Assets.LoadSprite("BUFF_ALPHABULLET"), 
             Color.yellow, false, true);
+            DodgeRollBuff = AddBuff("Dodgeroll Buff",
+            Assets.LoadSprite("BUFF_DODGEROLL"),
+            Color.yellow,
+            true, false);
 
             //Trackers
             MetronomeTrackerBuff = AddBuff("Metronome Stacks (Display)",
