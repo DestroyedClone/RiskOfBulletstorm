@@ -79,16 +79,19 @@ namespace RiskOfBulletstormRewrite.Items
                 var itemCount = self.targetInventory.GetItemCount(ItemDef);
                 if (itemCount > 0)
                 {
-                    self.stockText.gameObject.SetActive(true);
-                    StringBuilder stringBuilder2 = HG.StringBuilderPool.RentStringBuilder();
-                    var equipmentSlotCount = self.targetInventory.GetEquipmentSlotCount();
                     if (!self.displayAlternateEquipment) //aka main
                     {
+                        self.stockText.gameObject.SetActive(true);
+                        StringBuilder stringBuilder2 = HG.StringBuilderPool.RentStringBuilder();
+                        //var equipmentSlotCount = self.targetInventory.GetEquipmentSlotCount();
+
                         stringBuilder2.Append($"[{self.targetEquipmentSlot.activeEquipmentSlot}] : ");
+                        
                         stringBuilder2.AppendInt(self.currentDisplayData.stock, 1U, uint.MaxValue);
+                    
+                        self.stockText.SetText(stringBuilder2);
+                        HG.StringBuilderPool.ReturnStringBuilder(stringBuilder2);
                     }
-                    self.stockText.SetText(stringBuilder2);
-                    HG.StringBuilderPool.ReturnStringBuilder(stringBuilder2);
                 }
             }
         }

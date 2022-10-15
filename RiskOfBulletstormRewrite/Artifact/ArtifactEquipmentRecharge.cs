@@ -153,16 +153,17 @@ namespace RiskOfBulletstormRewrite.Artifact
                 {
                     //var timeLeft = inventory.equipmentStateSlots[durlength++].chargeFinishTime.timeUntil;
                     durlength++;
-                    remainingDurations.Add(1);
+                    remainingDurations.Add(0);
                 }
 
-                float normalCooldownMax = 1;
+                float normalCooldownMax = 1.5f;
                 for (int i = 0; i < durlength; i++)
                 {
                     EquipmentState equipment = inventory.GetEquipment((uint)i);
                     if (remainingDurations[i] <= normalCooldownMax)
                     {
-                        remainingDurations[i] = equipment.chargeFinishTime.timeUntil;
+                        if (equipment.isPerfomingRecharge)
+                            remainingDurations[i] = equipment.chargeFinishTime.timeUntil;
                     }
                     else {
                         inventory.SetEquipment(

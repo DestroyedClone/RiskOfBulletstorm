@@ -145,6 +145,8 @@ namespace RiskOfBulletstormRewrite.Items
                 {
                     foreach (var minion in minionGroup.members)
                     {
+                        if (!minion)
+                            continue;
                         Chat.AddMessage($"checking {minion.gameObject.name}");
                         var cb = minion.GetComponent<CharacterBody>();
                         if (cb && cb.healthComponent && cb.healthComponent.alive
@@ -170,6 +172,7 @@ namespace RiskOfBulletstormRewrite.Items
                 var copy = Util.TryToCreateGhost(targetMinion, ownerBody, 10);
                 copy.inventory.RemoveItem(RoR2Content.Items.Ghost);
                 copy.inventory.RemoveItem(RoR2Content.Items.HealthDecay, 10);
+                //this section probablyisnt networked
                 copy.baseNameToken = "RISKOFBULLETSTORM_BABYGOODMIMIC_BODY_NAME";
                 copy.subtitleNameToken = "RISKOFBULLETSTORM_BABYGOODMIMIC_BODY_SUBTITLE";
                 copy.portraitIcon = mimicIcon.texture;

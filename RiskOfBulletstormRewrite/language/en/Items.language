@@ -2,8 +2,8 @@
 	strings:
 	{
 		//[TIER1]
-		"RISKOFBULLETSTORM_ITEM_ANTIBODY_NAME": "<align="center">Antibody</align>",
-		"RISKOFBULLETSTORM_ITEM_ANTIBODY_PICKUP": "<align="center"><b>Heals Up</b>\nChance to improve healing receieved.</align>",
+		"RISKOFBULLETSTORM_ITEM_ANTIBODY_NAME": "Antibody",
+		"RISKOFBULLETSTORM_ITEM_ANTIBODY_PICKUP": "<b>Heals Up</b>\nChance to improve healing receieved.",
 		"RISKOFBULLETSTORM_ITEM_ANTIBODY_DESCRIPTION": "Upon <style=cIsHealing>healing</style>, gain a <style=cIsUtility>{0}% chance</style> to <style=cIsHealing>heal for +{1}% more healing</style> <style=cStack>(+{2}% more healing per stack)</style>.",
 		"RISKOFBULLETSTORM_ITEM_ANTIBODY_LORE": "An experimental treatment administered by the Gungeon's medical unit.",
 		
@@ -66,7 +66,7 @@
 		
 		//[TIER3]
 		"RISKOFBULLETSTORM_ITEM_BACKPACK_NAME": "Backpack",
-		"RISKOFBULLETSTORM_ITEM_BACKPACK_PICKUP": "<b>Equipment Capacity Up!</b>Grants an extra equipment slot.",
+		"RISKOFBULLETSTORM_ITEM_BACKPACK_PICKUP": "<b>Equipment Capacity Up!</b>\nGrants an extra equipment slot.",
 		"RISKOFBULLETSTORM_ITEM_BACKPACK_DESCRIPTION": "Grants access to an <style=cIsUtility>extra equipment slot</style> <style=cStack>(+1 per stack)</style>.",
 		"RISKOFBULLETSTORM_ITEM_BACKPACK_LORE": "While backpacks may seem to be useless once you use spatial compression technology, reports have come in demonstrating that a certain common backpack exceeds this. Most spatial compression technologies can only capture a specific form or type of item or structure. Sure, in this regard the structure capturing is superior, but its significantly different than the current features observed using backpacks. While not conclusive, reports have stated that some users have up to 2304 solid blocks of 1m cubed in volume. We've even heard reports that they've been able to store and deploy highly dense, sensitive crystals that seem to explode when fractured. The current technologies can only compress about 25% of the reported backpack capacity, while keeping that capacity lowers the decompression quality down to a staggering 92%! Truly, we must strive to reach these heights. - Report by Minnie Raria, 2XXX",
 		
@@ -132,8 +132,8 @@
 		//[TIERLUNAR]
 		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_NAME": "Bloodied Scarf",
 		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_PICKUP": "<b>Blink Away</b>\nUtility is replaced with a blink with vulnerability afterwards..",
-		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_DESCRIPTION": "<style=cIsUtility>Replace your Utility Skill</style> with <style=cIsUtility>Bloodied Teleport</style>. <style=cIsUtility>Teleport</style> up to <style=cIsUtility>{0}m </style> <style=cStack>(+{1}m per stack)</style>.\nAfter teleporting, <style=cDeath>take +{2}% more damage <style=cStack(+{3}% per stack)</style> for {4} seconds.</style>.",
-		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_LOGBOOK_DESCRIPTION": "<style=cIsUtility>Replace your Utility Skill</style> with <style=cIsUtility>Bloodied Teleport</style>.\n\n<b>Bloodied Teleport</b>\n<style=cIsUtility>Cooldown: 8f</style>\n<style=cIsUtility>Teleport</style> up to <style=cIsUtility>{0}m </style> <style=cStack>(+{1}m per stack)</style>.\nAfter teleporting, <style=cDeath>take +{2}% more damage <style=cStack(+{3}% per stack)</style> for {4} seconds.</style>.",
+		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_DESCRIPTION": "<style=cIsUtility>Replace your Utility Skill</style> with <style=cIsUtility>Bloodied Teleport</style>. <style=cIsUtility>Teleport</style> up to <style=cIsUtility>{0}m</style> <style=cStack>(+{1}m per stack)</style>.\nAfter teleporting, <style=cDeath>take +{2}% more damage <style=cStack>(+{3}% per stack)</style> for {4} seconds</style>.",
+		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_LOGBOOK_DESCRIPTION": "<style=cIsUtility>Replace your Utility Skill</style> with <style=cIsUtility>Bloodied Teleport</style>.\n<b>Bloodied Teleport</b>\n<style=cIsUtility>Cooldown: 8f</style>\n<style=cIsUtility>Teleport</style> up to <style=cIsUtility>{0}m</style> <style=cStack>(+{1}m per stack)</style>.\nAfter teleporting, <style=cDeath>take +{2}% more damage <style=cStack>(+{3}% per stack)</style> for {4} seconds</style>.",
 		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_LORE": "This simple scarf was once worn by a skilled assassin. Betrayed by his brothers and assumed dead...",
 		
 		"RISKOFBULLETSTORM_ITEM_BULLETHEAVY_NAME": "Heavy Bullets",

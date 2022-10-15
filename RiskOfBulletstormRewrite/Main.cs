@@ -85,10 +85,10 @@ namespace RiskOfBulletstormRewrite
 
             //todo enemy essembly thing
             //Enemies.LordofTheJammedMonster.CreatePrefab();
-            RiskOfBulletstormRewrite.Language.Initialize();
             Commands.Initialize();
             Tweaks.Init(Config);
             /* stupidlanguageshit(); */
+            RiskOfBulletstormRewrite.Language.Initialize();
         }
 
         /* private static ILHook _ilHook;

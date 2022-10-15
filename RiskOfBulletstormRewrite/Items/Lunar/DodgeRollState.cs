@@ -26,6 +26,8 @@ namespace RiskOfBulletstormRewrite.Items
 
         private float calcPercentageToApplyVulnerability = 0.5f;
 
+        private bool hasGivenBuff = false;
+
         public override void OnEnter()
         {
             base.OnEnter();
@@ -61,6 +63,7 @@ namespace RiskOfBulletstormRewrite.Items
                 DodgeRollUtilityReplacement.cfgVulnDuration.Value,
                 DodgeRollUtilityReplacement.cfgVulnDurationReduction.Value,
                 DodgeRollUtilityReplacement.instance.GetCount(base.characterBody))); */
+            
         }
 
         public float GetDuration()
@@ -69,18 +72,23 @@ namespace RiskOfBulletstormRewrite.Items
             return baseDuration;
         }
 
-        public override void FixedUpdate()
+        public override void Update()
         {
-            base.FixedUpdate();
+            base.Update();
 
             if (modelRoot)
             {
-                var addedRot = Vector3.one * calculatedRotationValue;
+                var addedRot = new Vector3(calculatedRotationValue, 0,0);
                 addedRot *= this.duration/(base.fixedAge+0.1f);
                 var newRotation = modelRootOldRot.eulerAngles + addedRot;
                 modelRoot.localRotation = Quaternion.Euler(newRotation);
                 modelRoot.localScale = Vector3.one*0.7f;
             }
+        }
+
+        public override void FixedUpdate()
+        {
+            base.FixedUpdate();
             
 
             if (base.fixedAge >= this.duration)
@@ -94,13 +102,15 @@ namespace RiskOfBulletstormRewrite.Items
                 if (base.characterBody)
                 {
                     base.characterBody.isSprinting = true;
-
-                    if (base.fixedAge < calcPercentageToApplyVulnerability 
-                    || base.fixedAge > calcPercentageToApplyVulnerability)
+                    if (!hasGivenBuff)
                     {
-                        base.characterBody.AddBuff(Utils.Buffs.DodgeRollBuff);
-                    } else {
-                        base.characterBody.RemoveBuff(Utils.Buffs.DodgeRollBuff);
+                        if (base.fixedAge <= calcPercentageToApplyVulnerability
+                        || base.fixedAge >= duration)
+                        {
+                            base.characterBody.AddBuff(Utils.Buffs.DodgeRollBuff);
+                        } else {
+                            base.characterBody.RemoveBuff(Utils.Buffs.DodgeRollBuff);
+                        }
                     }
                 }
                 //this.UpdateDirection();
