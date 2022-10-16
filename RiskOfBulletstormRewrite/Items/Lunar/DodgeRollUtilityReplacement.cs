@@ -56,11 +56,7 @@ namespace RiskOfBulletstormRewrite.Items
         protected override void CreateLang()
         {
             base.CreateLang();
-            foreach (var lang in RoR2.Language.steamLanguageTable)
-            {
-                var langName = lang.Value.webApiName;
-                Language.DeferToken(rollSkillDef.skillDescriptionToken, langName, ItemFullDescriptionParams);
-            }
+            Language.DeferToken(rollSkillDef.skillDescriptionToken, ItemFullDescriptionParams);
         }
 
         public void CreateSkillDef()

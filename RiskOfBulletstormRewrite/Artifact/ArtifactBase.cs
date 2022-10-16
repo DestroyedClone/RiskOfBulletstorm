@@ -96,29 +96,9 @@ namespace RiskOfBulletstormRewrite.Artifact
             //Main._logger.LogMessage("descCheck");
             if (formatDescription)
             {
-                //Main._logger.LogMessage("Nothing to format.");
+                Language.DeferToken(ArtifactDescriptionToken, ArtifactFullDescriptionParams);
                 return;
             }
-
-            foreach (var lang in RoR2.Language.steamLanguageTable)
-            {
-                var langName = lang.Value.webApiName;
-                // Main._logger.LogMessage($"[{langName}]Modifying {ItemLangTokenName}");
-
-                if (formatDescription)
-                {
-                    DeferToken(ArtifactDescriptionToken, langName, ArtifactFullDescriptionParams);
-                }
-            }
-        }
-
-        ///<summary>
-        ///Helper method to defer language tokens.
-        ///</summary>
-        private void DeferToken(string token, string lang, params string[] args)
-        {
-            //Main._logger.LogMessage($"Deferring {token} w/ lang {lang}");
-            RiskOfBulletstormRewrite.Language.langTokenValues.Add(new Language.LangTokenValue() { token = token, lang = lang, strings = args });
         }
 
         ///<summary>

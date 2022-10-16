@@ -97,11 +97,7 @@ namespace RiskOfBulletstormRewrite.Items
         {
             base.CreateLang();
             
-            foreach (var lang in RoR2.Language.steamLanguageTable)
-            {
-                var langName = lang.Value.webApiName;
-                Language.DeferToken(teleportSkillDef.skillDescriptionToken, langName, teleportSkillDefParams);
-            }
+            Language.DeferToken(teleportSkillDef.skillDescriptionToken, teleportSkillDefParams);
         }
 
         public override void CreateConfig(ConfigFile config)

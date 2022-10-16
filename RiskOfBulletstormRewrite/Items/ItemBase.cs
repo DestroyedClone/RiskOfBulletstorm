@@ -109,25 +109,19 @@ namespace RiskOfBulletstormRewrite.Items
                 return;
             }
             
-            foreach (var lang in RoR2.Language.steamLanguageTable)
+            if (formatPickup)
             {
-                var langName = lang.Value.webApiName;
-               // Main._logger.LogMessage($"[{langName}]Modifying {ItemLangTokenName}");
+                Language.DeferToken(ItemPickupToken, ItemPickupDescParams);
+            }
 
-                if (formatPickup)
-                {
-                    Language.DeferToken(ItemPickupToken, langName, ItemPickupDescParams);
-                }
+            if (formatDescription)
+            {
+                Language.DeferToken(ItemDescriptionToken, ItemFullDescriptionParams);
+            }
 
-                if (formatDescription)
-                {
-                    Language.DeferToken(ItemDescriptionToken, langName, ItemFullDescriptionParams);
-                }
-
-                if (formatLogbook)
-                {
-                    Language.DeferToken(ItemDescriptionLogbookToken, langName, ItemLogbookDescriptionParams);
-                }
+            if (formatLogbook)
+            {
+                Language.DeferToken(ItemDescriptionLogbookToken, ItemLogbookDescriptionParams);
             }
 
             if (ItemDescriptionLogbookOverride)

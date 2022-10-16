@@ -29,11 +29,7 @@ namespace RiskOfBulletstormRewrite
             {
                 if (descTokenParams != null || descTokenParams.Length > 0)
                 {
-                    foreach (var lang in RoR2.Language.steamLanguageTable)
-                    {
-                        var langName = lang.Value.webApiName;
-                        Language.DeferToken(prefix+baseToken+"_DESC", langName, descTokenParams);
-                    }
+                    Language.DeferToken(prefix+baseToken+"_DESC", descTokenParams);
                 }
                 BetterUI.Buffs.RegisterBuffInfo(buffDef, prefix+baseToken+"_NAME", prefix+baseToken+"_DESC");
             }
@@ -285,11 +281,11 @@ namespace RiskOfBulletstormRewrite
                 BetterUI.ItemStats.StatFormatter.Percent,
                 BetterUI.ItemStats.ItemTag.MaxHealth);
             BetterUI.ItemStats.RegisterStat(Items.OrangeConsumed.instance.ItemDef,
-                prefix + "ORANGECONSUMED_HEAL",
-                Orange.cfgHealPercentage.Value,
-                BetterUI.ItemStats.LinearStacking,
+                prefix + "ORANGECONSUMED_SKILLREDUCTION",
+                Orange.cfgChargeRateReduction.Value,
+                BetterUI.ItemStats.HyperbolicStacking,
                 BetterUI.ItemStats.StatFormatter.Percent,
-                BetterUI.ItemStats.ItemTag.Healing);
+                BetterUI.ItemStats.ItemTag.SkillCooldown);
             /*BetterUI.ItemStats.RegisterStat(OrangeConsumed.instance.ItemDef,
                 prefix + "RINGMISERLYPROTECTION_HEALTH",
                 Orange.cfgMaxHealthIncrease.Value,

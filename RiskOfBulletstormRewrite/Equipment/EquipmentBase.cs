@@ -106,26 +106,15 @@ namespace RiskOfBulletstormRewrite.Equipment
                 return;
             }
 
-            foreach (var lang in RoR2.Language.steamLanguageTable)
+            if (formatPickup)
             {
-                var langName = lang.Value.webApiName;
-                // Main._logger.LogMessage($"[{langName}]Modifying {ItemLangTokenName}");
-
-                if (formatPickup)
-                {
-                    DeferToken(EquipmentPickupToken, langName, EquipmentPickupDescParams);
-                }
-
-                if (formatDescription)
-                {
-                    DeferToken(EquipmentDescriptionToken, langName, EquipmentFullDescriptionParams);
-                }
+                Language.DeferToken(EquipmentPickupToken, EquipmentPickupDescParams);
             }
-        }
-        private void DeferToken(string token, string lang, params string[] args)
-        {
-            //Main._logger.LogMessage($"Deferring {token} w/ lang {lang}");
-            RiskOfBulletstormRewrite.Language.langTokenValues.Add(new Language.LangTokenValue() { token = token, lang = lang, strings = args });
+
+            if (formatDescription)
+            {
+                Language.DeferToken(EquipmentDescriptionToken, EquipmentFullDescriptionParams);
+            }
         }
 
         protected void CreateEquipment()
