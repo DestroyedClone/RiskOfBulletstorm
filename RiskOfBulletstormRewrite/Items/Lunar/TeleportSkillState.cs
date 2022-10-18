@@ -52,7 +52,7 @@ namespace RiskOfBulletstormRewrite.Items
 		public override void OnEnter()
 		{
 			base.OnEnter();
-			areaIndicatorInstance = UnityEngine.Object.Instantiate<GameObject>(ArrowRain.areaIndicatorPrefab);
+			areaIndicatorInstance = UnityEngine.Object.Instantiate<GameObject>(modelTransform?.gameObject ?? ArrowRain.areaIndicatorPrefab);//(ArrowRain.areaIndicatorPrefab);
 			areaIndicatorInstance.transform.localScale = new Vector3(ArrowRain.arrowRainRadius / 3, ArrowRain.arrowRainRadius / 1.5f, ArrowRain.arrowRainRadius / 3);
 
 			//Icewall
@@ -76,7 +76,7 @@ namespace RiskOfBulletstormRewrite.Items
 			if (characterBody && characterBody.inventory)
 			{
 				var itemCount = this.characterBody.inventory.GetItemCount(Items.BloodiedScarf.instance.ItemDef);
-				return BloodiedScarf.cfgTeleportRange.Value + BloodiedScarf.cfgTeleportRangePerStack.Value * itemCount;
+				return BloodiedScarf.cfgTeleportRange.Value + BloodiedScarf.cfgTeleportRangePerStack.Value * (itemCount - 1);
 			}
 			return BloodiedScarf.cfgTeleportRange.Value;
 		}
@@ -161,10 +161,10 @@ namespace RiskOfBulletstormRewrite.Items
 						forward.Normalize();
 						SetPosition(areaIndicatorInstance.transform.position + Vector3.up);
 
-						var characterBody = this.characterBody;
-						if (characterBody)
+						if (UnityEngine.Networking.NetworkServer.active && characterBody)
 						{
-							//MasterBlankItem.FireBlank(characterBody, characterBody.corePosition, 0f, 0f, 6f, false, false, false);
+							characterBody.AddTimedBuff(Utils.Buffs.BloodiedScarfBuff, BloodiedScarf.cfgDamageVulnerabilityDuration.Value, 1);
+							/* //MasterBlankItem.FireBlank(characterBody, characterBody.corePosition, 0f, 0f, 6f, false, false, false);
 							var inventory = characterBody.inventory;
 							if (inventory)
 							{
@@ -176,7 +176,7 @@ namespace RiskOfBulletstormRewrite.Items
 								}
 								for (uint i = 0; i < scarfCount; i++)
 									characterBody.AddTimedBuff(Utils.Buffs.BloodiedScarfBuff, 1f);
-							}
+							} */
 						}
 					}
 				}

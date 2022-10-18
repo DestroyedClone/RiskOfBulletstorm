@@ -20,8 +20,6 @@ namespace RiskOfBulletstormRewrite.Items
         public override string ItemLangTokenName => "BLOODIEDSCARF";
 
         public override bool ItemDescriptionLogbookOverride => true;
-        public override string[] ItemFullDescriptionParams => teleportSkillDefParams;
-        public override string[] ItemLogbookDescriptionParams => teleportSkillDefParams;
 
         public override ItemTier Tier => ItemTier.Lunar;
 
@@ -98,6 +96,12 @@ namespace RiskOfBulletstormRewrite.Items
             base.CreateLang();
             
             Language.DeferToken(teleportSkillDef.skillDescriptionToken, teleportSkillDefParams);
+
+            Language.DeferLateTokens(ItemDescriptionToken, new string[]{teleportSkillDef.skillDescriptionToken});
+            Language.DeferLateTokens(ItemDescriptionLogbookToken, new string[]{
+                ItemPickupToken,
+                teleportSkillDef.skillNameToken,
+                teleportSkillDef.skillDescriptionToken});
         }
 
         public override void CreateConfig(ConfigFile config)

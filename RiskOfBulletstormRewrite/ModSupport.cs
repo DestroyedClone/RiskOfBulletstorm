@@ -10,6 +10,7 @@ namespace RiskOfBulletstormRewrite
     internal class ModSupport
     {
         internal static bool betterUILoaded = false;
+        
         internal static void CheckForModSupport()
         {
             if (BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.xoxfaby.BetterUI"))
@@ -19,6 +20,15 @@ namespace RiskOfBulletstormRewrite
                 BetterUICompat_ItemStats();
                 BetterUICompat_Buffs();
             }
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
+        internal static void BetterUICompat_RegisterTag()
+        {
+            BetterUI.ItemStats.RegisterTag(null, new BetterUI.ItemStats.ItemTag()
+            {
+                
+            });
         }
 
         [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
@@ -43,8 +53,8 @@ namespace RiskOfBulletstormRewrite
                 GetFloat(AlphaBullets.cfgDamageStack)});
             RegisterBuffInfo(Buffs.DodgeRollBuff, "DODGEROLL",
             new string[]{
-                GetFloat(DodgeRollUtilityReplacement.cfgVulnDamageMultiplier),
-                GetFloat(DodgeRollUtilityReplacement.cfgVulnDamageMultiplierStack)
+                GetFloat(DodgeRollUtilityReplacement.cfgDamageVulnerabilityMultiplier),
+                GetFloat(DodgeRollUtilityReplacement.cfgDamageVulnerabilityMultiplierPerStack)
             });
         }
 
@@ -90,9 +100,15 @@ namespace RiskOfBulletstormRewrite
             return Mathf.Max(0, (stacks+1) - Scope.expectedMaxStacks) * value;
         }
 
+        public static float DodgeRollDurationStacking(float value, float extraStackValue, int stacks)
+        {
+            return DodgeRollUtilityReplacement.GetDuration(stacks);
+        }
+
         [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
         internal static void BetterUICompat_ItemStats()
         {
+            //todo: capformula, registermodifier
             var prefix = "RISKOFBULLETSTORM_STAT_";
             #region Common
             BetterUI.ItemStats.RegisterStat(Items.Antibody.instance.ItemDef,
@@ -244,16 +260,17 @@ namespace RiskOfBulletstormRewrite
                 BetterUI.ItemStats.StatFormatter.Seconds);
 
             BetterUI.ItemStats.RegisterStat(DodgeRollUtilityReplacement.instance.ItemDef,
-                prefix + "DODGEROLLUTILITYREPLACEMENT_VULNERABILITYPERIOD",
-                DodgeRollUtilityReplacement.cfgVulnDuration.Value,
-                BetterUI.ItemStats.HyperbolicStacking,
-                BetterUI.ItemStats.StatFormatter.Percent);
-            BetterUI.ItemStats.RegisterStat(DodgeRollUtilityReplacement.instance.ItemDef,
-                prefix + "DODGEROLLUTILITYREPLACEMENT_VULNERABILITYDAMAGE",
-                DodgeRollUtilityReplacement.cfgVulnDamageMultiplier.Value,
-                DodgeRollUtilityReplacement.cfgVulnDamageMultiplierStack.Value,
+                prefix + "DODGEROLLUTILITYREPLACEMENT_DAMAGEVULNERABILITY",
+                DodgeRollUtilityReplacement.cfgDamageVulnerabilityMultiplier.Value,
+                DodgeRollUtilityReplacement.cfgDamageVulnerabilityMultiplierPerStack.Value,
                 BetterUI.ItemStats.LinearStacking,
                 BetterUI.ItemStats.StatFormatter.Percent);
+            BetterUI.ItemStats.RegisterStat(DodgeRollUtilityReplacement.instance.ItemDef,
+                prefix + "DODGEROLLUTILITYREPLACEMENT_VULNERABILITYDURATION",
+                DodgeRollUtilityReplacement.cfgDamageVulnerabilityDuration.Value,
+                DodgeRollUtilityReplacement.cfgDamageVulnerabilityDurationDecreasePerStack.Value,
+                DodgeRollDurationStacking,
+                BetterUI.ItemStats.StatFormatter.Seconds);
 
             BetterUI.ItemStats.RegisterStat(HipHolster.instance.ItemDef,
                 prefix + "HIPHOLSTER_CHANCE",

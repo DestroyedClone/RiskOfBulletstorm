@@ -24,12 +24,13 @@ namespace RiskOfBulletstormRewrite.Items
         private Quaternion modelRootOldRot = Quaternion.identity;
         private float calculatedRotationValue = 1;
 
-        private float calcPercentageToApplyVulnerability = 0.5f;
+        //stupid fucking piece of broken shit fuckyou
+        /* private float calcPercentageToApplyVulnerability = 0.5f;
         private float calcPreVulnTime = 0.4f;
-        private float calcPostVulnTime = 0.6f;
+        private float calcPostVulnTime = 0.6f; */
         private Vector2 initialDirection;
 
-        private bool hasGivenBuff = false;
+        /* private bool hasGivenBuff = false; */
 
         public override void OnEnter()
         {
@@ -60,10 +61,10 @@ namespace RiskOfBulletstormRewrite.Items
             if (characterMotor)
                 characterMotor.useGravity = false;
             UpdateDirection();
-            calcPercentageToApplyVulnerability = 
+            /* calcPercentageToApplyVulnerability = 
                 Utils.ItemHelpers.GetHyperbolicValue(DodgeRollUtilityReplacement.cfgVulnDuration.Value, DodgeRollUtilityReplacement.instance.GetCount(base.characterBody));
             calcPreVulnTime = duration * calcPercentageToApplyVulnerability;
-            calcPostVulnTime = duration - calcPreVulnTime;
+            calcPostVulnTime = duration - calcPreVulnTime; */
             if (base.inputBank)
                 initialDirection = Util.Vector3XZToVector2XY(base.inputBank.moveVector);
         }
@@ -105,8 +106,8 @@ namespace RiskOfBulletstormRewrite.Items
                 if (base.characterBody)
                 {
                     base.characterBody.isSprinting = true;
-                    if (!hasGivenBuff)
-                    {
+                    //if (!hasGivenBuff)
+                    /* {
                         if (base.fixedAge < calcPreVulnTime
                         || base.fixedAge > calcPostVulnTime)
                         {
@@ -114,7 +115,7 @@ namespace RiskOfBulletstormRewrite.Items
                         } else {
                             base.characterBody.RemoveBuff(Utils.Buffs.DodgeRollBuff);
                         }
-                    }
+                    } */
                 }
                 //this.UpdateDirection();
                 if (base.characterDirection)
@@ -137,13 +138,20 @@ namespace RiskOfBulletstormRewrite.Items
             }
             base.gameObject.layer = LayerIndex.defaultLayer.intVal;
 			base.characterMotor.Motor.RebuildCollidableLayers();
-            if (base.isAuthority)
-                base.characterBody.RemoveBuff(Utils.Buffs.DodgeRollBuff);
+/*             if (base.isAuthority)
+                base.characterBody.RemoveBuff(Utils.Buffs.DodgeRollBuff); */
             if (animator)
                 animator.enabled = true;
-            if (base.isAuthority)
+            if (NetworkServer.active)
             {
                 characterBody.RemoveBuff(RoR2Content.Buffs.Intangible);
+                float debuffDuration = DodgeRollUtilityReplacement.cfgDamageVulnerabilityDuration.Value;
+                if (characterBody.inventory)
+                {
+                    var itemCount = DodgeRollUtilityReplacement.instance.GetCount(characterBody);
+                    debuffDuration = DodgeRollUtilityReplacement.GetDuration(itemCount);
+                }
+                characterBody.AddTimedBuff(Utils.Buffs.DodgeRollBuff, debuffDuration, 1);
             }
             if (characterMotor)
                 characterMotor.useGravity = characterMotor.gravityParameters.CheckShouldUseGravity();

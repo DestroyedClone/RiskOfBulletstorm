@@ -104,7 +104,7 @@ namespace RiskOfBulletstormRewrite.Artifact
                     }
                 }
                 self.bonusDirector.enabled = false;
-                self.bossDirector.enabled = false;
+                //self.bossDirector.enabled = false;
             }
         }
 

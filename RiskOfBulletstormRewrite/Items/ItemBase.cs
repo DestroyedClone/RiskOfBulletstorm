@@ -124,7 +124,7 @@ namespace RiskOfBulletstormRewrite.Items
                 Language.DeferToken(ItemDescriptionLogbookToken, ItemLogbookDescriptionParams);
             }
 
-            if (ItemDescriptionLogbookOverride)
+            if (ItemDescriptionLogbookOverride || formatLogbook)
             {
                 Language.logbookTokenOverrideDict.Add(ItemDescriptionToken, ItemDescriptionLogbookToken);
             }

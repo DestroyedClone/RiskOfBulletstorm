@@ -10,10 +10,11 @@ namespace RiskOfBulletstormRewrite.Items
 {
     public class DodgeRollUtilityReplacement : ItemBase<DodgeRollUtilityReplacement>
     {
-        public static ConfigEntry<float> cfgVulnDuration;
-        //public static ConfigEntry<float> cfgVulnDurationReduction;
-        public static ConfigEntry<float> cfgVulnDamageMultiplier;
-        public static ConfigEntry<float> cfgVulnDamageMultiplierStack;
+        public static ConfigEntry<float> cfgDamageVulnerabilityMultiplier;
+        public static ConfigEntry<float> cfgDamageVulnerabilityMultiplierPerStack;
+        public static ConfigEntry<float> cfgDamageVulnerabilityDuration;
+        public static ConfigEntry<float> cfgDamageVulnerabilityDurationDecreasePerStack;
+        public static ConfigEntry<float> cfgDamageVulnerabilityDurationMinimum;
         
         public override string ItemName => "DodgeRollUtilityReplacement";
 
@@ -21,14 +22,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override ItemTier Tier => ItemTier.Lunar;
         public override bool IsSkillReplacement => true;
-        public override string[] ItemFullDescriptionParams => new string[]
-        {
-            GetChance(cfgVulnDuration),
-            GetChance(cfgVulnDamageMultiplierStack),
-            GetChance(cfgVulnDuration),
-            GetChance(cfgVulnDamageMultiplierStack)
-        };
-        public override string[] ItemLogbookDescriptionParams => ItemFullDescriptionParams;
+        public override bool ItemDescriptionLogbookOverride => true;
 
         public override GameObject ItemModel => Assets.NullModel;
 
@@ -52,11 +46,31 @@ namespace RiskOfBulletstormRewrite.Items
             CreateItem();
             Hooks();
         }
+        public string[] rollSkillDefParams => new string[]
+        {
+            GetChance(cfgDamageVulnerabilityMultiplier),
+            GetChance(cfgDamageVulnerabilityMultiplierPerStack),
+            cfgDamageVulnerabilityDuration.Value.ToString(),
+            cfgDamageVulnerabilityDurationDecreasePerStack.Value.ToString(),
+            cfgDamageVulnerabilityDurationMinimum.Value.ToString()
+        };
+
+        public static float GetDuration(int stacks)
+        {
+            return cfgDamageVulnerabilityDurationMinimum.Value
+            + ((cfgDamageVulnerabilityDuration.Value - cfgDamageVulnerabilityDurationMinimum.Value) / (1 + cfgDamageVulnerabilityDurationDecreasePerStack.Value * stacks));
+        }
 
         protected override void CreateLang()
         {
             base.CreateLang();
-            Language.DeferToken(rollSkillDef.skillDescriptionToken, ItemFullDescriptionParams);
+            Language.DeferToken(rollSkillDef.skillDescriptionToken, rollSkillDefParams);
+
+            Language.DeferLateTokens(ItemDescriptionToken, new string[]{rollSkillDef.skillDescriptionToken});
+            Language.DeferLateTokens(ItemDescriptionLogbookToken, new string[]{
+                ItemPickupToken,
+                rollSkillDef.skillNameToken,
+                rollSkillDef.skillDescriptionToken});
         }
 
         public void CreateSkillDef()
@@ -96,10 +110,11 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void CreateConfig(ConfigFile config)
         {
-            cfgVulnDamageMultiplier = config.Bind(ConfigCategory, "Base Damage Vulnerability", 0.1f);
-            cfgVulnDamageMultiplierStack = config.Bind(ConfigCategory, "Damage Vulnerability Per Stack", 0.1f);
-            cfgVulnDuration = config.Bind(ConfigCategory, "Base Damage Vulnerability Duration Percentage", 0.15f);
-            //cfgVulnDurationReduction = config.Bind(ConfigCategory, "Damage Vulnerability Duration Percentage Per Stack", 0.05f);
+            cfgDamageVulnerabilityMultiplier = config.Bind(ConfigCategory, "Damage Vulnerability Multiplier", .2f, "");
+            cfgDamageVulnerabilityMultiplierPerStack = config.Bind(ConfigCategory, "Damage Vulnerability Multiplier Per Stack", .1f, "");
+            cfgDamageVulnerabilityDuration = config.Bind(ConfigCategory, "Damage Vulnerability Duration", 2f, "");
+            cfgDamageVulnerabilityDurationDecreasePerStack = config.Bind(ConfigCategory, "Damage Vulnerability Duration Decrease Per Stack", -0.1f);
+            cfgDamageVulnerabilityDurationMinimum = config.Bind(ConfigCategory, "Damage Vulnerability Duration Minimum", 0.5f);
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
@@ -118,7 +133,7 @@ namespace RiskOfBulletstormRewrite.Items
             if (self.body && self.body.HasBuff(Utils.Buffs.DodgeRollBuff))
             {
                 damageInfo.damage *= 1 + 
-                GetStack(cfgVulnDamageMultiplier, cfgVulnDamageMultiplierStack, GetCount(self.body));
+                GetStack(cfgDamageVulnerabilityMultiplier, cfgDamageVulnerabilityMultiplierPerStack, GetCount(self.body));
             }
             orig(self, damageInfo);
         }

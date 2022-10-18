@@ -12,7 +12,7 @@
 		"RISKOFBULLETSTORM_ARTIFACT_ADAPTIVEARMORBOSSES_DESCRIPTION": "All teleporter bosses gain the Final Boss's adaptive armor.",
 		
 		"RISKOFBULLETSTORM_ARTIFACT_BOSSCHAMBER_NAME": "Artifact of the Boss Chamber",
-		"RISKOFBULLETSTORM_ARTIFACT_BOSSCHAMBER_DESCRIPTION": "<style=cIsHealing>(+) Spawns are cleared; Boss death destroys projectiles; Teleporter charges by 100% divided per Focused Convergence.</style> <style=cHealth>(-) Boss is stronger.</style>",
+		"RISKOFBULLETSTORM_ARTIFACT_BOSSCHAMBER_DESCRIPTION": "<style=cIsHealing>(+) Spawns are cleared; Boss death destroys projectiles; Teleporter charges by 100% divided per Focused Convergence.</style> <style=cDeath>(-) Boss is stronger.</style>",
 		
 		"RISKOFBULLETSTORM_ARTIFACT_UPSPEEDOOC_NAME": "Artifact of the Swift Post-Battle",
 		"RISKOFBULLETSTORM_ARTIFACT_UPSPEEDOOC_DESCRIPTION": "After completing the teleporter event, all players gain a speed boost.",

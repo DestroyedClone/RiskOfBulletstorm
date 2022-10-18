@@ -18,6 +18,12 @@ namespace RiskOfBulletstormRewrite
             public string[] args;
         }
 
+        public struct PostReplacementToken
+        {
+            public string baseToken;
+            public string[] replacementTokens;
+        }
+
         ///<summary>
         ///Helper method to defer language tokens.
         ///</summary>
@@ -27,7 +33,13 @@ namespace RiskOfBulletstormRewrite
             RiskOfBulletstormRewrite.Language.replacementTokens.Add(new Language.ReplacementToken() { token = token, args = args });
         }
 
+        public static void DeferLateTokens(string baseToken, params string[] args)
+        {
+            RiskOfBulletstormRewrite.Language.postReplacementTokens.Add(new PostReplacementToken() { baseToken = baseToken, replacementTokens = args});
+        }
+
         public static List<ReplacementToken> replacementTokens = new List<ReplacementToken>();
+        public static List<PostReplacementToken> postReplacementTokens = new List<PostReplacementToken>();
         public static List<Type> configEntries = new List<Type>();
 
         public static Dictionary<string, string> logbookTokenOverrideDict = new Dictionary<string, string>();
@@ -54,6 +66,7 @@ namespace RiskOfBulletstormRewrite
 
         private static string FormatToken(string token, string lang, params string[] objects)
         {
+            //todo: vs GetStringFormatted??
             var oldString = RoR2.Language.GetString(token, lang);
             var newString = string.Format(oldString, objects);
             return newString;
@@ -62,7 +75,12 @@ namespace RiskOfBulletstormRewrite
         private static void SetupLanguage()
         {
             Main._logger.LogMessage($"Setting up language with {replacementTokens.Count} tokens.");
-            foreach (var replacementToken in replacementTokens)
+            DeferTokenFinalize();
+            PostDeferTokenFinalize();
+        }
+
+        private static void DeferTokenFinalize()
+        {foreach (var replacementToken in replacementTokens)
             {
                 try
                 {
@@ -93,6 +111,34 @@ namespace RiskOfBulletstormRewrite
                 catch {
                     Main._logger.LogError($"Failed to load replacement token {replacementToken.token}"
                     + $"Params: {replacementToken.args.ToString()}");
+                }
+            }
+        }
+
+        private static void PostDeferTokenFinalize()
+        {
+            foreach (var postReplacementToken in postReplacementTokens)
+            {
+                try
+                {
+                foreach (var lang in RoR2.Language.steamLanguageTable)
+                {
+                    var langName = lang.Value.webApiName;
+
+                    List<string> resolvedReplacementTokens = new List<string>();
+                    foreach (var tokenArg in postReplacementToken.replacementTokens)
+                    {
+                        resolvedReplacementTokens.Add(RoR2.Language.GetString(tokenArg, langName));
+                    }
+
+
+                    var newString = FormatToken(postReplacementToken.baseToken, langName, resolvedReplacementTokens.ToArray());
+                    LanguageAPI.Add(postReplacementToken.baseToken, newString, langName);
+                }
+                }
+                catch {
+                    Main._logger.LogError($"Failed to load post replacement token {postReplacementToken.baseToken}"
+                    + $"Params are wrong?");
                 }
             }
         }
