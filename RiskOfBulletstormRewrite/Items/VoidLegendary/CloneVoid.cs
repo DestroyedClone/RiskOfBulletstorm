@@ -153,6 +153,7 @@ namespace RiskOfBulletstormRewrite.Items
                 if (itemCountPerInstance < 0)
                 {
                     itemCountPerInstance = Util.GetItemCountForTeam(TeamIndex.Player, instance.ItemDef.itemIndex, false);
+                    itemCountPerInstance = cfgItemsToGet.Value + (cfgItemsToGetPerStack.Value * itemCountPerInstance - 1);
                 }
             }
 

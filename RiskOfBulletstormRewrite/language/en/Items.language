@@ -4,7 +4,7 @@
 		//[TIER1]
 		"RISKOFBULLETSTORM_ITEM_ANTIBODY_NAME": "Antibody",
 		"RISKOFBULLETSTORM_ITEM_ANTIBODY_PICKUP": "<b>Heals Up</b>\nChance to improve healing receieved.",
-		"RISKOFBULLETSTORM_ITEM_ANTIBODY_DESCRIPTION": "Upon <style=cIsHealing>healing</style>, gain a <style=cIsUtility>{0}% chance</style> to <style=cIsHealing>heal for +{1}% more healing</style> <style=cStack>(+{2}% more healing per stack)</style>.",
+		"RISKOFBULLETSTORM_ITEM_ANTIBODY_DESCRIPTION": "Upon <style=cIsHealing>healing</style>, gain a <style=cIsUtility>{0}% chance</style> to <style=cIsHealing>heal for +{1}% more healing</style> <style=cStack>(+{2}% more healing per stack)</style>. Unaffected by luck.",
 		"RISKOFBULLETSTORM_ITEM_ANTIBODY_LORE": "An experimental treatment administered by the Gungeon's medical unit.",
 		
 		"RISKOFBULLETSTORM_ITEM_MUSTACHE_NAME": "Mustache",
@@ -36,7 +36,7 @@
 		
 		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_NAME": "Battle Standard",
 		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_PICKUP": "<b>Set Your Own!</b>\nImproves the effectiveness of companions and charmed enemies.",
-		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_DESCRIPTION": "Increases damage of companions and charmed enemies by {0}% <style=cStack>(+{0}% per stack)</style>.",
+		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_DESCRIPTION": "Increases <style=cIsDamage>damage of companions</style> and <style=cIsDamage>charmed enemies</style> by {0}% <style=cStack>(+{0}% per stack)</style>.",
 		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_LORE": "Before the advancement of Gundead society, belligerent bands of Bullet Kin would rally around these banners before their raids upon the upper chambers.",
 		
 		"RISKOFBULLETSTORM_ITEM_RINGOFCHESTFRIENDSHIP_NAME": "Ring of Chest Friendship",
@@ -46,7 +46,7 @@
 		
 		"RISKOFBULLETSTORM_ITEM_RINGFIRERESISTANCE_NAME": "Ring of Fire Resistance",
 		"RISKOFBULLETSTORM_ITEM_RINGFIRERESISTANCE_PICKUP": "Reduces fire damage taken",
-		"RISKOFBULLETSTORM_ITEM_RINGFIRERESISTANCE_DESCRIPTION": "Hyperbolically reduces all incoming <style=cIsDamage>fire damage</style> by <style=cIsDamage>{0}%</style> <style=cStack>(+{0} per stack)</style>",
+		"RISKOFBULLETSTORM_ITEM_RINGFIRERESISTANCE_DESCRIPTION": "Hyperbolically reduces all incoming <style=cIsDamage>fire damage</style> by <style=cIsDamage>{0}%</style> <style=cStack>(+{0} per stack)</style>.",
 		"RISKOFBULLETSTORM_ITEM_RINGFIRERESISTANCE_LORE": "A ring originally worn by the legendary gunsmith himself. Later in life, Edwin no longer needed it, but the ring proved indispensable during his early years in the Forge. It eventually passed to his eldest daughter.",
 		
 		"RISKOFBULLETSTORM_ITEM_ALPHABULLET_NAME": "Alpha Bullet",
@@ -56,7 +56,7 @@
 		
 		"RISKOFBULLETSTORM_ITEM_COINCROWN_NAME": "Coin Crown",
 		"RISKOFBULLETSTORM_ITEM_COINCROWN_PICKUP": "<b>Play Well, Get Money</b>\nIncreases money on teleporter event completion.",
-		"RISKOFBULLETSTORM_ITEM_COINCROWN_DESCRIPTION": "After completing a teleporter event, increases your <style=cIsUtility>money</style> by <style=cIsUtility>{0}%</style> <style=cStack>(+{1}% per stack)</style>.",
+		"RISKOFBULLETSTORM_ITEM_COINCROWN_DESCRIPTION": "After <style=cIsUtility>completing a teleporter event</style>, increases your <style=cIsUtility>money</style> by <style=cIsUtility>{0}%</style> <style=cStack>(+{1}% per stack)</style>.",
 		"RISKOFBULLETSTORM_ITEM_COINCROWN_LORE": "A pre-Gungeon relic.",
 		
 		"RISKOFBULLETSTORM_ITEM_GHOSTBULLETS_NAME": "Ghost Bullets",
@@ -77,8 +77,8 @@
 		"OLD_RISKOFBULLETSTORM_ITEM_CLONE_LORE": "An uncomfortable answer to an uncomfortable truth. This clone can replace a single Gungeoneer upon their death, with almost no lapse in memory.",
 		
 		"RISKOFBULLETSTORM_ITEM_CLONE_NAME": "Clone",
-		"RISKOFBULLETSTORM_ITEM_CLONE_PICKUP": "<b>Extra Life</b>\nRestart the run with some items.",
-		"RISKOFBULLETSTORM_ITEM_CLONE_DESCRIPTION": "<style=cIsUtility>Upon death of all players</style>, this item will be <style=cIsUtility>consumed</style> and send <style=cIsUtility>all players</style> to the first stage with <style=cIsUtility>{0} items</style> <style=cStack>(+{1} items per stack)</style> intact. <style=cDeath>All stacks consumed on death</style>.",
+		"RISKOFBULLETSTORM_ITEM_CLONE_PICKUP": "<b>Extra Life</b>\nRestart the run with some items when out of lives.",
+		"RISKOFBULLETSTORM_ITEM_CLONE_DESCRIPTION": "<style=cDeath>Upon death of all players</style>, this item will be <style=cDeath>consumed</style> and send <style=cIsUtility>all players</style> to the first stage with <style=cIsUtility>{0} random items</style> <style=cStack>(+{1} random items per stack)</style> intact. <style=cDeath>All stacks consumed on death</style>.",
 		"RISKOFBULLETSTORM_ITEM_CLONE_LORE": "An uncomfortable answer to an uncomfortable truth. This clone can replace a single Gungeoneer upon their death, with almost no lapse in memory.",
 		
 		"RISKOFBULLETSTORM_ITEM_RINGTRIGGERS_NAME": "Ring of Triggers",
@@ -99,7 +99,8 @@
 		
 		"RISKOFBULLETSTORM_ITEM_PASTKILLINGBULLET_NAME": "Bullet That Can Kill The Past",
 		"RISKOFBULLETSTORM_ITEM_PASTKILLINGBULLET_PICKUP": "<b>Don't Miss</b>",
-		"RISKOFBULLETSTORM_ITEM_PASTKILLINGBULLET_DESCRIPTION": "A bullet that can only be fed into a special gun to unlock one's past.",
+		"RISKOFBULLETSTORM_ITEM_PASTKILLINGBULLET_DESCRIPTION": "A bullet that can kill the past.",
+		"RISKOFBULLETSTORM_ITEM_PASTKILLINGBULLET_LOGBOOK_DESCRIPTION": "A bullet that can kill the past. Bring it to the chest at the XYZ, and it will be loaded into the wazoo. When firing the Gun, launch to past. Pasts are character-dependent.",
 		"RISKOFBULLETSTORM_ITEM_PASTKILLINGBULLET_LORE": "A bullet that can kill the past. You're not sure what will happen when you fire it, but you feel exhilarated!",
 		
 		"RISKOFBULLETSTORM_ITEM_RATBOOTS_NAME": "Rat Boots",
@@ -132,7 +133,7 @@
 		
 		//[TIERLUNAR]
 		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_NAME": "Bloodied Scarf",
-		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_PICKUP": "<b>Blink Away</b>\nUtility is replaced with a blink with vulnerability afterwards.",
+		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_PICKUP": "<b>Blink Away</b>\nUtility is replaced with a vulnerable.",
 		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_DESCRIPTION": "<style=cIsUtility>Replace your Utility Skill</style> with <style=cIsUtility>Bloodied Teleport</style>. {0}",
 		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_LOGBOOK_DESCRIPTION": "{0}\n\nSkill:{1}\nDescription:{2}",
 		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_LORE": "This simple scarf was once worn by a skilled assassin. Betrayed by his brothers and assumed dead...",
@@ -150,7 +151,7 @@
 		
 		"RISKOFBULLETSTORM_ITEM_HIPHOLSTER_NAME": "Hip Holster",
 		"RISKOFBULLETSTORM_ITEM_HIPHOLSTER_PICKUP": "<b>Quickdraw</b>\nYour skills have a chance to activate for free upon recharging a stock.",
-		"RISKOFBULLETSTORM_ITEM_HIPHOLSTER_DESCRIPTION": "Your skills have a <style=cIsUtility>{0}% chance</style> <style=cStack>(+{1}% chance per stack, hyperbolically)</style> to activate for free upon recharging a stock.",
+		"RISKOFBULLETSTORM_ITEM_HIPHOLSTER_DESCRIPTION": "Your skills have a <style=cIsUtility>{0}% chance</style> <style=cStack>(+{1}% chance per stack, hyperbolically)</style> to <style=cIsUtility>activate for free</style> upon recharging a stock.",
 		"RISKOFBULLETSTORM_ITEM_HIPHOLSTER_LORE": "<style=cMono>INTERCEPTING TRANSMISSION...</style>\n\nIn '87, Huey released this; Fore!, their most accomplished album. I think their undisputed masterpiece is \"Hip To Be Square\". A song so catchy, most people probably don't listen to the lyrics. But they should, because- \n\n<style=cMono>TRANSMISSION STOPPED ABRUPTLY, ATTEMPTING TO RECONNECT...\n\n</style>",
 		
 		"RISKOFBULLETSTORM_ITEM_RINGMISERLYPROTECTION_NAME": "Ring of Miserly Protection",
@@ -159,20 +160,20 @@
 		"RISKOFBULLETSTORM_ITEM_RINGMISERLYPROTECTION_LORE": "Before the Shopkeep opened his shop, he was an avaricious and miserly man. He remains careful about any expenditures, but through capitalism he has purged himself of negative emotion.",
 		
 		//[VOIDUNCOMMON]
-		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARDVOID_NAME": "Leader's Standard",
-		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARDVOID_PICKUP": "<b>Set My Own!</b>\nCompanions increase your damage.",
+		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARDVOID_NAME": "Leader's Flag",
+		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARDVOID_PICKUP": "<b>The First Napkin</b>\nCompanions increase your damage.",
 		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARDVOID_DESCRIPTION": "For every companion, increases your <style=cIsDamage>damage by {0}%</style> <style=cStack>(+{0}% per stack)</style>. <style=cIsVoid>Corrupts all Battle Standards</style>.",
 		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARDVOID_LORE": "At the advancement of Gungeoneer society, some self-appointed Gungeoneer Leaders would adorn a flag onto themselves, advancing upon the lower chambers by rallies of their fellow Gungeoneers.",
 		
 		"RISKOFBULLETSTORM_ITEM_COINCROWNVOID_NAME": "Crown For Fools",
 		"RISKOFBULLETSTORM_ITEM_COINCROWNVOID_PICKUP": "<b>Play Long, Get Rich</b>\nIncreases gold gain during the teleporter event.",
 		"RISKOFBULLETSTORM_ITEM_COINCROWNVOID_DESCRIPTION": "During a teleporter event, increases your <style=cIsUtility>gold from kills</style> by <style=cIsUtility>+{0}</style> <style=cStack>(+{1} per stack)</style>. <style=cIsVoid>Corrupts all Coin Crowns</style>.",
-		"RISKOFBULLETSTORM_ITEM_COINCROWNVOID_LORE": "A pre-Gungeon relic.",
+		"RISKOFBULLETSTORM_ITEM_COINCROWNVOID_LORE": "A Gungeon relic, led to be corrupted and corrupt each user who wore it.",
 		
 		//[VOIDLEGENDARY]
 		"RISKOFBULLETSTORM_ITEM_CLONEVOID_NAME": "Prototype",
 		"RISKOFBULLETSTORM_ITEM_CLONEVOID_PICKUP": "<b>Extra Quarter</b>\nRestarts the run, but gain extra items every stage.",
-		"RISKOFBULLETSTORM_ITEM_CLONEVOID_DESCRIPTION": "<style=cIsUtility>Upon death of all players</style>, this item will be <style=cIsUtility>consumed</style> and send <style=cIsUtility>all players</style> to the first stage with no items. For <style=cIsUtility>{0} stages</style> <style=cStack>(+{1} stages per stack)</style> gain <style=cIsUtility>{2} random items</style> per stage. <style=cDeath>All stacks consumed on death</style>.",
+		"RISKOFBULLETSTORM_ITEM_CLONEVOID_DESCRIPTION": "<style=cIsUtility>Upon death of all players</style>, this item will be <style=cIsUtility>consumed</style> and send <style=cIsUtility>all players</style> to the first stage with no items. For <style=cIsUtility>{0} stages</style> gain <style=cIsUtility>{1} random items</style> <style=cStack>(+{2} items per stack) per stage</style>. <style=cDeath>All stacks consumed on death</style>. <style=cIsVoid>Corrupts all Clones</style>.",",
 		"RISKOFBULLETSTORM_ITEM_CLONEVOID_LORE": "An uncomfortable answer to an uncomfortable truth. This clone can replace a single Gungeoneer upon their death, with almost no lapse in memory.",
 		
 		//[NOTIER]
@@ -204,7 +205,7 @@
 		
 		"RISKOFBULLETSTORM_ITEM_ORANGECONSUMED_NAME": "Orange (Consumed)",
 		"RISKOFBULLETSTORM_ITEM_ORANGECONSUMED_PICKUP": "<b>With The Peel Too?</b>\nBoosts stats.",
-		"RISKOFBULLETSTORM_ITEM_ORANGECONSUMED_DESCRIPTION": "stat changes",
+		"RISKOFBULLETSTORM_ITEM_ORANGECONSUMED_DESCRIPTION": "Increase <style=cIsHealing>maximum health by {0}%</style>, and <style=cIsUtility>reduce equipment cooldown by {1}%</style>.",
 		"RISKOFBULLETSTORM_ITEM_ORANGECONSUMED_LORE": "Consumed result of Orange.",
 		
 		"RISKOFBULLETSTORM_ITEM__NAME": "",

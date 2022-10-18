@@ -50,10 +50,11 @@ namespace RiskOfBulletstormRewrite.Items
             if (cloneMeshRenderer)
             {
                 var mushroomMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/Mushroom/matMushroom.mat").WaitForCompletion();
-                for (int i = 0; i < cloneMeshRenderer.materials.Length; i++)
+                cloneMeshRenderer.SetMaterial(mushroomMat);
+                /* for (int i = 0; i < cloneMeshRenderer.materials.Length; i++)
                 {
                     cloneMeshRenderer.materials[i] = mushroomMat;
-                }
+                } */
             }
             return clonePMP;
         }
@@ -197,20 +198,20 @@ namespace RiskOfBulletstormRewrite.Items
             //todo optimize
             public void AcquireItemsToReturn()
             {
-                Main._logger.LogMessage("Acquiring items to return");
+                //Main._logger.LogMessage("Acquiring items to return");
                 var cloneCount = Util.GetItemCountForTeam(TeamIndex.Player, instance.ItemDef.itemIndex, false);
                 foreach (var player in PlayerCharacterMasterController.instances)
                 {
-                    Main._logger.LogMessage($"Checking player: {player.GetDisplayName()}");
+                    //Main._logger.LogMessage($"Checking player: {player.GetDisplayName()}");
                     var inv = player.master.inventory;
                     itemsToGive.Add(player, GetRandomItemsFromInventory(inv, cloneCount));
-                    Main._logger.LogMessage("Got items");
+                    //Main._logger.LogMessage("Got items");
                     var ownItemCount = inv.GetItemCount(instance.ItemDef);
-                    Main._logger.LogMessage("Clearing items");
+                    //Main._logger.LogMessage("Clearing items");
                     var tempInvGameObject = new GameObject();
                     inv.CopyItemsFrom(tempInvGameObject.AddComponent<Inventory>());
                     Destroy(tempInvGameObject);
-                    Main._logger.LogMessage("Items cleared");
+                   // Main._logger.LogMessage("Items cleared");
                     
                     if (ownItemCount > 0)
                     {
@@ -241,37 +242,44 @@ namespace RiskOfBulletstormRewrite.Items
                 Main._logger.LogMessage($"Getting random items from {inventory.GetComponent<PlayerCharacterMasterController>().GetDisplayName()}");
                 List<KeyValuePair<ItemIndex, int>> list = new List<KeyValuePair<ItemIndex, int>>();
                 var givenItemCount = cfgItemsToKeep.Value + (cloneCount - 1) * cfgItemsToKeepPerStack.Value;
-                for (int i = 0; i < inventory.itemAcquisitionOrder.Count; i++)
+                bool hasPerformedFirstPass = false;
+                while (givenItemCount > 0)
                 {
-                    var currentItemIndex = inventory.itemAcquisitionOrder[i];
-                    if (currentItemIndex == instance.ItemDef.itemIndex)
-                        continue;
-                    //no infinite clones, bozo
-                    var currentItemDef = ItemCatalog.GetItemDef(currentItemIndex);
-                    if (!currentItemDef)
-                        continue;
-                    //keeping hidden items are important: difficulty modifier items
-                    //so are NoTiers, usually
-                    if (currentItemDef?.hidden == true || currentItemDef.tier == ItemTier.Tier1)
+                    for (int i = 0; i < inventory.itemAcquisitionOrder.Count; i++)
                     {
-                        var hiddenItemCount = inventory.GetItemCount(currentItemDef);
-                        list.Add(new KeyValuePair<ItemIndex, int>(currentItemIndex, hiddenItemCount));
+                        //Prevents infinite clones
+                        var currentItemIndex = inventory.itemAcquisitionOrder[i];
+                        if (currentItemIndex == instance.ItemDef.itemIndex)
+                            continue;
+                        //nullcheck
+                        var currentItemDef = ItemCatalog.GetItemDef(currentItemIndex);
+                        if (!currentItemDef)
+                            continue;
+                        //keeping hidden items are important: difficulty modifier items
+                        //so are NoTiers, usually
+                        if (!hasPerformedFirstPass && currentItemDef?.hidden == true || currentItemDef.tier == ItemTier.Tier1)
+                        {
+                            var hiddenItemCount = inventory.GetItemCount(currentItemDef);
+                            list.Add(new KeyValuePair<ItemIndex, int>(currentItemIndex, hiddenItemCount));
+                            
+                            //Main._logger.LogMessage($"Added item: {currentItemDef.nameToken} x{hiddenItemCount}");
+                            continue;
+                        }
+
+                        var itemCount = UnityEngine.Random.RandomRangeInt(0, Mathf.Min(inventory.GetItemCount(currentItemIndex), givenItemCount));
+                        if (itemCount == 0)
+                            continue;
+                        givenItemCount -= itemCount;
+                        list.Add(new KeyValuePair<ItemIndex, int>((ItemIndex)i, itemCount));
                         
-                        Main._logger.LogMessage($"Added item: {currentItemDef.nameToken} x{hiddenItemCount}");
-                        continue;
+                            //Main._logger.LogMessage($"Added item: {currentItemDef.nameToken} x{itemCount}");
+                        if (givenItemCount <= 0)
+                        {
+                            break;
+                        }
                     }
-
-                    var itemCount = UnityEngine.Random.RandomRangeInt(0, Mathf.Min(inventory.GetItemCount(currentItemIndex), cloneCount));
-                    givenItemCount -= itemCount;
-                    list.Add(new KeyValuePair<ItemIndex, int>((ItemIndex)i, itemCount));
-                    
-                        Main._logger.LogMessage($"Added item: {currentItemDef.nameToken} x{itemCount}");
-                    if (givenItemCount <= 0)
-                    {
-                        break;
-                    }
+                    hasPerformedFirstPass = true;
                 }
-
                 return list;
             }
         }

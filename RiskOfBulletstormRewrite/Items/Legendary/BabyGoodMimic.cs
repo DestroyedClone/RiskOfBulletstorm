@@ -170,7 +170,7 @@ namespace RiskOfBulletstormRewrite.Items
             public void AssignMinion(CharacterBody targetMinion)
             {
                 var identifierDef = Items.BabyMimicIdentifier.instance.ItemDef;
-                Chat.AddMessage($"Mimic is copying {targetMinion.GetDisplayName()}");
+                //Chat.AddMessage($"Mimic is copying {targetMinion.GetDisplayName()}");
                 targetMinion.inventory.GiveItem(identifierDef);
                 //var copy = Util.TryToCreateGhost(targetMinion, ownerBody, 10);
                 //targetMinion.inventory.RemoveItem(identifierDef);
@@ -208,14 +208,14 @@ namespace RiskOfBulletstormRewrite.Items
             public CharacterMaster targetMaster;
             public RBS_BabyMimicBehaviour ownerComponent;
 
-            public void OnEnable()
+            public void Start()
             {
                 myMaster = gameObject.GetComponent<CharacterMaster>();
                 //myBody = myMaster.GetBody();
                 targetMaster.onBodyDestroyed += OnBodyDestroyed;
             }
 
-            public void OnDisable()
+            public void OnDestroy()
             {
                 targetMaster.onBodyDestroyed -= OnBodyDestroyed;
             }

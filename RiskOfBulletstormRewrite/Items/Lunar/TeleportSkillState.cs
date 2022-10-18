@@ -49,10 +49,14 @@ namespace RiskOfBulletstormRewrite.Items
 
 		private CrosshairUtils.OverrideRequest crosshairOverrideRequest;
 
+		private Transform modelRoot;
+
 		public override void OnEnter()
 		{
 			base.OnEnter();
-			areaIndicatorInstance = UnityEngine.Object.Instantiate<GameObject>(modelTransform?.gameObject ?? ArrowRain.areaIndicatorPrefab);//(ArrowRain.areaIndicatorPrefab);
+			modelRoot = base.GetModelTransform().GetComponentInChildren<SkinnedMeshRenderer>()?.rootBone;
+
+			areaIndicatorInstance = UnityEngine.Object.Instantiate<GameObject>(modelRoot?.gameObject ?? ArrowRain.areaIndicatorPrefab);//(ArrowRain.areaIndicatorPrefab);
 			areaIndicatorInstance.transform.localScale = new Vector3(ArrowRain.arrowRainRadius / 3, ArrowRain.arrowRainRadius / 1.5f, ArrowRain.arrowRainRadius / 3);
 
 			//Icewall

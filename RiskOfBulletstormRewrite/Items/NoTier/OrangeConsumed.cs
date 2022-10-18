@@ -10,6 +10,11 @@ namespace RiskOfBulletstormRewrite.Items
         public override string ItemName => "Orange (Consumed)";
 
         public override string ItemLangTokenName => "ORANGECONSUMED";
+        public override string[] ItemFullDescriptionParams => new string[]
+        {
+            GetChance(Equipment.Orange.cfgMaxHealthIncrease),
+            GetChance(Equipment.Orange.cfgChargeRateReduction)
+        };
 
         public override ItemTier Tier => ItemTier.NoTier;
 

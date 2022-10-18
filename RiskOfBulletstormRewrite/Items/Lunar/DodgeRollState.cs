@@ -82,7 +82,8 @@ namespace RiskOfBulletstormRewrite.Items
             if (modelRoot)
             {
                 //var newRot = Vector3.Lerp(modelRootOldRot, )
-                var addedRot = new Vector3(1, calculatedRotationValue, 1);
+                //this is goofy as fuck
+                var addedRot = new Vector3(1, 1, calculatedRotationValue);
                 addedRot *= this.duration/(base.fixedAge+0.1f);
                 var newRotation = modelRootOldRot.eulerAngles + addedRot;
                 modelRoot.localRotation = Quaternion.Euler(newRotation);

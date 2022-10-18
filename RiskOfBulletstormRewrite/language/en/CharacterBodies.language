@@ -98,7 +98,7 @@
 		"RISKOFBULLETSTORM_SKILL_TELEPORT_DESCRIPTION": "<style=cIsUtility>Teleport</style> up to <style=cIsUtility>{0}m</style> <style=cStack>(+{1}m per stack)</style>.\nAfter teleporting, <style=cDeath>take +{2}% more damage <style=cStack>(+{3}% per stack)</style> for {4} seconds</style>.",
 		
 		"RISKOFBULLETSTORM_SKILL_DODGEROLL_NAME": "Dodge Roll",
-		"RISKOFBULLETSTORM_SKILL_DODGEROLL_DESCRIPTION": "<style=cIsUtility>Roll</style> a short distance. \nAfter teleporting, <style=cDeath>take +{2}% more damage <style=cStack>(+{3}% per stack)</style> for {4} seconds</style> <style=cStack>(-{5} per stack, minimum {6})</style>. Become <style=cIsUtility>intangible during the roll</style>.",
+		"RISKOFBULLETSTORM_SKILL_DODGEROLL_DESCRIPTION": "<style=cIsUtility>Roll</style> a short distance. \nAfter teleporting, <style=cDeath>take +{0}% more damage <style=cStack>(+{1}% per stack)</style> for {2} seconds</style> <style=cStack>(-{3} per stack, minimum {4})</style>. Become <style=cIsUtility>intangible during the roll</style>.",
 		
 	}
 }

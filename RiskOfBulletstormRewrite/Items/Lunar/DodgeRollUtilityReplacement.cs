@@ -55,8 +55,10 @@ namespace RiskOfBulletstormRewrite.Items
             cfgDamageVulnerabilityDurationMinimum.Value.ToString()
         };
 
+        //todo fix this??? kinda cringe
         public static float GetDuration(int stacks)
         {
+            if (stacks <= 1) return cfgDamageVulnerabilityDuration.Value;
             return cfgDamageVulnerabilityDurationMinimum.Value
             + ((cfgDamageVulnerabilityDuration.Value - cfgDamageVulnerabilityDurationMinimum.Value) / (1 + cfgDamageVulnerabilityDurationDecreasePerStack.Value * stacks));
         }

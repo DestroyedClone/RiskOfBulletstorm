@@ -43,11 +43,19 @@ namespace RiskOfBulletstormRewrite
                 }
                 BetterUI.Buffs.RegisterBuffInfo(buffDef, prefix+baseToken+"_NAME", prefix+baseToken+"_DESC");
             }
+            RegisterBuffInfo(Buffs.AlphaBulletBuff, "ALPHABULLET", new string[]
+            {
+                GetFloat(AlphaBullets.cfgDamage),
+                GetFloat(AlphaBullets.cfgDamageStack)
+            });
             RegisterBuffInfo(Buffs.MustacheBuff, "MUSTACHE", new string[]{
                 GetFloat(Mustache.cfgRegenAmount), 
                 GetFloat(Mustache.cfgRegenAmountPerStack)});
             /*(Buffs.MetronomeTrackerBuff, "METRONOME", new string[]{});*/
-            RegisterBuffInfo(Buffs.BloodiedScarfBuff, "BLOODIEDSCARF", new string[]{});
+            RegisterBuffInfo(Buffs.BloodiedScarfBuff, "BLOODIEDSCARF", new string[]{
+                GetFloat(BloodiedScarf.cfgDamageVulnerabilityMultiplier),
+                GetFloat(BloodiedScarf.cfgDamageVulnerabilityMultiplierPerStack)
+            });
             RegisterBuffInfo(Buffs.BloodiedScarfBuff, "ALPHABULLET", new string[]{
                 GetFloat(AlphaBullets.cfgDamage),
                 GetFloat(AlphaBullets.cfgDamageStack)});
@@ -103,6 +111,11 @@ namespace RiskOfBulletstormRewrite
         public static float DodgeRollDurationStacking(float value, float extraStackValue, int stacks)
         {
             return DodgeRollUtilityReplacement.GetDuration(stacks);
+        }
+
+        public static float CustomHyperbolicStacking(float value, float extraStackValue, int stacks)
+        {
+            return Utils.ItemHelpers.GetHyperbolicValue(value, extraStackValue, stacks);
         }
 
         [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
@@ -276,7 +289,7 @@ namespace RiskOfBulletstormRewrite
                 prefix + "HIPHOLSTER_CHANCE",
                 HipHolster.cfgFreeStockChance.Value,
                 HipHolster.cfgFreeStockChancePerStack.Value,
-                BetterUI.ItemStats.HyperbolicStacking,
+                CustomHyperbolicStacking,
                 BetterUI.ItemStats.StatFormatter.Chance,
                 BetterUI.ItemStats.ItemTag.SkillCooldown);
 
