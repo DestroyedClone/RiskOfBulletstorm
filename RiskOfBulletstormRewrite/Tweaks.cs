@@ -15,7 +15,7 @@ namespace RiskOfBulletstormRewrite
         public const string category = "Tweaks";
         public static void Init(ConfigFile config)
         {
-            cfgCenterNotifications = config.Bind(category, "Center Notification Text", true, "If true, then notification text will be centered.");
+            cfgCenterNotifications = config.Bind(category, "Center Notification Text", false, "If true, then notification text will be centered.");
             cfgDisableAutoPickup = config.Bind(category, "Disable Auto Pickups", false);
             if (cfgCenterNotifications.Value)
             {

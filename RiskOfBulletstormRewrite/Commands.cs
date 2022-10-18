@@ -13,7 +13,7 @@ namespace RiskOfBulletstormRewrite
 
         [ConCommand(commandName = "rbs_givebulletparts", 
         flags = ConVarFlags.SenderMustBeServer, 
-        helpText = "rbs_givebulletparts\nGives the bullet parts.")]
+        helpText = "rbs_givebulletparts - Gives the bullet parts.")]
         public static void CCGiveBulletParts(ConCommandArgs args)
         {
             var master = args.senderMaster;

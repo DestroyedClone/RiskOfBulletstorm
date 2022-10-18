@@ -89,6 +89,8 @@ namespace RiskOfBulletstormRewrite.Items
             public GenericSkill utility = null;
             public GenericSkill special = null;
 
+            public bool hasItem = false;
+
             public void Start()
             {
                 if (!body)
@@ -117,17 +119,24 @@ namespace RiskOfBulletstormRewrite.Items
 
             public void OnInventoryChanged()
             {
-                if (body.inventory.GetItemCount(instance.ItemDef) > 0)
+                hasItem = body.inventory.GetItemCount(instance.ItemDef) > 0;
+                if (hasItem)
                 {
                     enabled = true;
                 } else {
-                    body.SetBuffCount(Utils.Buffs.AlphaBulletBuff.buffIndex, 0);
                     enabled = false;
                 }
             }
 
+            public void OnDisable()
+            {
+                body.SetBuffCount(Utils.Buffs.AlphaBulletBuff.buffIndex, 0); 
+            }
+
             public void FixedUpdate()
             {
+                if (!hasItem)
+                    return;
                 var validSkills = Inc(primary) + Inc(secondary) + Inc(utility) + Inc(special);
                 body.SetBuffCount(Utils.Buffs.AlphaBulletBuff.buffIndex, validSkills);
             }

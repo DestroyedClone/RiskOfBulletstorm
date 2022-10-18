@@ -147,45 +147,56 @@ namespace RiskOfBulletstormRewrite.Items
                     {
                         if (!minion)
                             continue;
-                        Chat.AddMessage($"checking {minion.gameObject.name}");
-                        var cb = minion.GetComponent<CharacterBody>();
-                        if (cb && cb.healthComponent && cb.healthComponent.alive
-                        && cb.inventory && cb.master 
-                        && cb.inventory.GetItemCount(RoR2Content.Items.Ghost) == 0
-                        && !cb.bodyFlags.HasFlag(CharacterBody.BodyFlags.Mechanical)
-                        && !cb.GetComponent<RBS_BabyMimicPairing>())
+                        if (minion.TryGetComponent<CharacterMaster>(out CharacterMaster minionMaster))
                         {
-                            AssignMinion(cb);
-                            minionsToCopy--;
+                            var minionBody = minionMaster.GetBody();
+                            if (minionBody && minionBody.healthComponent && minionBody.healthComponent.alive)
+                            if (minionMaster.inventory
+                            && minionMaster.inventory.GetItemCount(RoR2Content.Items.Ghost) == 0
+                            && minionMaster.inventory.GetItemCount(Items.BabyMimicIdentifier.instance.ItemDef) == 0)
+                            {
+                                AssignMinion(minionBody);
+                                minionsToCopy--;
+                            }
                         }
                         if (minionsToCopy <= 0)
                             break;
                     }
                 } else {
-                    stopwatch += subduration;
+                    stopwatch = subduration;
                 }
             }
 
             public void AssignMinion(CharacterBody targetMinion)
             {
+                var identifierDef = Items.BabyMimicIdentifier.instance.ItemDef;
                 Chat.AddMessage($"Mimic is copying {targetMinion.GetDisplayName()}");
-                var copy = Util.TryToCreateGhost(targetMinion, ownerBody, 10);
-                copy.inventory.RemoveItem(RoR2Content.Items.Ghost);
-                copy.inventory.RemoveItem(RoR2Content.Items.HealthDecay, 10);
+                targetMinion.inventory.GiveItem(identifierDef);
+                //var copy = Util.TryToCreateGhost(targetMinion, ownerBody, 10);
+                //targetMinion.inventory.RemoveItem(identifierDef);
+                
+                var copyMaster = new MasterSummon
+                {
+                    position = targetMinion.footPosition,
+                    ignoreTeamMemberLimit = true,
+                    masterPrefab = MasterCatalog.GetMasterPrefab(MasterCatalog.FindMasterIndex(targetMinion.masterObject)),
+                    summonerBodyObject = ownerBody.gameObject
+                }.Perform();
+                copyMaster.inventory.GiveItem(identifierDef);
                 //this section probablyisnt networked
-                copy.baseNameToken = "RISKOFBULLETSTORM_BABYGOODMIMIC_BODY_NAME";
-                copy.subtitleNameToken = "RISKOFBULLETSTORM_BABYGOODMIMIC_BODY_SUBTITLE";
-                copy.portraitIcon = mimicIcon.texture;
-                TeleportHelper.TeleportBody(copy, ownerBody.footPosition);
+                //copy.baseNameToken = "RISKOFBULLETSTORM_BABYGOODMIMIC_BODY_NAME";
+                //copy.subtitleNameToken = "RISKOFBULLETSTORM_BABYGOODMIMIC_BODY_SUBTITLE";
+                //copy.portraitIcon = mimicIcon.texture;
+                //TeleportHelper.TeleportBody(copy, ownerBody.footPosition);
 
                 Chat.AddMessage("Mimic is now adding component.");
-                var comp = copy.gameObject.AddComponent<RBS_BabyMimicPairing>();
+                var comp = copyMaster.gameObject.AddComponent<RBS_BabyMimicPairing>();
                 //comp.myBody = copy;
                 comp.ownerBody = ownerBody;
                 //comp.targetBody = targetMinion;
                 comp.targetMaster = targetMinion.master;
                 comp.ownerComponent = this;
-                mimics.Add(copy.master);
+                mimics.Add(copyMaster);
             }
         }
 

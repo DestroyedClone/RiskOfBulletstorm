@@ -22,12 +22,18 @@ namespace RiskOfBulletstormRewrite.Artifact
             Hooks();
         }
 
-        public const float damagePerSecond = 75f;
+        public const float damagePerSecond = 50f;
         public const float alternateEquipmentDecreaseMultiplier = 0.5f;
         public float stageDamagePerSecond
         {
             get
             {
+                if (ArtifactGungeonSpoof.instance.ArtifactEnabled)
+                {
+                    var spoofDamage = damagePerSecond * 0.5f;
+                    return Mathf.Max(spoofDamage *
+                Run.instance.stageClearCount, spoofDamage);
+                }
                 return Mathf.Max(damagePerSecond *
                 Run.instance.stageClearCount, damagePerSecond);
             }
@@ -156,14 +162,13 @@ namespace RiskOfBulletstormRewrite.Artifact
                     remainingDurations.Add(0);
                 }
 
-                float normalCooldownMax = 1.5f;
+                float normalCooldownMax = 1f;
                 for (int i = 0; i < durlength; i++)
                 {
                     EquipmentState equipment = inventory.GetEquipment((uint)i);
-                    if (remainingDurations[i] <= normalCooldownMax)
+                    if (remainingDurations[i] <= 0)
                     {
-                        if (equipment.isPerfomingRecharge)
-                            remainingDurations[i] = equipment.chargeFinishTime.timeUntil;
+                        remainingDurations[i] = equipment.chargeFinishTime.timeUntil;
                     }
                     else {
                         inventory.SetEquipment(

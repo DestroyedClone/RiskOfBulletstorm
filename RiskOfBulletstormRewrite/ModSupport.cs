@@ -27,7 +27,7 @@ namespace RiskOfBulletstormRewrite
             var prefix = "RISKOFBULLETSTORM_BUFF_";
             void RegisterBuffInfo(RoR2.BuffDef buffDef, string baseToken, string[] descTokenParams = null)
             {
-                if (descTokenParams != null || descTokenParams.Length > 0)
+                if (descTokenParams != null && descTokenParams.Length > 0)
                 {
                     Language.DeferToken(prefix+baseToken+"_DESC", descTokenParams);
                 }
@@ -36,7 +36,7 @@ namespace RiskOfBulletstormRewrite
             RegisterBuffInfo(Buffs.MustacheBuff, "MUSTACHE", new string[]{
                 GetFloat(Mustache.cfgRegenAmount), 
                 GetFloat(Mustache.cfgRegenAmountPerStack)});
-            RegisterBuffInfo(Buffs.MetronomeTrackerBuff, "METRONOME", new string[]{});
+            /*(Buffs.MetronomeTrackerBuff, "METRONOME", new string[]{});*/
             RegisterBuffInfo(Buffs.BloodiedScarfBuff, "BLOODIEDSCARF", new string[]{});
             RegisterBuffInfo(Buffs.BloodiedScarfBuff, "ALPHABULLET", new string[]{
                 GetFloat(AlphaBullets.cfgDamage),

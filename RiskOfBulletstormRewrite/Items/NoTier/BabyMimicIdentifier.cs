@@ -17,7 +17,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override GameObject ItemModel => Assets.NullModel;
 
-        public override Sprite ItemIcon => LoadSprite();
+        public override Sprite ItemIcon => Assets.NullSprite;
 
         public override ItemTag[] ItemTags => new ItemTag[]
         {
@@ -25,6 +25,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void Init(ConfigFile config)
         {
+            return;
             CreateConfig(config);
             CreateLang();
             CreateItem();

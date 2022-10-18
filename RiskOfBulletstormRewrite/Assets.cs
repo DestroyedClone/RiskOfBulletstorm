@@ -65,7 +65,8 @@ namespace RiskOfBulletstormRewrite
             if (File.Exists(FilePath))
             {
                 FileData = File.ReadAllBytes(FilePath);
-                Tex2D = new Texture2D(2, 2);           // Create new "empty" texture
+                //http://answers.unity.com/comments/1095919/view.html
+                Tex2D = new Texture2D(2, 2, TextureFormat.BGRA32,false);           // Create new "empty" texture
                 if (Tex2D.LoadImage(FileData))           // Load the imagedata into the texture (size is set automatically)
                     return Tex2D;                 // If data = readable -> return texture
             }

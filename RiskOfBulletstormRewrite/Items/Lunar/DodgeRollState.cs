@@ -25,6 +25,9 @@ namespace RiskOfBulletstormRewrite.Items
         private float calculatedRotationValue = 1;
 
         private float calcPercentageToApplyVulnerability = 0.5f;
+        private float calcPreVulnTime = 0.4f;
+        private float calcPostVulnTime = 0.6f;
+        private Vector2 initialDirection;
 
         private bool hasGivenBuff = false;
 
@@ -59,11 +62,10 @@ namespace RiskOfBulletstormRewrite.Items
             UpdateDirection();
             calcPercentageToApplyVulnerability = 
                 Utils.ItemHelpers.GetHyperbolicValue(DodgeRollUtilityReplacement.cfgVulnDuration.Value, DodgeRollUtilityReplacement.instance.GetCount(base.characterBody));
-            /* (Utils.ItemHelpers.GetHyperbolicValue(
-                DodgeRollUtilityReplacement.cfgVulnDuration.Value,
-                DodgeRollUtilityReplacement.cfgVulnDurationReduction.Value,
-                DodgeRollUtilityReplacement.instance.GetCount(base.characterBody))); */
-            
+            calcPreVulnTime = duration * calcPercentageToApplyVulnerability;
+            calcPostVulnTime = duration - calcPreVulnTime;
+            if (base.inputBank)
+                initialDirection = Util.Vector3XZToVector2XY(base.inputBank.moveVector);
         }
 
         public float GetDuration()
@@ -78,7 +80,8 @@ namespace RiskOfBulletstormRewrite.Items
 
             if (modelRoot)
             {
-                var addedRot = new Vector3(calculatedRotationValue, 0,0);
+                //var newRot = Vector3.Lerp(modelRootOldRot, )
+                var addedRot = new Vector3(1, calculatedRotationValue, 1);
                 addedRot *= this.duration/(base.fixedAge+0.1f);
                 var newRotation = modelRootOldRot.eulerAngles + addedRot;
                 modelRoot.localRotation = Quaternion.Euler(newRotation);
@@ -104,8 +107,8 @@ namespace RiskOfBulletstormRewrite.Items
                     base.characterBody.isSprinting = true;
                     if (!hasGivenBuff)
                     {
-                        if (base.fixedAge <= calcPercentageToApplyVulnerability
-                        || base.fixedAge >= duration)
+                        if (base.fixedAge < calcPreVulnTime
+                        || base.fixedAge > calcPostVulnTime)
                         {
                             base.characterBody.AddBuff(Utils.Buffs.DodgeRollBuff);
                         } else {
@@ -138,7 +141,7 @@ namespace RiskOfBulletstormRewrite.Items
                 base.characterBody.RemoveBuff(Utils.Buffs.DodgeRollBuff);
             if (animator)
                 animator.enabled = true;
-            if (NetworkServer.active)
+            if (base.isAuthority)
             {
                 characterBody.RemoveBuff(RoR2Content.Buffs.Intangible);
             }
@@ -150,11 +153,10 @@ namespace RiskOfBulletstormRewrite.Items
 		{
 			if (base.inputBank)
 			{
-				Vector2 vector = Util.Vector3XZToVector2XY(base.inputBank.moveVector);
-				if (vector != Vector2.zero)
+				if (initialDirection != Vector2.zero)
 				{
-					vector.Normalize();
-					this.idealDirection = new Vector3(vector.x, 0f, vector.y).normalized;
+					initialDirection.Normalize();
+					this.idealDirection = new Vector3(initialDirection.x, 0f, initialDirection.y).normalized;
 				}
 			}
 		}
@@ -169,7 +171,7 @@ namespace RiskOfBulletstormRewrite.Items
             {
                 modifiedSpeed = base.characterDirection.forward * 
                 Mathf.Lerp(base.characterBody.moveSpeed * this.speedMultiplier,
-                 characterBody.moveSpeed * 0.25f, 
+                 characterBody.moveSpeed * 0.1f, 
                  (fixedAge/baseDuration));
             }
 
