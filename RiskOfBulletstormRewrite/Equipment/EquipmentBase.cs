@@ -45,7 +45,7 @@ namespace RiskOfBulletstormRewrite.Equipment
         public virtual bool CanBeRandomlyTriggered { get; } = true;
 
         public virtual Equipment.EquipmentBase DependentEquipment {get;} = null;
-
+        public virtual string ParentEquipmentName {get;} = null;
         public EquipmentDef EquipmentDef;
 
         public string ConfigCategory

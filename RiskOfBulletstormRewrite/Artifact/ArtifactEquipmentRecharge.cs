@@ -162,21 +162,19 @@ namespace RiskOfBulletstormRewrite.Artifact
                     remainingDurations.Add(0);
                 }
 
-                float normalCooldownMax = 1f;
+                float normalCooldownMax = 3f;
                 for (int i = 0; i < durlength; i++)
                 {
                     EquipmentState equipment = inventory.GetEquipment((uint)i);
-                    if (remainingDurations[i] <= 0)
+                    if (remainingDurations[i] <= normalCooldownMax)
                     {
                         remainingDurations[i] = equipment.chargeFinishTime.timeUntil;
                     }
-                    else {
-                        inventory.SetEquipment(
-                            new EquipmentState(equipment.equipmentIndex,
-                            Run.FixedTimeStamp.now + remainingDurations[i],
-                            equipment.charges), (uint)i
-                        );
-                    }
+                    inventory.SetEquipment(
+                        new EquipmentState(equipment.equipmentIndex,
+                        Run.FixedTimeStamp.now + remainingDurations[i],
+                        equipment.charges), (uint)i
+                    );
                 }
             }
         }
