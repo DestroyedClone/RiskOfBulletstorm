@@ -22,6 +22,7 @@ namespace RiskOfBulletstormRewrite.Items
         public override ItemTag[] ItemTags => new ItemTag[]
         {
         };
+        public override string ParentItemName => BabyGoodMimic.instance.ItemName;
 
         public override void Init(ConfigFile config)
         {

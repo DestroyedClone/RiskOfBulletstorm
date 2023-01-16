@@ -146,30 +146,70 @@ namespace RiskOfBulletstormRewrite
                     artifact.Init(Config);
                 }
             }
-
-            //This section automatically scans the project for all items
-            var ItemTypes = Assembly.GetExecutingAssembly().GetTypes().Where(type => !type.IsAbstract && type.IsSubclassOf(typeof(ItemBase)));
-
-            foreach (var itemType in ItemTypes)
-            {
-                ItemBase item = (ItemBase)System.Activator.CreateInstance(itemType);
-                if (ValidateItem(item, Items))
-                {
-                    item.Init(Config);
-                }
-            }
-
+            
             //this section automatically scans the project for all equipment
             var EquipmentTypes = Assembly.GetExecutingAssembly().GetTypes().Where(type => !type.IsAbstract && type.IsSubclassOf(typeof(EquipmentBase)));
+            var loadedEquipmentNames = new List<string>();
+            var childEquipmentTypes = new List<EquipmentBase>();
 
             foreach (var equipmentType in EquipmentTypes)
             {
                 EquipmentBase equipment = (EquipmentBase)System.Activator.CreateInstance(equipmentType);
+                if (equipment.ParentEquipmentName != null)
+                {
+                    childEquipmentTypes.Add(equipment);
+                    continue;
+                }
+                
                 if (ValidateEquipment(equipment, Equipments))
                 {
                     equipment.Init(Config);
+                    loadedEquipmentNames.Add(equipment.EquipmentName);
                 }
             }
+
+            foreach (var childEquip in childEquipmentTypes)
+            {
+                if (loadedEquipmentNames.Contains(childEquip.ParentEquipmentName))
+                    childEquip.Init(Config);
+            }
+
+            //This section automatically scans the project for all items
+            var ItemTypes = Assembly.GetExecutingAssembly().GetTypes().Where(type => !type.IsAbstract && type.IsSubclassOf(typeof(ItemBase)));
+            var loadedItemNames = new List<string>();
+            var childItemTypes = new List<ItemBase>();
+
+            foreach (var itemType in ItemTypes)
+            {
+                ItemBase item = (ItemBase)System.Activator.CreateInstance(itemType);
+                if (
+                    item.ParentEquipmentName != null
+                    || item.ParentItemName != null
+                )
+                {
+                    childItemTypes.Add(item);
+                    continue;
+                }
+                if (ValidateItem(item, Items))
+                {
+                    item.Init(Config);
+                    loadedItemNames.Add(item.ItemName);
+                }
+            }
+
+            foreach (var childItem in childItemTypes)
+            {
+                if (loadedItemNames.Contains(childItem.ParentItemName)
+                || loadedEquipmentNames.Contains(childItem.ParentEquipmentName))
+                {
+                    //dependent children dont have rights, no validation.
+                    //if (ValidateItem(childItem, Items))
+                    {
+                        childItem.Init(Config);
+                    }
+                }
+            }
+
 
             //this section automatically scans the project for all elite equipment
             var EliteEquipmentTypes = Assembly.GetExecutingAssembly().GetTypes().Where(type => !type.IsAbstract && type.IsSubclassOf(typeof(EliteEquipmentBase)));
@@ -229,10 +269,10 @@ namespace RiskOfBulletstormRewrite
         /// <param name="itemList">The list you would like to add this to if it passes the config check.</param>
         public bool ValidateItem(ItemBase item, List<ItemBase> itemList)
         {
-            if (item.Tier == ItemTier.NoTier)
+            /*if (item.Tier == ItemTier.NoTier)
             {
                 return true;
-            }
+            }*/
             if (item.IsSkillReplacement)
             {
 

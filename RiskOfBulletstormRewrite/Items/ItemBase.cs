@@ -50,6 +50,8 @@ namespace RiskOfBulletstormRewrite.Items
 
         public virtual ItemDef ContagiousOwnerItemDef { get; } = null;
 
+        public virtual string ParentEquipmentName {get;} = null;
+        public virtual string ParentItemName {get;} = null;
         public string ConfigCategory
         {
             get
@@ -221,5 +223,11 @@ namespace RiskOfBulletstormRewrite.Items
             + ".png"
             );
         }
+
+        public static implicit operator ItemBase(Type v)
+        {
+            return (ItemBase)System.Activator.CreateInstance(v);
+        }
+        
     }
 }

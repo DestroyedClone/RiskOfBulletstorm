@@ -1,5 +1,6 @@
 using BepInEx.Configuration;
 using R2API;
+using RiskOfBulletstormRewrite.Equipment;
 using RoR2;
 using UnityEngine;
 
@@ -16,6 +17,8 @@ namespace RiskOfBulletstormRewrite.Items
         public override GameObject ItemModel => Assets.NullModel;
 
         public override Sprite ItemIcon => LoadSprite();
+
+        public override string ParentItemName => "Clone";
 
         public override ItemTag[] ItemTags => new ItemTag[]
         {

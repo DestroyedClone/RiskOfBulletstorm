@@ -1,6 +1,7 @@
 using BepInEx.Configuration;
 using R2API;
 using RoR2;
+using System;
 using UnityEngine;
 
 namespace RiskOfBulletstormRewrite.Items
@@ -22,6 +23,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override Sprite ItemIcon => LoadSprite();
 
+        public override string ParentEquipmentName => "Orange";
         public override ItemTag[] ItemTags => new ItemTag[]
         {
             ItemTag.Healing

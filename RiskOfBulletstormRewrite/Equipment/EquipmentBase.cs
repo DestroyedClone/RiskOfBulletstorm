@@ -44,6 +44,8 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public virtual bool CanBeRandomlyTriggered { get; } = true;
 
+        public virtual Equipment.EquipmentBase DependentEquipment {get;} = null;
+
         public EquipmentDef EquipmentDef;
 
         public string ConfigCategory
@@ -165,6 +167,12 @@ namespace RiskOfBulletstormRewrite.Equipment
             Assets.assemblyDir + "\\Assets\\EQUIPMENT_"+EquipmentLangTokenName
             + ".png"
             );
+        }
+
+        
+        public static implicit operator EquipmentBase(Type v)
+        {
+            return (EquipmentBase)System.Activator.CreateInstance(v);
         }
 
         #region Targeting Setup

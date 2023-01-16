@@ -16,6 +16,7 @@ namespace RiskOfBulletstormRewrite.Items
         public override GameObject ItemModel => Assets.NullModel;
 
         public override Sprite ItemIcon => LoadSprite();
+        public override string ParentItemName => "Past Killing Bullet";
 
         public override ItemTag[] ItemTags => new ItemTag[]
         {

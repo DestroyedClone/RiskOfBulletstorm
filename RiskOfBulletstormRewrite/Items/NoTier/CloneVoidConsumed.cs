@@ -21,6 +21,7 @@ namespace RiskOfBulletstormRewrite.Items
         {
             
         };
+        public override string ParentItemName => "Prototype";
 
         public override void Init(ConfigFile config)
         {
