@@ -5,18 +5,18 @@ using UnityEngine;
 namespace RiskOfBulletstormRewrite.Controllers
 {
     public class BulletQuestController : ControllerBase<BulletQuestController>
-	{
+    {
         /*  Primer: 110 casings on stage 2
         *   gunpowder: black powder mine
         *   planar lead: invis path in hollow
         *   shell casing: dragun
-        */  
+        */
 
-        static ItemDef primerDef => Items.PrimePrimer.instance.ItemDef;
-        static ItemDef gunpowderDef => Items.ArcaneGunpowder.instance.ItemDef;
-        static ItemDef leadDef => Items.PlanarLead.instance.ItemDef;
-        static ItemDef casingDef => Items.ObsidianShellCasing.instance.ItemDef;
-        
+        private static ItemDef primerDef => Items.PrimePrimer.instance.ItemDef;
+        private static ItemDef gunpowderDef => Items.ArcaneGunpowder.instance.ItemDef;
+        private static ItemDef leadDef => Items.PlanarLead.instance.ItemDef;
+        private static ItemDef casingDef => Items.ObsidianShellCasing.instance.ItemDef;
+
         public override void Init(ConfigFile config)
         {
             CreateConfig(config);
@@ -47,7 +47,6 @@ namespace RiskOfBulletstormRewrite.Controllers
 
         public override void CreateConfig(ConfigFile config)
         {
-            
         }
 
         public bool CraftShell(CharacterBody steve, Vector3 position)
@@ -59,7 +58,7 @@ namespace RiskOfBulletstormRewrite.Controllers
                     return steve.inventory.GetItemCount(itemDef) > 0;
                 }
 
-                if (hasItem(primerDef) 
+                if (hasItem(primerDef)
                 && hasItem(gunpowderDef)
                 && hasItem(leadDef)
                 && hasItem(casingDef))
@@ -79,6 +78,5 @@ namespace RiskOfBulletstormRewrite.Controllers
             }
             return false;
         }
-
     }
 }

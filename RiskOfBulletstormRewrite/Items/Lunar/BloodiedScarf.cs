@@ -94,10 +94,10 @@ namespace RiskOfBulletstormRewrite.Items
         protected override void CreateLang()
         {
             base.CreateLang();
-            
+
             Language.DeferToken(teleportSkillDef.skillDescriptionToken, teleportSkillDefParams);
 
-            Language.DeferLateTokens(ItemDescriptionToken, new string[]{teleportSkillDef.skillDescriptionToken});
+            Language.DeferLateTokens(ItemDescriptionToken, new string[] { teleportSkillDef.skillDescriptionToken });
             Language.DeferLateTokens(ItemDescriptionLogbookToken, new string[]{
                 ItemPickupToken,
                 teleportSkillDef.skillNameToken,
@@ -128,7 +128,7 @@ namespace RiskOfBulletstormRewrite.Items
         {
             if (self.body && self.body.HasBuff(Utils.Buffs.DodgeRollBuff))
             {
-                damageInfo.damage *= 1 + 
+                damageInfo.damage *= 1 +
                 GetStack(cfgDamageVulnerabilityMultiplier, cfgDamageVulnerabilityMultiplierPerStack, GetCount(self.body));
             }
             orig(self, damageInfo);
@@ -144,6 +144,7 @@ namespace RiskOfBulletstormRewrite.Items
     }
 
     #region oldTeleportDef
+
     /*
     //https://thunderstore.io/package/bongopd/ArtificerRangeTeleport/
     public class Teleport : BaseState
@@ -387,5 +388,6 @@ namespace RiskOfBulletstormRewrite.Items
 
         private HurtBoxGroup hurtboxGroup;
     }*/
-    #endregion
+
+    #endregion oldTeleportDef
 }

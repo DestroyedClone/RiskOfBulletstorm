@@ -29,6 +29,7 @@ namespace RiskOfBulletstormRewrite.Equipment.EliteEquipment
         /// <para>E.g.: AFFIX_HYPERCHARGED</para>
         /// </summary>
         public abstract string EliteAffixToken { get; }
+
         public abstract string EliteEquipmentPickupDesc { get; }
         public abstract string EliteEquipmentFullDescription { get; }
         public abstract string EliteEquipmentLore { get; }
@@ -99,7 +100,6 @@ namespace RiskOfBulletstormRewrite.Equipment.EliteEquipment
             LanguageAPI.Add("ELITE_EQUIPMENT_" + EliteAffixToken + "_PICKUP", EliteEquipmentName);
             LanguageAPI.Add("ELITE_EQUIPMENT_" + EliteAffixToken + "_DESCRIPTION", EliteEquipmentName);
             LanguageAPI.Add("ELITE_" + EliteAffixToken + "_MODIFIER", EliteModifier + " {0}");
-
         }
 
         protected void CreateEquipment()
@@ -139,7 +139,6 @@ namespace RiskOfBulletstormRewrite.Equipment.EliteEquipment
             {
                 On.RoR2.CharacterBody.FixedUpdate += OverlayManager;
             }
-
         }
 
         private void OverlayManager(On.RoR2.CharacterBody.orig_FixedUpdate orig, CharacterBody self)
@@ -175,9 +174,7 @@ namespace RiskOfBulletstormRewrite.Equipment.EliteEquipment
                     eliteOverlayManager.Overlay = overlay;
                     eliteOverlayManager.Body = self;
                     eliteOverlayManager.EliteBuffDef = EliteBuffDef;
-
                 }
-
             }
             orig(self);
         }
@@ -231,8 +228,6 @@ namespace RiskOfBulletstormRewrite.Equipment.EliteEquipment
             ContentAddition.AddBuffDef(EliteBuffDef);
         }
 
-
-
         protected bool PerformEquipmentAction(On.RoR2.EquipmentSlot.orig_PerformEquipmentAction orig, RoR2.EquipmentSlot self, EquipmentDef equipmentDef)
         {
             if (equipmentDef == EliteEquipmentDef)
@@ -255,14 +250,18 @@ namespace RiskOfBulletstormRewrite.Equipment.EliteEquipment
         public abstract void Hooks();
 
         #region Targeting Setup
+
         //Targeting Support
         public virtual bool UseTargeting { get; } = false;
+
         public GameObject TargetingIndicatorPrefabBase = null;
+
         public enum TargetingType
         {
             Enemies,
             Friendlies,
         }
+
         public virtual TargetingType TargetingTypeEnum { get; } = TargetingType.Enemies;
 
         //Based on MysticItem's targeting code.
@@ -286,6 +285,7 @@ namespace RiskOfBulletstormRewrite.Equipment.EliteEquipment
                         case (TargetingType.Enemies):
                             targetingComponent.ConfigureTargetFinderForEnemies(self);
                             break;
+
                         case (TargetingType.Friendlies):
                             targetingComponent.ConfigureTargetFinderForFriendlies(self);
                             break;
@@ -357,7 +357,6 @@ namespace RiskOfBulletstormRewrite.Equipment.EliteEquipment
                 TargetFinder.FilterOutGameObject(self.gameObject);
                 AdditionalBullseyeFunctionality(TargetFinder);
                 PlaceTargetingIndicator(TargetFinder.GetResults());
-
             }
 
             public void PlaceTargetingIndicator(IEnumerable<HurtBox> TargetFinderResults)

@@ -72,7 +72,7 @@ namespace RiskOfBulletstormRewrite.Equipment
             if (comp && comp.equipmentSlot && comp.equipmentSlot.stock > 0)
             {
                 //Chat.AddMessage($"Bottle: {amount * cfgExcessHealingPercentage.Value} / {healthComponent.fullHealth * cfgMaxHealthPercentagePool.Value}");
-                comp.AddReserve(amount * cfgExcessHealingPercentage.Value, healthComponent.fullHealth*cfgMaxHealthPercentagePool.Value);
+                comp.AddReserve(amount * cfgExcessHealingPercentage.Value, healthComponent.fullHealth * cfgMaxHealthPercentagePool.Value);
             }
         }
 

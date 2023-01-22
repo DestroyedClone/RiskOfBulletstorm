@@ -20,7 +20,6 @@ namespace RiskOfBulletstormRewrite.Items
         {
         };
 
-
         public override Sprite ItemIcon => LoadSprite();
 
         public override ItemTag[] ItemTags => new ItemTag[]
@@ -38,7 +37,9 @@ namespace RiskOfBulletstormRewrite.Items
             CreateItem();
             Hooks();
         }
+
         public static ConfigEntry<float> cfgDamageReduction;
+
         public override void CreateConfig(ConfigFile config)
         {
             cfgDamageReduction = config.Bind(ConfigCategory, "Damage Reduction", 0.5f);
@@ -63,7 +64,6 @@ namespace RiskOfBulletstormRewrite.Items
                 var itemCount = GetCount(self.owner.GetComponent<CharacterBody>());
                 if (itemCount > 0)
                 {
-
                 }
             }
             orig(self);
@@ -82,7 +82,7 @@ namespace RiskOfBulletstormRewrite.Items
             On.RoR2.UI.MainMenu.MainMenuController.Start -= TempHook;
         }
 
-        public void ApplyGhost(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_FireProjectileInfo orig, RoR2.Projectile.ProjectileManager self,  RoR2.Projectile.FireProjectileInfo info)
+        public void ApplyGhost(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_FireProjectileInfo orig, RoR2.Projectile.ProjectileManager self, RoR2.Projectile.FireProjectileInfo info)
         {
             if (info.owner)
             {
@@ -98,8 +98,9 @@ namespace RiskOfBulletstormRewrite.Items
                             //info.projectilePrefab
                         }
                     }
-                } else {
-                    
+                }
+                else
+                {
                 }
             }
             orig(self, info);
@@ -113,7 +114,7 @@ namespace RiskOfBulletstormRewrite.Items
             public ProjectileTargetComponent projectileTargetComponent;
 
             public int remainingShots = 0;
-            bool hasRun = false;
+            private bool hasRun = false;
 
             public void Start()
             {
@@ -124,7 +125,7 @@ namespace RiskOfBulletstormRewrite.Items
                     enabled = false;
                     return;
                 }
-                
+
                 projectileTargetComponent = gameObject.GetComponent<ProjectileTargetComponent>();
                 GetPasses();
             }
@@ -156,7 +157,7 @@ namespace RiskOfBulletstormRewrite.Items
                             Vector3 offset = Vector3.zero;
                             {
                                 var scale = transform.localScale;
-                                var projectileSize = Mathf.Max(scale.x,scale.y,scale.z);
+                                var projectileSize = Mathf.Max(scale.x, scale.y, scale.z);
                                 var rot = transform.forward;
                                 offset = projectileSize * rot * 1.1f;
                             }

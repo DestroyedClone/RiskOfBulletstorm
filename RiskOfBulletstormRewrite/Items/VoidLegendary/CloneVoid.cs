@@ -5,8 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.AddressableAssets;
+using UnityEngine.Networking;
 
 namespace RiskOfBulletstormRewrite.Items
 {
@@ -18,6 +18,7 @@ namespace RiskOfBulletstormRewrite.Items
         public override string ItemName => "Prototype";
 
         public override string ItemLangTokenName => "CLONEVOID";
+
         public override string[] ItemFullDescriptionParams => new string[]
         {
             cfgStageCount.Value.ToString(),
@@ -28,7 +29,6 @@ namespace RiskOfBulletstormRewrite.Items
         public override ItemTier Tier => ItemTier.VoidTier3;
 
         public override GameObject ItemModel => GetPickupModel();
-
 
         public override Sprite ItemIcon => LoadSprite();
 
@@ -198,7 +198,6 @@ namespace RiskOfBulletstormRewrite.Items
                 {
                     if (count > 0)
                     {
-                        
                         WeightedSelection<List<PickupIndex>> weightedSelection = new WeightedSelection<List<PickupIndex>>(8);
                         weightedSelection.AddChoice(Run.instance.availableTier1DropList, 100f);
                         weightedSelection.AddChoice(Run.instance.availableTier2DropList, 60f);

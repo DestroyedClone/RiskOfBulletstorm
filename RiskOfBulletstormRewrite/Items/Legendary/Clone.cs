@@ -5,8 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.AddressableAssets;
+using UnityEngine.Networking;
 
 namespace RiskOfBulletstormRewrite.Items
 {
@@ -159,7 +159,7 @@ namespace RiskOfBulletstormRewrite.Items
             }
 
             private void HandleMostRecentSceneDefChanged(SceneDef newSceneDef)
-		    {
+            {
                 if (!firstStageSceneDef)
                 {
                     firstStageSceneDef = newSceneDef;
@@ -172,6 +172,7 @@ namespace RiskOfBulletstormRewrite.Items
         {
             //public Xoroshiro128Plus rng;
             public Dictionary<NetworkUser, Inventory> playerInventories = new Dictionary<NetworkUser, Inventory>();
+
             public Dictionary<PlayerCharacterMasterController, List<KeyValuePair<ItemIndex, int>>> itemsToGive = new Dictionary<PlayerCharacterMasterController, List<KeyValuePair<ItemIndex, int>>>();
             public bool hasGivenItems = false;
 
@@ -211,11 +212,11 @@ namespace RiskOfBulletstormRewrite.Items
                     var tempInvGameObject = new GameObject();
                     inv.CopyItemsFrom(tempInvGameObject.AddComponent<Inventory>());
                     Destroy(tempInvGameObject);
-                   // Main._logger.LogMessage("Items cleared");
-                    
+                    // Main._logger.LogMessage("Items cleared");
+
                     if (ownItemCount > 0)
                     {
-                        //remove isnt needed since 
+                        //remove isnt needed since
                         //inv.RemoveItem(instance.ItemDef, ownItemCount);
                         inv.GiveItem(CloneConsumed.instance.ItemDef, ownItemCount);
                         //since the stage changes it might not show up for hte player... todo check
@@ -261,7 +262,7 @@ namespace RiskOfBulletstormRewrite.Items
                         {
                             var hiddenItemCount = inventory.GetItemCount(currentItemDef);
                             list.Add(new KeyValuePair<ItemIndex, int>(currentItemIndex, hiddenItemCount));
-                            
+
                             //Main._logger.LogMessage($"Added item: {currentItemDef.nameToken} x{hiddenItemCount}");
                             continue;
                         }
@@ -271,8 +272,8 @@ namespace RiskOfBulletstormRewrite.Items
                             continue;
                         givenItemCount -= itemCount;
                         list.Add(new KeyValuePair<ItemIndex, int>((ItemIndex)i, itemCount));
-                        
-                            //Main._logger.LogMessage($"Added item: {currentItemDef.nameToken} x{itemCount}");
+
+                        //Main._logger.LogMessage($"Added item: {currentItemDef.nameToken} x{itemCount}");
                         if (givenItemCount <= 0)
                         {
                             break;
@@ -318,7 +319,9 @@ namespace RiskOfBulletstormRewrite.Items
                         }
                     }
                 }
-            } else {
+            }
+            else
+            {
                 weightedSelection.AddChoice(RBS_RunTracker.instance.firstStageSceneDef, 1f);
             }
             Run.instance.PickNextStageScene(weightedSelection);

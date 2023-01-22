@@ -22,7 +22,6 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override GameObject ItemModel => Assets.NullModel;
 
-
         public override Sprite ItemIcon => LoadSprite();
 
         public override ItemDef ContagiousOwnerItemDef => Items.BattleStandard.instance.ItemDef;
@@ -54,7 +53,6 @@ namespace RiskOfBulletstormRewrite.Items
         public override void Hooks()
         {
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
-            
         }
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)

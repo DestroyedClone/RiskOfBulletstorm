@@ -23,7 +23,6 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override ItemDef ContagiousOwnerItemDef => CoinCrown.instance.ItemDef;
 
-
         public override Sprite ItemIcon => LoadSprite();
 
         public override ItemTag[] ItemTags => new ItemTag[]
@@ -70,10 +69,8 @@ namespace RiskOfBulletstormRewrite.Items
 
         private void StartStage(Stage stage)
         {
-
             On.RoR2.CharacterMaster.GiveMoney -= IncreaseMoney;
         }
-
 
         private void StartCharging(TeleporterInteraction teleporterInteraction)
         {
@@ -90,7 +87,6 @@ namespace RiskOfBulletstormRewrite.Items
 
         private void TeleporterInteraction_onTeleporterChargedGlobal(TeleporterInteraction teleporterInteraction)
         {
-            
             On.RoR2.CharacterMaster.GiveMoney -= IncreaseMoney;
         }
     }

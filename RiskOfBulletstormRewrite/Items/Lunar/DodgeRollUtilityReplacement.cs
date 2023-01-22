@@ -1,10 +1,9 @@
-﻿using EntityStates;
-using BepInEx.Configuration;
+﻿using BepInEx.Configuration;
+using EntityStates;
 using R2API;
 using RoR2;
 using RoR2.Skills;
 using UnityEngine;
-using System;
 
 namespace RiskOfBulletstormRewrite.Items
 {
@@ -15,7 +14,7 @@ namespace RiskOfBulletstormRewrite.Items
         public static ConfigEntry<float> cfgDamageVulnerabilityDuration;
         public static ConfigEntry<float> cfgDamageVulnerabilityDurationDecreasePerStack;
         public static ConfigEntry<float> cfgDamageVulnerabilityDurationMinimum;
-        
+
         public override string ItemName => "DodgeRollUtilityReplacement";
 
         public override string ItemLangTokenName => "DODGEROLLUTILITYREPLACEMENT";
@@ -46,6 +45,7 @@ namespace RiskOfBulletstormRewrite.Items
             CreateItem();
             Hooks();
         }
+
         public string[] rollSkillDefParams => new string[]
         {
             GetChance(cfgDamageVulnerabilityMultiplier),
@@ -68,7 +68,7 @@ namespace RiskOfBulletstormRewrite.Items
             base.CreateLang();
             Language.DeferToken(rollSkillDef.skillDescriptionToken, rollSkillDefParams);
 
-            Language.DeferLateTokens(ItemDescriptionToken, new string[]{rollSkillDef.skillDescriptionToken});
+            Language.DeferLateTokens(ItemDescriptionToken, new string[] { rollSkillDef.skillDescriptionToken });
             Language.DeferLateTokens(ItemDescriptionLogbookToken, new string[]{
                 ItemPickupToken,
                 rollSkillDef.skillNameToken,
@@ -134,7 +134,7 @@ namespace RiskOfBulletstormRewrite.Items
         {
             if (self.body && self.body.HasBuff(Utils.Buffs.DodgeRollBuff))
             {
-                damageInfo.damage *= 1 + 
+                damageInfo.damage *= 1 +
                 GetStack(cfgDamageVulnerabilityMultiplier, cfgDamageVulnerabilityMultiplierPerStack, GetCount(self.body));
             }
             orig(self, damageInfo);
@@ -147,6 +147,5 @@ namespace RiskOfBulletstormRewrite.Items
                 characterBody.ReplaceSkillIfItemPresent(characterBody.skillLocator.utility, ItemDef.itemIndex, rollSkillDef);
             }
         }
-        
     }
 }

@@ -1,9 +1,8 @@
 ﻿using BepInEx.Configuration;
 using R2API;
 using RoR2;
-using UnityEngine;
-using static RiskOfBulletstormRewrite.Main;
 using RoR2.CharacterAI;
+using UnityEngine;
 
 namespace RiskOfBulletstormRewrite.Items
 {
@@ -21,7 +20,6 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override ItemTag[] ItemTags => new ItemTag[]
         {
-
         };
 
         public override void Init(ConfigFile config)
@@ -35,7 +33,6 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void CreateConfig(ConfigFile config)
         {
-
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
@@ -55,7 +52,6 @@ namespace RiskOfBulletstormRewrite.Items
                 var tracker = inventory.gameObject.GetComponent<LOTJTracker>();
                 if (!tracker)
                     tracker = inventory.gameObject.AddComponent<LOTJTracker>();
-
             }
         }
 
@@ -76,7 +72,7 @@ namespace RiskOfBulletstormRewrite.Items
                         ignoreTeamMemberLimit = true,
                         //masterPrefab = Enemies.LordofTheJammedMonster.masterPrefab,
                         masterPrefab = MasterCatalog.FindMasterPrefab("BrotherBody"),
-                        position = TeleporterInteraction.instance 
+                        position = TeleporterInteraction.instance
                         ? TeleporterInteraction.instance.transform.position
                         : transform.position,
                         teamIndexOverride = TeamIndex.Monster

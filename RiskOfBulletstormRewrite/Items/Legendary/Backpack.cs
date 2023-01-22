@@ -2,10 +2,8 @@
 using R2API;
 using RoR2;
 using RoR2.UI;
-using System;
 using System.Text;
 using UnityEngine;
-using static RiskOfBulletstormRewrite.Main;
 
 namespace RiskOfBulletstormRewrite.Items
 {
@@ -52,7 +50,6 @@ namespace RiskOfBulletstormRewrite.Items
             CycleRightKey_KB = config.Bind(ConfigCategory, "What button should be pressed down to cycle to the next equipment slot", KeyCode.G, "").Value;
             UseScrollWheel = config.Bind(ConfigCategory, "Should the scrollwheel be used in addition to the cycle buttons?", true, "").Value;
 
-
             ModifierKey_KB = ModifierButton;
             CycleLeftKey_KB = CycleLeftButton;
             CycleRightKey_KB = CycleRightButton;
@@ -88,9 +85,9 @@ namespace RiskOfBulletstormRewrite.Items
                             //var equipmentSlotCount = self.targetInventory.GetEquipmentSlotCount();
 
                             stringBuilder2.Append($"[{self.targetEquipmentSlot.activeEquipmentSlot}] : ");
-                            
+
                             stringBuilder2.AppendInt(self.currentDisplayData.stock, 1U, uint.MaxValue);
-                        
+
                             self.stockText.SetText(stringBuilder2);
                             HG.StringBuilderPool.ReturnStringBuilder(stringBuilder2);
                         }
@@ -147,7 +144,8 @@ namespace RiskOfBulletstormRewrite.Items
                         }
                         self.iconImage.texture = texture;
                         self.iconImage.color = color;
-                    } else
+                    }
+                    else
                     {
                         stringBuilder2.Append($"[Slot:{self.targetEquipmentSlot.activeEquipmentSlot}]\n");
                         stringBuilder2.AppendInt(self.currentDisplayData.stock, 1U, uint.MaxValue);
@@ -174,7 +172,7 @@ namespace RiskOfBulletstormRewrite.Items
             private byte itemCount = 0;
             private byte extraSlotCount = 0;
             public byte selectableSlot = 0;
-            readonly string equipmentPrefix = "Selected slot ";
+            private readonly string equipmentPrefix = "Selected slot ";
 
             public void RunOnce()
             {
@@ -194,7 +192,7 @@ namespace RiskOfBulletstormRewrite.Items
                 inventory.onInventoryChanged -= OnInventoryChanged;
                 characterMaster.onBodyStart -= OnBodyStart;
             }
-            
+
             public void OnInventoryChanged()
             {
                 UpdateCount();
@@ -207,11 +205,13 @@ namespace RiskOfBulletstormRewrite.Items
                 if (characterBody)
                     extraSlotCount = (byte)(characterBody.bodyIndex == ToolbotBodyIndex ? 1 : 0);
             }
+
             public void UpdateCount()
             {
                 itemCount = (byte)inventory.GetItemCount(Backpack.instance.ItemDef);
                 selectableSlot = (byte)(itemCount + extraSlotCount);
             }
+
             public void Update()
             {
                 if (!localUser.isUIFocused) //TY KingEnderBrine for the help
@@ -276,7 +276,7 @@ namespace RiskOfBulletstormRewrite.Items
                     }
                 }
             }
-            
+
             private void SetEquipmentSlot(byte i)
             {
                 if (i > selectableSlot)
@@ -286,6 +286,7 @@ namespace RiskOfBulletstormRewrite.Items
                 //Chat.AddMessage(equipmentPrefix + i);
                 inventory.SetActiveEquipmentSlot(i);
             }
+
             private void CycleSlot(bool cycleRight)
             {
                 var currentSlot = inventory.activeEquipmentSlot + (cycleRight ? 1 : -1);
@@ -293,6 +294,7 @@ namespace RiskOfBulletstormRewrite.Items
                 inventory.SetActiveEquipmentSlot(newValue);
                 //Chat.AddMessage(equipmentPrefix + newValue);
             }
+
             public static float LoopAround(float value, float min, float max)
             {
                 if (value < min) value = max;

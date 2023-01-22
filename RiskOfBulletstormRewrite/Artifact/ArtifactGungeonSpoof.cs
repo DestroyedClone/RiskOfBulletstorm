@@ -26,6 +26,7 @@ namespace RiskOfBulletstormRewrite.Artifact
 
         public static ConfigEntry<float> cfgIFrameDuration;
         public static ConfigEntry<float> cfgStatDivider;
+
         public override void CreateConfig(ConfigFile config)
         {
             cfgIFrameDuration = config.Bind(ConfigCategory, "I-Frames Duration", 1f, "The amount of seconds of immunity after getting hit.");
@@ -52,7 +53,6 @@ namespace RiskOfBulletstormRewrite.Artifact
             R2API.RecalculateStatsAPI.GetStatCoefficients -= GungeonMimic_StatCoefficients;
             On.RoR2.HealthComponent.ServerFixedUpdate -= PreventBarrierLoss;
         }
-
 
         private void RunArtifactManager_onArtifactEnabledGlobal([JetBrains.Annotations.NotNull] RunArtifactManager runArtifactManager, [JetBrains.Annotations.NotNull] ArtifactDef artifactDef)
         {
@@ -81,7 +81,7 @@ namespace RiskOfBulletstormRewrite.Artifact
             self.body.barrierDecayRate = 0;
             orig(self);
         }
-        
+
         private void GungeonMimic_StatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (sender && sender.inventory)
@@ -144,15 +144,19 @@ namespace RiskOfBulletstormRewrite.Artifact
                         //this it to make sure it stays between
                         //0-2 damage (0hearts to 1 heart)
                         damageInfo.damage = Mathf.RoundToInt(damageInfo.damage);
-                        
+
                         if (damageInfo.damage < 1)
                         {
                             damageInfo.rejected = true;
-                        } else {
+                        }
+                        else
+                        {
                             if (damageInfo.crit)
                             {
                                 damageInfo.damage = 1;
-                            } else {
+                            }
+                            else
+                            {
                                 damageInfo.damage = 2;
                             }
                         }
@@ -177,7 +181,7 @@ namespace RiskOfBulletstormRewrite.Artifact
                     }
                 }
             }
-            
+
             orig(self, damageInfo);
             if (NetworkServer.active && modified)
             {
@@ -187,7 +191,6 @@ namespace RiskOfBulletstormRewrite.Artifact
 
         private void DamageDealt(DamageReport damageReport)
         {
-
         }
 
         private void CharacterBody_onBodyStartGlobal(CharacterBody characterBody)
@@ -202,7 +205,7 @@ namespace RiskOfBulletstormRewrite.Artifact
         private void ApplyBodyModifier(CharacterBody body)
         {
             float armorToConvertToBarrier = 0;
-            
+
             body.baseMaxHealth = Mathf.RoundToInt(body.baseMaxHealth / cfgStatDivider.Value);
             body.levelMaxHealth = 0;
             body.healthComponent.health = body.baseMaxHealth;

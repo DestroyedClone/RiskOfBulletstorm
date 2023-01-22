@@ -26,7 +26,6 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override GameObject ItemModel => Assets.NullModel;
 
-
         public override Sprite ItemIcon => LoadSprite();
 
         public override ItemTag[] ItemTags => new ItemTag[] { ItemTag.Any, ItemTag.AIBlacklist, ItemTag.Utility };

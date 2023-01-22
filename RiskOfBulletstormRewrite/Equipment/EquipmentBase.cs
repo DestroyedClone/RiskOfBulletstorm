@@ -18,6 +18,7 @@ namespace RiskOfBulletstormRewrite.Equipment
             instance = this as T;
         }
     }
+
     public abstract class EquipmentBase
     {
         public abstract string EquipmentName { get; }
@@ -44,8 +45,8 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public virtual bool CanBeRandomlyTriggered { get; } = true;
 
-        public virtual Equipment.EquipmentBase DependentEquipment {get;} = null;
-        public virtual string ParentEquipmentName {get;} = null;
+        public virtual Equipment.EquipmentBase DependentEquipment { get; } = null;
+        public virtual string ParentEquipmentName { get; } = null;
         public EquipmentDef EquipmentDef;
 
         public string ConfigCategory
@@ -55,6 +56,7 @@ namespace RiskOfBulletstormRewrite.Equipment
                 return "Equipment: " + EquipmentName;
             }
         }
+
         public string EquipmentPickupToken
         {
             get
@@ -70,6 +72,7 @@ namespace RiskOfBulletstormRewrite.Equipment
                 return "RISKOFBULLETSTORM_EQUIPMENT_" + EquipmentLangTokenName + "_DESCRIPTION";
             }
         }
+
         public string GetChance(ConfigEntry<float> configEntry)
         {
             return (configEntry.Value * 100).ToString();
@@ -89,8 +92,8 @@ namespace RiskOfBulletstormRewrite.Equipment
         /// <param name="config">The config file that will be passed into this from the main class.</param>
         public abstract void Init(ConfigFile config);
 
-        protected virtual void CreateConfig(ConfigFile config) { }
-
+        protected virtual void CreateConfig(ConfigFile config)
+        { }
 
         /// <summary>
         /// Take care to call base.CreateLang()!
@@ -158,16 +161,13 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         protected abstract bool ActivateEquipment(EquipmentSlot slot);
 
-        public virtual void Hooks() { }
-
-        
+        public virtual void Hooks()
+        { }
 
         public Sprite LoadSprite()
         {
             return Assets.LoadSprite($"EQUIPMENT_{EquipmentLangTokenName}");
         }
-
-
 
         public static implicit operator EquipmentBase(Type v)
         {
@@ -175,14 +175,18 @@ namespace RiskOfBulletstormRewrite.Equipment
         }
 
         #region Targeting Setup
+
         //Targeting Support
         public virtual bool UseTargeting { get; } = false;
+
         public GameObject TargetingIndicatorPrefabBase = null;
+
         public enum TargetingType
         {
             Enemies,
             Friendlies,
         }
+
         public virtual TargetingType TargetingTypeEnum { get; } = TargetingType.Enemies;
 
         //Based on MysticItem's targeting code.
@@ -206,6 +210,7 @@ namespace RiskOfBulletstormRewrite.Equipment
                         case (TargetingType.Enemies):
                             targetingComponent.ConfigureTargetFinderForEnemies(self);
                             break;
+
                         case (TargetingType.Friendlies):
                             targetingComponent.ConfigureTargetFinderForFriendlies(self);
                             break;
@@ -277,7 +282,6 @@ namespace RiskOfBulletstormRewrite.Equipment
                 TargetFinder.FilterOutGameObject(self.gameObject);
                 AdditionalBullseyeFunctionality(TargetFinder);
                 PlaceTargetingIndicator(TargetFinder.GetResults());
-
             }
 
             public void PlaceTargetingIndicator(IEnumerable<HurtBox> TargetFinderResults)

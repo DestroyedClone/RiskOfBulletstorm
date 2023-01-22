@@ -37,9 +37,9 @@ namespace RiskOfBulletstormRewrite.Equipment
         {
             string text = "The multiplier for the amount of credits given to the Combat Director for spawning the equipment's enemies.\nApplies to ";
 
-            cfgChestCostCommon = config.Bind(ConfigCategory, "Common Chest Credit Multiplier", 2f, text+"Chests, Utility Chests, Damage Chests, Healing Chests, and Equipment Barrels.");
-            cfgChestCostUncommon = config.Bind(ConfigCategory, "Large Chest Credit Multiplier", 3f, text+"Large Chests");
-            cfgChestCostLegendary = config.Bind(ConfigCategory, "Legendary Credit Multiplier", 4f, text+"Legendary Chests");
+            cfgChestCostCommon = config.Bind(ConfigCategory, "Common Chest Credit Multiplier", 2f, text + "Chests, Utility Chests, Damage Chests, Healing Chests, and Equipment Barrels.");
+            cfgChestCostUncommon = config.Bind(ConfigCategory, "Large Chest Credit Multiplier", 3f, text + "Large Chests");
+            cfgChestCostLegendary = config.Bind(ConfigCategory, "Legendary Credit Multiplier", 4f, text + "Legendary Chests");
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
@@ -60,18 +60,17 @@ namespace RiskOfBulletstormRewrite.Equipment
                         var purchaseInteraction = bestInteractableObject.GetComponent<PurchaseInteraction>();
                         if (!purchaseInteraction.GetComponent<ShopTerminalBehavior>())
                             if (purchaseInteraction)
-                        {
-                            if (UnlockChest(bestInteractableObject, interactionDriver))
                             {
-                                return true;
+                                if (UnlockChest(bestInteractableObject, interactionDriver))
+                                {
+                                    return true;
+                                }
                             }
-                        }
                     }
                 }
             }
             return false;
         }
-
 
         private bool UnlockChest(GameObject chestObject, InteractionDriver interactionDriver)
         {
@@ -85,7 +84,7 @@ namespace RiskOfBulletstormRewrite.Equipment
             if (!purchaseInteraction.isShrine && purchaseInteraction.available && purchaseInteraction.costType == CostTypeIndex.Money)
             {
                 Interactor interactor = interactionDriver.interactor;
-                        //interactionDriver.interactor.AttemptInteraction(chestObject);
+                //interactionDriver.interactor.AttemptInteraction(chestObject);
                 purchaseInteraction.SetAvailable(false);
                 //purchaseInteraction.Networkavailable = false;
 
@@ -106,16 +105,17 @@ namespace RiskOfBulletstormRewrite.Equipment
                     case "EQUIPMENTBARREL_NAME":
                         creditMultiplier = cfgChestCostCommon.Value;
                         break;
+
                     case "CHEST2_NAME":
                     case "CATEGORYCHEST2_HEALING_NAME":
                     case "CATEGORYCHEST2_DAMAGE_NAME":
                     case "CreateSpawner_NAME":
                         creditMultiplier = cfgChestCostUncommon.Value;
                         break;
+
                     case "GOLDCHEST_NAME":
                         creditMultiplier = cfgChestCostLegendary.Value;
                         break;
-
                 }
 
                 purchaseInteraction.onPurchase.Invoke(interactor);

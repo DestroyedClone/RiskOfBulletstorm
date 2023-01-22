@@ -12,6 +12,7 @@ namespace RiskOfBulletstormRewrite.Items
         public override string ItemName => "Ammo Belt";
 
         public override string ItemLangTokenName => "AMMOBELT";
+
         public override string[] ItemFullDescriptionParams => new string[]
         {
             GetChance(cfgPercentageStockAdditive),
@@ -74,6 +75,5 @@ namespace RiskOfBulletstormRewrite.Items
 
             orig(self, newBonusStockFromBody);
         }
-
     }
 }

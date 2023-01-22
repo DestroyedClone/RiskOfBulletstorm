@@ -10,6 +10,7 @@ namespace RiskOfBulletstormRewrite.Equipment
     {
         // TODO: Context string edits
         public static ConfigEntry<float> cfgUnlockChance;
+
         public static ConfigEntry<float> cfgPriceMultiplier;
 
         public override string EquipmentName => "Trusty Lockpicks";
@@ -28,6 +29,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         private readonly string UnlockSound = EntityStates.Engi.EngiWeapon.FireMines.throwMineSoundString;
         private readonly GameObject UnlockEffect = LegacyResourcesAPI.Load<GameObject>("prefabs/effects/LevelUpEffect");
+
         //private readonly GameObject Fail_DestroyEffect = LegacyResourcesAPI.Load<GameObject>("prefabs/effects/ShieldBreakEffect");
         private readonly GameObject Fail_LockEffect = LegacyResourcesAPI.Load<GameObject>("prefabs/effects/LevelUpEffectEnemy");
 
@@ -64,7 +66,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
             if (bulletstormChestInteractor && bulletstormChestInteractor.hasUsedLockpicks)
             {
-                if (highlight) 
+                if (highlight)
                     highlight.highlightColor = Highlight.HighlightColor.teleporter;
                 return orig(self, activator);
             }
@@ -86,10 +88,10 @@ namespace RiskOfBulletstormRewrite.Equipment
                         if (purchaseInteraction)
                         {
                             if (!purchaseInteraction.GetComponent<ShopTerminalBehavior>())
-                            if (AttemptUnlock(bestInteractableObject, interactionDriver, cfgUnlockChance.Value))
-                            {
-                                return true;
-                            }
+                                if (AttemptUnlock(bestInteractableObject, interactionDriver, cfgUnlockChance.Value))
+                                {
+                                    return true;
+                                }
                         }
                     }
                 }

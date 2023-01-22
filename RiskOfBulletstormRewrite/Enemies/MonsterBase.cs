@@ -25,6 +25,7 @@ namespace RiskOfBulletstormRewrite.Enemies
             throw new NotImplementedException();
         }
     }
+
     public abstract class MonsterBase
     {
         public abstract string MonsterName { get; }
@@ -36,10 +37,10 @@ namespace RiskOfBulletstormRewrite.Enemies
 
         public virtual string ConfigCategory { get; set; }
 
-        public virtual List<SkillDef> primarySkillDefs {get; set; }
-        public virtual List<SkillDef> secondarySkillDefs {get; set; }
-        public virtual List<SkillDef> utilitySkillDefs {get; set; }
-        public virtual List<SkillDef> specialSkillDefs {get; set; }
+        public virtual List<SkillDef> primarySkillDefs { get; set; }
+        public virtual List<SkillDef> secondarySkillDefs { get; set; }
+        public virtual List<SkillDef> utilitySkillDefs { get; set; }
+        public virtual List<SkillDef> specialSkillDefs { get; set; }
 
         /// <summary>
         /// This method structures your code execution of this class. An example implementation inside of it would be:
@@ -69,23 +70,22 @@ namespace RiskOfBulletstormRewrite.Enemies
         public void SetupDefaults()
         {
             if (ConfigCategory.IsNullOrWhiteSpace())
-                ConfigCategory = "Monster: "+MonsterName;
-            
+                ConfigCategory = "Monster: " + MonsterName;
         }
+
         public virtual void Hooks()
         {
-
         }
 
-        public virtual void SetupConfig(ConfigFile config) { }
+        public virtual void SetupConfig(ConfigFile config)
+        { }
 
-        public virtual void SetupLanguage() { }
+        public virtual void SetupLanguage()
+        { }
 
         public void SetupAssets()
         {
-
         }
-
 
         public void SetupSkills()
         {
@@ -108,7 +108,9 @@ namespace RiskOfBulletstormRewrite.Enemies
                 if (index == -1)
                 {
                     return false;
-                } else {
+                }
+                else
+                {
                     if (list.Count > 0)
                     {
                         if (list.Count - 1 < index)
@@ -132,10 +134,11 @@ namespace RiskOfBulletstormRewrite.Enemies
             //Then call base
             //
         }
+
         public void CreateAndSetNewSkillFamily(GenericSkill skillSlot, string slotName)
         {
             SkillFamily skillFamily = ScriptableObject.CreateInstance<SkillFamily>();
-            (skillFamily as ScriptableObject).name = MonsterLangTokenName+"_"+slotName+"_SKILLFAMILY";
+            (skillFamily as ScriptableObject).name = MonsterLangTokenName + "_" + slotName + "_SKILLFAMILY";
             skillSlot._skillFamily = skillFamily;
             skillFamily.variants = new SkillFamily.Variant[0];
             ContentAddition.AddSkillFamily(skillFamily);
@@ -168,13 +171,19 @@ namespace RiskOfBulletstormRewrite.Enemies
             AddSkillsToSkillFamily(primarySkillDefs, MonsterSkillLocator.primary.skillFamily);
         }
 
-        public virtual void SetupSecondary() {
-            AddSkillsToSkillFamily(secondarySkillDefs, MonsterSkillLocator.secondary.skillFamily); }
+        public virtual void SetupSecondary()
+        {
+            AddSkillsToSkillFamily(secondarySkillDefs, MonsterSkillLocator.secondary.skillFamily);
+        }
 
-        public virtual void SetupUtility() {
-            AddSkillsToSkillFamily(utilitySkillDefs, MonsterSkillLocator.utility.skillFamily); }
-        public virtual void SetupSpecial() {
-            AddSkillsToSkillFamily(specialSkillDefs, MonsterSkillLocator.special.skillFamily); }
+        public virtual void SetupUtility()
+        {
+            AddSkillsToSkillFamily(utilitySkillDefs, MonsterSkillLocator.utility.skillFamily);
+        }
 
+        public virtual void SetupSpecial()
+        {
+            AddSkillsToSkillFamily(specialSkillDefs, MonsterSkillLocator.special.skillFamily);
+        }
     }
 }

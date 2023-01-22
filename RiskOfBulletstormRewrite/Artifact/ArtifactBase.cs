@@ -17,7 +17,7 @@ namespace RiskOfBulletstormRewrite.Artifact
         }
     }
 
-    ///<summary> 
+    ///<summary>
     ///Abstract class responsible for Artifacts.
     ///</summary>
     public abstract class ArtifactBase
@@ -31,6 +31,7 @@ namespace RiskOfBulletstormRewrite.Artifact
         ///Language Token responsible for the localization.
         ///</summary>
         public abstract string ArtifactLangTokenName { get; }
+
         ///<summary>
         ///Parameters for formatting the description language token.
         ///</summary>
@@ -74,7 +75,7 @@ namespace RiskOfBulletstormRewrite.Artifact
         }
 
         //For use only after the run has started.
-        
+
         ///<summary>
         ///Boolean for checking whether the artifact is enabled. Run only.
         ///</summary>
@@ -84,7 +85,9 @@ namespace RiskOfBulletstormRewrite.Artifact
         ///The main method executed for setting up the class.
         ///</summary>
         public abstract void Init(ConfigFile config);
-        public virtual void CreateConfig(ConfigFile config) { }
+
+        public virtual void CreateConfig(ConfigFile config)
+        { }
 
         ///<summary>
         ///Method responsible for creating and deferring the language tokens.

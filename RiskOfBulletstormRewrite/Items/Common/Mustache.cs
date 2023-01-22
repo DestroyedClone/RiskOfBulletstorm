@@ -3,7 +3,6 @@ using R2API;
 using RiskOfBulletstormRewrite.Utils;
 using RoR2;
 using UnityEngine;
-using static RiskOfBulletstormRewrite.Main;
 
 namespace RiskOfBulletstormRewrite.Items
 {
@@ -17,6 +16,7 @@ namespace RiskOfBulletstormRewrite.Items
         public override string ItemName => "Mustache";
 
         public override string ItemLangTokenName => "MUSTACHE";
+
         public override string[] ItemFullDescriptionParams => new string[]
         {
             cfgRegenAmount.Value.ToString(),

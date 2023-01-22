@@ -27,7 +27,6 @@ namespace RiskOfBulletstormRewrite.Equipment
         public override bool CanBeRandomlyTriggered => false;
         public override string ParentEquipmentName => "Orange";
 
-
         public override ItemDisplayRuleDict CreateItemDisplayRules()
         {
             return new ItemDisplayRuleDict();
@@ -42,7 +41,5 @@ namespace RiskOfBulletstormRewrite.Equipment
         {
             return true;
         }
-
-
     }
 }

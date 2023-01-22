@@ -10,6 +10,7 @@ namespace RiskOfBulletstormRewrite.Equipment
         //Item bloat makes chance reduction even bigger of a pain in the ass.
         //public static ConfigEntry<float> cfgChanceReduction;
         public static ConfigEntry<float> cfgChargeRateReduction;
+
         public static ConfigEntry<float> cfgMaxHealthIncrease;
         public static ConfigEntry<float> cfgHealPercentage;
 
@@ -62,6 +63,5 @@ namespace RiskOfBulletstormRewrite.Equipment
         public override void Hooks()
         {
         }
-
     }
 }

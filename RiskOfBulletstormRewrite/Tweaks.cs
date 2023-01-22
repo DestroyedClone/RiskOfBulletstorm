@@ -1,11 +1,8 @@
-using System;
-using BepInEx;
 using BepInEx.Configuration;
 using RoR2;
 using RoR2.UI;
 using UnityEngine;
-using System.IO;
-using System.Collections.Generic;
+
 namespace RiskOfBulletstormRewrite
 {
     public static class Tweaks
@@ -13,6 +10,7 @@ namespace RiskOfBulletstormRewrite
         public static ConfigEntry<bool> cfgCenterNotifications;
         public static ConfigEntry<bool> cfgDisableAutoPickup;
         public const string category = "Tweaks";
+
         public static void Init(ConfigFile config)
         {
             cfgCenterNotifications = config.Bind(category, "Center Notification Text", false, "If true, then notification text will be centered.");
@@ -24,11 +22,11 @@ namespace RiskOfBulletstormRewrite
                 On.RoR2.UI.GenericNotification.SetEquipment += SetEquipment;
                 On.RoR2.UI.GenericNotification.SetItem += SetItem;
             }
-/*             var languagePaths = Directory.GetFiles(Assets.assemblyDir, "*.language", SearchOption.AllDirectories);
-            foreach (var path in languagePaths)
-            {
-                AddPath(path);
-            } */
+            /*             var languagePaths = Directory.GetFiles(Assets.assemblyDir, "*.language", SearchOption.AllDirectories);
+                        foreach (var path in languagePaths)
+                        {
+                            AddPath(path);
+                        } */
             if (cfgDisableAutoPickup.Value)
                 On.RoR2.GenericPickupController.OnTriggerStay += NoAutoPickup;
         }
@@ -38,13 +36,12 @@ namespace RiskOfBulletstormRewrite
             return;
         }
 
-        /* 
+        /*
        private static void AddPath(string path)
        {
            if (path != null)
            {
                var fileText = File.ReadAllText(path);
-
            }
        }
 
@@ -59,10 +56,10 @@ namespace RiskOfBulletstormRewrite
 
        private static void Add(Dictionary<string, string> tokenDictionary)
        {
-
        } */
 
         #region centertext
+
         private static void CenterTextMesh(GenericNotification genericNotification)
         {
             genericNotification.titleText.textMeshPro.alignment = TMPro.TextAlignmentOptions.Center;
@@ -90,10 +87,8 @@ namespace RiskOfBulletstormRewrite
         private static void CharacterMasterNotificationQueue_PushNotification(On.RoR2.CharacterMasterNotificationQueue.orig_PushNotification orig, CharacterMasterNotificationQueue self, CharacterMasterNotificationQueue.NotificationInfo notificationInfo, float duration)
         {
             orig(self, notificationInfo, duration);
-            
         }
-        #endregion
 
-
+        #endregion centertext
     }
 }

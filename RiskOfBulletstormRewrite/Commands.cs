@@ -10,9 +10,8 @@ namespace RiskOfBulletstormRewrite
             //R2API.Utils.CommandHelper.AddToConsoleWhenReady();
         }
 
-
-        [ConCommand(commandName = "rbs_givebulletparts", 
-        flags = ConVarFlags.SenderMustBeServer, 
+        [ConCommand(commandName = "rbs_givebulletparts",
+        flags = ConVarFlags.SenderMustBeServer,
         helpText = "rbs_givebulletparts - Gives the bullet parts.")]
         public static void CCGiveBulletParts(ConCommandArgs args)
         {

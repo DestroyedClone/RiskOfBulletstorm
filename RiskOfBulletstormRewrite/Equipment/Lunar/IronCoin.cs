@@ -29,7 +29,6 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         protected override void CreateConfig(ConfigFile config)
         {
-
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
@@ -82,7 +81,5 @@ namespace RiskOfBulletstormRewrite.Equipment
             }
             return false;
         }
-
-
     }
 }

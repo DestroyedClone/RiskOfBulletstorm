@@ -1,9 +1,8 @@
-using R2API;
-using UnityEngine;
-using RoR2;
-using EntityStates;
 using BepInEx.Configuration;
-
+using EntityStates;
+using R2API;
+using RoR2;
+using UnityEngine;
 
 namespace RiskOfBulletstormRewrite
 {
@@ -11,15 +10,14 @@ namespace RiskOfBulletstormRewrite
     {
         public static GameEndingDef gedPastWon;
         public static GameEndingDef gedPastLose;
+
         public static void Init(ConfigFile config)
         {
-            
         }
 
         public static void SetupGameEndings()
         {
-            
-        }  
+        }
 
         public enum ShowCredits
         {
@@ -61,9 +59,11 @@ namespace RiskOfBulletstormRewrite
                 case ShowCredits.Default:
                     gameEndingDef.showCredits = gameEndingDef.isWin;
                     break;
+
                 case ShowCredits.Show:
                     gameEndingDef.showCredits = true;
                     break;
+
                 case ShowCredits.DontShow:
                     gameEndingDef.showCredits = false;
                     break;

@@ -25,6 +25,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public override bool CanBeRandomlyTriggered => false;
         public override string ParentEquipmentName => "Iron Coin";
+
         public override void Init(ConfigFile config)
         {
             CreateConfig(config);
@@ -49,10 +50,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         protected override bool ActivateEquipment(EquipmentSlot slot)
         {
-
             return true;
         }
-
-
     }
 }

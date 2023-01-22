@@ -1,7 +1,5 @@
-using BepInEx;
 using RoR2;
 using UnityEngine;
-
 
 namespace RiskOfBulletstormRewrite
 {
@@ -12,7 +10,6 @@ namespace RiskOfBulletstormRewrite
 
         public struct PastInfo
         {
-            
         }
     }
 }

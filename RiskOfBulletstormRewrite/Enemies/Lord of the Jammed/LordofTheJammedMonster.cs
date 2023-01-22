@@ -23,12 +23,12 @@ namespace RiskOfBulletstormRewrite.Enemies
 
         public override GameObject CreateBodyPrefab()
         {
-            characterPrefab = PrefabAPI.InstantiateClone(Resources.Load<GameObject>("prefabs/characterbodies/JellyfishBody"), MonsterName+"Body", true);
+            characterPrefab = PrefabAPI.InstantiateClone(Resources.Load<GameObject>("prefabs/characterbodies/JellyfishBody"), MonsterName + "Body", true);
             ContentAddition.AddBody(characterPrefab);
             CharacterBody bodyComponent = characterPrefab.GetComponent<CharacterBody>();
             //bodyComponent.bodyIndex = -1; //def: 19
-            bodyComponent.baseNameToken = TokenPrefix+MonsterLangTokenName+"_BODY_NAME"; // name token
-            bodyComponent.subtitleNameToken = TokenPrefix+MonsterLangTokenName+"_BODY_SUBTITLE"; // subtitle token- used for umbras
+            bodyComponent.baseNameToken = TokenPrefix + MonsterLangTokenName + "_BODY_NAME"; // name token
+            bodyComponent.subtitleNameToken = TokenPrefix + MonsterLangTokenName + "_BODY_SUBTITLE"; // subtitle token- used for umbras
             //bodyComponent.bodyFlags = CharacterBody.BodyFlags.;
             //bodyComponent.mainRootSpeed = 0;
             bodyComponent.baseMaxHealth = 10000;
@@ -63,15 +63,14 @@ namespace RiskOfBulletstormRewrite.Enemies
 
         public override void SetupPassive()
         {
-            MonsterSkillLocator.passiveSkill.skillNameToken = TokenPrefix+"PASSIVE_NAME";
-            MonsterSkillLocator.passiveSkill.skillDescriptionToken = TokenPrefix+"PASSIVE_DESC";
+            MonsterSkillLocator.passiveSkill.skillNameToken = TokenPrefix + "PASSIVE_NAME";
+            MonsterSkillLocator.passiveSkill.skillDescriptionToken = TokenPrefix + "PASSIVE_DESC";
             base.SetupPassive();
         }
 
         public override void SetupSecondary()
         {
             CreateAndSetNewSkillFamily(MonsterSkillLocator.secondary, "SECONDARY");
-
 
             var mySkillDef = ScriptableObject.CreateInstance<SkillDef>();
             mySkillDef.activationState = new SerializableEntityStateType(typeof(LOTJSlash));
@@ -88,11 +87,11 @@ namespace RiskOfBulletstormRewrite.Enemies
             mySkillDef.requiredStock = 1;
             mySkillDef.stockToConsume = 1;
             //mySkillDef.icon = SurvivorSkillLocator.utility.skillDef.icon;
-            mySkillDef.skillName = TokenPrefix+"_SECONDARY";
+            mySkillDef.skillName = TokenPrefix + "_SECONDARY";
             mySkillDef.skillNameToken = $"{mySkillDef.skillName}_NAME";
             mySkillDef.skillDescriptionToken = $"{mySkillDef.skillName}_DESC";
             (mySkillDef as ScriptableObject).name = mySkillDef.skillName;
-            mySkillDef.keywordTokens = new string[]{};
+            mySkillDef.keywordTokens = new string[] { };
             secondarySkillDefs.Add(mySkillDef);
             base.SetupSecondary();
         }

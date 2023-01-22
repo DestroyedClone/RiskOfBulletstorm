@@ -19,8 +19,8 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override ItemTag[] ItemTags => new ItemTag[]
         {
-            
         };
+
         public override string ParentItemName => "Prototype";
 
         public override void Init(ConfigFile config)
@@ -33,7 +33,6 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void CreateConfig(ConfigFile config)
         {
-
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
@@ -44,6 +43,5 @@ namespace RiskOfBulletstormRewrite.Items
         public override void Hooks()
         {
         }
-
     }
 }

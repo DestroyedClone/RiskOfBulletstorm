@@ -10,7 +10,7 @@ namespace RiskOfBulletstormRewrite
     internal class ModSupport
     {
         internal static bool betterUILoaded = false;
-        
+
         internal static void CheckForModSupport()
         {
             if (BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.xoxfaby.BetterUI"))
@@ -27,7 +27,6 @@ namespace RiskOfBulletstormRewrite
         {
             BetterUI.ItemStats.RegisterTag(null, new BetterUI.ItemStats.ItemTag()
             {
-                
             });
         }
 
@@ -39,9 +38,9 @@ namespace RiskOfBulletstormRewrite
             {
                 if (descTokenParams != null && descTokenParams.Length > 0)
                 {
-                    Language.DeferToken(prefix+baseToken+"_DESC", descTokenParams);
+                    Language.DeferToken(prefix + baseToken + "_DESC", descTokenParams);
                 }
-                BetterUI.Buffs.RegisterBuffInfo(buffDef, prefix+baseToken+"_NAME", prefix+baseToken+"_DESC");
+                BetterUI.Buffs.RegisterBuffInfo(buffDef, prefix + baseToken + "_NAME", prefix + baseToken + "_DESC");
             }
             RegisterBuffInfo(Buffs.AlphaBulletBuff, "ALPHABULLET", new string[]
             {
@@ -49,7 +48,7 @@ namespace RiskOfBulletstormRewrite
                 GetFloat(AlphaBullets.cfgDamageStack)
             });
             RegisterBuffInfo(Buffs.MustacheBuff, "MUSTACHE", new string[]{
-                GetFloat(Mustache.cfgRegenAmount), 
+                GetFloat(Mustache.cfgRegenAmount),
                 GetFloat(Mustache.cfgRegenAmountPerStack)});
             /*(Buffs.MetronomeTrackerBuff, "METRONOME", new string[]{});*/
             RegisterBuffInfo(Buffs.BloodiedScarfBuff, "BLOODIEDSCARF", new string[]{
@@ -76,8 +75,8 @@ namespace RiskOfBulletstormRewrite
         {
             var prefix = "$RISKOFBULLETSTORM_STATDISPLAY_";
             //todo add auto display?????
-            BetterUI.StatsDisplay.AddStatsDisplay(prefix+"ACCURACY", (BetterUI.StatsDisplay.DisplayCallback)GetAccuracy);
-            BetterUI.StatsDisplay.AddStatsDisplay(prefix+"CURSE", (BetterUI.StatsDisplay.DisplayCallback)GetCurse);
+            BetterUI.StatsDisplay.AddStatsDisplay(prefix + "ACCURACY", (BetterUI.StatsDisplay.DisplayCallback)GetAccuracy);
+            BetterUI.StatsDisplay.AddStatsDisplay(prefix + "CURSE", (BetterUI.StatsDisplay.DisplayCallback)GetCurse);
         }
 
         private static string GetAccuracy(CharacterBody body)
@@ -91,6 +90,7 @@ namespace RiskOfBulletstormRewrite
 
             return value;
         }
+
         //this duplicate is kinda goofy, is this unoptimized?
         private static string GetCurse(CharacterBody body)
         {
@@ -103,9 +103,10 @@ namespace RiskOfBulletstormRewrite
 
             return value;
         }
+
         public static float ScopeDamageStacking(float value, float extraStackValue, int stacks)
         {
-            return Mathf.Max(0, (stacks+1) - Scope.expectedMaxStacks) * value;
+            return Mathf.Max(0, (stacks + 1) - Scope.expectedMaxStacks) * value;
         }
 
         public static float DodgeRollDurationStacking(float value, float extraStackValue, int stacks)
@@ -123,10 +124,12 @@ namespace RiskOfBulletstormRewrite
         {
             //todo: capformula, registermodifier
             var prefix = "RISKOFBULLETSTORM_STAT_";
+
             #region Common
+
             BetterUI.ItemStats.RegisterStat(Items.Antibody.instance.ItemDef,
                 prefix + "ANTIBODY_HEALCHANCE",
-                Antibody.cfgChance.Value/100, //divided by 100 because the rollchacne is 25f
+                Antibody.cfgChance.Value / 100, //divided by 100 because the rollchacne is 25f
                 BetterUI.ItemStats.NoStacking,
                 BetterUI.ItemStats.StatFormatter.Chance);
             BetterUI.ItemStats.RegisterStat(Antibody.instance.ItemDef,
@@ -169,8 +172,11 @@ namespace RiskOfBulletstormRewrite
                 ScopeDamageStacking,
                 BetterUI.ItemStats.StatFormatter.Percent,
                 BetterUI.ItemStats.ItemTag.Damage);
-#endregion
+
+            #endregion Common
+
             #region Uncommon
+
             BetterUI.ItemStats.RegisterStat(AlphaBullets.instance.ItemDef,
                 prefix + "ALPHABULLETS_DAMAGEBONUS",
                 AlphaBullets.cfgDamage.Value,
@@ -185,14 +191,14 @@ namespace RiskOfBulletstormRewrite
                 AmmoBelt.cfgPercentageStockAdditive.Value,
                 BetterUI.ItemStats.LinearStacking,
                 BetterUI.ItemStats.StatFormatter.Percent); */
-                
+
             BetterUI.ItemStats.RegisterStat(BattleStandard.instance.ItemDef,
                 prefix + "BATTLESTANDARD_DAMAGEBONUS",
                 BattleStandard.cfgDamage.Value,
                 BetterUI.ItemStats.LinearStacking,
                 BetterUI.ItemStats.StatFormatter.Percent,
                 BetterUI.ItemStats.ItemTag.Damage);
-                
+
             /* BetterUI.ItemStats.RegisterStat(GhostBullets.instance.ItemDef,
                 prefix + "GHOSTBULLETS_DAMAGEREDUCTION",
                 GhostBullets.cfgDamageReduction.Value,
@@ -203,14 +209,14 @@ namespace RiskOfBulletstormRewrite
                 1,
                 BetterUI.ItemStats.LinearStacking,
                 BetterUI.ItemStats.StatFormatter.Charges); */
-            
+
             /* BetterUI.ItemStats.RegisterStat(RingChestFriendship.instance.ItemDef,
                 prefix + "RINGCHESTFRIENDSHIP_CREDITMULTIPLIER",
                 RingChestFriendship.cfgCreditMultiplier.Value,
                 RingChestFriendship.cfgCreditMultiplierPerStack.Value,
                 BetterUI.ItemStats.LinearStacking,
                 BetterUI.ItemStats.StatFormatter.Percent); */
-                
+
             /*BetterUI.ItemStats.RegisterStat(RingFireResistance.instance.ItemDef,
                 prefix + "RINGFIRERESISTANCE_REDUCTION",
                 RingFireResistance.cfgBaseResist.Value,
@@ -223,8 +229,11 @@ namespace RiskOfBulletstormRewrite
                 CoinCrown.cfgCashMultiplierPerStack.Value,
                 BetterUI.ItemStats.LinearStacking,
                 BetterUI.ItemStats.StatFormatter.Percent);*/
-#endregion
+
+            #endregion Uncommon
+
             #region Legendary
+
             BetterUI.ItemStats.RegisterStat(Backpack.instance.ItemDef,
                 prefix + "BACKPACK_SLOTS",
                 1,
@@ -232,18 +241,18 @@ namespace RiskOfBulletstormRewrite
                 BetterUI.ItemStats.StatFormatter.Charges,
                 null);
             //BabyGoodMimic
-           /* BetterUI.ItemStats.RegisterStat(BabyGoodMimic.instance.ItemDef,
-                prefix + "BABYGOODMIMIC_MINIONCOUNT",
-                1,
-                BetterUI.ItemStats.LinearStacking,
-                BetterUI.ItemStats.StatFormatter.Charges,
-                null);
-            BetterUI.ItemStats.RegisterStat(BabyGoodMimic.instance.ItemDef,
-                prefix + "BABYGOODMIMIC_COOLDOWN",
-                30,
-                BetterUI.ItemStats.NoStacking,
-                BetterUI.ItemStats.StatFormatter.Seconds,
-                null);*/
+            /* BetterUI.ItemStats.RegisterStat(BabyGoodMimic.instance.ItemDef,
+                 prefix + "BABYGOODMIMIC_MINIONCOUNT",
+                 1,
+                 BetterUI.ItemStats.LinearStacking,
+                 BetterUI.ItemStats.StatFormatter.Charges,
+                 null);
+             BetterUI.ItemStats.RegisterStat(BabyGoodMimic.instance.ItemDef,
+                 prefix + "BABYGOODMIMIC_COOLDOWN",
+                 30,
+                 BetterUI.ItemStats.NoStacking,
+                 BetterUI.ItemStats.StatFormatter.Seconds,
+                 null);*/
 
             BetterUI.ItemStats.RegisterStat(Clone.instance.ItemDef,
                 prefix + "CLONE_ITEMCOUNT",
@@ -252,8 +261,11 @@ namespace RiskOfBulletstormRewrite
                 BetterUI.ItemStats.LinearStacking,
                 BetterUI.ItemStats.StatFormatter.Charges,
                 null);
-#endregion
+
+            #endregion Legendary
+
             #region Lunar
+
             BetterUI.ItemStats.RegisterStat(BloodiedScarf.instance.ItemDef,
                 prefix + "BLOODIEDSCARF_DISTANCE",
                 BloodiedScarf.cfgTeleportRange.Value,
@@ -300,9 +312,11 @@ namespace RiskOfBulletstormRewrite
                 BetterUI.ItemStats.LinearStacking,
                 BetterUI.ItemStats.StatFormatter.Percent,
                 BetterUI.ItemStats.ItemTag.MaxHealth);
-                #endregion
-            #region Boss
-            #endregion
+
+            #endregion Lunar
+
+
+
             #region NoTier
             BetterUI.ItemStats.RegisterStat(Items.OrangeConsumed.instance.ItemDef,
                 prefix + "ORANGECONSUMED_MAXHEALTHADD",
@@ -323,10 +337,10 @@ namespace RiskOfBulletstormRewrite
                 BetterUI.ItemStats.StatFormatter.Percent,
                 BetterUI.ItemStats.ItemTag.SkillCooldown);*/
 
-            #endregion
-            #region Void Common
+            #endregion NoTier
 
-            #endregion
+
+
             #region Void Uncommon
 
             BetterUI.ItemStats.RegisterStat(BattleStandardVoid.instance.ItemDef,
@@ -341,8 +355,11 @@ namespace RiskOfBulletstormRewrite
                 CoinCrownVoid.cfgCashAdderStack.Value,
                 BetterUI.ItemStats.LinearStacking,
                 BetterUI.ItemStats.StatFormatter.Charges);
-            #endregion
+
+            #endregion Void Uncommon
+
             #region Void Legendary
+
             BetterUI.ItemStats.RegisterStat(CloneVoid.instance.ItemDef,
                 prefix + "CLONEVOID_ITEMSPERSTAGE",
                 CloneVoid.cfgItemsToGet.Value,
@@ -354,9 +371,8 @@ namespace RiskOfBulletstormRewrite
                 CloneVoid.cfgStageCount.Value,
                 BetterUI.ItemStats.NoStacking,
                 BetterUI.ItemStats.StatFormatter.Charges);
-            #endregion
-            #region Void Boss
-            #endregion
+
+            #endregion Void Legendary
         }
     }
 }

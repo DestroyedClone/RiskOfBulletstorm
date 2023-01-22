@@ -1,5 +1,5 @@
-﻿using RoR2;
-using R2API;
+﻿using R2API;
+using RoR2;
 using UnityEngine;
 
 namespace RiskOfBulletstormRewrite.Utils
@@ -15,15 +15,15 @@ namespace RiskOfBulletstormRewrite.Utils
         public static void CreateBuffs()
         {
             //Buffs
-            MustacheBuff = AddBuff("Power of Commerce", 
-            Assets.LoadSprite("BUFF_MUSTACHE"), 
+            MustacheBuff = AddBuff("Power of Commerce",
+            Assets.LoadSprite("BUFF_MUSTACHE"),
             Color.yellow, false, true);
 
-            BloodiedScarfBuff = AddBuff("Vulnerable", 
-            Assets.LoadSprite("BUFF_BLOODIEDSCARF"), 
+            BloodiedScarfBuff = AddBuff("Vulnerable",
+            Assets.LoadSprite("BUFF_BLOODIEDSCARF"),
             Color.red, true, false);
-            AlphaBulletBuff = AddBuff("Alpha Bullet Damage", 
-            Assets.LoadSprite("BUFF_ALPHABULLET"), 
+            AlphaBulletBuff = AddBuff("Alpha Bullet Damage",
+            Assets.LoadSprite("BUFF_ALPHABULLET"),
             Color.yellow, false, true);
             DodgeRollBuff = AddBuff("Dodgeroll Buff",
             Assets.LoadSprite("BUFF_DODGEROLL"),

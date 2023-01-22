@@ -14,6 +14,7 @@ namespace RiskOfBulletstormRewrite.Items
         public override string ItemName => "Alpha Bullets";
 
         public override string ItemLangTokenName => "ALPHABULLET";
+
         public override string[] ItemFullDescriptionParams => new string[]
         {
             GetChance(cfgDamage),
@@ -56,7 +57,6 @@ namespace RiskOfBulletstormRewrite.Items
             RecalculateStatsAPI.GetStatCoefficients += StatCoefficients;
         }
 
-        
         private void StatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (sender)
@@ -66,7 +66,7 @@ namespace RiskOfBulletstormRewrite.Items
                 if (buffCount > 0 && itemCount > 0)
                 {
                     var multiplier = GetStack(cfgDamage, cfgDamageStack, itemCount);
-                    
+
                     args.damageMultAdd += buffCount * multiplier;
                 }
             }
@@ -83,7 +83,7 @@ namespace RiskOfBulletstormRewrite.Items
         public class RBS_AlphaBullet : MonoBehaviour
         {
             public CharacterBody body;
-            
+
             public GenericSkill primary = null;
             public GenericSkill secondary = null;
             public GenericSkill utility = null;
@@ -101,7 +101,9 @@ namespace RiskOfBulletstormRewrite.Items
                 {
                     enabled = false;
                     return;
-                } else {
+                }
+                else
+                {
                     var sk = body.skillLocator;
                     primary = sk.primary;
                     secondary = sk.secondary;
@@ -123,14 +125,16 @@ namespace RiskOfBulletstormRewrite.Items
                 if (hasItem)
                 {
                     enabled = true;
-                } else {
+                }
+                else
+                {
                     enabled = false;
                 }
             }
 
             public void OnDisable()
             {
-                body.SetBuffCount(Utils.Buffs.AlphaBulletBuff.buffIndex, 0); 
+                body.SetBuffCount(Utils.Buffs.AlphaBulletBuff.buffIndex, 0);
             }
 
             public void FixedUpdate()

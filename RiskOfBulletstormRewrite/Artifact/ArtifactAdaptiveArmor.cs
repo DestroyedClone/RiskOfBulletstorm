@@ -37,7 +37,6 @@ namespace RiskOfBulletstormRewrite.Artifact
             RoR2.CharacterBody.onBodyStartGlobal -= CharacterBody_onBodyStartGlobal;
         }
 
-
         private void RunArtifactManager_onArtifactEnabledGlobal([JetBrains.Annotations.NotNull] RunArtifactManager runArtifactManager, [JetBrains.Annotations.NotNull] ArtifactDef artifactDef)
         {
             if (artifactDef != ArtifactDef)

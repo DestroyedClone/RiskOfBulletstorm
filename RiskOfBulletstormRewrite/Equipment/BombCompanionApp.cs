@@ -14,8 +14,9 @@ namespace RiskOfBulletstormRewrite.Equipment
         // Add more effects for use
         // Adjust damage and cooldown
         // Add assets (model, idrs, sound)
-        // 
+        //
         public static ConfigEntry<float> cfgCooldown;
+
         public static ConfigEntry<float> cfgRange;
         public static ConfigEntry<float> cfgTarDamageMultiplier;
         public static ConfigEntry<float> cfgJellyfishDamageMultiplier;

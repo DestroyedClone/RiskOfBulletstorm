@@ -1,7 +1,6 @@
 using BepInEx.Configuration;
 using R2API;
 using RoR2;
-using System;
 using UnityEngine;
 
 namespace RiskOfBulletstormRewrite.Items
@@ -11,6 +10,7 @@ namespace RiskOfBulletstormRewrite.Items
         public override string ItemName => "Orange (Consumed)";
 
         public override string ItemLangTokenName => "ORANGECONSUMED";
+
         public override string[] ItemFullDescriptionParams => new string[]
         {
             GetChance(Equipment.Orange.cfgMaxHealthIncrease),
@@ -24,6 +24,7 @@ namespace RiskOfBulletstormRewrite.Items
         public override Sprite ItemIcon => LoadSprite();
 
         public override string ParentEquipmentName => "Orange";
+
         public override ItemTag[] ItemTags => new ItemTag[]
         {
             ItemTag.Healing
@@ -39,7 +40,6 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void CreateConfig(ConfigFile config)
         {
-
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
@@ -55,7 +55,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         private float ReduceCooldowns(On.RoR2.Inventory.orig_CalculateEquipmentCooldownScale orig, Inventory self)
         {
-            return orig(self) * Mathf.Pow(1f-Equipment.Orange.cfgChargeRateReduction.Value, self.GetItemCount(ItemDef));
+            return orig(self) * Mathf.Pow(1f - Equipment.Orange.cfgChargeRateReduction.Value, self.GetItemCount(ItemDef));
         }
 
         private void Orange_StatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
@@ -69,6 +69,5 @@ namespace RiskOfBulletstormRewrite.Items
                 }
             }
         }
-
     }
 }

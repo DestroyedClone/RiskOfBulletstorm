@@ -69,6 +69,5 @@ namespace RiskOfBulletstormRewrite.Items
             }
             orig(self, damageInfo);
         }
-
     }
 }

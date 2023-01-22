@@ -1,6 +1,5 @@
 using BepInEx.Configuration;
 using R2API;
-using RiskOfBulletstormRewrite.Equipment;
 using RoR2;
 using UnityEngine;
 
@@ -22,7 +21,6 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override ItemTag[] ItemTags => new ItemTag[]
         {
-
         };
 
         public override void Init(ConfigFile config)
@@ -35,7 +33,6 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void CreateConfig(ConfigFile config)
         {
-
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
@@ -46,6 +43,5 @@ namespace RiskOfBulletstormRewrite.Items
         public override void Hooks()
         {
         }
-
     }
 }

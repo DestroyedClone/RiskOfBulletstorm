@@ -35,7 +35,7 @@ namespace RiskOfBulletstormRewrite
 
         public static void DeferLateTokens(string baseToken, params string[] args)
         {
-            RiskOfBulletstormRewrite.Language.postReplacementTokens.Add(new PostReplacementToken() { baseToken = baseToken, replacementTokens = args});
+            RiskOfBulletstormRewrite.Language.postReplacementTokens.Add(new PostReplacementToken() { baseToken = baseToken, replacementTokens = args });
         }
 
         public static List<ReplacementToken> replacementTokens = new List<ReplacementToken>();
@@ -80,35 +80,36 @@ namespace RiskOfBulletstormRewrite
         }
 
         private static void DeferTokenFinalize()
-        {foreach (var replacementToken in replacementTokens)
+        {
+            foreach (var replacementToken in replacementTokens)
             {
                 try
                 {
-                foreach (var lang in RoR2.Language.steamLanguageTable)
-                {
-                    var langName = lang.Value.webApiName;
-                    var newString = FormatToken(replacementToken.token, langName, replacementToken.args);
-                    LanguageAPI.Add(replacementToken.token, newString, langName);
-
-                /* try
-                {
-
-                }catch
-                {
-                    Main._logger.LogError($"Failed setting up token \"{langTokenValue.token}\" for language {langTokenValue.lang}." +
-                        $"\nFollowing parameters where given:");
-                    foreach (var str in langTokenValue.strings)
+                    foreach (var lang in RoR2.Language.steamLanguageTable)
                     {
-                        Main._logger.LogMessage(str);
+                        var langName = lang.Value.webApiName;
+                        var newString = FormatToken(replacementToken.token, langName, replacementToken.args);
+                        LanguageAPI.Add(replacementToken.token, newString, langName);
+
+                        /* try
+                        {
+                        }catch
+                        {
+                            Main._logger.LogError($"Failed setting up token \"{langTokenValue.token}\" for language {langTokenValue.lang}." +
+                                $"\nFollowing parameters where given:");
+                            foreach (var str in langTokenValue.strings)
+                            {
+                                Main._logger.LogMessage(str);
+                            }
+                        }
+                        if (langTokenValue.lang == "en")
+                        {
+                            Main._logger.LogMessage($"{langTokenValue.token} {newString}");
+                        } */
                     }
                 }
-                if (langTokenValue.lang == "en")
+                catch
                 {
-                    Main._logger.LogMessage($"{langTokenValue.token} {newString}");
-                } */
-                }
-                }
-                catch {
                     Main._logger.LogError($"Failed to load replacement token {replacementToken.token}"
                     + $"Params: {replacementToken.args.ToString()}");
                 }
@@ -121,22 +122,22 @@ namespace RiskOfBulletstormRewrite
             {
                 try
                 {
-                foreach (var lang in RoR2.Language.steamLanguageTable)
-                {
-                    var langName = lang.Value.webApiName;
-
-                    List<string> resolvedReplacementTokens = new List<string>();
-                    foreach (var tokenArg in postReplacementToken.replacementTokens)
+                    foreach (var lang in RoR2.Language.steamLanguageTable)
                     {
-                        resolvedReplacementTokens.Add(RoR2.Language.GetString(tokenArg, langName));
+                        var langName = lang.Value.webApiName;
+
+                        List<string> resolvedReplacementTokens = new List<string>();
+                        foreach (var tokenArg in postReplacementToken.replacementTokens)
+                        {
+                            resolvedReplacementTokens.Add(RoR2.Language.GetString(tokenArg, langName));
+                        }
+
+                        var newString = FormatToken(postReplacementToken.baseToken, langName, resolvedReplacementTokens.ToArray());
+                        LanguageAPI.Add(postReplacementToken.baseToken, newString, langName);
                     }
-
-
-                    var newString = FormatToken(postReplacementToken.baseToken, langName, resolvedReplacementTokens.ToArray());
-                    LanguageAPI.Add(postReplacementToken.baseToken, newString, langName);
                 }
-                }
-                catch {
+                catch
+                {
                     Main._logger.LogError($"Failed to load post replacement token {postReplacementToken.baseToken}"
                     + $"Params are wrong?");
                 }
@@ -147,6 +148,7 @@ namespace RiskOfBulletstormRewrite
         {
             return RoR2.Language.GetString(token, RoR2.Language.currentLanguageName);
         }
+
         /*
         private static void SetupConfigLanguage(ConfigFile config)
         {
@@ -179,6 +181,5 @@ namespace RiskOfBulletstormRewrite
                 On.RoR2.Language.GetString_string -= OverrideGetStringLogbook;
             }
         }
-
     }
 }

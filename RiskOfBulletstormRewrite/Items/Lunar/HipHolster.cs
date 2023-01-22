@@ -1,9 +1,9 @@
 ﻿using BepInEx.Configuration;
 using R2API;
 using RoR2;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
-using System.Collections.Generic;
 
 namespace RiskOfBulletstormRewrite.Items
 {

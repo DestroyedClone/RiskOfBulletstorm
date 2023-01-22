@@ -23,6 +23,7 @@ namespace RiskOfBulletstormRewrite.Items
             instance = this as T;
         }
     }
+
     public abstract class ItemBase
     {
         public abstract string ItemName { get; }
@@ -50,8 +51,9 @@ namespace RiskOfBulletstormRewrite.Items
 
         public virtual ItemDef ContagiousOwnerItemDef { get; } = null;
 
-        public virtual string ParentEquipmentName {get;} = null;
-        public virtual string ParentItemName {get;} = null;
+        public virtual string ParentEquipmentName { get; } = null;
+        public virtual string ParentItemName { get; } = null;
+
         public string ConfigCategory
         {
             get
@@ -59,6 +61,7 @@ namespace RiskOfBulletstormRewrite.Items
                 return "Item: " + ItemName;
             }
         }
+
         public string ItemPickupToken
         {
             get
@@ -95,7 +98,8 @@ namespace RiskOfBulletstormRewrite.Items
         /// <param name="config">The config file that will be passed into this from the main class.</param>
         public abstract void Init(ConfigFile config);
 
-        public virtual void CreateConfig(ConfigFile config) { }
+        public virtual void CreateConfig(ConfigFile config)
+        { }
 
         protected virtual void CreateLang() //create lang (addtokens for nwo) -> modify lang (this will be kept later)
         {
@@ -110,7 +114,7 @@ namespace RiskOfBulletstormRewrite.Items
                 //Main._logger.LogMessage("Nothing to format.");
                 return;
             }
-            
+
             if (formatPickup)
             {
                 Language.DeferToken(ItemPickupToken, ItemPickupDescParams);
@@ -135,7 +139,6 @@ namespace RiskOfBulletstormRewrite.Items
             LanguageAPI.Add("ITEM_" + ItemLangTokenName + "_PICKUP", ItemPickupDesc);
             LanguageAPI.Add("ITEM_" + ItemLangTokenName + "_DESCRIPTION", ItemFullDescription);
             LanguageAPI.Add("ITEM_" + ItemLangTokenName + "_LORE", ItemLore);*/
-        
         }
 
         public string GetChance(ConfigEntry<float> configEntry)
@@ -144,6 +147,7 @@ namespace RiskOfBulletstormRewrite.Items
         }
 
         public abstract ItemDisplayRuleDict CreateItemDisplayRules();
+
         protected void CreateItem()
         {
             if (AIBlacklisted)
@@ -173,7 +177,9 @@ namespace RiskOfBulletstormRewrite.Items
                 if (!ContagiousOwnerItemDef)
                 {
                     Main._logger.LogWarning($"Void Item {ItemDef.name} does not have an associated ItemDef to convert from!");
-                } else {
+                }
+                else
+                {
                     Main.voidConversions.Add(ContagiousOwnerItemDef, ItemDef);
                 }
             }
@@ -183,7 +189,8 @@ namespace RiskOfBulletstormRewrite.Items
             ItemAPI.Add(new CustomItem(ItemDef, CreateItemDisplayRules()));
         }
 
-        public virtual void Hooks() { }
+        public virtual void Hooks()
+        { }
 
         //Based on ThinkInvis' methods
         public int GetCount(CharacterBody body)
@@ -211,11 +218,11 @@ namespace RiskOfBulletstormRewrite.Items
         {
             return initialValue + stackValue * (itemCount - 1);
         }
+
         public float GetStack(ConfigEntry<float> initialValue, ConfigEntry<float> stackValue, int itemCount)
         {
             return GetStack(initialValue.Value, stackValue.Value, itemCount);
         }
-        
 
         public Sprite LoadSprite()
         {
@@ -226,6 +233,5 @@ namespace RiskOfBulletstormRewrite.Items
         {
             return (ItemBase)System.Activator.CreateInstance(v);
         }
-        
     }
 }

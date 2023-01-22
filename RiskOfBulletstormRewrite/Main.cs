@@ -1,6 +1,5 @@
 ﻿using BepInEx;
 using HarmonyLib;
-using Path = System.IO.Path;
 using R2API;
 using R2API.Utils;
 using RiskOfBulletstormRewrite.Artifact;
@@ -8,17 +7,12 @@ using RiskOfBulletstormRewrite.Controllers;
 using RiskOfBulletstormRewrite.Equipment;
 using RiskOfBulletstormRewrite.Equipment.EliteEquipment;
 using RiskOfBulletstormRewrite.Items;
-using RiskOfBulletstormRewrite.Enemies;
 using RoR2;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using UnityEngine;
-
-using MonoMod.RuntimeDetour;
-using MonoMod.Cil;
-using Mono.Cecil.Cil;
+using Path = System.IO.Path;
 
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
 
@@ -29,11 +23,11 @@ namespace RiskOfBulletstormRewrite
     [BepInDependency(R2API.R2API.PluginGUID, R2API.R2API.PluginVersion)]
     [BepInDependency("com.xoxfaby.BetterUI", BepInDependency.DependencyFlags.SoftDependency)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.EveryoneNeedSameModVersion)]
-    [R2APISubmoduleDependency(nameof(ItemAPI), 
-    nameof(LanguageAPI), 
-    nameof(ContentAddition), 
-    nameof(EliteAPI), 
-    nameof(RecalculateStatsAPI), 
+    [R2APISubmoduleDependency(nameof(ItemAPI),
+    nameof(LanguageAPI),
+    nameof(ContentAddition),
+    nameof(EliteAPI),
+    nameof(RecalculateStatsAPI),
     nameof(DirectorAPI))]
     public class Main : BaseUnityPlugin
     {
@@ -99,18 +93,14 @@ namespace RiskOfBulletstormRewrite
 
         private static void borpa(ILContext il)
         {
-
         } */
 
         public static Dictionary<ItemDef, ItemDef> voidConversions = new Dictionary<ItemDef, ItemDef>();
 
         public void SetupVoid()
         {
-            
             On.RoR2.Items.ContagiousItemManager.Init += MethodNameHere;
         }
-
-
 
         private void MethodNameHere(On.RoR2.Items.ContagiousItemManager.orig_Init orig)
         {
@@ -124,7 +114,7 @@ namespace RiskOfBulletstormRewrite
                 };
                 RoR2.ItemCatalog.itemRelationships[RoR2.DLC1Content.ItemRelationshipTypes.ContagiousItem] = ItemCatalog.itemRelationships[DLC1Content.ItemRelationshipTypes.ContagiousItem].AddToArray(transformation);
             }
-            
+
             orig();
         }
 
@@ -141,7 +131,7 @@ namespace RiskOfBulletstormRewrite
                     artifact.Init(Config);
                 }
             }
-            
+
             //this section automatically scans the project for all equipment
             var EquipmentTypes = Assembly.GetExecutingAssembly().GetTypes().Where(type => !type.IsAbstract && type.IsSubclassOf(typeof(EquipmentBase)));
             var loadedEquipmentNames = new List<string>();
@@ -155,7 +145,7 @@ namespace RiskOfBulletstormRewrite
                     childEquipmentTypes.Add(equipment);
                     continue;
                 }
-                
+
                 if (ValidateEquipment(equipment, Equipments))
                 {
                     equipment.Init(Config);
@@ -205,7 +195,6 @@ namespace RiskOfBulletstormRewrite
                 }
             }
 
-
             //this section automatically scans the project for all elite equipment
             var EliteEquipmentTypes = Assembly.GetExecutingAssembly().GetTypes().Where(type => !type.IsAbstract && type.IsSubclassOf(typeof(EliteEquipmentBase)));
 
@@ -236,7 +225,6 @@ namespace RiskOfBulletstormRewrite
                 //monsterBase.Init(Config);
             }*/
         }
-
 
         #region Validators
 
@@ -270,7 +258,6 @@ namespace RiskOfBulletstormRewrite
             }*/
             if (item.IsSkillReplacement)
             {
-
             }
             var enabled = Config.Bind<bool>(item.ConfigCategory, "Enable Item?", true, "Should this item appear in runs?").Value;
             var aiBlacklist = Config.Bind<bool>(item.ConfigCategory, "Blacklist Item from AI Use?", false, "Should the AI not be able to obtain this item?").Value;

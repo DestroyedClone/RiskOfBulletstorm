@@ -14,9 +14,9 @@ namespace RiskOfBulletstormRewrite.Controllers
             instance = this as T;
         }
     }
+
     public abstract class ControllerBase
     {
-
         public virtual string ConfigCategory { get; }
 
         /// <summary>
@@ -29,14 +29,14 @@ namespace RiskOfBulletstormRewrite.Controllers
         /// <param name="config">The config file that will be passed into this from the main class.</param>
         public abstract void Init(ConfigFile config);
 
-        public virtual void CreateConfig(ConfigFile config) { }
+        public virtual void CreateConfig(ConfigFile config)
+        { }
 
         protected virtual void CreateLang()
         {
-
         }
 
-
-        public virtual void Hooks() { }
+        public virtual void Hooks()
+        { }
     }
 }

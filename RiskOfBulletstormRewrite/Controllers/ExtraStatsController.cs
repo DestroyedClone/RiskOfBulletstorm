@@ -1,12 +1,12 @@
 ﻿using BepInEx.Configuration;
-using static RiskOfBulletstormRewrite.Main;
-using static RiskOfBulletstormRewrite.Utils.ItemHelpers;
 using RoR2;
 using RoR2.Projectile;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
+using static RiskOfBulletstormRewrite.Main;
+using static RiskOfBulletstormRewrite.Utils.ItemHelpers;
 
 namespace RiskOfBulletstormRewrite.Controllers
 {
@@ -40,10 +40,9 @@ namespace RiskOfBulletstormRewrite.Controllers
             Load<GameObject>("RoR2/Base/Mage/MageIceBombProjectile.prefab"),
             Load<GameObject>("RoR2/Base/Mage/MageIcewallWalkerProjectile.prefab"),
             //MageIcewallPillarProjectile ??
-                
+
                 // Bandit2
             Load<GameObject>("RoR2/Base/Bandit2/Bandit2ShivProjectile.prefab"),
-
 
                 // Captain
             Load<GameObject>("RoR2/Base/Captain/CaptainTazer.prefab"),
@@ -107,9 +106,9 @@ namespace RiskOfBulletstormRewrite.Controllers
             Load<GameObject>("RoR2/Base/Gravekeeper/GravekeeperTrackingFireball.prefab"),
                 // Imp + Imp Overlord
             Load<GameObject>("RoR2/Base/ImpBoss/ImpVoidspikeProjectile.prefab"),
-            EntityStates.ImpMonster.FireSpines.projectilePrefab, 
+            EntityStates.ImpMonster.FireSpines.projectilePrefab,
                 // Elder Lemurian
-            Load<GameObject>("RoR2/Base/LemurianBruiser/LemurianBigFireball.prefab"), 
+            Load<GameObject>("RoR2/Base/LemurianBruiser/LemurianBigFireball.prefab"),
                 // Void Reaver
             Load<GameObject>("RoR2/Base/Nullifier/NullifierBombProjectile.prefab"),
                 // Alloy Worship Unit / Solus Control Unit
@@ -123,25 +122,25 @@ namespace RiskOfBulletstormRewrite.Controllers
                 // Wandering Vagrant
             EntityStates.VagrantMonster.Weapon.JellyBarrage.projectilePrefab,
                 // Alloy Vulture
-            Load<GameObject>("RoR2/Base/Vulture/WindbladeProjectile.prefab"), 
+            Load<GameObject>("RoR2/Base/Vulture/WindbladeProjectile.prefab"),
                 // Beetle Guard
-            Load<GameObject>("RoR2/Base/Beetle/Sunder.prefab"), 
+            Load<GameObject>("RoR2/Base/Beetle/Sunder.prefab"),
                 // Brass Contraption
-            Load<GameObject>("RoR2/Base/Bell/BellBall.prefab"), 
+            Load<GameObject>("RoR2/Base/Bell/BellBall.prefab"),
                 // Lemurian
             Load<GameObject>("RoR2/Base/Lemurian/Fireball.prefab"), //fireball
                 // Hermit Crab
-            //Load<GameObject>("RoR2/Base/HermitCrab/HermitCrabBombProjectile.prefab"), 
+            //Load<GameObject>("RoR2/Base/HermitCrab/HermitCrabBombProjectile.prefab"),
                 // Lunar Golem
-            Load<GameObject>("RoR2/Base/LunarGolem/LunarGolemTwinShotProjectile.prefab"), //check stick 
+            Load<GameObject>("RoR2/Base/LunarGolem/LunarGolemTwinShotProjectile.prefab"), //check stick
                 // Lunar Wisp
-            Load<GameObject>("RoR2/Base/LunarWisp/LunarWispTrackingBomb.prefab"), 
+            Load<GameObject>("RoR2/Base/LunarWisp/LunarWispTrackingBomb.prefab"),
                 // Lunar Exploder
             Load<GameObject>("RoR2/Base/LunarExploder/LunarExploderShardProjectile.prefab"),
                 // Mini Mushrum
-            Load<GameObject>("RoR2/Base/MiniMushroom/SporeGrenadeProjectile.prefab"), 
+            Load<GameObject>("RoR2/Base/MiniMushroom/SporeGrenadeProjectile.prefab"),
                 // Void Reaver
-            Load<GameObject>("RoR2/Base/Nullifier/NullifierPreBombProjectile.prefab"), 
+            Load<GameObject>("RoR2/Base/Nullifier/NullifierPreBombProjectile.prefab"),
                 // Greater Wisp
             Load<GameObject>("RoR2/Base/GreaterWisp/WispCannon.prefab"),
                 // Grandparent
@@ -296,8 +295,6 @@ namespace RiskOfBulletstormRewrite.Controllers
             _logger.LogMessage("[Risk of Bulletstorm] Projectile Whitelist: Added " + moddedProjectilesAdded + " modded projectiles.");
         }
 
-
-
         public static void SetupConfig(ConfigFile config)
         {
             ShotSpread_EnableDML = config.Bind(CategoryNameShotSpread, "Disposable Missile Launcher", true, "If enabled, Shot Spread will affect the Disposable Missile Launcher. " +
@@ -348,6 +345,7 @@ namespace RiskOfBulletstormRewrite.Controllers
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += ProjectileManager_FireProjectile_FireProjectileInfo;
             On.EntityStates.GenericBulletBaseState.FireBullet += GenericBulletBaseState_FireBullet;
         }
+
         private static void CharacterMaster_onStartGlobal(CharacterMaster obj)
         {
             if (obj && obj.inventory && !obj.gameObject.GetComponent<RBSExtraStatsController>())
@@ -384,6 +382,7 @@ namespace RiskOfBulletstormRewrite.Controllers
             }
             orig(self);
         }
+
         private static void ProjectileManager_FireProjectile_FireProjectileInfo(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_FireProjectileInfo orig, ProjectileManager self, FireProjectileInfo fireProjectileInfo)
         {
             if (fireProjectileInfo.owner)
@@ -437,9 +436,11 @@ namespace RiskOfBulletstormRewrite.Controllers
         {
             private float Scope_SpreadReduction => Items.Scope.cfgSpreadReduction.Value;
             private float Scope_SpreadReductionStack => Items.Scope.cfgSpreadReductionPerStack.Value;
+
             //private float[,] SpiceBonusesConstant => Equipment.Spice.SpiceBonusesConstant;
             //private float[] SpiceBonusesAdditive => Equipment.Spice.SpiceBonusesAdditive;
             public Inventory inventory;
+
             public int itemCount_Scope = 0;
             public int itemCount_Spice = 0;
             public float idealizedAccuracyStat = 1f;
@@ -496,13 +497,16 @@ namespace RiskOfBulletstormRewrite.Controllers
                     case 1:
                     case 2:
                         break;
+
                     case 3:
                     case 4:
                         //SpiceMult -= SpiceBonusesConstant[itemCount_Spice, 2];
                         break;
+
                     case 5: //fuck IT GOES FROM 0.15 to -0.2 WHYYYYYYYYYYYYYYY hardcoded stopgap time
                         SpiceMult -= 0f;
                         break;
+
                     default:
                         //SpiceMult -= SpiceBonusesConstant[5, 2] + SpiceBonusesAdditive[2] * (itemCount_Spice - 4);
                         break;

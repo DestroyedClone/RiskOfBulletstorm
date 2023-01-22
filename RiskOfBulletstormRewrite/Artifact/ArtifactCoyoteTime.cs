@@ -39,7 +39,6 @@ namespace RiskOfBulletstormRewrite.Artifact
             On.RoR2.CharacterMotor.OnLeaveStableGround -= OnLeaveStableGround;
         }
 
-
         private void RunArtifactManager_onArtifactEnabledGlobal([JetBrains.Annotations.NotNull] RunArtifactManager runArtifactManager, [JetBrains.Annotations.NotNull] ArtifactDef artifactDef)
         {
             if (artifactDef != ArtifactDef)

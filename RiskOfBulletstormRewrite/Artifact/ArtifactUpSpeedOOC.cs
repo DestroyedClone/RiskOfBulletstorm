@@ -37,7 +37,6 @@ namespace RiskOfBulletstormRewrite.Artifact
             TeleporterInteraction.onTeleporterChargedGlobal -= OnTeleporterCharged;
         }
 
-
         private void RunArtifactManager_onArtifactEnabledGlobal([JetBrains.Annotations.NotNull] RunArtifactManager runArtifactManager, [JetBrains.Annotations.NotNull] ArtifactDef artifactDef)
         {
             if (artifactDef != ArtifactDef)
@@ -50,23 +49,23 @@ namespace RiskOfBulletstormRewrite.Artifact
         public void OnTeleporterCharged(TeleporterInteraction self)
         {
             if (NetworkServer.active)
+            {
+                //Chat.AddMessage("speedup 1");
+                foreach (var player in PlayerCharacterMasterController.instances)
                 {
-                    //Chat.AddMessage("speedup 1");
-                    foreach (var player in PlayerCharacterMasterController.instances)
-                    {
                     //Chat.AddMessage($"speedup: {player.GetDisplayName()}");
-                        if (player.master)
+                    if (player.master)
+                    {
+                        //Chat.AddMessage("speedup: has master");
+                        var body = player.master.GetBody();
+                        if (body)
                         {
-                            //Chat.AddMessage("speedup: has master");
-                            var body = player.master.GetBody();
-                            if (body)
-                            {
-                                //Chat.AddMessage("speedup: has body");
-                                body.AddBuff(RoR2Content.Buffs.CloakSpeed);
-                            }
+                            //Chat.AddMessage("speedup: has body");
+                            body.AddBuff(RoR2Content.Buffs.CloakSpeed);
                         }
                     }
                 }
+            }
         }
     }
 }

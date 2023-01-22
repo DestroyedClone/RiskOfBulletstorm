@@ -8,6 +8,5 @@ namespace RiskOfBulletstormRewrite.Controllers
         {
             public bool hasUsedLockpicks = false;
         }
-
     }
 }
