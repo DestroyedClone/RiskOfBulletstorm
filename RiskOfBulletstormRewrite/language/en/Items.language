@@ -133,7 +133,7 @@
 		
 		//[TIERLUNAR]
 		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_NAME": "Bloodied Scarf",
-		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_PICKUP": "<b>Blink Away</b>\nUtility is replaced with a vulnerable.",
+		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_PICKUP": "<b>Blink Away</b>\nUtility is replaced with a teleport that has vulnerability afterwards.",
 		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_DESCRIPTION": "<style=cIsUtility>Replace your Utility Skill</style> with <style=cIsUtility>Bloodied Teleport</style>. {0}",
 		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_LOGBOOK_DESCRIPTION": "{0}\n\nSkill:{1}\nDescription:{2}",
 		"RISKOFBULLETSTORM_ITEM_BLOODIEDSCARF_LORE": "This simple scarf was once worn by a skilled assassin. Betrayed by his brothers and assumed dead...",
