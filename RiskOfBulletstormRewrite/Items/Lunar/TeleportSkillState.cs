@@ -10,7 +10,7 @@ namespace RiskOfBulletstormRewrite.Items
 	public class TeleportUtilitySkillState : BaseSkillState
 	{
 		//Blink
-		private Transform modelTransform;
+		//private Transform modelTransform;
 		public static GameObject blinkPrefab;
 		private float stopwatch;
 		private Vector3 blinkVector = Vector3.zero;
@@ -22,14 +22,14 @@ namespace RiskOfBulletstormRewrite.Items
 		public string beginSoundString;
 		[SerializeField]
 		public string endSoundString;
-		private CharacterModel characterModel;
-		private HurtBoxGroup hurtboxGroup;
+		//private CharacterModel characterModel;
+		//private HurtBoxGroup hurtboxGroup;
 
 		//ArrowRain
 		public static GameObject areaIndicatorPrefab;
 		public static GameObject muzzleFlashEffect;
 		private GameObject areaIndicatorInstance;
-		private bool shouldFireArrowRain;
+		//private bool shouldFireArrowRain;
 
 		//IceWall
 		public static float baseDuration;

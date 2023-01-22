@@ -173,7 +173,7 @@
 		//[VOIDLEGENDARY]
 		"RISKOFBULLETSTORM_ITEM_CLONEVOID_NAME": "Prototype",
 		"RISKOFBULLETSTORM_ITEM_CLONEVOID_PICKUP": "<b>Extra Quarter</b>\nRestarts the run, but gain extra items every stage.",
-		"RISKOFBULLETSTORM_ITEM_CLONEVOID_DESCRIPTION": "<style=cIsUtility>Upon death of all players</style>, this item will be <style=cIsUtility>consumed</style> and send <style=cIsUtility>all players</style> to the first stage with no items. For <style=cIsUtility>{0} stages</style> gain <style=cIsUtility>{1} random items</style> <style=cStack>(+{2} items per stack) per stage</style>. <style=cDeath>All stacks consumed on death</style>. <style=cIsVoid>Corrupts all Clones</style>.",",
+		"RISKOFBULLETSTORM_ITEM_CLONEVOID_DESCRIPTION": "<style=cIsUtility>Upon death of all players</style>, this item will be <style=cIsUtility>consumed</style> and send <style=cIsUtility>all players</style> to the first stage with no items. For <style=cIsUtility>{0} stages</style> gain <style=cIsUtility>{1} random items</style> <style=cStack>(+{2} items per stack) per stage</style>. <style=cDeath>All stacks consumed on death</style>. <style=cIsVoid>Corrupts all Clones</style>.",
 		"RISKOFBULLETSTORM_ITEM_CLONEVOID_LORE": "An uncomfortable answer to an uncomfortable truth. This clone can replace a single Gungeoneer upon their death, with almost no lapse in memory.",
 		
 		//[NOTIER]
@@ -212,6 +212,6 @@
 		"RISKOFBULLETSTORM_ITEM__PICKUP": "",
 		"RISKOFBULLETSTORM_ITEM__DESCRIPTION": "",
 		"RISKOFBULLETSTORM_ITEM__LOGBOOK_DESCRIPTION": "{0}",
-		"RISKOFBULLETSTORM_ITEM__LORE": "",
+		"RISKOFBULLETSTORM_ITEM__LORE": ""
 	}
 }

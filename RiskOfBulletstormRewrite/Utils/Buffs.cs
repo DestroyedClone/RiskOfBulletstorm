@@ -32,7 +32,7 @@ namespace RiskOfBulletstormRewrite.Utils
 
             //Trackers
             MetronomeTrackerBuff = AddBuff("Metronome Stacks (Display)",
-                Main.MainAssets.LoadAsset<Sprite>("Assets/Textures/Icons/Buffs/Metronome.png"),
+                Assets.LoadSprite("BUFF_METRONOME"),
                 Color.blue,
                 false,
                 true);
