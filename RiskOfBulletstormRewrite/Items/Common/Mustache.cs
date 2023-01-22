@@ -26,9 +26,9 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override ItemTier Tier => ItemTier.Tier1;
 
-        public override GameObject ItemModel => MainAssets.LoadAsset<GameObject>("Assets/Models/Prefabs/Mustache.prefab");
+        public override GameObject ItemModel => Assets.NullModel;
 
-        public override Sprite ItemIcon => MainAssets.LoadAsset<Sprite>("Assets/Textures/Icons/Mustache.png");
+        public override Sprite ItemIcon => LoadSprite();
 
         public override ItemTag[] ItemTags => new ItemTag[] { ItemTag.Any, ItemTag.Healing };
 

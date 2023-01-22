@@ -23,9 +23,9 @@ namespace RiskOfBulletstormRewrite.Items
         public override ItemTier Tier => ItemTier.Tier3;
         public override ItemTag[] ItemTags => new[] { ItemTag.Utility, ItemTag.EquipmentRelated, ItemTag.AIBlacklist };
 
-        public override GameObject ItemModel => MainAssets.LoadAsset<GameObject>("Assets/Models/Prefabs/Backpack.prefab");
+        public override GameObject ItemModel => Assets.NullModel;
 
-        public override Sprite ItemIcon => MainAssets.LoadAsset<Sprite>("Assets/Textures/Icons/Backpack.png");
+        public override Sprite ItemIcon => LoadSprite();
 
         public static KeyCode ModifierKey_KB = KeyCode.None;
         public static KeyCode CycleLeftKey_KB = KeyCode.None;

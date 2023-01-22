@@ -216,12 +216,10 @@ namespace RiskOfBulletstormRewrite.Items
             return GetStack(initialValue.Value, stackValue.Value, itemCount);
         }
         
+
         public Sprite LoadSprite()
         {
-            return Assets.LoadNewSprite(
-            Assets.assemblyDir + "\\Assets\\ITEM_"+ItemLangTokenName
-            + ".png"
-            );
+            return Assets.LoadSprite($"ITEM_{ItemLangTokenName}");
         }
 
         public static implicit operator ItemBase(Type v)

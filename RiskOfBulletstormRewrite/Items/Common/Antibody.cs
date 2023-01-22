@@ -63,7 +63,7 @@ namespace RiskOfBulletstormRewrite.Items
                 if (GetCount(self.body) > 0)
                 {
                     //timothy: 0.25f chance = 0.0025% chance. 25f = 25% chance. got it?
-                    if (Util.CheckRoll(cfgChance.Value, self.body.master))
+                    if (Util.CheckRoll(cfgChance.Value))
                     {
                         var itemCount = self.body.inventory.GetItemCount(ItemDef);
                         var multiplier = 1f + cfgMultiplier.Value + cfgMultiplierPerStack.Value * (itemCount - 1);

@@ -43,8 +43,6 @@ namespace RiskOfBulletstormRewrite
 
         internal static BepInEx.Logging.ManualLogSource _logger;
 
-        public static AssetBundle MainAssets;
-
         public List<ArtifactBase> Artifacts = new List<ArtifactBase>();
         public List<ItemBase> Items = new List<ItemBase>();
         public List<EquipmentBase> Equipments = new List<EquipmentBase>();
@@ -70,10 +68,7 @@ namespace RiskOfBulletstormRewrite
             // Don't know how to create/use an asset bundle, or don't have a unity project set up?
             // Look here for info on how to set these up: https://github.com/KomradeSpectre/AetheriumMod/blob/rewrite-master/Tutorials/Item%20Mod%20Creation.md#unity-project
 
-            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("RiskOfBulletstormRewrite.riskofgungeonassets"))
-            {
-                MainAssets = AssetBundle.LoadFromStream(stream);
-            }
+            Assets.PopulateAssets();
 
             Utils.Buffs.CreateBuffs();
             //On.RoR2.Language.LoadTokensFromFile += Language_LoadTokensFromFile;

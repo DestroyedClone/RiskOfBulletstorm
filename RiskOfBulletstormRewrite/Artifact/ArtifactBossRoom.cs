@@ -18,7 +18,6 @@ namespace RiskOfBulletstormRewrite.Artifact
 
         public override void Init(ConfigFile config)
         {
-            return;
             CreateLang();
             CreateArtifact();
             Hooks();

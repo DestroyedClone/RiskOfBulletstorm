@@ -161,15 +161,14 @@ namespace RiskOfBulletstormRewrite.Equipment
         public virtual void Hooks() { }
 
         
+
         public Sprite LoadSprite()
         {
-            return Assets.LoadNewSprite(
-            Assets.assemblyDir + "\\Assets\\EQUIPMENT_"+EquipmentLangTokenName
-            + ".png"
-            );
+            return Assets.LoadSprite($"EQUIPMENT_{EquipmentLangTokenName}");
         }
 
-        
+
+
         public static implicit operator EquipmentBase(Type v)
         {
             return (EquipmentBase)System.Activator.CreateInstance(v);

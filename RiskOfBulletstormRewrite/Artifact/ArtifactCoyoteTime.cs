@@ -76,7 +76,7 @@ namespace RiskOfBulletstormRewrite.Artifact
             public CharacterMotor characterMotor;
             public int jumpCountOnStart = 0;
             private float age = 0;
-            private float duration => windowOfTime;
+            private float Duration => windowOfTime;
 
             public void Awake()
             {
@@ -94,7 +94,7 @@ namespace RiskOfBulletstormRewrite.Artifact
                 {
                     Destroy(this);
                 }
-                if (age >= duration)
+                if (age >= Duration)
                 {
                     ConsumeJump();
                     Destroy(this);

@@ -17,7 +17,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override GameObject ItemModel => Assets.NullModel;
 
-        public override Sprite ItemIcon => Assets.NullSprite;
+        public override Sprite ItemIcon => Assets.NullSprite; //no need for a sprite, this is monster only
 
         public override ItemTag[] ItemTags => new ItemTag[]
         {

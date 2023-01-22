@@ -22,10 +22,8 @@ namespace RiskOfBulletstormRewrite.Items
         };
 
         public override ItemTier Tier => ItemTier.Lunar;
-
-        public override GameObject ItemModel => MainAssets.LoadAsset<GameObject>("Assets/Models/Prefabs/RingMiserlyProtection.prefab");
-
-        public override Sprite ItemIcon => MainAssets.LoadAsset<Sprite>("Assets/Textures/Icons/RingMiserlyProtection.png");
+        public override GameObject ItemModel => Assets.NullModel;
+        public override Sprite ItemIcon => LoadSprite();
 
         public override ItemTag[] ItemTags => new ItemTag[]
         {

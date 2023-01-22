@@ -124,8 +124,8 @@ namespace RiskOfBulletstormRewrite.Artifact
 
         public Sprite LoadSprite(bool enabled)
         {
-            return Assets.LoadNewSprite(
-            Assets.assemblyDir + "\\Assets\\ARTIFACT_"+ArtifactLangTokenName
+            return Assets.LoadSprite(
+            "Assets/Icons/ARTIFACT_" + ArtifactLangTokenName
             + (enabled ? "_ENABLED" : "_DISABLED") + ".png"
             );
         }

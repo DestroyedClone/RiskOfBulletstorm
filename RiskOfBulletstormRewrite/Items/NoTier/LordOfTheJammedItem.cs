@@ -15,7 +15,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override ItemTier Tier => ItemTier.NoTier;
 
-        public override GameObject ItemModel => MainAssets.LoadAsset<GameObject>("ExampleItemPrefab.prefab");
+        public override GameObject ItemModel => Assets.NullModel;
 
         public override Sprite ItemIcon => LoadSprite();
 
