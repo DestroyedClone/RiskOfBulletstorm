@@ -211,7 +211,7 @@ namespace RiskOfBulletstormRewrite
                 BetterUI.ItemStats.LinearStacking,
                 BetterUI.ItemStats.StatFormatter.Percent); */
                 
-            BetterUI.ItemStats.RegisterStat(RingFireResistance.instance.ItemDef,
+            /*BetterUI.ItemStats.RegisterStat(RingFireResistance.instance.ItemDef,
                 prefix + "RINGFIRERESISTANCE_REDUCTION",
                 RingFireResistance.cfgBaseResist.Value,
                 BetterUI.ItemStats.HyperbolicStacking,
@@ -222,7 +222,7 @@ namespace RiskOfBulletstormRewrite
                 CoinCrown.cfgCashMultiplier.Value,
                 CoinCrown.cfgCashMultiplierPerStack.Value,
                 BetterUI.ItemStats.LinearStacking,
-                BetterUI.ItemStats.StatFormatter.Percent);
+                BetterUI.ItemStats.StatFormatter.Percent);*/
 #endregion
             #region Legendary
             BetterUI.ItemStats.RegisterStat(Backpack.instance.ItemDef,
@@ -231,8 +231,8 @@ namespace RiskOfBulletstormRewrite
                 BetterUI.ItemStats.LinearStacking,
                 BetterUI.ItemStats.StatFormatter.Charges,
                 null);
-            //Clone
-            BetterUI.ItemStats.RegisterStat(BabyGoodMimic.instance.ItemDef,
+            //BabyGoodMimic
+           /* BetterUI.ItemStats.RegisterStat(BabyGoodMimic.instance.ItemDef,
                 prefix + "BABYGOODMIMIC_MINIONCOUNT",
                 1,
                 BetterUI.ItemStats.LinearStacking,
@@ -243,7 +243,7 @@ namespace RiskOfBulletstormRewrite
                 30,
                 BetterUI.ItemStats.NoStacking,
                 BetterUI.ItemStats.StatFormatter.Seconds,
-                null);
+                null);*/
 
             BetterUI.ItemStats.RegisterStat(Clone.instance.ItemDef,
                 prefix + "CLONE_ITEMCOUNT",

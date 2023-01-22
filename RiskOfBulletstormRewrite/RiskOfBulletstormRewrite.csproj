@@ -7,6 +7,8 @@
 	
 
   <ItemGroup>
+    <Compile Remove="Artifact\ArtifactBossRoom.cs" />
+    <Compile Remove="Artifact\ArtifactEquipmentRecharge.cs" />
     <Compile Remove="Artifact\ArtifactPitLordPlayer.cs" />
     <Compile Remove="Artifact\ExampleArtifact.cs" />
     <Compile Remove="Controllers\BabyMimicBodyBehavior.cs" />
@@ -23,23 +25,29 @@
     <Compile Remove="Equipment\Lunar\Spice.cs" />
     <Compile Remove="Equipment\Molotov.cs" />
     <Compile Remove="Equipment\Ration.cs" />
+    <Compile Remove="Equipment\WeirdEgg.cs" />
     <Compile Remove="Items\Boss\ClownMask.cs" />
     <Compile Remove="Items\Boss\PastKillingBulletBanPickup.cs" />
     <Compile Remove="Items\Boss\RatBoots.cs" />
     <Compile Remove="Items\ClownMask.cs" />
     <Compile Remove="Items\ExampleItem.cs" />
     <Compile Remove="Items\Boss\MasterRounds\MasterRoundI.cs" />
+    <Compile Remove="Items\Legendary\BabyGoodMimic.cs" />
     <Compile Remove="Items\Legendary\Clone_old.cs" />
     <Compile Remove="Items\Legendary\RingTriggers.cs" />
+    <Compile Remove="Items\Lunar\HeavyBullets.cs" />
     <Compile Remove="Items\Lunar\Metronome.cs" />
+    <Compile Remove="Items\NoTier\BabyMimicIdentifier.cs" />
+    <Compile Remove="Items\Uncommon\RingFireResistance.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="riskofbulletstormbundle" />
     <None Remove="riskofgungeonassets" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="riskofgungeonassets" />
+    <EmbeddedResource Include="riskofbulletstormbundle" />
   </ItemGroup>
 
   <ItemGroup>
