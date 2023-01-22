@@ -19,7 +19,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public override bool IsLunar => false;
 
-        public override float Cooldown => 5f;
+        public override float Cooldown => 60f;
 
         public override bool CanDrop => false;
 
@@ -50,6 +50,18 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         protected override bool ActivateEquipment(EquipmentSlot slot)
         {
+            if (slot.characterBody)
+            {
+                //RISKOFBULLETSTORM_EQUIPMENT_IRONCOINCONSUMED_FLAVORSIDE maybe
+                var result = Util.CheckRoll(50f) ? "RISKOFBULLETSTORM_EQUIPMENT_IRONCOINCONSUMED_FLAVORHEADS" : "RISKOFBULLETSTORM_EQUIPMENT_IRONCOINCONSUMED_FLAVORTAILS";
+                Chat.SendBroadcastChat(new Chat.SubjectFormatChatMessage
+                {
+                    baseToken = "RISKOFBULLETSTORM_EQUIPMENT_IRONCOINCONSUMED_FLAVOR",
+                    paramTokens = new string[] { result },
+                    subjectAsCharacterBody = slot.characterBody
+                });
+                slot.subcooldownTimer = 1f;
+            }
             return true;
         }
     }
