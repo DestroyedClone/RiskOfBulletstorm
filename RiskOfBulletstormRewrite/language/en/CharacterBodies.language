@@ -1,16 +1,16 @@
 ﻿{
-	strings:
-	{
+	strings: {
 		//[modifiers]
 		"RISKOFBULLETSTORM_BODY_MODIFIER_MIMIC": "Mimic of {0}",
-	
+		"RISKOFBULLETSTORM_BODY_MODIFIER_JAMMED": "Jammed {0}",
+
 		//[SURVIVORS]
 		//[SHARED SURVIVOR]
 		"RISKOFBULLETSTORM_SHARED_UTILITY_NAME": "Dodge Roll",
 		"RISKOFBULLETSTORM_SHARED_UTILITY_DESC": "<style=cIsUtility>Roll</style> forward, <style=cIsUtility>dodging through projectiles</style>.",
 		"RISKOFBULLETSTORM_SHARED_EMPTY_NAME": "None",
 		"RISKOFBULLETSTORM_SHARED_EMPTY_DESC": "Maybe pick up a gun?",
-		
+
 		"RISKOFBULLETSTORM_PILOT_NAME": "Pilot",
 		"RISKOFBULLETSTORM_PILOT_SUBTITLE": "Flyboy",
 		"RISKOFBULLETSTORM_PILOT_DESCRIPTION": "Starts with <style=cIsUtility>Trusty Lockpicks</style> and <style=cUtility>Hidden Compartment</style>",
@@ -23,7 +23,7 @@
 		"RISKOFBULLETSTORM_PILOT_UTILITY_DESC": "<style=cIsUtility>Dash forward</style>, <style=cIsUtility>replenishing one stock</style> to your primary.",
 		"RISKOFBULLETSTORM_PILOT_SPECIAL_NAME": "",
 		"RISKOFBULLETSTORM_PILOT_SPECIAL_DESC": "",
-		
+
 		"RISKOFBULLETSTORM_CULTIST_NAME": "Cultist",
 		"RISKOFBULLETSTORM_CULTIST_SUBTITLE": "Player Two",
 		"RISKOFBULLETSTORM_CULTIST_DESCRIPTION": "",
@@ -32,52 +32,52 @@
 		"RISKOFBULLETSTORM_CULTIST_PRIMARY_DESC": "",
 		"RISKOFBULLETSTORM_CULTIST_SECONDARY_NAME": "",
 		"RISKOFBULLETSTORM_CULTIST_SECONDARY_DESC": "",
-		"RISKOFBULLETSTORM_CULTIST_UTILITY_NAME": "",
+		"RISKOFBULLETSTORM_CULTIST_UTILITY_NAME": "Dodge Fumble",
 		"RISKOFBULLETSTORM_CULTIST_UTILITY_DESC": "",
 		"RISKOFBULLETSTORM_CULTIST_SPECIAL_NAME": "",
 		"RISKOFBULLETSTORM_CULTIST_SPECIAL_DESC": "",
-	
+
 		//[ENEMIES]
 		"RISKOFBULLETSTORM_BULLETKIN_NAME": "Bullet Kin",
 		"RISKOFBULLETSTORM_BULLETKIN_SUBTITLE": "Standard Issue",
 		"RISKOFBULLETSTORM_BULLETKIN_LORE": "Bullet Kin are the most common Gundead.\nThese sentient shells were brought to life hundreds of years ago, when the great Bullet struck and formed the Gungeon.\n\nThey are simple creatures, but vigilant and loyal.",
-	
-	
+
+
 		//[BOSSES]
 		"RISKOFBULLETSTORM_LORDOFTHEJAMMED_NAME": "Lord of the Jammed",
 		"RISKOFBULLETSTORM_LORDOFTHEJAMMED_SUBTITLE": "Ceaseless",
 		"RISKOFBULLETSTORM_LORDOFTHEJAMMED_DESCRIPTION": "The Lord of the Jammed is summoned once a player reaches 10 curse.",
 		"RISKOFBULLETSTORM_LORDOFTHEJAMMED_LORE": "When the screams of the Jammed reach a fevered pitch, this sentinel will be called forth from beyond the Curtain.\nThis immortal being cannot be bargained or reasoned with, and will hunt its prey without compassion.",
-		
+
 		"RISKOFBULLETSTORM_LORDOFTHEJAMMED_PASSIVE_NAME": "Jammed Domain",
 		"RISKOFBULLETSTORM_LORDOFTHEJAMMED_PASSIVE_DESC": "As the <style=cHealth>Lord of the Jammed</style>, you are <style=cHealth>invulnerable</style> and can <style=cIsUtility>fly through walls</style>.\n<style=cMono>[AI] Forced to focus on whoever summoned you.</style>",
-		
+
 		"RISKOFBULLETSTORM_LORDOFTHEJAMMED_SECONDARY_NAME": "Scythe Slash",
 		"RISKOFBULLETSTORM_LORDOFTHEJAMMED_SECONDARY_DESC": "Raise your scythe back, then <style=cIsDamage>swing forward</style> for <style=cIsDamage>200% damage</style>, firing <style=cIsUtility>8x100% bullets</style> in all cardinal directions.",
-		
+
 		//[ENEMIES - MIMICS]
 		//mims generally share the same subtitle
 		//lore's the same, should probs change tho
 		"RISKOFBULLETSTORM_CHEST1MIMIC_NAME": "Common Chest Mimic",
 		"RISKOFBULLETSTORM_CHEST1MIMIC_SUBTITLE": "Deceiver",
 		"RISKOFBULLETSTORM_CHEST1MIMIC_LORE": "Mimics are very dangerous, as many Gungeoneers foolishly drop their guard around treasure chests.\nSome experts argue that the Mimic is the true master of any dungeon, as no monster is more at home than the Mimic.",
-		
+
 		"RISKOFBULLETSTORM_CHEST2MIMIC_NAME": "Uncommon Chest Mimic",
 		"RISKOFBULLETSTORM_CHEST2MIMIC_SUBTITLE": "Deceiver",
 		"RISKOFBULLETSTORM_CHEST2MIMIC_LORE": "Mimics are very dangerous, as many Gungeoneers foolishly drop their guard around treasure chests.\nSome experts argue that the Mimic is the true master of any dungeon, as no monster is more at home than the Mimic.",
-		
+
 		"RISKOFBULLETSTORM_CHEST3MIMIC_NAME": "Legendary Chest Mimic",
 		"RISKOFBULLETSTORM_CHEST3MIMIC_SUBTITLE": "Deceiver",
 		"RISKOFBULLETSTORM_CHEST3MIMIC_LORE": "Mimics are very dangerous, as many Gungeoneers foolishly drop their guard around treasure chests.\nSome experts argue that the Mimic is the true master of any dungeon, as no monster is more at home than the Mimic.",
-		
+
 		"RISKOFBULLETSTORM_LUNARCHESTMIMIC_NAME": "Lunar Pod Mimic",
 		"RISKOFBULLETSTORM_LUNARCHESTMIMIC_SUBTITLE": "Lunar Deceiver",
 		"RISKOFBULLETSTORM_LUNARCHESTMIMIC_LORE": "Mimics are very dangerous, as many Gungeoneers foolishly drop their guard around treasure chests.\nSome experts argue that the Mimic is the true master of any dungeon, as no monster is more at home than the Mimic.",
-		
+
 		"RISKOFBULLETSTORM_EQUIPMIMIC_NAME": "Equipment Barrel Mimic",
 		"RISKOFBULLETSTORM_EQUIP1MIMIC_SUBTITLE": "Deceiver",
 		"RISKOFBULLETSTORM_EQUIP1MIMIC_LORE": "Mimics are very dangerous, as many Gungeoneers foolishly drop their guard around treasure chests.\nSome experts argue that the Mimic is the true master of any dungeon, as no monster is more at home than the Mimic.",
-		
+
 		//[ALLIES]
 		"RISKOFBULLETSTORM_BABYGOODMIMIC_NAME": "Baby Good Mimic",
 		"RISKOFBULLETSTORM_BABYGOODMIMIC_OVERRIDE_NAME": "{0} (Mimic)",
@@ -85,20 +85,20 @@
 		"RISKOFBULLETSTORM_BABYGOODMIMIC_LORE": "This abandoned baby mimic misses its siblings, and imprints on the first follower it sees.",
 		"RISKOFBULLETSTORM_BABYGOODMIMIC_PRIMARY_NAME": "Mimic Shoot",
 		"RISKOFBULLETSTORM_BABYGOODMIMIC_PRIMARY_DESC": "Fire bullets for damage.",
-		
+
 		"RISKOFBULLETSTORM__NAME": "",
 		"RISKOFBULLETSTORM__SUBTITLE": "",
 		"RISKOFBULLETSTORM__DESCRIPTION": "",
 		"RISKOFBULLETSTORM__LORE": "",
 		"RISKOFBULLETSTORM__PRIMARY_NAME": "",
 		"RISKOFBULLETSTORM__PRIMARY_DESC": "",
-		
+
 		//[SKILLS]
 		"RISKOFBULLETSTORM_SKILL_TELEPORT_NAME": "Bloodied Teleport",
 		"RISKOFBULLETSTORM_SKILL_TELEPORT_DESCRIPTION": "<style=cIsUtility>Teleport</style> up to <style=cIsUtility>{0}m</style> <style=cStack>(+{1}m per stack)</style>.\nAfter teleporting, <style=cDeath>take +{2}% more damage <style=cStack>(+{3}% per stack)</style> for {4} seconds</style>.",
-		
+
 		"RISKOFBULLETSTORM_SKILL_DODGEROLL_NAME": "Dodge Roll",
-		"RISKOFBULLETSTORM_SKILL_DODGEROLL_DESCRIPTION": "<style=cIsUtility>Roll</style> a short distance. \nAfter teleporting, <style=cDeath>take +{0}% more damage <style=cStack>(+{1}% per stack)</style> for {2} seconds</style> <style=cStack>(-{3} per stack, minimum {4})</style>. Become <style=cIsUtility>intangible during the roll</style>.",
-		
+		"RISKOFBULLETSTORM_SKILL_DODGEROLL_DESCRIPTION": "<style=cIsUtility>Roll</style> a short distance. \nAfter teleporting, <style=cDeath>take +{0}% more damage <style=cStack>(+{1}% per stack)</style> for {2} seconds</style> <style=cStack>({3} per stack, minimum {4})</style>. Become <style=cIsUtility>intangible during the roll</style>."
+
 	}
 }
