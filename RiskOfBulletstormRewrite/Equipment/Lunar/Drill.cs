@@ -17,7 +17,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public override string EquipmentLangTokenName => "DRILL";
 
-        public override GameObject EquipmentModel => Assets.NullModel;
+        public override GameObject EquipmentModel => LoadModel();
 
         public override Sprite EquipmentIcon => LoadSprite();
 

@@ -25,7 +25,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override bool IsSkillReplacement => true;
 
-        public override GameObject ItemModel => Assets.NullModel;
+        public override GameObject ItemModel => LoadModel();
 
         public override Sprite ItemIcon => LoadSprite();
 

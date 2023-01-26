@@ -169,6 +169,11 @@ namespace RiskOfBulletstormRewrite.Equipment
             return Assets.LoadSprite($"EQUIPMENT_{EquipmentLangTokenName}");
         }
 
+        public GameObject LoadModel()
+        {
+            return Assets.LoadObject($"{EquipmentLangTokenName}.prefab");
+        }
+
         public static implicit operator EquipmentBase(Type v)
         {
             return (EquipmentBase)System.Activator.CreateInstance(v);

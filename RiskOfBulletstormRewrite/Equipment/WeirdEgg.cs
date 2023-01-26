@@ -18,13 +18,12 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         };
 
-        public override GameObject EquipmentModel => Assets.NullModel;
+        public override GameObject EquipmentModel => LoadModel();
 
         public override Sprite EquipmentIcon => LoadSprite();
 
         public override void Init(ConfigFile config)
         {
-            return;
             CreateConfig(config);
             CreateLang();
             CreateEquipment();
@@ -52,6 +51,14 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         protected override bool ActivateEquipment(EquipmentSlot slot)
         {
+            if (slot?.characterBody?.healthComponent?.health < slot.characterBody.healthComponent.fullHealth && Util.HasEffectiveAuthority(slot.gameObject))
+            {
+                slot.characterBody.healthComponent.CallCmdHealFull();
+
+                slot.inventory.SetEquipmentIndex(EquipmentIndex.None);
+                CharacterMasterNotificationQueue.PushEquipmentTransformNotification(slot.characterBody.master, WeirdEgg.instance.EquipmentDef.equipmentIndex, EquipmentIndex.None, CharacterMasterNotificationQueue.TransformationType.Default);
+                return true;
+            }
             return false;
         }
 

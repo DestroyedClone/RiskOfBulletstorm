@@ -21,7 +21,7 @@ namespace RiskOfBulletstormRewrite.Items
         public override ItemTier Tier => ItemTier.Tier3;
         public override ItemTag[] ItemTags => new[] { ItemTag.Utility, ItemTag.EquipmentRelated, ItemTag.AIBlacklist };
 
-        public override GameObject ItemModel => Assets.NullModel;
+        public override GameObject ItemModel => LoadModel();
 
         public override Sprite ItemIcon => LoadSprite();
 

@@ -228,6 +228,10 @@ namespace RiskOfBulletstormRewrite.Items
         {
             return Assets.LoadSprite($"ITEM_{ItemLangTokenName}");
         }
+        public GameObject LoadModel()
+        {
+            return Assets.LoadObject($"{ItemLangTokenName}.prefab");
+        }
 
         public static implicit operator ItemBase(Type v)
         {

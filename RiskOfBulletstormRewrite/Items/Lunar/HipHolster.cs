@@ -24,7 +24,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override ItemTier Tier => ItemTier.Lunar;
 
-        public override GameObject ItemModel => Assets.NullModel;
+        public override GameObject ItemModel => LoadModel();
 
         public override Sprite ItemIcon => LoadSprite();
 

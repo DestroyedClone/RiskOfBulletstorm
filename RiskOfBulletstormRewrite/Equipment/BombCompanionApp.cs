@@ -38,7 +38,7 @@ namespace RiskOfBulletstormRewrite.Equipment
             GetChance(cfgDunestriderDamageMultiplier)
         };
 
-        public override GameObject EquipmentModel => Assets.NullModel;
+        public override GameObject EquipmentModel => LoadModel();
 
         public override Sprite EquipmentIcon => LoadSprite();
 

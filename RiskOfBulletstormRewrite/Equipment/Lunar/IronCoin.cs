@@ -13,7 +13,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public override string EquipmentLangTokenName => "IRONCOIN";
 
-        public override GameObject EquipmentModel => Assets.NullModel;
+        public override GameObject EquipmentModel => LoadModel();
 
         public override Sprite EquipmentIcon => LoadSprite();
 

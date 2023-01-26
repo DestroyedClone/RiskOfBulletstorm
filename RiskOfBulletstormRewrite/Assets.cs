@@ -45,6 +45,11 @@ namespace RiskOfBulletstormRewrite
             return mainAssetBundle.LoadAsset<Sprite>(path);
         }
 
+        public static GameObject LoadObject(string path)
+        {
+            return mainAssetBundle.LoadAsset<GameObject>(path);
+        }
+
         /*
 
         public static Sprite LoadSprite(string fileName)
