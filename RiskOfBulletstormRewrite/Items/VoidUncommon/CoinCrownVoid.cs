@@ -32,8 +32,8 @@ namespace RiskOfBulletstormRewrite.Items
             ItemTag.Utility
         };
 
-        public static ConfigEntry<float> cfgCashAdder;
-        public static ConfigEntry<float> cfgCashAdderStack;
+        public static ConfigEntry<int> cfgCashAdder;
+        public static ConfigEntry<int> cfgCashAdderStack;
 
         public override void Init(ConfigFile config)
         {
@@ -45,8 +45,8 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void CreateConfig(ConfigFile config)
         {
-            cfgCashAdder = config.Bind(ConfigCategory, "Cash Multiplier", 0.1f, "The percentage of extra money to get on completing the teleporter event.");
-            cfgCashAdderStack = config.Bind(ConfigCategory, "Cash Multiplier Per Stack", 0.05f, "The percentage of extra money PER ITEM STACK to get on completing the teleporter event.");
+            cfgCashAdder = config.Bind(ConfigCategory, "Cash Additive", 5, "The percentage of extra money to get on completing the teleporter event.");
+            cfgCashAdderStack = config.Bind(ConfigCategory, "Cash Additive Per Stack", 10, "The percentage of extra money PER ITEM STACK to get on completing the teleporter event.");
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
@@ -77,6 +77,7 @@ namespace RiskOfBulletstormRewrite.Items
             On.RoR2.CharacterMaster.GiveMoney += IncreaseMoney;
         }
 
+        //set by UpdateItemCount
         public uint itemCount = 0;
 
         private void IncreaseMoney(On.RoR2.CharacterMaster.orig_GiveMoney orig, CharacterMaster self, uint amount)
