@@ -19,13 +19,13 @@
     <Compile Remove="Equipment\BrickOfCash.cs" />
     <Compile Remove="Equipment\ChestTeleporter.cs" />
     <Compile Remove="Equipment\EliteEquipment\ExampleEliteEquipment.cs" />
+    <Compile Remove="Equipment\EliteEquipment\JammedEliteEquipment.cs" />
     <Compile Remove="Equipment\ExampleEquipment.cs" />
     <Compile Remove="Equipment\ExampleEquipWithTargeting.cs" />
     <Compile Remove="Equipment\JarBees.cs" />
     <Compile Remove="Equipment\Lunar\Spice.cs" />
     <Compile Remove="Equipment\Molotov.cs" />
     <Compile Remove="Equipment\Ration.cs" />
-    <Compile Remove="Equipment\WeirdEgg.cs" />
     <Compile Remove="Items\Boss\ClownMask.cs" />
     <Compile Remove="Items\Boss\PastKillingBulletBanPickup.cs" />
     <Compile Remove="Items\Boss\RatBoots.cs" />
