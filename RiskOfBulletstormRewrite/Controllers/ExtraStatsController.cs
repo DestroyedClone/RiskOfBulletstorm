@@ -12,11 +12,16 @@ namespace RiskOfBulletstormRewrite.Controllers
 {
     public class ExtraStatsController : ControllerBase<ExtraStatsController>
     {
+        /// <summary> Config Value to enable <b>Disposable Missile Launcher's rockets</b> being affected by RBSAccuracy. </summary>
         public static bool ShotSpread_EnableDML { get; private set; } = true;
+        /// <summary> Config Value to enable the Survivor, <b>Loader</b>, being affected by RBSAccuracy. </summary>
         public static bool ShotSpread_EnableLoader { get; private set; } = false;
+        /// <summary> Config Value to enable <b>only specific projectiles</b>, being affected by RBSAccuracy. </summary>
         public static bool ShotSpread_WhitelistProjectiles { get; private set; } = true;
+        /// <summary> Config Value to enable <b>Auto downloading updates</b> for projectiles to be added to RBSAccuracy </summary>
         public static bool AutoDownloadUpdates { get; private set; } = true;
 
+        /// <summary> List of whitelisted <b>vanilla</b> projectiles for RBSAccuracy </summary>
         public static List<GameObject> WhitelistedProjectiles = new List<GameObject>
         {
             // Equipment/Items
@@ -163,7 +168,7 @@ namespace RiskOfBulletstormRewrite.Controllers
             Load<GameObject>("RoR2/DLC1/VoidMegaCrab/MissileVoidBigProjectile.prefab"),
             Load<GameObject>("RoR2/DLC1/VoidRaidCrab/VoidRaidCrabMissileProjectile.prefab"),
         };
-
+        /// <summary> List of whitelisted <b>modded</b> projectiles for RBSAccuracy </summary>
         public static List<string> ModdedWhitelistedProjectiles = new List<string>();
 
         private const string CategoryNameShotSpread = "ExtraStatsShotSpread";
@@ -173,6 +178,11 @@ namespace RiskOfBulletstormRewrite.Controllers
         //private static readonly GameObject DisposableMissileLauncherPrefab = Load<GameObject>("Prefabs/Projectiles/MissileProjectile");
         //private static readonly GameObject LoaderHookPrefab = Load<GameObject>("prefabs/projectiles/LoaderHook");
         //private static readonly GameObject LoaderYankHookPrefab = Load<GameObject>("prefabs/projectiles/LoaderYankHook");
+
+        /// <summary> Method to return a float from the  </summary>
+        /// <param name="accuracy"></param>
+        /// <param name="multiplier"></param>
+        /// <param name="originalValue"></param>
         public static float SimpleSpread(float accuracy, float originalValue, float multiplier = 1f)
         {
             return originalValue == 0 ? accuracy * multiplier : originalValue * accuracy;
@@ -185,6 +195,9 @@ namespace RiskOfBulletstormRewrite.Controllers
             SetupModdedProjectiles();
         }
 
+        /// <summary>
+        /// Method which checks for a large list of modded projectiles to cache the names of projectiles that are actually available
+        /// </summary>
         public void SetupModdedProjectiles()
         {
             string[] moddedProjectileStrings =
@@ -346,15 +359,24 @@ namespace RiskOfBulletstormRewrite.Controllers
             On.EntityStates.GenericBulletBaseState.FireBullet += GenericBulletBaseState_FireBullet;
         }
 
-        private static void CharacterMaster_onStartGlobal(CharacterMaster obj)
+        /// <summary>
+        /// Adds the AccuracyController component to the character master
+        /// </summary>
+        /// <param name="characterMaster">The characterMaster to add the controller to</param>
+        private static void CharacterMaster_onStartGlobal(CharacterMaster characterMaster)
         {
-            if (obj && obj.inventory && !obj.gameObject.GetComponent<RBSExtraStatsController>())
+            if (characterMaster && characterMaster.inventory && !characterMaster.gameObject.GetComponent<RBSExtraStatsController>())
             {
-                var comp = obj.gameObject.AddComponent<RBSExtraStatsController>();
-                comp.inventory = obj.inventory;
+                var comp = characterMaster.gameObject.AddComponent<RBSExtraStatsController>();
+                comp.inventory = characterMaster.inventory;
             }
         }
 
+        /// <summary>
+        /// Override method to affect <b>BulletAttacks</b> using RBSAccuracy
+        /// </summary>
+        /// <param name="orig"></param>
+        /// <param name="self"></param>
         private static void AdjustSpreadBullets(On.RoR2.BulletAttack.orig_Fire orig, BulletAttack self)
         {
             if (self.owner)
@@ -383,6 +405,12 @@ namespace RiskOfBulletstormRewrite.Controllers
             orig(self);
         }
 
+        /// <summary>
+        /// Override method to affect <b>Projectiles</b> using RBSAccuracy
+        /// </summary>
+        /// <param name="orig"></param>
+        /// <param name="self"></param>
+        /// <param name="fireProjectileInfo"></param>
         private static void ProjectileManager_FireProjectile_FireProjectileInfo(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_FireProjectileInfo orig, ProjectileManager self, FireProjectileInfo fireProjectileInfo)
         {
             if (fireProjectileInfo.owner)
@@ -432,6 +460,9 @@ namespace RiskOfBulletstormRewrite.Controllers
             orig(self, aimRay);
         }
 
+        /// <summary>
+        /// Component to control a CharacterMaster's RBSAccuracy
+        /// </summary>
         public class RBSExtraStatsController : MonoBehaviour
         {
             private float Scope_SpreadReduction => Items.Scope.cfgSpreadReduction.Value;
@@ -443,6 +474,9 @@ namespace RiskOfBulletstormRewrite.Controllers
 
             public int itemCount_Scope = 0;
             public int itemCount_Spice = 0;
+            /// <summary>
+            /// "Pretty" accuracy stat, effective for most cases. 0.78 = 78% more accurate
+            /// </summary>
             public float idealizedAccuracyStat = 1f;
             public float bulletAccuracy = 1f;
             public float projectileAccuracy = 1f;

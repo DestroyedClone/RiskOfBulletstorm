@@ -16,7 +16,10 @@ namespace RiskOfBulletstormRewrite.Controllers
     }
 
     public abstract class ControllerBase
-    {
+    {        /// <summary>
+             /// UNUSED Name of its configuration category.
+             /// <para>"Config: {}</para>
+             /// </summary>
         public virtual string ConfigCategory { get; }
 
         /// <summary>

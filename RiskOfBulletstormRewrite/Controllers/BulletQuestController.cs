@@ -12,10 +12,10 @@ namespace RiskOfBulletstormRewrite.Controllers
         *   shell casing: dragun
         */
 
-        private static ItemDef primerDef => Items.PrimePrimer.instance.ItemDef;
-        private static ItemDef gunpowderDef => Items.ArcaneGunpowder.instance.ItemDef;
-        private static ItemDef leadDef => Items.PlanarLead.instance.ItemDef;
-        private static ItemDef casingDef => Items.ObsidianShellCasing.instance.ItemDef;
+        private static ItemDef PrimerDef => Items.PrimePrimer.instance.ItemDef;
+        private static ItemDef GunpowderDef => Items.ArcaneGunpowder.instance.ItemDef;
+        private static ItemDef LeadDef => Items.PlanarLead.instance.ItemDef;
+        private static ItemDef CasingDef => Items.ObsidianShellCasing.instance.ItemDef;
 
         public override void Init(ConfigFile config)
         {
@@ -49,6 +49,13 @@ namespace RiskOfBulletstormRewrite.Controllers
         {
         }
 
+
+
+        /// <summary>
+        /// This method effectively creates the Bullet That Can Kill The Past for the player.
+        /// </summary>
+        /// <param name="steve">The characterbody of the person crafting.</param>
+        /// <param name="position">The position where the bullet is dropped.</param>
         public bool CraftShell(CharacterBody steve, Vector3 position)
         {
             if (steve && steve.inventory)
@@ -58,15 +65,15 @@ namespace RiskOfBulletstormRewrite.Controllers
                     return steve.inventory.GetItemCount(itemDef) > 0;
                 }
 
-                if (hasItem(primerDef)
-                && hasItem(gunpowderDef)
-                && hasItem(leadDef)
-                && hasItem(casingDef))
+                if (hasItem(PrimerDef)
+                && hasItem(GunpowderDef)
+                && hasItem(LeadDef)
+                && hasItem(CasingDef))
                 {
-                    steve.inventory.RemoveItem(primerDef);
-                    steve.inventory.RemoveItem(gunpowderDef);
-                    steve.inventory.RemoveItem(leadDef);
-                    steve.inventory.RemoveItem(casingDef);
+                    steve.inventory.RemoveItem(PrimerDef);
+                    steve.inventory.RemoveItem(GunpowderDef);
+                    steve.inventory.RemoveItem(LeadDef);
+                    steve.inventory.RemoveItem(CasingDef);
                     //steve.inventory.GiveItem(Items.PastKillingBullet.instance.ItemDef);
                     PickupDropletController.CreatePickupDroplet(
                         PickupCatalog.itemIndexToPickupIndex[(int)Items.PastKillingBullet.instance.ItemDef.itemIndex],

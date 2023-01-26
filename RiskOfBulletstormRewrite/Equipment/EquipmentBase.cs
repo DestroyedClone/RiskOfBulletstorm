@@ -21,9 +21,22 @@ namespace RiskOfBulletstormRewrite.Equipment
 
     public abstract class EquipmentBase
     {
+        /// <summary>
+        /// Name of the Equipment, for the Config and Internals
+        /// </summary>
         public abstract string EquipmentName { get; }
+        /// <summary>
+        /// Primary Token for language.
+        /// <para>Ex: "GAWK" => used in RBS_GAWK_NAME, RBS_GAWK_DESC, ETC</para>
+        /// </summary>
         public abstract string EquipmentLangTokenName { get; }
+        /// <summary>
+        /// Optional parameters for the Equipment Pickup Token
+        /// </summary>
         public virtual string[] EquipmentPickupDescParams { get; }
+        /// <summary>
+        /// Optional parameters for the Equipment Description Token
+        /// </summary>
         public virtual string[] EquipmentFullDescriptionParams { get; }
 
         public abstract GameObject EquipmentModel { get; }
@@ -43,9 +56,18 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public virtual bool IsLunar { get; } = false;
 
+        /// <summary>
+        /// Can be randomly triggered by things such as Bottled Chaos
+        /// </summary>
         public virtual bool CanBeRandomlyTriggered { get; } = true;
 
         public virtual Equipment.EquipmentBase DependentEquipment { get; } = null;
+
+        /// <summary>
+        /// The internal name of its parent equipment, so that when its Parent is disabled, so too will it as a child.
+        /// <para>Ex: AppleConsumed has its ParentEquipmentName as "Apple". AppleConsumed loses its ability to be disabled and requires
+        /// Apple to be disabled.</para>
+        /// </summary>
         public virtual string ParentEquipmentName { get; } = null;
         public EquipmentDef EquipmentDef;
 
@@ -124,7 +146,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         protected void CreateEquipment()
         {
-            var prefix = "RISKOFBULLETSTORM_EQUIPMENT_";
+            var prefix = "RISKOFBULLETSTORM_ELITE_EQUIPMENT_";
             EquipmentDef = ScriptableObject.CreateInstance<EquipmentDef>();
             EquipmentDef.name = prefix + EquipmentLangTokenName;
             EquipmentDef.nameToken = prefix + EquipmentLangTokenName + "_NAME";

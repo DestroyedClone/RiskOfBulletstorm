@@ -25,10 +25,10 @@ namespace RiskOfBulletstormRewrite.Controllers
         {
             base.Hooks();
             if (cfgSpawnWispFromPotChance.Value > 0)
-                GlobalEventManager.onCharacterDeathGlobal += OnCharacterDeathGlobal;
+                GlobalEventManager.onCharacterDeathGlobal += RollForSpawnWispOnPotBreak;
         }
 
-        private void OnCharacterDeathGlobal(DamageReport obj)
+        private void RollForSpawnWispOnPotBreak(DamageReport obj)
         {
             if (NetworkServer.active)
             {

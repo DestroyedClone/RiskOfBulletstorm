@@ -61,7 +61,7 @@ namespace RiskOfBulletstormRewrite.Equipment
                         if (!purchaseInteraction.GetComponent<ShopTerminalBehavior>())
                             if (purchaseInteraction)
                             {
-                                if (UnlockChest(bestInteractableObject, interactionDriver))
+                                if (ActivateDrillEffectOnChest(bestInteractableObject, interactionDriver))
                                 {
                                     return true;
                                 }
@@ -72,7 +72,13 @@ namespace RiskOfBulletstormRewrite.Equipment
             return false;
         }
 
-        private bool UnlockChest(GameObject chestObject, InteractionDriver interactionDriver)
+        /// <summary>
+        /// Activate's the <b>Drill</b>'s effects on Chests.
+        /// </summary>
+        /// <param name="chestObject">The GameObject of the chest</param>
+        /// <param name="interactionDriver">The InteractionDriver of the user</param>
+        /// <returns></returns>
+        private bool ActivateDrillEffectOnChest(GameObject chestObject, InteractionDriver interactionDriver)
         {
             if (!interactionDriver) return false;
             Highlight highlight = chestObject.GetComponent<Highlight>();
@@ -130,6 +136,12 @@ namespace RiskOfBulletstormRewrite.Equipment
             }
         }
 
+        /// <summary>
+        /// Helper method to emulate the spawn of a CombatShrine
+        /// </summary>
+        /// <param name="interactor">The Interactor of the interactor</param>
+        /// <param name="effectTransform">The transform where the effect spawns</param>
+        /// <param name="creditMultiplier">The Credit multiplier for the director of the Combat Shrine.</param>
         private void SpawnCombat(Interactor interactor, Transform effectTransform, float creditMultiplier = 1f)
         {
             GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(LegacyResourcesAPI.Load<GameObject>("Prefabs/NetworkedObjects/Encounters/MonstersOnShrineUseEncounter"), effectTransform.position, Quaternion.identity);
