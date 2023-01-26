@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 418287552
+CRC: 3573825566
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 9d4aa8f88a087b5678bddcd9aa4c15a5
+    Hash: 0dd2a7d07dd4179709ca41e4491e9794
   TypeTreeHash:
     serializedVersion: 2
     Hash: 1fe3abd029edb3522ae5dbbc711d0a74
@@ -32,6 +32,7 @@ Assets:
 - Assets/Icons/EQUIPMENT_WEIRDEGG.png
 - Assets/Icons/ARTIFACT_DAMAGEEQUIPMENTRECHARGE_DISABLED.png
 - Assets/Models/Clone.fbx
+- Assets/Models/Prefabs/BattleStandard.prefab
 - Assets/Models/AntibodyTex.png
 - Assets/Icons/ITEM_BATTLESTANDARDVOID.png
 - Assets/Models/Orange.fbx
@@ -48,19 +49,25 @@ Assets:
 - Assets/Models/DodgerollUtilityReplacement.fbx
 - Assets/Icons/ARTIFACT_BOSSCHAMBER_ENABLED.png
 - Assets/Models/AlphaBullet.fbx
+- Assets/Models/Prefabs/DodgerollUtilityReplacement.prefab
 - Assets/Models/BombCompanionAppTex.png
 - Assets/Icons/ITEM_RINGFIRERESISTANCE.png
 - Assets/Icons/EQUIPMENT_ORANGECONSUMED.png
 - Assets/Models/TrustyLockpicks.fbx
+- Assets/Models/Prefabs/Backpack.prefab
 - Assets/Icons/BODY_BABYGOODMIMIC.png
+- Assets/Models/Prefabs/BattleStandardVoid.prefab
 - Assets/Icons/ITEM_BABYGOODMIMIC.png
 - Assets/Icons/EQUIPMENT_BRICKOFCASH.png
+- Assets/Models/Prefabs/BombCompanionApp.prefab
 - Assets/Models/WeirdEggTex.png
 - Assets/Icons/ITEM_CURSETALLY.png
+- Assets/Models/Prefabs/WeirdEgg.prefab
 - Assets/Models/IronCoin.fbx
 - Assets/Icons/EQUIPMENT_IRONCOINCONSUMED.png
 - Assets/Icons/ITEM_ORANGECONSUMED.png
 - Assets/Models/Drill.fbx
+- Assets/Models/Prefabs/Antibody.prefab
 - Assets/Icons/ARTIFACT_ADAPTIVEARMORBOSSES_DISABLED.png
 - Assets/Icons/ARTIFACT_UPSPEEDOOC_DISABLED.png
 - Assets/Icons/ARTIFACT_COYOTETIME_DISABLED.png
@@ -70,18 +77,24 @@ Assets:
 - Assets/Icons/ARTIFACT_GUNGEONSPOOF_DISABLED.png
 - Assets/Icons/ARTIFACT_BOSSCHAMBER_DISABLED.png
 - Assets/Models/BrickOfCashTex.png
+- Assets/Models/Prefabs/HipHolster.prefab
 - Assets/Icons/ITEM_LORDOFTHEJAMMED.png
 - Assets/Icons/ITEM_ALPHABULLET.png
 - Assets/Models/BloodiedScarf.fbx
+- Assets/Models/Prefabs/AlphaBullet.prefab
 - Assets/Models/BattleStandardVoidTex.png
 - Assets/Icons/ARTIFACT_UPSPEEDOOC_ENABLED.png
 - Assets/Icons/SKILL_LORDOFTHEJAMMED_PRIMARY.png
 - Assets/Icons/ITEM_BATTLESTANDARD.png
 - Assets/Icons/ITEM_DODGEROLLUTILITYREPLACEMENT.png
+- Assets/Models/Prefabs/IronCoin.prefab
+- Assets/Models/Prefabs/Orange.prefab
 - Assets/Icons/BUFF_BLOODIEDSCARF.png
 - Assets/Icons/ITEM_COINCROWNVOID.png
 - Assets/Icons/SKILL_DODGEROLL.png
+- Assets/Models/Prefabs/Drill.prefab
 - Assets/Models/BackpackTex.png
+- Assets/Models/Prefabs/BloodiedScarf.prefab
 - Assets/Icons/ITEM_CLONEVOIDCONSUMED.png
 - Assets/Icons/ARTIFACT_GUNGEONSPOOF_ENABLED.png
 - Assets/Models/BattleStandardTex.png
@@ -94,6 +107,7 @@ Assets:
 - Assets/Icons/ARTIFACT_PITLORD_DISABLED.png
 - Assets/Models/Antibody.fbx
 - Assets/Icons/ARTIFACT_DAMAGEEQUIPMENTRECHARGE_ENABLED.png
+- Assets/Models/Prefabs/TrustyLockpicks.prefab
 - Assets/Icons/ITEM_CLONEVOID.png
 - Assets/Icons/EQUIPMENT_BOTTLE.png
 - Assets/Models/DodgeRollUtilityReplacementTex.png
@@ -108,7 +122,9 @@ Assets:
 - Assets/Icons/EQUIPMENT_TRUSTYLOCKPICKS.png
 - Assets/Icons/EQUIPMENT_DRILL.png
 - Assets/Models/BattleStandardVoid.fbx
+- Assets/Models/Prefabs/Clone.prefab
 - Assets/Models/DrillTex.png
 - Assets/Icons/SKILL_BLOODIEDSCARF.png
+- Assets/Models/Prefabs/CoinCrown.prefab
 - Assets/Icons/ARTIFACT_COYOTETIME_ENABLED.png
 Dependencies: []
