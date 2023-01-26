@@ -1,4 +1,5 @@
 ﻿using BepInEx.Configuration;
+using BetterUI;
 using R2API;
 using RoR2;
 using System;
@@ -23,22 +24,21 @@ namespace RiskOfBulletstormRewrite.Equipment.EliteEquipment
     public abstract class EliteEquipmentBase
     {
         public abstract string EliteEquipmentName { get; }
+        public abstract string EliteEquipmentLangTokenName { get; }
 
         /// <summary>
         /// The lang token that will be used in registering most of your strings.
         /// <para>E.g.: AFFIX_HYPERCHARGED</para>
         /// </summary>
-        public abstract string EliteAffixToken { get; }
-
-        public abstract string EliteEquipmentPickupDesc { get; }
-        public abstract string EliteEquipmentFullDescription { get; }
-        public abstract string EliteEquipmentLore { get; }
+        //public abstract string EliteAffixToken { get; }
+        public virtual string[] EliteEquipmentPickupDescParams { get; }
+        public virtual string[] EliteEquipmentFullDescriptionParams { get; }
 
         /// <summary>
         /// This is what appears before the name of the creature that has this elite status.
         /// <para>E.g.: "Hypercharged Beetle" where Hypercharged is the modifier.</para>
         /// </summary>
-        public abstract string EliteModifier { get; }
+        //public abstract string EliteModifier { get; }
 
         public virtual bool AppearsInSinglePlayer { get; } = true;
 
@@ -78,6 +78,35 @@ namespace RiskOfBulletstormRewrite.Equipment.EliteEquipment
 
         public EliteDef EliteDef;
 
+        public string ConfigCategory
+        {
+            get
+            {
+                return "Elite Equipment: " + EliteEquipmentName;
+            }
+        }
+
+        public string EliteEquipmentPickupToken
+        {
+            get
+            {
+                return "RISKOFBULLETSTORM_ELITE_EQUIPMENT_" + EliteEquipmentLangTokenName + "_PICKUP";
+            }
+        }
+
+        public string EliteEquipmentDescriptionToken
+        {
+            get
+            {
+                return "RISKOFBULLETSTORM_ELITE_EQUIPMENT_" + EliteEquipmentLangTokenName + "_DESCRIPTION";
+            }
+        }
+
+        public string GetChance(ConfigEntry<float> configEntry)
+        {
+            return (configEntry.Value * 100).ToString();
+        }
+
         /// <summary>
         /// This method structures your code execution of this class. An example implementation inside of it would be:
         /// <para>CreateConfig(config);</para>
@@ -93,28 +122,50 @@ namespace RiskOfBulletstormRewrite.Equipment.EliteEquipment
         public abstract void Init(ConfigFile config);
 
         public abstract ItemDisplayRuleDict CreateItemDisplayRules();
-
-        protected void CreateLang()
+        /// <summary>
+        /// Take care to call base.CreateLang()!
+        /// </summary>
+        protected virtual void CreateLang()
         {
-            LanguageAPI.Add("ELITE_EQUIPMENT_" + EliteAffixToken + "_NAME", EliteEquipmentName);
-            LanguageAPI.Add("ELITE_EQUIPMENT_" + EliteAffixToken + "_PICKUP", EliteEquipmentName);
-            LanguageAPI.Add("ELITE_EQUIPMENT_" + EliteAffixToken + "_DESCRIPTION", EliteEquipmentName);
-            LanguageAPI.Add("ELITE_" + EliteAffixToken + "_MODIFIER", EliteModifier + " {0}");
+            Main._logger.LogMessage($"{EliteEquipmentName} CreateLang()");
+            bool formatPickup = EliteEquipmentPickupDescParams?.Length > 0;
+            //Main._logger.LogMessage("pickupCheck");
+            bool formatDescription = EliteEquipmentFullDescriptionParams?.Length > 0; //https://stackoverflow.com/a/41596301
+            //Main._logger.LogMessage("descCheck");
+            if (formatDescription && formatPickup)
+            {
+                //Main._logger.LogMessage("Nothing to format.");
+                return;
+            }
+
+            if (formatPickup)
+            {
+                Language.DeferToken(EliteEquipmentPickupToken, EliteEquipmentPickupDescParams);
+            }
+
+            if (formatDescription)
+            {
+                Language.DeferToken(EliteEquipmentDescriptionToken, EliteEquipmentFullDescriptionParams);
+            }
         }
+
+        public virtual Color EliteBuffColor { get; set; } = new Color32(255, 255, 255, byte.MaxValue);
 
         protected void CreateEquipment()
         {
-            EliteBuffDef = ScriptableObject.CreateInstance<BuffDef>();
-            EliteBuffDef.name = EliteAffixToken;
-            EliteBuffDef.buffColor = new Color32(255, 255, 255, byte.MaxValue);
-            EliteBuffDef.iconSprite = EliteBuffIcon;
-            EliteBuffDef.canStack = false;
+            var prefix = "RISKOFBULLETSTORM_ELITE_EQUIPMENT_";
+            EliteBuffDef = RiskOfBulletstormRewrite.Utils.Buffs.AddBuff(
+                "BUFF_"+EliteEquipmentLangTokenName,
+                EliteBuffIcon,
+                EliteBuffColor,
+                false,
+                false);
 
             EliteEquipmentDef = ScriptableObject.CreateInstance<EquipmentDef>();
-            EliteEquipmentDef.name = "ELITE_EQUIPMENT_" + EliteAffixToken;
-            EliteEquipmentDef.nameToken = "ELITE_EQUIPMENT_" + EliteAffixToken + "_NAME";
-            EliteEquipmentDef.pickupToken = "ELITE_EQUIPMENT_" + EliteAffixToken + "_PICKUP";
-            EliteEquipmentDef.descriptionToken = "ELITE_EQUIPMENT_" + EliteAffixToken + "_DESCRIPTION";
+            EliteEquipmentDef.name = prefix + EliteEquipmentLangTokenName;
+            EliteEquipmentDef.nameToken = prefix + EliteEquipmentLangTokenName + "_NAME";
+            EliteEquipmentDef.pickupToken = prefix + EliteEquipmentLangTokenName + "_PICKUP";
+            EliteEquipmentDef.descriptionToken = prefix + EliteEquipmentLangTokenName + "_DESCRIPTION";
             EliteEquipmentDef.pickupModelPrefab = EliteEquipmentModel;
             EliteEquipmentDef.pickupIconSprite = EliteEquipmentIcon;
             EliteEquipmentDef.appearsInSinglePlayer = AppearsInSinglePlayer;
@@ -198,8 +249,8 @@ namespace RiskOfBulletstormRewrite.Equipment.EliteEquipment
         protected void CreateElite()
         {
             EliteDef = ScriptableObject.CreateInstance<EliteDef>();
-            EliteDef.name = "ELITE_" + EliteAffixToken;
-            EliteDef.modifierToken = "ELITE_" + EliteAffixToken + "_MODIFIER";
+            EliteDef.name = "RISKOFBULLETSTORM_ELITE_" + EliteEquipmentLangTokenName;
+            EliteDef.modifierToken = "RISKOFBULLETSTORM_ELITE_" + EliteEquipmentLangTokenName + "_MODIFIER";
             EliteDef.eliteEquipmentDef = EliteEquipmentDef;
 
             var baseEliteTierDefs = EliteAPI.GetCombatDirectorEliteTiers();
