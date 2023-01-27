@@ -146,7 +146,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         protected void CreateEquipment()
         {
-            var prefix = "RISKOFBULLETSTORM_ELITE_EQUIPMENT_";
+            var prefix = "RISKOFBULLETSTORM_EQUIPMENT_";
             EquipmentDef = ScriptableObject.CreateInstance<EquipmentDef>();
             EquipmentDef.name = prefix + EquipmentLangTokenName;
             EquipmentDef.nameToken = prefix + EquipmentLangTokenName + "_NAME";
