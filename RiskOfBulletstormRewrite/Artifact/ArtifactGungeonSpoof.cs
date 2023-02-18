@@ -29,7 +29,7 @@ namespace RiskOfBulletstormRewrite.Artifact
 
         public override void CreateConfig(ConfigFile config)
         {
-            cfgIFrameDuration = config.Bind(ConfigCategory, "I-Frames Duration", 1f, "The amount of seconds of immunity after getting hit.");
+            cfgIFrameDuration = config.Bind(ConfigCategory, "I-Frames Duration", 0.5f, "The amount of seconds of immunity after getting hit.");
             cfgStatDivider = config.Bind(ConfigCategory, "Health and Damage Division Coefficient", 8f, "The value that the body's maxHealth and baseDamage are divided by.");
         }
 
@@ -52,6 +52,8 @@ namespace RiskOfBulletstormRewrite.Artifact
             Run.onRunStartGlobal -= StartRun;
             R2API.RecalculateStatsAPI.GetStatCoefficients -= GungeonMimic_StatCoefficients;
             On.RoR2.HealthComponent.ServerFixedUpdate -= PreventBarrierLoss;
+            On.RoR2.HealthComponent.AddBarrier -= HealthComponent_AddBarrier;
+            On.RoR2.Inventory.CalculateEquipmentCooldownScale -= IncreaseCooldowns;
         }
 
         private void RunArtifactManager_onArtifactEnabledGlobal([JetBrains.Annotations.NotNull] RunArtifactManager runArtifactManager, [JetBrains.Annotations.NotNull] ArtifactDef artifactDef)
@@ -74,6 +76,23 @@ namespace RiskOfBulletstormRewrite.Artifact
             }
             R2API.RecalculateStatsAPI.GetStatCoefficients += GungeonMimic_StatCoefficients;
             On.RoR2.HealthComponent.ServerFixedUpdate += PreventBarrierLoss;
+            On.RoR2.HealthComponent.AddBarrier += HealthComponent_AddBarrier;
+            On.RoR2.Inventory.CalculateEquipmentCooldownScale += IncreaseCooldowns;
+        }
+
+        private float IncreaseCooldowns(On.RoR2.Inventory.orig_CalculateEquipmentCooldownScale orig, Inventory self)
+        {
+            var original = orig(self);
+
+            original *= 1.25f;
+
+            return original;
+        }
+
+        private void HealthComponent_AddBarrier(On.RoR2.HealthComponent.orig_AddBarrier orig, HealthComponent self, float value)
+        {
+            value = Mathf.RoundToInt(value / cfgStatDivider.Value);
+            orig(self, value);
         }
 
         private void PreventBarrierLoss(On.RoR2.HealthComponent.orig_ServerFixedUpdate orig, HealthComponent self)
@@ -204,8 +223,6 @@ namespace RiskOfBulletstormRewrite.Artifact
         [Server] //>using something you dont know what its for
         private void ApplyBodyModifier(CharacterBody body)
         {
-            float armorToConvertToBarrier = 0;
-
             body.baseMaxHealth = Mathf.RoundToInt(body.baseMaxHealth / cfgStatDivider.Value);
             body.levelMaxHealth = 0;
             body.healthComponent.health = body.baseMaxHealth;
@@ -213,7 +230,7 @@ namespace RiskOfBulletstormRewrite.Artifact
             body.levelRegen = 0;
             body.barrierDecayRate = 0;
             body.crit = 0;
-            armorToConvertToBarrier = body.baseArmor;
+            float armorToConvertToBarrier = body.baseArmor;
             body.baseArmor = 0;
             body.levelArmor = 0;
 
