@@ -106,8 +106,8 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void CreateConfig(ConfigFile config)
         {
-            cfgTeleportRange = config.Bind(ConfigCategory, "Teleport Range", 5f, "Distance in meters");
-            cfgTeleportRangePerStack = config.Bind(ConfigCategory, "Teleport Range Per Stack", 2.5f, "Distance in meters");
+            cfgTeleportRange = config.Bind(ConfigCategory, "Teleport Range", 15f, "Distance in meters");
+            cfgTeleportRangePerStack = config.Bind(ConfigCategory, "Teleport Range Per Stack", 5f, "Distance in meters");
             cfgDamageVulnerabilityMultiplier = config.Bind(ConfigCategory, "Damage Vulnerability Multiplier", .2f, "");
             cfgDamageVulnerabilityMultiplierPerStack = config.Bind(ConfigCategory, "Damage Vulnerability Multiplier Per Stack", .1f, "");
             cfgDamageVulnerabilityDuration = config.Bind(ConfigCategory, "Damage Vulnerability Duration", 1f, "");

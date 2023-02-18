@@ -17,10 +17,7 @@ namespace RiskOfBulletstormRewrite.Items
         private Vector3 blinkVector = Vector3.zero;
 
         [SerializeField]
-        public float duration = 0.3f;
-
-        [SerializeField]
-        public float speedCoefficient = 25f;
+        public float duration = 0.1f;
 
         [SerializeField]
         public string beginSoundString;
@@ -67,8 +64,8 @@ namespace RiskOfBulletstormRewrite.Items
             base.OnEnter();
             modelRoot = base.GetModelTransform().GetComponentInChildren<SkinnedMeshRenderer>()?.rootBone;
 
-            areaIndicatorInstance = UnityEngine.Object.Instantiate<GameObject>(modelRoot?.gameObject ?? ArrowRain.areaIndicatorPrefab);//(ArrowRain.areaIndicatorPrefab);
-            areaIndicatorInstance.transform.localScale = new Vector3(ArrowRain.arrowRainRadius / 3, ArrowRain.arrowRainRadius / 1.5f, ArrowRain.arrowRainRadius / 3);
+            areaIndicatorInstance = UnityEngine.Object.Instantiate<GameObject>(modelRoot?.parent.parent.gameObject ?? ArrowRain.areaIndicatorPrefab);//(ArrowRain.areaIndicatorPrefab);
+            //areaIndicatorInstance.transform.localScale = new Vector3(ArrowRain.arrowRainRadius / 3, ArrowRain.arrowRainRadius / 1.5f, ArrowRain.arrowRainRadius / 3);
 
             //Icewall
             baseDuration = PrepWall.baseDuration;
@@ -89,8 +86,7 @@ namespace RiskOfBulletstormRewrite.Items
         {
             if (characterBody && characterBody.inventory)
             {
-                var itemCount = this.characterBody.inventory.GetItemCount(Items.BloodiedScarf.instance.ItemDef);
-                return BloodiedScarf.cfgTeleportRange.Value + BloodiedScarf.cfgTeleportRangePerStack.Value * (itemCount - 1);
+                return BloodiedScarf.instance.GetStack(BloodiedScarf.cfgTeleportRange.Value, BloodiedScarf.cfgTeleportRangePerStack.Value, this.characterBody.inventory.GetItemCount(Items.BloodiedScarf.instance.ItemDef));
             }
             return BloodiedScarf.cfgTeleportRange.Value;
         }
@@ -120,7 +116,8 @@ namespace RiskOfBulletstormRewrite.Items
                     crosshairOverrideRequest = CrosshairUtils.RequestOverrideForBody(base.characterBody, goodPlacement ? TeleportUtilitySkillState.goodCrosshairPrefab : TeleportUtilitySkillState.badCrosshairPrefab, CrosshairUtils.OverridePriority.Skill);
                 }
             }
-            this.areaIndicatorInstance.SetActive(this.goodPlacement);
+            //this.areaIndicatorInstance.SetActive(this.goodPlacement);
+            areaIndicatorInstance.transform.localScale = Vector3.one * (goodPlacement ? 1f : 0.25f);
         }
 
         protected virtual Vector3 GetBlinkVector()
@@ -150,6 +147,7 @@ namespace RiskOfBulletstormRewrite.Items
             this.stopwatch += Time.fixedDeltaTime;
             if (this.stopwatch >= this.duration && !base.inputBank.skill3.down && base.isAuthority)
             {
+                CreateBlinkEffect(outer.commonComponents.characterBody.corePosition);
                 this.outer.SetNextStateToMain();
             }
         }
