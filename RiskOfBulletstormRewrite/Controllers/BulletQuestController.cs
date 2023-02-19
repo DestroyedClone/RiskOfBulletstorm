@@ -1,6 +1,8 @@
 ﻿using BepInEx.Configuration;
+using RiskOfBulletstormRewrite.Items;
 using RoR2;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace RiskOfBulletstormRewrite.Controllers
 {
@@ -17,6 +19,9 @@ namespace RiskOfBulletstormRewrite.Controllers
         private static ItemDef LeadDef => Items.PlanarLead.instance.ItemDef;
         private static ItemDef CasingDef => Items.ObsidianShellCasing.instance.ItemDef;
 
+        public int CurrentPrimerCost { get; set; }
+        public static bool EnablePrimerPurchase = true;
+
         public override void Init(ConfigFile config)
         {
             CreateConfig(config);
@@ -27,6 +32,52 @@ namespace RiskOfBulletstormRewrite.Controllers
         {
             base.Hooks();
             On.RoR2.BazaarController.OnStartServer += BazaarOnStartServer;
+            On.RoR2.Chat.SendBroadcastChat_ChatMessageBase += Chat_SendBroadcastChat_ChatMessageBase;
+            Stage.onStageStartGlobal += Stage_onStageStartGlobal;
+        }
+
+        private void Stage_onStageStartGlobal(Stage stage)
+        {
+            if (NetworkServer.active)
+            {
+                if (Run.instance.stageClearCount == 1)
+                {
+                    EnablePrimerPurchase = true;
+                    CurrentPrimerCost = Run.instance.GetDifficultyScaledCost(25) * 2;
+                    Chat.SendBroadcastChat(new Chat.SimpleChatMessage()
+                    {
+                        baseToken = "RISKOFBULLETSTORM_DIALOGUE_GUNQUEST_PURCHASE",
+                        paramTokens = new string[] { PrimePrimer.instance.ItemDef.nameToken, CurrentPrimerCost.ToString() }
+                    });
+                } else
+                {
+                    EnablePrimerPurchase = false;
+                }
+            }
+        }
+
+        private void Chat_SendBroadcastChat_ChatMessageBase(On.RoR2.Chat.orig_SendBroadcastChat_ChatMessageBase orig, ChatMessageBase message)
+        {
+            orig(message);
+            if (!EnablePrimerPurchase) return;
+            if (message is Chat.UserChatMessage chatMsg)
+            {
+                if (chatMsg.sender && chatMsg.text.ToLower() == "/buy") //sender is a networkuser gameobject
+                {
+                    chatMsg.sender.TryGetComponent<NetworkUser>(out NetworkUser networkUser);
+                    PurchasePrimePrimer(networkUser.master);
+                }
+            }
+        }
+
+        public void PurchasePrimePrimer(CharacterMaster purchaserMaster)
+        {
+            if (purchaserMaster.money >= CurrentPrimerCost)
+            {
+                purchaserMaster.money -= (uint)CurrentPrimerCost;
+                EnablePrimerPurchase = false;
+                purchaserMaster.inventory.GiveItem(Items.PrimePrimer.instance.ItemDef);
+            }
         }
 
         public void BazaarOnStartServer(On.RoR2.BazaarController.orig_OnStartServer orig, BazaarController self)

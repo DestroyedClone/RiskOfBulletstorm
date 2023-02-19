@@ -1,0 +1,9 @@
+﻿{
+	strings: {
+		//[GUNSMITH]
+		"RISKOFBULLETSTORM_DIALOGUE_GUNSMITH_NAME": "Gunsmith",
+		"RISKOFBULLETSTORM_DIALOGUE_GUNSMITH_GIVEBULLET": "Here's your bullet.",
+
+		"RISKOFBULLETSTORM_DIALOGUE_GUNQUEST_PURCHASE": "Purchase Available: {0} ${1}. Say '/buy' in chat to purchase."
+	}
+}
