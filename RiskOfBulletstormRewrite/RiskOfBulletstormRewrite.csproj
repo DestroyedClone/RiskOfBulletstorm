@@ -30,6 +30,7 @@
     <Compile Remove="Items\Boss\PastKillingBulletBanPickup.cs" />
     <Compile Remove="Items\Boss\RatBoots.cs" />
     <Compile Remove="Items\ClownMask.cs" />
+    <Compile Remove="Items\Common\IrradiatedLead.cs" />
     <Compile Remove="Items\ExampleItem.cs" />
     <Compile Remove="Items\Boss\MasterRounds\MasterRoundI.cs" />
     <Compile Remove="Items\Legendary\BabyGoodMimic.cs" />

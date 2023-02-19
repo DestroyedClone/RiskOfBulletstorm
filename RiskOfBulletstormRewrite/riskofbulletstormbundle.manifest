@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3428973262
+CRC: 2222650593
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: fb24c5032f04f94fafe84b80ab61c8ad
+    Hash: f3c89a967d89eb4a0c5932b85d92b6a4
   TypeTreeHash:
     serializedVersion: 2
     Hash: 1fe3abd029edb3522ae5dbbc711d0a74
@@ -30,6 +30,7 @@ ClassTypes:
 SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/Icons/EQUIPMENT_WEIRDEGG.png
+- Assets/Icons/ITEM_RINGMISERLYPROTECTION.png
 - Assets/Icons/ARTIFACT_DAMAGEEQUIPMENTRECHARGE_DISABLED.png
 - Assets/Models/Clone.fbx
 - Assets/Models/Prefabs/BattleStandard.prefab
@@ -37,6 +38,7 @@ Assets:
 - Assets/Models/Prefabs/CoinCrown 1.prefab
 - Assets/Models/Orange.fbx
 - Assets/Models/WeirdEgg.fbx
+- Assets/Icons/ITEM_MUSTACHE.png
 - Assets/Icons/BUFF_MUSTACHE.png
 - Assets/Models/BombCompanionApp.fbx
 - Assets/Icons/ITEM_CLONECONSUMED.png
@@ -48,6 +50,8 @@ Assets:
 - Assets/Models/AlphaBullet.fbx
 - Assets/Models/Prefabs/DodgerollUtilityReplacement.prefab
 - Assets/Icons/ITEM_RINGFIRERESISTANCE.png
+- Assets/Icons/Materials/ITEM_CLONEVOID.mat
+- Assets/Materials/MustacheTex.mat
 - Assets/Icons/EQUIPMENT_ORANGECONSUMED.png
 - Assets/Models/TrustyLockpicks.fbx
 - Assets/Models/Prefabs/Backpack.prefab
@@ -67,6 +71,7 @@ Assets:
 - Assets/Models/Prefabs/Antibody.prefab
 - Assets/Icons/ARTIFACT_ADAPTIVEARMORBOSSES_DISABLED.png
 - Assets/Icons/ARTIFACT_UPSPEEDOOC_DISABLED.png
+- Assets/Materials/CoinCrownVoidTex.mat
 - Assets/Icons/ARTIFACT_COYOTETIME_DISABLED.png
 - Assets/Icons/ITEM_ANTIBODY.png
 - Assets/Icons/BUFF_METRONOME.png
@@ -109,12 +114,16 @@ Assets:
 - Assets/Icons/BUFF_ALPHABULLET.png
 - Assets/Models/CoinCrown.fbx
 - Assets/Icons/ITEM_CLONE.png
+- Assets/Icons/ITEM_BACKPACK.png
 - Assets/Models/BattleStandard.fbx
+- Assets/Models/Prototype.prefab
 - Assets/Icons/EQUIPMENT_BOMBCOMPANIONAPP.png
 - Assets/Icons/EQUIPMENT_TRUSTYLOCKPICKS.png
+- Assets/Icons/ITEM_SCOPE.png
 - Assets/Icons/EQUIPMENT_DRILL.png
 - Assets/Models/BattleStandardVoid.fbx
 - Assets/Models/Prefabs/Clone.prefab
+- Assets/Materials/UV_Orange.mat
 - Assets/Icons/SKILL_BLOODIEDSCARF.png
 - Assets/Models/Prefabs/CoinCrown.prefab
 - Assets/Icons/ARTIFACT_COYOTETIME_ENABLED.png

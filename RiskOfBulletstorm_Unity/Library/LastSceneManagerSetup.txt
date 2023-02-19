@@ -1,5 +1,5 @@
 sceneSetups:
-- path: C:/Users/destr/Documents/AssetRipper Exports/Sonny AR Export/SonnyWindows/ExportedProject/Assets/Scene/AbilityTree.unity
+- path: Assets/Scenes/SampleScene.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0
