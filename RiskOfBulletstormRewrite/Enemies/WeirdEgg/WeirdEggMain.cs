@@ -9,7 +9,6 @@ namespace RiskOfBulletstormRewrite.Enemies.WeirdEgg
 {
     public class WeirdEggMain : GenericCharacterMain, IOnTakeDamageServerReceiver
     {
-        public CharacterBody characterBody;
         public int stagesCleared = 0;
 
         void IOnTakeDamageServerReceiver.OnTakeDamageServer(DamageReport damageReport)

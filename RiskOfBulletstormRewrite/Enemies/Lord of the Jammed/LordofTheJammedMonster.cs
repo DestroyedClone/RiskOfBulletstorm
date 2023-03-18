@@ -92,7 +92,7 @@ namespace RiskOfBulletstormRewrite.Enemies
             mySkillDef.skillDescriptionToken = $"{mySkillDef.skillName}_DESC";
             (mySkillDef as ScriptableObject).name = mySkillDef.skillName;
             mySkillDef.keywordTokens = new string[] { };
-            secondarySkillDefs.Add(mySkillDef);
+            SecondarySkillDefs.Add(mySkillDef);
             base.SetupSecondary();
         }
     }

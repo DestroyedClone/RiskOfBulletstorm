@@ -12,12 +12,12 @@ namespace RiskOfBulletstormRewrite.Enemies
     public abstract class MonsterBase<T> : MonsterBase where T : MonsterBase<T>
     {
         //This, which you will see on all the -base classes, will allow both you and other modders to enter through any class with this to access internal fields/properties/etc as if they were a member inheriting this -Base too from this class.
-        public static T instance { get; private set; }
+        public static T Instance { get; private set; }
 
         public MonsterBase()
         {
-            if (instance != null) throw new InvalidOperationException("Singleton class \"" + typeof(T).Name + "\" inheriting MonsterBase was instantiated twice");
-            instance = this as T;
+            if (Instance != null) throw new InvalidOperationException("Singleton class \"" + typeof(T).Name + "\" inheriting MonsterBase was instantiated twice");
+            Instance = this as T;
         }
 
         internal void Init()
@@ -37,10 +37,10 @@ namespace RiskOfBulletstormRewrite.Enemies
 
         public virtual string ConfigCategory { get; set; }
 
-        public virtual List<SkillDef> primarySkillDefs { get; set; }
-        public virtual List<SkillDef> secondarySkillDefs { get; set; }
-        public virtual List<SkillDef> utilitySkillDefs { get; set; }
-        public virtual List<SkillDef> specialSkillDefs { get; set; }
+        public virtual List<SkillDef> PrimarySkillDefs { get; set; }
+        public virtual List<SkillDef> SecondarySkillDefs { get; set; }
+        public virtual List<SkillDef> UtilitySkillDefs { get; set; }
+        public virtual List<SkillDef> SpecialSkillDefs { get; set; }
 
         /// <summary>
         /// This method structures your code execution of this class. An example implementation inside of it would be:
@@ -89,10 +89,10 @@ namespace RiskOfBulletstormRewrite.Enemies
 
         public void SetupSkills()
         {
-            primarySkillDefs = new List<SkillDef>();
-            secondarySkillDefs = new List<SkillDef>();
-            utilitySkillDefs = new List<SkillDef>();
-            specialSkillDefs = new List<SkillDef>();
+            PrimarySkillDefs = new List<SkillDef>();
+            SecondarySkillDefs = new List<SkillDef>();
+            UtilitySkillDefs = new List<SkillDef>();
+            SpecialSkillDefs = new List<SkillDef>();
 
             SetupPassive();
             SetupPrimary();
@@ -122,10 +122,10 @@ namespace RiskOfBulletstormRewrite.Enemies
                 }
             }
 
-            if (Check(primaryIndex, primarySkillDefs)) MonsterSkillLocator.primary.AssignSkill(primarySkillDefs[primaryIndex]);
-            if (Check(secondaryIndex, secondarySkillDefs)) MonsterSkillLocator.secondary.AssignSkill(secondarySkillDefs[secondaryIndex]);
-            if (Check(utilityIndex, utilitySkillDefs)) MonsterSkillLocator.utility.AssignSkill(utilitySkillDefs[utilityIndex]);
-            if (Check(specialIndex, specialSkillDefs)) MonsterSkillLocator.special.AssignSkill(specialSkillDefs[specialIndex]);
+            if (Check(primaryIndex, PrimarySkillDefs)) MonsterSkillLocator.primary.AssignSkill(PrimarySkillDefs[primaryIndex]);
+            if (Check(secondaryIndex, SecondarySkillDefs)) MonsterSkillLocator.secondary.AssignSkill(SecondarySkillDefs[secondaryIndex]);
+            if (Check(utilityIndex, UtilitySkillDefs)) MonsterSkillLocator.utility.AssignSkill(UtilitySkillDefs[utilityIndex]);
+            if (Check(specialIndex, SpecialSkillDefs)) MonsterSkillLocator.special.AssignSkill(SpecialSkillDefs[specialIndex]);
         }
 
         public virtual void SetupPassive()
@@ -168,22 +168,22 @@ namespace RiskOfBulletstormRewrite.Enemies
 
         public virtual void SetupPrimary()
         {
-            AddSkillsToSkillFamily(primarySkillDefs, MonsterSkillLocator.primary.skillFamily);
+            AddSkillsToSkillFamily(PrimarySkillDefs, MonsterSkillLocator.primary.skillFamily);
         }
 
         public virtual void SetupSecondary()
         {
-            AddSkillsToSkillFamily(secondarySkillDefs, MonsterSkillLocator.secondary.skillFamily);
+            AddSkillsToSkillFamily(SecondarySkillDefs, MonsterSkillLocator.secondary.skillFamily);
         }
 
         public virtual void SetupUtility()
         {
-            AddSkillsToSkillFamily(utilitySkillDefs, MonsterSkillLocator.utility.skillFamily);
+            AddSkillsToSkillFamily(UtilitySkillDefs, MonsterSkillLocator.utility.skillFamily);
         }
 
         public virtual void SetupSpecial()
         {
-            AddSkillsToSkillFamily(specialSkillDefs, MonsterSkillLocator.special.skillFamily);
+            AddSkillsToSkillFamily(SpecialSkillDefs, MonsterSkillLocator.special.skillFamily);
         }
     }
 }
