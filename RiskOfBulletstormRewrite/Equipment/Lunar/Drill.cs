@@ -1,5 +1,6 @@
 ﻿using BepInEx.Configuration;
 using R2API;
+using RiskOfBulletstormRewrite.Utils;
 using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -42,10 +43,7 @@ namespace RiskOfBulletstormRewrite.Equipment
             cfgChestCostLegendary = config.Bind(ConfigCategory, "Legendary Credit Multiplier", 4f, text + "Legendary Chests");
         }
 
-        public override ItemDisplayRuleDict CreateItemDisplayRules()
-        {
-            return new ItemDisplayRuleDict();
-        }
+        public override ItemDisplayRuleDict CreateItemDisplayRules() => EquipmentDisplays.Drill(ref ItemBodyModelPrefab, EquipmentModel);
 
         protected override bool ActivateEquipment(EquipmentSlot slot)
         {
