@@ -225,7 +225,6 @@ namespace RiskOfBulletstormRewrite.Artifact
         {
             body.baseMaxHealth = Mathf.RoundToInt(body.baseMaxHealth / cfgStatDivider.Value);
             body.levelMaxHealth = 0;
-            body.healthComponent.health = body.baseMaxHealth;
             body.baseRegen = 0;
             body.levelRegen = 0;
             body.barrierDecayRate = 0;
