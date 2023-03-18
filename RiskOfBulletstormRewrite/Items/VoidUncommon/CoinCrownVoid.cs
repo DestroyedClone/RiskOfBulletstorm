@@ -1,5 +1,6 @@
 using BepInEx.Configuration;
 using R2API;
+using RiskOfBulletstormRewrite.Utils;
 using RoR2;
 using UnityEngine;
 
@@ -17,8 +18,8 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override string[] ItemFullDescriptionParams => new string[]
         {
-            GetChance(cfgCashAdder),
-            GetChance(cfgCashAdderStack)
+            cfgCashAdder.Value.ToString(),
+            cfgCashAdderStack.Value.ToString()
         };
 
         public override ItemDef ContagiousOwnerItemDef => CoinCrown.instance.ItemDef;
@@ -51,7 +52,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
         {
-            return new ItemDisplayRuleDict();
+            return CoinCrown.instance.CreateItemDisplayRules();
         }
 
         public override void Hooks()
@@ -82,7 +83,8 @@ namespace RiskOfBulletstormRewrite.Items
 
         private void IncreaseMoney(On.RoR2.CharacterMaster.orig_GiveMoney orig, CharacterMaster self, uint amount)
         {
-            amount += (uint)GetStack(cfgCashAdder.Value, cfgCashAdderStack.Value, (int)itemCount);
+            if (itemCount > 0)
+                amount += (uint)GetStack(cfgCashAdder.Value, cfgCashAdderStack.Value, (int)itemCount);
             orig(self, amount);
         }
 

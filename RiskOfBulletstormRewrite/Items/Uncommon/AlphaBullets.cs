@@ -42,8 +42,8 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void CreateConfig(ConfigFile config)
         {
-            cfgDamage = config.Bind(ConfigCategory, "Damage", 0.1f, "");
-            cfgDamageStack = config.Bind(ConfigCategory, "Damage Per Stack", 0.05f, "");
+            cfgDamage = config.Bind(ConfigCategory, "Damage", 0.05f, "");
+            cfgDamageStack = config.Bind(ConfigCategory, "Damage Per Stack", 0.025f, "");
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
