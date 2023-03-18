@@ -140,12 +140,12 @@ namespace RiskOfBulletstormRewrite.Equipment.EliteEquipment
 
             if (formatPickup)
             {
-                Language.DeferToken(EliteEquipmentPickupToken, EliteEquipmentPickupDescParams);
+                LanguageOverrides.DeferToken(EliteEquipmentPickupToken, EliteEquipmentPickupDescParams);
             }
 
             if (formatDescription)
             {
-                Language.DeferToken(EliteEquipmentDescriptionToken, EliteEquipmentFullDescriptionParams);
+                LanguageOverrides.DeferToken(EliteEquipmentDescriptionToken, EliteEquipmentFullDescriptionParams);
             }
         }
 

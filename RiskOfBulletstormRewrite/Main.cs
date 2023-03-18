@@ -55,7 +55,7 @@ namespace RiskOfBulletstormRewrite
         {
             _logger = Logger;
             pluginInfo = Info;
-            Language.config = Config;
+            LanguageOverrides.config = Config;
 
             LocationOfProgram = Path.GetDirectoryName(Info.Location);
 
@@ -77,7 +77,7 @@ namespace RiskOfBulletstormRewrite
             Commands.Initialize();
             Tweaks.Init(Config);
             /* stupidlanguageshit(); */
-            RiskOfBulletstormRewrite.Language.Initialize();
+            LanguageOverrides.Initialize();
         }
 
         /* private static ILHook _ilHook;

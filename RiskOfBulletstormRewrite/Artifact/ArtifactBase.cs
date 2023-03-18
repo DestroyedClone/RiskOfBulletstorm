@@ -99,7 +99,7 @@ namespace RiskOfBulletstormRewrite.Artifact
             //Main._logger.LogMessage("descCheck");
             if (formatDescription)
             {
-                Language.DeferToken(ArtifactDescriptionToken, ArtifactFullDescriptionParams);
+                LanguageOverrides.DeferToken(ArtifactDescriptionToken, ArtifactFullDescriptionParams);
                 return;
             }
         }

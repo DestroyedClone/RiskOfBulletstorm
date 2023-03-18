@@ -1,6 +1,7 @@
 ﻿using RiskOfBulletstormRewrite.Equipment;
 using RiskOfBulletstormRewrite.Items;
 using RiskOfBulletstormRewrite.Utils;
+using static RiskOfBulletstormRewrite.LanguageOverrides;
 using RoR2;
 using System.Runtime.CompilerServices;
 using UnityEngine;
@@ -38,7 +39,7 @@ namespace RiskOfBulletstormRewrite
             {
                 if (descTokenParams != null && descTokenParams.Length > 0)
                 {
-                    Language.DeferToken(prefix + baseToken + "_DESC", descTokenParams);
+                    LanguageOverrides.DeferToken(prefix + baseToken + "_DESC", descTokenParams);
                 }
                 BetterUI.Buffs.RegisterBuffInfo(buffDef, prefix + baseToken + "_NAME", prefix + baseToken + "_DESC");
             }

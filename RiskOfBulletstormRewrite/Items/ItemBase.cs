@@ -117,22 +117,22 @@ namespace RiskOfBulletstormRewrite.Items
 
             if (formatPickup)
             {
-                Language.DeferToken(ItemPickupToken, ItemPickupDescParams);
+                LanguageOverrides.DeferToken(ItemPickupToken, ItemPickupDescParams);
             }
 
             if (formatDescription)
             {
-                Language.DeferToken(ItemDescriptionToken, ItemFullDescriptionParams);
+                LanguageOverrides.DeferToken(ItemDescriptionToken, ItemFullDescriptionParams);
             }
 
             if (formatLogbook)
             {
-                Language.DeferToken(ItemDescriptionLogbookToken, ItemLogbookDescriptionParams);
+                LanguageOverrides.DeferToken(ItemDescriptionLogbookToken, ItemLogbookDescriptionParams);
             }
 
             if (ItemDescriptionLogbookOverride || formatLogbook)
             {
-                Language.logbookTokenOverrideDict.Add(ItemDescriptionToken, ItemDescriptionLogbookToken);
+                LanguageOverrides.logbookTokenOverrideDict.Add(ItemDescriptionToken, ItemDescriptionLogbookToken);
             }
             /*
             LanguageAPI.Add("ITEM_" + ItemLangTokenName + "_NAME", ItemName);
@@ -145,6 +145,8 @@ namespace RiskOfBulletstormRewrite.Items
         {
             return (configEntry.Value * 100).ToString();
         }
+
+        public GameObject ItemBodyModelPrefab;
 
         public abstract ItemDisplayRuleDict CreateItemDisplayRules();
 
@@ -228,6 +230,7 @@ namespace RiskOfBulletstormRewrite.Items
         {
             return Assets.LoadSprite($"ITEM_{ItemLangTokenName}");
         }
+
         public GameObject LoadModel()
         {
             return Assets.LoadObject($"{ItemLangTokenName}.prefab");

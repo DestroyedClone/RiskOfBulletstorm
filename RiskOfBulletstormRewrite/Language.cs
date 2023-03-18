@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace RiskOfBulletstormRewrite
 {
-    public class Language
+    public class LanguageOverrides
     {
         public static ConfigFile config;
 
@@ -30,12 +30,12 @@ namespace RiskOfBulletstormRewrite
         public static void DeferToken(string token, params string[] args)
         {
             //Main._logger.LogMessage($"Deferring {token} w/ lang {lang}");
-            RiskOfBulletstormRewrite.Language.replacementTokens.Add(new Language.ReplacementToken() { token = token, args = args });
+            LanguageOverrides.replacementTokens.Add(new LanguageOverrides.ReplacementToken() { token = token, args = args });
         }
 
         public static void DeferLateTokens(string baseToken, params string[] args)
         {
-            RiskOfBulletstormRewrite.Language.postReplacementTokens.Add(new PostReplacementToken() { baseToken = baseToken, replacementTokens = args });
+            RiskOfBulletstormRewrite.LanguageOverrides.postReplacementTokens.Add(new PostReplacementToken() { baseToken = baseToken, replacementTokens = args });
         }
 
         public static List<ReplacementToken> replacementTokens = new List<ReplacementToken>();
