@@ -1,6 +1,7 @@
 using BepInEx.Configuration;
 using RoR2;
 using UnityEngine.Networking;
+using RoR2.CharacterAI;
 
 namespace RiskOfBulletstormRewrite.Controllers
 {
@@ -42,11 +43,15 @@ namespace RiskOfBulletstormRewrite.Controllers
                         masterPrefab = GlobalEventManager.CommonAssets.wispSoulMasterPrefabMasterComponent.gameObject,
                         summonerBodyObject = obj.victim.gameObject
                     }.Perform();
-                    /*if (wispMaster
+                    if (wispMaster
                     && wispMaster.TryGetComponent<BaseAI>(out BaseAI baseAI)
                     && obj.attackerBody)
                     {
-                    }*/
+                        baseAI.customTarget = new BaseAI.Target(baseAI)
+                        {
+                            characterBody = obj.attackerBody;
+                        };
+                    }
                 }
             }
         }
