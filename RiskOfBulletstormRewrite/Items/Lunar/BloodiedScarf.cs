@@ -95,10 +95,10 @@ namespace RiskOfBulletstormRewrite.Items
         {
             base.CreateLang();
 
-            Language.DeferToken(teleportSkillDef.skillDescriptionToken, teleportSkillDefParams);
+            LanguageOverrides.DeferToken(teleportSkillDef.skillDescriptionToken, teleportSkillDefParams);
 
-            Language.DeferLateTokens(ItemDescriptionToken, new string[] { teleportSkillDef.skillDescriptionToken });
-            Language.DeferLateTokens(ItemDescriptionLogbookToken, new string[]{
+            LanguageOverrides.DeferLateTokens(ItemDescriptionToken, new string[] { teleportSkillDef.skillDescriptionToken });
+            LanguageOverrides.DeferLateTokens(ItemDescriptionLogbookToken, new string[]{
                 ItemPickupToken,
                 teleportSkillDef.skillNameToken,
                 teleportSkillDef.skillDescriptionToken});

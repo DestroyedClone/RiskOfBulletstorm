@@ -46,8 +46,8 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void CreateConfig(ConfigFile config)
         {
-            cfgCashAdder = config.Bind(ConfigCategory, "Cash Additive", 5, "The percentage of extra money to get on completing the teleporter event.");
-            cfgCashAdderStack = config.Bind(ConfigCategory, "Cash Additive Per Stack", 10, "The percentage of extra money PER ITEM STACK to get on completing the teleporter event.");
+            cfgCashAdder = config.Bind(ConfigCategory, "Cash Additive", 5, "The amount of extra money to get on kill.");
+            cfgCashAdderStack = config.Bind(ConfigCategory, "Cash Additive Per Stack", 10, "The amount of extra money to get on kill per stack.");
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()

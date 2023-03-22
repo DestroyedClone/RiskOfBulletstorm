@@ -12,7 +12,7 @@ namespace RiskOfBulletstormRewrite.Equipment
         public override string EquipmentName => "Orange (Consumed)";
 
         public override string EquipmentLangTokenName => "ORANGECONSUMED";
-        public override string[] EquipmentFullDescriptionParams => Equipment.Orange.instance.EquipmentFullDescriptionParams;
+        public override string[] EquipmentFullDescriptionParams => Equipment.Orange.Instance.EquipmentFullDescriptionParams;
 
         public override GameObject EquipmentModel => Assets.NullModel;
 
@@ -20,7 +20,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public override bool IsLunar => false;
 
-        public override float Cooldown => 5f;
+        public override float Cooldown => 45f;
 
         public override bool CanDrop => false;
 
