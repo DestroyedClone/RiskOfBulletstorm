@@ -1,4 +1,5 @@
 ﻿using BepInEx.Configuration;
+using R2API;
 using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -26,6 +27,16 @@ namespace RiskOfBulletstormRewrite.Artifact
         {
             RunArtifactManager.onArtifactEnabledGlobal += RunArtifactManager_onArtifactEnabledGlobal;
             RunArtifactManager.onArtifactDisabledGlobal += RunArtifactManager_onArtifactDisabledGlobal;
+
+            RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
+        }
+
+        private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        {
+            if (sender.HasBuff(Utils.Buffs.ArtifactSpeedUpBuff))
+            {
+                args.moveSpeedMultAdd += 0.45f;
+            }
         }
 
         private void RunArtifactManager_onArtifactDisabledGlobal([JetBrains.Annotations.NotNull] RunArtifactManager runArtifactManager, [JetBrains.Annotations.NotNull] ArtifactDef artifactDef)
@@ -50,22 +61,41 @@ namespace RiskOfBulletstormRewrite.Artifact
         {
             if (NetworkServer.active)
             {
-                //Chat.AddMessage("speedup 1");
+                self.gameObject.AddComponent<RiskOfBulletstorm_ArtifactSpeedUpController>();
+            }
+        }
+
+        public class RiskOfBulletstorm_ArtifactSpeedUpController : MonoBehaviour
+        {
+            public void Awake()
+            {
+                CharacterBody.onBodyStartGlobal += CharacterBody_onBodyStartGlobal;
+
                 foreach (var player in PlayerCharacterMasterController.instances)
                 {
-                    //Chat.AddMessage($"speedup: {player.GetDisplayName()}");
                     if (player.master)
                     {
-                        //Chat.AddMessage("speedup: has master");
                         var body = player.master.GetBody();
                         if (body)
                         {
-                            //Chat.AddMessage("speedup: has body");
-                            body.AddBuff(RoR2Content.Buffs.CloakSpeed);
+                            body.AddBuff(Utils.Buffs.ArtifactSpeedUpBuff);
                         }
                     }
                 }
             }
+
+            private void CharacterBody_onBodyStartGlobal(CharacterBody characterBody)
+            {
+                if (characterBody.isPlayerControlled)
+                    characterBody.AddBuff(Utils.Buffs.ArtifactSpeedUpBuff);
+            }
+
+            public void OnDestroy()
+            {
+                CharacterBody.onBodyStartGlobal -= CharacterBody_onBodyStartGlobal;
+            }
+
+
         }
     }
 }

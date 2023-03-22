@@ -11,6 +11,7 @@ namespace RiskOfBulletstormRewrite.Utils
         public static BuffDef BloodiedScarfBuff;
         public static BuffDef AlphaBulletBuff;
         public static BuffDef DodgeRollBuff;
+        public static BuffDef ArtifactSpeedUpBuff;
 
         public static void CreateBuffs()
         {
@@ -29,6 +30,12 @@ namespace RiskOfBulletstormRewrite.Utils
             Assets.LoadSprite("BUFF_DODGEROLL"),
             Color.yellow,
             true, false);
+
+            ArtifactSpeedUpBuff = AddBuff("Speed Up",
+                Assets.LoadSprite("Assets/Icons/ARTIFACT_UPSPEEDOOC_ENABLED"), 
+                Color.blue,
+                false,
+                false);
 
             //Trackers
             MetronomeTrackerBuff = AddBuff("Metronome Stacks (Display)",
