@@ -9,8 +9,11 @@ namespace RiskOfBulletstormRewrite.Controllers
     public class BulletQuestController : ControllerBase<BulletQuestController>
     {
         /*  Primer: 110 casings on stage 2
+         *      Special Purchase next to teleporter
         *   gunpowder: black powder mine
+        *       Special Interaction in skies on stage 3 area
         *   planar lead: invis path in hollow
+        *       
         *   shell casing: dragun
         */
 
@@ -24,6 +27,7 @@ namespace RiskOfBulletstormRewrite.Controllers
 
         public override void Init(ConfigFile config)
         {
+            return;
             CreateConfig(config);
             Hooks();
         }
@@ -34,24 +38,38 @@ namespace RiskOfBulletstormRewrite.Controllers
             On.RoR2.BazaarController.OnStartServer += BazaarOnStartServer;
             On.RoR2.Chat.SendBroadcastChat_ChatMessageBase += Chat_SendBroadcastChat_ChatMessageBase;
             Stage.onStageStartGlobal += Stage_onStageStartGlobal;
+            On.RoR2.TeleporterInteraction.Start += TeleporterInteraction_Start;
+
+        }
+
+        private void TeleporterInteraction_Start(On.RoR2.TeleporterInteraction.orig_Start orig, TeleporterInteraction self)
+        {
+            orig(self);
+
         }
 
         private void Stage_onStageStartGlobal(Stage stage)
         {
             if (NetworkServer.active)
             {
-                if (Run.instance.stageClearCount == 1)
+                switch (Run.instance.stageClearCount)
                 {
-                    EnablePrimerPurchase = true;
-                    CurrentPrimerCost = Run.instance.GetDifficultyScaledCost(25) * 2;
-                    Chat.SendBroadcastChat(new Chat.SimpleChatMessage()
-                    {
-                        baseToken = "RISKOFBULLETSTORM_DIALOGUE_GUNQUEST_PURCHASE",
-                        paramTokens = new string[] { PrimePrimer.instance.ItemDef.nameToken, CurrentPrimerCost.ToString() }
-                    });
-                } else
-                {
-                    EnablePrimerPurchase = false;
+                    case 1:
+                        EnablePrimerPurchase = true;
+                        CurrentPrimerCost = Run.instance.GetDifficultyScaledCost(25) * 2;
+                        Chat.SendBroadcastChat(new Chat.SimpleChatMessage()
+                        {
+                            baseToken = "RISKOFBULLETSTORM_DIALOGUE_GUNQUEST_PURCHASE",
+                            paramTokens = new string[] { PrimePrimer.instance.ItemDef.nameToken, CurrentPrimerCost.ToString() }
+                        });
+                        break;
+                    case 2:
+
+                        EnablePrimerPurchase = false;
+                        break;
+                    default:
+                        EnablePrimerPurchase = false;
+                        break;
                 }
             }
         }
@@ -98,6 +116,7 @@ namespace RiskOfBulletstormRewrite.Controllers
 
         public override void CreateConfig(ConfigFile config)
         {
+
         }
 
 
