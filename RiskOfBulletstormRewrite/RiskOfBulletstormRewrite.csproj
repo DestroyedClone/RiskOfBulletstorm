@@ -7,8 +7,11 @@
 
   <ItemGroup>
     <Compile Remove="Achievements\**" />
+    <Compile Remove="Enemies\**" />
     <EmbeddedResource Remove="Achievements\**" />
+    <EmbeddedResource Remove="Enemies\**" />
     <None Remove="Achievements\**" />
+    <None Remove="Enemies\**" />
   </ItemGroup>
 	
 
