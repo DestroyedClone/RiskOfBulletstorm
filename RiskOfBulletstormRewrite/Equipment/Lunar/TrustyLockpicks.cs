@@ -322,7 +322,25 @@ localScale = new Vector3(1F, 1F, 1F)
 
         public override void Hooks()
         {
-            //On.RoR2.PurchaseInteraction.GetInteractability += PurchaseInteraction_GetInteractability;
+            On.RoR2.PurchaseInteraction.GetInteractability += PurchaseInteraction_GetInteractability;
+            On.RoR2.PurchaseInteraction.GetContextString += PurchaseInteraction_GetContextString;
+        }
+
+
+        private string PurchaseInteraction_GetContextString(On.RoR2.PurchaseInteraction.orig_GetContextString orig, PurchaseInteraction self, Interactor activator)
+        {
+            var original = orig(self, activator);
+
+            BulletstormChestInteractorComponent bulletstormChestInteractor = self.GetComponent<BulletstormChestInteractorComponent>();
+            if (bulletstormChestInteractor)
+            {
+                if (bulletstormChestInteractor.InteractorHasValidEquipment(activator))
+                {
+                    return bulletstormChestInteractor.GetContextualString(original);
+                }
+            }
+
+            return original;
         }
 
         private Interactability PurchaseInteraction_GetInteractability(On.RoR2.PurchaseInteraction.orig_GetInteractability orig, PurchaseInteraction self, Interactor activator)
@@ -376,7 +394,6 @@ localScale = new Vector3(1F, 1F, 1F)
             if (!highlight || !purchaseInteraction) return false;
             BulletstormChestInteractorComponent chestComponent = chestObject.GetComponent<BulletstormChestInteractorComponent>();
             if (chestComponent && chestComponent.hasUsedLockpicks) return false;
-            GameObject selectedEffect = UnlockEffect;
             Vector3 offset = Vector3.up * 1f;
 
             if (!purchaseInteraction.isShrine && purchaseInteraction.available && purchaseInteraction.costType == CostTypeIndex.Money)
@@ -403,7 +420,7 @@ localScale = new Vector3(1F, 1F, 1F)
                     var newCost = Mathf.CeilToInt(purchaseInteraction.cost * cfgPriceMultiplier.Value);
                     //purchaseInteraction.cost = newCost;
                     purchaseInteraction.Networkcost = newCost;
-                    selectedEffect = Fail_LockEffect;
+                    GameObject selectedEffect = Fail_LockEffect;
 
                     //purchaseInteraction.displayNameToken = (prefix + purchaseInteraction.displayNameToken);
                     chestObject.AddComponent<BulletstormChestInteractorComponent>().hasUsedLockpicks = true; //does this even work? lol
