@@ -10,7 +10,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 {
     public class BrickOfCash : EquipmentBase<BrickOfCash>
     {
-        public static ConfigEntry<float> cfg;
+        //public static ConfigEntry<float> cfg;
 
         public override string EquipmentName => "Brick of Cash";
 
@@ -123,7 +123,8 @@ namespace RiskOfBulletstormRewrite.Equipment
             var comp = chestBehavior.GetComponent<PurchaseInteraction>();
             if (comp)
             {
-                if (comp.displayNameToken == "CHEST1_STEALTHED_NAME")
+                if (comp.displayNameToken == "CHEST1_STEALTHED_NAME"
+                    || comp.displayNameToken == "GOLDCHEST_NAME")
                 {
                     return true;
                 }
@@ -133,7 +134,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         private bool PlayersHaveBrickOfCash()
         {
-            return Utils.ItemHelpers.GetAtLeastOneEquipmentForTeam(TeamIndex.Player, BrickOfCash.instance.EquipmentDef.equipmentIndex, true);
+            return Utils.ItemHelpers.GetAtLeastOneEquipmentForTeam(TeamIndex.Player, BrickOfCash.Instance.EquipmentDef.equipmentIndex, true);
         }
 
         private void CreateIndicator(Transform parent)
@@ -160,7 +161,12 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         protected override bool ActivateEquipment(EquipmentSlot slot)
         {
-            return false;
+            var aimRay = slot.GetAimRay();
+            PickupDropletController.CreatePickupDroplet(PickupCatalog.FindPickupIndex(EquipmentDef.equipmentIndex),
+                aimRay.origin, aimRay.direction * 20f);
+            slot.characterBody.inventory.SetEquipmentIndex(EquipmentIndex.None);
+            CharacterMasterNotificationQueue.PushEquipmentTransformNotification(slot.characterBody.master, slot.characterBody.inventory.currentEquipmentIndex, EquipmentIndex.None, CharacterMasterNotificationQueue.TransformationType.Default);
+            return true;
         }
 
         private void ThrowBrick(EquipmentSlot slot)
