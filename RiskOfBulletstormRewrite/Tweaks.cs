@@ -8,13 +8,23 @@ namespace RiskOfBulletstormRewrite
     public static class Tweaks
     {
         public static ConfigEntry<bool> cfgCenterNotifications;
-        public static ConfigEntry<bool> cfgDisableAutoPickup;
+        //public static ConfigEntry<bool> cfgDisableAutoPickup;
+        //public static ConfigEntry<NotificationMod> cfgEnableBreachNotifications;
+
+        public enum NotificationMod
+        {
+            disable,
+            bulletstorm,
+            all
+        }
+
         public const string category = "Tweaks";
 
         public static void Init(ConfigFile config)
         {
             cfgCenterNotifications = config.Bind(category, "Center Notification Text", false, "If true, then notification text will be centered.");
-            cfgDisableAutoPickup = config.Bind(category, "Disable Auto Pickups", false);
+            //cfgDisableAutoPickup = config.Bind(category, "Disable Auto Pickups", false);
+            //cfgEnableBreachNotifications = config.Bind(category, "Modify Achievement Notificaton", NotificationMod.bulletstorm, "");
             if (cfgCenterNotifications.Value)
             {
                 On.RoR2.CharacterMasterNotificationQueue.PushNotification += CharacterMasterNotificationQueue_PushNotification;
@@ -27,8 +37,23 @@ namespace RiskOfBulletstormRewrite
                         {
                             AddPath(path);
                         } */
-            if (cfgDisableAutoPickup.Value)
-                On.RoR2.GenericPickupController.OnTriggerStay += NoAutoPickup;
+            //if (cfgDisableAutoPickup.Value)
+                //On.RoR2.GenericPickupController.OnTriggerStay += NoAutoPickup;
+            //switch (cfgEnableBreachNotifications.Value)
+            //{
+            //    case NotificationMod.disable:
+            //        break;
+            //    case NotificationMod.bulletstorm:
+            //        On.RoR2.UI.AchievementNotificationPanel.SetAchievementDef += AchievementNotificationPanel_SetAchievementDef;
+            //        break;
+            //    case NotificationMod.all:
+            //        break;
+            //}
+        }
+
+        private static void AchievementNotificationPanel_SetAchievementDef(On.RoR2.UI.AchievementNotificationPanel.orig_SetAchievementDef orig, AchievementNotificationPanel self, AchievementDef achievementDef)
+        {
+            orig(self, achievementDef);
         }
 
         private static void NoAutoPickup(On.RoR2.GenericPickupController.orig_OnTriggerStay orig, GenericPickupController self, Collider other)
