@@ -43,6 +43,11 @@
 		"RISKOFBULLETSTORM_EQUIPMENT_JARBEES_DESCRIPTION": "<style=cIsUtility>Throw</style> a <style=cIsDamage>jar of bees</style> that shatters into <style=cIsDamage>{0} bees</style> that deal <style=cIsDamage>{1}% damage</style> with a <style=cIsDamage>{2} proc coefficient</style>.",
 		"RISKOFBULLETSTORM_EQUIPMENT_JARBEES_LORE": "These bees have been carefully trained to hunt down enemy munitions... and destroy them.",
 
+		"RISKOFBULLETSTORM_EQUIPMENT_SHADOWCLONE_NAME": "Shadow Clone",
+		"RISKOFBULLETSTORM_EQUIPMENT_SHADOWCLONE_PICKUP": "<b>No Jutsu</b>\nCreates a temporary second you.",
+		"RISKOFBULLETSTORM_EQUIPMENT_SHADOWCLONE_DESCRIPTION": "Eat to heal to full health.",
+		"RISKOFBULLETSTORM_EQUIPMENT_SHADOWCLONE_LORE": "Though the quality of this clone is debatable, Believe It! or not, this clone has seen extensive use in the Gungeon.\n\nNot to be confused with the Clone. While the Clone provides a second chance at life, the Shadow Clone will merely laugh at you upon your demise.",
+
 		"RISKOFBULLETSTORM_EQUIPMENT_WEIRDEGG_NAME": "Weird Egg",
 		"RISKOFBULLETSTORM_EQUIPMENT_WEIRDEGG_PICKUP": "<b>Miracle of Gun</b>\nGestates over time. Use to acquire... something.",
 		"RISKOFBULLETSTORM_EQUIPMENT_WEIRDEGG_DESCRIPTION": "Eat to heal to full health.",
