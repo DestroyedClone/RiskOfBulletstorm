@@ -10,12 +10,12 @@ namespace RiskOfBulletstormRewrite.Equipment
 {
     public abstract class EquipmentBase<T> : EquipmentBase where T : EquipmentBase<T>
     {
-        public static T instance { get; private set; }
+        public static T Instance { get; private set; }
 
         public EquipmentBase()
         {
-            if (instance != null) throw new InvalidOperationException("Singleton class \"" + typeof(T).Name + "\" inheriting EquipmentBoilerplate/Equipment was instantiated twice");
-            instance = this as T;
+            if (Instance != null) throw new InvalidOperationException("Singleton class \"" + typeof(T).Name + "\" inheriting EquipmentBoilerplate/Equipment was instantiated twice");
+            Instance = this as T;
         }
     }
 
@@ -25,15 +25,18 @@ namespace RiskOfBulletstormRewrite.Equipment
         /// Name of the Equipment, for the Config and Internals
         /// </summary>
         public abstract string EquipmentName { get; }
+
         /// <summary>
         /// Primary Token for language.
         /// <para>Ex: "GAWK" => used in RBS_GAWK_NAME, RBS_GAWK_DESC, ETC</para>
         /// </summary>
         public abstract string EquipmentLangTokenName { get; }
+
         /// <summary>
         /// Optional parameters for the Equipment Pickup Token
         /// </summary>
         public virtual string[] EquipmentPickupDescParams { get; }
+
         /// <summary>
         /// Optional parameters for the Equipment Description Token
         /// </summary>
@@ -69,7 +72,9 @@ namespace RiskOfBulletstormRewrite.Equipment
         /// Apple to be disabled.</para>
         /// </summary>
         public virtual string ParentEquipmentName { get; } = null;
+
         public EquipmentDef EquipmentDef;
+        public GameObject ItemBodyModelPrefab;
 
         public string ConfigCategory
         {
@@ -117,6 +122,17 @@ namespace RiskOfBulletstormRewrite.Equipment
         protected virtual void CreateConfig(ConfigFile config)
         { }
 
+        public virtual UnlockableDef UnlockableDef { get; set; } = null;
+
+        public virtual UnlockableDef CreateUnlockableDef()
+        {
+            UnlockableDef unlockableDef = ScriptableObject.CreateInstance<UnlockableDef>();
+            unlockableDef.achievementIcon = LoadSprite();
+            unlockableDef.cachedName = $"RiskOfBulletstorm.Equipment.{EquipmentLangTokenName}";
+            return unlockableDef;
+        }
+
+
         /// <summary>
         /// Take care to call base.CreateLang()!
         /// </summary>
@@ -135,12 +151,12 @@ namespace RiskOfBulletstormRewrite.Equipment
 
             if (formatPickup)
             {
-                Language.DeferToken(EquipmentPickupToken, EquipmentPickupDescParams);
+                LanguageOverrides.DeferToken(EquipmentPickupToken, EquipmentPickupDescParams);
             }
 
             if (formatDescription)
             {
-                Language.DeferToken(EquipmentDescriptionToken, EquipmentFullDescriptionParams);
+                LanguageOverrides.DeferToken(EquipmentDescriptionToken, EquipmentFullDescriptionParams);
             }
         }
 
@@ -163,6 +179,14 @@ namespace RiskOfBulletstormRewrite.Equipment
             EquipmentDef.isBoss = IsBoss;
             EquipmentDef.isLunar = IsLunar;
             EquipmentDef.canBeRandomlyTriggered = CanBeRandomlyTriggered;
+
+            UnlockableDef = CreateUnlockableDef();
+            if (UnlockableDef != null)
+            {
+                ContentAddition.AddUnlockableDef(UnlockableDef);
+                EquipmentDef.unlockableDef = UnlockableDef;
+            }
+
             //EquipmentDef.colorIndex
 
             ItemAPI.Add(new CustomEquipment(EquipmentDef, CreateItemDisplayRules()));
