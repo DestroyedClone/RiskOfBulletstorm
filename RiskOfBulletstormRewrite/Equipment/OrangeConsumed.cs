@@ -34,6 +34,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public override void Init(ConfigFile config)
         {
+            CreateLang();
             CreateEquipment();
         }
 
