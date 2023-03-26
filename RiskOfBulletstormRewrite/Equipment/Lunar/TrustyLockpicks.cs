@@ -349,7 +349,10 @@ localScale = new Vector3(1F, 1F, 1F)
             Highlight highlight = gameObject.GetComponent<Highlight>();
             BulletstormChestInteractorComponent bulletstormChestInteractor = gameObject.GetComponent<BulletstormChestInteractorComponent>();
 
-            if (bulletstormChestInteractor && bulletstormChestInteractor.hasUsedLockpicks)
+            if (bulletstormChestInteractor
+                && bulletstormChestInteractor.hasUsedLockpicks
+                && activator.GetComponent<EquipmentSlot>()?.equipmentIndex == EquipmentDef.equipmentIndex
+                && activator.GetComponent<CharacterBody>()?.inputBank?.activateEquipment.justPressed == true)
             {
                 if (highlight)
                     highlight.highlightColor = Highlight.HighlightColor.teleporter;
