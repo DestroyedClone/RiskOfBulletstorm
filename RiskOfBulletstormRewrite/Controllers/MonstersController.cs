@@ -49,7 +49,7 @@ namespace RiskOfBulletstormRewrite.Controllers
                     {
                         baseAI.customTarget = new BaseAI.Target(baseAI)
                         {
-                            characterBody = obj.attackerBody;
+                            characterBody = obj.attackerBody
                         };
                     }
                 }

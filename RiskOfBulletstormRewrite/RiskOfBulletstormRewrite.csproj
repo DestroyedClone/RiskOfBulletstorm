@@ -27,7 +27,7 @@
     <Compile Remove="Controllers\MasterRoundController.cs" />
     <Compile Remove="Controllers\Pasts\PastKillingController.cs" />
     <Compile Remove="Controllers\Pasts\TransitionToPastEntityState.cs" />
-    <Compile Remove="Equipment\BrickOfCash.cs" />
+    <Compile Remove="Equipment\Bottle.cs" />
     <Compile Remove="Equipment\ChestTeleporter.cs" />
     <Compile Remove="Equipment\EliteEquipment\ExampleEliteEquipment.cs" />
     <Compile Remove="Equipment\EliteEquipment\JammedEliteEquipment.cs" />
@@ -45,12 +45,16 @@
     <Compile Remove="Items\ExampleItem.cs" />
     <Compile Remove="Items\Boss\MasterRounds\MasterRoundI.cs" />
     <Compile Remove="Items\Legendary\BabyGoodMimic.cs" />
+    <Compile Remove="Items\Legendary\Clone.cs" />
     <Compile Remove="Items\Legendary\Clone_old.cs" />
     <Compile Remove="Items\Legendary\RingTriggers.cs" />
     <Compile Remove="Items\Lunar\HeavyBullets.cs" />
     <Compile Remove="Items\Lunar\Metronome.cs" />
     <Compile Remove="Items\NoTier\BabyMimicIdentifier.cs" />
+    <Compile Remove="Items\Uncommon\GhostBullets.cs" />
+    <Compile Remove="Items\Uncommon\RingChestFriendship.cs" />
     <Compile Remove="Items\Uncommon\RingFireResistance.cs" />
+    <Compile Remove="Items\VoidLegendary\CloneVoid.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -375,9 +375,10 @@ localScale = new Vector3(1F, 1F, 1F)
                             StringBuilder stringBuilder2 = HG.StringBuilderPool.RentStringBuilder();
                             //var equipmentSlotCount = self.targetInventory.GetEquipmentSlotCount();
 
-                            stringBuilder2.Append($"[{self.targetEquipmentSlot.activeEquipmentSlot}]\n");
+                            stringBuilder2.Append($"Active: [{self.targetEquipmentSlot.activeEquipmentSlot}]\n");
 
-                            stringBuilder2.AppendInt(self.currentDisplayData.stock, 1U, uint.MaxValue);
+                            //stringBuilder2.AppendInt(self.currentDisplayData.stock, 1U, uint.MaxValue);
+                            stringBuilder2.Append($"x{self.currentDisplayData.stock}");
 
                             self.stockText.SetText(stringBuilder2);
                             HG.StringBuilderPool.ReturnStringBuilder(stringBuilder2);
