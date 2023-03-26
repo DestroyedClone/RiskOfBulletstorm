@@ -51,12 +51,12 @@
 		
 		"RISKOFBULLETSTORM_ITEM_ALPHABULLET_NAME": "Alpha Bullet",
 		"RISKOFBULLETSTORM_ITEM_ALPHABULLET_PICKUP": "<b>First!</b>\nGrants extra damage at full stocks.",
-		"RISKOFBULLETSTORM_ITEM_ALPHABULLET_DESCRIPTION": "For each skill <style=cIsDamage>off cooldown</style>, grants <style=cIsDamage>+{0}% damage</style> <style=cStack>({1}% per stack)</style>.",
+		"RISKOFBULLETSTORM_ITEM_ALPHABULLET_DESCRIPTION": "For each skill <style=cIsDamage>off cooldown</style>, grants <style=cIsDamage>+{0}% damage</style> <style=cStack>(+{1}% per stack)</style>.",
 		"RISKOFBULLETSTORM_ITEM_ALPHABULLET_LORE": "One of a pair of artifact bullets forged by Edwin's daughter as part of her journeyman's trial.",
 		
 		"RISKOFBULLETSTORM_ITEM_COINCROWN_NAME": "Coin Crown",
 		"RISKOFBULLETSTORM_ITEM_COINCROWN_PICKUP": "<b>Play Well, Get Money</b>\nIncreases money on teleporter event completion.",
-		"RISKOFBULLETSTORM_ITEM_COINCROWN_DESCRIPTION": "After <style=cIsUtility>completing a teleporter event</style>, increases your <style=cIsUtility>money</style> by <style=cIsUtility>{0}%</style> <style=cStack>(+{1}% per stack)</style>.",
+		"RISKOFBULLETSTORM_ITEM_COINCROWN_DESCRIPTION": "After <style=cIsUtility>completing a teleporter event</style>, increase your <style=cIsUtility>money</style> by <style=cIsUtility>{0}%</style> <style=cStack>(+{1}% per stack)</style>.",
 		"RISKOFBULLETSTORM_ITEM_COINCROWN_LORE": "A pre-Gungeon relic.",
 		
 		"RISKOFBULLETSTORM_ITEM_GHOSTBULLETS_NAME": "Ghost Bullets",
