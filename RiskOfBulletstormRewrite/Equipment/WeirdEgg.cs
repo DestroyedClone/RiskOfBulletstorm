@@ -31,6 +31,7 @@ namespace RiskOfBulletstormRewrite.Equipment
         }
 
         /*  Needs to be able to be dropped, so install YEET? or implement our own?
+         *      //do our own is fine.
         *   1. When Shot: Drop item based on carry time vs chamber time?
         *   2. When dropped into fire source: fire source vs fire weapon?
             3. Needs to be fed -> transform into snake or use modelswap ES?
@@ -38,6 +39,40 @@ namespace RiskOfBulletstormRewrite.Equipment
 
             Requirement: CharacterBody (pot?) w/ custom entitystates
         */
+
+        public override void Hooks()
+        {
+            Stage.onServerStageComplete += Stage_onServerStageComplete;
+        }
+
+        private void Stage_onServerStageComplete(Stage stage)
+        {
+            foreach (var player in PlayerCharacterMasterController.instances)
+            {
+                if (player
+                    && player.master
+                    && player.master.inventory)
+                {
+                    bool hasEgg = false;
+                    foreach (var slot in player.master.inventory.equipmentStateSlots)
+                    {
+                        if (slot.equipmentDef == EquipmentDef)
+                        {
+                            hasEgg = true;
+                            break;
+                        }
+                    }
+                    if (hasEgg)
+                    {
+                        player.master.inventory.GiveItem(Items.WeirdEggStageClearTally.instance.ItemDef);
+                    } else
+                    {
+                        var itemCount = player.master.inventory.GetItemCount(Items.WeirdEggStageClearTally.instance.ItemDef);
+                        player.master.inventory.RemoveItem(Items.WeirdEggStageClearTally.instance.ItemDef, itemCount);
+                    }
+                }
+            }
+        }
 
         protected override void CreateConfig(ConfigFile config)
         {

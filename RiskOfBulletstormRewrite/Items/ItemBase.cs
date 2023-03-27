@@ -4,6 +4,7 @@ using RoR2;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using RiskOfBulletstormRewrite.Modules;
 
 namespace RiskOfBulletstormRewrite.Items
 {

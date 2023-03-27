@@ -1,4 +1,5 @@
 ﻿using BepInEx.Configuration;
+using EntityStates.GummyClone;
 using R2API;
 using RoR2;
 using System;
@@ -20,7 +21,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public override Sprite EquipmentIcon => LoadSprite();
 
-        public static GameObject CashProjectile = null;
+        public static GameObject ShadowCloneMaster = null;
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
         {
@@ -38,7 +39,10 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public static void CreateAssets()
         {
+            ShadowCloneMaster = new GameObject();
 
+
+            PrefabAPI.RegisterNetworkPrefab(ShadowCloneMaster);
         }
 
         protected override bool ActivateEquipment(EquipmentSlot slot)
@@ -88,8 +92,28 @@ namespace RiskOfBulletstormRewrite.Equipment
                     summonComponent.myHealthComponent = summonComponent.myBody.healthComponent;
                     summonComponent.myInputBank = summonComponent.myBody.inputBank;
 
-                    NetworkServer.Spawn(gameObject);
+                    summonComponent.gameObject.layer = LayerIndex.fakeActor.intVal;
+                    summonComponent.myBody.characterMotor.Motor.RebuildCollidableLayers();
 
+                    summonComponent.myBody.GetComponent<CharacterDeathBehavior>().deathState
+                        = new EntityStates.SerializableEntityStateType(typeof(EntityStates.GummyClone.GummyCloneDeathState));
+                    foreach (EntityStateMachine entityStateMachine in summonComponent.gameObject.GetComponents<EntityStateMachine>())
+                    {
+                        if (entityStateMachine.customName == "Body")
+                        {
+                            entityStateMachine.SetState(new GummyCloneSpawnState());
+                            break;
+                        }
+                    }
+
+                    var inventory = summonComponent.gameObject.AddComponent<Inventory>();
+                    summonComponent.myBody.inventory = inventory;
+                    inventory.CopyItemsFrom(ownerInventory);
+
+                    summonComponent.myBody.teamComponent.teamIndex = ownerBody.teamComponent.teamIndex;
+
+                    shadowClones.Add(summonComponent);
+                    NetworkServer.Spawn(gameObject);
                     return true;
                 }
 

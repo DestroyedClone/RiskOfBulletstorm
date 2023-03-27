@@ -1,10 +1,14 @@
-﻿using RoR2;
+﻿using R2API;
+using RoR2;
+using System;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.Networking;
 
-namespace RiskOfBulletstormRewrite
+namespace RiskOfBulletstormRewrite.Modules
 {
-    internal class Assets
+    internal static class Assets
     {
         internal static GameObject NullModel = LegacyResourcesAPI.Load<GameObject>("prefabs/nullmodel");
         internal static Sprite NullSprite = LegacyResourcesAPI.Load<Sprite>("textures/itemicons/texnullicon");
@@ -18,6 +22,13 @@ namespace RiskOfBulletstormRewrite
             {
                 return System.IO.Path.GetDirectoryName(Main.pluginInfo.Location);
             }
+        }
+
+        public static void Init()
+        {
+            commandoMat = LegacyResourcesAPI.Load<GameObject>("Prefabs/CharacterBodies/CommandoBody").GetComponentInChildren<CharacterModel>().baseRendererInfos[0].defaultMaterial;
+
+            PopulateAssets();
         }
 
         public static void PopulateAssets()
@@ -49,6 +60,95 @@ namespace RiskOfBulletstormRewrite
         {
             return mainAssetBundle.LoadAsset<GameObject>(path);
         }
+
+        public static Material commandoMat;
+        internal static Shader hotpoo = LegacyResourcesAPI.Load<Shader>("Shaders/Deferred/HGStandard");
+
+        #region helpers
+
+        internal static Sprite LoadBuffSprite(string path)
+        {
+            return Addressables.LoadAssetAsync<BuffDef>(path).WaitForCompletion().iconSprite;
+        }
+
+        public static GameObject ConvertAllRenderersToHopooShader(this GameObject objectToConvert)
+        {
+            if (!objectToConvert) return objectToConvert;
+
+            foreach (MeshRenderer i in objectToConvert.GetComponentsInChildren<MeshRenderer>())
+            {
+                if (i?.sharedMaterial != null)
+                {
+                    i.sharedMaterial.SetHotpooMaterial();
+                }
+            }
+
+            foreach (SkinnedMeshRenderer i in objectToConvert.GetComponentsInChildren<SkinnedMeshRenderer>())
+            {
+                if (i?.sharedMaterial != null)
+                {
+                    i.sharedMaterial.SetHotpooMaterial();
+                }
+            }
+
+            return objectToConvert;
+        }
+
+        internal static NetworkSoundEventDef CreateNetworkSoundEventDef(string eventName)
+        {
+            NetworkSoundEventDef networkSoundEventDef = ScriptableObject.CreateInstance<NetworkSoundEventDef>();
+            networkSoundEventDef.akId = AkSoundEngine.GetIDFromString(eventName);
+            networkSoundEventDef.eventName = eventName;
+
+            Modules.Content.AddNetworkSoundEventDef(networkSoundEventDef);
+
+            return networkSoundEventDef;
+        }
+
+        public static T LoadAsset<T>(string name) where T : UnityEngine.Object
+        {
+            //handle dynamically loading from additional bundle if we want to here
+            return MainAssetBundle.LoadAsset<T>(name);
+        }
+
+        private static GameObject LoadEffect(string resourceName, string soundName, AssetBundle bundle)
+        {
+            GameObject newEffect = bundle.LoadAsset<GameObject>(resourceName);
+
+            newEffect.AddComponent<DestroyOnTimer>().duration = 12;
+            newEffect.AddComponent<NetworkIdentity>();
+            newEffect.AddComponent<VFXAttributes>().vfxPriority = VFXAttributes.VFXPriority.Always;
+            var effect = newEffect.AddComponent<EffectComponent>();
+            effect.applyScale = false;
+            effect.effectIndex = EffectIndex.Invalid;
+            effect.parentToReferencedTransform = true;
+            effect.positionAtReferencedTransform = true;
+            effect.soundName = soundName;
+
+            Modules.Effects.AddEffect(newEffect);
+
+            return newEffect;
+        }
+
+        public static GameObject LoadCrosshair(string crosshairName)
+        {
+            if (LoadAsset<GameObject>("Prefabs/Crosshair/" + crosshairName + "Crosshair") == null) return LoadAsset<GameObject>("Prefabs/Crosshair/StandardCrosshair");
+            return LoadAsset<GameObject>("Prefabs/Crosshair/" + crosshairName + "Crosshair");
+        }
+
+        internal static GameObject LoadSurvivorModel(string modelName)
+        {
+            GameObject model = LoadAsset<GameObject>(modelName);
+            if (model == null)
+            {
+                Debug.LogError("Trying to load a null model- check to see if the name in your code matches the name of the object in Unity");
+                return null;
+            }
+
+            return model.InstantiateClone(model.name, false);
+        }
+
+        #endregion helpers
 
         /*
 

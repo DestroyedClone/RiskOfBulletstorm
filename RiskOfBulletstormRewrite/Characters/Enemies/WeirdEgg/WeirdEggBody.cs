@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace RiskOfBulletstormRewrite.Enemies.WeirdEgg
+namespace RiskOfBulletstormRewrite.Characters.Enemies.WeirdEgg
 {
     internal class WeirdEggBody : MonsterBase<WeirdEggBody>
     {

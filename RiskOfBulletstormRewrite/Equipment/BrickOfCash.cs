@@ -5,6 +5,7 @@ using UnityEngine;
 using static RiskOfBulletstormRewrite.Main;
 using UnityEngine.Networking;
 using System.Collections.Generic;
+using RiskOfBulletstormRewrite.Modules;
 
 namespace RiskOfBulletstormRewrite.Equipment
 {

@@ -5,7 +5,7 @@ using UnityEngine;
 using RoR2;
 using EntityStates;
 
-namespace RiskOfBulletstormRewrite.Enemies.WeirdEgg
+namespace RiskOfBulletstormRewrite.Characters.Enemies.WeirdEgg
 {
     public class WeirdEggMain : GenericCharacterMain, IOnTakeDamageServerReceiver
     {
@@ -17,12 +17,14 @@ namespace RiskOfBulletstormRewrite.Enemies.WeirdEgg
                 || damageReport.damageInfo.damageType.HasFlag(DamageType.PercentIgniteOnHit))
             {
                 SpawnEel();
-            } else
+            }
+            else
             {
                 if (CheckStageClears())
                 {
                     SpawnItem();
-                } else
+                }
+                else
                 {
                     SpawnSlug();
                 }

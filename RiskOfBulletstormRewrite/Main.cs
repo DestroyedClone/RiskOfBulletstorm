@@ -7,6 +7,7 @@ using RiskOfBulletstormRewrite.Controllers;
 using RiskOfBulletstormRewrite.Equipment;
 using RiskOfBulletstormRewrite.Equipment.EliteEquipment;
 using RiskOfBulletstormRewrite.Items;
+using RiskOfBulletstormRewrite.Modules;
 using RoR2;
 using System;
 using System.Collections.Generic;
@@ -62,7 +63,7 @@ namespace RiskOfBulletstormRewrite
             // Don't know how to create/use an asset bundle, or don't have a unity project set up?
             // Look here for info on how to set these up: https://github.com/KomradeSpectre/AetheriumMod/blob/rewrite-master/Tutorials/Item%20Mod%20Creation.md#unity-project
 
-            Assets.PopulateAssets();
+            Assets.Init();
 
             Utils.Buffs.CreateBuffs();
             //On.RoR2.Language.LoadTokensFromFile += Language_LoadTokensFromFile;

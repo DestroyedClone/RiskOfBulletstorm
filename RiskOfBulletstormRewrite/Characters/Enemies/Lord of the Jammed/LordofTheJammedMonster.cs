@@ -1,5 +1,6 @@
 ﻿using EntityStates;
 using R2API;
+using RiskOfBulletstormRewrite.Characters.Enemies;
 using RoR2;
 using RoR2.Skills;
 using UnityEngine;

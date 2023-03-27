@@ -255,13 +255,13 @@ namespace RiskOfBulletstormRewrite
                  BetterUI.ItemStats.StatFormatter.Seconds,
                  null);*/
 
-            BetterUI.ItemStats.RegisterStat(Clone.instance.ItemDef,
+            /*BetterUI.ItemStats.RegisterStat(Clone.instance.ItemDef,
                 prefix + "CLONE_ITEMCOUNT",
                 Clone.cfgItemsToKeep.Value,
                 Clone.cfgItemsToKeepPerStack.Value,
                 BetterUI.ItemStats.LinearStacking,
                 BetterUI.ItemStats.StatFormatter.Charges,
-                null);
+                null);*/
 
             #endregion Legendary
 
@@ -361,7 +361,7 @@ namespace RiskOfBulletstormRewrite
 
             #region Void Legendary
 
-            BetterUI.ItemStats.RegisterStat(CloneVoid.instance.ItemDef,
+            /*BetterUI.ItemStats.RegisterStat(CloneVoid.instance.ItemDef,
                 prefix + "CLONEVOID_ITEMSPERSTAGE",
                 CloneVoid.cfgItemsToGet.Value,
                 CloneVoid.cfgItemsToGetPerStack.Value,
@@ -371,7 +371,7 @@ namespace RiskOfBulletstormRewrite
                 prefix + "CLONEVOID_STAGECOUNT",
                 CloneVoid.cfgStageCount.Value,
                 BetterUI.ItemStats.NoStacking,
-                BetterUI.ItemStats.StatFormatter.Charges);
+                BetterUI.ItemStats.StatFormatter.Charges);*/
 
             #endregion Void Legendary
         }

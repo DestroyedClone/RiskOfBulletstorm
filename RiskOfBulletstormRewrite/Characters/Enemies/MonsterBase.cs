@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RiskOfBulletstormRewrite.Enemies
+namespace RiskOfBulletstormRewrite.Characters.Enemies
 {
     public abstract class MonsterBase<T> : MonsterBase where T : MonsterBase<T>
     {
