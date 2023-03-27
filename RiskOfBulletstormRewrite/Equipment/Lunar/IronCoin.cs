@@ -346,6 +346,7 @@ localScale = new Vector3(1F, 1F, 1F)
                             charBody.healthComponent.TakeDamage(ironCoinDamage);
                             enemiesKilled++;
                             break;
+
                         default:
                             charBody.healthComponent.Suicide(slot.gameObject);
                             enemiesKilled++;

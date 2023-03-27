@@ -65,7 +65,8 @@ namespace RiskOfBulletstormRewrite.Equipment
                     if (hasEgg)
                     {
                         player.master.inventory.GiveItem(Items.WeirdEggStageClearTally.instance.ItemDef);
-                    } else
+                    }
+                    else
                     {
                         var itemCount = player.master.inventory.GetItemCount(Items.WeirdEggStageClearTally.instance.ItemDef);
                         player.master.inventory.RemoveItem(Items.WeirdEggStageClearTally.instance.ItemDef, itemCount);

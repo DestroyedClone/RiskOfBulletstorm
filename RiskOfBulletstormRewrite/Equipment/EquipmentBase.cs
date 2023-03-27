@@ -133,7 +133,6 @@ namespace RiskOfBulletstormRewrite.Equipment
             return unlockableDef;
         }
 
-
         /// <summary>
         /// Take care to call base.CreateLang()!
         /// </summary>

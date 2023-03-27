@@ -1,8 +1,5 @@
 ﻿using BepInEx.Configuration;
-using RiskOfBulletstormRewrite.Controllers;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace RiskOfBulletstormRewrite.Interactables
 {
@@ -45,5 +42,4 @@ namespace RiskOfBulletstormRewrite.Interactables
         public virtual void Hooks()
         { }
     }
-
 }

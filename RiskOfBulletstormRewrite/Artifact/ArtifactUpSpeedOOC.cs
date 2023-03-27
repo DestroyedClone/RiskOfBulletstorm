@@ -94,8 +94,6 @@ namespace RiskOfBulletstormRewrite.Artifact
             {
                 CharacterBody.onBodyStartGlobal -= CharacterBody_onBodyStartGlobal;
             }
-
-
         }
     }
 }

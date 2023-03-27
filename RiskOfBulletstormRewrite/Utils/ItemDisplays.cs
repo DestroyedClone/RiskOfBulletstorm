@@ -1,6 +1,4 @@
-﻿using BepInEx.Configuration;
-using R2API;
-using RiskOfBulletstormRewrite.Utils;
+﻿using R2API;
 using RoR2;
 using UnityEngine;
 
@@ -8,11 +6,10 @@ namespace RiskOfBulletstormRewrite.Utils
 {
     internal class HelperDisplays
     {
-        
     }
+
     internal class ItemDisplays
     {
-        
     }
 
     internal class EquipmentDisplays
@@ -287,11 +284,9 @@ localScale = new Vector3(1F, 1F, 1F)
             });
             return rules;
         }
-
     }
 
     internal class EliteDisplays
     {
-
     }
 }

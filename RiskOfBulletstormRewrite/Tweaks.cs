@@ -38,7 +38,7 @@ namespace RiskOfBulletstormRewrite
                             AddPath(path);
                         } */
             //if (cfgDisableAutoPickup.Value)
-                //On.RoR2.GenericPickupController.OnTriggerStay += NoAutoPickup;
+            //On.RoR2.GenericPickupController.OnTriggerStay += NoAutoPickup;
             //switch (cfgEnableBreachNotifications.Value)
             //{
             //    case NotificationMod.disable:

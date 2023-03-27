@@ -1,10 +1,6 @@
-﻿using R2API;
-using RoR2;
-using System;
+﻿using RoR2;
 using System.Reflection;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.Networking;
 
 namespace RiskOfBulletstormRewrite.Modules
 {
@@ -60,6 +56,7 @@ namespace RiskOfBulletstormRewrite.Modules
         {
             return mainAssetBundle.LoadAsset<GameObject>(path);
         }
+
         /*
         public static Material commandoMat;
         internal static Shader hotpoo = LegacyResourcesAPI.Load<Shader>("Shaders/Deferred/HGStandard");
@@ -149,6 +146,7 @@ namespace RiskOfBulletstormRewrite.Modules
         }
 
         #endregion helpers
+
         */
         /*
 

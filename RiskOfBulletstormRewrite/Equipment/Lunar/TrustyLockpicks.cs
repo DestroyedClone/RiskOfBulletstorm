@@ -326,7 +326,6 @@ localScale = new Vector3(1F, 1F, 1F)
             On.RoR2.PurchaseInteraction.GetContextString += PurchaseInteraction_GetContextString;
         }
 
-
         private string PurchaseInteraction_GetContextString(On.RoR2.PurchaseInteraction.orig_GetContextString orig, PurchaseInteraction self, Interactor activator)
         {
             var original = orig(self, activator);

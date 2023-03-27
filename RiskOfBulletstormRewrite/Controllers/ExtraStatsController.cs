@@ -14,10 +14,13 @@ namespace RiskOfBulletstormRewrite.Controllers
     {
         /// <summary> Config Value to enable <b>Disposable Missile Launcher's rockets</b> being affected by RBSAccuracy. </summary>
         public static bool ShotSpread_EnableDML { get; private set; } = true;
+
         /// <summary> Config Value to enable the Survivor, <b>Loader</b>, being affected by RBSAccuracy. </summary>
         public static bool ShotSpread_EnableLoader { get; private set; } = false;
+
         /// <summary> Config Value to enable <b>only specific projectiles</b>, being affected by RBSAccuracy. </summary>
         public static bool ShotSpread_WhitelistProjectiles { get; private set; } = true;
+
         /// <summary> Config Value to enable <b>Auto downloading updates</b> for projectiles to be added to RBSAccuracy </summary>
         public static bool AutoDownloadUpdates { get; private set; } = true;
 
@@ -168,6 +171,7 @@ namespace RiskOfBulletstormRewrite.Controllers
             Load<GameObject>("RoR2/DLC1/VoidMegaCrab/MissileVoidBigProjectile.prefab"),
             Load<GameObject>("RoR2/DLC1/VoidRaidCrab/VoidRaidCrabMissileProjectile.prefab"),
         };
+
         /// <summary> List of whitelisted <b>modded</b> projectiles for RBSAccuracy </summary>
         public static List<string> ModdedWhitelistedProjectiles = new List<string>();
 
@@ -474,10 +478,12 @@ namespace RiskOfBulletstormRewrite.Controllers
 
             public int itemCount_Scope = 0;
             public int itemCount_Spice = 0;
+
             /// <summary>
             /// "Pretty" accuracy stat, effective for most cases. 0.78 = 78% more accurate
             /// </summary>
             public float idealizedAccuracyStat = 1f;
+
             public float bulletAccuracy = 1f;
             public float projectileAccuracy = 1f;
             public float itemCount_Curse = 0f;

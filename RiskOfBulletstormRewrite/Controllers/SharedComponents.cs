@@ -18,8 +18,8 @@ namespace RiskOfBulletstormRewrite.Controllers
             public PurchaseInteraction purchaseInteraction;
             public ChestBehavior chestBehavior;
 
-            readonly string attemptContextToken = "RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT";
-            readonly string failContextToken = "RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT_LOSE";
+            private readonly string attemptContextToken = "RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT";
+            private readonly string failContextToken = "RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT_LOSE";
 
             public bool InteractorHasValidEquipment(Interactor interactor)
             {
@@ -31,7 +31,6 @@ namespace RiskOfBulletstormRewrite.Controllers
                     {
                         return true;
                     }
-
                 }
                 return false;
             }

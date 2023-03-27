@@ -1,11 +1,9 @@
 ﻿using BepInEx.Configuration;
 using R2API;
+using RiskOfBulletstormRewrite.Modules;
 using RoR2;
 using UnityEngine;
-using static RiskOfBulletstormRewrite.Main;
 using UnityEngine.Networking;
-using System.Collections.Generic;
-using RiskOfBulletstormRewrite.Modules;
 
 namespace RiskOfBulletstormRewrite.Equipment
 {
@@ -152,7 +150,6 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         protected override void CreateConfig(ConfigFile config)
         {
-
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()

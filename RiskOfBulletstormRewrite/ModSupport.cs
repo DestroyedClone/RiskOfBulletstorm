@@ -1,11 +1,10 @@
 ﻿using RiskOfBulletstormRewrite.Equipment;
 using RiskOfBulletstormRewrite.Items;
+using RiskOfBulletstormRewrite.Modules;
 using RiskOfBulletstormRewrite.Utils;
-using static RiskOfBulletstormRewrite.Modules.LanguageOverrides;
 using RoR2;
 using System.Runtime.CompilerServices;
 using UnityEngine;
-using RiskOfBulletstormRewrite.Modules;
 
 namespace RiskOfBulletstormRewrite
 {
@@ -317,9 +316,8 @@ namespace RiskOfBulletstormRewrite
 
             #endregion Lunar
 
-
-
             #region NoTier
+
             BetterUI.ItemStats.RegisterStat(Items.OrangeConsumed.instance.ItemDef,
                 prefix + "ORANGECONSUMED_MAXHEALTHADD",
                 Orange.cfgMaxHealthIncrease.Value,
@@ -340,8 +338,6 @@ namespace RiskOfBulletstormRewrite
                 BetterUI.ItemStats.ItemTag.SkillCooldown);*/
 
             #endregion NoTier
-
-
 
             #region Void Uncommon
 

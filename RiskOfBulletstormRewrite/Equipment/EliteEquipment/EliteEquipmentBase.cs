@@ -1,5 +1,4 @@
 ﻿using BepInEx.Configuration;
-using BetterUI;
 using R2API;
 using RiskOfBulletstormRewrite.Modules;
 using RoR2;
@@ -33,6 +32,7 @@ namespace RiskOfBulletstormRewrite.Equipment.EliteEquipment
         /// </summary>
         //public abstract string EliteAffixToken { get; }
         public virtual string[] EliteEquipmentPickupDescParams { get; }
+
         public virtual string[] EliteEquipmentFullDescriptionParams { get; }
 
         /// <summary>
@@ -123,6 +123,7 @@ namespace RiskOfBulletstormRewrite.Equipment.EliteEquipment
         public abstract void Init(ConfigFile config);
 
         public abstract ItemDisplayRuleDict CreateItemDisplayRules();
+
         /// <summary>
         /// Take care to call base.CreateLang()!
         /// </summary>
@@ -156,7 +157,7 @@ namespace RiskOfBulletstormRewrite.Equipment.EliteEquipment
         {
             var prefix = "RISKOFBULLETSTORM_ELITE_EQUIPMENT_";
             EliteBuffDef = RiskOfBulletstormRewrite.Utils.Buffs.AddBuff(
-                "BUFF_"+EliteEquipmentLangTokenName,
+                "BUFF_" + EliteEquipmentLangTokenName,
                 EliteBuffIcon,
                 EliteBuffColor,
                 false,
