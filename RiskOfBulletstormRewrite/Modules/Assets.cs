@@ -26,7 +26,7 @@ namespace RiskOfBulletstormRewrite.Modules
 
         public static void Init()
         {
-            commandoMat = LegacyResourcesAPI.Load<GameObject>("Prefabs/CharacterBodies/CommandoBody").GetComponentInChildren<CharacterModel>().baseRendererInfos[0].defaultMaterial;
+            //commandoMat = LegacyResourcesAPI.Load<GameObject>("Prefabs/CharacterBodies/CommandoBody").GetComponentInChildren<CharacterModel>().baseRendererInfos[0].defaultMaterial;
 
             PopulateAssets();
         }
@@ -60,7 +60,7 @@ namespace RiskOfBulletstormRewrite.Modules
         {
             return mainAssetBundle.LoadAsset<GameObject>(path);
         }
-
+        /*
         public static Material commandoMat;
         internal static Shader hotpoo = LegacyResourcesAPI.Load<Shader>("Shaders/Deferred/HGStandard");
 
@@ -149,7 +149,7 @@ namespace RiskOfBulletstormRewrite.Modules
         }
 
         #endregion helpers
-
+        */
         /*
 
         public static Sprite LoadSprite(string fileName)

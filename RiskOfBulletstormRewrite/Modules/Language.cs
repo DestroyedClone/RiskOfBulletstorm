@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RiskOfBulletstormRewrite
+namespace RiskOfBulletstormRewrite.Modules
 {
     public class LanguageOverrides
     {
@@ -30,12 +30,12 @@ namespace RiskOfBulletstormRewrite
         public static void DeferToken(string token, params string[] args)
         {
             //Main._logger.LogMessage($"Deferring {token} w/ lang {lang}");
-            LanguageOverrides.replacementTokens.Add(new LanguageOverrides.ReplacementToken() { token = token, args = args });
+            replacementTokens.Add(new ReplacementToken() { token = token, args = args });
         }
 
         public static void DeferLateTokens(string baseToken, params string[] args)
         {
-            RiskOfBulletstormRewrite.LanguageOverrides.postReplacementTokens.Add(new PostReplacementToken() { baseToken = baseToken, replacementTokens = args });
+            postReplacementTokens.Add(new PostReplacementToken() { baseToken = baseToken, replacementTokens = args });
         }
 
         public static List<ReplacementToken> replacementTokens = new List<ReplacementToken>();

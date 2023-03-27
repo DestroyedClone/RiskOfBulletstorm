@@ -1,10 +1,11 @@
 ﻿using RiskOfBulletstormRewrite.Equipment;
 using RiskOfBulletstormRewrite.Items;
 using RiskOfBulletstormRewrite.Utils;
-using static RiskOfBulletstormRewrite.LanguageOverrides;
+using static RiskOfBulletstormRewrite.Modules.LanguageOverrides;
 using RoR2;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using RiskOfBulletstormRewrite.Modules;
 
 namespace RiskOfBulletstormRewrite
 {

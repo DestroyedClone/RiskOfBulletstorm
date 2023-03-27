@@ -7,8 +7,11 @@
 
   <ItemGroup>
     <Compile Remove="Achievements\**" />
+    <Compile Remove="Characters\**" />
     <EmbeddedResource Remove="Achievements\**" />
+    <EmbeddedResource Remove="Characters\**" />
     <None Remove="Achievements\**" />
+    <None Remove="Characters\**" />
   </ItemGroup>
 	
 
@@ -53,6 +56,8 @@
     <Compile Remove="Items\Uncommon\RingChestFriendship.cs" />
     <Compile Remove="Items\Uncommon\RingFireResistance.cs" />
     <Compile Remove="Items\VoidLegendary\CloneVoid.cs" />
+    <Compile Remove="Modules\Materials.cs" />
+    <Compile Remove="Modules\Prefabs.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,6 +1,7 @@
 ﻿using BepInEx.Configuration;
 using BetterUI;
 using R2API;
+using RiskOfBulletstormRewrite.Modules;
 using RoR2;
 using System;
 using System.Collections.Generic;

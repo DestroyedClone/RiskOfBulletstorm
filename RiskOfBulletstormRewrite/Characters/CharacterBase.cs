@@ -211,4 +211,3 @@ namespace RiskOfBulletstormRewrite.Characters
         public bool dontHotpoo = false;
     }
 }
-}
