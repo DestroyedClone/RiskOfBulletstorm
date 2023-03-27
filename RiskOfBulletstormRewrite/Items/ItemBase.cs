@@ -54,6 +54,8 @@ namespace RiskOfBulletstormRewrite.Items
         public virtual string ParentEquipmentName { get; } = null;
         public virtual string ParentItemName { get; } = null;
 
+        public virtual bool Hidden { get; } = false;
+
         public string ConfigCategory
         {
             get
@@ -185,6 +187,8 @@ namespace RiskOfBulletstormRewrite.Items
                     Main.voidConversions.Add(ContagiousOwnerItemDef, ItemDef);
                 }
             }
+
+            ItemDef.hidden = Hidden;
 
             if (ItemTags.Length > 0) { ItemDef.tags = ItemTags; }
 
