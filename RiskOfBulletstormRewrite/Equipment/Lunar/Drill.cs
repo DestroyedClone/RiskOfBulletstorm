@@ -113,7 +113,7 @@ namespace RiskOfBulletstormRewrite.Equipment
                     case "CHEST2_NAME":
                     case "CATEGORYCHEST2_HEALING_NAME":
                     case "CATEGORYCHEST2_DAMAGE_NAME":
-                    case "CreateSpawner_NAME":
+                    case "CATEGORYCHEST2_UTILITY_NAME":
                         creditMultiplier = cfgChestCostUncommon.Value;
                         break;
 
