@@ -14,14 +14,21 @@ namespace RiskOfBulletstormRewrite.Artifact
 
         public override Sprite ArtifactDisabledIcon => LoadSprite(false);
 
-        //public static ConfigEntry<float> cfgWindowOfTime;
-        public const float windowOfTime = 0.2f;
+        public static ConfigEntry<float> cfgWindowOfTime;
+        //public const float windowOfTime = 0.2f;
 
         public override void Init(ConfigFile config)
         {
+            CreateConfig(config);
             CreateLang();
             CreateArtifact();
             Hooks();
+        }
+
+        public override void CreateConfig(ConfigFile config)
+        {
+            base.CreateConfig(config);
+            cfgWindowOfTime = config.Bind(ConfigCategory, "Time Window", 0.2f, "The amount of time in seconds that the character can walk off a platform before they can no longer jump.");
         }
 
         public override void Hooks()
@@ -75,7 +82,7 @@ namespace RiskOfBulletstormRewrite.Artifact
             public CharacterMotor characterMotor;
             public int jumpCountOnStart = 0;
             private float age = 0;
-            private float Duration => windowOfTime;
+            private float Duration => cfgWindowOfTime.Value;
 
             public void Awake()
             {

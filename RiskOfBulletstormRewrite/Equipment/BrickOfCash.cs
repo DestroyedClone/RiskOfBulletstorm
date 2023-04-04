@@ -11,6 +11,8 @@ namespace RiskOfBulletstormRewrite.Equipment
     public class BrickOfCash : EquipmentBase<BrickOfCash>
     {
         //public static ConfigEntry<float> cfg;
+        public static ConfigEntry<float> cfgCooldown;
+        public override float Cooldown => cfgCooldown.Value;
 
         public override string EquipmentName => "Brick of Cash";
 
@@ -172,6 +174,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         protected override void CreateConfig(ConfigFile config)
         {
+            cfgCooldown = config.Bind(ConfigCategory, CooldownName, 5f, CooldownDescription);
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()

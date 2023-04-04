@@ -23,6 +23,9 @@ namespace RiskOfBulletstormRewrite.Equipment
 
     public abstract class EquipmentBase
     {
+        public const string CooldownDescription = "What is the cooldown in seconds of this equipment?";
+        public const string CooldownName = "Cooldown";
+
         /// <summary>
         /// Name of the Equipment, for the Config and Internals
         /// </summary>

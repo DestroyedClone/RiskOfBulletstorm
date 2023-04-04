@@ -10,6 +10,8 @@ namespace RiskOfBulletstormRewrite.Equipment
     public class IronCoinConsumed : EquipmentBase<IronCoinConsumed>
     {
         public static ConfigEntry<bool> cfgResultPrintByPlayersOnly;
+        public static ConfigEntry<float> cfgCooldown;
+        public override float Cooldown => cfgCooldown.Value;
 
         public override string EquipmentName => "Iron Coin (Spent)";
 
@@ -20,8 +22,6 @@ namespace RiskOfBulletstormRewrite.Equipment
         public override Sprite EquipmentIcon => LoadSprite();
 
         public override bool IsLunar => false;
-
-        public override float Cooldown => 60f;
 
         public override bool CanDrop => false;
 
@@ -43,6 +43,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         protected override void CreateConfig(ConfigFile config)
         {
+            cfgCooldown = config.Bind(ConfigCategory, CooldownName, 5f, CooldownDescription);
             cfgResultPrintByPlayersOnly = config.Bind(ConfigCategory, "Only Players Can Print Result", false, "If true, then only players can print the result of the flip.");
         }
 

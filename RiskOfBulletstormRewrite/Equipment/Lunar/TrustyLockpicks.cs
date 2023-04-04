@@ -13,6 +13,8 @@ namespace RiskOfBulletstormRewrite.Equipment
         public static ConfigEntry<float> cfgUnlockChance;
 
         public static ConfigEntry<float> cfgPriceMultiplier;
+        public static ConfigEntry<float> cfgCooldown;
+        public override float Cooldown => cfgCooldown.Value;
 
         public override string EquipmentName => "Trusty Lockpicks";
 
@@ -44,6 +46,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         protected override void CreateConfig(ConfigFile config)
         {
+            cfgCooldown = config.Bind(ConfigCategory, CooldownName, 60f, CooldownDescription);
             cfgUnlockChance = config.Bind(ConfigCategory, "Chest Unlock Chance", 50f, "What is the chance to unlock the chest?" +
                 "\n50 = 50%, 0.5 = 0.5%");
             cfgPriceMultiplier = config.Bind(ConfigCategory, "Fail Cost Multiplier", 2f, "If you fail to unlock the chest, what will the price be multiplied by?");

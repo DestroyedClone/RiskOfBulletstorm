@@ -10,6 +10,8 @@ namespace RiskOfBulletstormRewrite.Equipment
 {
     public class WeirdEgg : EquipmentBase<WeirdEgg>
     {
+        public static ConfigEntry<float> cfgCooldown;
+        public override float Cooldown => cfgCooldown.Value;
 
         public override string EquipmentName => "Weird Egg";
 
@@ -81,6 +83,8 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         protected override void CreateConfig(ConfigFile config)
         {
+            base.CreateConfig(config);
+            cfgCooldown = config.Bind(ConfigCategory, CooldownName, 25f, CooldownDescription);
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()

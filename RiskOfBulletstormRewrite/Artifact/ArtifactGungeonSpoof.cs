@@ -26,11 +26,13 @@ namespace RiskOfBulletstormRewrite.Artifact
 
         public static ConfigEntry<float> cfgIFrameDuration;
         public static ConfigEntry<float> cfgStatDivider;
+        public static ConfigEntry<float> cfgCooldownIncrease;
 
         public override void CreateConfig(ConfigFile config)
         {
             cfgIFrameDuration = config.Bind(ConfigCategory, "I-Frames Duration", 0.5f, "The amount of seconds of immunity after getting hit.");
             cfgStatDivider = config.Bind(ConfigCategory, "Health and Damage Division Coefficient", 8f, "The value that the body's maxHealth and baseDamage are divided by.");
+            cfgCooldownIncrease = config.Bind(ConfigCategory, "Cooldown Multiplier", 1.5f, "The cooldown multiplier. 1.5 = 150% cooldown.");
         }
 
         public override void Hooks()
@@ -84,7 +86,7 @@ namespace RiskOfBulletstormRewrite.Artifact
         {
             var original = orig(self);
 
-            original *= 1.25f;
+            original *= cfgCooldownIncrease.Value;
 
             return original;
         }

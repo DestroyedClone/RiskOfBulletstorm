@@ -13,6 +13,8 @@ namespace RiskOfBulletstormRewrite.Equipment
         public static ConfigEntry<float> cfgChestCostCommon;
         public static ConfigEntry<float> cfgChestCostUncommon;
         public static ConfigEntry<float> cfgChestCostLegendary;
+        public static ConfigEntry<float> cfgCooldown;
+        public override float Cooldown => cfgCooldown.Value;
 
         public override string EquipmentName => "Drill";
 
@@ -36,6 +38,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         protected override void CreateConfig(ConfigFile config)
         {
+            cfgCooldown = config.Bind(ConfigCategory, CooldownName, 60f, CooldownDescription);
             string text = "The multiplier for the amount of credits given to the Combat Director for spawning the equipment's enemies.\nApplies to ";
 
             cfgChestCostCommon = config.Bind(ConfigCategory, "Common Chest Credit Multiplier", 2f, text + "Chests, Utility Chests, Damage Chests, Healing Chests, and Equipment Barrels.");

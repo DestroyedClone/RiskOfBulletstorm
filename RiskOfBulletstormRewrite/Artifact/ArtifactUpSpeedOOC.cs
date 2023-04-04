@@ -8,6 +8,8 @@ namespace RiskOfBulletstormRewrite.Artifact
 {
     internal class ArtifactUpSpeedOOC : ArtifactBase<ArtifactUpSpeedOOC>
     {
+        public static ConfigEntry<float> cfgMoveSpeedAdditiveMultiplier;
+
         public override string ArtifactName => "Artifact of the Swift Post-Battle";
 
         public override string ArtifactLangTokenName => "UPSPEEDOOC";
@@ -18,9 +20,16 @@ namespace RiskOfBulletstormRewrite.Artifact
 
         public override void Init(ConfigFile config)
         {
+            CreateConfig(config);
             CreateLang();
             CreateArtifact();
             Hooks();
+        }
+
+        public override void CreateConfig(ConfigFile config)
+        {
+            base.CreateConfig(config);
+            cfgMoveSpeedAdditiveMultiplier = config.Bind(ConfigCategory, "Move Speed Additive Multiplier", 0.45f, "The additive percentage in increase in movement speed. 0.45 = +45% movement speed.");
         }
 
         public override void Hooks()
@@ -35,7 +44,7 @@ namespace RiskOfBulletstormRewrite.Artifact
         {
             if (sender.HasBuff(Utils.Buffs.ArtifactSpeedUpBuff))
             {
-                args.moveSpeedMultAdd += 0.45f;
+                args.moveSpeedMultAdd += cfgMoveSpeedAdditiveMultiplier.Value;
             }
         }
 

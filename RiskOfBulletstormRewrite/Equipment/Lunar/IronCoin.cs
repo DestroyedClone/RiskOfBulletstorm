@@ -10,6 +10,8 @@ namespace RiskOfBulletstormRewrite.Equipment
     {
         public static ConfigEntry<float> cfgDamageToPlayers;
         public static ConfigEntry<IronCoinEnum> cfgEnemyPlayerDamageType;
+        public static ConfigEntry<float> cfgCooldown;
+        public override float Cooldown => cfgCooldown.Value;
 
         public override string EquipmentName => "Iron Coin";
 
@@ -38,6 +40,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         protected override void CreateConfig(ConfigFile config)
         {
+            cfgCooldown = config.Bind(ConfigCategory, CooldownName, 5f, CooldownDescription);
             cfgDamageToPlayers = config.Bind(ConfigCategory, "Damage Dealt To Enemy Players", 0.05f, "If flipped by an enemy, deals this amount of damage to enemy players." +
                 "\nDamage dealt is equal to config value multiplied by enemy player's max health." +
                 "\nEx: 0.05 -> 5% of the enemy player's max health.");

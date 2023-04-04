@@ -14,6 +14,8 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public static ConfigEntry<float> cfgMaxHealthIncrease;
         public static ConfigEntry<float> cfgHealPercentage;
+        public static ConfigEntry<float> cfgCooldown;
+        public override float Cooldown => cfgCooldown.Value;
 
         public override string EquipmentName => "Orange";
 
@@ -30,8 +32,6 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public override Sprite EquipmentIcon => LoadSprite();
 
-        public override float Cooldown => 45f;
-
         public override void Init(ConfigFile config)
         {
             CreateConfig(config);
@@ -42,6 +42,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         protected override void CreateConfig(ConfigFile config)
         {
+            cfgCooldown = config.Bind(ConfigCategory, CooldownName, 25f, CooldownDescription);
             cfgMaxHealthIncrease = config.Bind(ConfigCategory, "Max Health Increase", 0.1f);
             cfgHealPercentage = config.Bind(ConfigCategory, "Heal Percentage", 1f);
             cfgChargeRateReduction = config.Bind(ConfigCategory, "Equipment Charge Rate Reduction", 0.1f);
