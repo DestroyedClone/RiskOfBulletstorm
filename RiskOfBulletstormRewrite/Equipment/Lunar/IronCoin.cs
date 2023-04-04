@@ -325,11 +325,12 @@ localScale = new Vector3(1F, 1F, 1F)
             var attackerGameObject = slot.characterBody.gameObject;
             foreach (var charMaster in CharacterMaster.readOnlyInstancesList)
             {
-                //todo:
-                // Should something happen to a player. obv not TrueKill, but...?
-                if (charMaster.playerCharacterMasterController && charMaster.teamIndex != slot.teamComponent.teamIndex && charMaster.GetBody())
+                var charBody = charMaster.GetBody();
+                if (charMaster.playerCharacterMasterController 
+                    && charBody
+                    && FriendlyFireManager.ShouldDirectHitProceed(charMaster.GetBody().healthComponent, slot.characterBody.teamComponent.teamIndex) 
+                    )
                 {
-                    var charBody = charMaster.GetBody();
                     switch (cfgEnemyPlayerDamageType.Value)
                     {
                         case IronCoinEnum.Nonfatal:

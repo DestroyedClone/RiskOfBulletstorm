@@ -1,7 +1,12 @@
+using BepInEx;
 using BepInEx.Configuration;
 using RoR2;
 using RoR2.UI;
+using System.Text;
 using UnityEngine;
+using Rewired;
+using Rewired.Dev;
+using static RoR2.MasterSpawnSlotController;
 
 namespace RiskOfBulletstormRewrite
 {
@@ -32,11 +37,6 @@ namespace RiskOfBulletstormRewrite
                 On.RoR2.UI.GenericNotification.SetEquipment += SetEquipment;
                 On.RoR2.UI.GenericNotification.SetItem += SetItem;
             }
-            /*             var languagePaths = Directory.GetFiles(Assets.assemblyDir, "*.language", SearchOption.AllDirectories);
-                        foreach (var path in languagePaths)
-                        {
-                            AddPath(path);
-                        } */
             //if (cfgDisableAutoPickup.Value)
             //On.RoR2.GenericPickupController.OnTriggerStay += NoAutoPickup;
             //switch (cfgEnableBreachNotifications.Value)
@@ -49,6 +49,8 @@ namespace RiskOfBulletstormRewrite
             //    case NotificationMod.all:
             //        break;
             //}
+
+            On.RoR2.UI.EquipmentIcon.Update += EquipmentIcon_Update;
         }
 
         private static void AchievementNotificationPanel_SetAchievementDef(On.RoR2.UI.AchievementNotificationPanel.orig_SetAchievementDef orig, AchievementNotificationPanel self, AchievementDef achievementDef)
@@ -115,5 +117,85 @@ namespace RiskOfBulletstormRewrite
         }
 
         #endregion centertext
+
+        #region DropEquipment
+
+        public static void DropEquipment(EquipmentSlot slot, EquipmentDef equipmentDef)
+        {
+            var aimRay = slot.GetAimRay();
+            PickupDropletController.CreatePickupDroplet(PickupCatalog.FindPickupIndex(equipmentDef.equipmentIndex),
+                aimRay.origin, aimRay.direction * 20f);
+            slot.characterBody.inventory.SetEquipmentIndex(EquipmentIndex.None);
+            CharacterMasterNotificationQueue.PushEquipmentTransformNotification(slot.characterBody.master, slot.characterBody.inventory.currentEquipmentIndex, EquipmentIndex.None, CharacterMasterNotificationQueue.TransformationType.Default);
+        }
+
+        private static void EquipmentIcon_Update(On.RoR2.UI.EquipmentIcon.orig_Update orig, RoR2.UI.EquipmentIcon self)
+        {
+            orig(self);
+            if (self.targetEquipmentSlot
+                && EquipmentCanBeDropped(self.targetEquipmentSlot.equipmentIndex)
+                && !self.displayAlternateEquipment)
+            {
+                if (self.stockText)
+                {
+                    bool shouldShowStock = self.stockText.gameObject.activeSelf;
+                    self.stockText.gameObject.SetActive(true);
+                    StringBuilder stringBuilder2 = HG.StringBuilderPool.RentStringBuilder();
+                    //var equipmentSlotCount = self.targetInventory.GetEquipmentSlotCount();
+
+                    if (shouldShowStock)//self.stockText.text.IsNullOrWhiteSpace())
+                    {
+                        //stringBuilder2.AppendInt(self.currentDisplayData.stock, 1U, uint.MaxValue);
+                        stringBuilder2.Append($"x{self.currentDisplayData.stock}");
+                    }
+                    string dropText = $"<size=45%>Drop Equip Mod: [Interact]</size>";
+                    string colorMod;
+                    if (self.playerCharacterMasterController
+                        && self.playerCharacterMasterController.networkUser
+                        && PlayerCharacterMasterController.CanSendBodyInput(self.playerCharacterMasterController.networkUser, out LocalUser localUser, out Player inputPlayer, out CameraRigController cameraRigController)
+                        && inputPlayer.GetButton(5)
+                        )
+                    {
+                        colorMod = "green";
+                    }
+                    else
+                    {
+                        colorMod = "red";
+                    }
+                    if (shouldShowStock) stringBuilder2.Append("\n");
+                    stringBuilder2.Append($"<color={colorMod}>{dropText}</color>");
+                    if (shouldShowStock) stringBuilder2.Append("\n");
+
+                    self.stockText.SetText(stringBuilder2);
+                    HG.StringBuilderPool.ReturnStringBuilder(stringBuilder2);
+                }
+            }
+        }
+
+        public static bool PlayerCharacterMasterCanSendBodyInput(EquipmentSlot equipmentSlot, out LocalUser localUser, out Player player, out CameraRigController cameraRigController)
+        {
+            if (equipmentSlot.characterBody
+                    && equipmentSlot.characterBody.master
+                    && equipmentSlot.characterBody.master.playerCharacterMasterController
+                    && PlayerCharacterMasterController.CanSendBodyInput(equipmentSlot.characterBody.master.playerCharacterMasterController.networkUser,
+                    out localUser, out player, out cameraRigController))
+                return true;
+            localUser = null;
+            player = null;
+            cameraRigController = null;
+            return false;
+        }
+
+        public static bool EquipmentCanBeDropped(EquipmentDef equipmentDef)
+        {
+            return EquipmentCanBeDropped(equipmentDef.equipmentIndex);
+        }
+
+        public static bool EquipmentCanBeDropped(EquipmentIndex equipmentIndex)
+        {
+            return equipmentIndex != EquipmentIndex.None;
+        }
+
+        #endregion
     }
 }

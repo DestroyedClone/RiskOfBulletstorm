@@ -13,8 +13,10 @@
 
 		"RISKOFBULLETSTORM_EQUIPMENT_BRICKOFCASH_NAME": "Brick of Cash",
 		"RISKOFBULLETSTORM_EQUIPMENT_BRICKOFCASH_PICKUP": "<b>Secrets Of The Masons</b>\nReveals secrets.",
-		"RISKOFBULLETSTORM_EQUIPMENT_BRICKOFCASH_DESCRIPTION": "Holding this <style=cIsUtility>reveals pressure plates, cloaked chests, and Legendary Chests</style>. Use to <style=cIsUtility>throw</style>",
+		"RISKOFBULLETSTORM_EQUIPMENT_BRICKOFCASH_DESCRIPTION": "Holding this <style=cIsUtility>reveals pressure plates, cloaked chests, and Legendary Chests</style>. <style=cIsUtility>Use to flaunt your wealth in chat</style>",
 		"RISKOFBULLETSTORM_EQUIPMENT_BRICKOFCASH_LORE": "This can be used to pay off unscrupulous Snitch Bricks, who are willing to betray their mortared brethren for cold, hard cash. Not legal tender.",
+		"RISKOFBULLETSTORM_EQUIPMENT_BRICKOFCASH_SAYCASH": "{0} has ${1}!",
+		"RISKOFBULLETSTORM_EQUIPMENT_BRICKOFCASH_SAYCASH_2P": "You have ${1}!",
 
 		"RISKOFBULLETSTORM_EQUIPMENT_CHESTTELEPORTER_NAME": "Chest Teleporter",
 		"RISKOFBULLETSTORM_EQUIPMENT_CHESTTELEPORTER_PICKUP": "Consumes a chest for Rusted Keys.",

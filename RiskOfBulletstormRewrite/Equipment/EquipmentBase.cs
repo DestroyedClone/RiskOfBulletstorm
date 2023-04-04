@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Rewired;
 
 namespace RiskOfBulletstormRewrite.Equipment
 {
@@ -195,6 +196,24 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         private bool PerformEquipmentAction(On.RoR2.EquipmentSlot.orig_PerformEquipmentAction orig, RoR2.EquipmentSlot self, EquipmentDef equipmentDef)
         {
+            if (Tweaks.EquipmentCanBeDropped(equipmentDef)
+                )
+            /*    && Tweaks.PlayerCharacterMasterCanSendBodyInput(self, out LocalUser localUser, out Player player, out CameraRigController cameraRigController))
+            {
+                if (player.GetButtonDown(5)) //interact
+                {
+                    Tweaks.DropEquipment(self, equipmentDef);
+                    return true;
+                }
+            }*/
+            {
+                bool inputCheck = self.inputBank && self.inputBank.interact.down;
+                if (inputCheck)
+                {
+                    Tweaks.DropEquipment(self, equipmentDef);
+                    return true;
+                }
+            }
             if (equipmentDef == EquipmentDef)
             {
                 return ActivateEquipment(self);

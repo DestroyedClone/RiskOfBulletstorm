@@ -79,6 +79,14 @@ namespace RiskOfBulletstormRewrite
             Tweaks.Init(Config);
             /* stupidlanguageshit(); */
             LanguageOverrides.Initialize();
+            Run.onRunStartGlobal += Run_onRunStartGlobal;
+        }
+
+        private void Run_onRunStartGlobal(Run obj)
+        {
+            RoR2.Console.instance.SubmitCmd(LocalUserManager.GetFirstLocalUser().currentNetworkUser, "no_enemies", true);
+            RoR2.Console.instance.SubmitCmd(LocalUserManager.GetFirstLocalUser().currentNetworkUser, "stage1_pod 0", true);
+            RoR2.UI.ConsoleWindow.cvConsoleEnabled.SetBool(true);
         }
 
         /* private static ILHook _ilHook;

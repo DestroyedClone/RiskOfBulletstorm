@@ -16,7 +16,6 @@ namespace RiskOfBulletstormRewrite.Equipment
         // Adjust damage and cooldown
         // Add assets (model, idrs, sound)
         //
-        public static ConfigEntry<float> cfgCooldown;
 
         public static ConfigEntry<float> cfgRange;
         public static ConfigEntry<float> cfgTarDamageMultiplier;
@@ -24,6 +23,7 @@ namespace RiskOfBulletstormRewrite.Equipment
         public static ConfigEntry<float> cfgVagrantDamageMultiplier;
         public static ConfigEntry<float> cfgDunestriderDamageMultiplier;
 
+        public static ConfigEntry<float> cfgCooldown;
         public override float Cooldown => cfgCooldown.Value;
 
         public override string EquipmentName => "iBomb Companion App";
@@ -42,6 +42,8 @@ namespace RiskOfBulletstormRewrite.Equipment
         public override GameObject EquipmentModel => LoadModel();
 
         public override Sprite EquipmentIcon => LoadSprite();
+
+        public GameObject ExplosionEffect => UnityEngine.AddressableAssets.Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Engi/BubbleShieldEndEffect.prefab").WaitForCompletion();
 
         public static GameObject[] explosiveProjectiles = new GameObject[]
         {
@@ -491,6 +493,17 @@ localScale = new Vector3(1F, 1F, 1F)
 
                 //DefenseMatrixOn
                 DeleteNearbyProjectile(slot.characterBody);
+
+                EffectData effectData = new EffectData
+                {
+                    origin = slot.characterBody.corePosition,
+                    scale = cfgRange.Value,
+                };
+                EffectManager.SpawnEffect(
+                    ExplosionEffect,
+                    effectData,
+                    true);
+
                 slot.subcooldownTimer += 2.5f;
                 return true;
             }

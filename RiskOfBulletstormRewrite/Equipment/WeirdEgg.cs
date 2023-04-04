@@ -1,14 +1,15 @@
+using BepInEx;
 using BepInEx.Configuration;
 using R2API;
 using RiskOfBulletstormRewrite.Utils;
 using RoR2;
+using System.Text;
 using UnityEngine;
 
 namespace RiskOfBulletstormRewrite.Equipment
 {
     public class WeirdEgg : EquipmentBase<WeirdEgg>
     {
-        public static ConfigEntry<float> cfg;
 
         public override string EquipmentName => "Weird Egg";
 
@@ -30,6 +31,8 @@ namespace RiskOfBulletstormRewrite.Equipment
             Hooks();
         }
 
+        
+
         /*  Needs to be able to be dropped, so install YEET? or implement our own?
          *      //do our own is fine.
         *   1. When Shot: Drop item based on carry time vs chamber time?
@@ -44,6 +47,7 @@ namespace RiskOfBulletstormRewrite.Equipment
         {
             Stage.onServerStageComplete += Stage_onServerStageComplete;
         }
+
 
         private void Stage_onServerStageComplete(Stage stage)
         {
@@ -352,13 +356,16 @@ localScale = new Vector3(1F, 1F, 1F)
 
         protected override bool ActivateEquipment(EquipmentSlot slot)
         {
-            if (slot?.characterBody?.healthComponent?.health < slot.characterBody.healthComponent.fullHealth && Util.HasEffectiveAuthority(slot.gameObject))
+            if (Util.HasEffectiveAuthority(slot.gameObject))
             {
-                slot.characterBody.healthComponent.CallCmdHealFull();
+                if (slot?.characterBody?.healthComponent?.health < slot.characterBody.healthComponent.fullHealth)
+                {
+                    slot.characterBody.healthComponent.CallCmdHealFull();
 
-                slot.inventory.SetEquipmentIndex(EquipmentIndex.None);
-                CharacterMasterNotificationQueue.PushEquipmentTransformNotification(slot.characterBody.master, WeirdEgg.Instance.EquipmentDef.equipmentIndex, EquipmentIndex.None, CharacterMasterNotificationQueue.TransformationType.Default);
-                return true;
+                    slot.inventory.SetEquipmentIndex(EquipmentIndex.None);
+                    CharacterMasterNotificationQueue.PushEquipmentTransformNotification(slot.characterBody.master, WeirdEgg.Instance.EquipmentDef.equipmentIndex, EquipmentIndex.None, CharacterMasterNotificationQueue.TransformationType.Default);
+                    return true;
+                }
             }
             return false;
         }

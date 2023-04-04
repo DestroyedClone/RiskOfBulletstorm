@@ -4,6 +4,7 @@ using RiskOfBulletstormRewrite.Modules;
 using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
+using System.Collections.Generic;
 
 namespace RiskOfBulletstormRewrite.Equipment
 {
@@ -20,6 +21,9 @@ namespace RiskOfBulletstormRewrite.Equipment
         public override Sprite EquipmentIcon => LoadSprite();
 
         public static GameObject CashProjectile = null;
+
+        public List<ChestRevealer.PendingReveal> cashPendingReveals = new List<ChestRevealer.PendingReveal>();
+
 
         public override void Init(ConfigFile config)
         {
@@ -79,11 +83,28 @@ namespace RiskOfBulletstormRewrite.Equipment
         {
             bool isCash = equipmentState.equipmentDef == EquipmentDef;
             var original = orig(self, equipmentState, slot);
-            if (isCash && original)
+            if (original)
             {
-                RatOut();
+                if (isCash)
+                    RatOut();
+                else if (!PlayersHaveBrickOfCash())
+                {
+                    RemovePendingRevealersFromCash();
+                }
             }
             return original;
+        }
+
+        private void RemovePendingRevealersFromCash()
+        {
+            /*foreach (var reveal in cashPendingReveals)
+            {
+                
+            }
+
+            var mystruct = ChestRevealer.pendingReveals[0];
+            mystruct.duration = 0f;
+            ChestRevealer.pendingReveals[0] = mystruct;*/
         }
 
         private void RatOut()
@@ -146,6 +167,7 @@ namespace RiskOfBulletstormRewrite.Equipment
                 duration = Mathf.Infinity
             };
             ChestRevealer.pendingReveals.Add(item);
+            cashPendingReveals.Add(item);
         }
 
         protected override void CreateConfig(ConfigFile config)
@@ -159,20 +181,15 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         protected override bool ActivateEquipment(EquipmentSlot slot)
         {
-            var aimRay = slot.GetAimRay();
-            PickupDropletController.CreatePickupDroplet(PickupCatalog.FindPickupIndex(EquipmentDef.equipmentIndex),
-                aimRay.origin, aimRay.direction * 20f);
-            slot.characterBody.inventory.SetEquipmentIndex(EquipmentIndex.None);
-            CharacterMasterNotificationQueue.PushEquipmentTransformNotification(slot.characterBody.master, slot.characterBody.inventory.currentEquipmentIndex, EquipmentIndex.None, CharacterMasterNotificationQueue.TransformationType.Default);
+            Chat.SendBroadcastChat(new Chat.SubjectFormatChatMessage
+            {
+                baseToken = "RISKOFBULLETSTORM_EQUIPMENT_BRICKOFCASH_SAYCASH",
+                paramTokens = new string[] { slot.characterBody.master ? slot.characterBody.master.money.ToString() : "???" },
+                subjectAsCharacterBody = slot.characterBody
+            });
+            slot.subcooldownTimer = 3f;
             return true;
         }
 
-        private void ThrowBrick(EquipmentSlot slot)
-        {
-            if (slot && slot.equipmentIndex != EquipmentIndex.None)
-            {
-                slot.equipmentIndex = EquipmentIndex.None;
-            }
-        }
     }
 }
