@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using UnityEngine.Networking;
 using Path = System.IO.Path;
 
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
@@ -42,6 +43,9 @@ namespace RiskOfBulletstormRewrite
         public List<ItemBase> Items = new List<ItemBase>();
         public List<EquipmentBase> Equipments = new List<EquipmentBase>();
         public List<EliteEquipmentBase> EliteEquipments = new List<EliteEquipmentBase>();
+
+        public static List<ItemDef> itemDefsThatCantBeAutoPickedUp = new List<ItemDef>();
+        public static List<PickupIndex> pickupIndicesThatCantBePickedUp = new List<PickupIndex>();
         public static R2API.ScriptableObjects.R2APISerializableContentPack ContentPack { get; private set; }
         public static string LocationOfProgram;
 
@@ -70,6 +74,17 @@ namespace RiskOfBulletstormRewrite
 
             AddToAssembly();
             SetupVoid();
+            RoR2Application.onLoad += () =>
+            {
+                foreach (var item in itemDefsThatCantBeAutoPickedUp)
+                {
+                    var pickupIndex = PickupCatalog.FindPickupIndex(item.itemIndex);
+                    if (pickupIndex.isValid)
+                    {
+                        pickupIndicesThatCantBePickedUp.Add(pickupIndex);
+                    }
+                }
+            };
 
             ModSupport.CheckForModSupport();
 
@@ -79,7 +94,25 @@ namespace RiskOfBulletstormRewrite
             Tweaks.Init(Config);
             /* stupidlanguageshit(); */
             LanguageOverrides.Initialize();
+            On.RoR2.GenericPickupController.OnTriggerStay += GenericPickupController_OnTriggerStay;
+
+            //debug
             Run.onRunStartGlobal += Run_onRunStartGlobal;
+        }
+
+        private void GenericPickupController_OnTriggerStay(On.RoR2.GenericPickupController.orig_OnTriggerStay orig, GenericPickupController self, UnityEngine.Collider other)
+        {
+            if (!NetworkServer.active)
+            {
+                return;
+            }
+
+            var cache = self.pickupIndex;
+            bool isPickupManual = pickupIndicesThatCantBePickedUp.Contains(self.pickupIndex);
+            if (isPickupManual)
+                self.pickupIndex = PickupIndex.none;
+            orig(self, other);
+            self.pickupIndex = cache;
         }
 
         private void Run_onRunStartGlobal(Run obj)
@@ -88,21 +121,6 @@ namespace RiskOfBulletstormRewrite
             RoR2.Console.instance.SubmitCmd(LocalUserManager.GetFirstLocalUser().currentNetworkUser, "stage1_pod 0", true);
             RoR2.UI.ConsoleWindow.cvConsoleEnabled.SetBool(true);
         }
-
-        /* private static ILHook _ilHook;
-        public static void stupidlanguageshit()
-        {
-            var ilHookConfig = new ILHookConfig { ManualApply = true };
-            _ilHook = new ILHook(
-                typeof(R2API.LanguageAPI).GetMethod(nameof(R2API.LanguageAPI.Add),(System.Reflection.BindingFlags)(-1)),
-                borpa,
-                ref ilHookConfig
-            );
-        }
-
-        private static void borpa(ILContext il)
-        {
-        } */
 
         public static Dictionary<ItemDef, ItemDef> voidConversions = new Dictionary<ItemDef, ItemDef>();
 

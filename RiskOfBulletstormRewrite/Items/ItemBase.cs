@@ -37,6 +37,8 @@ namespace RiskOfBulletstormRewrite.Items
 
         public abstract ItemTier Tier { get; }
         public virtual ItemTag[] ItemTags { get; set; } = new ItemTag[] { };
+        //like lunars or not
+        public virtual bool CanBePickedUp { get; } = true;
 
         public abstract GameObject ItemModel { get; }
         public abstract Sprite ItemIcon { get; }
@@ -192,6 +194,7 @@ namespace RiskOfBulletstormRewrite.Items
             ItemDef.hidden = Hidden;
 
             if (ItemTags.Length > 0) { ItemDef.tags = ItemTags; }
+            if (!CanBePickedUp) RiskOfBulletstormRewrite.Main.itemDefsThatCantBeAutoPickedUp.Add(ItemDef);
 
             ItemAPI.Add(new CustomItem(ItemDef, CreateItemDisplayRules()));
         }
