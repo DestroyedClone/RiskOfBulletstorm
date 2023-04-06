@@ -377,7 +377,6 @@ localScale = new Vector3(0.4205F, 0.4205F, 0.4205F)
         public override void Hooks()
         {
             base.Hooks();
-            OnGenericNotification.SetEquipment += ChangePickupText;
             GetStatCoefficients += Spice_GetStatCoefficients;
             On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
 
@@ -489,21 +488,6 @@ localScale = new Vector3(0.4205F, 0.4205F, 0.4205F)
                         //enemy
                         //damage
                         break;
-                }
-            }
-        }
-
-        private void ChangePickupText(OnGenericNotification.orig_SetEquipment orig, RoR2.UI.GenericNotification self, EquipmentDef equipmentDef)
-        {
-            orig(self, equipmentDef);
-            if (equipmentDef == instance.EquipmentDef)
-            {
-                var localUser = LocalUserManager.readOnlyLocalUsersList[0];
-                if (localUser != null && localUser.cachedMaster?.inventory)
-                {
-                    var inventoryCount = localUser.cachedMaster.inventory.GetItemCount(Items.SpiceTally.instance.ItemDef);
-                    var index = Mathf.Min(inventoryCount, SpiceDescArray.Length - 1);
-                    self.descriptionText.token = SpiceDescArray[index];
                 }
             }
         }

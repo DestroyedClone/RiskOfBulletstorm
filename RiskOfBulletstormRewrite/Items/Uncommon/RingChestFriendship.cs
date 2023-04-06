@@ -1,5 +1,6 @@
 ﻿using BepInEx.Configuration;
 using R2API;
+using RiskOfBulletstormRewrite.Modules;
 using RoR2;
 using System.Text;
 using UnityEngine;
@@ -32,7 +33,6 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void Init(ConfigFile config)
         {
-            return;
             CreateConfig(config);
             CreateLang();
             CreateItem();
@@ -52,7 +52,18 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void Hooks()
         {
-            R2API.DirectorAPI.StageSettingsActions += DirectorAPI_StageSettingsActions;
+            //R2API.DirectorAPI.StageSettingsActions += DirectorAPI_StageSettingsActions;
+            On.RoR2.SceneDirector.PopulateScene += SceneDirector_PopulateScene;
+        }
+
+        private void SceneDirector_PopulateScene(On.RoR2.SceneDirector.orig_PopulateScene orig, SceneDirector self)
+        {
+            var itemCount = Util.GetItemCountForTeam(TeamIndex.Player, ItemDef.itemIndex, false, true);
+            
+
+
+            orig(self);
+
         }
 
         private void DirectorAPI_StageSettingsActions(DirectorAPI.StageSettings arg1, DirectorAPI.StageInfo arg2)

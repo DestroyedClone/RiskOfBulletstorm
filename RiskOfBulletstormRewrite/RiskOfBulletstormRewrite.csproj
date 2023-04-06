@@ -22,7 +22,6 @@
     <Compile Remove="Artifact\ExampleArtifact.cs" />
     <Compile Remove="Controllers\BabyMimicBodyBehavior.cs" />
     <Compile Remove="Controllers\BulletQuestController.cs" />
-    <Compile Remove="Controllers\CurseController.cs" />
     <Compile Remove="Controllers\LimitedPickupsController.cs" />
     <Compile Remove="Controllers\MasterRoundController.cs" />
     <Compile Remove="Controllers\Pasts\PastKillingController.cs" />
@@ -50,6 +49,7 @@
     <Compile Remove="Items\Legendary\Clone.cs" />
     <Compile Remove="Items\Legendary\Clone_old.cs" />
     <Compile Remove="Items\Legendary\RingTriggers.cs" />
+    <Compile Remove="Items\Legendary\VorpalBullets.cs" />
     <Compile Remove="Items\Lunar\HeavyBullets.cs" />
     <Compile Remove="Items\Lunar\Metronome.cs" />
     <Compile Remove="Items\NoTier\BabyMimicIdentifier.cs" />

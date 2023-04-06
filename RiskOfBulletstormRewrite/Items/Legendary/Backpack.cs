@@ -1,4 +1,5 @@
 ﻿using BepInEx.Configuration;
+using EntityStates.Toolbot;
 using R2API;
 using RiskOfBulletstormRewrite.Utils;
 using RoR2;
@@ -14,6 +15,7 @@ namespace RiskOfBulletstormRewrite.Items
         public KeyCode CycleLeftButton { get; private set; } = KeyCode.F;
         public KeyCode CycleRightButton { get; private set; } = KeyCode.G;
         public static bool UseScrollWheel { get; private set; } = true;
+        public static ConfigEntry<bool> cfgToolbotSwapsModded;
 
         public override string ItemName => "Backpack";
 
@@ -33,7 +35,6 @@ namespace RiskOfBulletstormRewrite.Items
         public KeyCode CycleLeftKey_GP = KeyCode.None;
         public KeyCode CycleRightKey_GP = KeyCode.None;
 
-        public static GameObject ItemBodyModelPrefab;
         public static BodyIndex ToolbotBodyIndex;
 
         public override void Init(ConfigFile config)
@@ -50,6 +51,7 @@ namespace RiskOfBulletstormRewrite.Items
             CycleLeftKey_KB = config.Bind(ConfigCategory, "What button should be pressed down to cycle to the previous equipment slot?", KeyCode.F, "").Value;
             CycleRightKey_KB = config.Bind(ConfigCategory, "What button should be pressed down to cycle to the next equipment slot", KeyCode.G, "").Value;
             UseScrollWheel = config.Bind(ConfigCategory, "Should the scrollwheel be used in addition to the cycle buttons?", true, "").Value;
+            cfgToolbotSwapsModded = config.Bind(ConfigCategory, "MUL-T swaps modded", true, "If true, then MUL-T Retool will swap between the last selected slot.");
 
             ModifierKey_KB = ModifierButton;
             CycleLeftKey_KB = CycleLeftButton;
@@ -357,6 +359,29 @@ localScale = new Vector3(1F, 1F, 1F)
             //On.RoR2.UI.EquipmentIcon.Update += EquipmentIcon_Update;
             On.RoR2.BodyCatalog.Init += GetBodyIndex;
             On.RoR2.UI.EquipmentIcon.Update += ShowCurrentSlot;
+
+            if (cfgToolbotSwapsModded.Value)
+            {
+                On.EntityStates.Toolbot.ToolbotStanceBase.SetEquipmentSlot += ToolbotStanceBase_SetEquipmentSlot;
+            }
+        }
+
+        private void ToolbotStanceBase_SetEquipmentSlot(On.EntityStates.Toolbot.ToolbotStanceBase.orig_SetEquipmentSlot orig, EntityStates.Toolbot.ToolbotStanceBase self, byte i)
+        {
+            orig(self, i);
+            bool isFirstStance = self is ToolbotStanceA;
+            CharacterBody characterBody = self.outer.commonComponents.characterBody;
+            if (characterBody && characterBody.master && characterBody.master.TryGetComponent<BackpackComponent>(out BackpackComponent backpackComponent))
+            {
+                if (isFirstStance)
+                {
+
+                } else
+                {
+
+                }
+                backpackComponent.SetActiveEquipmentSlot(backpackComponent.lastEquipmentSlot);
+            }
         }
 
         private void ShowCurrentSlot(On.RoR2.UI.EquipmentIcon.orig_Update orig, EquipmentIcon self)
@@ -466,6 +491,8 @@ localScale = new Vector3(1F, 1F, 1F)
             public byte selectableSlot = 0;
             private readonly string equipmentPrefix = "Selected slot ";
 
+            public byte lastEquipmentSlot = 0;
+
             public void RunOnce()
             {
                 Subscribe();
@@ -489,7 +516,13 @@ localScale = new Vector3(1F, 1F, 1F)
             {
                 UpdateCount();
                 if (inventory.activeEquipmentSlot > selectableSlot)
-                    inventory.SetActiveEquipmentSlot(selectableSlot);
+                    SetActiveEquipmentSlot(selectableSlot);
+            }
+
+            public void SetActiveEquipmentSlot(byte slot)
+            {
+                lastEquipmentSlot = inventory.activeEquipmentSlot;
+                inventory.SetActiveEquipmentSlot(slot);
             }
 
             public void OnBodyStart(CharacterBody characterBody)
@@ -576,14 +609,14 @@ localScale = new Vector3(1F, 1F, 1F)
                     return;
                 }
                 //Chat.AddMessage(equipmentPrefix + i);
-                inventory.SetActiveEquipmentSlot(i);
+                SetActiveEquipmentSlot(i);
             }
 
             private void CycleSlot(bool cycleRight)
             {
                 var currentSlot = inventory.activeEquipmentSlot + (cycleRight ? 1 : -1);
                 var newValue = (byte)LoopAround(currentSlot, 0, selectableSlot);
-                inventory.SetActiveEquipmentSlot(newValue);
+                SetActiveEquipmentSlot(newValue);
                 //Chat.AddMessage(equipmentPrefix + newValue);
             }
 

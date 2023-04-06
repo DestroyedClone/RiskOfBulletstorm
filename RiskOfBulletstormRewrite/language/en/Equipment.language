@@ -6,7 +6,7 @@
 		"RISKOFBULLETSTORM_EQUIPMENT_BOMBCOMPANIONAPP_DESCRIPTION": "Upon use, all explosives <style=cStack>(pots, bombs, mines, grenades, etc)</style> within <style=cIsUtility>{0}m</style> detonate. <style=cIsDamage>Tar-based</style> enemies take <style=cIsDamage>{1}% damage</style>, <style=cIsDamage>Jellyfish</style> take <style=cIsDamage>{2}% damage</style>, <style=cIsDamage>Wandering Vagrants</style> take <style=cIsDamage>{3}% damage</style>, and <style=cIsDamage>Dunestriders</style> take <style=cIsDamage>{4}% damage</style>.",
 		"RISKOFBULLETSTORM_EQUIPMENT_BOMBCOMPANIONAPP_LORE": "Kids these days can detonate explosives from their phones. In the early days of the Gungeon, some form of shooting was required.",
 
-		"RISKOFBULLETSTORM_EQUIPMENT_BOTTLE_NAME": "Bottle",
+		"RISKOFBULLETSTORM_EQUIPMENT_BOTTLE_NAME": "Bottle UNUSED",
 		"RISKOFBULLETSTORM_EQUIPMENT_BOTTLE_PICKUP": "<b>Heart Container</b>\nStores excess healing for use later.",
 		"RISKOFBULLETSTORM_EQUIPMENT_BOTTLE_DESCRIPTION": "While off cooldown, <style=cIsHealing>{0}% of healing</style> will be <style=cIsUtility>stored</style>, up to <style=cIsHealing>{1}%</style> of your <style=cIsHealing>maximum health</style>. Upon use, <style=cIsHealing>heal</style> for your stored <style=cIsHealing>healing</style>.",
 		"RISKOFBULLETSTORM_EQUIPMENT_BOTTLE_LORE": "\"A glass bottle! Woo!\"\n\"Woo? It's just a bottle... What's to like? We have way more impressive equipment- er... actives. Don't you think slowing down time is way better?\"\n\"Well, I had nothing before this. But now, I can pick up a heart for later.\"\n\"Still seems useless. The shop has the machine for that.\"\n\"I'm happy with this. Come, let's go to the next room, I think there's a miniboss ahead.\"",
@@ -18,12 +18,12 @@
 		"RISKOFBULLETSTORM_EQUIPMENT_BRICKOFCASH_SAYCASH": "{0} has ${1}!",
 		"RISKOFBULLETSTORM_EQUIPMENT_BRICKOFCASH_SAYCASH_2P": "You have ${1}!",
 
-		"RISKOFBULLETSTORM_EQUIPMENT_CHESTTELEPORTER_NAME": "Chest Teleporter",
+		"RISKOFBULLETSTORM_EQUIPMENT_CHESTTELEPORTER_NAME": "Chest Teleporter UNUSED",
 		"RISKOFBULLETSTORM_EQUIPMENT_CHESTTELEPORTER_PICKUP": "Consumes a chest for Rusted Keys.",
 		"RISKOFBULLETSTORM_EQUIPMENT_CHESTTELEPORTER_DESCRIPTION": "Upon use, the nearest chest will get <style=cIsUtility>consumed</style>, spawning a <style=cIsUtility>Rusted Key</style>. Regular chests give {0}, Large chests give {1}, and Legendary Chests give {2}.",
 		"RISKOFBULLETSTORM_EQUIPMENT_CHESTTELEPORTER_LORE": "This unusual adventuring tool moves a chest forward in the timestream, causing it to age and possibly level up!",
 
-		"RISKOFBULLETSTORM_EQUIPMENT_MOLOTOV_NAME": "Molotov",
+		"RISKOFBULLETSTORM_EQUIPMENT_MOLOTOV_NAME": "Molotov UNUSED",
 		"RISKOFBULLETSTORM_EQUIPMENT_MOLOTOV_PICKUP": "Feel The Burn\nUpon use, throws a molotov that sets an area on fire.",
 		"RISKOFBULLETSTORM_EQUIPMENT_MOLOTOV_DESCRIPTION": "Throws a <style=cIsDamage>molotov</style> that <style=cIsDamage>explodes</style> into a <style=cIsDamage>burning</style> zone dealing <style=cIsDamage>{0} every {1} second for {2} seconds</style>.",
 		"RISKOFBULLETSTORM_EQUIPMENT_MOLOTOV_LORE": "Molotov cocktails aren't guns, and so they are frowned upon by long-dwelling Gungeoneers. They get the job done regardless.\nKnowing the Hegemony wouldn't let her bring her own weaponry to the Gungeon, the Convict smuggled these few bottles in with the transport's cargo.",
@@ -33,26 +33,24 @@
 		"RISKOFBULLETSTORM_EQUIPMENT_ORANGE_DESCRIPTION": "<style=cIsUtility>Eat</style> to <style=cIsHealing>increase maximum health by {0}%</style>, <style=cIsHealing>heal for {0}% health, and <style=cIsUtility>reduce equipment cooldown by {2}%</style>.",
 		"RISKOFBULLETSTORM_EQUIPMENT_ORANGE_LORE": "With this orange, your style... it's impetuous. Your defense, impregnable.",
 
-		//same as item
-		//for the sake of a stat errors
 		"RISKOFBULLETSTORM_EQUIPMENT_ORANGECONSUMED_NAME": "Orange (Consumed)",
 		"RISKOFBULLETSTORM_EQUIPMENT_ORANGECONSUMED_PICKUP": "<b>Peel or No Peel</b>\nYou ate the whole thing.",
 		"RISKOFBULLETSTORM_EQUIPMENT_ORANGECONSUMED_DESCRIPTION": "Looks citrus, but that's about it.",
 		"RISKOFBULLETSTORM_EQUIPMENT_ORANGECONSUMED_LORE": "Formerly with style, now a disgrace...",
 
-		"RISKOFBULLETSTORM_EQUIPMENT_JARBEES_NAME": "Jar of Bees",
+		"RISKOFBULLETSTORM_EQUIPMENT_JARBEES_NAME": "Jar of Bees UNUSED",
 		"RISKOFBULLETSTORM_EQUIPMENT_JARBEES_PICKUP": "<b>The Pain!</b>\nThrow a jar of bees that shatters on contact.",
 		"RISKOFBULLETSTORM_EQUIPMENT_JARBEES_DESCRIPTION": "<style=cIsUtility>Throw</style> a <style=cIsDamage>jar of bees</style> that shatters into <style=cIsDamage>{0} bees</style> that deal <style=cIsDamage>{1}% damage</style> with a <style=cIsDamage>{2} proc coefficient</style>.",
 		"RISKOFBULLETSTORM_EQUIPMENT_JARBEES_LORE": "These bees have been carefully trained to hunt down enemy munitions... and destroy them.",
 
-		"RISKOFBULLETSTORM_EQUIPMENT_SHADOWCLONE_NAME": "Shadow Clone",
+		"RISKOFBULLETSTORM_EQUIPMENT_SHADOWCLONE_NAME": "Shadow Clone UNUSED",
 		"RISKOFBULLETSTORM_EQUIPMENT_SHADOWCLONE_PICKUP": "<b>No Jutsu</b>\nCreates a temporary second you.",
 		"RISKOFBULLETSTORM_EQUIPMENT_SHADOWCLONE_DESCRIPTION": "Eat to heal to full health.",
 		"RISKOFBULLETSTORM_EQUIPMENT_SHADOWCLONE_LORE": "Though the quality of this clone is debatable, Believe It! or not, this clone has seen extensive use in the Gungeon.\n\nNot to be confused with the Clone. While the Clone provides a second chance at life, the Shadow Clone will merely laugh at you upon your demise.",
 
 		"RISKOFBULLETSTORM_EQUIPMENT_WEIRDEGG_NAME": "Weird Egg",
 		"RISKOFBULLETSTORM_EQUIPMENT_WEIRDEGG_PICKUP": "<b>Miracle of Gun</b>\nGestates over time. Use to acquire... something.",
-		"RISKOFBULLETSTORM_EQUIPMENT_WEIRDEGG_DESCRIPTION": "Eat to heal to full health.",
+		"RISKOFBULLETSTORM_EQUIPMENT_WEIRDEGG_DESCRIPTION": "<style=cIsUtility>Eat</style> to <style=cIsHealing>heal to full health</style>, or use it for something else.",
 		"RISKOFBULLETSTORM_EQUIPMENT_WEIRDEGG_LORE": "A strange egg found in the Gungeon. High in protein.",
 
 		//[LUNAR]
@@ -73,13 +71,30 @@
 
 		"RISKOFBULLETSTORM_EQUIPMENT_IRONCOINCONSUMED_NAME": "Iron Coin (Spent)",
 		"RISKOFBULLETSTORM_EQUIPMENT_IRONCOINCONSUMED_PICKUP": "<b>Valar Morgunis</b>\nDeed has been paid...",
-		"RISKOFBULLETSTORM_EQUIPMENT_IRONCOINCONSUMED_DESCRIPTION": "It looks neat, that's about it. I suppose you can still flip it.",
+		"RISKOFBULLETSTORM_EQUIPMENT_IRONCOINCONSUMED_DESCRIPTION": "It looks neat, that's about it. I suppose you can still <style=cIsUtility>flip it</style>.",
 		"RISKOFBULLETSTORM_EQUIPMENT_IRONCOINCONSUMED_LORE": "A payment for services rendered.",
 		"RISKOFBULLETSTORM_EQUIPMENT_IRONCOINCONSUMED_FLAVOR": "{0} flipped a coin. The result was {1}",
 		"RISKOFBULLETSTORM_EQUIPMENT_IRONCOINCONSUMED_FLAVOR_2P": "You flipped a coin. The result was {1}",
 		"RISKOFBULLETSTORM_EQUIPMENT_IRONCOINCONSUMED_FLAVORHEADS": "Heads!",
 		"RISKOFBULLETSTORM_EQUIPMENT_IRONCOINCONSUMED_FLAVORTAILS": "Tails!",
 		"RISKOFBULLETSTORM_EQUIPMENT_IRONCOINCONSUMED_FLAVORSIDE": "Neither! ...huh?",
+
+		"RISKOFBULLETSTORM_EQUIPMENT_SPICE_NAME": "Spice",
+		"RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP": "SHOUDLNT BE SEEN<b>A tantalizing cube of power.</b>\nIncreases <style=cIsDamage>combat prowess</style>, with <style=cDeath>absolutely no downside</style>!",
+		"RISKOFBULLETSTORM_EQUIPMENT_SPICE_DESCRIPTION": "<style=cIsUtility>Increases stats based on the spice amount consumed</style>, but has <style=cDeath>with detrimental effect on excessive consumption</style>. <style=cDeath>Grants curse on each use</style>.",
+		"RISKOFBULLETSTORM_EQUIPMENT_SPICE_LORE": "A potent gun-enhancing drug from the far reaches of the galaxy. It is known to be extremely addictive, and extremely expensive.",
+
+		"RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP_USES_0": "A tantalizing cube of power.",
+		"RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP_USES_1": "One more couldn't hurt.",
+		"RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP_USES_2": "Just one more hit...",
+		"RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP_USES_3": "MORE",
+		"RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP_FORMAT": "<b>{0}</b>\nIncreases <style=cIsDamage>combat prowess</style>, with <style=cDeath>absolutely no downside</style>!",
+
+		"RISKOFBULLETSTORM_EQUIPMENT_SPICECONSUMED_NAME": "Spice Wrapper",
+		"RISKOFBULLETSTORM_EQUIPMENT_SPICECONSUMED_PICKUP": "<b>Licked Clean</b>\nYou should really throw this contraband coating away.",
+		"RISKOFBULLETSTORM_EQUIPMENT_SPICECONSUMED_DESCRIPTION": "For <style=cDeath>each player with Spice Wrapper</style>, nothing happens! i mean you shouldnt see this unless you're using like betterui or something, its not coded yet to do anything",
+		"RISKOFBULLETSTORM_EQUIPMENT_SPICECONSUMED_LORE": "za sbicey",
+
 
 		//[ELITE]
 

@@ -64,6 +64,8 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public virtual bool IsLunar { get; } = false;
 
+        public virtual bool CanBeDroppedByPlayer { get; } = true;
+
         /// <summary>
         /// Can be randomly triggered by things such as Bottled Chaos
         /// </summary>
@@ -89,7 +91,7 @@ namespace RiskOfBulletstormRewrite.Equipment
             }
         }
 
-        public string EquipmentPickupToken
+        public virtual string EquipmentPickupToken
         {
             get
             {
@@ -97,7 +99,7 @@ namespace RiskOfBulletstormRewrite.Equipment
             }
         }
 
-        public string EquipmentDescriptionToken
+        public virtual string EquipmentDescriptionToken
         {
             get
             {
@@ -190,6 +192,10 @@ namespace RiskOfBulletstormRewrite.Equipment
                 ContentAddition.AddUnlockableDef(UnlockableDef);
                 EquipmentDef.unlockableDef = UnlockableDef;
             }
+            if (!CanBeDroppedByPlayer)
+            {
+
+            }
 
             //EquipmentDef.colorIndex
 
@@ -197,6 +203,7 @@ namespace RiskOfBulletstormRewrite.Equipment
             On.RoR2.EquipmentSlot.PerformEquipmentAction += PerformEquipmentAction;
         }
 
+        //runs on server
         private bool PerformEquipmentAction(On.RoR2.EquipmentSlot.orig_PerformEquipmentAction orig, RoR2.EquipmentSlot self, EquipmentDef equipmentDef)
         {
             if (Tweaks.EquipmentCanBeDropped(equipmentDef)
@@ -227,19 +234,22 @@ namespace RiskOfBulletstormRewrite.Equipment
             }
         }
 
+        //runs on server
         protected abstract bool ActivateEquipment(EquipmentSlot slot);
 
         public virtual void Hooks()
         { }
 
-        public Sprite LoadSprite()
+        public Sprite LoadSprite(string equipmentNameToken = "")
         {
-            return Assets.LoadSprite($"EQUIPMENT_{EquipmentLangTokenName}");
+            var token = equipmentNameToken == "" ? EquipmentLangTokenName : equipmentNameToken;
+            return Assets.LoadSprite($"EQUIPMENT_{token}");
         }
 
-        public GameObject LoadModel()
+        public GameObject LoadModel(string equipmentNameToken = "")
         {
-            return Assets.LoadObject($"{EquipmentLangTokenName}.prefab");
+            var token = equipmentNameToken == "" ? EquipmentLangTokenName : equipmentNameToken;
+            return Assets.LoadObject($"{token}.prefab");
         }
 
         public static implicit operator EquipmentBase(Type v)

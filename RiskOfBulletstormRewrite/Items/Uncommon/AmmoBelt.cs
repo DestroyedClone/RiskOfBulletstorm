@@ -32,7 +32,6 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void Init(ConfigFile config)
         {
-            return;
             CreateConfig(config);
             CreateLang();
             CreateItem();
@@ -41,7 +40,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void CreateConfig(ConfigFile config)
         {
-            cfgPercentageStockAdditive = config.Bind(ConfigCategory, "Percentage", 0.09f, "");
+            cfgPercentageStockAdditive = config.Bind(ConfigCategory, "Percentage", 0.09f, "This value is rounded when giving stocks.");
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
@@ -63,14 +62,25 @@ namespace RiskOfBulletstormRewrite.Items
 
         public void AddAmmoBeltStocks(On.RoR2.GenericSkill.orig_SetBonusStockFromBody orig, GenericSkill self, int newBonusStockFromBody)
         {
-            var characterBody = self.characterBody;
-            if (characterBody)
+            if (self.baseStock > 0)
             {
-                var itemCount = GetCount(characterBody);
-                if (itemCount > 0)
+                var characterBody = self.characterBody;
+                if (characterBody)
                 {
-                    var stocksToGive = (int)Mathf.Max(1, itemCount * cfgPercentageStockAdditive.Value);
-                    newBonusStockFromBody += stocksToGive;
+                    var itemCount = GetCount(characterBody);
+                    if (itemCount > 0)
+                    {
+                        int stocksToGive = 0;
+                        if (itemCount == 1)
+                        {
+                            stocksToGive = 1;
+                        } else
+                        {
+                            var multipliedValue = itemCount * cfgPercentageStockAdditive.Value;
+                            newBonusStockFromBody = Mathf.RoundToInt(multipliedValue);
+                        }
+                        newBonusStockFromBody += stocksToGive;
+                    }
                 }
             }
 

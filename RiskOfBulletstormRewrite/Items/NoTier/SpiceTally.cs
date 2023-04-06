@@ -1,4 +1,4 @@
-﻿using BepInEx.Configuration;
+using BepInEx.Configuration;
 using R2API;
 using RiskOfBulletstormRewrite.Modules;
 using RoR2;
@@ -8,21 +8,24 @@ namespace RiskOfBulletstormRewrite.Items
 {
     public class SpiceTally : ItemBase<SpiceTally>
     {
-        public override string ItemName => "Spice (Consumed)";
+        public override string ItemName => "SpiceTally";
 
         public override string ItemLangTokenName => "SPICETALLY";
 
         public override ItemTier Tier => ItemTier.NoTier;
 
         public override GameObject ItemModel => Assets.NullModel;
-        public override Sprite ItemIcon => LoadSprite();
 
-        public static GameObject ItemBodyModelPrefab;
+        public override Sprite ItemIcon => LoadSprite(); //sprite is fine, its gonna show up in inv
+
+        public override bool Hidden => true;
+
+        public override ItemTag[] ItemTags => new ItemTag[]
+        {
+        };
 
         public override void Init(ConfigFile config)
         {
-            CreateConfig(config);
-            CreateLang();
             CreateItem();
         }
 

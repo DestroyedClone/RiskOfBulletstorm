@@ -117,7 +117,7 @@ namespace RiskOfBulletstormRewrite.Items
                 }
             }
             //this.areaIndicatorInstance.SetActive(this.goodPlacement);
-            areaIndicatorInstance.transform.localScale = Vector3.one * (goodPlacement ? 1f : 0.25f);
+            areaIndicatorInstance.transform.localScale = Vector3.one * (goodPlacement ? 1f : -1f);
         }
 
         protected virtual Vector3 GetBlinkVector()
@@ -127,6 +127,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         private void CreateBlinkEffect(Vector3 origin)
         {
+            return;
             EffectData effectData = new EffectData
             {
                 rotation = Util.QuaternionSafeLookRotation(this.blinkVector),

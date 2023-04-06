@@ -1,16 +1,34 @@
 ﻿using RoR2;
+using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace RiskOfBulletstormRewrite.Modules
 {
     internal static class Assets
     {
-        internal static GameObject NullModel = LegacyResourcesAPI.Load<GameObject>("prefabs/nullmodel");
-        internal static Sprite NullSprite = LegacyResourcesAPI.Load<Sprite>("textures/itemicons/texnullicon");
+        internal static GameObject NullModel = LoadAsset<GameObject>("RoR2/Base/Core/NullModel.prefab");
+        internal static Sprite NullSprite = LoadAsset<Sprite>("RoR2/Base/Core/texNullIcon.png");
+
+        internal static ItemTierDef itemLunarTierDef = LoadAsset<ItemTierDef>("RoR2/Base/Common/LunarTierDef.asset");
+        internal static ItemTierDef itemBossTierDef = LoadAsset<ItemTierDef>("RoR2/Base/Common/BossTierDef.asset");
+        internal static ItemTierDef itemTier1Def = LoadAsset<ItemTierDef>("RoR2/Base/Common/Tier1Def.asset");
+        internal static ItemTierDef itemTier2Def = LoadAsset<ItemTierDef>("RoR2/Base/Common/Tier2Def.asset");
+        internal static ItemTierDef itemTier3Def = LoadAsset<ItemTierDef>("RoR2/Base/Common/Tier3Def.asset");
+        internal static ItemTierDef itemVoidBossTierDef = LoadAsset<ItemTierDef>("RoR2/DLC1/Common/VoidBossDef.asset");
+        internal static ItemTierDef itemVoidTier1Def = LoadAsset<ItemTierDef>("RoR2/DLC1/Common/VoidTier1Def.asset");
+        internal static ItemTierDef itemVoidTier2Def = LoadAsset<ItemTierDef>("RoR2/DLC1/Common/VoidTier2Def.asset");
+        internal static ItemTierDef itemVoidTier3Def = LoadAsset<ItemTierDef>("RoR2/DLC1/Common/VoidTier3Def.asset");
 
         //the bundle to load assets from
         public static AssetBundle mainAssetBundle;
+
+        public static T LoadAsset<T> (string path)
+        {
+            return Addressables.LoadAssetAsync<T>(path).WaitForCompletion();
+        }
+
 
         internal static string assemblyDir
         {

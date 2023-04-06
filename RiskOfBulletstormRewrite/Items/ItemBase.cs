@@ -174,6 +174,7 @@ namespace RiskOfBulletstormRewrite.Items
             ItemDef.hidden = false;
             ItemDef.canRemove = CanRemove;
             //ItemDef.tier = Tier;
+
             ItemDef.deprecatedTier = Tier;
             if (Tier == ItemTier.VoidTier1
             || Tier == ItemTier.VoidTier2
@@ -234,14 +235,16 @@ namespace RiskOfBulletstormRewrite.Items
             return GetStack(initialValue.Value, stackValue.Value, itemCount);
         }
 
-        public Sprite LoadSprite()
+        public Sprite LoadSprite(string itemNameToken = "")
         {
-            return Assets.LoadSprite($"ITEM_{ItemLangTokenName}");
+            var token = itemNameToken == "" ? ItemLangTokenName : itemNameToken;
+            return Assets.LoadSprite($"ITEM_{token}");
         }
 
-        public GameObject LoadModel()
+        public GameObject LoadModel(string itemNameToken = "")
         {
-            return Assets.LoadObject($"{ItemLangTokenName}.prefab");
+            var token = itemNameToken == "" ? ItemLangTokenName : itemNameToken;
+            return Assets.LoadObject($"{token}.prefab");
         }
 
         public static implicit operator ItemBase(Type v)
