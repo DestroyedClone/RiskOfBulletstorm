@@ -33,8 +33,6 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override ItemTag[] ItemTags => new ItemTag[] { ItemTag.Any, ItemTag.Healing };
 
-        public static GameObject ItemBodyModelPrefab;
-
         public override void Init(ConfigFile config)
         {
             CreateConfig(config);
@@ -325,14 +323,14 @@ localScale = new Vector3(1F, 1F, 1F)
         public override void Hooks()
         {
             On.RoR2.PurchaseInteraction.OnInteractionBegin += AddBuffOnUse;
-            R2API.RecalculateStatsAPI.GetStatCoefficients += Mustache_StatCoefficients;
+            RecalculateStatsAPI.GetStatCoefficients += Mustache_StatCoefficients;
         }
 
         private void Mustache_StatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (sender && sender.HasBuff(Buffs.MustacheBuff))
             {
-                args.baseRegenAdd += cfgRegenAmount.Value + cfgRegenAmountPerStack.Value * (GetCount(sender) - 1);
+                args.baseRegenAdd += GetStack(cfgRegenAmount, cfgRegenAmountPerStack, GetCount(sender));
             }
         }
 
@@ -341,10 +339,9 @@ localScale = new Vector3(1F, 1F, 1F)
             orig(self, activator);
             if (!activator) return;
             CharacterBody characterBody = activator.GetComponent<CharacterBody>();
-            if (characterBody && characterBody.inventory)
+            if (characterBody?.inventory)
             {
-                var itemCount = GetCount(characterBody);
-                if (itemCount > 0)
+                if (GetCount(characterBody) > 0)
                 {
                     var isBloodShrine = self.costType == CostTypeIndex.PercentHealth;
                     var isCost = self.costType > CostTypeIndex.None;

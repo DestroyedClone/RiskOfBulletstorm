@@ -9,7 +9,6 @@ namespace RiskOfBulletstormRewrite.Equipment
 {
     public class TrustyLockpicks : EquipmentBase<TrustyLockpicks>
     {
-        // TODO: Context string edits
         public static ConfigEntry<float> cfgUnlockChance;
 
         public static ConfigEntry<float> cfgPriceMultiplier;
@@ -32,8 +31,6 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         private readonly string UnlockSound = EntityStates.Engi.EngiWeapon.FireMines.throwMineSoundString;
         private readonly GameObject UnlockEffect = LegacyResourcesAPI.Load<GameObject>("prefabs/effects/LevelUpEffect");
-
-        //private readonly GameObject Fail_DestroyEffect = LegacyResourcesAPI.Load<GameObject>("prefabs/effects/ShieldBreakEffect");
         private readonly GameObject Fail_LockEffect = LegacyResourcesAPI.Load<GameObject>("prefabs/effects/LevelUpEffectEnemy");
 
         public override void Init(ConfigFile config)

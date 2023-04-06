@@ -44,20 +44,46 @@ namespace RiskOfBulletstormRewrite.Equipment
 
             Requirement: CharacterBody (pot?) w/ custom entitystates
         */
+        public enum WeirdEggStatus
+        {
+            NotDropped,
+            Dropped,
+            Owned,
+            SpawnedBoss
+        }
+
+        public WeirdEggStatus eggStatus;
+        public void UpdateEggStatus(WeirdEggStatus weirdEggStatus)
+        {
+            var oldStatus = eggStatus;
+            eggStatus = weirdEggStatus;
+
+
+        }
 
         public override void Hooks()
         {
             Stage.onServerStageComplete += Stage_onServerStageComplete;
+            PickupDropletController.onDropletHitGroundServer += PickupDropletController_onDropletHitGroundServer;
         }
 
+        private void PickupDropletController_onDropletHitGroundServer(ref GenericPickupController.CreatePickupInfo createPickupInfo, ref bool shouldSpawn)
+        {
+            if (!shouldSpawn) return;
+            if (createPickupInfo.pickupIndex == PickupCatalog.FindPickupIndex(EquipmentDef.equipmentIndex))
+            {
+                if (eggStatus == WeirdEggStatus.NotDropped)
+                {
+                    eggStatus = WeirdEggStatus.Dropped;
+                }
+            }
+        }
 
         private void Stage_onServerStageComplete(Stage stage)
         {
             foreach (var player in PlayerCharacterMasterController.instances)
             {
-                if (player
-                    && player.master
-                    && player.master.inventory)
+                if (player?.master?.inventory)
                 {
                     bool hasEgg = false;
                     foreach (var slot in player.master.inventory.equipmentStateSlots)
@@ -74,8 +100,9 @@ namespace RiskOfBulletstormRewrite.Equipment
                     }
                     else
                     {
-                        var itemCount = player.master.inventory.GetItemCount(Items.WeirdEggStageClearTally.instance.ItemDef);
-                        player.master.inventory.RemoveItem(Items.WeirdEggStageClearTally.instance.ItemDef, itemCount);
+                        player.master.inventory.ResetItem(Items.WeirdEggStageClearTally.instance.ItemDef);
+                        //var itemCount = player.master.inventory.GetItemCount(Items.WeirdEggStageClearTally.instance.ItemDef);
+                        //player.master.inventory.RemoveItem(Items.WeirdEggStageClearTally.instance.ItemDef, itemCount);
                     }
                 }
             }
@@ -372,6 +399,11 @@ localScale = new Vector3(1F, 1F, 1F)
                 }
             }
             return false;
+        }
+
+        public override void DropEquipment(EquipmentSlot equipmentSlot, EquipmentDef equipmentDef)
+        {
+            base.DropEquipment(equipmentSlot, equipmentDef);
         }
     }
 }

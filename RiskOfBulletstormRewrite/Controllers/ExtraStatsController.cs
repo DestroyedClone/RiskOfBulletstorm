@@ -179,10 +179,6 @@ namespace RiskOfBulletstormRewrite.Controllers
 
         private const string projectileAddress = "https://raw.githubusercontent.com/DestroyedClone/RiskOfBulletstorm/master/RiskOfBulletstormRewrite/Controllers/ModdedProjectileNames.txt";
 
-        //private static readonly GameObject DisposableMissileLauncherPrefab = Load<GameObject>("Prefabs/Projectiles/MissileProjectile");
-        //private static readonly GameObject LoaderHookPrefab = Load<GameObject>("prefabs/projectiles/LoaderHook");
-        //private static readonly GameObject LoaderYankHookPrefab = Load<GameObject>("prefabs/projectiles/LoaderYankHook");
-
         /// <summary> Method to return a float from the  </summary>
         /// <param name="accuracy"></param>
         /// <param name="multiplier"></param>

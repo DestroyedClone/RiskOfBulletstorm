@@ -16,7 +16,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override GameObject ItemModel => Assets.NullModel;
 
-        public override Sprite ItemIcon => LoadSprite(); //sprite is fine, its gonna show up in inv
+        public override Sprite ItemIcon => LoadSprite();
 
         public override bool Hidden => true;
 
@@ -31,7 +31,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
         {
-            return new ItemDisplayRuleDict();
+            return null;
         }
     }
 }

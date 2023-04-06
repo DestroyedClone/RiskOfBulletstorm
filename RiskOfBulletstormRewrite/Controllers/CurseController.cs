@@ -1,7 +1,6 @@
 ﻿using BepInEx.Configuration;
 using RiskOfBulletstormRewrite.Items;
 using RoR2;
-using UnityEngine;
 using UnityEngine.Networking;
 
 namespace RiskOfBulletstormRewrite.Controllers

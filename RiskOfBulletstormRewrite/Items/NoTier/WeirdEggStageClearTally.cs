@@ -30,16 +30,11 @@ namespace RiskOfBulletstormRewrite.Items
         {
             CreateLang();
             CreateItem();
-            Hooks();
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
         {
-            return new ItemDisplayRuleDict();
-        }
-
-        public override void Hooks()
-        {
+            return null;
         }
     }
 }

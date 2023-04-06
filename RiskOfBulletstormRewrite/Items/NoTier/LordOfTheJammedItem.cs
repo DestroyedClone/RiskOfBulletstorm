@@ -31,13 +31,9 @@ namespace RiskOfBulletstormRewrite.Items
             Hooks();
         }
 
-        public override void CreateConfig(ConfigFile config)
-        {
-        }
-
         public override ItemDisplayRuleDict CreateItemDisplayRules()
         {
-            return new ItemDisplayRuleDict();
+            return null;
         }
 
         public override void Hooks()

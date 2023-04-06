@@ -22,8 +22,6 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public override Sprite EquipmentIcon => LoadSprite();
 
-        public static GameObject CashProjectile = null;
-
         public List<ChestRevealer.PendingReveal> cashPendingReveals = new List<ChestRevealer.PendingReveal>();
 
 

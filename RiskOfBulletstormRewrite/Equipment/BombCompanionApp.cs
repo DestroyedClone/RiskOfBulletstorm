@@ -11,7 +11,6 @@ namespace RiskOfBulletstormRewrite.Equipment
 {
     public class BombCompanionApp : EquipmentBase<BombCompanionApp>
     {
-        // TODO: Add Visualizer for explosion radius
         // Add more effects for use
         // Adjust damage and cooldown
         // Add assets (model, idrs, sound)

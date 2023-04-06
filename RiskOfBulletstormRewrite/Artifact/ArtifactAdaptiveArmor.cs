@@ -48,7 +48,7 @@ namespace RiskOfBulletstormRewrite.Artifact
 
         private void CharacterBody_onBodyStartGlobal(CharacterBody characterBody)
         {
-            if (NetworkServer.active && characterBody.isBoss && characterBody.inventory && characterBody.inventory.GetItemCount(RoR2Content.Items.AdaptiveArmor) <= 0)
+            if (NetworkServer.active && characterBody.isBoss && characterBody.inventory?.GetItemCount(RoR2Content.Items.AdaptiveArmor) <= 0)
             {
                 characterBody.inventory.GiveItem(RoR2Content.Items.AdaptiveArmor);
             }

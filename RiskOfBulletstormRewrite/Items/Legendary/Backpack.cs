@@ -369,17 +369,10 @@ localScale = new Vector3(1F, 1F, 1F)
         private void ToolbotStanceBase_SetEquipmentSlot(On.EntityStates.Toolbot.ToolbotStanceBase.orig_SetEquipmentSlot orig, EntityStates.Toolbot.ToolbotStanceBase self, byte i)
         {
             orig(self, i);
-            bool isFirstStance = self is ToolbotStanceA;
+            //bool isFirstStance = self is ToolbotStanceA;
             CharacterBody characterBody = self.outer.commonComponents.characterBody;
             if (characterBody && characterBody.master && characterBody.master.TryGetComponent<BackpackComponent>(out BackpackComponent backpackComponent))
             {
-                if (isFirstStance)
-                {
-
-                } else
-                {
-
-                }
                 backpackComponent.SetActiveEquipmentSlot(backpackComponent.lastEquipmentSlot);
             }
         }

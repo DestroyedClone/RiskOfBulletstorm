@@ -54,15 +54,7 @@ namespace RiskOfBulletstormRewrite.Modules
                     mainAssetBundle = AssetBundle.LoadFromStream(assetStream);
                 }
             }
-            /*
-            using (Stream manifestResourceStream2 = Assembly.GetExecutingAssembly().GetManifestResourceStream("PaladinMod.Paladin.bnk"))
-            {
-                byte[] array = new byte[manifestResourceStream2.Length];
-                manifestResourceStream2.Read(array, 0, array.Length);
-                SoundAPI.SoundBanks.Add(array);
-            }*/
         }
-
         //https://forum.unity.com/threads/generating-sprites-dynamically-from-png-or-jpeg-files-in-c.343735/#post-3177001
 
         public static Sprite LoadSprite(string path)

@@ -48,7 +48,7 @@ namespace RiskOfBulletstormRewrite.Items
             Hooks();
         }
 
-        public string[] rollSkillDefParams => new string[]
+        public string[] RollSkillDefParams => new string[]
         {
             GetChance(cfgDamageVulnerabilityMultiplier),
             GetChance(cfgDamageVulnerabilityMultiplierPerStack),
@@ -68,7 +68,7 @@ namespace RiskOfBulletstormRewrite.Items
         protected override void CreateLang()
         {
             base.CreateLang();
-            LanguageOverrides.DeferToken(rollSkillDef.skillDescriptionToken, rollSkillDefParams);
+            LanguageOverrides.DeferToken(rollSkillDef.skillDescriptionToken, RollSkillDefParams);
 
             LanguageOverrides.DeferLateTokens(ItemDescriptionToken, new string[] { rollSkillDef.skillDescriptionToken });
             LanguageOverrides.DeferLateTokens(ItemDescriptionLogbookToken, new string[]{

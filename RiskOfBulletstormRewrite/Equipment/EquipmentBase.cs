@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Rewired;
+using IL.RoR2.ConVar;
 
 namespace RiskOfBulletstormRewrite.Equipment
 {
@@ -203,6 +204,11 @@ namespace RiskOfBulletstormRewrite.Equipment
             On.RoR2.EquipmentSlot.PerformEquipmentAction += PerformEquipmentAction;
         }
 
+        public virtual void DropEquipment(EquipmentSlot equipmentSlot, EquipmentDef equipmentDef)
+        {
+            Tweaks.DropEquipment(equipmentSlot, equipmentDef);
+        }
+
         //runs on server
         private bool PerformEquipmentAction(On.RoR2.EquipmentSlot.orig_PerformEquipmentAction orig, RoR2.EquipmentSlot self, EquipmentDef equipmentDef)
         {
@@ -220,7 +226,7 @@ namespace RiskOfBulletstormRewrite.Equipment
                 bool inputCheck = self.inputBank && self.inputBank.interact.down;
                 if (inputCheck)
                 {
-                    Tweaks.DropEquipment(self, equipmentDef);
+                    DropEquipment(self, equipmentDef);
                     return true;
                 }
             }

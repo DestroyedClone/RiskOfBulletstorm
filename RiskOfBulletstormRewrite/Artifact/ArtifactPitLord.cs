@@ -42,7 +42,6 @@ namespace RiskOfBulletstormRewrite.Artifact
         {
             if (artifactDef != ArtifactDef)
             {
-                //_logger.LogMessage($"Artifact {artifactDef} (ID:{artifactDef.artifactIndex}) does not equal {ArtifactDef} (ID:{ArtifactDef.artifactIndex})");
                 return;
             }
             CharacterBody.onBodyStartGlobal += GiveOobTeleport;

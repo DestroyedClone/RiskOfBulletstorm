@@ -64,13 +64,9 @@ namespace RiskOfBulletstormRewrite
 
             LocationOfProgram = Path.GetDirectoryName(Info.Location);
 
-            // Don't know how to create/use an asset bundle, or don't have a unity project set up?
-            // Look here for info on how to set these up: https://github.com/KomradeSpectre/AetheriumMod/blob/rewrite-master/Tutorials/Item%20Mod%20Creation.md#unity-project
-
             Assets.Init();
 
             Utils.Buffs.CreateBuffs();
-            //On.RoR2.Language.LoadTokensFromFile += Language_LoadTokensFromFile;
 
             AddToAssembly();
             SetupVoid();
@@ -88,8 +84,6 @@ namespace RiskOfBulletstormRewrite
 
             ModSupport.CheckForModSupport();
 
-            //todo enemy essembly thing
-            //Enemies.LordofTheJammedMonster.CreatePrefab();
             Commands.Initialize();
             Tweaks.Init(Config);
             /* stupidlanguageshit(); */
@@ -126,10 +120,10 @@ namespace RiskOfBulletstormRewrite
 
         public void SetupVoid()
         {
-            On.RoR2.Items.ContagiousItemManager.Init += MethodNameHere;
+            On.RoR2.Items.ContagiousItemManager.Init += SetupContagiousItemManager;
         }
 
-        private void MethodNameHere(On.RoR2.Items.ContagiousItemManager.orig_Init orig)
+        private void SetupContagiousItemManager(On.RoR2.Items.ContagiousItemManager.orig_Init orig)
         {
             foreach (var itemPair in voidConversions)
             {

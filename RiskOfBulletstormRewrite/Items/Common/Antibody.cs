@@ -41,7 +41,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void CreateConfig(ConfigFile config)
         {
-            cfgChance = config.Bind(ConfigCategory, "Heal Chance", 25f, "What is the chance in percent of the item activating?");
+            cfgChance = config.Bind(ConfigCategory, "Heal Chance", 25f, "What is the chance in percent of the item activating? 25 = 25%");
             cfgMultiplier = config.Bind(ConfigCategory, "Multiplier", 0.33f, "What is the amount of healing increased by?");
             cfgMultiplierPerStack = config.Bind(ConfigCategory, "Multiplier per stack", 0.11f, "What is the amount of healing increased by per stack?");
         }
@@ -324,23 +324,15 @@ localScale = new Vector3(1F, 1F, 1F)
 
         private float HealthComponent_Heal(On.RoR2.HealthComponent.orig_Heal orig, HealthComponent self, float amount, ProcChainMask procChainMask, bool nonRegen)
         {
-            //_logger.LogMessage($"Heal: regen: {nonRegen}");
             if (nonRegen)
             {
                 if (GetCount(self.body) > 0)
                 {
-                    //timothy: 0.25f chance = 0.0025% chance. 25f = 25% chance. got it?
                     if (Util.CheckRoll(cfgChance.Value))
                     {
                         var itemCount = self.body.inventory.GetItemCount(ItemDef);
                         var multiplier = 1f + cfgMultiplier.Value + cfgMultiplierPerStack.Value * (itemCount - 1);
-                        //var oldHeal = amount;
                         amount *= multiplier;
-                        //_logger.LogMessage($"roll won: {oldHeal} -> {amount}");
-                    }
-                    else
-                    {
-                        //_logger.LogMessage("roll failed");
                     }
                 }
             }

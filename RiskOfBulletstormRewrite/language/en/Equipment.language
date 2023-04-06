@@ -49,7 +49,7 @@
 		"RISKOFBULLETSTORM_EQUIPMENT_SHADOWCLONE_LORE": "Though the quality of this clone is debatable, Believe It! or not, this clone has seen extensive use in the Gungeon.\n\nNot to be confused with the Clone. While the Clone provides a second chance at life, the Shadow Clone will merely laugh at you upon your demise.",
 
 		"RISKOFBULLETSTORM_EQUIPMENT_WEIRDEGG_NAME": "Weird Egg",
-		"RISKOFBULLETSTORM_EQUIPMENT_WEIRDEGG_PICKUP": "<b>Miracle of Gun</b>\nGestates over time. Use to acquire... something.",
+		"RISKOFBULLETSTORM_EQUIPMENT_WEIRDEGG_PICKUP": "<b>Miracle of Gun</b>\nGestates over time. <style=cIsUtility>",
 		"RISKOFBULLETSTORM_EQUIPMENT_WEIRDEGG_DESCRIPTION": "<style=cIsUtility>Eat</style> to <style=cIsHealing>heal to full health</style>, or use it for something else.",
 		"RISKOFBULLETSTORM_EQUIPMENT_WEIRDEGG_LORE": "A strange egg found in the Gungeon. High in protein.",
 

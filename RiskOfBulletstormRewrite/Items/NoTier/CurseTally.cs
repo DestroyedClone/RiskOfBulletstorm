@@ -20,27 +20,18 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override ItemTag[] ItemTags => new ItemTag[]
         {
+            ItemTag.AIBlacklist,
         };
 
         public override void Init(ConfigFile config)
         {
-            CreateConfig(config);
             CreateLang();
             CreateItem();
-            Hooks();
-        }
-
-        public override void CreateConfig(ConfigFile config)
-        {
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
         {
-            return new ItemDisplayRuleDict();
-        }
-
-        public override void Hooks()
-        {
+            return null;
         }
     }
 }

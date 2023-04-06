@@ -15,7 +15,6 @@ namespace RiskOfBulletstormRewrite.Artifact
         public override Sprite ArtifactDisabledIcon => LoadSprite(false);
 
         public static ConfigEntry<float> cfgWindowOfTime;
-        //public const float windowOfTime = 0.2f;
 
         public override void Init(ConfigFile config)
         {

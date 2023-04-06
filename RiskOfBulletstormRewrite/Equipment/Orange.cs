@@ -8,8 +8,6 @@ namespace RiskOfBulletstormRewrite.Equipment
 {
     public class Orange : EquipmentBase<Orange>
     {
-        //Item bloat makes chance reduction even bigger of a pain in the ass.
-        //public static ConfigEntry<float> cfgChanceReduction;
         public static ConfigEntry<float> cfgChargeRateReduction;
 
         public static ConfigEntry<float> cfgMaxHealthIncrease;

@@ -5,7 +5,6 @@ using RiskOfBulletstormRewrite.Modules;
 using RiskOfBulletstormRewrite.Utils;
 using RoR2;
 using UnityEngine;
-using UnityEngine.Networking;
 
 namespace RiskOfBulletstormRewrite.Equipment
 {
@@ -321,8 +320,6 @@ localScale = new Vector3(1F, 1F, 1F)
             base.Hooks();
             On.RoR2.CharacterMasterNotificationQueue.PushNotification += CharacterMasterNotificationQueue_PushNotification;
             R2API.RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
-            //baka
-
         }
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)

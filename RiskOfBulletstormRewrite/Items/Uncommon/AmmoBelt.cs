@@ -45,19 +45,12 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
         {
-            return new ItemDisplayRuleDict();
+            return null;
         }
 
         public override void Hooks()
         {
             On.RoR2.GenericSkill.SetBonusStockFromBody += AddAmmoBeltStocks;
-            //On.RoR2.GenericSkill.RecalculateMaxStock += RecalculateAmmoBeltStocks;
-        }
-
-        public void RecalculateAmmoBeltStocks(On.RoR2.GenericSkill.orig_RecalculateMaxStock orig, GenericSkill self)
-        {
-            orig(self);
-            //self.maxStock += (int)Mathf.Min(1, 0);
         }
 
         public void AddAmmoBeltStocks(On.RoR2.GenericSkill.orig_SetBonusStockFromBody orig, GenericSkill self, int newBonusStockFromBody)
@@ -83,7 +76,6 @@ namespace RiskOfBulletstormRewrite.Items
                     }
                 }
             }
-
             orig(self, newBonusStockFromBody);
         }
     }

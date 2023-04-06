@@ -40,8 +40,6 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override ItemTag[] ItemTags => new ItemTag[] { ItemTag.Any, ItemTag.Utility };
 
-        public static GameObject ItemBodyModelPrefab;
-
         public override void Init(ConfigFile config)
         {
             CreateConfig(config);
