@@ -1,6 +1,7 @@
 using BepInEx.Configuration;
 using RoR2;
 using RoR2.CharacterAI;
+using UnityEngine;
 using UnityEngine.Networking;
 
 namespace RiskOfBulletstormRewrite.Controllers
@@ -51,6 +52,12 @@ namespace RiskOfBulletstormRewrite.Controllers
                         {
                             characterBody = obj.attackerBody
                         };
+                        baseAI.neverRetaliateFriendlies = true;
+                        baseAI.enemyAttentionDuration = Mathf.Infinity;
+                        foreach (var skillDriver in baseAI.skillDrivers)
+                        {
+                            skillDriver.moveTargetType = AISkillDriver.TargetType.Custom;
+                        }
                     }
                 }
             }

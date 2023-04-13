@@ -64,7 +64,8 @@ namespace RiskOfBulletstormRewrite.Items
             base.OnEnter();
             modelRoot = base.GetModelTransform().GetComponentInChildren<SkinnedMeshRenderer>()?.rootBone;
 
-            areaIndicatorInstance = UnityEngine.Object.Instantiate<GameObject>(modelRoot?.parent.parent.gameObject ?? ArrowRain.areaIndicatorPrefab);//(ArrowRain.areaIndicatorPrefab);
+            //areaIndicatorInstance = UnityEngine.Object.Instantiate<GameObject>(modelRoot?.parent.parent.gameObject ?? ArrowRain.areaIndicatorPrefab);//(ArrowRain.areaIndicatorPrefab);
+            areaIndicatorInstance = UnityEngine.Object.Instantiate<GameObject>(GetModelTransform().gameObject ?? ArrowRain.areaIndicatorPrefab);
             //areaIndicatorInstance.transform.localScale = new Vector3(ArrowRain.arrowRainRadius / 3, ArrowRain.arrowRainRadius / 1.5f, ArrowRain.arrowRainRadius / 3);
 
             //Icewall
@@ -109,10 +110,7 @@ namespace RiskOfBulletstormRewrite.Items
                 if (areaIndicatorInstance != goodPlacement || crosshairOverrideRequest == null)
                 {
                     CrosshairUtils.OverrideRequest overrideRequest = crosshairOverrideRequest;
-                    if (overrideRequest != null)
-                    {
-                        overrideRequest.Dispose();
-                    }
+                    overrideRequest?.Dispose();
                     crosshairOverrideRequest = CrosshairUtils.RequestOverrideForBody(base.characterBody, goodPlacement ? TeleportUtilitySkillState.goodCrosshairPrefab : TeleportUtilitySkillState.badCrosshairPrefab, CrosshairUtils.OverridePriority.Skill);
                 }
             }

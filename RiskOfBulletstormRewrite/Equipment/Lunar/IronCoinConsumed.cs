@@ -43,7 +43,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         protected override void CreateConfig(ConfigFile config)
         {
-            cfgCooldown = config.Bind(ConfigCategory, CooldownName, 5f, CooldownDescription);
+            cfgCooldown = config.Bind(ConfigCategory, CooldownName, 60f, CooldownDescription);
             cfgResultPrintByPlayersOnly = config.Bind(ConfigCategory, "Only Players Can Print Result", false, "If true, then only players can print the result of the flip.");
         }
 

@@ -29,7 +29,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override ItemTag[] ItemTags => new ItemTag[]
         {
-            ItemTag.Utility
+            ItemTag.Damage
         };
 
         public override void Init(ConfigFile config)

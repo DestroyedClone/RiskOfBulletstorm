@@ -14,6 +14,7 @@ namespace RiskOfBulletstormRewrite.Equipment
         public static ConfigEntry<float> cfgPriceMultiplier;
         public static ConfigEntry<float> cfgCooldown;
         public override float Cooldown => cfgCooldown.Value;
+        public override bool CanBeRandomlyTriggered => false;
 
         public override string EquipmentName => "Trusty Lockpicks";
 
@@ -322,43 +323,6 @@ localScale = new Vector3(1F, 1F, 1F)
 
         public override void Hooks()
         {
-            On.RoR2.PurchaseInteraction.GetInteractability += PurchaseInteraction_GetInteractability;
-            On.RoR2.PurchaseInteraction.GetContextString += PurchaseInteraction_GetContextString;
-        }
-
-        private string PurchaseInteraction_GetContextString(On.RoR2.PurchaseInteraction.orig_GetContextString orig, PurchaseInteraction self, Interactor activator)
-        {
-            var original = orig(self, activator);
-
-            BulletstormChestInteractorComponent bulletstormChestInteractor = self.GetComponent<BulletstormChestInteractorComponent>();
-            if (bulletstormChestInteractor)
-            {
-                if (bulletstormChestInteractor.InteractorHasValidEquipment(activator))
-                {
-                    return bulletstormChestInteractor.GetContextualString(original);
-                }
-            }
-
-            return original;
-        }
-
-        private Interactability PurchaseInteraction_GetInteractability(On.RoR2.PurchaseInteraction.orig_GetInteractability orig, PurchaseInteraction self, Interactor activator)
-        {
-            var gameObject = self.gameObject;
-            Highlight highlight = gameObject.GetComponent<Highlight>();
-            BulletstormChestInteractorComponent bulletstormChestInteractor = gameObject.GetComponent<BulletstormChestInteractorComponent>();
-
-            if (bulletstormChestInteractor
-                && bulletstormChestInteractor.hasUsedLockpicks
-                && activator.GetComponent<EquipmentSlot>()?.equipmentIndex == EquipmentDef.equipmentIndex
-                && activator.GetComponent<CharacterBody>()?.inputBank?.activateEquipment.justPressed == true)
-            {
-                if (highlight)
-                    highlight.highlightColor = Highlight.HighlightColor.teleporter;
-                return orig(self, activator);
-            }
-
-            return orig(self, activator);
         }
 
         protected override bool ActivateEquipment(EquipmentSlot slot)
@@ -375,7 +339,7 @@ localScale = new Vector3(1F, 1F, 1F)
                         if (purchaseInteraction)
                         {
                             if (!purchaseInteraction.GetComponent<ShopTerminalBehavior>())
-                                if (AttemptUnlock(bestInteractableObject, interactionDriver, cfgUnlockChance.Value))
+                                if (AttemptUnlock(bestInteractableObject, interactionDriver, purchaseInteraction, cfgUnlockChance.Value))
                                 {
                                     return true;
                                 }
@@ -386,14 +350,11 @@ localScale = new Vector3(1F, 1F, 1F)
             return false;
         }
 
-        private bool AttemptUnlock(GameObject chestObject, InteractionDriver interactionDriver, float UnlockChance)
+        private bool AttemptUnlock(GameObject chestObject, InteractionDriver interactionDriver, PurchaseInteraction purchaseInteraction, float UnlockChance)
         {
             if (!interactionDriver) return false;
             var chestBehavior = chestObject.GetComponent<ChestBehavior>();
             if (!chestBehavior) return false;
-            Highlight highlight = chestObject.GetComponent<Highlight>();
-            PurchaseInteraction purchaseInteraction = chestObject.GetComponent<PurchaseInteraction>();
-            if (!highlight || !purchaseInteraction) return false;
             BulletstormChestInteractorComponent chestComponent = chestObject.GetComponent<BulletstormChestInteractorComponent>();
             if (chestComponent && chestComponent.hasUsedLockpicks) return false;
             Vector3 offset = Vector3.up * 1f;
@@ -428,6 +389,7 @@ localScale = new Vector3(1F, 1F, 1F)
                     chestObject.AddComponent<BulletstormChestInteractorComponent>().hasUsedLockpicks = true; //does this even work? lol
                     EffectManager.SimpleEffect(selectedEffect, chestObject.transform.position + offset, Quaternion.identity, true);
                 }
+                chestComponent.hasUsedLockpicks = true;
                 return true;
             }
             else

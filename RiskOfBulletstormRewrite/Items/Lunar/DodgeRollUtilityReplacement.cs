@@ -34,7 +34,8 @@ namespace RiskOfBulletstormRewrite.Items
             ItemTag.Cleansable,
             ItemTag.Utility,
             ItemTag.AIBlacklist, //AI can't use it effectively,
-            ItemTag.CannotCopy
+            ItemTag.CannotCopy,
+            ItemTag.Utility
         };
 
         public static SkillDef rollSkillDef;

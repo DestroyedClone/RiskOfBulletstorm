@@ -31,7 +31,8 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override ItemTag[] ItemTags => new ItemTag[]
         {
-            ItemTag.Cleansable
+            ItemTag.Cleansable,
+            ItemTag.Utility
         };
 
         public override void Init(ConfigFile config)

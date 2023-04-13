@@ -35,7 +35,8 @@ namespace RiskOfBulletstormRewrite.Items
             ItemTag.CannotSteal,
             ItemTag.Cleansable,
             ItemTag.AIBlacklist,
-            ItemTag.CannotCopy
+            ItemTag.CannotCopy,
+            ItemTag.Utility
         };
 
         public static SkillDef teleportSkillDef;

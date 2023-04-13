@@ -17,9 +17,6 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public override string EquipmentName => "Spice";
 
-        public override string EquipmentPickupToken => "RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP_FORMAT";
-        public override string[] EquipmentPickupDescParams => new string[] { "RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP_USES_0" };
-
         public override string EquipmentLangTokenName => "SPICE";
 
         public override GameObject EquipmentModel => Assets.NullModel;
@@ -27,6 +24,7 @@ namespace RiskOfBulletstormRewrite.Equipment
         public override Sprite EquipmentIcon => Assets.NullSprite;
 
         public override bool IsLunar => true;
+        public override bool CanBeRandomlyTriggered => false;
 
         public override void Init(ConfigFile config)
         {
@@ -36,9 +34,15 @@ namespace RiskOfBulletstormRewrite.Equipment
             Hooks();
         }
 
+        protected override void CreateLang()
+        {
+            base.CreateLang();
+            LanguageOverrides.DeferUniqueToken("RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP", "RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP_FORMAT", "RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP_USES_0");
+        }
+
         protected override void CreateConfig(ConfigFile config)
         {
-            cfgCooldown = config.Bind(ConfigCategory, CooldownName, 5f, CooldownDescription);
+            cfgCooldown = config.Bind(ConfigCategory, CooldownName, 60f, CooldownDescription);
             cfgCurseAmount = config.Bind(ConfigCategory, "Curse", 0.5f, "The amount of curse gained per use.");
 
             cfgSpiceReplacement = config.Bind(ConfigCategory, "Pickup Replacement", true, "Should spice replace pickups?");
@@ -358,15 +362,6 @@ localScale = new Vector3(1F, 1F, 1F)
             ExplicitPickupDropTable.RegenerateAll(run);
         }
 
-        //ref CommandArtifactManager
-
-        public bool ShouldSpiceReplaceDrop()
-        {
-            var teamItemCount = Util.GetItemCountForTeam(TeamIndex.Player, Items.SpiceTally.instance.ItemDef.itemIndex, false, true);
-
-            return false;
-        }
-
         private void CharacterMasterNotificationQueue_PushNotification(On.RoR2.CharacterMasterNotificationQueue.orig_PushNotification orig, CharacterMasterNotificationQueue self, CharacterMasterNotificationQueue.NotificationInfo info, float duration)
         {
             EquipmentDef equipmentInfo = info.data as EquipmentDef;
@@ -407,7 +402,8 @@ localScale = new Vector3(1F, 1F, 1F)
         {
             CharacterMasterNotificationQueue.PushEquipmentTransformNotification(slot.characterBody.master, slot.characterBody.inventory.currentEquipmentIndex, SpiceConsumed.Instance.EquipmentDef.equipmentIndex, CharacterMasterNotificationQueue.TransformationType.Default);
             slot.inventory.SetEquipmentIndex(SpiceConsumed.Instance.EquipmentDef.equipmentIndex);
-            slot.inventory.GiveItem(Items.SpiceTally.instance.ItemDef);
+            slot.inventory.GiveItem(SpiceTally.instance.ItemDef);
+            slot.inventory.GiveItem(CurseTally.instance.ItemDef);
 
             if (cfgSpiceReplacement.Value)
             if (slot.characterBody 

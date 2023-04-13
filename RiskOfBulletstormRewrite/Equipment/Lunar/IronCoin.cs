@@ -20,6 +20,7 @@ namespace RiskOfBulletstormRewrite.Equipment
         public override GameObject EquipmentModel => LoadModel();
 
         public override Sprite EquipmentIcon => LoadSprite();
+        public override bool CanBeRandomlyTriggered => false;
 
         public override bool IsLunar => true;
 
@@ -40,7 +41,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         protected override void CreateConfig(ConfigFile config)
         {
-            cfgCooldown = config.Bind(ConfigCategory, CooldownName, 5f, CooldownDescription);
+            cfgCooldown = config.Bind(ConfigCategory, CooldownName, 60f, CooldownDescription);
             cfgDamageToPlayers = config.Bind(ConfigCategory, "Damage Dealt To Enemy Players", 0.05f, "If flipped by an enemy, deals this amount of damage to enemy players." +
                 "\nDamage dealt is equal to config value multiplied by enemy player's max health." +
                 "\nEx: 0.05 -> 5% of the enemy player's max health.");

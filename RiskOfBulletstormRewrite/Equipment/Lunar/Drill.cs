@@ -27,6 +27,7 @@ namespace RiskOfBulletstormRewrite.Equipment
         public override bool IsLunar => true;
 
         private readonly string UnlockSound = EntityStates.Engi.EngiWeapon.FireMines.throwMineSoundString;
+        public override bool CanBeRandomlyTriggered => false;
 
         public override void Init(ConfigFile config)
         {

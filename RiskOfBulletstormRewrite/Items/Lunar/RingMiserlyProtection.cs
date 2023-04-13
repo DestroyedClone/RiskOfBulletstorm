@@ -28,7 +28,8 @@ namespace RiskOfBulletstormRewrite.Items
         public override ItemTag[] ItemTags => new ItemTag[]
         {
             ItemTag.Healing,
-            ItemTag.Cleansable
+            ItemTag.Cleansable,
+            ItemTag.InteractableRelated
         };
 
         private readonly GameObject ShatterEffect = LegacyResourcesAPI.Load<GameObject>("prefabs/effects/ShieldBreakEffect");

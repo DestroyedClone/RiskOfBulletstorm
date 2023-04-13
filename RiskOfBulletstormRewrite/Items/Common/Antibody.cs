@@ -29,7 +29,10 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override Sprite ItemIcon => LoadSprite();
 
-        public override ItemTag[] ItemTags => new ItemTag[] { ItemTag.Any, ItemTag.Healing };
+        public override ItemTag[] ItemTags => new ItemTag[] { 
+            ItemTag.Any, 
+            ItemTag.Healing
+        };
 
         public override void Init(ConfigFile config)
         {

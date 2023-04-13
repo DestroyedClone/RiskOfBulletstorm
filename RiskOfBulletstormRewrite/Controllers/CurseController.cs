@@ -7,8 +7,11 @@ namespace RiskOfBulletstormRewrite.Controllers
 {
     public class CurseController : ControllerBase<CurseController>
     {
+        public override string ConfigCategory => "Controller: Curse";
         public ConfigEntry<int> cfgMaxCurse;
         public ConfigEntry<float> cfgCurseMonsterCreditMultiplier;
+
+        public ItemDef LOTJItemDef => LordOfTheJammedItem.instance.ItemDef;
 
         public override void Init(ConfigFile config)
         {
@@ -38,14 +41,15 @@ namespace RiskOfBulletstormRewrite.Controllers
 
         private void Inventory_onInventoryChangedGlobal(Inventory inventory)
         {
-            if (NetworkServer.active) return;
+            if (!NetworkServer.active) return;
             var curseCount = inventory.GetItemCount(Items.CurseTally.instance.ItemDef);
             if (curseCount >= cfgMaxCurse.Value)
             {
                 var lotjcount = inventory.GetItemCount(Items.LordOfTheJammedItem.instance.ItemDef);
-                if (lotjcount <= 0)
+                if (lotjcount <= 0 && inventory.TryGetComponent(out CharacterMaster master))
                 {
-                    inventory.GiveItem(Items.LordOfTheJammedItem.instance.ItemDef, 1);
+                    inventory.GiveItem(LOTJItemDef, 1);
+                    CharacterMasterNotificationQueue.PushPickupNotification(master, PickupCatalog.FindPickupIndex(LOTJItemDef.itemIndex));
                 }
             }
         }

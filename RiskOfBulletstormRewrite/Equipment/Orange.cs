@@ -29,6 +29,7 @@ namespace RiskOfBulletstormRewrite.Equipment
         public override GameObject EquipmentModel => LoadModel();
 
         public override Sprite EquipmentIcon => LoadSprite();
+        public override bool CanBeRandomlyTriggered => false;
 
         public override void Init(ConfigFile config)
         {
