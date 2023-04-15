@@ -84,7 +84,7 @@ namespace RiskOfBulletstormRewrite.Items
             rollSkillDef.activationState = new SerializableEntityStateType(typeof(DodgeRollState));
             rollSkillDef.activationStateMachineName = "Body";
             rollSkillDef.baseMaxStock = 1;
-            rollSkillDef.baseRechargeInterval = 8;
+            rollSkillDef.baseRechargeInterval = 4;
             rollSkillDef.beginSkillCooldownOnSkillEnd = true;
             rollSkillDef.canceledFromSprinting = false;
             rollSkillDef.cancelSprintingOnActivation = false;

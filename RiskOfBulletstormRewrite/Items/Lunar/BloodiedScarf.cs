@@ -65,7 +65,7 @@ namespace RiskOfBulletstormRewrite.Items
             teleportSkillDef.activationState = new SerializableEntityStateType(typeof(TeleportUtilitySkillState));
             teleportSkillDef.activationStateMachineName = "Body";
             teleportSkillDef.baseMaxStock = 1;
-            teleportSkillDef.baseRechargeInterval = 8;
+            teleportSkillDef.baseRechargeInterval = 6;
             teleportSkillDef.beginSkillCooldownOnSkillEnd = true;
             teleportSkillDef.canceledFromSprinting = false;
             teleportSkillDef.cancelSprintingOnActivation = false;

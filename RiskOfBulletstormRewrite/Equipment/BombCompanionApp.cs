@@ -42,7 +42,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public override Sprite EquipmentIcon => LoadSprite();
 
-        public GameObject ExplosionEffect => UnityEngine.AddressableAssets.Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Engi/BubbleShieldEndEffect.prefab").WaitForCompletion();
+        public GameObject ExplosionEffect => UnityEngine.AddressableAssets.Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/Railgunner/RailgunnerMineExplosion.prefab").WaitForCompletion();
 
         public static GameObject[] explosiveProjectiles = new GameObject[]
         {
@@ -496,7 +496,7 @@ localScale = new Vector3(1F, 1F, 1F)
                 EffectData effectData = new EffectData
                 {
                     origin = slot.characterBody.corePosition,
-                    scale = cfgRange.Value,
+                    scale = cfgRange.Value * 1.25f,
                 };
                 EffectManager.SpawnEffect(
                     ExplosionEffect,

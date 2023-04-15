@@ -323,6 +323,12 @@ localScale = new Vector3(1F, 1F, 1F)
             CharacterMasterNotificationQueue.PushEquipmentTransformNotification(slot.characterBody.master, slot.characterBody.inventory.currentEquipmentIndex, OrangeConsumed.Instance.EquipmentDef.equipmentIndex, CharacterMasterNotificationQueue.TransformationType.Default);
             slot.inventory.SetEquipmentIndex(OrangeConsumed.Instance.EquipmentDef.equipmentIndex);
             slot.inventory.GiveItem(Items.OrangeConsumed.instance.ItemDef);
+            EffectData effectData = new EffectData
+            {
+                origin = slot.transform.position
+            };
+            effectData.SetNetworkedObjectReference(slot.gameObject);
+            EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/FruitHealEffect"), effectData, true);
             slot.healthComponent.HealFraction(cfgHealPercentage.Value, default);
             return true;
         }

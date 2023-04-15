@@ -19,9 +19,9 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public override string EquipmentLangTokenName => "SPICE";
 
-        public override GameObject EquipmentModel => Assets.NullModel;
+        public override GameObject EquipmentModel => LoadModel();
 
-        public override Sprite EquipmentIcon => Assets.NullSprite;
+        public override Sprite EquipmentIcon => LoadSprite();
 
         public override bool IsLunar => true;
         public override bool CanBeRandomlyTriggered => false;
@@ -37,7 +37,7 @@ namespace RiskOfBulletstormRewrite.Equipment
         protected override void CreateLang()
         {
             base.CreateLang();
-            LanguageOverrides.DeferUniqueToken("RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP", "RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP_FORMAT", "RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP_USES_0");
+            //LanguageOverrides.DeferLateUniqueTokens("RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP", "RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP_FORMAT", "RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP_USES_0");
         }
 
         protected override void CreateConfig(ConfigFile config)

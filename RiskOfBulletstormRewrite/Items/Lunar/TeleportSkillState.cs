@@ -65,7 +65,10 @@ namespace RiskOfBulletstormRewrite.Items
             modelRoot = base.GetModelTransform().GetComponentInChildren<SkinnedMeshRenderer>()?.rootBone;
 
             //areaIndicatorInstance = UnityEngine.Object.Instantiate<GameObject>(modelRoot?.parent.parent.gameObject ?? ArrowRain.areaIndicatorPrefab);//(ArrowRain.areaIndicatorPrefab);
+
+            base.GetModelAnimator().enabled = false;
             areaIndicatorInstance = UnityEngine.Object.Instantiate<GameObject>(GetModelTransform().gameObject ?? ArrowRain.areaIndicatorPrefab);
+            base.GetModelAnimator().enabled = true;
             //areaIndicatorInstance.transform.localScale = new Vector3(ArrowRain.arrowRainRadius / 3, ArrowRain.arrowRainRadius / 1.5f, ArrowRain.arrowRainRadius / 3);
 
             //Icewall

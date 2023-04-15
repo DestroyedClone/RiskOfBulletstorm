@@ -16,9 +16,9 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public override string EquipmentLangTokenName => "SPICECONSUMED";
 
-        public override GameObject EquipmentModel => LoadModel("SPICE");
+        public override GameObject EquipmentModel => LoadModel();
 
-        public override Sprite EquipmentIcon => LoadSprite("SPICE");
+        public override Sprite EquipmentIcon => LoadSprite();
 
         public override bool IsLunar => false;
 

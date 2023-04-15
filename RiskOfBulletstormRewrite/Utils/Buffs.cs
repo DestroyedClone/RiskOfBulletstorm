@@ -33,7 +33,7 @@ namespace RiskOfBulletstormRewrite.Utils
             true, false);
 
             ArtifactSpeedUpBuff = AddBuff("Speed Up",
-                Assets.LoadSprite("Assets/Icons/ARTIFACT_UPSPEEDOOC_ENABLED"),
+                Assets.LoadSprite("BUFF_SPEEDUPOOC"),
                 Color.blue,
                 false,
                 false);

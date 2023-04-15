@@ -1,8 +1,10 @@
 using BepInEx.Configuration;
 using R2API;
+using RiskOfBulletstormRewrite.Equipment;
 using RiskOfBulletstormRewrite.Modules;
 using RoR2;
 using UnityEngine;
+using static AkMIDIEvent;
 
 namespace RiskOfBulletstormRewrite.Items
 {
@@ -16,9 +18,9 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override GameObject ItemModel => Assets.NullModel;
 
-        public override Sprite ItemIcon => LoadSprite();
+        public override Sprite ItemIcon => Assets.LoadSprite($"EQUIPMENT_SPICE");
 
-        public override bool Hidden => true;
+        public override bool Hidden => false;
 
         public override ItemTag[] ItemTags => new ItemTag[]
         {

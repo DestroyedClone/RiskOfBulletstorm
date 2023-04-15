@@ -1,8 +1,11 @@
 ﻿using BepInEx.Configuration;
 using R2API;
+using RoR2;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static AkMIDIEvent;
+using static RiskOfBulletstormRewrite.Modules.LanguageOverrides;
 
 namespace RiskOfBulletstormRewrite.Modules
 {
@@ -14,32 +17,42 @@ namespace RiskOfBulletstormRewrite.Modules
 
         public struct ReplacementToken
         {
-            public string token;
-            public string[] args;
-        }
-
-        public struct PostReplacementToken
-        {
-            public string baseToken;
-            public string[] replacementTokens;
+            public string assignedToken;
+            public string formatToken;
+            public object[] args;
         }
 
         ///<summary>
         ///Helper method to defer language tokens.
         ///</summary>
-        public static void DeferToken(string token, params string[] args)
+        public static void DeferToken(string token, params object[] args)
         {
             //Main._logger.LogMessage($"Deferring {token} w/ lang {lang}");
-            replacementTokens.Add(new ReplacementToken() { token = token, args = args });
+            replacementTokens.Add(new ReplacementToken() { assignedToken = token, formatToken = token, args = args });
         }
 
-        public static void DeferLateTokens(string baseToken, params string[] args)
+        ///<summary>
+        ///Helper method to defer language tokens. All passed args must be existing tokens.
+        ///</summary>
+        public static void DeferLateTokens(string token, params object[] args)
         {
-            postReplacementTokens.Add(new PostReplacementToken() { baseToken = baseToken, replacementTokens = args });
+            postReplacementTokens.Add(new ReplacementToken() { assignedToken = token, formatToken = token, args = args });
+        }
+
+        public static void DeferUniqueToken(string assignedToken, string formatToken, params object[] args)
+        {
+            replacementTokens.Add(new ReplacementToken() { assignedToken = assignedToken, formatToken = formatToken, args = args });
+        }
+        ///<summary>
+        ///Helper method to defer language tokens. All passed args must be existing tokens.
+        ///</summary>
+        public static void DeferLateUniqueTokens(string assignedToken, string formatToken, params object[] args)
+        {
+            postReplacementTokens.Add(new ReplacementToken() { assignedToken = assignedToken, formatToken = formatToken, args = args });
         }
 
         public static List<ReplacementToken> replacementTokens = new List<ReplacementToken>();
-        public static List<PostReplacementToken> postReplacementTokens = new List<PostReplacementToken>();
+        public static List<ReplacementToken> postReplacementTokens = new List<ReplacementToken>();
         public static List<Type> configEntries = new List<Type>();
 
         public static Dictionary<string, string> logbookTokenOverrideDict = new Dictionary<string, string>();
@@ -64,17 +77,35 @@ namespace RiskOfBulletstormRewrite.Modules
             On.RoR2.UI.MainMenu.MainMenuController.Start -= FinalizeLanguage;
         }
 
-        private static string FormatToken(string token, string lang, params string[] objects)
+        private static string FormatToken(ReplacementToken replacementToken, string langName)
         {
-            //todo: vs GetStringFormatted??
-            var oldString = RoR2.Language.GetString(token, lang);
-            var newString = string.Format(oldString, objects);
+            //GetStringFormatted uses currentLanguage, while we have to use other languages
+            var oldString = RoR2.Language.GetString(replacementToken.formatToken, langName);
+            var newString = string.Format(oldString, replacementToken.args);
             return newString;
+        }
+        private static string FormatToken(string formatToken, string[] args, string langName)
+        {
+            //GetStringFormatted uses currentLanguage, while we have to use other languages
+            var oldString = RoR2.Language.GetString(formatToken, langName);
+            var newString = string.Format(oldString, args);
+            return newString;
+        }
+
+        private static void AssignToken(ReplacementToken token, string langName)
+        {
+            var newString = FormatToken(token, langName);
+            var assignedToken = token.formatToken;
+            if (token.assignedToken == null || token.assignedToken != token.formatToken)
+            {
+                assignedToken = token.assignedToken;
+            }
+            LanguageAPI.Add(assignedToken, newString, langName);
         }
 
         private static void SetupLanguage()
         {
-            Main._logger.LogMessage($"Setting up language with {replacementTokens.Count} tokens.");
+            Main._logger.LogMessage($"Setting up language with {replacementTokens.Count+postReplacementTokens.Count} tokens.");
             DeferTokenFinalize();
             PostDeferTokenFinalize();
         }
@@ -88,8 +119,7 @@ namespace RiskOfBulletstormRewrite.Modules
                     foreach (var lang in RoR2.Language.steamLanguageTable)
                     {
                         var langName = lang.Value.webApiName;
-                        var newString = FormatToken(replacementToken.token, langName, replacementToken.args);
-                        LanguageAPI.Add(replacementToken.token, newString, langName);
+                        AssignToken(replacementToken, langName);
 
                         /* try
                         {
@@ -110,7 +140,7 @@ namespace RiskOfBulletstormRewrite.Modules
                 }
                 catch
                 {
-                    Main._logger.LogError($"Failed to load replacement token {replacementToken.token}"
+                    Main._logger.LogError($"Failed to load replacement token {replacementToken.assignedToken}"
                     + $"Params: {replacementToken.args.ToString()}");
                 }
             }
@@ -127,18 +157,24 @@ namespace RiskOfBulletstormRewrite.Modules
                         var langName = lang.Value.webApiName;
 
                         List<string> resolvedReplacementTokens = new List<string>();
-                        foreach (var tokenArg in postReplacementToken.replacementTokens)
+                        foreach (var tokenArg in postReplacementToken.args)
                         {
-                            resolvedReplacementTokens.Add(RoR2.Language.GetString(tokenArg, langName));
+                            resolvedReplacementTokens.Add(RoR2.Language.GetString(tokenArg.ToString(), langName));
                         }
 
-                        var newString = FormatToken(postReplacementToken.baseToken, langName, resolvedReplacementTokens.ToArray());
-                        LanguageAPI.Add(postReplacementToken.baseToken, newString, langName);
+                        var assignedToken = postReplacementToken.formatToken;
+                        if (postReplacementToken.assignedToken == null || postReplacementToken.assignedToken != postReplacementToken.formatToken)
+                        {
+                            assignedToken = postReplacementToken.assignedToken;
+                        }
+
+                        var newString = FormatToken(postReplacementToken.formatToken, resolvedReplacementTokens.ToArray(), langName);
+                        LanguageAPI.Add(assignedToken, newString, langName);
                     }
                 }
                 catch
                 {
-                    Main._logger.LogError($"Failed to load post replacement token {postReplacementToken.baseToken}"
+                    Main._logger.LogError($"Failed to load post replacement token {postReplacementToken.assignedToken}"
                     + $"Params are wrong?");
                 }
             }

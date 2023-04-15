@@ -1,4 +1,5 @@
-﻿using RiskOfBulletstormRewrite.Equipment;
+﻿using RiskOfBulletstormRewrite.Artifact;
+using RiskOfBulletstormRewrite.Equipment;
 using RiskOfBulletstormRewrite.Items;
 using RiskOfBulletstormRewrite.Modules;
 using RiskOfBulletstormRewrite.Utils;
@@ -64,6 +65,9 @@ namespace RiskOfBulletstormRewrite
                 GetFloat(DodgeRollUtilityReplacement.cfgDamageVulnerabilityMultiplier),
                 GetFloat(DodgeRollUtilityReplacement.cfgDamageVulnerabilityMultiplierPerStack)
             });
+            RegisterBuffInfo(Buffs.ArtifactSpeedUpBuff,
+                "ARTIFACTSPEEDUP",
+                new string[] { GetFloat(ArtifactUpSpeedOOC.cfgMoveSpeedAdditiveMultiplier) });
         }
 
         private static string GetFloat(BepInEx.Configuration.ConfigEntry<float> entry)

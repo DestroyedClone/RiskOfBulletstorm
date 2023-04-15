@@ -15,9 +15,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public override string EquipmentLangTokenName => "SPICEPICKUPEQUIPMENTA";
 
-        public override string EquipmentPickupToken => "RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP_FORMAT";
-        public override string[] EquipmentPickupDescParams => new string[] { "RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP_USES_1" };
-        public override string EquipmentDescriptionToken => "RISKOFBULLETSTORM_EQUIPMENT_SPICE_DESCRIPTION";
+        public override string EquipmentPickupToken => "RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP_A";
 
         public override GameObject EquipmentModel => LoadModel("SPICE");
 
@@ -41,6 +39,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         protected override bool ActivateEquipment(EquipmentSlot slot)
         {
+            slot.inventory.SetEquipmentIndex(Spice2.Instance.EquipmentDef.equipmentIndex);
             return false;
         }
     }
