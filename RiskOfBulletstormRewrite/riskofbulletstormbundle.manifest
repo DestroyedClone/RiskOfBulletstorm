@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 2222650593
+CRC: 93003458
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: f3c89a967d89eb4a0c5932b85d92b6a4
+    Hash: eee852495cb2a3d19033e205c7222c83
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 1fe3abd029edb3522ae5dbbc711d0a74
+    Hash: 04c8befcd4fa360efbf89a569ab92db2
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -25,20 +25,28 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 48
   Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
 - Class: 213
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
+- Assets/Models/Prefabs/OrangeConsumed.prefab
 - Assets/Icons/EQUIPMENT_WEIRDEGG.png
 - Assets/Icons/ITEM_RINGMISERLYPROTECTION.png
 - Assets/Icons/ARTIFACT_DAMAGEEQUIPMENTRECHARGE_DISABLED.png
 - Assets/Models/Clone.fbx
+- Assets/Models/Prefabs/Scope.prefab
 - Assets/Models/Prefabs/BattleStandard.prefab
+- Assets/Models/Prefabs/Spice.prefab
+- Assets/Icons/EQUIPMENT_SPICECONSUMED.png
 - Assets/Icons/ITEM_BATTLESTANDARDVOID.png
 - Assets/Models/Prefabs/CoinCrown 1.prefab
 - Assets/Models/Orange.fbx
 - Assets/Models/WeirdEgg.fbx
 - Assets/Icons/ITEM_MUSTACHE.png
+- Assets/Models/Prefabs/RingMiserlyProtection.prefab
+- Assets/Models/RingMiserlyProtection.fbx
 - Assets/Icons/BUFF_MUSTACHE.png
 - Assets/Models/BombCompanionApp.fbx
 - Assets/Icons/ITEM_CLONECONSUMED.png
@@ -54,6 +62,7 @@ Assets:
 - Assets/Materials/MustacheTex.mat
 - Assets/Icons/EQUIPMENT_ORANGECONSUMED.png
 - Assets/Models/TrustyLockpicks.fbx
+- Assets/Icons/EQUIPMENT_SPICE.png
 - Assets/Models/Prefabs/Backpack.prefab
 - Assets/Icons/BODY_BABYGOODMIMIC.png
 - Assets/Models/Prefabs/BattleStandardVoid.prefab
@@ -61,6 +70,7 @@ Assets:
 - Assets/Icons/EQUIPMENT_BRICKOFCASH.png
 - Assets/Models/Prefabs/CoinCrownVoid.prefab
 - Assets/Models/Prefabs/BombCompanionApp.prefab
+- Assets/Models/SpiceConsumed.fbx
 - Assets/Models/Prefabs/Mustache.prefab
 - Assets/Icons/ITEM_CURSETALLY.png
 - Assets/Models/Prefabs/WeirdEgg.prefab
@@ -69,6 +79,8 @@ Assets:
 - Assets/Icons/ITEM_ORANGECONSUMED.png
 - Assets/Models/Drill.fbx
 - Assets/Models/Prefabs/Antibody.prefab
+- Assets/Models/IronCoinConsumed.fbx
+- Assets/Models/OrangeConsumed.fbx
 - Assets/Icons/ARTIFACT_ADAPTIVEARMORBOSSES_DISABLED.png
 - Assets/Icons/ARTIFACT_UPSPEEDOOC_DISABLED.png
 - Assets/Materials/CoinCrownVoidTex.mat
@@ -82,6 +94,7 @@ Assets:
 - Assets/Icons/ITEM_LORDOFTHEJAMMED.png
 - Assets/Icons/ITEM_ALPHABULLET.png
 - Assets/Models/BloodiedScarf.fbx
+- Assets/Icons/BUFF_SPEEDUPOOC.png
 - Assets/Models/Prefabs/AlphaBullet.prefab
 - Assets/Icons/ARTIFACT_UPSPEEDOOC_ENABLED.png
 - Assets/Icons/SKILL_LORDOFTHEJAMMED_PRIMARY.png
@@ -101,12 +114,16 @@ Assets:
 - Assets/Icons/ARTIFACT_PITLORD_ENABLED.png
 - Assets/Icons/BUFF_DODGEROLL.png
 - Assets/Icons/EQUIPMENT_IRONCOIN.png
+- Assets/Models/Prefabs/IronCoinConsumed.prefab
 - Assets/Icons/ARTIFACT_ADAPTIVEARMORBOSSES_ENABLED.png
 - Assets/Models/Backpack.fbx
 - Assets/Icons/ARTIFACT_PITLORD_DISABLED.png
+- Assets/Materials/SpiceTex.mat
+- Assets/Models/Prefabs/SpiceConsumed.prefab
 - Assets/Models/Antibody.fbx
 - Assets/Icons/ARTIFACT_DAMAGEEQUIPMENTRECHARGE_ENABLED.png
 - Assets/Models/Prefabs/TrustyLockpicks.prefab
+- Assets/Models/Spice.fbx
 - Assets/Icons/ITEM_CLONEVOID.png
 - Assets/Icons/EQUIPMENT_BOTTLE.png
 - Assets/Icons/ITEM_HIPHOLSTER.png
@@ -126,5 +143,6 @@ Assets:
 - Assets/Materials/UV_Orange.mat
 - Assets/Icons/SKILL_BLOODIEDSCARF.png
 - Assets/Models/Prefabs/CoinCrown.prefab
+- Assets/Models/Scope.fbx
 - Assets/Icons/ARTIFACT_COYOTETIME_ENABLED.png
 Dependencies: []

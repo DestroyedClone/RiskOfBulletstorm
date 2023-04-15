@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <Compile Remove="Artifact\ArtifactBossRoom.cs" />
+    <Compile Remove="Artifact\ArtifactChallengeMode.cs" />
     <Compile Remove="Artifact\ArtifactEquipmentRecharge.cs" />
     <Compile Remove="Artifact\ArtifactPitLordPlayer.cs" />
     <Compile Remove="Artifact\ExampleArtifact.cs" />
@@ -56,6 +57,7 @@
     <Compile Remove="Items\Lunar\Metronome.cs" />
     <Compile Remove="Items\NoTier\BabyMimicIdentifier.cs" />
     <Compile Remove="Items\NoTier\SpiceReplacementDisplay.cs" />
+    <Compile Remove="Items\Uncommon\AmmoBelt.cs" />
     <Compile Remove="Items\Uncommon\GhostBullets.cs" />
     <Compile Remove="Items\Uncommon\RingChestFriendship.cs" />
     <Compile Remove="Items\Uncommon\RingFireResistance.cs" />
@@ -103,6 +105,12 @@
 			<NoWarn>NU1701</NoWarn>
 		</PackageReference>
 		<PackageReference Include="R2API" Version="4.3.5" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Equipment\Lunar\SpiceRewrite.cs">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </Compile>
 	</ItemGroup>
 
 </Project>
