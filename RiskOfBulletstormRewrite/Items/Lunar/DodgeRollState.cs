@@ -180,7 +180,7 @@ namespace RiskOfBulletstormRewrite.Items
             {
                 modifiedSpeed = base.characterDirection.forward *
                 Mathf.Lerp(base.characterBody.moveSpeed * this.speedMultiplier,
-                 characterBody.moveSpeed * 0.1f,
+                 characterBody.moveSpeed * 0.3f,
                  (fixedAge / baseDuration));
             }
 

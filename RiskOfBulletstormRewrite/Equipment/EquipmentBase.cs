@@ -8,6 +8,7 @@ using System.Linq;
 using UnityEngine;
 using Rewired;
 using IL.RoR2.ConVar;
+using BepInEx;
 
 namespace RiskOfBulletstormRewrite.Equipment
 {
@@ -47,6 +48,17 @@ namespace RiskOfBulletstormRewrite.Equipment
         /// Optional parameters for the Equipment Description Token
         /// </summary>
         public virtual string[] EquipmentFullDescriptionParams { get; }
+
+        /// <summary>
+        /// Primary Token for language.
+        /// <para>Ex: "GAWK" => used in RBS_GAWK_NAME, RBS_GAWK_DESC, ETC</para>
+        /// </summary>
+        public virtual string EquipmentUniquePickupToken { get; }
+        /// <summary>
+        /// Primary Token for language.
+        /// <para>Ex: "GAWK" => used in RBS_GAWK_NAME, RBS_GAWK_DESC, ETC</para>
+        /// </summary>
+        public virtual string EquipmentUniqueDescriptionToken { get; }
 
         public abstract GameObject EquipmentModel { get; }
         public abstract Sprite EquipmentIcon { get; }
@@ -158,12 +170,24 @@ namespace RiskOfBulletstormRewrite.Equipment
 
             if (formatPickup)
             {
-                LanguageOverrides.DeferToken(EquipmentPickupToken, EquipmentPickupDescParams);
+                if (EquipmentUniquePickupToken.IsNullOrWhiteSpace())
+                {
+                    LanguageOverrides.DeferToken(EquipmentPickupToken, EquipmentPickupDescParams);
+                } else
+                {
+                    LanguageOverrides.DeferUniqueToken(EquipmentUniquePickupToken, EquipmentPickupToken, EquipmentPickupDescParams);
+                }
             }
 
             if (formatDescription)
             {
-                LanguageOverrides.DeferToken(EquipmentDescriptionToken, EquipmentFullDescriptionParams);
+                if (EquipmentUniqueDescriptionToken.IsNullOrWhiteSpace())
+                {
+                    LanguageOverrides.DeferToken(EquipmentDescriptionToken, EquipmentFullDescriptionParams);
+                } else
+                {
+                    LanguageOverrides.DeferUniqueToken(EquipmentUniqueDescriptionToken, EquipmentDescriptionToken, EquipmentFullDescriptionParams);
+                }
             }
         }
 
@@ -173,8 +197,8 @@ namespace RiskOfBulletstormRewrite.Equipment
             EquipmentDef = ScriptableObject.CreateInstance<EquipmentDef>();
             EquipmentDef.name = prefix + EquipmentLangTokenName;
             EquipmentDef.nameToken = prefix + EquipmentLangTokenName + "_NAME";
-            EquipmentDef.pickupToken = prefix + EquipmentLangTokenName + "_PICKUP";
-            EquipmentDef.descriptionToken = prefix + EquipmentLangTokenName + "_DESCRIPTION";
+            EquipmentDef.pickupToken = EquipmentPickupToken;
+            EquipmentDef.descriptionToken = EquipmentDescriptionToken;
             EquipmentDef.loreToken = prefix + EquipmentLangTokenName + "_LORE";
             EquipmentDef.pickupModelPrefab = EquipmentModel;
             EquipmentDef.pickupIconSprite = EquipmentIcon;
@@ -209,6 +233,11 @@ namespace RiskOfBulletstormRewrite.Equipment
             Tweaks.DropEquipment(equipmentSlot, equipmentDef);
         }
 
+        public virtual void ActivateEquipmentOnRandomUse(EquipmentSlot slot)
+        {
+
+        }
+
         //runs on server
         private bool PerformEquipmentAction(On.RoR2.EquipmentSlot.orig_PerformEquipmentAction orig, RoR2.EquipmentSlot self, EquipmentDef equipmentDef)
         {
@@ -227,7 +256,7 @@ namespace RiskOfBulletstormRewrite.Equipment
                 if (inputCheck)
                 {
                     DropEquipment(self, equipmentDef);
-                    return true;
+                    return false;
                 }
             }
             if (equipmentDef == EquipmentDef)

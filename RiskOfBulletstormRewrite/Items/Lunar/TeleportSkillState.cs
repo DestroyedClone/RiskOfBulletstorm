@@ -69,7 +69,7 @@ namespace RiskOfBulletstormRewrite.Items
             //areaIndicatorInstance.transform.localScale = new Vector3(ArrowRain.arrowRainRadius / 3, ArrowRain.arrowRainRadius / 1.5f, ArrowRain.arrowRainRadius / 3);
 
             //Icewall
-            baseDuration = PrepWall.baseDuration;
+            baseDuration = PrepWall.baseDuration / 2;
             muzzleflashEffect = PrepWall.muzzleflashEffect;
             goodCrosshairPrefab = PrepWall.goodCrosshairPrefab;
             badCrosshairPrefab = PrepWall.badCrosshairPrefab;

@@ -15,6 +15,7 @@ namespace RiskOfBulletstormRewrite
         public static ConfigEntry<bool> cfgCenterNotifications;
         //public static ConfigEntry<bool> cfgDisableAutoPickup;
         //public static ConfigEntry<NotificationMod> cfgEnableBreachNotifications;
+        public static ConfigEntry<bool> cfgDropEquipment;
 
         public enum NotificationMod
         {
@@ -30,6 +31,7 @@ namespace RiskOfBulletstormRewrite
             cfgCenterNotifications = config.Bind(category, "Center Notification Text", false, "If true, then notification text will be centered.");
             //cfgDisableAutoPickup = config.Bind(category, "Disable Auto Pickups", false);
             //cfgEnableBreachNotifications = config.Bind(category, "Modify Achievement Notificaton", NotificationMod.bulletstorm, "");
+            cfgDropEquipment = config.Bind(category, "Drop Equipment", true, "If true, you can drop your equipment by holding [interact] and using your equipment.");
             if (cfgCenterNotifications.Value)
             {
                 On.RoR2.CharacterMasterNotificationQueue.PushNotification += CharacterMasterNotificationQueue_PushNotification;
@@ -50,7 +52,8 @@ namespace RiskOfBulletstormRewrite
             //        break;
             //}
 
-            On.RoR2.UI.EquipmentIcon.Update += EquipmentIcon_Update;
+            if (cfgDropEquipment.Value)
+                On.RoR2.UI.EquipmentIcon.Update += EquipmentIcon_Update;
         }
 
         private static void AchievementNotificationPanel_SetAchievementDef(On.RoR2.UI.AchievementNotificationPanel.orig_SetAchievementDef orig, AchievementNotificationPanel self, AchievementDef achievementDef)
@@ -122,6 +125,7 @@ namespace RiskOfBulletstormRewrite
 
         public static void DropEquipment(EquipmentSlot slot, EquipmentDef equipmentDef)
         {
+            if (!cfgDropEquipment.Value) return;
             var aimRay = slot.GetAimRay();
             PickupDropletController.CreatePickupDroplet(PickupCatalog.FindPickupIndex(equipmentDef.equipmentIndex),
                 aimRay.origin, aimRay.direction * 20f);
@@ -142,12 +146,6 @@ namespace RiskOfBulletstormRewrite
                     self.stockText.gameObject.SetActive(true);
                     StringBuilder stringBuilder2 = HG.StringBuilderPool.RentStringBuilder();
                     //var equipmentSlotCount = self.targetInventory.GetEquipmentSlotCount();
-
-                    if (shouldShowStock)//self.stockText.text.IsNullOrWhiteSpace())
-                    {
-                        //stringBuilder2.AppendInt(self.currentDisplayData.stock, 1U, uint.MaxValue);
-                        stringBuilder2.Append($"x{self.currentDisplayData.stock}");
-                    }
                     string dropText = $"<size=45%>Drop Equip Mod: [Interact]</size>";
                     string colorMod;
                     if (self.playerCharacterMasterController
@@ -162,9 +160,14 @@ namespace RiskOfBulletstormRewrite
                     {
                         colorMod = "red";
                     }
-                    if (shouldShowStock) stringBuilder2.Append("\n");
                     stringBuilder2.Append($"<color={colorMod}>{dropText}</color>");
                     if (shouldShowStock) stringBuilder2.Append("\n");
+
+                    if (shouldShowStock)//self.stockText.text.IsNullOrWhiteSpace())
+                    {
+                        //stringBuilder2.AppendInt(self.currentDisplayData.stock, 1U, uint.MaxValue);
+                        stringBuilder2.Append($"x{self.currentDisplayData.stock}");
+                    }
 
                     self.stockText.SetText(stringBuilder2);
                     HG.StringBuilderPool.ReturnStringBuilder(stringBuilder2);
