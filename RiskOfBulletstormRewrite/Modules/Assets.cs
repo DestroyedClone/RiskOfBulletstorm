@@ -67,6 +67,12 @@ namespace RiskOfBulletstormRewrite.Modules
             return mainAssetBundle.LoadAsset<GameObject>(path);
         }
 
+        public static T LoadAddressable<T>(string assetPath)
+        {
+            var loadedAsset = Addressables.LoadAssetAsync<T>(assetPath).WaitForCompletion();
+            return loadedAsset;
+        }
+
         /*
         public static Material commandoMat;
         internal static Shader hotpoo = LegacyResourcesAPI.Load<Shader>("Shaders/Deferred/HGStandard");

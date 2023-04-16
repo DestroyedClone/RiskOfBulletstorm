@@ -1,29 +1,31 @@
 ﻿{
-	strings:
-	{
+	strings: {
 		//[NORMAL]
 		"RISKOFBULLETSTORM_ARTIFACT_PITLORD_NAME": "Artifact of the Pit Lord",
 		"RISKOFBULLETSTORM_ARTIFACT_PITLORD_DESCRIPTION": "Players and monsters land safely back on stage after falling off.",
-		
+
 		"RISKOFBULLETSTORM_ARTIFACT_DAMAGEEQUIPMENTRECHARGE_NAME": "Artifact of the Equipment Battery",
 		"RISKOFBULLETSTORM_ARTIFACT_DAMAGEEQUIPMENTRECHARGE_DESCRIPTION": "Equipment only recharges based off damage dealt. Scales over time.",
-		
+
 		"RISKOFBULLETSTORM_ARTIFACT_ADAPTIVEARMORBOSSES_NAME": "Artifact of the Adaptive Armor",
 		"RISKOFBULLETSTORM_ARTIFACT_ADAPTIVEARMORBOSSES_DESCRIPTION": "All teleporter bosses gain the Final Boss's adaptive armor.",
-		
+
 		"RISKOFBULLETSTORM_ARTIFACT_BOSSCHAMBER_NAME": "Artifact of the Boss Chamber",
 		"RISKOFBULLETSTORM_ARTIFACT_BOSSCHAMBER_DESCRIPTION": "<style=cIsHealing>(+) Spawns are cleared; Boss death destroys projectiles; Teleporter charges by 100% divided per Focused Convergence.</style> <style=cDeath>(-) Boss is stronger.</style>",
-		
+
 		"RISKOFBULLETSTORM_ARTIFACT_UPSPEEDOOC_NAME": "Artifact of the Swift Post-Battle",
 		"RISKOFBULLETSTORM_ARTIFACT_UPSPEEDOOC_DESCRIPTION": "After completing the teleporter event, all players gain a speed boost.",
-		
+
 		"RISKOFBULLETSTORM_ARTIFACT_GUNGEONSPOOF_NAME": "Artifact of Gungeon Mimic",
 		"RISKOFBULLETSTORM_ARTIFACT_GUNGEONSPOOF_DESCRIPTION": "Modifies the game to act similar to Gungeon.\nReduced health and damage, i-frames after getting hit.",
-		
+
 		"RISKOFBULLETSTORM_ARTIFACT_COYOTETIME_NAME": "Artifact of Canis Duration",
 		"RISKOFBULLETSTORM_ARTIFACT_COYOTETIME_DESCRIPTION": "Allowed to jump within 0.3s of falling off a platform.",
-		
+
+		"RISKOFBULLETSTORM_ARTIFACT_CHALLENGEMODE_NAME": "Artifact of Daisuke",
+		"RISKOFBULLETSTORM_ARTIFACT_CHALLENGEMODE_DESCRIPTION": "Activates Challenge Mode.",
+
 		"RISKOFBULLETSTORM_ARTIFACT__NAME": "",
-		"RISKOFBULLETSTORM_ARTIFACT__DESCRIPTION": "",
+		"RISKOFBULLETSTORM_ARTIFACT__DESCRIPTION": ""
 	}
 }

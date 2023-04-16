@@ -16,12 +16,6 @@
 		"RISKOFBULLETSTORM_ITEM_SCOPE_DESCRIPTION": "Decreases <style=cIsUtility>firing spread</style> by <style=cIsUtility>{0}%</style> <style=cStack>(+{1}% per stack)</style>. Each stack past the max of {2} will increase your <style=cIsDamage>damage by {3}%</style>.",
 		"RISKOFBULLETSTORM_ITEM_SCOPE_LORE": "<style=cStack>DECODING MESSAGE - KATE ****** - G*****N EXPLORATORY TEAM\n[SYS] Filter: [messages from:KATE_OPERATOR sort:chronological date:today] | Showing 6 recent results\n\n4:44 - [Kate] Found this scope in a chest, reporting back. It's got a green lens, and looks like a sniper scope.\n4:55 - [Kate] Seems to work whether it's attached or not, but I can't really look through it if it's not actually attached. Decision: attaching it.\n5:20 - [Kate] Not really sure it fits this place, since its just a scope. Then again, there was some duct tape in a chest, so maybe its not that weird...\n6:00 - [Kate] I'm requesting a possible analysis sometime, I don't think this is just a scope. I'm hitting a lot more of my shots. Maybe I'm just more focused.\n6:02 - [Kate] Scratch that, this is ACTUALLY reducing the spread of bullets. I'm kinda curious how it works, but I'll study it at the shop.\n3:00 - [Kate] I am now back in the Breach. The shopkeeper did not like me testing the scope.",
 
-		"RISKOFBULLETSTORM_ITEM_SPICETALLY_NAME": "Spice (Consumed)",
-		"RISKOFBULLETSTORM_ITEM_SPICETALLY_PICKUP": "<style=cIsUtility>Increases combat prowess</style>, <style=cDeath>with absolutely no downside!</style>",
-		"RISKOFBULLETSTORM_ITEM_SPICETALLY_DESCRIPTION": "Provides positive and negative stat changes.",
-		"RISKOFBULLETSTORM_ITEM_SPICETALLY_LORE": "Message DestroyedClone if you see this, because you shouldn't...",
-
-
 		"RISKOFBULLETSTORM_ITEM_IRRADIATEDLEAD_NAME": "Irradiated Lead",
 		"RISKOFBULLETSTORM_ITEM_IRRADIATEDLEAD_PICKUP": "<b>Poison Shot</b>\nThese irradiated slugs have a chance to poison any target they touch.",
 		"RISKOFBULLETSTORM_ITEM_IRRADIATEDLEAD_DESCRIPTION": "Attacks have a <style=cIsDamage>{0}% chance</style> <style=cStack>(+{1}% chance per stack</style> to <style=cIsDamage>blight</style> on hit.",
@@ -30,7 +24,7 @@
 		//[TIER2]
 		"RISKOFBULLETSTORM_ITEM_AMMOBELT_NAME": "Ammo Belt",
 		"RISKOFBULLETSTORM_ITEM_AMMOBELT_PICKUP": "<b>Ammo Capacity Up!</b>\nAmmo capacity increased.",
-		"RISKOFBULLETSTORM_ITEM_AMMOBELT_DESCRIPTION": "Increases <style=cIsUtility>stock</style> of all skills that <style=cIsUtility>use stocks</style> by <style=cIsUtility>+{0}%</style> <style=cStack>(+{0}% per stack)</style>.",
+		"RISKOFBULLETSTORM_ITEM_AMMOBELT_DESCRIPTION": "Increases <style=cIsUtility>stock</style> of all skills that <style=cIsUtility>use stocks</style> by <style=cIsUtility>+{0}%</style> <style=cStack>(+{0}% per stack)</style>. Ammo packs restore <style=cIsUtility>+{1} stock</style> <style=cStack>(+{2} stocks per stack)</style>.",
 		"RISKOFBULLETSTORM_ITEM_AMMOBELT_LORE": "Yeah, I've got tons of ammunition in my packs. I pick up every single thing that can be fired out of a gun. Let's see here... Musket Balls, Meteor Shots, Silver Bullets, Crystal Bullets, Cursed Bullets, Blessed Bullets, Uncursed Bullets, Unblessed bullets, Bullets, Tungsten Bullets, Burning Bullets, Wet Bullets, Bullet Bullets, Party Bull- Oh you want something specific? Just name it, and I'll have it quicker than Velocity Bulle-... What the fuck is a nine melee meter?",
 
 		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_NAME": "Battle Standard",
@@ -211,6 +205,11 @@
 		"RISKOFBULLETSTORM_ITEM_ORANGECONSUMED_PICKUP": "<b>With The Peel Too?</b>\nBoosts stats.",
 		"RISKOFBULLETSTORM_ITEM_ORANGECONSUMED_DESCRIPTION": "Increase <style=cIsHealing>maximum health by {0}%</style>, and <style=cIsUtility>reduce equipment cooldown by {1}%</style>.",
 		"RISKOFBULLETSTORM_ITEM_ORANGECONSUMED_LORE": "Consumed result of Orange.",
+
+		"RISKOFBULLETSTORM_ITEM_SPICETALLY_NAME": "Spice (Consumed)",
+		"RISKOFBULLETSTORM_ITEM_SPICETALLY_PICKUP": "<style=cIsUtility>Increases combat prowess</style>, <style=cDeath>with absolutely no downside!</style>",
+		"RISKOFBULLETSTORM_ITEM_SPICETALLY_DESCRIPTION": "Increases <style=cIsDamage>damage dealt by {0}%</style> <style=cStack>({1} per stack)</style> and reduces accuracy by <style=cIsDamage>{2}%</style> <style=cStack>({3}% per stack)</style>. Reduces maximum health by <style=cHealth>{4}%</style> <style=cStack>({5}% per stack).",
+		"RISKOFBULLETSTORM_ITEM_SPICETALLY_LORE": "",
 
 		"RISKOFBULLETSTORM_ITEM__NAME": "",
 		"RISKOFBULLETSTORM_ITEM__PICKUP": "",

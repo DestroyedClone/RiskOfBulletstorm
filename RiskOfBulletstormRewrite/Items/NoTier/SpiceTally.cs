@@ -14,6 +14,16 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override string ItemLangTokenName => "SPICETALLY";
 
+        public override string[] ItemFullDescriptionParams => new string[]
+        {
+            GetChance(Spice2.cfgStatDamage),
+            GetChance(Spice2.cfgStatDamageStack),
+            GetChance(Spice2.cfgStatAccuracy),
+            GetChance(Spice2.cfgStatAccuracyStack),
+            Spice2.cfgStatRORCurse.Value.ToString(),
+            Spice2.cfgStatRORCurseStack.Value.ToString(),
+        };
+
         public override ItemTier Tier => ItemTier.NoTier;
 
         public override GameObject ItemModel => Assets.NullModel;
@@ -29,6 +39,7 @@ namespace RiskOfBulletstormRewrite.Items
         public override void Init(ConfigFile config)
         {
             CreateItem();
+            CreateLang();
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()

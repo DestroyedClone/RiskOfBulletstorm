@@ -226,14 +226,14 @@ namespace RiskOfBulletstormRewrite
                 prefix + "RINGFIRERESISTANCE_REDUCTION",
                 RingFireResistance.cfgBaseResist.Value,
                 BetterUI.ItemStats.HyperbolicStacking,
-                BetterUI.ItemStats.StatFormatter.Percent);
+                BetterUI.ItemStats.StatFormatter.Percent);*/
 
             BetterUI.ItemStats.RegisterStat(CoinCrown.instance.ItemDef,
                 prefix + "COINCROWN_MONEYMULTADD",
                 CoinCrown.cfgCashMultiplier.Value,
                 CoinCrown.cfgCashMultiplierPerStack.Value,
                 BetterUI.ItemStats.LinearStacking,
-                BetterUI.ItemStats.StatFormatter.Percent);*/
+                BetterUI.ItemStats.StatFormatter.Percent);
 
             #endregion Uncommon
 
@@ -334,6 +334,29 @@ namespace RiskOfBulletstormRewrite
                 BetterUI.ItemStats.HyperbolicStacking,
                 BetterUI.ItemStats.StatFormatter.Percent,
                 BetterUI.ItemStats.ItemTag.SkillCooldown);
+            BetterUI.ItemStats.RegisterStat(CurseTally.instance.ItemDef,
+                prefix + "CURSETALLY_CURSE",
+                1,
+                BetterUI.ItemStats.LinearStacking,
+                BetterUI.ItemStats.StatFormatter.Charges);
+            BetterUI.ItemStats.RegisterStat(SpiceTally.instance.ItemDef,
+                prefix + "SPICETALLY_DAMAGE",
+                Spice2.cfgStatDamage.Value,
+                Spice2.cfgStatDamageStack.Value,
+                BetterUI.ItemStats.LinearStacking,
+                BetterUI.ItemStats.StatFormatter.Percent);
+            BetterUI.ItemStats.RegisterStat(SpiceTally.instance.ItemDef,
+                prefix + "SPICETALLY_ACCURACY",
+                Spice2.cfgStatAccuracy.Value,
+                Spice2.cfgStatAccuracyStack.Value,
+                BetterUI.ItemStats.LinearStacking,
+                BetterUI.ItemStats.StatFormatter.Percent);
+            BetterUI.ItemStats.RegisterStat(SpiceTally.instance.ItemDef,
+                prefix + "SPICETALLY_ROR2CURSE",
+                Spice2.cfgStatRORCurse.Value,
+                Spice2.cfgStatRORCurseStack.Value,
+                BetterUI.ItemStats.LinearStacking,
+                BetterUI.ItemStats.StatFormatter.Charges);
             /*BetterUI.ItemStats.RegisterStat(OrangeConsumed.instance.ItemDef,
                 prefix + "RINGMISERLYPROTECTION_HEALTH",
                 Orange.cfgMaxHealthIncrease.Value,

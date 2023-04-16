@@ -1,28 +1,29 @@
 {
-	strings:
-	{
-		[BUFFS]
+	strings: {
+		//[ "BUFFS" ],
 		"RISKOFBULLETSTORM_BUFF_MUSTACHE_NAME": "Power of Commerce",
 		"RISKOFBULLETSTORM_BUFF_MUSTACHE_DESC": "<style=cIsHealing>+{0} regen</style> <style=cIsHealing>regeneration</style> <style=cStack>(+{1} per <style=cIsUtility>Mustache</style>stack)</style>",
 		"RISKOFBULLETSTORM_BUFF_METRONOME_NAME": "Metronome Stacks (Display)",
 		"RISKOFBULLETSTORM_BUFF_METRONOME_DESC": "Deal {0}% extra damage.",
 		"RISKOFBULLETSTORM_BUFF_BLOODIEDSCARF_NAME": "Betrayal Reminiscence",
 		"RISKOFBULLETSTORM_BUFF_BLOODIEDSCARF_DESC": "Take <style=cIsHealth>{0}% extra damage</style> <style=cStack>(+{1}% damage per stack)</style>.",
-		"RISKOFBULLETSTORM_BUFF_ALPHABULLET_NAME": "Alpha Bullet Damage",
-		"RISKOFBULLETSTORM_BUFF_ALPHABULLET_DESC": "For each skill <style=cIsDamage>off cooldown</style>, grants <style=cIsDamage>+{0}% damage</style> <style=cStack>{1}% per stack</style> per buff.",
+		"RISKOFBULLETSTORM_BUFF_ALPHABULLET_NAME": "Alpha Bullet",
+		"RISKOFBULLETSTORM_BUFF_ALPHABULLET_DESC": "For each skill <style=cIsDamage>off cooldown</style>, grants <style=cIsDamage>+{0}% damage</style> <style=cStack>*{1}% per stack)</style> per buff.",
 		"RISKOFBULLETSTORM_BUFF_DODGEROLL_NAME": "Metacarpel Damage",
 		"RISKOFBULLETSTORM_BUFF_DODGEROLL_DESC": "Take <style=cIsHealth>{0}% extra damage</style> <style=cStack>(+{0}% damage per stack)</style>.",
+		"RISKOFBULLETSTORM_BUFF_ARTIFACTSPEEDUP_NAME": "Out of Combat Speed Up",
+		"RISKOFBULLETSTORM_BUFF_ARTIFACTSPEEDUP_DESC": "Increases movement speed by {0}%. Caused by [Artifact of the Swift Post-Battle]",
 		"RISKOFBULLETSTORM_BUFF__NAME": "",
 		"RISKOFBULLETSTORM_BUFF__DESC": "",
-		
-		
-		[ItemStats]
+
+
+		//[ "ItemStats" ],
 		//[CommonAssets]
 		//[STATSDISPLAY]
 		"RISKOFBULLETSTORM_STATDISPLAY_ACCURACY": "Accuracy",
 		"RISKOFBULLETSTORM_STATDISPLAY_CURSE": "Curse",
 		"RISKOFBULLETSTORM_STATDISPLAY_": "",
-		
+
 		//[Common]
 		"RISKOFBULLETSTORM_STAT_ANTIBODY_HEALCHANCE": "Healing Chance",
 		"RISKOFBULLETSTORM_STAT_ANTIBODY_HEALAMOUNT": "Extra Healing",
@@ -31,7 +32,7 @@
 		"RISKOFBULLETSTORM_STAT_SCOPE_SPREADREDUCTION": "Spread Reduction",
 		"RISKOFBULLETSTORM_STAT_SCOPE_DAMAGEMULTIPLIER": "Damage Multiplier",
 		"RISKOFBULLETSTORM_STAT_IRRADIATEDLEAD_POISONCHANCE": "Blight Chance",
-		
+
 		//[Uncommon]
 		"RISKOFBULLETSTORM_STAT_RINGCHESTFRIENDSHIP_CREDITMULTIPLIER": "Chest Credit Multiplier",
 		"RISKOFBULLETSTORM_STAT_COINCROWN_MONEYMULTADD": "Money Multiplier",
@@ -41,13 +42,13 @@
 		"RISKOFBULLETSTORM_STAT_GHOSTBULLETS_DAMAGEREDUCTION": "Damage Reduction Per Pierce",
 		"RISKOFBULLETSTORM_STAT_GHOSTBULLETS_PIERCECOUNT": "Enemies Pierced Per Projectile",
 		"RISKOFBULLETSTORM_STAT_RINGFIRERESISTANCE_REDUCTION": "Fire Resistance",
-		
+
 		//[Legendary]
-		"RISKOFBULLETSTORM_STAT_BACKPACK_SLOTS": "Extra Equipment Slot",
+		"RISKOFBULLETSTORM_STAT_BACKPACK_SLOTS": "Extra Equipment Slots",
 		"RISKOFBULLETSTORM_STAT_BABYGOODMIMIC_MINIONCOUNT": "Max Mimics",
 		"RISKOFBULLETSTORM_STAT_BABYGOODMIMIC_COOLDOWN": "Recharge",
 		"RISKOFBULLETSTORM_STAT_CLONE_ITEMCOUNT": "Amount of Items Returned",
-		
+
 		//[Lunar]
 		"RISKOFBULLETSTORM_STAT_HIPHOLSTER_CHANCE": "Use Chance",
 		"RISKOFBULLETSTORM_STAT_RINGMISERLYPROTECTION_HEALTH": "Max Health",
@@ -56,21 +57,25 @@
 		"RISKOFBULLETSTORM_STAT_BLOODIEDSCARF_VULNERABILITYDURATION": "Vulnerability Duration",
 		"RISKOFBULLETSTORM_STAT_DODGEROLLUTILITYREPLACEMENT_DAMAGEVULNERABILITY": "Damage Vulnerability After Roll",
 		"RISKOFBULLETSTORM_STAT_DODGEROLLUTILITYREPLACEMENT_VULNERABILITYDURATION": "Vulnerability Duration",
-		
+
 		//[NoTier]
 		"RISKOFBULLETSTORM_STAT_ORANGECONSUMED_MAXHEALTHADD": "Max Health",
 		"RISKOFBULLETSTORM_STAT_ORANGECONSUMED_SKILLREDUCTION": "Skill Cooldowns Reduction",
-		
+		"RISKOFBULLETSTORM_STAT_CURSETALLY_CURSE": "Curse",
+		"RISKOFBULLETSTORM_STAT_SPICETALLY_DAMAGE": "Damage Multiplier",
+		"RISKOFBULLETSTORM_STAT_SPICETALLY_ACCURACY": "Accuracy",
+		"RISKOFBULLETSTORM_STAT_SPICETALLY_ROR2CURSE": "RoR2 Curse",
+
 		//[VOID COMMON]
-		
+
 		//[VOID UNCOMMON]
 		"RISKOFBULLETSTORM_STAT_BATTLESTANDARDVOID_DAMAGEBONUSPERMINION": "Damage Bonus Per Minion",
 		"RISKOFBULLETSTORM_STAT_EXTRACASHPERKILL": "Increased Gold Per Kill",
-		
+
 		//[VOID LEGENDARY]
 		"RISKOFBULLETSTORM_STAT_CLONEVOID_ITEMSPERSTAGE": "Extra Items Per Stage",
-		"RISKOFBULLETSTORM_STAT_CLONEVOID_STAGECOUNT": "Stage Count",
-		
+		"RISKOFBULLETSTORM_STAT_CLONEVOID_STAGECOUNT": "Stage Count"
+
 		//[VOID BOSS]
 		//"RISKOFBULLETSTORM_STAT_": "",
 	}

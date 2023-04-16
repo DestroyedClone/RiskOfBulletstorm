@@ -50,6 +50,12 @@ namespace RiskOfBulletstormRewrite.Utils
             return renderInfos;
         }
 
+        /// <summary>
+        /// Converts a float to a string percentage
+        /// <para>(float)0.2 -> (string)"20%"</para>
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static string Pct(float value)
         {
             return $"{100 * value}%";
@@ -115,12 +121,12 @@ namespace RiskOfBulletstormRewrite.Utils
 
         public static float GetHyperbolicValue(float baseAmount, float stackAmount, int itemCount)
         {
-            if (itemCount == 0)
-                return 0;
-            if (itemCount == 1)
-                return baseAmount;
+            if (itemCount <= 1)
+                return baseAmount * itemCount;
 
-            return 1 - 1 / (1 + baseAmount * (stackAmount * (itemCount - 1)));
+            //https://discord.com/channels/562704639141740588/562704639569428506/1097118130427404298
+            float itemCountFactor = (1 + baseAmount * (stackAmount * (itemCount - 1)));
+            return 1 - 1 / itemCountFactor;
         }
 
         public static int GetEquipmentCountForTeam(TeamIndex teamIndex, EquipmentIndex equipmentIndex, bool requiresAlive, bool requiresConnected = true)

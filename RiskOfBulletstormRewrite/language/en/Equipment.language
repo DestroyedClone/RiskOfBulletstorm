@@ -30,7 +30,7 @@
 
 		"RISKOFBULLETSTORM_EQUIPMENT_ORANGE_NAME": "Orange",
 		"RISKOFBULLETSTORM_EQUIPMENT_ORANGE_PICKUP": "<b>You're not Alexander</b>\nHeals on use, increases max health.",
-		"RISKOFBULLETSTORM_EQUIPMENT_ORANGE_DESCRIPTION": "<style=cIsUtility>Eat</style> to <style=cIsHealing>increase maximum health by {0}%</style>, <style=cIsHealing>heal for {0}% health, and <style=cIsUtility>reduce equipment cooldown by {2}%</style>.",
+		"RISKOFBULLETSTORM_EQUIPMENT_ORANGE_DESCRIPTION": "<style=cIsUtility>Eat</style> to <style=cIsHealing>increase maximum health by {0}%</style>, <style=cIsHealing>heal for {0}% health, and <style=cIsUtility>reduce equipment cooldown by {2}%</style>. Consumed on use.",
 		"RISKOFBULLETSTORM_EQUIPMENT_ORANGE_LORE": "With this orange, your style... it's impetuous. Your defense, impregnable.",
 
 		"RISKOFBULLETSTORM_EQUIPMENT_ORANGECONSUMED_NAME": "Orange (Consumed)",
@@ -80,8 +80,8 @@
 		"RISKOFBULLETSTORM_EQUIPMENT_IRONCOINCONSUMED_FLAVORSIDE": "Neither! ...huh?",
 
 		"RISKOFBULLETSTORM_EQUIPMENT_SPICE_NAME": "Spice",
-		"RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP": "SHOUDLNT BE SEEN<b>A tantalizing cube of power.</b>\nIncreases <style=cIsDamage>combat prowess</style>, with <style=cDeath>absolutely no downside</style>!",
-		"RISKOFBULLETSTORM_EQUIPMENT_SPICE_DESCRIPTION": "<style=cIsUtility>Increases stats based on the spice amount consumed</style>, but has <style=cDeath>with detrimental effect on excessive consumption</style>. <style=cDeath>Grants curse on each use</style>.",
+		"RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP": "<b>A tantalizing cube of power.</b>\nIncreases <style=cIsDamage>combat prowess</style>, with <style=cDeath>absolutely no downside</style>!",
+		"RISKOFBULLETSTORM_EQUIPMENT_SPICE_DESCRIPTION": "<style=cIsUtility>Increases damage based on the spice amount consumed</style>, but has <style=cDeath>detrimental effect on consumption</style>. <style=cDeath>Grants curse on each use</style>.",
 		"RISKOFBULLETSTORM_EQUIPMENT_SPICE_LORE": "A potent gun-enhancing drug from the far reaches of the galaxy. It is known to be extremely addictive, and extremely expensive.",
 
 		"RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP_USES_0": "A tantalizing cube of power.",
@@ -89,6 +89,14 @@
 		"RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP_USES_2": "Just one more hit...",
 		"RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP_USES_3": "MORE",
 		"RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP_FORMAT": "<b>{0}</b>\nIncreases <style=cIsDamage>combat prowess</style>, with <style=cDeath>absolutely no downside</style>!",
+
+		//if they use the same token, the statsheet throws an error
+		"RISKOFBULLETSTORM_EQUIPMENT_SPICEA_NAME": "Spice",
+		"RISKOFBULLETSTORM_EQUIPMENT_SPICEB_NAME": "Spice",
+		"RISKOFBULLETSTORM_EQUIPMENT_SPICEC_NAME": "Spice",
+		"RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP_A": "<b>One more couldn't hurt.</b>\nIncreases <style=cIsDamage>combat prowess</style>, with <style=cDeath>absolutely no downside</style>!",
+		"RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP_B": "<b>Just one more hit...</b>\nIncreases <style=cIsDamage>combat prowess</style>, with <style=cDeath>absolutely no downside</style>!",
+		"RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP_C": "<b>MORE</b>\nIncreases <style=cIsDamage>combat prowess</style>, with <style=cDeath>absolutely no downside</style>!",
 
 		"RISKOFBULLETSTORM_EQUIPMENT_SPICECONSUMED_NAME": "Spice Wrapper",
 		"RISKOFBULLETSTORM_EQUIPMENT_SPICECONSUMED_PICKUP": "<b>Licked Clean</b>\nYou should really throw this contraband coating away.",

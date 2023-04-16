@@ -52,8 +52,8 @@ namespace RiskOfBulletstormRewrite
             //        break;
             //}
 
-            if (cfgDropEquipment.Value)
-                On.RoR2.UI.EquipmentIcon.Update += EquipmentIcon_Update;
+            //if (cfgDropEquipment.Value)
+                //On.RoR2.UI.EquipmentIcon.Update += EquipmentIcon_Update;
         }
 
         private static void AchievementNotificationPanel_SetAchievementDef(On.RoR2.UI.AchievementNotificationPanel.orig_SetAchievementDef orig, AchievementNotificationPanel self, AchievementDef achievementDef)
@@ -160,6 +160,7 @@ namespace RiskOfBulletstormRewrite
                     {
                         colorMod = "red";
                     }
+                    stringBuilder2.Append(self.stockText.text);
                     stringBuilder2.Append($"<color={colorMod}>{dropText}</color>");
                     if (shouldShowStock) stringBuilder2.Append("\n");
 

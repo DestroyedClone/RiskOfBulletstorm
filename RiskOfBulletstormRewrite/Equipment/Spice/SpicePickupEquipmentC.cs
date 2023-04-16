@@ -13,7 +13,7 @@ namespace RiskOfBulletstormRewrite.Equipment
     {
         public override string EquipmentName => "SpicePickupEquipmentC";
 
-        public override string EquipmentLangTokenName => "SPICEPICKUPEQUIPMENTC";
+        public override string EquipmentLangTokenName => "SPICEC";
 
         public override string EquipmentPickupToken => "RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP_C";
 

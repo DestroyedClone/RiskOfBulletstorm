@@ -467,6 +467,8 @@ namespace RiskOfBulletstormRewrite.Controllers
         {
             private float Scope_SpreadReduction => Items.Scope.cfgSpreadReduction.Value;
             private float Scope_SpreadReductionStack => Items.Scope.cfgSpreadReductionPerStack.Value;
+            private float Spice_SpreadReduction => Equipment.Spice2.cfgStatAccuracy.Value;
+            private float Spice_SpreadReductionStack => Equipment.Spice2.cfgStatAccuracyStack.Value;
 
             //private float[,] SpiceBonusesConstant => Equipment.Spice.SpiceBonusesConstant;
             //private float[] SpiceBonusesAdditive => Equipment.Spice.SpiceBonusesAdditive;
@@ -518,35 +520,24 @@ namespace RiskOfBulletstormRewrite.Controllers
                 //curse -= itemCount_CurseReduction * 0.5f;
             }
 
+            public float scopeMult = 0;
+            public float spiceMult = 0;
+
             private void RecalculateAccuracy()
             {
+                //A reduction is tighter
+                //An increase is looser
+
                 float ScopeMult = 0f;
                 float SpiceMult = 0f;
 
                 if (itemCount_Scope > 0)
                     ScopeMult -= (Scope_SpreadReduction + Scope_SpreadReductionStack * (itemCount_Scope - 1));
+                scopeMult = ScopeMult;
 
-                //switch case?
-                switch (itemCount_Spice)
-                {
-                    case 0:
-                    case 1:
-                    case 2:
-                        break;
-
-                    case 3:
-                    case 4:
-                        //SpiceMult -= SpiceBonusesConstant[itemCount_Spice, 2];
-                        break;
-
-                    case 5: //fuck IT GOES FROM 0.15 to -0.2 WHYYYYYYYYYYYYYYY hardcoded stopgap time
-                        SpiceMult -= 0f;
-                        break;
-
-                    default:
-                        //SpiceMult -= SpiceBonusesConstant[5, 2] + SpiceBonusesAdditive[2] * (itemCount_Spice - 4);
-                        break;
-                }
+                if (itemCount_Spice > 0)
+                    SpiceMult += (-Spice_SpreadReduction - Spice_SpreadReductionStack * (itemCount_Spice - 1));
+                spiceMult= SpiceMult;
 
                 var accuracy = ScopeMult + SpiceMult;
                 idealizedAccuracyStat = -accuracy;

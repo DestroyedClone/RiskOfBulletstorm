@@ -211,6 +211,11 @@ namespace RiskOfBulletstormRewrite.Equipment
             EquipmentDef.isLunar = IsLunar;
             EquipmentDef.canBeRandomlyTriggered = CanBeRandomlyTriggered;
 
+            if (IsLunar)
+            {
+                EquipmentDef.colorIndex = ColorCatalog.ColorIndex.LunarItem;
+            }
+
             UnlockableDef = CreateUnlockableDef();
             if (UnlockableDef != null)
             {
@@ -241,7 +246,7 @@ namespace RiskOfBulletstormRewrite.Equipment
         //runs on server
         private bool PerformEquipmentAction(On.RoR2.EquipmentSlot.orig_PerformEquipmentAction orig, RoR2.EquipmentSlot self, EquipmentDef equipmentDef)
         {
-            if (Tweaks.EquipmentCanBeDropped(equipmentDef)
+            /*if (Tweaks.EquipmentCanBeDropped(equipmentDef)
                 )
             /*    && Tweaks.PlayerCharacterMasterCanSendBodyInput(self, out LocalUser localUser, out Player player, out CameraRigController cameraRigController))
             {
@@ -250,7 +255,7 @@ namespace RiskOfBulletstormRewrite.Equipment
                     Tweaks.DropEquipment(self, equipmentDef);
                     return true;
                 }
-            }*/
+            }
             {
                 bool inputCheck = self.inputBank && self.inputBank.interact.down;
                 if (inputCheck)
@@ -258,7 +263,7 @@ namespace RiskOfBulletstormRewrite.Equipment
                     DropEquipment(self, equipmentDef);
                     return false;
                 }
-            }
+            }*/
             if (equipmentDef == EquipmentDef)
             {
                 return ActivateEquipment(self);
