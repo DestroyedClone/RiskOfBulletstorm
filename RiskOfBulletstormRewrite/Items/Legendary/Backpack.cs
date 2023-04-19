@@ -119,10 +119,10 @@ localScale = new Vector3(1F, 1F, 1F)
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Chest",
-                    localPos = new Vector3(0f, 0.5f, 0.22f),
-                    localAngles = new Vector3(0f, 1f, -0.06f),
-                    localScale = generalScale
+childName = "Chest",
+localPos = new Vector3(0.00252F, 0.2011F, -0.38373F),
+localAngles = new Vector3(354.7345F, 223.2252F, 350.3122F),
+localScale = new Vector3(0.15178F, 0.15178F, 0.15178F)
                 }
             });
 
@@ -170,7 +170,7 @@ localScale = new Vector3(0.07786F, 0.07786F, 0.07786F)
                     followerPrefab = ItemBodyModelPrefab,
 childName = "HeadBase",
 localPos = new Vector3(0F, 0.628F, -0.392F),
-localAngles = new Vector3(344.4032F, 180F, 180F),
+localAngles = new Vector3(344.4032F, 137.7126F, 180F),
 localScale = new Vector3(0.1341F, 0.1341F, 0.1341F)
                 }
             });
@@ -216,10 +216,10 @@ localScale = new Vector3(0.2F, 0.2F, 0.2F)
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-childName = "Head",
-localPos = new Vector3(0F, -0.0616F, 0.18F),
-localAngles = new Vector3(0F, 0F, 0F),
-localScale = new Vector3(0.05F, 0.05F, 0.05F)
+childName = "chest",
+localPos = new Vector3(0.02159F, 0.35501F, -0.1903F),
+localAngles = new Vector3(341.6615F, 218.0503F, 0F),
+localScale = new Vector3(0.10951F, 0.10951F, 0.10951F)
                 }
             });
             rules.Add("mdlBandit", new ItemDisplayRule[]
@@ -252,9 +252,9 @@ localScale = new Vector3(0.1F, 0.1F, 0.1F)
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-              childName = "Pelvis",
-localPos = new Vector3(-0.13679F, 0.02986F, -0.14214F),
-localAngles = new Vector3(20.0726F, 264.6954F, 176.4028F),
+            childName = "Chest",
+localPos = new Vector3(0.13045F, -0.03158F, 0.00752F),
+localAngles = new Vector3(29.93956F, 129.4898F, 343.6404F),
 localScale = new Vector3(0.05F, 0.05F, 0.05F)
                 }
             });
@@ -264,10 +264,10 @@ localScale = new Vector3(0.05F, 0.05F, 0.05F)
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-              childName = "Pelvis",
-localPos = new Vector3(-0.13679F, 0.02986F, -0.14214F),
-localAngles = new Vector3(20.0726F, 264.6954F, 176.4028F),
-localScale = new Vector3(0.05F, 0.05F, 0.05F)
+          childName = "Chest",
+localPos = new Vector3(-0.00538F, 0.11036F, -0.20132F),
+localAngles = new Vector3(11.38334F, 221.3227F, 8.18337F),
+localScale = new Vector3(0.10787F, 0.10787F, 0.10787F)
                 }
             });
             rules.Add("mdlClayBruiser", new ItemDisplayRule[]
@@ -477,7 +477,6 @@ localScale = new Vector3(1F, 1F, 1F)
         {
             public LocalUser localUser;
             public CharacterMaster characterMaster;
-            public CharacterBody characterBody;
             public Inventory inventory;
             private byte itemCount = 0;
             private byte extraSlotCount = 0;
@@ -514,7 +513,10 @@ localScale = new Vector3(1F, 1F, 1F)
 
             public void SetActiveEquipmentSlot(byte slot)
             {
+                var oldEquipmentSlot = lastEquipmentSlot;
                 lastEquipmentSlot = inventory.activeEquipmentSlot;
+                var newEquipmentSlot = lastEquipmentSlot;
+                Chat.AddMessage($"LastEquipment: {oldEquipmentSlot}->{newEquipmentSlot}, Current set to {slot}");
                 inventory.SetActiveEquipmentSlot(slot);
             }
 

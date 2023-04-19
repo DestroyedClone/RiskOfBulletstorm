@@ -51,7 +51,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
         {
-            return CoinCrown.instance.CreateItemDisplayRules();
+            return CoinCrown.instance.NewMethod(ref ItemBodyModelPrefab, ItemModel);
         }
 
         public override void Hooks()

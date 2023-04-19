@@ -48,7 +48,14 @@ namespace RiskOfBulletstormRewrite.Items
             cfgCashMultiplierPerStack = config.Bind(ConfigCategory, "Cash Multiplier Per Stack", 0.05f, "The percentage of extra money PER ITEM STACK to get on completing the teleporter event.");
         }
 
+
+
         public override ItemDisplayRuleDict CreateItemDisplayRules()
+        {
+            return NewMethod(ref ItemBodyModelPrefab, ItemModel);
+        }
+
+        public ItemDisplayRuleDict NewMethod(ref GameObject ItemBodyModelPrefab, GameObject ItemModel)
         {
             ItemBodyModelPrefab = ItemModel;
             ItemBodyModelPrefab.AddComponent<ItemDisplay>();
@@ -109,10 +116,10 @@ localScale = new Vector3(0.39367F, 0.39367F, 0.39367F)
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Chest",
-                    localPos = new Vector3(0f, 0.5f, 0.22f),
-                    localAngles = new Vector3(0f, 1f, -0.06f),
-                    localScale = generalScale
+childName = "Chest",
+localPos = new Vector3(0.00124F, 0.78889F, 0.03056F),
+localAngles = new Vector3(0F, 1F, 359.94F),
+localScale = new Vector3(0.05F, 0.05F, 0.05F)
                 }
             });
 
@@ -122,10 +129,10 @@ localScale = new Vector3(0.39367F, 0.39367F, 0.39367F)
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-            childName = "Head",
-localPos = new Vector3(0F, 0.98902F, -0.82352F),
+childName = "Head",
+localPos = new Vector3(0F, 0.96482F, -0.82352F),
 localAngles = new Vector3(0F, 0F, 0F),
-localScale = new Vector3(0.1F, 0.1F, 0.1F)
+localScale = new Vector3(0.12502F, 0.12502F, 0.12502F)
                 }
             });
             rules.Add("mdlMage", new ItemDisplayRule[]
@@ -159,9 +166,9 @@ localScale = new Vector3(0.04219F, 0.04219F, 0.04219F)
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
 childName = "HeadBase",
-localPos = new Vector3(0F, 0.628F, -0.392F),
+localPos = new Vector3(0F, -0.12809F, -0.4823F),
 localAngles = new Vector3(344.4032F, 180F, 180F),
-localScale = new Vector3(0.1341F, 0.1341F, 0.1341F)
+localScale = new Vector3(0.08525F, 0.08525F, 0.08525F)
                 }
             });
             rules.Add("mdlLoader", new ItemDisplayRule[]
@@ -207,7 +214,7 @@ localScale = new Vector3(0.05F, 0.05F, 0.05F)
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
 childName = "Head",
-localPos = new Vector3(0F, -0.0616F, 0.18F),
+localPos = new Vector3(0.00004F, 0.28214F, 0.0222F),
 localAngles = new Vector3(0F, 0F, 0F),
 localScale = new Vector3(0.05F, 0.05F, 0.05F)
                 }
@@ -235,6 +242,24 @@ localPos = new Vector3(-0.00934F, 0.22059F, -0.01868F),
 localAngles = new Vector3(0F, 83.54522F, 349.4288F),
 localScale = new Vector3(0.05F, 0.05F, 0.05F)
                 }
+            });
+            rules.Add("mdlVoidSurvivor", new ItemDisplayRule
+            {
+                ruleType = ItemDisplayRuleType.ParentedPrefab,
+                followerPrefab = ItemBodyModelPrefab,
+                childName = "Head",
+                localPos = new Vector3(0F, 0.24271F, 0.00002F),
+                localAngles = new Vector3(0F, 0F, 0F),
+                localScale = new Vector3(0.05328F, 0.05328F, 0.05328F)
+            });
+            rules.Add("mdlRailGunner", new ItemDisplayRule
+            {
+                ruleType = ItemDisplayRuleType.ParentedPrefab,
+                followerPrefab = ItemBodyModelPrefab,
+                childName = "Head",
+                localPos = new Vector3(-0.0027F, 0.23143F, -0.06081F),
+                localAngles = new Vector3(339.5427F, 359.7718F, 0.29537F),
+                localScale = new Vector3(0.0343F, 0.0343F, 0.0343F)
             });
             rules.Add("mdlClayBruiser", new ItemDisplayRule[]
             {

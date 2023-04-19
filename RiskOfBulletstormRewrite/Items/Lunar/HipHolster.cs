@@ -110,10 +110,10 @@ localScale = new Vector3(0.68137F, 0.71426F, 0.68137F)
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-                    childName = "Chest",
-                    localPos = new Vector3(0f, 0.5f, 0.22f),
-                    localAngles = new Vector3(0f, 1f, -0.06f),
-                    localScale = generalScale
+childName = "Pelvis",
+localPos = new Vector3(0.13122F, -0.0001F, -0.01835F),
+localAngles = new Vector3(19.27725F, 85.19704F, 145.0748F),
+localScale = new Vector3(0.12243F, 0.11417F, 0.1148F)
                 }
             });
 
@@ -123,10 +123,10 @@ localScale = new Vector3(0.68137F, 0.71426F, 0.68137F)
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-      childName = "Head",
-localPos = new Vector3(0.23752F, 0.20222F, 0.09962F),
+childName = "Base",
+localPos = new Vector3(0.11878F, 1.3892F, 0.05592F),
 localAngles = new Vector3(339.9832F, 91.42525F, 319.8334F),
-localScale = new Vector3(0.22351F, 0.22351F, 0.22351F)
+localScale = new Vector3(0.13749F, 0.13749F, 0.13749F)
                 }
             });
             rules.Add("mdlMage", new ItemDisplayRule[]
@@ -135,10 +135,10 @@ localScale = new Vector3(0.22351F, 0.22351F, 0.22351F)
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-   childName = "Pelvis",
-localPos = new Vector3(0.07427F, -0.07771F, 0.01486F),
-localAngles = new Vector3(20.72317F, 88.45992F, 158.5711F),
-localScale = new Vector3(0.1F, 0.1F, 0.1F)
+childName = "Pelvis",
+localPos = new Vector3(0.10036F, -0.10851F, 0.00613F),
+localAngles = new Vector3(20.62196F, 92.59741F, 170.2556F),
+localScale = new Vector3(0.08868F, 0.08868F, 0.08868F)
                 }
             });
             rules.Add("mdlMerc", new ItemDisplayRule[]
@@ -160,8 +160,8 @@ localScale = new Vector3(0.1F, 0.1F, 0.1F)
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
 childName = "HeadBase",
-localPos = new Vector3(0F, 0.628F, -0.392F),
-localAngles = new Vector3(344.4032F, 180F, 180F),
+localPos = new Vector3(0.19012F, 0.06155F, -0.49279F),
+localAngles = new Vector3(30.72254F, 121.4533F, 174.6666F),
 localScale = new Vector3(0.1341F, 0.1341F, 0.1341F)
                 }
             });
@@ -183,9 +183,9 @@ localScale = new Vector3(0.13278F, 0.13278F, 0.13278F)
                 {
                     ruleType = ItemDisplayRuleType.ParentedPrefab,
                     followerPrefab = ItemBodyModelPrefab,
-        childName = "Pelvis",
-localPos = new Vector3(0.69459F, 1.01468F, -0.95193F),
-localAngles = new Vector3(8.3527F, 84.39689F, 124.4845F),
+      childName = "Hip",
+localPos = new Vector3(0.98113F, 1.0147F, -0.95194F),
+localAngles = new Vector3(8.3527F, 84.3969F, 124.4845F),
 localScale = new Vector3(0.83998F, 0.83998F, 0.83998F)
                 }
             });
@@ -236,6 +236,24 @@ localPos = new Vector3(0.06196F, -0.01626F, 0.00386F),
 localAngles = new Vector3(14.67509F, 86.43238F, 154.4437F),
 localScale = new Vector3(0.1F, 0.1F, 0.1F)
                 }
+            });
+            rules.Add("mdlVoidSurvivor", new ItemDisplayRule
+            {
+                ruleType = ItemDisplayRuleType.ParentedPrefab,
+                followerPrefab = ItemBodyModelPrefab,
+                childName = "Pelvis",
+                localPos = new Vector3(0.01192F, 0.04854F, 0.08877F),
+                localAngles = new Vector3(22.60713F, 349.1809F, 138.0614F),
+                localScale = new Vector3(0.08201F, 0.08201F, 0.08201F)
+            });
+            rules.Add("mdlRailGunner", new ItemDisplayRule
+            {
+                ruleType = ItemDisplayRuleType.ParentedPrefab,
+                followerPrefab = ItemBodyModelPrefab,
+                childName = "Pelvis",
+                localPos = new Vector3(0.06763F, 0.04185F, 0.01322F),
+                localAngles = new Vector3(20.46132F, 81.72948F, 140.0435F),
+                localScale = new Vector3(0.07687F, 0.07687F, 0.07687F)
             });
             rules.Add("mdlClayBruiser", new ItemDisplayRule[]
             {

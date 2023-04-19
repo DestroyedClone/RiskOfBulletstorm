@@ -237,6 +237,24 @@ localScale = new Vector3(0.05F, 0.05F, 0.05F)
                     localScale = new Vector3(0.05F, 0.05F, 0.05F)
                 }
             });
+            rules.Add("mdlVoidSurvivor", new ItemDisplayRule
+            {
+                ruleType = ItemDisplayRuleType.ParentedPrefab,
+                followerPrefab = ItemBodyModelPrefab,
+                childName = "Head",
+                localPos = new Vector3(0.02346F, -0.01105F, 0.17482F),
+                localAngles = new Vector3(0F, 0F, 0F),
+                localScale = new Vector3(0.05886F, 0.05886F, 0.05886F)
+            });
+            rules.Add("mdlRailGunner", new ItemDisplayRule
+            {
+                ruleType = ItemDisplayRuleType.ParentedPrefab,
+                followerPrefab = ItemBodyModelPrefab,
+                childName = "Head",
+                localPos = new Vector3(0.00017F, 0.02236F, 0.12411F),
+                localAngles = new Vector3(0.73114F, 0.0132F, -0.00326F),
+                localScale = new Vector3(0.03698F, 0.03698F, 0.03698F)
+            });
             rules.Add("mdlClayBruiser", new ItemDisplayRule[]
             {
                 new ItemDisplayRule
