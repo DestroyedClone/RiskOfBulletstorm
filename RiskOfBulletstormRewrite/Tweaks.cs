@@ -7,15 +7,16 @@ using UnityEngine;
 using Rewired;
 using Rewired.Dev;
 using static RoR2.MasterSpawnSlotController;
+using R2API.Utils;
 
 namespace RiskOfBulletstormRewrite
 {
     public static class Tweaks
     {
         public static ConfigEntry<bool> cfgCenterNotifications;
-        //public static ConfigEntry<bool> cfgDisableAutoPickup;
         //public static ConfigEntry<NotificationMod> cfgEnableBreachNotifications;
         public static ConfigEntry<bool> cfgDropEquipment;
+        public static ConfigEntry<bool> cfgCanStealFromNewt;
 
         public enum NotificationMod
         {
@@ -39,8 +40,13 @@ namespace RiskOfBulletstormRewrite
                 On.RoR2.UI.GenericNotification.SetEquipment += SetEquipment;
                 On.RoR2.UI.GenericNotification.SetItem += SetItem;
             }
-            //if (cfgDisableAutoPickup.Value)
-            //On.RoR2.GenericPickupController.OnTriggerStay += NoAutoPickup;
+            cfgCanStealFromNewt = config.Bind(category, "Steal From Bazaar", true, "If true, you can steal from the bazaar while cloaked. But failing to steal will close the shop for the rest of the run.");
+            if (cfgCanStealFromNewt.Value)
+            {
+                //On.RoR2.ShopTerminalBehavior.Start += ShopTerminalBehavior_Start;
+                On.RoR2.PurchaseInteraction.OnInteractionBegin += PurchaseInteraction_OnInteractionBegin;
+                On.RoR2.PurchaseInteraction.CanBeAffordedByInteractor += PurchaseInteraction_CanBeAffordedByInteractor;
+            }
             //switch (cfgEnableBreachNotifications.Value)
             //{
             //    case NotificationMod.disable:
@@ -56,14 +62,64 @@ namespace RiskOfBulletstormRewrite
                 //On.RoR2.UI.EquipmentIcon.Update += EquipmentIcon_Update;
         }
 
+        private static void PurchaseInteraction_OnInteractionBegin(On.RoR2.PurchaseInteraction.orig_OnInteractionBegin orig, PurchaseInteraction self, Interactor activator)
+        {
+            var originalCost = self.Networkcost;
+            if (self.GetComponent<ShopTerminalBehavior>()
+                && activator.TryGetComponent(out CharacterBody characterBody)
+                && characterBody.hasCloakBuff)
+            {
+                var stolenItemCount = Items.StolenItemTally.instance.GetCount(characterBody);
+                var rollchance = 100 / (stolenItemCount + 1);
+                if (Util.CheckRoll(rollchance))
+                {
+                    self.Networkcost = 0;
+                    characterBody.inventory?.GiveItem(Items.CurseTally.instance.ItemDef);
+                    characterBody.inventory?.GiveItem(Items.StolenItemTally.instance.ItemDef);
+                } else
+                {
+                    characterBody.inventory?.GiveItem(Items.BannedFromBazaarTally.instance.ItemDef);
+                    NewtSaySteal();
+                }
+            }
+            orig(self, activator);
+            self.Networkcost = originalCost;
+        }
+
+        private static void NewtSaySteal()
+        {
+            //var sfxLocator = BazaarController.instance.shopkeeper.GetComponent<SfxLocator>();
+            Chat.SendBroadcastChat(new Chat.NpcChatMessage
+            {
+                baseToken = "RISKOFBULLETSTORM_DIALOGUE_NEWT_STEALRESPONSE_"+UnityEngine.Random.RandomRangeInt(0, 4),
+                formatStringToken = "RISKOFBULLETSTORM_DIALOGUE_NEWT_FORMAT",
+                //sender = BazaarController.instance.shopkeeper,
+                //sound = sfxLocator?.barkSound
+            });
+        }
+
+        private static bool PurchaseInteraction_CanBeAffordedByInteractor(On.RoR2.PurchaseInteraction.orig_CanBeAffordedByInteractor orig, PurchaseInteraction self, Interactor activator)
+        {
+            var original = orig(self, activator);
+
+            if (self.GetComponent<ShopTerminalBehavior>()
+                && activator.TryGetComponent(out CharacterBody characterBody)
+                && characterBody.hasCloakBuff)
+            {
+                original = true;
+            }
+
+
+            return original;
+        }
+
+        private static void ShopTerminalBehavior_Start(On.RoR2.ShopTerminalBehavior.orig_Start orig, ShopTerminalBehavior self)
+        {
+        }
+
         private static void AchievementNotificationPanel_SetAchievementDef(On.RoR2.UI.AchievementNotificationPanel.orig_SetAchievementDef orig, AchievementNotificationPanel self, AchievementDef achievementDef)
         {
             orig(self, achievementDef);
-        }
-
-        private static void NoAutoPickup(On.RoR2.GenericPickupController.orig_OnTriggerStay orig, GenericPickupController self, Collider other)
-        {
-            return;
         }
 
         /*
@@ -150,7 +206,7 @@ namespace RiskOfBulletstormRewrite
                     string colorMod;
                     if (self.playerCharacterMasterController
                         && self.playerCharacterMasterController.networkUser
-                        && PlayerCharacterMasterController.CanSendBodyInput(self.playerCharacterMasterController.networkUser, out LocalUser localUser, out Player inputPlayer, out CameraRigController cameraRigController)
+                        && PlayerCharacterMasterController.CanSendBodyInput(self.playerCharacterMasterController.networkUser, out LocalUser localUser, out Player inputPlayer, out CameraRigController _)
                         && inputPlayer.GetButton(5)
                         )
                     {

@@ -20,9 +20,40 @@ namespace RiskOfBulletstormRewrite.Modules
         internal static ItemTierDef itemVoidTier1Def = LoadAsset<ItemTierDef>("RoR2/DLC1/Common/VoidTier1Def.asset");
         internal static ItemTierDef itemVoidTier2Def = LoadAsset<ItemTierDef>("RoR2/DLC1/Common/VoidTier2Def.asset");
         internal static ItemTierDef itemVoidTier3Def = LoadAsset<ItemTierDef>("RoR2/DLC1/Common/VoidTier3Def.asset");
+        public static ItemTierDef ResolveTierDef(ItemTier itemTier)
+        {
+            switch (itemTier)
+            {
+                case ItemTier.AssignedAtRuntime:
+                    return null;
+                case ItemTier.Boss:
+                    return itemBossTierDef;
+                case ItemTier.Lunar:
+                    return itemLunarTierDef;
+                case ItemTier.NoTier:
+                    return null;
+                case ItemTier.Tier1:
+                    return itemTier1Def; 
+                case ItemTier.Tier2:
+                    return itemTier2Def;
+                case ItemTier.Tier3:
+                    return itemTier3Def;
+                case ItemTier.VoidBoss:
+                    return itemVoidBossTierDef;
+                case ItemTier.VoidTier1:
+                    return itemVoidTier1Def;
+                case ItemTier.VoidTier2:
+                    return itemVoidTier2Def;
+                case ItemTier.VoidTier3:
+                    return itemVoidTier3Def;
+            }
+            return null;
+        }
 
         //the bundle to load assets from
         public static AssetBundle mainAssetBundle;
+
+        public static CostTypeDef stealCostTypeDef;
 
         public static T LoadAsset<T> (string path)
         {
@@ -43,6 +74,18 @@ namespace RiskOfBulletstormRewrite.Modules
             //commandoMat = LegacyResourcesAPI.Load<GameObject>("Prefabs/CharacterBodies/CommandoBody").GetComponentInChildren<CharacterModel>().baseRendererInfos[0].defaultMaterial;
 
             PopulateAssets();
+            //CreateCostTypeDefs();
+        }
+
+        public static void CreateCostTypeDefs()
+        {
+            stealCostTypeDef = new CostTypeDef()
+            {
+                colorIndex = ColorCatalog.ColorIndex.Blood,
+                costStringFormatToken = "RISKOFBULLETSTORM_COST_STEAL_FORMAT",
+                //costStringStyle = 
+                name = "RBS_STEALCOSTTYPEDEF"
+            };
         }
 
         public static void PopulateAssets()

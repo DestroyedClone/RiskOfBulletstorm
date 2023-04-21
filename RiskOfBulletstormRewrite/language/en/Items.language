@@ -188,7 +188,7 @@
 
 		"RISKOFBULLETSTORM_ITEM_CURSEREDUCTIONTALLY_NAME": "Cleansed Curse",
 		"RISKOFBULLETSTORM_ITEM_CURSEREDUCTIONTALLY_PICKUP": "<b>Relief</b>\nResult of an act that cleanses the act of darkness.",
-		"RISKOFBULLETSTORM_ITEM_CURSEREDUCTIONTALLY_DESCRIPTION": "",
+		"RISKOFBULLETSTORM_ITEM_CURSEREDUCTIONTALLY_DESCRIPTION": "Decreases <b>Curse</b> by 1.",
 		"RISKOFBULLETSTORM_ITEM_CURSEREDUCTIONTALLY_LORE": "Result of interacting with a curse cleanse shrine",
 
 		"RISKOFBULLETSTORM_ITEM_CLONECONSUMED_NAME": "Clone (Consumed)",
@@ -208,7 +208,7 @@
 
 		"RISKOFBULLETSTORM_ITEM_SPICETALLY_NAME": "Spice (Consumed)",
 		"RISKOFBULLETSTORM_ITEM_SPICETALLY_PICKUP": "<style=cIsUtility>Increases combat prowess</style>, <style=cDeath>with absolutely no downside!</style>",
-		"RISKOFBULLETSTORM_ITEM_SPICETALLY_DESCRIPTION": "Increases <style=cIsDamage>damage dealt by {0}%</style> <style=cStack>({1} per stack)</style> and reduces accuracy by <style=cIsDamage>{2}%</style> <style=cStack>({3}% per stack)</style>. Reduces maximum health by <style=cHealth>{4}%</style> <style=cStack>({5}% per stack).",
+		"RISKOFBULLETSTORM_ITEM_SPICETALLY_DESCRIPTION": "Increases <style=cIsDamage>damage dealt by {0}%</style> <style=cStack>(+{1} per stack)</style> and increases accuracy by <style=cIsDamage>+{2}%</style> <style=cStack>({3}% per stack)</style>. Reduces maximum health by <style=cIsHealth>{4}%</style> <style=cStack>({5}% per stack)</style>.",
 		"RISKOFBULLETSTORM_ITEM_SPICETALLY_LORE": "",
 
 		"RISKOFBULLETSTORM_ITEM__NAME": "",

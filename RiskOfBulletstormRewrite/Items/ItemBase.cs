@@ -155,6 +155,11 @@ namespace RiskOfBulletstormRewrite.Items
 
         public abstract ItemDisplayRuleDict CreateItemDisplayRules();
 
+        public static ItemTierDef ResolveTierDef(ItemTier itemTier)
+        {
+            return Assets.ResolveTierDef(itemTier);
+        }
+
         protected void CreateItem()
         {
             if (AIBlacklisted)

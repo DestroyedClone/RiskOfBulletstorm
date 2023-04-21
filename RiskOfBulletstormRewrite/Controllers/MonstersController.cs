@@ -44,21 +44,6 @@ namespace RiskOfBulletstormRewrite.Controllers
                         masterPrefab = GlobalEventManager.CommonAssets.wispSoulMasterPrefabMasterComponent.gameObject,
                         summonerBodyObject = obj.victim.gameObject
                     }.Perform();
-                    if (wispMaster
-                    && wispMaster.TryGetComponent<BaseAI>(out BaseAI baseAI)
-                    && obj.attackerBody)
-                    {
-                        baseAI.customTarget = new BaseAI.Target(baseAI)
-                        {
-                            characterBody = obj.attackerBody
-                        };
-                        baseAI.neverRetaliateFriendlies = true;
-                        baseAI.enemyAttentionDuration = Mathf.Infinity;
-                        foreach (var skillDriver in baseAI.skillDrivers)
-                        {
-                            skillDriver.moveTargetType = AISkillDriver.TargetType.Custom;
-                        }
-                    }
                 }
             }
         }

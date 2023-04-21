@@ -62,8 +62,8 @@ namespace RiskOfBulletstormRewrite
                 GetFloat(AlphaBullets.cfgDamageStack)});
             RegisterBuffInfo(Buffs.DodgeRollBuff, "DODGEROLL",
             new string[]{
-                GetFloat(DodgeRollUtilityReplacement.cfgDamageVulnerabilityMultiplier),
-                GetFloat(DodgeRollUtilityReplacement.cfgDamageVulnerabilityMultiplierPerStack)
+                Utils.ItemHelpers.Pct(DodgeRollUtilityReplacement.cfgDamageVulnerabilityMultiplier.Value),
+                Utils.ItemHelpers.Pct(DodgeRollUtilityReplacement.cfgDamageVulnerabilityMultiplierPerStack.Value)
             });
             RegisterBuffInfo(Buffs.ArtifactSpeedUpBuff,
                 "ARTIFACTSPEEDUP",
@@ -80,17 +80,22 @@ namespace RiskOfBulletstormRewrite
         {
             var prefix = "$RISKOFBULLETSTORM_STATDISPLAY_";
             //todo add auto display?????
-            BetterUI.StatsDisplay.AddStatsDisplay(prefix + "ACCURACY", (BetterUI.StatsDisplay.DisplayCallback)GetAccuracy);
-            BetterUI.StatsDisplay.AddStatsDisplay(prefix + "CURSE", (BetterUI.StatsDisplay.DisplayCallback)GetCurse);
+            BetterUI.StatsDisplay.AddStatsDisplay("$riskofbulletstorm_accuracy", (BetterUI.StatsDisplay.DisplayCallback)GetAccuracy);
+            BetterUI.StatsDisplay.AddStatsDisplay("$riskofbulletstorm_curse", (BetterUI.StatsDisplay.DisplayCallback)GetCurse);
+            BetterUI.StatsDisplay.AddStatsDisplay("$riskofbulletstorm_steal", (BetterUI.StatsDisplay.DisplayCallback)GetStealChance);
         }
 
         private static string GetAccuracy(CharacterBody body)
         {
-            string value = null;
-            var extraStatsController = body.GetComponent<Controllers.ExtraStatsController.RBSExtraStatsController>();
-            if (extraStatsController)
+            string value = "N/A";
+            var master = body.master;
+            if (master)
             {
-                return $"{extraStatsController.idealizedAccuracyStat * 100f}%";
+                var extraStatsController = master.GetComponent<Controllers.ExtraStatsController.RBSExtraStatsController>();
+                if (extraStatsController)
+                {
+                    return $"{(extraStatsController.idealizedAccuracyStat * 100f):0.##}%";
+                }
             }
 
             return value;
@@ -99,13 +104,26 @@ namespace RiskOfBulletstormRewrite
         //this duplicate is kinda goofy, is this unoptimized?
         private static string GetCurse(CharacterBody body)
         {
-            string value = null;
-            var extraStatsController = body.GetComponent<Controllers.ExtraStatsController.RBSExtraStatsController>();
-            if (extraStatsController)
+            string value = "N/A";
+            var master = body.master;
+            if (master)
             {
-                return extraStatsController.curse.ToString();
+                var extraStatsController = master.GetComponent<Controllers.ExtraStatsController.RBSExtraStatsController>();
+                if (extraStatsController)
+                {
+                    return $"{extraStatsController.curse:0.##}";
+                }
             }
 
+            return value;
+        }
+
+        private static string GetStealChance(CharacterBody body)
+        {
+            string value = "N/A";
+            var stolenItemCount = Items.StolenItemTally.instance.GetCount(body);
+            var rollchance = (100 / (stolenItemCount + 1)).ToString("0.##");
+            value = rollchance + "%";
             return value;
         }
 

@@ -39,6 +39,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         protected override bool ActivateEquipment(EquipmentSlot slot)
         {
+            slot.inventory.SetEquipmentIndex(Spice2.Instance.EquipmentDef.equipmentIndex);
             return false;
         }
     }

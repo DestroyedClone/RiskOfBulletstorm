@@ -21,7 +21,7 @@ namespace RiskOfBulletstormRewrite.Controllers
 
         public override void CreateConfig(ConfigFile config)
         {
-            cfgMaxCurse = config.Bind(ConfigCategory, "Lord of the Jammed Curse Requirement", 10, "The amount of curse required for the Lord of the Jammed to spawn.");
+            cfgMaxCurse = config.Bind(ConfigCategory, "Lord of the Jammed Curse Requirement", 20, "The amount of curse required for the Lord of the Jammed to spawn.");
             cfgCurseMonsterCreditMultiplier = config.Bind(ConfigCategory, "Additive Monster Credit Multiplier", 0.1f, "The additive multiplier to monster credits for the director per 1 curse. 0.1 = +10% credits");
         }
 

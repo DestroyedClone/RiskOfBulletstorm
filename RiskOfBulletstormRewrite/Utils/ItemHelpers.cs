@@ -61,29 +61,6 @@ namespace RiskOfBulletstormRewrite.Utils
             return $"{100 * value}%";
         }
 
-        public static void GiveItemToPlayers(ItemDef itemDef, bool showInChat = true, int amount = 1)
-        {
-            var instances = PlayerCharacterMasterController.instances;
-            foreach (PlayerCharacterMasterController playerCharacterMaster in instances)
-            {
-                var master = playerCharacterMaster.master;
-                if (master)
-                {
-                    var body = playerCharacterMaster.body;
-                    if (body)
-                    {
-                        var inventory = master.inventory;
-
-                        if (inventory)
-                        {
-                            if (showInChat) SimulatePickup(master, itemDef, amount);
-                            else inventory.GiveItem(itemDef, amount);
-                        }
-                    }
-                }
-            }
-        }
-
         public static void SimulatePickup(CharacterMaster characterMaster, ItemDef itemDef, int amount = 1, bool showNotif = true)
         {
             var self = characterMaster.inventory;
@@ -168,16 +145,18 @@ namespace RiskOfBulletstormRewrite.Utils
         //Squid.FireSpine
         public static void FireSquidShot(CharacterBody ownerBody, Vector3 origin, float damageCoefficient, float procCoefficient = 1)
         {
-            BullseyeSearch enemyFinder = new BullseyeSearch();
-            enemyFinder.viewer = ownerBody;
-            enemyFinder.maxDistanceFilter = float.PositiveInfinity;
-            enemyFinder.searchOrigin = origin;
-            enemyFinder.searchDirection = Vector3.up;
-            enemyFinder.sortMode = BullseyeSearch.SortMode.Distance;
-            enemyFinder.teamMaskFilter = TeamMask.allButNeutral;
-            enemyFinder.minDistanceFilter = 0f;
-            enemyFinder.maxAngleFilter = 180;
-            enemyFinder.filterByLoS = true;
+            BullseyeSearch enemyFinder = new BullseyeSearch
+            {
+                viewer = ownerBody,
+                maxDistanceFilter = float.PositiveInfinity,
+                searchOrigin = origin,
+                searchDirection = Vector3.up,
+                sortMode = BullseyeSearch.SortMode.Distance,
+                teamMaskFilter = TeamMask.allButNeutral,
+                minDistanceFilter = 0f,
+                maxAngleFilter = 180,
+                filterByLoS = true
+            };
             if (FriendlyFireManager.friendlyFireMode != FriendlyFireManager.FriendlyFireMode.Off)
             {
                 enemyFinder.teamMaskFilter.RemoveTeam(ownerBody.teamComponent.teamIndex);
@@ -186,12 +165,14 @@ namespace RiskOfBulletstormRewrite.Utils
             HurtBox hurtBox = enemyFinder.GetResults().FirstOrDefault<HurtBox>();
             if (hurtBox)
             {
-                SquidOrb squidOrb = new SquidOrb();
-                squidOrb.damageValue = ownerBody.damage * damageCoefficient;
-                squidOrb.isCrit = Util.CheckRoll(ownerBody.crit, ownerBody.master);
-                squidOrb.teamIndex = TeamComponent.GetObjectTeam(ownerBody.gameObject);
-                squidOrb.attacker = ownerBody.gameObject;
-                squidOrb.procCoefficient = procCoefficient;
+                SquidOrb squidOrb = new SquidOrb
+                {
+                    damageValue = ownerBody.damage * damageCoefficient,
+                    isCrit = Util.CheckRoll(ownerBody.crit, ownerBody.master),
+                    teamIndex = TeamComponent.GetObjectTeam(ownerBody.gameObject),
+                    attacker = ownerBody.gameObject,
+                    procCoefficient = procCoefficient
+                };
                 HurtBox hurtBox2 = hurtBox;
                 if (hurtBox2)
                 {

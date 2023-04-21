@@ -10,7 +10,7 @@
 		"RISKOFBULLETSTORM_BUFF_ALPHABULLET_NAME": "Alpha Bullet",
 		"RISKOFBULLETSTORM_BUFF_ALPHABULLET_DESC": "For each skill <style=cIsDamage>off cooldown</style>, grants <style=cIsDamage>+{0}% damage</style> <style=cStack>*{1}% per stack)</style> per buff.",
 		"RISKOFBULLETSTORM_BUFF_DODGEROLL_NAME": "Metacarpel Damage",
-		"RISKOFBULLETSTORM_BUFF_DODGEROLL_DESC": "Take <style=cIsHealth>{0}% extra damage</style> <style=cStack>(+{0}% damage per stack)</style>.",
+		"RISKOFBULLETSTORM_BUFF_DODGEROLL_DESC": "Take <style=cIsHealth>{0} extra damage</style> <style=cStack>(+{0} damage per stack)</style>.",
 		"RISKOFBULLETSTORM_BUFF_ARTIFACTSPEEDUP_NAME": "Out of Combat Speed Up",
 		"RISKOFBULLETSTORM_BUFF_ARTIFACTSPEEDUP_DESC": "Increases movement speed by {0}%. Caused by [Artifact of the Swift Post-Battle]",
 		"RISKOFBULLETSTORM_BUFF__NAME": "",
