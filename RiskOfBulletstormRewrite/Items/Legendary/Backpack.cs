@@ -368,13 +368,17 @@ localScale = new Vector3(1F, 1F, 1F)
 
         private void ToolbotStanceBase_SetEquipmentSlot(On.EntityStates.Toolbot.ToolbotStanceBase.orig_SetEquipmentSlot orig, EntityStates.Toolbot.ToolbotStanceBase self, byte i)
         {
-            orig(self, i);
-            //bool isFirstStance = self is ToolbotStanceA;
             CharacterBody characterBody = self.outer.commonComponents.characterBody;
-            if (characterBody && characterBody.master && characterBody.master.TryGetComponent<BackpackComponent>(out BackpackComponent backpackComponent))
+            BackpackComponent backpackComponent = null;
+            bool v = (bool)(characterBody?.master?.TryGetComponent(out backpackComponent));
+            if (backpackComponent)
             {
-                backpackComponent.SetActiveEquipmentSlot(backpackComponent.lastEquipmentSlot);
+                backpackComponent.SetActiveEquipmentSlot_Retool(orig, self, i, backpackComponent.lastEquipmentSlot);
+            } else
+            {
+                orig(self, i);
             }
+            //bool isFirstStance = self is ToolbotStanceA;
         }
 
         private void ShowCurrentSlot(On.RoR2.UI.EquipmentIcon.orig_Update orig, EquipmentIcon self)
@@ -513,11 +517,18 @@ localScale = new Vector3(1F, 1F, 1F)
 
             public void SetActiveEquipmentSlot(byte slot)
             {
-                var oldEquipmentSlot = lastEquipmentSlot;
+                //var oldEquipmentSlot = lastEquipmentSlot;
                 lastEquipmentSlot = inventory.activeEquipmentSlot;
-                var newEquipmentSlot = lastEquipmentSlot;
-                Chat.AddMessage($"LastEquipment: {oldEquipmentSlot}->{newEquipmentSlot}, Current set to {slot}");
+                //var newEquipmentSlot = lastEquipmentSlot;
+                //Chat.AddMessage($"LastEquipment: {oldEquipmentSlot}->{newEquipmentSlot}, Current set to {slot}");
                 inventory.SetActiveEquipmentSlot(slot);
+            }
+
+            public void SetActiveEquipmentSlot_Retool(On.EntityStates.Toolbot.ToolbotStanceBase.orig_SetEquipmentSlot orig, EntityStates.Toolbot.ToolbotStanceBase self, byte originalRequestedSlot, byte replaceRequestedSlot)
+            {
+                lastEquipmentSlot = inventory.activeEquipmentSlot;
+                orig(self, originalRequestedSlot);
+                inventory.SetActiveEquipmentSlot(replaceRequestedSlot);
             }
 
             public void OnBodyStart(CharacterBody characterBody)
