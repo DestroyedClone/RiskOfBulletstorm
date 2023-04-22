@@ -53,10 +53,14 @@ namespace RiskOfBulletstormRewrite.Controllers
         private static void ChestBehavior_Start(On.RoR2.ChestBehavior.orig_Start orig, ChestBehavior self)
         {
             orig(self);
-            var comp = self.gameObject.AddComponent<BulletstormChestInteractorComponent>();
-            comp.chestBehavior = self;
-            comp.purchaseInteraction = self.GetComponent<PurchaseInteraction>();
-            comp.StoreHighlightColor(self.GetComponent<Highlight>());
+            PurchaseInteraction purchaseInteraction = self.GetComponent<PurchaseInteraction>();
+            if (purchaseInteraction.costType != CostTypeIndex.PercentHealth)
+            {
+                var comp = self.gameObject.AddComponent<BulletstormChestInteractorComponent>();
+                comp.chestBehavior = self;
+                comp.purchaseInteraction = purchaseInteraction;
+                comp.StoreHighlightColor(self.GetComponent<Highlight>());
+            }
         }
 
         /// <summary>
