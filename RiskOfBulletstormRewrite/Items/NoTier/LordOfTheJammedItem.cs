@@ -41,9 +41,9 @@ namespace RiskOfBulletstormRewrite.Items
             Inventory.onServerItemGiven += Inventory_onServerItemGiven;
         }
 
-        private void Inventory_onServerItemGiven(Inventory inventory, ItemIndex arg2, int arg3)
+        private void Inventory_onServerItemGiven(Inventory inventory, ItemIndex itemIndex, int stackCount)
         {
-            if (arg2 == ItemDef.itemIndex)
+            if (itemIndex == ItemDef.itemIndex)
             {
                 var tracker = inventory.gameObject.GetComponent<LOTJTracker>();
                 if (!tracker)
@@ -61,52 +61,95 @@ namespace RiskOfBulletstormRewrite.Items
             public CharacterBody bossBody = null;
             public RoR2.CharacterAI.BaseAI baseAI;
 
+            public float stopwatch = 0f;
+            public float duration = 10f;
+
             public void Start()
             {
                 ownerMaster.onBodyStart += OwnerMaster_onBodyStart;
+                ownerMaster.onBodyDestroyed += OwnerMaster_onBodyDestroyed;
 
-                ownerBody = gameObject.GetComponent<CharacterBody>();
+                ownerBody = ownerMaster.GetBody();
 
                 AttemptSpawn();
             }
 
+            private void OwnerMaster_onBodyDestroyed(CharacterBody obj)
+            {
+                if (ownerMaster.IsDeadAndOutOfLivesServer())
+                {
+                    if (bossMaster)
+                        bossMaster.TrueKill();
+                }
+            }
+
             private void AttemptSpawn()
             {
-                if (!bossMaster)
+                if (!bossMaster && ownerBody)
                 {
                     var masterSummon = new MasterSummon()
                     {
                         ignoreTeamMemberLimit = true,
                         //masterPrefab = Enemies.LordofTheJammedMonster.masterPrefab,
-                        masterPrefab = MasterCatalog.FindMasterPrefab("BrotherGlassBody"),
+                        masterPrefab = MasterCatalog.FindMasterPrefab("BrotherGlassMaster"),
                         position = TeleporterInteraction.instance
                         ? TeleporterInteraction.instance.transform.position
                         : transform.position,
-                        teamIndexOverride = TeamIndex.Monster
+                        teamIndexOverride = TeamIndex.None
                     };
 
                     bossMaster = masterSummon.Perform();
+                    if (!bossMaster) return;
                     bossMaster.inventory.GiveItem(RoR2Content.Items.Ghost);
-                    bossMaster.inventory.GiveItem(RoR2Content.Items.SummonedEcho);
+                    bossMaster.inventory.GiveItem(RoR2Content.Items.TeleportWhenOob);
+                    bossMaster.inventory.GiveItem(LordOfTheJammedIdentifierItem.instance.ItemDef);
+
                     bossBody = bossMaster.GetBody();
-                    baseAI = bossMaster.GetComponent<BaseAI>();
+
+                    if (bossMaster.TryGetComponent<BaseAI>(out BaseAI baseAI))
+                    {
+                        baseAI.currentEnemy = new BaseAI.Target(baseAI)
+                        {
+                            characterBody = ownerBody
+                        };
+                        baseAI.neverRetaliateFriendlies = true;
+                        baseAI.enemyAttentionDuration = Mathf.Infinity;
+                        /*foreach (var skillDriver in baseAI.skillDrivers)
+                        {
+                            skillDriver.moveTargetType = AISkillDriver.TargetType.Custom;
+                        }*/
+                    }
                 }
             }
 
             private void OwnerMaster_onBodyStart(CharacterBody body)
             {
                 ownerBody = body;
+
+                if (bossMaster && bossMaster.TryGetComponent<BaseAI>(out BaseAI baseAI))
+                {
+                    baseAI.currentEnemy = new BaseAI.Target(baseAI)
+                    {
+                        characterBody = ownerBody
+                    };
+                }
             }
 
             public void FixedUpdate()
             {
                 RedirectAttention();
+                stopwatch += Time.fixedDeltaTime;
+                if (stopwatch <= duration)
+                {
+                    stopwatch = 0;
+                    AttemptSpawn();
+                }
             }
 
             public void RedirectAttention()
             {
                 if (ownerBody && baseAI)
-                    baseAI.customTarget.characterBody = ownerBody;
+                    baseAI.currentEnemy.characterBody = ownerBody;
             }
 
             public void OnDestroy()

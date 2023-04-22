@@ -18,7 +18,7 @@ namespace RiskOfBulletstormRewrite.Items
     {
         public override string ItemName => "LordOfTheJammedBodyDisplay";
 
-        public override string ItemLangTokenName => "LordOfTheJammedBodyDisplay";
+        public override string ItemLangTokenName => "LordOfTheJammedBodyDisplayLOTJDisplay";
 
         public override ItemTier Tier => ItemTier.NoTier;
 
@@ -28,6 +28,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override ItemTag[] ItemTags => new ItemTag[]
         {
+            ItemTag.WorldUnique
         };
 
         public override void Init(ConfigFile config)
@@ -38,19 +39,50 @@ namespace RiskOfBulletstormRewrite.Items
             Hooks();
         }
 
+        static readonly Material blackMat = Assets.LoadAddressable<Material>("RoR2/Base/Common/matDebugBlack.mat");
+
         public static void CreateAssets()
         {
+            var yellowRedMat = Assets.LoadAddressable<Material>("RoR2/Base/Beetle/matSulfurBeetle.mat");
             void SetMaterial(GameObject gameObject, Material material)
             {
-                gameObject.GetComponent<SkinnedMeshRenderer>().SetMaterial(material);
+                SkinnedMeshRenderer skinnedMeshRenderer = gameObject.GetComponent<SkinnedMeshRenderer>();
+                if (!skinnedMeshRenderer)
+                {
+                    Main._logger.LogError($"SkinnedMeshRenderer Not Found For {gameObject.name}!");
+                    MeshRenderer meshRenderer= gameObject.GetComponent<MeshRenderer>();
+                    if (!meshRenderer)
+                    {
+                        Main._logger.LogError($"MeshRenderer also falied.");
+                    } else
+                    {
+                        meshRenderer.SetMaterial(material);
+                    }
+                    return;
+                }
+                skinnedMeshRenderer.SetMaterial(material);
             }
 
-            skull = PrefabAPI.InstantiateClone(Assets.LoadAddressable<GameObject>("RoR2/Base/DeathMark/mdlDeathMark.fbx"), "LOTJSkull", false);
+            GameObject clone(string path, string name)
+            {
+                return PrefabAPI.InstantiateClone(Assets.LoadAddressable<GameObject>(path), name, false);
+            }
+
+            skull = clone("RoR2/Base/DeathMark/mdlDeathMark.fbx","LOTJSkull");
             skull.gameObject.AddComponent<LOTJDisplaySetup>();
+            SetMaterial(skull, yellowRedMat);
             
-            scythe = PrefabAPI.InstantiateClone(Assets.LoadAddressable<GameObject>("RoR2/Base/HealOnCrit/mdlScythe.fbx"), "LOTJWeapon_Scythe", false);
-            shotgun = PrefabAPI.InstantiateClone(Assets.LoadAddressable<GameObject>("RoR2/Base/Bandit2/BanditShotgun.fbx"), "LOTJWeapon_Shotgun", false);
-            crown = PrefabAPI.InstantiateClone(Assets.LoadAddressable<GameObject>("RoR2/Base/artifactworld/mdlArtifactCrown.fbx"), "LOTJCrown", false);
+            scythe = clone("RoR2/Base/HealOnCrit/mdlScythe.fbx", "LOTJWeapon_Scythe");
+            var scytheMat = Assets.LoadAddressable<Material>("RoR2/Base/HealOnCrit/matScythe.mat");
+            SetMaterial(scythe, scytheMat);
+
+            shotgun = clone("RoR2/Base/Bandit2/BanditShotgun.fbx", "LOTJWeapon_Shotgun");
+            var shotgunMat = Assets.LoadAddressable<Material>("RoR2/Base/Bandit2/matBandit2Shotgun.mat");
+            SetMaterial(shotgun, shotgunMat);
+
+            crown = clone("RoR2/Base/artifactworld/mdlArtifactCrown.fbx", "LOTJCrown");
+            UnityEngine.Object.Destroy(crown.transform.Find("ArtifactCrownJewelMesh").gameObject);
+            SetMaterial(crown.transform.Find("ArtifactCrownMesh").gameObject, yellowRedMat);
         }
 
         public static GameObject skull;
@@ -60,6 +92,8 @@ namespace RiskOfBulletstormRewrite.Items
 
         public class LOTJDisplaySetup : MonoBehaviour
         {
+            SkinnedMeshRenderer meshRenderer;
+
             public void Start()
             {
                 try
@@ -69,11 +103,17 @@ namespace RiskOfBulletstormRewrite.Items
                     primaryTransform.Find("BrotherStibPieces").gameObject.SetActive(false);
                     primaryTransform.Find("BrotherClothPieces").gameObject.SetActive(false);
                     transform.parent.Find("BrotherHeadArmorMesh").gameObject.SetActive(false);
+                    meshRenderer = primaryTransform.Find("BrotherBodyMesh").GetComponent<SkinnedMeshRenderer>();
                 }
                 catch
                 {
                     Debug.Log("there's a snake in my boot!");
                 }
+            }
+
+            public void FixedUpdate()
+            {
+                meshRenderer.SetMaterial(blackMat);;
             }
         }
 
@@ -190,6 +230,8 @@ localScale = new Vector3(0.03303F, 0.03303F, 0.07704F)
             const int verticalIntensity = 2;
             const float horizontalIntensity = 1f;
 
+            public bool subscribed = false;
+
             public void OnEnable()
             {
                 InstanceTracker.Add(this);
@@ -209,13 +251,25 @@ localScale = new Vector3(0.03303F, 0.03303F, 0.07704F)
                 }
 
                 lordBody = lordMaster.GetBody();
-                lordMaster.onBodyStart += LordMaster_onBodyStart;
+                if (lordBody && !subscribed)
+                {
+                    lordMaster.onBodyStart += LordMaster_onBodyStart;
+                    lordMaster.onBodyDestroyed += LordMaster_onBodyDestroyed;
+                }
+                LordMaster_onBodyStart(lordBody);
+            }
+
+            private void LordMaster_onBodyDestroyed(CharacterBody obj)
+            {
+                subscribed = false;
             }
 
             private void LordMaster_onBodyStart(CharacterBody obj)
             {
                 lordBody = obj;
                 lordBody.onSkillActivatedServer += LordBody_onSkillActivatedServer;
+
+                subscribed = true;
             }
 
             private void LordBody_onSkillActivatedServer(GenericSkill genericSkill)
@@ -231,7 +285,7 @@ localScale = new Vector3(0.03303F, 0.03303F, 0.07704F)
                 {
                     projectilePrefab = ProjectilePrefab,
                     position = characterBody.corePosition,
-                    owner = base.gameObject,
+                    owner = characterBody.gameObject,
                     //damage = base.characterBody.damage * (4f / (chefPlugin.minceHorizontolIntensity.Value + intensity)),
                     damage = characterBody.damage * damageCoefficient,
                     force = 0f,
