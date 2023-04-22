@@ -8,6 +8,7 @@ using Rewired;
 using Rewired.Dev;
 using static RoR2.MasterSpawnSlotController;
 using R2API.Utils;
+using UnityEngine.SceneManagement;
 
 namespace RiskOfBulletstormRewrite
 {
@@ -44,8 +45,8 @@ namespace RiskOfBulletstormRewrite
             if (cfgCanStealFromNewt.Value)
             {
                 //On.RoR2.ShopTerminalBehavior.Start += ShopTerminalBehavior_Start;
-                On.RoR2.PurchaseInteraction.OnInteractionBegin += PurchaseInteraction_OnInteractionBegin;
-                On.RoR2.PurchaseInteraction.CanBeAffordedByInteractor += PurchaseInteraction_CanBeAffordedByInteractor;
+                SceneManager.sceneLoaded += SceneManager_sceneLoaded;
+                SceneManager.sceneUnloaded += SceneManager_sceneUnloaded;
             }
             //switch (cfgEnableBreachNotifications.Value)
             //{
@@ -62,23 +63,42 @@ namespace RiskOfBulletstormRewrite
                 //On.RoR2.UI.EquipmentIcon.Update += EquipmentIcon_Update;
         }
 
+        private static void SceneManager_sceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
+        {
+            if (loadSceneMode == LoadSceneMode.Single && scene.name == "bazaar")
+            {
+                On.RoR2.PurchaseInteraction.OnInteractionBegin += PurchaseInteraction_OnInteractionBegin;
+                On.RoR2.PurchaseInteraction.CanBeAffordedByInteractor += PurchaseInteraction_CanBeAffordedByInteractor;
+            }
+        }
+
+        private static void SceneManager_sceneUnloaded(Scene scene)
+        {
+            if (scene.name == "bazaar")
+            {
+                On.RoR2.PurchaseInteraction.OnInteractionBegin -= PurchaseInteraction_OnInteractionBegin;
+                On.RoR2.PurchaseInteraction.CanBeAffordedByInteractor -= PurchaseInteraction_CanBeAffordedByInteractor;
+            }
+        }
+
         private static void PurchaseInteraction_OnInteractionBegin(On.RoR2.PurchaseInteraction.orig_OnInteractionBegin orig, PurchaseInteraction self, Interactor activator)
         {
             var originalCost = self.Networkcost;
             if (self.GetComponent<ShopTerminalBehavior>()
                 && activator.TryGetComponent(out CharacterBody characterBody)
-                && characterBody.hasCloakBuff)
+                && characterBody.hasCloakBuff
+                && characterBody.inventory)
             {
                 var stolenItemCount = Items.StolenItemTally.instance.GetCount(characterBody);
                 var rollchance = 100 / (stolenItemCount + 1);
                 if (Util.CheckRoll(rollchance))
                 {
                     self.Networkcost = 0;
-                    characterBody.inventory?.GiveItem(Items.CurseTally.instance.ItemDef);
-                    characterBody.inventory?.GiveItem(Items.StolenItemTally.instance.ItemDef);
+                    characterBody.inventory.GiveItem(Items.CurseTally.instance.ItemDef);
+                    characterBody.inventory.GiveItem(Items.StolenItemTally.instance.ItemDef);
                 } else
                 {
-                    characterBody.inventory?.GiveItem(Items.BannedFromBazaarTally.instance.ItemDef);
+                    characterBody.inventory.GiveItem(Items.BannedFromBazaarTally.instance.ItemDef);
                     NewtSaySteal();
                 }
             }
@@ -108,13 +128,7 @@ namespace RiskOfBulletstormRewrite
             {
                 original = true;
             }
-
-
             return original;
-        }
-
-        private static void ShopTerminalBehavior_Start(On.RoR2.ShopTerminalBehavior.orig_Start orig, ShopTerminalBehavior self)
-        {
         }
 
         private static void AchievementNotificationPanel_SetAchievementDef(On.RoR2.UI.AchievementNotificationPanel.orig_SetAchievementDef orig, AchievementNotificationPanel self, AchievementDef achievementDef)
