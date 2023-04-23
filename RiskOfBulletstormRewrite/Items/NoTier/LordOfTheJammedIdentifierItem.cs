@@ -331,12 +331,7 @@ localScale = new Vector3(0.03303F, 0.03303F, 0.07704F)
                     if (InstanceTracker.GetInstancesList<LordOfTheJammedController>().Count > 0)
                     {
                         var charBody = gameObject.GetComponent<CharacterBody>();
-                        if (charBody && charBody.healthComponent)
-                        {
-                            charBody.healthComponent.health = 500;
-                            charBody.healthComponent.godMode = true;
-                            //idk how else to force the kickout
-                        }
+                        Tweaks.Bazaar_KickFromShop(charBody);
                         enabled = false;
                     }
                     age = 0;

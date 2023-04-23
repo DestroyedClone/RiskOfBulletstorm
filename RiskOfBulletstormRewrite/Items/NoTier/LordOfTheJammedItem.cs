@@ -95,7 +95,7 @@ namespace RiskOfBulletstormRewrite.Items
                         position = TeleporterInteraction.instance
                         ? TeleporterInteraction.instance.transform.position
                         : transform.position,
-                        teamIndexOverride = TeamIndex.None
+                        teamIndexOverride = TeamIndex.Monster
                     };
 
                     bossMaster = masterSummon.Perform();

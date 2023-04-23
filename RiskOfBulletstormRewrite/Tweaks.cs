@@ -9,6 +9,7 @@ using Rewired.Dev;
 using static RoR2.MasterSpawnSlotController;
 using R2API.Utils;
 using UnityEngine.SceneManagement;
+using UnityEngine.Networking;
 
 namespace RiskOfBulletstormRewrite
 {
@@ -16,7 +17,7 @@ namespace RiskOfBulletstormRewrite
     {
         public static ConfigEntry<bool> cfgCenterNotifications;
         //public static ConfigEntry<NotificationMod> cfgEnableBreachNotifications;
-        public static ConfigEntry<bool> cfgDropEquipment;
+        //public static ConfigEntry<bool> cfgDropEquipment;
         public static ConfigEntry<bool> cfgCanStealFromNewt;
 
         public enum NotificationMod
@@ -33,7 +34,7 @@ namespace RiskOfBulletstormRewrite
             cfgCenterNotifications = config.Bind(category, "Center Notification Text", false, "If true, then notification text will be centered.");
             //cfgDisableAutoPickup = config.Bind(category, "Disable Auto Pickups", false);
             //cfgEnableBreachNotifications = config.Bind(category, "Modify Achievement Notificaton", NotificationMod.bulletstorm, "");
-            cfgDropEquipment = config.Bind(category, "Drop Equipment", true, "If true, you can drop your equipment by holding [interact] and using your equipment.");
+            //cfgDropEquipment = config.Bind(category, "Drop Equipment", true, "If true, you can drop your equipment by holding [interact] and using your equipment.");
             if (cfgCenterNotifications.Value)
             {
                 On.RoR2.CharacterMasterNotificationQueue.PushNotification += CharacterMasterNotificationQueue_PushNotification;
@@ -41,6 +42,7 @@ namespace RiskOfBulletstormRewrite
                 On.RoR2.UI.GenericNotification.SetEquipment += SetEquipment;
                 On.RoR2.UI.GenericNotification.SetItem += SetItem;
             }
+            On.EntityStates.NewtMonster.SpawnState.OnEnter += SpawnState_OnEnter;
             cfgCanStealFromNewt = config.Bind(category, "Steal From Bazaar", true, "If true, you can steal from the bazaar while cloaked. But failing to steal will close the shop for the rest of the run.");
             if (cfgCanStealFromNewt.Value)
             {
@@ -61,6 +63,26 @@ namespace RiskOfBulletstormRewrite
 
             //if (cfgDropEquipment.Value)
                 //On.RoR2.UI.EquipmentIcon.Update += EquipmentIcon_Update;
+        }
+
+        public static void Bazaar_KickFromShop(CharacterBody newtBody)
+        {
+            if (newtBody && newtBody.healthComponent)
+            {
+                newtBody.healthComponent.health = 500;
+                newtBody.healthComponent.godMode = true;
+                //idk how else to force the kickout
+            }
+        }
+
+        private static void SpawnState_OnEnter(On.EntityStates.NewtMonster.SpawnState.orig_OnEnter orig, EntityStates.NewtMonster.SpawnState self)
+        {
+            orig(self);
+            if (NetworkServer.active)
+            if (RoR2.Util.GetItemCountForTeam(TeamIndex.Player, Items.BannedFromBazaarTally.instance.ItemDef.itemIndex, false) > 0)
+            {
+                Bazaar_KickFromShop(self.outer.commonComponents.characterBody);
+            }
         }
 
         private static void SceneManager_sceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
@@ -100,6 +122,15 @@ namespace RiskOfBulletstormRewrite
                 {
                     characterBody.inventory.GiveItem(Items.BannedFromBazaarTally.instance.ItemDef);
                     NewtSaySteal();
+                    var shopkeeperBodyIndex = BodyCatalog.FindBodyIndex("ShopkeeperBody");
+                    foreach (var body in CharacterBody.readOnlyInstancesList)
+                    {
+                        if (body.bodyIndex == shopkeeperBodyIndex)
+                        {
+                            Bazaar_KickFromShop(body);
+                            break;
+                        }
+                    }
                 }
             }
             orig(self, activator);
@@ -190,7 +221,7 @@ namespace RiskOfBulletstormRewrite
         }
 
         #endregion centertext
-
+/*
         #region DropEquipment
 
         public static void DropEquipment(EquipmentSlot slot, EquipmentDef equipmentDef)
@@ -270,6 +301,6 @@ namespace RiskOfBulletstormRewrite
             return equipmentIndex != EquipmentIndex.None;
         }
 
-        #endregion
+        #endregion*/
     }
 }
