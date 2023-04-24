@@ -149,7 +149,10 @@ namespace RiskOfBulletstormRewrite.Items
             public void RedirectAttention()
             {
                 if (ownerBody && baseAI)
-                    baseAI.currentEnemy.characterBody = ownerBody;
+                    baseAI.currentEnemy = new BaseAI.Target(baseAI)
+                    {
+                        characterBody = ownerBody
+                    };
             }
 
             public void OnDestroy()

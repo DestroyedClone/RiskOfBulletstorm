@@ -97,6 +97,7 @@ namespace RiskOfBulletstormRewrite.Artifact
             orig(self, value);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Member Access", "Publicizer001:Accessing a member that was not originally public", Justification = "<Pending>")]
         private void PreventBarrierLoss(On.RoR2.HealthComponent.orig_ServerFixedUpdate orig, HealthComponent self)
         {
             self.body.barrierDecayRate = 0;
@@ -221,8 +222,7 @@ namespace RiskOfBulletstormRewrite.Artifact
                 ApplyBodyModifier(characterBody);
             }
         }
-
-        [Server] //>using something you dont know what its for
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Member Access", "Publicizer001:Accessing a member that was not originally public", Justification = "<Pending>")]
         private void ApplyBodyModifier(CharacterBody body)
         {
             body.baseMaxHealth = Mathf.RoundToInt(body.baseMaxHealth / cfgStatDivider.Value);

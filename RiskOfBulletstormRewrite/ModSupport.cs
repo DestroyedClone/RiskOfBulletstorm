@@ -78,8 +78,6 @@ namespace RiskOfBulletstormRewrite
         [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
         internal static void BetterUICompat_StatsDisplay()
         {
-            var prefix = "$RISKOFBULLETSTORM_STATDISPLAY_";
-            //todo add auto display?????
             BetterUI.StatsDisplay.AddStatsDisplay("$riskofbulletstorm_accuracy", (BetterUI.StatsDisplay.DisplayCallback)GetAccuracy);
             BetterUI.StatsDisplay.AddStatsDisplay("$riskofbulletstorm_curse", (BetterUI.StatsDisplay.DisplayCallback)GetCurse);
             BetterUI.StatsDisplay.AddStatsDisplay("$riskofbulletstorm_steal", (BetterUI.StatsDisplay.DisplayCallback)GetStealChance);
@@ -120,10 +118,9 @@ namespace RiskOfBulletstormRewrite
 
         private static string GetStealChance(CharacterBody body)
         {
-            string value = "N/A";
             var stolenItemCount = Items.StolenItemTally.instance.GetCount(body);
             var rollchance = (100 / (stolenItemCount + 1)).ToString("0.##");
-            value = rollchance + "%";
+            string value = rollchance + "%";
             return value;
         }
 

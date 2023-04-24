@@ -430,46 +430,6 @@ localScale = new Vector3(1F, 1F, 1F)
             }
         }
 
-        //fuck this
-        private void EquipmentIcon_Update(On.RoR2.UI.EquipmentIcon.orig_Update orig, EquipmentIcon self)
-        {
-            orig(self);
-            if (self.targetInventory)
-            {
-                var itemCount = self.targetInventory.GetItemCount(ItemDef);
-                if (itemCount > 0)
-                {
-                    self.stockText.gameObject.SetActive(true);
-                    StringBuilder stringBuilder2 = HG.StringBuilderPool.RentStringBuilder();
-                    var equipmentSlotCount = self.targetInventory.GetEquipmentSlotCount();
-                    if (self.displayAlternateEquipment)
-                    {
-                        uint nextSlot = LoopAround(self.targetEquipmentSlot.activeEquipmentSlot++, 0, (uint)(equipmentSlotCount - 1));
-                        self.currentDisplayData.equipmentDef = self.targetInventory.equipmentStateSlots[nextSlot].equipmentDef;
-                        stringBuilder2.Append($"[Slot:{nextSlot}/Ct:{equipmentSlotCount}]\n");
-                        stringBuilder2.AppendInt(self.currentDisplayData.stock, 1U, uint.MaxValue);
-
-                        Texture texture = null;
-                        Color color = Color.clear;
-                        if (self.currentDisplayData.equipmentDef != null)
-                        {
-                            color = ((self.currentDisplayData.stock > 0) ? Color.white : Color.gray);
-                            texture = self.currentDisplayData.equipmentDef.pickupIconTexture;
-                        }
-                        self.iconImage.texture = texture;
-                        self.iconImage.color = color;
-                    }
-                    else
-                    {
-                        stringBuilder2.Append($"[Slot:{self.targetEquipmentSlot.activeEquipmentSlot}]\n");
-                        stringBuilder2.AppendInt(self.currentDisplayData.stock, 1U, uint.MaxValue);
-                    }
-                    self.stockText.SetText(stringBuilder2);
-                    HG.StringBuilderPool.ReturnStringBuilder(stringBuilder2);
-                }
-            }
-        }
-
         public static uint LoopAround(uint value, uint min, uint max)
         {
             if (value < min) value = max;
@@ -485,7 +445,7 @@ localScale = new Vector3(1F, 1F, 1F)
             private byte itemCount = 0;
             private byte extraSlotCount = 0;
             public byte selectableSlot = 0;
-            private readonly string equipmentPrefix = "Selected slot ";
+            //private readonly string equipmentPrefix = "Selected slot ";
 
             public byte lastEquipmentSlot = 0;
 
