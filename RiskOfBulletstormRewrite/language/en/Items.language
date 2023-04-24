@@ -2,7 +2,7 @@
 	strings: {
 		//[TIER1]
 		"RISKOFBULLETSTORM_ITEM_ANTIBODY_NAME": "Antibody",
-		"RISKOFBULLETSTORM_ITEM_ANTIBODY_PICKUP": "<b>Heals Up</b>\nChance to improve healing receieved.",
+		"RISKOFBULLETSTORM_ITEM_ANTIBODY_PICKUP": "<b>Heals Up</b>\nChance to improve healing received.",
 		"RISKOFBULLETSTORM_ITEM_ANTIBODY_DESCRIPTION": "Upon <style=cIsHealing>healing</style>, gain a <style=cIsUtility>{0}% chance</style> to <style=cIsHealing>heal for +{1}% more healing</style> <style=cStack>(+{2}% more healing per stack)</style>. Unaffected by luck.",
 		"RISKOFBULLETSTORM_ITEM_ANTIBODY_LORE": "An experimental treatment administered by the Gungeon's medical unit.",
 

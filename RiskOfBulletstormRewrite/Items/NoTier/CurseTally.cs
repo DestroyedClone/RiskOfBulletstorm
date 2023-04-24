@@ -27,6 +27,35 @@ namespace RiskOfBulletstormRewrite.Items
         {
             CreateLang();
             CreateItem();
+            Hooks();
+        }
+
+        public override void Hooks()
+        {
+            base.Hooks();
+            Inventory.onServerItemGiven += Inventory_onServerItemGiven;
+        }
+
+        private void Inventory_onServerItemGiven(Inventory inventory, ItemIndex itemIndex, int _)
+        {
+            if (itemIndex == ItemDef.itemIndex)
+            {
+                if (inventory.TryGetComponent(out CharacterMaster characterMaster))
+                {
+                    var body = characterMaster.GetBody();
+                    if (body)
+                    {
+                        /*EffectData effectData = new EffectData()
+                        {
+                            origin = body.gameObject.transform.position
+                        };
+                        EffectManager.SpawnEffect(CharacterBody.AssetReferences.deathmarkEffectPrefab,
+                            effectData, true);*/
+                        body.UpdateSingleTemporaryVisualEffect(ref body.deathmarkEffectInstance, CharacterBody.AssetReferences.deathmarkEffectPrefab,
+                            body.radius, true);
+                    }
+                }
+            }
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()

@@ -235,7 +235,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public virtual void DropEquipment(EquipmentSlot equipmentSlot, EquipmentDef equipmentDef)
         {
-            Tweaks.DropEquipment(equipmentSlot, equipmentDef);
+            //Tweaks.DropEquipment(equipmentSlot, equipmentDef);
         }
 
         public virtual void ActivateEquipmentOnRandomUse(EquipmentSlot slot)
