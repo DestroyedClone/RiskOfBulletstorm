@@ -12,6 +12,7 @@ namespace RiskOfBulletstormRewrite.Controllers
             //On.RoR2.PurchaseInteraction.GetInteractability += PurchaseInteraction_GetInteractability;
             On.RoR2.PurchaseInteraction.GetContextString += PurchaseInteraction_GetContextString;
         }
+
         private static string PurchaseInteraction_GetContextString(On.RoR2.PurchaseInteraction.orig_GetContextString orig, PurchaseInteraction self, Interactor activator)
         {
             var original = orig(self, activator);
@@ -49,7 +50,6 @@ namespace RiskOfBulletstormRewrite.Controllers
             return original;
         }
 
-
         private static void ChestBehavior_Start(On.RoR2.ChestBehavior.orig_Start orig, ChestBehavior self)
         {
             orig(self);
@@ -71,13 +71,15 @@ namespace RiskOfBulletstormRewrite.Controllers
         public class BulletstormChestInteractorComponent : MonoBehaviour
         {
             public bool hasUsedLockpicks = false;
+
             //public string nameModifier = "";
             //public string contextModifier = "";
             public PurchaseInteraction purchaseInteraction;
+
             public ChestBehavior chestBehavior;
 
             public Highlight.HighlightColor originalHighlightColor = Highlight.HighlightColor.interactive;
-            bool highlightColorStored = false;
+            private bool highlightColorStored = false;
 
             public void StoreHighlightColor(Highlight highlight)
             {

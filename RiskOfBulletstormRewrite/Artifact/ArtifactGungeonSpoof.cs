@@ -222,6 +222,7 @@ namespace RiskOfBulletstormRewrite.Artifact
                 ApplyBodyModifier(characterBody);
             }
         }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Member Access", "Publicizer001:Accessing a member that was not originally public", Justification = "<Pending>")]
         private void ApplyBodyModifier(CharacterBody body)
         {

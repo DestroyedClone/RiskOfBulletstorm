@@ -1,5 +1,4 @@
 ﻿using BepInEx.Configuration;
-using EntityStates.Toolbot;
 using R2API;
 using RiskOfBulletstormRewrite.Utils;
 using RoR2;
@@ -374,7 +373,8 @@ localScale = new Vector3(1F, 1F, 1F)
             if (backpackComponent)
             {
                 backpackComponent.SetActiveEquipmentSlot_Retool(orig, self, i, backpackComponent.lastEquipmentSlot);
-            } else
+            }
+            else
             {
                 orig(self, i);
             }

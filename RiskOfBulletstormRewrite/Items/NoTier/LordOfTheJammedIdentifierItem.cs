@@ -1,6 +1,4 @@
 ﻿using BepInEx.Configuration;
-using IL.RoR2.Skills;
-using JetBrains.Annotations;
 using R2API;
 using RiskOfBulletstormRewrite.Modules;
 using RiskOfBulletstormRewrite.Utils;
@@ -9,8 +7,6 @@ using RoR2.Projectile;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 namespace RiskOfBulletstormRewrite.Items
 {
@@ -39,7 +35,7 @@ namespace RiskOfBulletstormRewrite.Items
             Hooks();
         }
 
-        static readonly Material blackMat = Assets.LoadAddressable<Material>("RoR2/Base/Common/matDebugBlack.mat");
+        private static readonly Material blackMat = Assets.LoadAddressable<Material>("RoR2/Base/Common/matDebugBlack.mat");
 
         public static void CreateAssets()
         {
@@ -50,11 +46,12 @@ namespace RiskOfBulletstormRewrite.Items
                 if (!skinnedMeshRenderer)
                 {
                     Main._logger.LogError($"SkinnedMeshRenderer Not Found For {gameObject.name}!");
-                    MeshRenderer meshRenderer= gameObject.GetComponent<MeshRenderer>();
+                    MeshRenderer meshRenderer = gameObject.GetComponent<MeshRenderer>();
                     if (!meshRenderer)
                     {
                         Main._logger.LogError($"MeshRenderer also falied.");
-                    } else
+                    }
+                    else
                     {
                         meshRenderer.SetMaterial(material);
                     }
@@ -68,10 +65,10 @@ namespace RiskOfBulletstormRewrite.Items
                 return PrefabAPI.InstantiateClone(Assets.LoadAddressable<GameObject>(path), name, false);
             }
 
-            skull = clone("RoR2/Base/DeathMark/mdlDeathMark.fbx","LOTJSkull");
+            skull = clone("RoR2/Base/DeathMark/mdlDeathMark.fbx", "LOTJSkull");
             skull.gameObject.AddComponent<LOTJDisplaySetup>();
             SetMaterial(skull, yellowRedMat);
-            
+
             scythe = clone("RoR2/Base/HealOnCrit/mdlScythe.fbx", "LOTJWeapon_Scythe");
             var scytheMat = Assets.LoadAddressable<Material>("RoR2/Base/HealOnCrit/matScythe.mat");
             SetMaterial(scythe, scytheMat);
@@ -92,7 +89,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public class LOTJDisplaySetup : MonoBehaviour
         {
-            SkinnedMeshRenderer meshRenderer;
+            private SkinnedMeshRenderer meshRenderer;
 
             public void Start()
             {
@@ -113,10 +110,9 @@ namespace RiskOfBulletstormRewrite.Items
 
             public void FixedUpdate()
             {
-                meshRenderer.SetMaterial(blackMat);;
+                meshRenderer.SetMaterial(blackMat); ;
             }
         }
-
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
         {
@@ -222,13 +218,13 @@ localScale = new Vector3(0.03303F, 0.03303F, 0.07704F)
 
         public class LordOfTheJammedController : MonoBehaviour
         {
-            CharacterBody lordBody;
+            private CharacterBody lordBody;
             public CharacterMaster lordMaster;
 
             public static GameObject ProjectilePrefab => Assets.LoadAddressable<GameObject>("RoR2/DLC1/VoidBarnacle/VoidBarnacleBullet.prefab");
-            const float damageCoefficient = 1f;
-            const int verticalIntensity = 2;
-            const float horizontalIntensity = 1f;
+            private const float damageCoefficient = 1f;
+            private const int verticalIntensity = 2;
+            private const float horizontalIntensity = 1f;
 
             public bool subscribed = false;
 

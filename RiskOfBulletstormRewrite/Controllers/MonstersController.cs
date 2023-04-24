@@ -1,7 +1,5 @@
 using BepInEx.Configuration;
 using RoR2;
-using RoR2.CharacterAI;
-using UnityEngine;
 using UnityEngine.Networking;
 
 namespace RiskOfBulletstormRewrite.Controllers

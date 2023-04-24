@@ -48,8 +48,6 @@ namespace RiskOfBulletstormRewrite.Items
             cfgCashMultiplierPerStack = config.Bind(ConfigCategory, "Cash Multiplier Per Stack", 0.05f, "The percentage of extra money PER ITEM STACK to get on completing the teleporter event.");
         }
 
-
-
         public override ItemDisplayRuleDict CreateItemDisplayRules()
         {
             return NewMethod(ref ItemBodyModelPrefab, ItemModel);

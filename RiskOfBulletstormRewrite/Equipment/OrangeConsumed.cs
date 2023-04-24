@@ -1,6 +1,5 @@
 ﻿using BepInEx.Configuration;
 using R2API;
-using RiskOfBulletstormRewrite.Modules;
 using RoR2;
 using UnityEngine;
 
@@ -10,6 +9,7 @@ namespace RiskOfBulletstormRewrite.Equipment
     {
         //public static ConfigEntry<float> cfg;
         public static ConfigEntry<float> cfgCooldown;
+
         public override float Cooldown => cfgCooldown.Value;
 
         public override string EquipmentName => "Orange (Consumed)";

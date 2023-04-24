@@ -2,7 +2,6 @@ using RiskOfBulletstormRewrite.Equipment;
 using RiskOfBulletstormRewrite.Items;
 using RoR2;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace RiskOfBulletstormRewrite
 {
@@ -51,7 +50,7 @@ namespace RiskOfBulletstormRewrite
                 { "availableVoidTier3DropList", run.availableVoidTier3DropList },
             };
             var sb = HG.StringBuilderPool.RentStringBuilder();
-            foreach (var kvp in dict )
+            foreach (var kvp in dict)
             {
                 var spiceCount = 0;
                 foreach (var index in kvp.Value)

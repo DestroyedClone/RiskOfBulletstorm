@@ -4,7 +4,6 @@ using RiskOfBulletstormRewrite.Equipment;
 using RiskOfBulletstormRewrite.Modules;
 using RoR2;
 using UnityEngine;
-using static AkMIDIEvent;
 
 namespace RiskOfBulletstormRewrite.Items
 {

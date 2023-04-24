@@ -1,4 +1,5 @@
-﻿using BepInEx.Configuration;
+﻿using BepInEx;
+using BepInEx.Configuration;
 using R2API;
 using RiskOfBulletstormRewrite.Modules;
 using RoR2;
@@ -6,9 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Rewired;
-using IL.RoR2.ConVar;
-using BepInEx;
 
 namespace RiskOfBulletstormRewrite.Equipment
 {
@@ -54,6 +52,7 @@ namespace RiskOfBulletstormRewrite.Equipment
         /// <para>Ex: "GAWK" => used in RBS_GAWK_NAME, RBS_GAWK_DESC, ETC</para>
         /// </summary>
         public virtual string EquipmentUniquePickupToken { get; }
+
         /// <summary>
         /// Primary Token for language.
         /// <para>Ex: "GAWK" => used in RBS_GAWK_NAME, RBS_GAWK_DESC, ETC</para>
@@ -173,7 +172,8 @@ namespace RiskOfBulletstormRewrite.Equipment
                 if (EquipmentUniquePickupToken.IsNullOrWhiteSpace())
                 {
                     LanguageOverrides.DeferToken(EquipmentPickupToken, EquipmentPickupDescParams);
-                } else
+                }
+                else
                 {
                     LanguageOverrides.DeferUniqueToken(EquipmentUniquePickupToken, EquipmentPickupToken, EquipmentPickupDescParams);
                 }
@@ -184,7 +184,8 @@ namespace RiskOfBulletstormRewrite.Equipment
                 if (EquipmentUniqueDescriptionToken.IsNullOrWhiteSpace())
                 {
                     LanguageOverrides.DeferToken(EquipmentDescriptionToken, EquipmentFullDescriptionParams);
-                } else
+                }
+                else
                 {
                     LanguageOverrides.DeferUniqueToken(EquipmentUniqueDescriptionToken, EquipmentDescriptionToken, EquipmentFullDescriptionParams);
                 }
@@ -224,7 +225,6 @@ namespace RiskOfBulletstormRewrite.Equipment
             }
             if (!CanBeDroppedByPlayer)
             {
-
             }
 
             //EquipmentDef.colorIndex
@@ -240,7 +240,6 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public virtual void ActivateEquipmentOnRandomUse(EquipmentSlot slot)
         {
-
         }
 
         //runs on server

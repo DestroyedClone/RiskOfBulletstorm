@@ -34,8 +34,8 @@ namespace RiskOfBulletstormRewrite.Controllers
         private void CombatDirector_OnEnable(On.RoR2.CombatDirector.orig_OnEnable orig, CombatDirector self)
         {
             orig(self);
-            self.creditMultiplier *= 1 
-                + cfgCurseMonsterCreditMultiplier.Value 
+            self.creditMultiplier *= 1
+                + cfgCurseMonsterCreditMultiplier.Value
                 * Util.GetItemCountForTeam(TeamIndex.Player, CurseTally.instance.ItemDef.itemIndex, false, true);
         }
 

@@ -537,7 +537,7 @@ namespace RiskOfBulletstormRewrite.Controllers
 
                 if (itemCount_Spice > 0)
                     SpiceMult += (-Spice_SpreadReduction - Spice_SpreadReductionStack * (itemCount_Spice - 1));
-                spiceMult= SpiceMult;
+                spiceMult = SpiceMult;
 
                 var accuracy = ScopeMult + SpiceMult;
                 idealizedAccuracyStat = -accuracy;

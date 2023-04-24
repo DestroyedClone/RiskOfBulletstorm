@@ -1,11 +1,8 @@
 ﻿using BepInEx.Configuration;
 using R2API;
-using RoR2;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static AkMIDIEvent;
-using static RiskOfBulletstormRewrite.Modules.LanguageOverrides;
 
 namespace RiskOfBulletstormRewrite.Modules
 {
@@ -43,6 +40,7 @@ namespace RiskOfBulletstormRewrite.Modules
         {
             replacementTokens.Add(new ReplacementToken() { assignedToken = assignedToken, formatToken = formatToken, args = args });
         }
+
         ///<summary>
         ///Helper method to defer language tokens. All passed args must be existing tokens.
         ///</summary>
@@ -84,6 +82,7 @@ namespace RiskOfBulletstormRewrite.Modules
             var newString = string.Format(oldString, replacementToken.args);
             return newString;
         }
+
         private static string FormatToken(string formatToken, string[] args, string langName)
         {
             //GetStringFormatted uses currentLanguage, while we have to use other languages
@@ -105,7 +104,7 @@ namespace RiskOfBulletstormRewrite.Modules
 
         private static void SetupLanguage()
         {
-            Main._logger.LogMessage($"Setting up language with {replacementTokens.Count+postReplacementTokens.Count} tokens.");
+            Main._logger.LogMessage($"Setting up language with {replacementTokens.Count + postReplacementTokens.Count} tokens.");
             DeferTokenFinalize();
             PostDeferTokenFinalize();
         }

@@ -37,6 +37,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public abstract ItemTier Tier { get; }
         public virtual ItemTag[] ItemTags { get; set; } = new ItemTag[] { };
+
         //like lunars or not
         public virtual bool CanBePickedUp { get; } = true;
 

@@ -1,5 +1,4 @@
 ﻿using RoR2;
-using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -20,30 +19,41 @@ namespace RiskOfBulletstormRewrite.Modules
         internal static ItemTierDef itemVoidTier1Def = LoadAsset<ItemTierDef>("RoR2/DLC1/Common/VoidTier1Def.asset");
         internal static ItemTierDef itemVoidTier2Def = LoadAsset<ItemTierDef>("RoR2/DLC1/Common/VoidTier2Def.asset");
         internal static ItemTierDef itemVoidTier3Def = LoadAsset<ItemTierDef>("RoR2/DLC1/Common/VoidTier3Def.asset");
+
         public static ItemTierDef ResolveTierDef(ItemTier itemTier)
         {
             switch (itemTier)
             {
                 case ItemTier.AssignedAtRuntime:
                     return null;
+
                 case ItemTier.Boss:
                     return itemBossTierDef;
+
                 case ItemTier.Lunar:
                     return itemLunarTierDef;
+
                 case ItemTier.NoTier:
                     return null;
+
                 case ItemTier.Tier1:
-                    return itemTier1Def; 
+                    return itemTier1Def;
+
                 case ItemTier.Tier2:
                     return itemTier2Def;
+
                 case ItemTier.Tier3:
                     return itemTier3Def;
+
                 case ItemTier.VoidBoss:
                     return itemVoidBossTierDef;
+
                 case ItemTier.VoidTier1:
                     return itemVoidTier1Def;
+
                 case ItemTier.VoidTier2:
                     return itemVoidTier2Def;
+
                 case ItemTier.VoidTier3:
                     return itemVoidTier3Def;
             }
@@ -55,11 +65,10 @@ namespace RiskOfBulletstormRewrite.Modules
 
         public static CostTypeDef stealCostTypeDef;
 
-        public static T LoadAsset<T> (string path)
+        public static T LoadAsset<T>(string path)
         {
             return Addressables.LoadAssetAsync<T>(path).WaitForCompletion();
         }
-
 
         internal static string assemblyDir
         {
@@ -83,7 +92,7 @@ namespace RiskOfBulletstormRewrite.Modules
             {
                 colorIndex = ColorCatalog.ColorIndex.Blood,
                 costStringFormatToken = "RISKOFBULLETSTORM_COST_STEAL_FORMAT",
-                //costStringStyle = 
+                //costStringStyle =
                 name = "RBS_STEALCOSTTYPEDEF"
             };
         }
@@ -98,6 +107,7 @@ namespace RiskOfBulletstormRewrite.Modules
                 }
             }
         }
+
         //https://forum.unity.com/threads/generating-sprites-dynamically-from-png-or-jpeg-files-in-c.343735/#post-3177001
 
         public static Sprite LoadSprite(string path)

@@ -1,21 +1,15 @@
-using BepInEx;
 using BepInEx.Configuration;
 using RoR2;
 using RoR2.UI;
-using System.Text;
-using UnityEngine;
-using Rewired;
-using Rewired.Dev;
-using static RoR2.MasterSpawnSlotController;
-using R2API.Utils;
-using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 namespace RiskOfBulletstormRewrite
 {
     public static class Tweaks
     {
         public static ConfigEntry<bool> cfgCenterNotifications;
+
         //public static ConfigEntry<NotificationMod> cfgEnableBreachNotifications;
         //public static ConfigEntry<bool> cfgDropEquipment;
         public static ConfigEntry<bool> cfgCanStealFromNewt;
@@ -62,7 +56,7 @@ namespace RiskOfBulletstormRewrite
             //}
 
             //if (cfgDropEquipment.Value)
-                //On.RoR2.UI.EquipmentIcon.Update += EquipmentIcon_Update;
+            //On.RoR2.UI.EquipmentIcon.Update += EquipmentIcon_Update;
         }
 
         public static void Bazaar_KickFromShop(CharacterBody newtBody)
@@ -79,10 +73,10 @@ namespace RiskOfBulletstormRewrite
         {
             orig(self);
             if (NetworkServer.active)
-            if (RoR2.Util.GetItemCountForTeam(TeamIndex.Player, Items.BannedFromBazaarTally.instance.ItemDef.itemIndex, false) > 0)
-            {
-                Bazaar_KickFromShop(self.outer.commonComponents.characterBody);
-            }
+                if (RoR2.Util.GetItemCountForTeam(TeamIndex.Player, Items.BannedFromBazaarTally.instance.ItemDef.itemIndex, false) > 0)
+                {
+                    Bazaar_KickFromShop(self.outer.commonComponents.characterBody);
+                }
         }
 
         private static void SceneManager_sceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
@@ -118,7 +112,8 @@ namespace RiskOfBulletstormRewrite
                     self.Networkcost = 0;
                     characterBody.inventory.GiveItem(Items.CurseTally.instance.ItemDef);
                     characterBody.inventory.GiveItem(Items.StolenItemTally.instance.ItemDef);
-                } else
+                }
+                else
                 {
                     characterBody.inventory.GiveItem(Items.BannedFromBazaarTally.instance.ItemDef);
                     NewtSaySteal();
@@ -142,7 +137,7 @@ namespace RiskOfBulletstormRewrite
             //var sfxLocator = BazaarController.instance.shopkeeper.GetComponent<SfxLocator>();
             Chat.SendBroadcastChat(new Chat.NpcChatMessage
             {
-                baseToken = "RISKOFBULLETSTORM_DIALOGUE_NEWT_STEALRESPONSE_"+UnityEngine.Random.RandomRangeInt(0, 4),
+                baseToken = "RISKOFBULLETSTORM_DIALOGUE_NEWT_STEALRESPONSE_" + UnityEngine.Random.RandomRangeInt(0, 4),
                 formatStringToken = "RISKOFBULLETSTORM_DIALOGUE_NEWT_FORMAT",
                 //sender = BazaarController.instance.shopkeeper,
                 //sound = sfxLocator?.barkSound
@@ -221,86 +216,88 @@ namespace RiskOfBulletstormRewrite
         }
 
         #endregion centertext
-/*
-        #region DropEquipment
 
-        public static void DropEquipment(EquipmentSlot slot, EquipmentDef equipmentDef)
-        {
-            if (!cfgDropEquipment.Value) return;
-            var aimRay = slot.GetAimRay();
-            PickupDropletController.CreatePickupDroplet(PickupCatalog.FindPickupIndex(equipmentDef.equipmentIndex),
-                aimRay.origin, aimRay.direction * 20f);
-            slot.characterBody.inventory.SetEquipmentIndex(EquipmentIndex.None);
-            CharacterMasterNotificationQueue.PushEquipmentTransformNotification(slot.characterBody.master, slot.characterBody.inventory.currentEquipmentIndex, EquipmentIndex.None, CharacterMasterNotificationQueue.TransformationType.Default);
-        }
+        /*
 
-        private static void EquipmentIcon_Update(On.RoR2.UI.EquipmentIcon.orig_Update orig, RoR2.UI.EquipmentIcon self)
-        {
-            orig(self);
-            if (self.targetEquipmentSlot
-                && EquipmentCanBeDropped(self.targetEquipmentSlot.equipmentIndex)
-                && !self.displayAlternateEquipment)
-            {
-                if (self.stockText)
+                #region DropEquipment
+
+                public static void DropEquipment(EquipmentSlot slot, EquipmentDef equipmentDef)
                 {
-                    bool shouldShowStock = self.stockText.gameObject.activeSelf;
-                    self.stockText.gameObject.SetActive(true);
-                    StringBuilder stringBuilder2 = HG.StringBuilderPool.RentStringBuilder();
-                    //var equipmentSlotCount = self.targetInventory.GetEquipmentSlotCount();
-                    string dropText = $"<size=45%>Drop Equip Mod: [Interact]</size>";
-                    string colorMod;
-                    if (self.playerCharacterMasterController
-                        && self.playerCharacterMasterController.networkUser
-                        && PlayerCharacterMasterController.CanSendBodyInput(self.playerCharacterMasterController.networkUser, out LocalUser localUser, out Player inputPlayer, out CameraRigController _)
-                        && inputPlayer.GetButton(5)
-                        )
-                    {
-                        colorMod = "green";
-                    }
-                    else
-                    {
-                        colorMod = "red";
-                    }
-                    stringBuilder2.Append(self.stockText.text);
-                    stringBuilder2.Append($"<color={colorMod}>{dropText}</color>");
-                    if (shouldShowStock) stringBuilder2.Append("\n");
-
-                    if (shouldShowStock)//self.stockText.text.IsNullOrWhiteSpace())
-                    {
-                        //stringBuilder2.AppendInt(self.currentDisplayData.stock, 1U, uint.MaxValue);
-                        stringBuilder2.Append($"x{self.currentDisplayData.stock}");
-                    }
-
-                    self.stockText.SetText(stringBuilder2);
-                    HG.StringBuilderPool.ReturnStringBuilder(stringBuilder2);
+                    if (!cfgDropEquipment.Value) return;
+                    var aimRay = slot.GetAimRay();
+                    PickupDropletController.CreatePickupDroplet(PickupCatalog.FindPickupIndex(equipmentDef.equipmentIndex),
+                        aimRay.origin, aimRay.direction * 20f);
+                    slot.characterBody.inventory.SetEquipmentIndex(EquipmentIndex.None);
+                    CharacterMasterNotificationQueue.PushEquipmentTransformNotification(slot.characterBody.master, slot.characterBody.inventory.currentEquipmentIndex, EquipmentIndex.None, CharacterMasterNotificationQueue.TransformationType.Default);
                 }
-            }
-        }
 
-        public static bool PlayerCharacterMasterCanSendBodyInput(EquipmentSlot equipmentSlot, out LocalUser localUser, out Player player, out CameraRigController cameraRigController)
-        {
-            if (equipmentSlot.characterBody
-                    && equipmentSlot.characterBody.master
-                    && equipmentSlot.characterBody.master.playerCharacterMasterController
-                    && PlayerCharacterMasterController.CanSendBodyInput(equipmentSlot.characterBody.master.playerCharacterMasterController.networkUser,
-                    out localUser, out player, out cameraRigController))
-                return true;
-            localUser = null;
-            player = null;
-            cameraRigController = null;
-            return false;
-        }
+                private static void EquipmentIcon_Update(On.RoR2.UI.EquipmentIcon.orig_Update orig, RoR2.UI.EquipmentIcon self)
+                {
+                    orig(self);
+                    if (self.targetEquipmentSlot
+                        && EquipmentCanBeDropped(self.targetEquipmentSlot.equipmentIndex)
+                        && !self.displayAlternateEquipment)
+                    {
+                        if (self.stockText)
+                        {
+                            bool shouldShowStock = self.stockText.gameObject.activeSelf;
+                            self.stockText.gameObject.SetActive(true);
+                            StringBuilder stringBuilder2 = HG.StringBuilderPool.RentStringBuilder();
+                            //var equipmentSlotCount = self.targetInventory.GetEquipmentSlotCount();
+                            string dropText = $"<size=45%>Drop Equip Mod: [Interact]</size>";
+                            string colorMod;
+                            if (self.playerCharacterMasterController
+                                && self.playerCharacterMasterController.networkUser
+                                && PlayerCharacterMasterController.CanSendBodyInput(self.playerCharacterMasterController.networkUser, out LocalUser localUser, out Player inputPlayer, out CameraRigController _)
+                                && inputPlayer.GetButton(5)
+                                )
+                            {
+                                colorMod = "green";
+                            }
+                            else
+                            {
+                                colorMod = "red";
+                            }
+                            stringBuilder2.Append(self.stockText.text);
+                            stringBuilder2.Append($"<color={colorMod}>{dropText}</color>");
+                            if (shouldShowStock) stringBuilder2.Append("\n");
 
-        public static bool EquipmentCanBeDropped(EquipmentDef equipmentDef)
-        {
-            return EquipmentCanBeDropped(equipmentDef.equipmentIndex);
-        }
+                            if (shouldShowStock)//self.stockText.text.IsNullOrWhiteSpace())
+                            {
+                                //stringBuilder2.AppendInt(self.currentDisplayData.stock, 1U, uint.MaxValue);
+                                stringBuilder2.Append($"x{self.currentDisplayData.stock}");
+                            }
 
-        public static bool EquipmentCanBeDropped(EquipmentIndex equipmentIndex)
-        {
-            return equipmentIndex != EquipmentIndex.None;
-        }
+                            self.stockText.SetText(stringBuilder2);
+                            HG.StringBuilderPool.ReturnStringBuilder(stringBuilder2);
+                        }
+                    }
+                }
 
-        #endregion*/
+                public static bool PlayerCharacterMasterCanSendBodyInput(EquipmentSlot equipmentSlot, out LocalUser localUser, out Player player, out CameraRigController cameraRigController)
+                {
+                    if (equipmentSlot.characterBody
+                            && equipmentSlot.characterBody.master
+                            && equipmentSlot.characterBody.master.playerCharacterMasterController
+                            && PlayerCharacterMasterController.CanSendBodyInput(equipmentSlot.characterBody.master.playerCharacterMasterController.networkUser,
+                            out localUser, out player, out cameraRigController))
+                        return true;
+                    localUser = null;
+                    player = null;
+                    cameraRigController = null;
+                    return false;
+                }
+
+                public static bool EquipmentCanBeDropped(EquipmentDef equipmentDef)
+                {
+                    return EquipmentCanBeDropped(equipmentDef.equipmentIndex);
+                }
+
+                public static bool EquipmentCanBeDropped(EquipmentIndex equipmentIndex)
+                {
+                    return equipmentIndex != EquipmentIndex.None;
+                }
+
+                #endregion DropEquipment
     }
 }

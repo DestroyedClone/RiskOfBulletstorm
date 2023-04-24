@@ -1,7 +1,6 @@
 ﻿using BepInEx.Configuration;
 using R2API;
 using RiskOfBulletstormRewrite.Items;
-using RiskOfBulletstormRewrite.Modules;
 using RiskOfBulletstormRewrite.Utils;
 using RoR2;
 using UnityEngine;
@@ -11,8 +10,10 @@ namespace RiskOfBulletstormRewrite.Equipment
     public class Spice2 : EquipmentBase<Spice2>
     {
         public static ConfigEntry<float> cfgCooldown;
+
         //public static ConfigEntry<float> cfgCurseAmount;
         public static ConfigEntry<bool> cfgSpiceReplacement;
+
         public static ConfigEntry<float> cfgStatAccuracy;
         public static ConfigEntry<float> cfgStatAccuracyStack;
         public static ConfigEntry<float> cfgStatDamage;
@@ -403,12 +404,15 @@ localScale = new Vector3(1F, 1F, 1F)
                     {
                         case 0:
                             break;
+
                         case 1:
                             replacementEquipmentIndex = SpicePickupEquipmentA.Instance.EquipmentDef.equipmentIndex;
                             break;
+
                         case 2:
                             replacementEquipmentIndex = SpicePickupEquipmentB.Instance.EquipmentDef.equipmentIndex;
                             break;
+
                         default:
                             replacementEquipmentIndex = SpicePickupEquipmentC.Instance.EquipmentDef.equipmentIndex;
                             break;
@@ -433,14 +437,14 @@ localScale = new Vector3(1F, 1F, 1F)
             slot.inventory.GiveItem(CurseTally.instance.ItemDef);
 
             if (cfgSpiceReplacement.Value)
-            if (slot.characterBody 
-                    && slot.characterBody.teamComponent
-                    && slot.characterBody.isPlayerControlled
-                    && slot.characterBody.teamComponent.teamIndex == TeamIndex.Player
-                    )
-            {
-                BloatDropListsWithSpice();
-            }
+                if (slot.characterBody
+                        && slot.characterBody.teamComponent
+                        && slot.characterBody.isPlayerControlled
+                        && slot.characterBody.teamComponent.teamIndex == TeamIndex.Player
+                        )
+                {
+                    BloatDropListsWithSpice();
+                }
             return true;
         }
     }
