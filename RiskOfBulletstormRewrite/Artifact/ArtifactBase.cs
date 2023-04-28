@@ -95,7 +95,7 @@ namespace RiskOfBulletstormRewrite.Artifact
         ///</summary>
         protected void CreateLang()
         {
-            Main._logger.LogMessage($"{ArtifactName} CreateLang()");
+            //Main._logger.LogMessage($"{ArtifactName} CreateLang()");
             bool formatDescription = ArtifactFullDescriptionParams?.Length > 0; //https://stackoverflow.com/a/41596301
             //Main._logger.LogMessage("descCheck");
             if (formatDescription)

@@ -156,7 +156,7 @@ namespace RiskOfBulletstormRewrite.Equipment
         /// </summary>
         protected virtual void CreateLang()
         {
-            Main._logger.LogMessage($"{EquipmentName} CreateLang()");
+            //Main._logger.LogMessage($"{EquipmentName} CreateLang()");
             bool formatPickup = EquipmentPickupDescParams?.Length > 0;
             //Main._logger.LogMessage("pickupCheck");
             bool formatDescription = EquipmentFullDescriptionParams?.Length > 0; //https://stackoverflow.com/a/41596301

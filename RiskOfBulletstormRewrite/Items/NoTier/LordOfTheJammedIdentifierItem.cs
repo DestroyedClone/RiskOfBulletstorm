@@ -45,11 +45,11 @@ namespace RiskOfBulletstormRewrite.Items
                 SkinnedMeshRenderer skinnedMeshRenderer = gameObject.GetComponent<SkinnedMeshRenderer>();
                 if (!skinnedMeshRenderer)
                 {
-                    Main._logger.LogError($"SkinnedMeshRenderer Not Found For {gameObject.name}!");
+                    //Main._logger.LogError($"SkinnedMeshRenderer Not Found For {gameObject.name}!"); <- this one
                     MeshRenderer meshRenderer = gameObject.GetComponent<MeshRenderer>();
                     if (!meshRenderer)
                     {
-                        Main._logger.LogError($"MeshRenderer also falied.");
+                        //Main._logger.LogError($"MeshRenderer also falied.");
                     }
                     else
                     {
