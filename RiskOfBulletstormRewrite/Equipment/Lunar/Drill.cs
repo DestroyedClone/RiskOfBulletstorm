@@ -10,9 +10,9 @@ namespace RiskOfBulletstormRewrite.Equipment
 {
     public class Drill : EquipmentBase<Drill>
     {
-        public static ConfigEntry<float> cfgChestCostCommon;
-        public static ConfigEntry<float> cfgChestCostUncommon;
-        public static ConfigEntry<float> cfgChestCostLegendary;
+        public static ConfigEntry<float> cfgChestCostCommonDirectorMultiplier;
+        public static ConfigEntry<float> cfgChestCostUncommonDirectorMultiplier;
+        public static ConfigEntry<float> cfgChestCostLegendaryDirectorMultiplier;
         public static ConfigEntry<float> cfgCooldown;
         public override float Cooldown => cfgCooldown.Value;
 
@@ -42,9 +42,9 @@ namespace RiskOfBulletstormRewrite.Equipment
             cfgCooldown = config.Bind(ConfigCategory, CooldownName, 60f, CooldownDescription);
             string text = "The multiplier for the amount of credits given to the Combat Director for spawning the equipment's enemies.\nApplies to ";
 
-            cfgChestCostCommon = config.Bind(ConfigCategory, "Common Chest Credit Multiplier", 2f, text + "Chests, Utility Chests, Damage Chests, Healing Chests, and Equipment Barrels.");
-            cfgChestCostUncommon = config.Bind(ConfigCategory, "Large Chest Credit Multiplier", 3f, text + "Large Chests");
-            cfgChestCostLegendary = config.Bind(ConfigCategory, "Legendary Credit Multiplier", 4f, text + "Legendary Chests");
+            cfgChestCostCommonDirectorMultiplier = config.Bind(ConfigCategory, "Common Chest Credit Multiplier", 2f, text + "Chests, Category Chests, and Equipment Barrels.");
+            cfgChestCostUncommonDirectorMultiplier = config.Bind(ConfigCategory, "Large Chest Credit Multiplier", 3f, text + "Large Chests and Large Category Chests.");
+            cfgChestCostLegendaryDirectorMultiplier = config.Bind(ConfigCategory, "Legendary Credit Multiplier", 4f, text + "Legendary Chests.");
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules() => EquipmentDisplays.Drill(ref ItemBodyModelPrefab, EquipmentModel);
@@ -86,7 +86,7 @@ namespace RiskOfBulletstormRewrite.Equipment
             Highlight highlight = chestObject.GetComponent<Highlight>();
             PurchaseInteraction purchaseInteraction = chestObject.GetComponent<PurchaseInteraction>();
             if (!highlight || !purchaseInteraction) return false;
-            BulletstormChestInteractorComponent chestComponent = chestObject.GetComponent<BulletstormChestInteractorComponent>();
+            RBSChestInteractorComponent chestComponent = chestObject.GetComponent<RBSChestInteractorComponent>();
             if (chestComponent && chestComponent.hasUsedLockpicks) return false;
 
             if (!purchaseInteraction.isShrine && purchaseInteraction.available && purchaseInteraction.costType == CostTypeIndex.Money)
@@ -111,18 +111,18 @@ namespace RiskOfBulletstormRewrite.Equipment
                     case "CATEGORYCHEST_DAMAGE_NAME":
                     case "CATEGORYCHEST_UTILITY_NAME":
                     case "EQUIPMENTBARREL_NAME":
-                        creditMultiplier = cfgChestCostCommon.Value;
+                        creditMultiplier = cfgChestCostCommonDirectorMultiplier.Value;
                         break;
 
                     case "CHEST2_NAME":
                     case "CATEGORYCHEST2_HEALING_NAME":
                     case "CATEGORYCHEST2_DAMAGE_NAME":
                     case "CATEGORYCHEST2_UTILITY_NAME":
-                        creditMultiplier = cfgChestCostUncommon.Value;
+                        creditMultiplier = cfgChestCostUncommonDirectorMultiplier.Value;
                         break;
 
                     case "GOLDCHEST_NAME":
-                        creditMultiplier = cfgChestCostLegendary.Value;
+                        creditMultiplier = cfgChestCostLegendaryDirectorMultiplier.Value;
                         break;
                 }
 

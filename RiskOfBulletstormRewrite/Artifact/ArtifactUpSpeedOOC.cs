@@ -1,5 +1,6 @@
 ﻿using BepInEx.Configuration;
 using R2API;
+using RiskOfBulletstormRewrite.Modules;
 using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -29,7 +30,7 @@ namespace RiskOfBulletstormRewrite.Artifact
         public override void CreateConfig(ConfigFile config)
         {
             base.CreateConfig(config);
-            cfgMoveSpeedAdditiveMultiplier = config.Bind(ConfigCategory, "Move Speed Additive Multiplier", 0.45f, "The additive percentage in increase in movement speed. 0.45 = +45% movement speed.");
+            cfgMoveSpeedAdditiveMultiplier = config.Bind(ConfigCategory, Assets.cfgMoveSpeedAdditiveMultiplierKey, 0.45f, Assets.cfgMoveSpeedAdditiveMultiplierDesc);
         }
 
         public override void Hooks()

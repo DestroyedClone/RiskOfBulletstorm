@@ -1,5 +1,6 @@
 ﻿using BepInEx.Configuration;
 using R2API;
+using RiskOfBulletstormRewrite.Modules;
 using RiskOfBulletstormRewrite.Utils;
 using RoR2;
 using UnityEngine;
@@ -39,14 +40,12 @@ namespace RiskOfBulletstormRewrite.Equipment
             CreateConfig(config);
             CreateLang();
             CreateEquipment();
-            Hooks();
         }
 
         protected override void CreateConfig(ConfigFile config)
         {
             cfgCooldown = config.Bind(ConfigCategory, CooldownName, 60f, CooldownDescription);
-            cfgUnlockChance = config.Bind(ConfigCategory, "Chest Unlock Chance", 50f, "What is the chance to unlock the chest?" +
-                "\n50 = 50%, 0.5 = 0.5%");
+            cfgUnlockChance = config.Bind(ConfigCategory, Assets.cfgChanceIntegerKey, 50f, Assets.cfgChanceIntegerDesc);
             cfgPriceMultiplier = config.Bind(ConfigCategory, "Fail Cost Multiplier", 2f, "If you fail to unlock the chest, what will the price be multiplied by?");
         }
 
@@ -339,10 +338,6 @@ localScale = new Vector3(1F, 1F, 1F)
             return rules;
         }
 
-        public override void Hooks()
-        {
-        }
-
         protected override bool ActivateEquipment(EquipmentSlot slot)
         {
             if (slot.characterBody)
@@ -373,7 +368,7 @@ localScale = new Vector3(1F, 1F, 1F)
             if (!interactionDriver) return false;
             var chestBehavior = chestObject.GetComponent<ChestBehavior>();
             if (!chestBehavior) return false;
-            BulletstormChestInteractorComponent chestComponent = chestObject.GetComponent<BulletstormChestInteractorComponent>();
+            RBSChestInteractorComponent chestComponent = chestObject.GetComponent<RBSChestInteractorComponent>();
             if (chestComponent && chestComponent.hasUsedLockpicks) return false;
             Vector3 offset = Vector3.up * 1f;
 
@@ -404,7 +399,7 @@ localScale = new Vector3(1F, 1F, 1F)
                     GameObject selectedEffect = Fail_LockEffect;
 
                     //purchaseInteraction.displayNameToken = (prefix + purchaseInteraction.displayNameToken);
-                    chestObject.AddComponent<BulletstormChestInteractorComponent>().hasUsedLockpicks = true; //does this even work? lol
+                    chestObject.AddComponent<RBSChestInteractorComponent>().hasUsedLockpicks = true; //does this even work? lol
                     EffectManager.SimpleEffect(selectedEffect, chestObject.transform.position + offset, Quaternion.identity, true);
                 }
                 chestComponent.hasUsedLockpicks = true;

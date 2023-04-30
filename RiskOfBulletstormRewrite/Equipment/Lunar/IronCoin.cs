@@ -44,7 +44,8 @@ namespace RiskOfBulletstormRewrite.Equipment
             cfgCooldown = config.Bind(ConfigCategory, CooldownName, 60f, CooldownDescription);
             cfgDamageToPlayers = config.Bind(ConfigCategory, "Damage Dealt To Enemy Players", 0.05f, "If flipped by an enemy, deals this amount of damage to enemy players." +
                 "\nDamage dealt is equal to config value multiplied by enemy player's max health." +
-                "\nEx: 0.05 -> 5% of the enemy player's max health.");
+                "\nEx: 0.05 -> 5% of the enemy player's max health." +
+                "\nThis value is affected by the friendly fire damage modification.");
             cfgEnemyPlayerDamageType = config.Bind(ConfigCategory, "Damage Type Dealt To Players",
                 IronCoinEnum.Nonfatal,
                 "Nonfatal - Deals damage based off the other config value, but can not kill the player" +
@@ -391,7 +392,7 @@ localScale = new Vector3(1F, 1F, 1F)
                     }
                     if (body.isElite && body.TryGetComponent(out EquipmentSlot equipmentSlot))
                     {
-                        equipmentSlot.equipmentIndex = EquipmentIndex.None;
+                        charMaster.inventory.SetEquipmentIndex(EquipmentIndex.None);
                     }
                     var itemCount = charMaster.inventory.GetItemCount(RoR2Content.Items.InvadingDoppelganger);
                     if (itemCount > 0)

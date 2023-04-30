@@ -1,5 +1,6 @@
 ﻿using BepInEx.Configuration;
 using R2API;
+using RiskOfBulletstormRewrite.Modules;
 using RiskOfBulletstormRewrite.Utils;
 using RoR2;
 using UnityEngine;
@@ -44,8 +45,8 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void CreateConfig(ConfigFile config)
         {
-            cfgCashMultiplier = config.Bind(ConfigCategory, "Cash Multiplier", 0.1f, "The percentage of extra money to get on completing the teleporter event.");
-            cfgCashMultiplierPerStack = config.Bind(ConfigCategory, "Cash Multiplier Per Stack", 0.05f, "The percentage of extra money PER ITEM STACK to get on completing the teleporter event.");
+            cfgCashMultiplier = config.Bind(ConfigCategory, Assets.cfgCoinCrownKey, 0.1f, Assets.cfgCoinCrownDesc);
+            cfgCashMultiplierPerStack = config.Bind(ConfigCategory, Assets.cfgCoinCrownPerStackKey, 0.05f, Assets.cfgCoinCrownPerStackDesc);
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()

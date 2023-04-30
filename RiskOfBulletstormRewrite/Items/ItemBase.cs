@@ -179,9 +179,9 @@ namespace RiskOfBulletstormRewrite.Items
             ItemDef.pickupIconSprite = ItemIcon;
             ItemDef.hidden = false;
             ItemDef.canRemove = CanRemove;
-            ItemDef.tier = Tier;
+            //ItemDef.tier = ResolveTierDef(Tier).tier;
 
-            //ItemDef.deprecatedTier = Tier;
+            ItemDef.deprecatedTier = Tier;
             if (Tier == ItemTier.VoidTier1
             || Tier == ItemTier.VoidTier2
             || Tier == ItemTier.VoidTier3

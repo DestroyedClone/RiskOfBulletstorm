@@ -1,5 +1,6 @@
 ﻿using BepInEx.Configuration;
 using R2API;
+using RiskOfBulletstormRewrite.Modules;
 using RiskOfBulletstormRewrite.Utils;
 using RoR2;
 using UnityEngine;
@@ -44,9 +45,9 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void CreateConfig(ConfigFile config)
         {
-            cfgChance = config.Bind(ConfigCategory, "Heal Chance", 25f, "What is the chance in percent of the item activating? 25 = 25%");
-            cfgMultiplier = config.Bind(ConfigCategory, "Multiplier", 0.33f, "What is the amount of healing increased by?");
-            cfgMultiplierPerStack = config.Bind(ConfigCategory, "Multiplier per stack", 0.11f, "What is the amount of healing increased by per stack?");
+            cfgChance = config.Bind(ConfigCategory, Assets.cfgChanceIntegerKey, 25f, Assets.cfgChanceIntegerDesc);
+            cfgMultiplier = config.Bind(ConfigCategory, Assets.cfgMultiplierKey, 0.33f, Assets.cfgAntibodyHealMultiplierPctDesc);
+            cfgMultiplierPerStack = config.Bind(ConfigCategory, Assets.cfgMultiplierPerStackKey, 0.11f, Assets.cfgAntibodyHealMultiplierPctPerStackDesc);
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()

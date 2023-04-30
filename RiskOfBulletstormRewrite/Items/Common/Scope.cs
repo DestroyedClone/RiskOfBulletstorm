@@ -1,5 +1,6 @@
 ﻿using BepInEx.Configuration;
 using R2API;
+using RiskOfBulletstormRewrite.Modules;
 using RiskOfBulletstormRewrite.Utils;
 using RoR2;
 using UnityEngine;
@@ -10,8 +11,6 @@ namespace RiskOfBulletstormRewrite.Items
     {
         public static ConfigEntry<float> cfgSpreadReduction;
         public static ConfigEntry<float> cfgSpreadReductionPerStack;
-        public static int expectedMaxStacks = 0;
-        public static ConfigEntry<float> cfgDamageMultiplierPerStack;
 
         public override string ItemName => "Scope";
 
@@ -21,8 +20,6 @@ namespace RiskOfBulletstormRewrite.Items
         {
             GetChance(cfgSpreadReduction),
             GetChance(cfgSpreadReductionPerStack),
-            expectedMaxStacks.ToString(),
-            GetChance(cfgDamageMultiplierPerStack) //technically the same as getting percentage.
         };
 
         public int GetStackCountForMaxEffect(float baseAmount, float stackAmount)
@@ -42,31 +39,14 @@ namespace RiskOfBulletstormRewrite.Items
         public override void Init(ConfigFile config)
         {
             CreateConfig(config);
-            expectedMaxStacks = GetStackCountForMaxEffect(cfgSpreadReduction.Value, cfgSpreadReductionPerStack.Value);
             CreateLang();
             CreateItem();
-            Hooks();
         }
 
         public override void CreateConfig(ConfigFile config)
         {
-            cfgSpreadReduction = config.Bind(ConfigCategory, "Spread Reduction", 0.2f, "How much should one Scope reduce spread? (Value: Subtractive Percentage)");
-            cfgSpreadReductionPerStack = config.Bind(ConfigCategory, "Spread Reduction per Stack", 0.02f, "How much should each Scope reduce spread by per stack? (Value: Subtractive Percentage)");
-            cfgDamageMultiplierPerStack = config.Bind(ConfigCategory, "Damage Multiplier Past Max Stacks", 0.01f, "How much should the damage be multiplied per stack past max stacks?");
-        }
-
-        public override void Hooks()
-        {
-            R2API.RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
-        }
-
-        private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
-        {
-            var resolvedItemCount = GetCount(sender) - expectedMaxStacks;
-            if (resolvedItemCount > 0)
-            {
-                args.damageMultAdd += resolvedItemCount * cfgDamageMultiplierPerStack.Value;
-            }
+            cfgSpreadReduction = config.Bind(ConfigCategory, Assets.cfgAccuracyKey, 0.2f, Assets.cfgAccuracyDesc);
+            cfgSpreadReductionPerStack = config.Bind(ConfigCategory, Assets.cfgAccuracyPerStackKey, 0.02f, Assets.cfgAccuracyPerStackDesc);
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()

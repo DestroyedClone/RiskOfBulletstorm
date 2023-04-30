@@ -1,5 +1,6 @@
 ﻿using BepInEx.Configuration;
 using R2API;
+using RiskOfBulletstormRewrite.Modules;
 using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -42,8 +43,8 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void CreateConfig(ConfigFile config)
         {
-            cfgDamage = config.Bind(ConfigCategory, "Damage", 0.05f, "");
-            cfgDamageStack = config.Bind(ConfigCategory, "Damage Per Stack", 0.025f, "");
+            cfgDamage = config.Bind(ConfigCategory, Assets.cfgDamageKey, 0.05f, "");
+            cfgDamageStack = config.Bind(ConfigCategory, Assets.cfgDamagePerStackKey, 0.025f, "");
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()

@@ -14,7 +14,7 @@ namespace RiskOfBulletstormRewrite.Artifact
 
         public override Sprite ArtifactDisabledIcon => LoadSprite(false);
 
-        public static ConfigEntry<float> cfgWindowOfTime;
+        public static ConfigEntry<float> cfgWindowOfTimeForActivation;
 
         public override void Init(ConfigFile config)
         {
@@ -27,7 +27,7 @@ namespace RiskOfBulletstormRewrite.Artifact
         public override void CreateConfig(ConfigFile config)
         {
             base.CreateConfig(config);
-            cfgWindowOfTime = config.Bind(ConfigCategory, "Time Window", 0.2f, "The amount of time in seconds that the character can walk off a platform before they can no longer jump.");
+            cfgWindowOfTimeForActivation = config.Bind(ConfigCategory, "Time Window", 0.2f, "The amount of time in seconds that the character can walk off a platform before they can no longer jump.");
         }
 
         public override void Hooks()
@@ -61,14 +61,14 @@ namespace RiskOfBulletstormRewrite.Artifact
             if (self.jumpCount != initJumpCount)
             {
                 self.jumpCount = initJumpCount;
-                var comp = self.gameObject.GetComponent<RBS_CoyoteTime>();
+                var comp = self.gameObject.GetComponent<RiskOfBulletstorm_CoyoteTimeController>();
                 if (!comp)
                 {
                     var bodyESM = EntityStateMachine.FindByCustomName(self.gameObject, "Body");
 
                     if (bodyESM && bodyESM.IsInMainState())
                     {
-                        comp = self.gameObject.AddComponent<RBS_CoyoteTime>();
+                        comp = self.gameObject.AddComponent<RiskOfBulletstorm_CoyoteTimeController>();
                         comp.characterMotor = self;
                         comp.jumpCountOnStart = initJumpCount;
                     }
@@ -76,12 +76,12 @@ namespace RiskOfBulletstormRewrite.Artifact
             }
         }
 
-        private class RBS_CoyoteTime : MonoBehaviour
+        private class RiskOfBulletstorm_CoyoteTimeController : MonoBehaviour
         {
             public CharacterMotor characterMotor;
             public int jumpCountOnStart = 0;
             private float age = 0;
-            private float Duration => cfgWindowOfTime.Value;
+            private float Duration => cfgWindowOfTimeForActivation.Value;
 
             public void Awake()
             {

@@ -1,5 +1,6 @@
 ﻿using BepInEx.Configuration;
 using R2API;
+using RiskOfBulletstormRewrite.Modules;
 using RiskOfBulletstormRewrite.Utils;
 using RoR2;
 using UnityEngine;
@@ -11,7 +12,6 @@ namespace RiskOfBulletstormRewrite.Items
         public static ConfigEntry<float> cfgRegenAmount;
         public static ConfigEntry<float> cfgRegenAmountPerStack;
         public static ConfigEntry<float> cfgDuration;
-        public static ConfigEntry<bool> cfgHealOnBloodShrineUse;
 
         public override string ItemName => "Mustache";
 
@@ -42,10 +42,9 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void CreateConfig(ConfigFile config)
         {
-            cfgRegenAmount = config.Bind(ConfigCategory, "Regen Amount", 2f, "The amount of regen to gain with one stack.");
-            cfgRegenAmountPerStack = config.Bind(ConfigCategory, "Regen Amount (Stack)", 1f, "The amount of regen to gain with per stack.");
-            cfgDuration = config.Bind(ConfigCategory, "Duration", 8f, "The amount of time in seconds the buff lasts for.");
-            cfgHealOnBloodShrineUse = config.Bind(ConfigCategory, "Heal on Health Cost", false, "If true, then the buff will be applied upon purchase of anything that costs health, such as Blood Shrines.");
+            cfgRegenAmount = config.Bind(ConfigCategory, Assets.cfgRegenKey, 2f, Assets.cfgRegenIntegerDesc);
+            cfgRegenAmountPerStack = config.Bind(ConfigCategory, Assets.cfgRegenKeyPerStack, 1f, Assets.cfgRegenIntegerPerStackDesc);
+            cfgDuration = config.Bind(ConfigCategory, Assets.cfgDurationKey, 8f, Assets.cfgDurationDesc);
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
@@ -364,7 +363,7 @@ localScale = new Vector3(1F, 1F, 1F)
                     var isCost = self.costType > CostTypeIndex.None;
                     if (isCost)
                     {
-                        if ((isBloodShrine && cfgHealOnBloodShrineUse.Value) || !isBloodShrine)
+                        if (!isBloodShrine)
                         {
                             Heal(characterBody);
                         }

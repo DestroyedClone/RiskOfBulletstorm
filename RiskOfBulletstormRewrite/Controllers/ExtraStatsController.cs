@@ -1,4 +1,6 @@
 ﻿using BepInEx.Configuration;
+using R2API;
+using RiskOfBulletstormRewrite.Modules;
 using RoR2;
 using RoR2.Projectile;
 using System;
@@ -13,16 +15,16 @@ namespace RiskOfBulletstormRewrite.Controllers
     public class ExtraStatsController : ControllerBase<ExtraStatsController>
     {
         /// <summary> Config Value to enable <b>Disposable Missile Launcher's rockets</b> being affected by RBSAccuracy. </summary>
-        public static bool ShotSpread_EnableDML { get; private set; } = true;
+        public static bool cfgShotSpread_EnableDML { get; private set; } = true;
 
         /// <summary> Config Value to enable the Survivor, <b>Loader</b>, being affected by RBSAccuracy. </summary>
-        public static bool ShotSpread_EnableLoader { get; private set; } = false;
+        public static bool cfgShotSpread_EnableLoader { get; private set; } = false;
 
         /// <summary> Config Value to enable <b>only specific projectiles</b>, being affected by RBSAccuracy. </summary>
-        public static bool ShotSpread_WhitelistProjectiles { get; private set; } = true;
+        public static bool cfgShotSpread_WhitelistProjectiles { get; private set; } = true;
 
         /// <summary> Config Value to enable <b>Auto downloading updates</b> for projectiles to be added to RBSAccuracy </summary>
-        public static bool AutoDownloadUpdates { get; private set; } = true;
+        public static bool cfgAutoDownloadUpdates { get; private set; } = true;
 
         /// <summary> List of whitelisted <b>vanilla</b> projectiles for RBSAccuracy </summary>
         public static List<GameObject> WhitelistedProjectiles = new List<GameObject>
@@ -175,6 +177,8 @@ namespace RiskOfBulletstormRewrite.Controllers
         /// <summary> List of whitelisted <b>modded</b> projectiles for RBSAccuracy </summary>
         public static List<string> ModdedWhitelistedProjectiles = new List<string>();
 
+        public static ConfigEntry<float> cfgDamageMultiplierPerStack;
+
         private const string CategoryNameShotSpread = "ExtraStatsShotSpread";
 
         private const string projectileAddress = "https://raw.githubusercontent.com/DestroyedClone/RiskOfBulletstorm/master/RiskOfBulletstormRewrite/Controllers/ModdedProjectileNames.txt";
@@ -310,24 +314,40 @@ namespace RiskOfBulletstormRewrite.Controllers
 
         public static void SetupConfig(ConfigFile config)
         {
-            ShotSpread_EnableDML = config.Bind(CategoryNameShotSpread, "Disposable Missile Launcher", true, "If enabled, Shot Spread will affect the Disposable Missile Launcher. " +
+            cfgShotSpread_EnableDML = config.Bind(CategoryNameShotSpread, "Disposable Missile Launcher", true, "If enabled, Shot Spread will affect the Disposable Missile Launcher. " +
                 "\nThis tends to make it fire forwards rather than vertically, but shouldn't affect its homing.").Value;
-            ShotSpread_EnableLoader = config.Bind(CategoryNameShotSpread, "Loader Hooks", false, "If enabled, Shot Spread will affect Loader's Hooks.").Value;
-            ShotSpread_WhitelistProjectiles = config.Bind(CategoryNameShotSpread, "Whitelisted Projectiles", true, "If enabled, Shot Spread will only tighten the spread of SPECIFIC projectiles." +
+            cfgShotSpread_EnableLoader = config.Bind(CategoryNameShotSpread, "Loader Hooks", false, "If enabled, Shot Spread will affect Loader's Hooks.").Value;
+            cfgShotSpread_WhitelistProjectiles = config.Bind(CategoryNameShotSpread, "Whitelisted Projectiles", true, "If enabled, Shot Spread will only tighten the spread of SPECIFIC projectiles." +
                 "\nIt is HIGHLY recommended not to disable, because alot of projectiles could break otherwise.").Value;
-            AutoDownloadUpdates = config.Bind(CategoryNameShotSpread, "Autodownload updates",
-                true, "If enabled, then the mod will autodownload the latest modded projectile names on startup. These are added manually.").Value;
+            //cfgAutoDownloadUpdates = config.Bind(CategoryNameShotSpread, "Autodownload updates",
+            //true, "If enabled, then the mod will autodownload the latest modded projectile names on startup. These are added manually.").Value;
+            cfgDamageMultiplierPerStack = config.Bind(CategoryNameShotSpread, "Damage Multiplier Past Max Accuracy", 0.01f, "How much should the damage be multiplied per stack past max accuracy?");
 
-            if (ShotSpread_EnableDML)
+
+            if (cfgShotSpread_EnableDML)
                 WhitelistedProjectiles.Add(Load<GameObject>("RoR2/Base/Common/MissileProjectile.prefab"));
-            if (ShotSpread_EnableLoader)
+            if (cfgShotSpread_EnableLoader)
             {
                 WhitelistedProjectiles.Add(Load<GameObject>("RoR2/Base/Loader/LoaderHook.prefab"));
                 WhitelistedProjectiles.Add(Load<GameObject>("RoR2/Base/Loader/LoaderYankHook.prefab"));
             }
-            if (AutoDownloadUpdates)
+            if (cfgAutoDownloadUpdates)
             {
                 //DownloadNewProjectileNames();
+            }
+            R2API.RecalculateStatsAPI.GetStatCoefficients += ApplyDamageIncreaseToMaxAccuracy;
+        }
+
+
+        private static void ApplyDamageIncreaseToMaxAccuracy(CharacterBody sender, R2API.RecalculateStatsAPI.StatHookEventArgs args)
+        {
+            if (sender && sender.master && sender.master.TryGetComponent(out RBSExtraStatsController extraStatsController))
+            {
+                var difference = extraStatsController.unboundAccuracyStat - 1;
+                if (difference > 1)
+                {
+                    args.damageMultAdd += difference * cfgDamageMultiplierPerStack.Value;
+                }
             }
         }
 
@@ -352,7 +372,6 @@ namespace RiskOfBulletstormRewrite.Controllers
         public override void Hooks()
         {
             CharacterMaster.onStartGlobal += CharacterMaster_onStartGlobal;
-
             // Accuracy //
             On.RoR2.BulletAttack.Fire += AdjustSpreadBullets;
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += ProjectileManager_FireProjectile_FireProjectileInfo;
@@ -425,7 +444,7 @@ namespace RiskOfBulletstormRewrite.Controllers
                     //if (ShowAnnoyingDebugText) _logger.LogMessage("Projectile Fired: " + fireProjectileInfo.projectilePrefab.name);
 
                     // projectile check
-                    if ((ShotSpread_WhitelistProjectiles && WhitelistedProjectiles.Contains(fireProjectileInfo.projectilePrefab)) || !ShotSpread_WhitelistProjectiles)
+                    if ((cfgShotSpread_WhitelistProjectiles && WhitelistedProjectiles.Contains(fireProjectileInfo.projectilePrefab)) || !cfgShotSpread_WhitelistProjectiles)
                     {
                         Quaternion UpdatedAngle;
 
@@ -481,6 +500,8 @@ namespace RiskOfBulletstormRewrite.Controllers
             /// "Pretty" accuracy stat, effective for most cases. 0.78 = 78% more accurate
             /// </summary>
             public float idealizedAccuracyStat = 1f;
+
+            public float unboundAccuracyStat = 1;
 
             public float bulletAccuracy = 1f;
             public float projectileAccuracy = 1f;
@@ -539,20 +560,20 @@ namespace RiskOfBulletstormRewrite.Controllers
                     SpiceMult += (-Spice_SpreadReduction - Spice_SpreadReductionStack * (itemCount_Spice - 1));
                 spiceMult = SpiceMult;
 
-                var accuracy = ScopeMult + SpiceMult;
-                idealizedAccuracyStat = -accuracy;
+                unboundAccuracyStat = ScopeMult + SpiceMult;
+                idealizedAccuracyStat = -unboundAccuracyStat;
 
                 // Bullets get better the closer they are to zero starting at a multiplier of 1.0 (since we're multiplying the spread)
                 // Projectiles get better the closer they are to 1 (due to LERP) starting at a multiplier of 0.0
                 // When we get max scope amount, it's a value of ~-1.1
                 // Here with projectiles we get a resulting value of 1.1 rounded to 1.
                 //ResultMult = -ResultMult > 1 ? 1 : -ResultMult;
-                projectileAccuracy = -accuracy;
+                projectileAccuracy = -unboundAccuracyStat;
 
                 // With bullets we have to start at 1
                 // Then we evaluate it (1 - ~1.1 = -0.1)
                 // We clamp it at zero because a negative multiplier converges the spread on itself and actually increases the spread.
-                bulletAccuracy = 1 + accuracy <= 0 ? 0 : 1 + accuracy;
+                bulletAccuracy = 1 + unboundAccuracyStat <= 0 ? 0 : 1 + unboundAccuracyStat;
             }
         }
     }

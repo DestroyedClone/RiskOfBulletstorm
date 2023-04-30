@@ -8,16 +8,16 @@ namespace RiskOfBulletstormRewrite.Controllers
     {
         public static void Init()
         {
-            On.RoR2.ChestBehavior.Start += ChestBehavior_Start;
+            On.RoR2.ChestBehavior.Start += ChestBehavior_Start_AddRBSChestComponent;
             //On.RoR2.PurchaseInteraction.GetInteractability += PurchaseInteraction_GetInteractability;
-            On.RoR2.PurchaseInteraction.GetContextString += PurchaseInteraction_GetContextString;
+            On.RoR2.PurchaseInteraction.GetContextString += ModifyContextStringBasedOnEquipment;
         }
 
-        private static string PurchaseInteraction_GetContextString(On.RoR2.PurchaseInteraction.orig_GetContextString orig, PurchaseInteraction self, Interactor activator)
+        private static string ModifyContextStringBasedOnEquipment(On.RoR2.PurchaseInteraction.orig_GetContextString orig, PurchaseInteraction self, Interactor activator)
         {
             var original = orig(self, activator);
 
-            BulletstormChestInteractorComponent bulletstormChestInteractor = self.GetComponent<BulletstormChestInteractorComponent>();
+            RBSChestInteractorComponent bulletstormChestInteractor = self.GetComponent<RBSChestInteractorComponent>();
             if (bulletstormChestInteractor)
             {
                 if (bulletstormChestInteractor.InteractorHasValidEquipment(activator))
@@ -34,7 +34,7 @@ namespace RiskOfBulletstormRewrite.Controllers
             var original = orig(self, activator);
             var gameObject = self.gameObject;
             Highlight highlight = gameObject.GetComponent<Highlight>();
-            BulletstormChestInteractorComponent bulletstormChestInteractor = gameObject.GetComponent<BulletstormChestInteractorComponent>();
+            RBSChestInteractorComponent bulletstormChestInteractor = gameObject.GetComponent<RBSChestInteractorComponent>();
 
             if (bulletstormChestInteractor
                 && bulletstormChestInteractor.hasUsedLockpicks
@@ -50,13 +50,13 @@ namespace RiskOfBulletstormRewrite.Controllers
             return original;
         }
 
-        private static void ChestBehavior_Start(On.RoR2.ChestBehavior.orig_Start orig, ChestBehavior self)
+        private static void ChestBehavior_Start_AddRBSChestComponent(On.RoR2.ChestBehavior.orig_Start orig, ChestBehavior self)
         {
             orig(self);
             PurchaseInteraction purchaseInteraction = self.GetComponent<PurchaseInteraction>();
             if (purchaseInteraction.costType != CostTypeIndex.PercentHealth)
             {
-                var comp = self.gameObject.AddComponent<BulletstormChestInteractorComponent>();
+                var comp = self.gameObject.AddComponent<RBSChestInteractorComponent>();
                 comp.chestBehavior = self;
                 comp.purchaseInteraction = purchaseInteraction;
                 comp.StoreHighlightColor(self.GetComponent<Highlight>());
@@ -68,7 +68,7 @@ namespace RiskOfBulletstormRewrite.Controllers
         /// <para><b>Trusty Lockpicks</b>: Affects hasUsedLockpicks </para>
         /// <para><b>Drill</b>: Can't interact with Lockpicked Chests</para>
         /// </summary>
-        public class BulletstormChestInteractorComponent : MonoBehaviour
+        public class RBSChestInteractorComponent : MonoBehaviour
         {
             public bool hasUsedLockpicks = false;
 

@@ -97,6 +97,7 @@ namespace RiskOfBulletstormRewrite
 
             //On.RoR2.UI.MainMenu.MainMenuController.Start += MainMenuController_Start;
             //On.RoR2.UI.MainMenu.MainMenuController.Start += OutputEquipmentForWiki;
+            On.RoR2.Networking.NetworkManagerSystemSteam.OnClientConnect += (s, u, t) => { };
         }
 
         private void OutputEquipmentForWiki(On.RoR2.UI.MainMenu.MainMenuController.orig_Start orig, RoR2.UI.MainMenu.MainMenuController self)

@@ -53,9 +53,9 @@ namespace RiskOfBulletstormRewrite.Artifact
             //On.RoR2.HealthComponent.Heal -= OnHeal;
             Run.onRunStartGlobal -= StartRun;
             R2API.RecalculateStatsAPI.GetStatCoefficients -= GungeonMimic_StatCoefficients;
-            On.RoR2.HealthComponent.ServerFixedUpdate -= PreventBarrierLoss;
-            On.RoR2.HealthComponent.AddBarrier -= HealthComponent_AddBarrier;
-            On.RoR2.Inventory.CalculateEquipmentCooldownScale -= IncreaseCooldowns;
+            On.RoR2.HealthComponent.ServerFixedUpdate -= SetBarrierDecayRateToZero;
+            On.RoR2.HealthComponent.AddBarrier -= ReduceReceivedBarrierByStatDivider;
+            On.RoR2.Inventory.CalculateEquipmentCooldownScale -= IncreaseBaseCooldownOfEquipment;
         }
 
         private void RunArtifactManager_onArtifactEnabledGlobal([JetBrains.Annotations.NotNull] RunArtifactManager runArtifactManager, [JetBrains.Annotations.NotNull] ArtifactDef artifactDef)
@@ -77,12 +77,12 @@ namespace RiskOfBulletstormRewrite.Artifact
                 //RunArtifactManager.instance.SetArtifactEnabledServer(ArtifactCoyoteTime.instance.ArtifactDef, true);
             }
             R2API.RecalculateStatsAPI.GetStatCoefficients += GungeonMimic_StatCoefficients;
-            On.RoR2.HealthComponent.ServerFixedUpdate += PreventBarrierLoss;
-            On.RoR2.HealthComponent.AddBarrier += HealthComponent_AddBarrier;
-            On.RoR2.Inventory.CalculateEquipmentCooldownScale += IncreaseCooldowns;
+            On.RoR2.HealthComponent.ServerFixedUpdate += SetBarrierDecayRateToZero;
+            On.RoR2.HealthComponent.AddBarrier += ReduceReceivedBarrierByStatDivider;
+            On.RoR2.Inventory.CalculateEquipmentCooldownScale += IncreaseBaseCooldownOfEquipment;
         }
 
-        private float IncreaseCooldowns(On.RoR2.Inventory.orig_CalculateEquipmentCooldownScale orig, Inventory self)
+        private float IncreaseBaseCooldownOfEquipment(On.RoR2.Inventory.orig_CalculateEquipmentCooldownScale orig, Inventory self)
         {
             var original = orig(self);
 
@@ -91,14 +91,14 @@ namespace RiskOfBulletstormRewrite.Artifact
             return original;
         }
 
-        private void HealthComponent_AddBarrier(On.RoR2.HealthComponent.orig_AddBarrier orig, HealthComponent self, float value)
+        private void ReduceReceivedBarrierByStatDivider(On.RoR2.HealthComponent.orig_AddBarrier orig, HealthComponent self, float value)
         {
             value = Mathf.RoundToInt(value / cfgStatDivider.Value);
             orig(self, value);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Member Access", "Publicizer001:Accessing a member that was not originally public", Justification = "<Pending>")]
-        private void PreventBarrierLoss(On.RoR2.HealthComponent.orig_ServerFixedUpdate orig, HealthComponent self)
+        private void SetBarrierDecayRateToZero(On.RoR2.HealthComponent.orig_ServerFixedUpdate orig, HealthComponent self)
         {
             self.body.barrierDecayRate = 0;
             orig(self);

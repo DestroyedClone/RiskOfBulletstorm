@@ -4,6 +4,7 @@ using RiskOfBulletstormRewrite.Items;
 using RiskOfBulletstormRewrite.Modules;
 using RiskOfBulletstormRewrite.Utils;
 using RoR2;
+using System;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
@@ -21,14 +22,22 @@ namespace RiskOfBulletstormRewrite
                 BetterUICompat_StatsDisplay();
                 BetterUICompat_ItemStats();
                 BetterUICompat_Buffs();
+                BetterUICompat_ItemTags();
             }
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
+        internal static void BetterUICompat_ItemTags()
+        {
+
         }
 
         [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
         internal static void BetterUICompat_RegisterTag()
         {
-            BetterUI.ItemStats.RegisterTag(null, new BetterUI.ItemStats.ItemTag()
+            BetterUI.ItemStats.RegisterTag(new BetterUI.ItemStats.ItemStat(), new BetterUI.ItemStats.ItemTag()
             {
+                
             });
         }
 
@@ -124,11 +133,6 @@ namespace RiskOfBulletstormRewrite
             return value;
         }
 
-        public static float ScopeDamageStacking(float value, float extraStackValue, int stacks)
-        {
-            return Mathf.Max(0, (stacks + 1) - Scope.expectedMaxStacks) * value;
-        }
-
         public static float DodgeRollDurationStacking(float value, float extraStackValue, int stacks)
         {
             return DodgeRollUtilityReplacement.GetDuration(stacks);
@@ -184,14 +188,6 @@ namespace RiskOfBulletstormRewrite
                 BetterUI.ItemStats.LinearStacking,
                 BetterUI.ItemStats.StatFormatter.Percent,
                 null);
-
-            BetterUI.ItemStats.RegisterStat(Scope.instance.ItemDef,
-                prefix + "SCOPE_DAMAGEMULTIPLIER",
-                Scope.cfgDamageMultiplierPerStack.Value,
-                0,
-                ScopeDamageStacking,
-                BetterUI.ItemStats.StatFormatter.Percent,
-                BetterUI.ItemStats.ItemTag.Damage);
 
             #endregion Common
 

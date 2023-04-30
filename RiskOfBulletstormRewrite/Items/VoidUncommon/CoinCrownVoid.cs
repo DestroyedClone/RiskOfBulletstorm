@@ -1,5 +1,6 @@
 using BepInEx.Configuration;
 using R2API;
+using RiskOfBulletstormRewrite.Modules;
 using RoR2;
 using UnityEngine;
 
@@ -45,8 +46,8 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void CreateConfig(ConfigFile config)
         {
-            cfgCashAdder = config.Bind(ConfigCategory, "Cash Additive", 5, "The amount of extra money to get on kill.");
-            cfgCashAdderStack = config.Bind(ConfigCategory, "Cash Additive Per Stack", 10, "The amount of extra money to get on kill per stack.");
+            cfgCashAdder = config.Bind(ConfigCategory, Assets.cfgCoinCrownVoidKey, 5, Assets.cfgCoinCrownVoidDesc);
+            cfgCashAdderStack = config.Bind(ConfigCategory, Assets.cfgCoinCrownVoidPerStackKey, 10, Assets.cfgCoinCrownVoidPerStackDesc);
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()

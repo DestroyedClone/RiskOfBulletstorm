@@ -216,9 +216,8 @@ namespace RiskOfBulletstormRewrite
         }
 
         #endregion centertext
-
+        
         /*
-
                 #region DropEquipment
 
                 public static void DropEquipment(EquipmentSlot slot, EquipmentDef equipmentDef)
@@ -299,5 +298,6 @@ namespace RiskOfBulletstormRewrite
                 }
 
                 #endregion DropEquipment
+        */
     }
 }

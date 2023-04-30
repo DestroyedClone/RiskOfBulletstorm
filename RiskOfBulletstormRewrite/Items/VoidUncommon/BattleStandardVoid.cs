@@ -1,5 +1,6 @@
 ﻿using BepInEx.Configuration;
 using R2API;
+using RiskOfBulletstormRewrite.Modules;
 using RiskOfBulletstormRewrite.Utils;
 using RoR2;
 using UnityEngine;
@@ -43,7 +44,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void CreateConfig(ConfigFile config)
         {
-            cfgDamage = config.Bind(ConfigCategory, "Damage Percentage Per Ally", 0.1f, "");
+            cfgDamage = config.Bind(ConfigCategory, Assets.cfgBattleStandardVoidKey, 0.1f, "");
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()

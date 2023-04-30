@@ -1,4 +1,5 @@
 using BepInEx.Configuration;
+using RiskOfBulletstormRewrite.Modules;
 using RoR2;
 using UnityEngine.Networking;
 
@@ -18,7 +19,7 @@ namespace RiskOfBulletstormRewrite.Controllers
         public override void CreateConfig(ConfigFile config)
         {
             var category = "Monsters";
-            cfgSpawnWispFromPotChance = config.Bind(category, "Chance to Spawn Wisp From Pot", 0.5f, "The chance to spawn a wisp when breaking a pot. 0.5 = 0.5% chance");
+            cfgSpawnWispFromPotChance = config.Bind(category, "Chance to Spawn Wisp From Pot", 0.5f, Assets.cfgChanceIntegerDesc);
         }
 
         public override void Hooks()
@@ -35,7 +36,7 @@ namespace RiskOfBulletstormRewrite.Controllers
                 if (obj?.victimBody?.baseNameToken == "POT2_BODY_NAME"
                 && Util.CheckRoll(cfgSpawnWispFromPotChance.Value))
                 {
-                    var wispMaster = new MasterSummon
+                    var _ = new MasterSummon
                     {
                         position = obj.victimBody.corePosition,
                         ignoreTeamMemberLimit = true,

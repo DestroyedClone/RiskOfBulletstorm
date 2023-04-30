@@ -60,6 +60,59 @@ namespace RiskOfBulletstormRewrite.Modules
             return null;
         }
 
+        // This section is to keep consistency between config key/descs
+        internal const string cfgChanceIntegerKey = "Chance of Activation";
+        internal const string cfgChanceIntegerDesc = "The chance in percent of activation. 25 = 25%";
+
+        internal const string cfgMultiplierKey = "Multiplier";
+        internal const string cfgMultiplierPerStackKey = "Multiplier Per Stack";
+
+        internal const string cfgRegenKey = "Regen";
+        internal const string cfgRegenIntegerDesc = "The amount of health regen to get.";
+
+        internal const string cfgRegenKeyPerStack = "Regen Per Stack";
+        internal const string cfgRegenIntegerPerStackDesc = "The amount of health regen to get per stack.";
+
+        internal const string cfgDurationKey = "Duration";
+        internal const string cfgDurationDesc = "The amount of time in seconds it lasts for.";
+
+        internal const string cfgMoveSpeedAdditiveMultiplierKey = "Move Speed Additive Multiplier";
+        internal const string cfgMoveSpeedAdditiveMultiplierDesc = "The additive percentage in increase in movement speed. 0.45 = +45%";
+
+        internal const string cfgAntibodyHealMultiplierPctDesc = "The additive multiplier of healing increased by. 0.33 = 33% more healing";
+        internal const string cfgAntibodyHealMultiplierPctPerStackDesc = "The amount of healing increased by per stack.";
+
+        internal const string cfgAccuracyKey = "Accuracy";
+        internal const string cfgAccuracyDesc = "The percentage of accuracy increase.";
+
+        internal const string cfgAccuracyPerStackKey = "Accuracy Per Stack";
+        internal const string cfgAccuracyPerStackDesc = "The percentage of accuracy increase per stack.";
+
+        internal const string cfgAccuracyMaxStacksDamageMultiplierDesc = "Past 100% accuracy, the damage increase per percent of accuracy.";
+
+        internal const string cfgDistanceMeters = "Distance in meters";
+
+        internal const string cfgMaxHealthAdditiveMultKey = "Max Health Additive Multiplier";
+        internal const string cfgMaxHealthAdditiveMultDesc = "How much maximum health is multiplied by per Ring of Miserly Protection?";
+        internal const string cfgMaxHealthAdditiveMultPerStackKey = "Max Health Additive Multiplier";
+        internal const string cfgMaxHealthAdditiveMultPerStackDesc = "How much additional maximum health is multiplied by per subsequent stacks of Ring of Miserly Protection?";
+
+        internal const string cfgDamageKey = "Damage";
+        internal const string cfgDamagePerStackKey = "Damage Per Stack";
+
+        internal const string cfgCoinCrownKey = "Cash Multiplier";
+        internal const string cfgCoinCrownDesc = "The percentage of extra money to get on completing the teleporter event.";
+        internal const string cfgCoinCrownPerStackKey = "Cash Multiplier Per Stack";
+        internal const string cfgCoinCrownPerStackDesc = "The percentage of extra money PER ITEM STACK to get on completing the teleporter event.";
+
+        internal const string cfgBattleStandardVoidKey = "Damage Percentage Per Ally";
+
+        internal const string cfgCoinCrownVoidKey = "Cash Additive";
+        internal const string cfgCoinCrownVoidDesc = "The amount of extra money to get on kill.";
+        internal const string cfgCoinCrownVoidPerStackKey = "Cash Additive Per Stack";
+        internal const string cfgCoinCrownVoidPerStackDesc = "The amount of extra money to get on kill per stack.";
+
+
         //the bundle to load assets from
         public static AssetBundle mainAssetBundle;
 
@@ -70,7 +123,7 @@ namespace RiskOfBulletstormRewrite.Modules
             return Addressables.LoadAssetAsync<T>(path).WaitForCompletion();
         }
 
-        internal static string assemblyDir
+        internal static string AssemblyDir
         {
             get
             {

@@ -13,7 +13,7 @@
 
 		"RISKOFBULLETSTORM_ITEM_SCOPE_NAME": "Scope",
 		"RISKOFBULLETSTORM_ITEM_SCOPE_PICKUP": "<b>Steady Aim</b>\nA standard scope. Increases accuracy!",
-		"RISKOFBULLETSTORM_ITEM_SCOPE_DESCRIPTION": "Decreases <style=cIsUtility>firing spread</style> by <style=cIsUtility>{0}%</style> <style=cStack>(+{1}% per stack)</style>. Each stack past the max of {2} will increase your <style=cIsDamage>damage by {3}%</style>.",
+		"RISKOFBULLETSTORM_ITEM_SCOPE_DESCRIPTION": "Decreases <style=cIsUtility>firing spread</style> by <style=cIsUtility>{0}%</style> <style=cStack>(+{1}% per stack)</style>.",
 		"RISKOFBULLETSTORM_ITEM_SCOPE_LORE": "<style=cStack>DECODING MESSAGE - KATE ****** - G*****N EXPLORATORY TEAM\n[SYS] Filter: [messages from:KATE_OPERATOR sort:chronological date:today] | Showing 6 recent results\n\n4:44 - [Kate] Found this scope in a chest, reporting back. It's got a green lens, and looks like a sniper scope.\n4:55 - [Kate] Seems to work whether it's attached or not, but I can't really look through it if it's not actually attached. Decision: attaching it.\n5:20 - [Kate] Not really sure it fits this place, since its just a scope. Then again, there was some duct tape in a chest, so maybe its not that weird...\n6:00 - [Kate] I'm requesting a possible analysis sometime, I don't think this is just a scope. I'm hitting a lot more of my shots. Maybe I'm just more focused.\n6:02 - [Kate] Scratch that, this is ACTUALLY reducing the spread of bullets. I'm kinda curious how it works, but I'll study it at the shop.\n3:00 - [Kate] I am now back in the Breach. The shopkeeper did not like me testing the scope.",
 
 		"RISKOFBULLETSTORM_ITEM_IRRADIATEDLEAD_NAME": "Irradiated Lead",
@@ -29,7 +29,7 @@
 
 		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_NAME": "Battle Standard",
 		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_PICKUP": "<b>Set Your Own!</b>\nImproves the effectiveness of companions and charmed enemies.",
-		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_DESCRIPTION": "Increases <style=cIsDamage>damage of companions</style> and <style=cIsDamage>charmed enemies</style> by {0}% <style=cStack>(+{0}% per stack)</style>.",
+		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_DESCRIPTION": "Increases <style=cIsDamage>damage of companions</style> and <style=cIsDamage>charmed enemies</style> by <style=cIsDamage>{0}%</style> <style=cStack>(+{0}% per stack)</style>.",
 		"RISKOFBULLETSTORM_ITEM_BATTLESTANDARD_LORE": "Before the advancement of Gundead society, belligerent bands of Bullet Kin would rally around these banners before their raids upon the upper chambers.",
 
 		"RISKOFBULLETSTORM_ITEM_RINGOFCHESTFRIENDSHIP_NAME": "Ring of Chest Friendship",

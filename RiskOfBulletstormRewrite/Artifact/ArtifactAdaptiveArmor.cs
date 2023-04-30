@@ -34,7 +34,7 @@ namespace RiskOfBulletstormRewrite.Artifact
             {
                 return;
             }
-            RoR2.CharacterBody.onBodyStartGlobal -= CharacterBody_onBodyStartGlobal;
+            CharacterMaster.onStartGlobal -= GiveAdaptiveArmorToBoss;
         }
 
         private void RunArtifactManager_onArtifactEnabledGlobal([JetBrains.Annotations.NotNull] RunArtifactManager runArtifactManager, [JetBrains.Annotations.NotNull] ArtifactDef artifactDef)
@@ -43,14 +43,14 @@ namespace RiskOfBulletstormRewrite.Artifact
             {
                 return;
             }
-            RoR2.CharacterBody.onBodyStartGlobal += CharacterBody_onBodyStartGlobal;
+            CharacterMaster.onStartGlobal += GiveAdaptiveArmorToBoss;
         }
 
-        private void CharacterBody_onBodyStartGlobal(CharacterBody characterBody)
+        private void GiveAdaptiveArmorToBoss(CharacterMaster characterMaster)
         {
-            if (NetworkServer.active && characterBody.isBoss && characterBody.inventory?.GetItemCount(RoR2Content.Items.AdaptiveArmor) <= 0)
+            if (NetworkServer.active && characterMaster.isBoss && characterMaster.inventory?.GetItemCount(RoR2Content.Items.AdaptiveArmor) <= 0)
             {
-                characterBody.inventory.GiveItem(RoR2Content.Items.AdaptiveArmor);
+                characterMaster.inventory.GiveItem(RoR2Content.Items.AdaptiveArmor);
             }
         }
     }

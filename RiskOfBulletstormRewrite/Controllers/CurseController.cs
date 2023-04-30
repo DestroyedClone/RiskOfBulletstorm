@@ -27,7 +27,7 @@ namespace RiskOfBulletstormRewrite.Controllers
 
         public override void Hooks()
         {
-            Inventory.onInventoryChangedGlobal += Inventory_onInventoryChangedGlobal;
+            Inventory.onInventoryChangedGlobal += GiveLordOfTheJammedItemIfInventoryHasMaxCurse;
             On.RoR2.CombatDirector.OnEnable += CombatDirector_OnEnable;
         }
 
@@ -39,13 +39,13 @@ namespace RiskOfBulletstormRewrite.Controllers
                 * Util.GetItemCountForTeam(TeamIndex.Player, CurseTally.instance.ItemDef.itemIndex, false, true);
         }
 
-        private void Inventory_onInventoryChangedGlobal(Inventory inventory)
+        private void GiveLordOfTheJammedItemIfInventoryHasMaxCurse(Inventory inventory)
         {
             if (!NetworkServer.active) return;
-            var curseCount = inventory.GetItemCount(Items.CurseTally.instance.ItemDef);
+            var curseCount = inventory.GetItemCount(CurseTally.instance.ItemDef);
             if (curseCount >= cfgMaxCurse.Value)
             {
-                var lotjcount = inventory.GetItemCount(Items.LordOfTheJammedItem.instance.ItemDef);
+                var lotjcount = inventory.GetItemCount(LordOfTheJammedItem.instance.ItemDef);
                 if (lotjcount <= 0 && inventory.TryGetComponent(out CharacterMaster master))
                 {
                     inventory.GiveItem(LOTJItemDef, 1);

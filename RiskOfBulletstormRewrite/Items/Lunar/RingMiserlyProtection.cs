@@ -1,5 +1,6 @@
 ﻿using BepInEx.Configuration;
 using R2API;
+using RiskOfBulletstormRewrite.Modules;
 using RoR2;
 using UnityEngine;
 
@@ -43,8 +44,8 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void CreateConfig(ConfigFile config)
         {
-            cfgMaxHealthPctAdded = config.Bind(ConfigCategory, "Max Health Additive Multiplier", 1f, "How much maximum health is multiplied by per Ring of Miserly Protection?");
-            cfgMaxHealthPctAddedStack = config.Bind(ConfigCategory, "Max Health Additive Multiplier per Stack", 0.5f, "How much additional maximum health is multiplied by per subsequent stacks of Ring of Miserly Protection?");
+            cfgMaxHealthPctAdded = config.Bind(ConfigCategory, Assets.cfgMaxHealthAdditiveMultKey, 1f, Assets.cfgMaxHealthAdditiveMultDesc);
+            cfgMaxHealthPctAddedStack = config.Bind(ConfigCategory, Assets.cfgMaxHealthAdditiveMultPerStackKey, 0.5f, Assets.cfgMaxHealthAdditiveMultPerStackDesc);
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
