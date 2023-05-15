@@ -1,5 +1,7 @@
 ﻿using BepInEx.Configuration;
 using R2API;
+using RiskOfBulletstormRewrite.Controllers;
+using RiskOfBulletstormRewrite.Modules;
 using RoR2;
 using System;
 using System.Collections.Generic;
@@ -14,11 +16,11 @@ namespace RiskOfBulletstormRewrite.Equipment.EliteEquipment
 
         public override string EliteEquipmentLangTokenName => "JAMMEDELITE";
 
-        public override GameObject EliteEquipmentModel => new GameObject();
+        public override GameObject EliteEquipmentModel => Assets.NullModel;
 
-        public override Sprite EliteEquipmentIcon => null;
+        public override Sprite EliteEquipmentIcon => Assets.NullSprite;
 
-        public override Sprite EliteBuffIcon => null;
+        public override Sprite EliteBuffIcon => Assets.NullSprite;
 
         public override void Init(ConfigFile config)
         {
@@ -61,7 +63,8 @@ namespace RiskOfBulletstormRewrite.Equipment.EliteEquipment
 
         private bool SetAvailability(SpawnCard.EliteRules arg)
         {
-            return Run.instance.loopClearCount > 0 && arg == SpawnCard.EliteRules.Default;
+            //return Run.instance.loopClearCount > 0 && arg == SpawnCard.EliteRules.Default;
+            return CurseController.instance.teamwideCurseCount > 0 && arg == SpawnCard.EliteRules.Default;
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
@@ -71,7 +74,15 @@ namespace RiskOfBulletstormRewrite.Equipment.EliteEquipment
 
         public override void Hooks()
         {
+            RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
+        }
 
+        private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        {
+            if (sender.HasBuff(EliteBuffDef))
+            {
+                args.critAdd += 100f;
+            }
         }
 
         //If you want an on use effect, implement it here as you would with a normal equipment.
