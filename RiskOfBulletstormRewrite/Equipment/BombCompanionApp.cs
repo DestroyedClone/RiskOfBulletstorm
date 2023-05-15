@@ -42,7 +42,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public override Sprite EquipmentIcon => LoadSprite();
 
-        public GameObject ExplosionEffect => UnityEngine.AddressableAssets.Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/Railgunner/RailgunnerMineExplosion.prefab").WaitForCompletion();
+        public GameObject ExplosionEffect => UnityEngine.AddressableAssets.Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Huntress/HuntressArrowRainIndicator.prefab").WaitForCompletion();
 
         public static GameObject[] explosiveProjectiles = new GameObject[]
         {
@@ -142,7 +142,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         protected override void CreateConfig(ConfigFile config)
         {
-            cfgCooldown = config.Bind(ConfigCategory, CooldownName, 60f, CooldownDescription);
+            cfgCooldown = config.Bind(ConfigCategory, CooldownName, 30f, CooldownDescription);
             cfgRange = config.Bind(ConfigCategory, "Range", 75f, "Radius of the activation");
             cfgTarDamageMultiplier = config.Bind(ConfigCategory, "Tar-based Enemy Damage", 2f, "Percentage of your damage dealt against this enemy type.");
             cfgJellyfishDamageMultiplier = config.Bind(ConfigCategory, "Jellyfish Damage", 3f, "Percentage of your damage dealt against this enemy type.");
