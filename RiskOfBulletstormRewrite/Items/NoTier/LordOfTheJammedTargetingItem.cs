@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace RiskOfBulletstormRewrite.Items
 {
-    public class LordOfTheJammedItem : ItemBase<LordOfTheJammedItem>
+    public class LordOfTheJammedTargetingItem : ItemBase<LordOfTheJammedTargetingItem>
     {
         public override string ItemName => "Lord of the Jammed";
 
