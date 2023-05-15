@@ -54,6 +54,7 @@
     <Compile Remove="Items\Legendary\RingTriggers.cs" />
     <Compile Remove="Items\Legendary\VorpalBullets.cs" />
     <Compile Remove="Items\Lunar\HeavyBullets.cs" />
+    <Compile Remove="Items\Lunar\HipHolster.cs" />
     <Compile Remove="Items\Lunar\Metronome.cs" />
     <Compile Remove="Items\NoTier\BabyMimicIdentifier.cs" />
     <Compile Remove="Items\NoTier\SpiceReplacementDisplay.cs" />
