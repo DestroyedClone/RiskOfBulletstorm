@@ -2,6 +2,8 @@ using RiskOfBulletstormRewrite.Equipment;
 using RiskOfBulletstormRewrite.Items;
 using RoR2;
 using System.Collections.Generic;
+using System.Reflection;
+using UnityEngine;
 
 namespace RiskOfBulletstormRewrite
 {
@@ -28,7 +30,7 @@ namespace RiskOfBulletstormRewrite
         }
 
         [ConCommand(commandName = "rbs_getspicechance",
-        flags = ConVarFlags.SenderMustBeServer,
+        flags = ConVarFlags.ExecuteOnServer,
         helpText = "rbs_getspicechance")]
         public static void CCGetSpiceChance(ConCommandArgs args)
         {
@@ -61,8 +63,86 @@ namespace RiskOfBulletstormRewrite
                 var chance = (spiceCount / kvp.Value.Count) * 100;
                 sb.AppendLine($"{kvp.Key} Count: {spiceCount}/{kvp.Value.Count} ({chance}% chance)");
             }
-            Main._logger.LogMessage(sb.ToString());
+            Debug.Log(sb.ToString());
             HG.StringBuilderPool.ReturnStringBuilder(sb);
+        }
+
+
+        [ConCommand(commandName = "rbs_backpacksetslot",
+        flags = ConVarFlags.ExecuteOnServer,
+        helpText = "rbs_backpacksetslot index - Sets your equipment slot to the selected slot.")]
+        public static void CCBackpackSetSlot(ConCommandArgs args)
+        {
+            int? index = args.TryGetArgInt(0);
+            if (index.HasValue)
+            {
+                if (args.senderMaster)
+                {
+                    if (args.senderMaster.TryGetComponent(out Backpack.BackpackComponent backpackComponent))
+                    {
+                        //var sb = HG.StringBuilderPool.RentStringBuilder();
+                        if (index > backpackComponent.selectableSlot)
+                        {
+                            index = backpackComponent.selectableSlot;
+                        }
+                        backpackComponent.SetActiveEquipmentSlot((byte)index);
+                    }
+                } else
+                {
+                    Debug.LogError("No character master found!");
+                }
+            }
+            else
+            {
+                Debug.LogError("Couldn't parse the index!");
+            }
+        }
+
+        [ConCommand(commandName = "rbs_backpacklist",
+        flags = ConVarFlags.ExecuteOnServer,
+        helpText = "rbs_backpacklist - Lists your equipment in console.")]
+        public static void CCBackpackList(ConCommandArgs args)
+        {
+            if (args.senderMaster && args.senderMaster.inventory)
+            {
+                var inventory = args.senderMaster.inventory;
+                if (args.senderMaster.TryGetComponent(out Backpack.BackpackComponent backpackComponent))
+                {
+                    var equipmentStateSlots = inventory.equipmentStateSlots;
+                    var stringBuilder = HG.StringBuilderPool.RentStringBuilder();
+                    if (equipmentStateSlots.Length > 0)
+                    {
+                        for (int i = 0; i <= backpackComponent.selectableSlot; i++)
+                        {
+                            var eqpName = "None";
+                            var charges = -6;
+                            var cooldown = -7;
+                            if (i < equipmentStateSlots.Length) //prevents out of bounds error from unset slots
+                            {
+                                var eqp = equipmentStateSlots[i];
+                                if (eqp.equipmentIndex != EquipmentIndex.None)
+                                {
+                                    eqpName = RoR2.Language.GetString(eqp.equipmentDef.nameToken);
+                                }
+                                charges = eqp.charges;
+                                cooldown = eqp.isPerfomingRecharge ? Mathf.Max((int)eqp.chargeFinishTime.timeUntil, 0) : cooldown;
+                            }
+                            // Slot 0: "[1] Bomb 5x CD:10"
+                            stringBuilder.AppendLine(
+                                "[" + (i) + "] " +
+                                eqpName +
+                                (charges == -6 ? "" : " " + charges + "x") +
+                                (cooldown == -7 ? "" : " CD:" + cooldown + " ")
+                                );
+                        }
+                    }
+                    HG.StringBuilderPool.ReturnStringBuilder(stringBuilder);
+                }
+            }
+            else
+            {
+                Debug.LogError("No character master found!");
+            }
         }
     }
 }
