@@ -45,7 +45,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void CreateConfig(ConfigFile config)
         {
-            cfgCashMultiplier = config.Bind(ConfigCategory, Assets.cfgCoinCrownKey, 0.1f, Assets.cfgCoinCrownDesc);
+            cfgCashMultiplier = config.Bind(ConfigCategory, Assets.cfgCoinCrownKey, 0.15f, Assets.cfgCoinCrownDesc);
             cfgCashMultiplierPerStack = config.Bind(ConfigCategory, Assets.cfgCoinCrownPerStackKey, 0.05f, Assets.cfgCoinCrownPerStackDesc);
         }
 
