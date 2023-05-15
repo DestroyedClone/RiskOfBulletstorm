@@ -5,6 +5,7 @@ using RoR2;
 using RoR2.UI;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace RiskOfBulletstormRewrite.Items
 {
@@ -423,7 +424,7 @@ localScale = new Vector3(1F, 1F, 1F)
                 BackpackComponent backpackComponent = characterMaster.GetComponent<BackpackComponent>();
                 if (!backpackComponent) { backpackComponent = characterMaster.gameObject.AddComponent<BackpackComponent>(); }
                 //backpackComponent.characterBody = characterMaster.GetBody();
-                backpackComponent.localUser = LocalUserManager.readOnlyLocalUsersList[0];
+                backpackComponent.localUser = characterMaster.playerCharacterMasterController.networkUser.localUser;
                 backpackComponent.inventory = characterMaster.inventory;
                 backpackComponent.characterMaster = characterMaster;
                 backpackComponent.RunOnce();
@@ -481,14 +482,24 @@ localScale = new Vector3(1F, 1F, 1F)
                 lastEquipmentSlot = inventory.activeEquipmentSlot;
                 //var newEquipmentSlot = lastEquipmentSlot;
                 //Chat.AddMessage($"LastEquipment: {oldEquipmentSlot}->{newEquipmentSlot}, Current set to {slot}");
-                inventory.SetActiveEquipmentSlot(slot);
+                Server_SetActiveEquipmentSlot(slot);
+            }
+
+            public void Server_SetActiveEquipmentSlot(byte slot)
+            {
+                if (NetworkServer.active)
+                    inventory.SetActiveEquipmentSlot(slot);
+                else
+                {
+                    Console.instance.SubmitCmd(characterMaster.playerCharacterMasterController.networkUser, $"rbs_backpacksetslot {slot}", true);
+                }
             }
 
             public void SetActiveEquipmentSlot_Retool(On.EntityStates.Toolbot.ToolbotStanceBase.orig_SetEquipmentSlot orig, EntityStates.Toolbot.ToolbotStanceBase self, byte originalRequestedSlot, byte replaceRequestedSlot)
             {
                 lastEquipmentSlot = inventory.activeEquipmentSlot;
                 orig(self, originalRequestedSlot);
-                inventory.SetActiveEquipmentSlot(replaceRequestedSlot);
+                Server_SetActiveEquipmentSlot(replaceRequestedSlot);
             }
 
             public void OnBodyStart(CharacterBody characterBody)
@@ -519,33 +530,7 @@ localScale = new Vector3(1F, 1F, 1F)
 
                             if (Input.GetKeyDown(KeyCode.Equals))
                             {
-                                var equipmentStateSlots = inventory.equipmentStateSlots;
-                                if (equipmentStateSlots.Length > 0)
-                                {
-                                    for (int i = 0; i <= selectableSlot; i++)
-                                    {
-                                        var eqpName = "None";
-                                        var charges = -6;
-                                        var cooldown = -7;
-                                        if (i < equipmentStateSlots.Length) //prevents out of bounds error from unset slots
-                                        {
-                                            var eqp = equipmentStateSlots[i];
-                                            if (eqp.equipmentIndex != EquipmentIndex.None)
-                                            {
-                                                eqpName = RoR2.Language.GetString(eqp.equipmentDef.nameToken);
-                                            }
-                                            charges = eqp.charges;
-                                            cooldown = eqp.isPerfomingRecharge ? Mathf.Max((int)eqp.chargeFinishTime.timeUntil, 0) : cooldown;
-                                        }
-                                        // Slot 0: "[1] Bomb 5x CD:10"
-                                        Chat.AddMessage(
-                                            "[" + (i) + "] " +
-                                            eqpName +
-                                            (charges == -6 ? "" : " " + charges + "x") +
-                                            (cooldown == -7 ? "" : " CD:" + cooldown + " ")
-                                            );
-                                    }
-                                }
+                                Console.instance.SubmitCmd(characterMaster.playerCharacterMasterController.networkUser, "rbs_backpacklist", true);
                             }
                         }
 
