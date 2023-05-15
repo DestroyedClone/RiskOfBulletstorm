@@ -46,8 +46,8 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void CreateConfig(ConfigFile config)
         {
-            cfgCashAdder = config.Bind(ConfigCategory, Assets.cfgCoinCrownVoidKey, 5, Assets.cfgCoinCrownVoidDesc);
-            cfgCashAdderStack = config.Bind(ConfigCategory, Assets.cfgCoinCrownVoidPerStackKey, 10, Assets.cfgCoinCrownVoidPerStackDesc);
+            cfgCashAdder = config.Bind(ConfigCategory, Assets.cfgCoinCrownVoidKey, 15, Assets.cfgCoinCrownVoidDesc);
+            cfgCashAdderStack = config.Bind(ConfigCategory, Assets.cfgCoinCrownVoidPerStackKey, 15, Assets.cfgCoinCrownVoidPerStackDesc);
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
