@@ -12,6 +12,7 @@ namespace RiskOfBulletstormRewrite.Controllers
         public ConfigEntry<float> cfgCurseMonsterCreditMultiplier;
 
         public ItemDef LOTJItemDef => LordOfTheJammedTargetingItem.instance.ItemDef;
+        public int teamwideCurseCount = 0;
 
         public override void Init(ConfigFile config)
         {
@@ -28,7 +29,13 @@ namespace RiskOfBulletstormRewrite.Controllers
         public override void Hooks()
         {
             Inventory.onInventoryChangedGlobal += GiveLordOfTheJammedItemIfInventoryHasMaxCurse;
+            Inventory.onInventoryChangedGlobal += UpdateTeamCurseCount;
             On.RoR2.CombatDirector.OnEnable += CombatDirector_OnEnable;
+        }
+
+        private void UpdateTeamCurseCount(Inventory obj)
+        {
+            teamwideCurseCount = Util.GetItemCountForTeam(TeamIndex.Player, CurseTally.instance.ItemDef.itemIndex, false, true);
         }
 
         private void CombatDirector_OnEnable(On.RoR2.CombatDirector.orig_OnEnable orig, CombatDirector self)
@@ -36,7 +43,7 @@ namespace RiskOfBulletstormRewrite.Controllers
             orig(self);
             self.creditMultiplier *= 1
                 + cfgCurseMonsterCreditMultiplier.Value
-                * Util.GetItemCountForTeam(TeamIndex.Player, CurseTally.instance.ItemDef.itemIndex, false, true);
+                * teamwideCurseCount;
         }
 
         private void GiveLordOfTheJammedItemIfInventoryHasMaxCurse(Inventory inventory)
