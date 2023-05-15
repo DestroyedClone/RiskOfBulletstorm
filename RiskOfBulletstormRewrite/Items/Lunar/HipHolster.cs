@@ -345,9 +345,9 @@ localScale = new Vector3(1F, 1F, 1F)
 
         private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody obj)
         {
-            if (NetworkServer.active)
+            if (obj.hasEffectiveAuthority)
             {
-                var comp = obj.gameObject.GetComponent<HipHolsterController>();
+                var comp = obj.gameObject.GetComponent<RBSHipHolsterController>();
                 bool flag = GetCount(obj) > 0;
                 if (flag != comp)
                 {
@@ -355,7 +355,7 @@ localScale = new Vector3(1F, 1F, 1F)
                     {
                         if (obj.skillLocator)
                         {
-                            comp = obj.gameObject.AddComponent<HipHolsterController>();
+                            comp = obj.gameObject.AddComponent<RBSHipHolsterController>();
                             comp.skillLocator = obj.skillLocator;
                             comp.inventory = obj.inventory;
                             comp.characterBody = obj;
@@ -367,7 +367,7 @@ localScale = new Vector3(1F, 1F, 1F)
             }
         }
 
-        public class HipHolsterController : MonoBehaviour
+        public class RBSHipHolsterController : MonoBehaviour
         {
             public CharacterBody characterBody;
             public Inventory inventory;
