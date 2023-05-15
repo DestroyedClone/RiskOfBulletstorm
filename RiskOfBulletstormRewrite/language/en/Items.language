@@ -148,8 +148,8 @@
 		"RISKOFBULLETSTORM_ITEM_DODGEROLLUTILITYREPLACEMENT_LORE": "\"What I don't understand is why the bullets weren't hitting you. It really looks like they should.\" - Blockner",
 
 		"RISKOFBULLETSTORM_ITEM_HIPHOLSTER_NAME": "Hip Holster",
-		"RISKOFBULLETSTORM_ITEM_HIPHOLSTER_PICKUP": "<b>Quickdraw</b>\nYour skills have a chance to activate for free upon recharging a stock.",
-		"RISKOFBULLETSTORM_ITEM_HIPHOLSTER_DESCRIPTION": "Your skills have a <style=cIsUtility>{0}% chance</style> <style=cStack>(+{1}% chance per stack, hyperbolically)</style> to <style=cIsUtility>activate for free</style> upon recharging a stock.",
+		"RISKOFBULLETSTORM_ITEM_HIPHOLSTER_PICKUP": "<b>Quickdraw</b>\nYour skills have a chance to fire something from your character on recharge.",
+		"RISKOFBULLETSTORM_ITEM_HIPHOLSTER_DESCRIPTION": "Your skills have a <style=cIsDamage>{0}% chance</style> <style=cStack>(+{0}% chance per stack, hyperbolically)</style> to <style=cIsDamage>fire your character's projectile</style> for <style=cIsDamage>100% damage</style> upon <style=cIsUtility>recharging a stock</style>.",
 		"RISKOFBULLETSTORM_ITEM_HIPHOLSTER_LORE": "<style=cMono>INTERCEPTING TRANSMISSION...</style>\n\nIn '87, Huey released this; Fore!, their most accomplished album. I think their undisputed masterpiece is \"Hip To Be Square\". A song so catchy, most people probably don't listen to the lyrics. But they should, because- \n\n<style=cMono>TRANSMISSION STOPPED ABRUPTLY, ATTEMPTING TO RECONNECT...\n\n</style>",
 
 		"RISKOFBULLETSTORM_ITEM_RINGMISERLYPROTECTION_NAME": "Ring of Miserly Protection",
