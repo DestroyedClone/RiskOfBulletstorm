@@ -1,6 +1,7 @@
 ﻿using RiskOfBulletstormRewrite.Artifact;
 using RiskOfBulletstormRewrite.Equipment;
 using RiskOfBulletstormRewrite.Items;
+using RiskOfBulletstormRewrite.Items.Common;
 using RiskOfBulletstormRewrite.Modules;
 using RiskOfBulletstormRewrite.Utils;
 using RoR2;
@@ -313,11 +314,17 @@ namespace RiskOfBulletstormRewrite
                 DodgeRollDurationStacking,
                 BetterUI.ItemStats.StatFormatter.Seconds);
 
-            BetterUI.ItemStats.RegisterStat(HipHolster.instance.ItemDef,
+            /*BetterUI.ItemStats.RegisterStat(HipHolster.instance.ItemDef,
                 prefix + "HIPHOLSTER_CHANCE",
                 HipHolster.cfgFreeStockChance.Value,
                 HipHolster.cfgFreeStockChancePerStack.Value,
                 CustomHyperbolicStacking,
+                BetterUI.ItemStats.StatFormatter.Chance,
+                BetterUI.ItemStats.ItemTag.SkillCooldown);*/
+            BetterUI.ItemStats.RegisterStat(HipHolster.instance.ItemDef,
+                prefix + "HIPHOLSTER_CHANCE",
+                HipHolster.cfgChanceHyperbolic.Value,
+                BetterUI.ItemStats.HyperbolicStacking,
                 BetterUI.ItemStats.StatFormatter.Chance,
                 BetterUI.ItemStats.ItemTag.SkillCooldown);
 
