@@ -23,6 +23,7 @@
 		"RISKOFBULLETSTORM_LOCKPICKS_NAME_WIN": "{0} (Unlocked)",
 		"RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT": "{0}\nYour equipment seems compatible with this, try using it.",
 		"RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT_LOSE": "{0}\nYour equipment can't fit into the damaged lock.",
+		"RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT_CLIENT": "{0}\nYour equipment seems compatible with this.\nIf it doesn't work, someone broke the lock.",
 
 		//[COSTS]	
 		"RISKOFBULLETSTORM_COST_STEAL_FORMAT": "Steal"

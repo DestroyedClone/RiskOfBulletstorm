@@ -1,6 +1,7 @@
 ﻿using RoR2;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace RiskOfBulletstormRewrite.Controllers
 {
@@ -97,6 +98,7 @@ namespace RiskOfBulletstormRewrite.Controllers
 
             private readonly string attemptContextToken = "RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT";
             private readonly string failContextToken = "RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT_LOSE";
+            private readonly string attemptContextTokenClient = "RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT_CLIENT";
 
             public static EquipmentIndex[] allowedEquips = new EquipmentIndex[]
             {
@@ -120,6 +122,10 @@ namespace RiskOfBulletstormRewrite.Controllers
             public string GetContextualString(string original)
             {
                 string formattingToken = hasUsedLockpicks ? failContextToken : attemptContextToken;
+                if (NetworkClient.active)
+                {
+                    formattingToken = attemptContextTokenClient;
+                }
                 return Language.GetStringFormatted(formattingToken, original);
             }
 
