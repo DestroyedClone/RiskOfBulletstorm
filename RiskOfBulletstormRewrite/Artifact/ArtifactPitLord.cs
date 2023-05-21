@@ -57,7 +57,7 @@ namespace RiskOfBulletstormRewrite.Artifact
 
         public static bool CanCharacterBodyTakeFallDamage(CharacterBody body)
         {
-            return body.bodyFlags.HasFlag(CharacterBody.BodyFlags.IgnoreFallDamage);
+            return !body.bodyFlags.HasFlag(CharacterBody.BodyFlags.IgnoreFallDamage);
         }
 
         private void AllNoFallDamage(On.RoR2.MapZone.orig_TryZoneStart orig, MapZone self, Collider other)
@@ -66,11 +66,11 @@ namespace RiskOfBulletstormRewrite.Artifact
             if (body)
             {
                 bool canTakeFallDamage = CanCharacterBodyTakeFallDamage(body);
-                if (canTakeFallDamage) body.bodyFlags &= CharacterBody.BodyFlags.IgnoreFallDamage;
+                if (canTakeFallDamage) body.bodyFlags |= CharacterBody.BodyFlags.IgnoreFallDamage;
 
                 orig(self, other);
 
-                if (canTakeFallDamage) body.bodyFlags |= CharacterBody.BodyFlags.IgnoreFallDamage;
+                if (canTakeFallDamage) body.bodyFlags &= ~CharacterBody.BodyFlags.IgnoreFallDamage;
                 /* if (body.master && body.master.TryGetComponent<RoR2.CharacterAI.BaseAI>(out RoR2.CharacterAI.BaseAI baseAI))
                 {
                     if (baseAI.currentEnemy == null)
