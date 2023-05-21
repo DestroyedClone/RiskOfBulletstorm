@@ -61,14 +61,11 @@ namespace RiskOfBulletstormRewrite.Artifact
             if (self.jumpCount != initJumpCount)
             {
                 self.jumpCount = initJumpCount;
-                var comp = self.gameObject.GetComponent<RiskOfBulletstorm_CoyoteTimeController>();
-                if (!comp)
+                if (!self.gameObject.TryGetComponent(out RiskOfBulletstorm_CoyoteTimeController _))
                 {
-                    var bodyESM = EntityStateMachine.FindByCustomName(self.gameObject, "Body");
-
-                    if (bodyESM && bodyESM.IsInMainState())
+                    if (EntityStateMachine.FindByCustomName(self.gameObject, "Body")?.IsInMainState() == true)
                     {
-                        comp = self.gameObject.AddComponent<RiskOfBulletstorm_CoyoteTimeController>();
+                        RiskOfBulletstorm_CoyoteTimeController comp = self.gameObject.AddComponent<RiskOfBulletstorm_CoyoteTimeController>();
                         comp.characterMotor = self;
                         comp.jumpCountOnStart = initJumpCount;
                     }
@@ -91,15 +88,11 @@ namespace RiskOfBulletstormRewrite.Artifact
                 }
                 characterMotor.useGravity = false;
             }
-
             public void FixedUpdate()
             {
                 age += Time.fixedDeltaTime;
-                if (characterMotor.isGrounded)
-                {
-                    Destroy(this);
-                }
-                if (age >= Duration)
+
+                if (characterMotor.isGrounded || age >= Duration)
                 {
                     ConsumeJump();
                     Destroy(this);
