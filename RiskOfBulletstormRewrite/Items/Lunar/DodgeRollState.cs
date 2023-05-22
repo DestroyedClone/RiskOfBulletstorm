@@ -145,7 +145,7 @@ namespace RiskOfBulletstormRewrite.Items
             if (NetworkServer.active)
             {
                 characterBody.RemoveBuff(RoR2Content.Buffs.Intangible);
-                float debuffDuration = DodgeRollUtilityReplacement.cfgDamageVulnerabilityDuration.Value;
+                float debuffDuration = DodgeRollUtilityReplacement.cfgDamageVulnerabilityDuration;
                 if (characterBody.inventory)
                 {
                     var itemCount = DodgeRollUtilityReplacement.instance.GetCount(characterBody);

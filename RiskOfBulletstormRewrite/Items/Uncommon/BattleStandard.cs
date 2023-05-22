@@ -9,7 +9,7 @@ namespace RiskOfBulletstormRewrite.Items
 {
     public class BattleStandard : ItemBase<BattleStandard>
     {
-        public static ConfigEntry<float> cfgDamage;
+        public static float damage = 0.1f;
 
         public override string ItemName => "Battle Standard";
 
@@ -17,7 +17,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override string[] ItemFullDescriptionParams => new string[]
         {
-            GetChance(cfgDamage)
+            ToPct(damage)
         };
 
         public override ItemTier Tier => ItemTier.Tier2;
@@ -38,11 +38,6 @@ namespace RiskOfBulletstormRewrite.Items
             CreateLang();
             CreateItem();
             Hooks();
-        }
-
-        public override void CreateConfig(ConfigFile config)
-        {
-            cfgDamage = config.Bind(ConfigCategory, Assets.cfgDamagePerStackKey, 0.1f, "");
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
@@ -346,7 +341,7 @@ localScale = new Vector3(1F, 1F, 1F)
                 var count = GetCount(sender.master.minionOwnership.ownerMaster);
                 if (count > 0)
                 {
-                    args.damageMultAdd += count * cfgDamage.Value;
+                    args.damageMultAdd += count * damage;
                 }
             }
         }

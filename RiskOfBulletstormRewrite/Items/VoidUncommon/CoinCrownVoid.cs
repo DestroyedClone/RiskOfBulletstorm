@@ -18,8 +18,8 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override string[] ItemFullDescriptionParams => new string[]
         {
-            cfgCashAdder.Value.ToString(),
-            cfgCashAdderStack.Value.ToString()
+            cfgCashAdder.ToString(),
+            cfgCashAdderStack.ToString()
         };
 
         public override ItemDef ContagiousOwnerItemDef => CoinCrown.instance.ItemDef;
@@ -33,8 +33,8 @@ namespace RiskOfBulletstormRewrite.Items
             ItemTag.Utility
         };
 
-        public static ConfigEntry<int> cfgCashAdder;
-        public static ConfigEntry<int> cfgCashAdderStack;
+        public static int cfgCashAdder = 15;
+        public static int cfgCashAdderStack = 15;
 
         public override void Init(ConfigFile config)
         {
@@ -42,12 +42,6 @@ namespace RiskOfBulletstormRewrite.Items
             CreateLang();
             CreateItem();
             Hooks();
-        }
-
-        public override void CreateConfig(ConfigFile config)
-        {
-            cfgCashAdder = config.Bind(ConfigCategory, Assets.cfgCoinCrownVoidKey, 15, Assets.cfgCoinCrownVoidDesc);
-            cfgCashAdderStack = config.Bind(ConfigCategory, Assets.cfgCoinCrownVoidPerStackKey, 15, Assets.cfgCoinCrownVoidPerStackDesc);
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
@@ -84,7 +78,7 @@ namespace RiskOfBulletstormRewrite.Items
         private void IncreaseMoney(On.RoR2.CharacterMaster.orig_GiveMoney orig, CharacterMaster self, uint amount)
         {
             if (itemCount > 0)
-                amount += (uint)GetStack(cfgCashAdder.Value, cfgCashAdderStack.Value, (int)itemCount);
+                amount += (uint)GetStack(cfgCashAdder, cfgCashAdderStack, (int)itemCount);
             orig(self, amount);
         }
 

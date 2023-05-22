@@ -7,8 +7,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 {
     public class SpiceConsumed : EquipmentBase<SpiceConsumed>
     {
-        public static ConfigEntry<float> cfgCooldown;
-        public override float Cooldown => cfgCooldown.Value;
+        public override float Cooldown => 30;
 
         public override string EquipmentName => "Spice (Consumed)";
 
@@ -38,10 +37,6 @@ namespace RiskOfBulletstormRewrite.Equipment
             base.Hooks();
         }
 
-        protected override void CreateConfig(ConfigFile config)
-        {
-            cfgCooldown = config.Bind(ConfigCategory, CooldownName, 5f, CooldownDescription);
-        }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
         {

@@ -9,7 +9,7 @@ namespace RiskOfBulletstormRewrite.Items
 {
     public class BattleStandardVoid : ItemBase<BattleStandardVoid>
     {
-        public static ConfigEntry<float> cfgDamage;
+        public static float damage = 0.1f;
 
         public override string ItemName => "Leaders Standard";
 
@@ -17,7 +17,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override string[] ItemFullDescriptionParams => new string[]
         {
-            GetChance(cfgDamage)
+            ToPct(damage)
         };
 
         public override ItemTier Tier => ItemTier.VoidTier2;
@@ -41,12 +41,6 @@ namespace RiskOfBulletstormRewrite.Items
             CreateItem();
             Hooks();
         }
-
-        public override void CreateConfig(ConfigFile config)
-        {
-            cfgDamage = config.Bind(ConfigCategory, Assets.cfgBattleStandardVoidKey, 0.1f, "");
-        }
-
         public override ItemDisplayRuleDict CreateItemDisplayRules()
         {
             ItemBodyModelPrefab = ItemModel;
@@ -351,7 +345,7 @@ localScale = new Vector3(1F, 1F, 1F)
                     //var minions = CharacterMaster.readOnlyInstancesList.Where(el => el.minionOwnership.ownerMaster == sender.master);
                     var minionGroup = MinionOwnership.MinionGroup.FindGroup(sender.master.netId);
                     if (minionGroup != null)
-                        args.damageMultAdd += count * cfgDamage.Value * minionGroup.memberCount;
+                        args.damageMultAdd += count * damage * minionGroup.memberCount;
                 }
             }
         }

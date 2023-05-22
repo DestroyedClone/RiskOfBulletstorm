@@ -10,11 +10,10 @@ namespace RiskOfBulletstormRewrite.Equipment
 {
     public class Drill : EquipmentBase<Drill>
     {
-        public static ConfigEntry<float> cfgChestCostCommonDirectorMultiplier;
-        public static ConfigEntry<float> cfgChestCostUncommonDirectorMultiplier;
-        public static ConfigEntry<float> cfgChestCostLegendaryDirectorMultiplier;
-        public static ConfigEntry<float> cfgCooldown;
-        public override float Cooldown => cfgCooldown.Value;
+        public static float ChestCostCommonDirectorMultiplier = 2;
+        public static float ChestCostUncommonDirectorMultiplier = 3;
+        public static float ChestCostLegendaryDirectorMultiplier = 4;
+        public override float Cooldown => 60;
 
         public override string EquipmentName => "Drill";
 
@@ -35,16 +34,6 @@ namespace RiskOfBulletstormRewrite.Equipment
             CreateLang();
             CreateEquipment();
             Hooks();
-        }
-
-        protected override void CreateConfig(ConfigFile config)
-        {
-            cfgCooldown = config.Bind(ConfigCategory, CooldownName, 60f, CooldownDescription);
-            string text = "The multiplier for the amount of credits given to the Combat Director for spawning the equipment's enemies.\nApplies to ";
-
-            cfgChestCostCommonDirectorMultiplier = config.Bind(ConfigCategory, "Common Chest Credit Multiplier", 2f, text + "Chests, Category Chests, and Equipment Barrels.");
-            cfgChestCostUncommonDirectorMultiplier = config.Bind(ConfigCategory, "Large Chest Credit Multiplier", 3f, text + "Large Chests and Large Category Chests.");
-            cfgChestCostLegendaryDirectorMultiplier = config.Bind(ConfigCategory, "Legendary Credit Multiplier", 4f, text + "Legendary Chests.");
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules() => EquipmentDisplays.Drill(ref ItemBodyModelPrefab, EquipmentModel);
@@ -111,18 +100,18 @@ namespace RiskOfBulletstormRewrite.Equipment
                     case "CATEGORYCHEST_DAMAGE_NAME":
                     case "CATEGORYCHEST_UTILITY_NAME":
                     case "EQUIPMENTBARREL_NAME":
-                        creditMultiplier = cfgChestCostCommonDirectorMultiplier.Value;
+                        creditMultiplier = ChestCostCommonDirectorMultiplier;
                         break;
 
                     case "CHEST2_NAME":
                     case "CATEGORYCHEST2_HEALING_NAME":
                     case "CATEGORYCHEST2_DAMAGE_NAME":
                     case "CATEGORYCHEST2_UTILITY_NAME":
-                        creditMultiplier = cfgChestCostUncommonDirectorMultiplier.Value;
+                        creditMultiplier = ChestCostUncommonDirectorMultiplier;
                         break;
 
                     case "GOLDCHEST_NAME":
-                        creditMultiplier = cfgChestCostLegendaryDirectorMultiplier.Value;
+                        creditMultiplier = ChestCostLegendaryDirectorMultiplier;
                         break;
                 }
 

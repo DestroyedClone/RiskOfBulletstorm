@@ -9,8 +9,8 @@ namespace RiskOfBulletstormRewrite.Items
 {
     public class Scope : ItemBase<Scope>
     {
-        public static ConfigEntry<float> cfgSpreadReduction;
-        public static ConfigEntry<float> cfgSpreadReductionPerStack;
+        public static float cfgSpreadReduction = 0.2f;
+        public static float cfgSpreadReductionPerStack = 0.02f;
 
         public override string ItemName => "Scope";
 
@@ -18,8 +18,8 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override string[] ItemFullDescriptionParams => new string[]
         {
-            GetChance(cfgSpreadReduction),
-            GetChance(cfgSpreadReductionPerStack),
+            ToPct(cfgSpreadReduction),
+            ToPct(cfgSpreadReductionPerStack),
         };
 
         public int GetStackCountForMaxEffect(float baseAmount, float stackAmount)
@@ -41,12 +41,6 @@ namespace RiskOfBulletstormRewrite.Items
             CreateConfig(config);
             CreateLang();
             CreateItem();
-        }
-
-        public override void CreateConfig(ConfigFile config)
-        {
-            cfgSpreadReduction = config.Bind(ConfigCategory, Assets.cfgAccuracyKey, 0.2f, Assets.cfgAccuracyDesc);
-            cfgSpreadReductionPerStack = config.Bind(ConfigCategory, Assets.cfgAccuracyPerStackKey, 0.02f, Assets.cfgAccuracyPerStackDesc);
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()

@@ -10,11 +10,10 @@ namespace RiskOfBulletstormRewrite.Equipment
 {
     public class TrustyLockpicks : EquipmentBase<TrustyLockpicks>
     {
-        public static ConfigEntry<float> cfgUnlockChance;
+        public static float cfgUnlockChance = 50;
 
-        public static ConfigEntry<float> cfgPriceMultiplier;
-        public static ConfigEntry<float> cfgCooldown;
-        public override float Cooldown => cfgCooldown.Value;
+        public static float cfgPriceMultiplier = 2;
+        public override float Cooldown => 60;
         public override bool CanBeRandomlyTriggered => false;
 
         public override string EquipmentName => "Trusty Lockpicks";
@@ -23,8 +22,8 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public override string[] EquipmentFullDescriptionParams => new string[]
         {
-            cfgUnlockChance.Value.ToString(), //direct percentage so...
-            GetChance(cfgPriceMultiplier)
+            cfgUnlockChance.ToString(), //direct percentage so...
+            ToPct(cfgPriceMultiplier)
         };
 
         public override GameObject EquipmentModel => LoadModel();
@@ -40,13 +39,6 @@ namespace RiskOfBulletstormRewrite.Equipment
             CreateConfig(config);
             CreateLang();
             CreateEquipment();
-        }
-
-        protected override void CreateConfig(ConfigFile config)
-        {
-            cfgCooldown = config.Bind(ConfigCategory, CooldownName, 60f, CooldownDescription);
-            cfgUnlockChance = config.Bind(ConfigCategory, Assets.cfgChanceIntegerKey, 50f, Assets.cfgChanceIntegerDesc);
-            cfgPriceMultiplier = config.Bind(ConfigCategory, "Fail Cost Multiplier", 2f, "If you fail to unlock the chest, what will the price be multiplied by?");
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
@@ -352,7 +344,7 @@ localScale = new Vector3(1F, 1F, 1F)
                         if (purchaseInteraction)
                         {
                             if (!purchaseInteraction.GetComponent<ShopTerminalBehavior>())
-                                if (AttemptUnlock(bestInteractableObject, interactionDriver, purchaseInteraction, cfgUnlockChance.Value))
+                                if (AttemptUnlock(bestInteractableObject, interactionDriver, purchaseInteraction, cfgUnlockChance))
                                 {
                                     return true;
                                 }
@@ -393,7 +385,7 @@ localScale = new Vector3(1F, 1F, 1F)
                 }
                 else
                 {
-                    var newCost = Mathf.CeilToInt(purchaseInteraction.cost * cfgPriceMultiplier.Value);
+                    var newCost = Mathf.CeilToInt(purchaseInteraction.cost * cfgPriceMultiplier);
                     //purchaseInteraction.cost = newCost;
                     purchaseInteraction.Networkcost = newCost;
                     GameObject selectedEffect = Fail_LockEffect;

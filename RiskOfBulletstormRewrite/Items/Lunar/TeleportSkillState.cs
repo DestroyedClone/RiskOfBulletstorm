@@ -90,9 +90,9 @@ namespace RiskOfBulletstormRewrite.Items
         {
             if (characterBody && characterBody.inventory)
             {
-                return BloodiedScarf.instance.GetStack(BloodiedScarf.cfgTeleportRange.Value, BloodiedScarf.cfgTeleportRangePerStack.Value, this.characterBody.inventory.GetItemCount(Items.BloodiedScarf.instance.ItemDef));
+                return BloodiedScarf.instance.GetStack(BloodiedScarf.cfgTeleportRange, BloodiedScarf.cfgTeleportRangePerStack, this.characterBody.inventory.GetItemCount(Items.BloodiedScarf.instance.ItemDef));
             }
-            return BloodiedScarf.cfgTeleportRange.Value;
+            return BloodiedScarf.cfgTeleportRange;
         }
 
         private void UpdateAreaIndicator() //check
@@ -178,7 +178,7 @@ namespace RiskOfBulletstormRewrite.Items
 
                         if (UnityEngine.Networking.NetworkServer.active && characterBody)
                         {
-                            characterBody.AddTimedBuff(Utils.Buffs.BloodiedScarfBuff, BloodiedScarf.cfgDamageVulnerabilityDuration.Value, 1);
+                            characterBody.AddTimedBuff(Utils.Buffs.BloodiedScarfBuff, BloodiedScarf.cfgDamageVulnerabilityDuration, 1);
                             /* //MasterBlankItem.FireBlank(characterBody, characterBody.corePosition, 0f, 0f, 6f, false, false, false);
 							var inventory = characterBody.inventory;
 							if (inventory)

@@ -23,9 +23,6 @@ namespace RiskOfBulletstormRewrite.Controllers
         /// <summary> Config Value to enable <b>only specific projectiles</b>, being affected by RBSAccuracy. </summary>
         public static bool cfgShotSpread_WhitelistProjectiles { get; private set; } = true;
 
-        /// <summary> Config Value to enable <b>Auto downloading updates</b> for projectiles to be added to RBSAccuracy </summary>
-        public static bool cfgAutoDownloadUpdates { get; private set; } = true;
-
         /// <summary> List of whitelisted <b>vanilla</b> projectiles for RBSAccuracy </summary>
         public static List<GameObject> WhitelistedProjectiles = new List<GameObject>
         {
@@ -181,8 +178,6 @@ namespace RiskOfBulletstormRewrite.Controllers
 
         private const string CategoryNameShotSpread = "ExtraStatsShotSpread";
 
-        private const string projectileAddress = "https://raw.githubusercontent.com/DestroyedClone/RiskOfBulletstorm/master/RiskOfBulletstormRewrite/Controllers/ModdedProjectileNames.txt";
-
         /// <summary> Method to return a float from the  </summary>
         /// <param name="accuracy"></param>
         /// <param name="multiplier"></param>
@@ -319,8 +314,6 @@ namespace RiskOfBulletstormRewrite.Controllers
             cfgShotSpread_EnableLoader = config.Bind(CategoryNameShotSpread, "Loader Hooks", false, "If enabled, Shot Spread will affect Loader's Hooks.").Value;
             cfgShotSpread_WhitelistProjectiles = config.Bind(CategoryNameShotSpread, "Whitelisted Projectiles", true, "If enabled, Shot Spread will only tighten the spread of SPECIFIC projectiles." +
                 "\nIt is HIGHLY recommended not to disable, because alot of projectiles could break otherwise.").Value;
-            //cfgAutoDownloadUpdates = config.Bind(CategoryNameShotSpread, "Autodownload updates",
-            //true, "If enabled, then the mod will autodownload the latest modded projectile names on startup. These are added manually.").Value;
             cfgDamageMultiplierPerStack = config.Bind(CategoryNameShotSpread, "Damage Multiplier Past Max Accuracy", 0.01f, "How much should the damage be multiplied per stack past max accuracy?");
 
 
@@ -330,10 +323,6 @@ namespace RiskOfBulletstormRewrite.Controllers
             {
                 WhitelistedProjectiles.Add(Load<GameObject>("RoR2/Base/Loader/LoaderHook.prefab"));
                 WhitelistedProjectiles.Add(Load<GameObject>("RoR2/Base/Loader/LoaderYankHook.prefab"));
-            }
-            if (cfgAutoDownloadUpdates)
-            {
-                //DownloadNewProjectileNames();
             }
             R2API.RecalculateStatsAPI.GetStatCoefficients += ApplyDamageIncreaseToMaxAccuracy;
         }
@@ -350,25 +339,6 @@ namespace RiskOfBulletstormRewrite.Controllers
                 }
             }
         }
-
-        public static void DownloadNewProjectileNames()
-        {
-            WebClient webClient = new WebClient();
-            webClient.DownloadFileCompleted += WebClient_DownloadFileCompleted;
-            //webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressChanged);
-            webClient.DownloadFileAsync(new Uri(projectileAddress), RiskOfBulletstormRewrite.Main.LocationOfProgram);
-        }
-
-        private static void WebClient_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
-        {
-            _logger.LogMessage("Finished downloading latest projectiles list.");
-        }
-
-        private void ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
-        {
-            //progressBar.Value = e.ProgressPercentage;
-        }
-
         public override void Hooks()
         {
             CharacterMaster.onStartGlobal += CharacterMaster_onStartGlobal;
@@ -484,10 +454,10 @@ namespace RiskOfBulletstormRewrite.Controllers
         /// </summary>
         public class RBSExtraStatsController : MonoBehaviour
         {
-            private float Scope_SpreadReduction => Items.Scope.cfgSpreadReduction.Value;
-            private float Scope_SpreadReductionStack => Items.Scope.cfgSpreadReductionPerStack.Value;
-            private float Spice_SpreadReduction => Equipment.Spice2.cfgStatAccuracy.Value;
-            private float Spice_SpreadReductionStack => Equipment.Spice2.cfgStatAccuracyStack.Value;
+            private float Scope_SpreadReduction => Items.Scope.cfgSpreadReduction;
+            private float Scope_SpreadReductionStack => Items.Scope.cfgSpreadReductionPerStack;
+            private float Spice_SpreadReduction => Equipment.Spice2.cfgStatAccuracy;
+            private float Spice_SpreadReductionStack => Equipment.Spice2.cfgStatAccuracyStack;
 
             //private float[,] SpiceBonusesConstant => Equipment.Spice.SpiceBonusesConstant;
             //private float[] SpiceBonusesAdditive => Equipment.Spice.SpiceBonusesAdditive;

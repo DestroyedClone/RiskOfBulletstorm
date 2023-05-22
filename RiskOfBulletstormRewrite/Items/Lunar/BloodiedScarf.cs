@@ -10,11 +10,11 @@ namespace RiskOfBulletstormRewrite.Items
 {
     public class BloodiedScarf : ItemBase<BloodiedScarf>
     {
-        public static ConfigEntry<float> cfgTeleportRange;
-        public static ConfigEntry<float> cfgTeleportRangePerStack;
-        public static ConfigEntry<float> cfgDamageVulnerabilityMultiplier;
-        public static ConfigEntry<float> cfgDamageVulnerabilityMultiplierPerStack;
-        public static ConfigEntry<float> cfgDamageVulnerabilityDuration;
+        public static float cfgTeleportRange = 50;
+        public static float cfgTeleportRangePerStack = 5;
+        public static float cfgDamageVulnerabilityMultiplier = .2f;
+        public static float cfgDamageVulnerabilityMultiplierPerStack = .1f;
+        public static float cfgDamageVulnerabilityDuration = 1;
 
         public override string ItemName => "Bloodied Scarf";
 
@@ -52,11 +52,11 @@ namespace RiskOfBulletstormRewrite.Items
 
         public string[] TeleportSkillDefParams => new string[]
         {
-            cfgTeleportRange.Value.ToString(),
-            cfgTeleportRangePerStack.Value.ToString(),
-            GetChance(cfgDamageVulnerabilityMultiplier),
-            GetChance(cfgDamageVulnerabilityMultiplierPerStack),
-            cfgDamageVulnerabilityDuration.Value.ToString()
+            cfgTeleportRange.ToString(),
+            cfgTeleportRangePerStack.ToString(),
+            ToPct(cfgDamageVulnerabilityMultiplier),
+            ToPct(cfgDamageVulnerabilityMultiplierPerStack),
+            cfgDamageVulnerabilityDuration.ToString()
         };
 
         public void CreateSkillDef()
@@ -104,15 +104,6 @@ namespace RiskOfBulletstormRewrite.Items
                 ItemPickupToken,
                 teleportSkillDef.skillNameToken,
                 teleportSkillDef.skillDescriptionToken});
-        }
-
-        public override void CreateConfig(ConfigFile config)
-        {
-            cfgTeleportRange = config.Bind(ConfigCategory, "Teleport Range", 50f, Assets.cfgDistanceMeters);
-            cfgTeleportRangePerStack = config.Bind(ConfigCategory, "Teleport Range Per Stack", 5f, Assets.cfgDistanceMeters);
-            cfgDamageVulnerabilityMultiplier = config.Bind(ConfigCategory, "Damage Vulnerability Multiplier", .2f, "");
-            cfgDamageVulnerabilityMultiplierPerStack = config.Bind(ConfigCategory, "Damage Vulnerability Multiplier Per Stack", .1f, "");
-            cfgDamageVulnerabilityDuration = config.Bind(ConfigCategory, "Damage Vulnerability Duration", 1f, "");
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()

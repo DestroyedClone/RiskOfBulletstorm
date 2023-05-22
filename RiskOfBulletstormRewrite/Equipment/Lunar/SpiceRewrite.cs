@@ -9,18 +9,17 @@ namespace RiskOfBulletstormRewrite.Equipment
 {
     public class Spice2 : EquipmentBase<Spice2>
     {
-        public static ConfigEntry<float> cfgCooldown;
 
-        //public static ConfigEntry<float> cfgCurseAmount;
-        public static ConfigEntry<bool> cfgSpiceReplacement;
+        //public static float cfgCurseAmount;
+        public static bool cfgSpiceReplacement = true;
 
-        public static ConfigEntry<float> cfgStatAccuracy;
-        public static ConfigEntry<float> cfgStatAccuracyStack;
-        public static ConfigEntry<float> cfgStatDamage;
-        public static ConfigEntry<float> cfgStatDamageStack;
-        public static ConfigEntry<float> cfgStatRORCurse;
-        public static ConfigEntry<float> cfgStatRORCurseStack;
-        public override float Cooldown => cfgCooldown.Value;
+        public static float cfgStatAccuracy = 0.2f;
+        public static float cfgStatAccuracyStack = -0.1f;
+        public static float cfgStatDamage = 0.2f;
+        public static float cfgStatDamageStack = 0.1f;
+        public static float cfgStatRORCurse = 0.1f;
+        public static float cfgStatRORCurseStack = 0.05f;
+        public override float Cooldown => 60;
 
         public override string EquipmentName => "Spice";
 
@@ -45,21 +44,6 @@ namespace RiskOfBulletstormRewrite.Equipment
         {
             base.CreateLang();
             //LanguageOverrides.DeferLateUniqueTokens("RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP", "RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP_FORMAT", "RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP_USES_0");
-        }
-
-        protected override void CreateConfig(ConfigFile config)
-        {
-            cfgCooldown = config.Bind(ConfigCategory, CooldownName, 60f, CooldownDescription);
-            //cfgCurseAmount = config.Bind(ConfigCategory, "Curse", 0.5f, "The amount of curse gained per use.");
-
-            cfgStatAccuracy = config.Bind(ConfigCategory, "Accuracy", 0.2f, "");
-            cfgStatAccuracyStack = config.Bind(ConfigCategory, "Accuracy Per Stack", -0.1f, "");
-            cfgStatDamage = config.Bind(ConfigCategory, "Damage", 0.2f, "");
-            cfgStatDamageStack = config.Bind(ConfigCategory, "Damage Per Stack", 0.1f, "");
-            cfgStatRORCurse = config.Bind(ConfigCategory, "ROR2 Curse", 0.1f, "");
-            cfgStatRORCurseStack = config.Bind(ConfigCategory, "ROR2 Curse Per Stack", 0.05f, "");
-
-            cfgSpiceReplacement = config.Bind(ConfigCategory, "Pickup Replacement", true, "Should spice replace pickups?");
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
@@ -363,7 +347,7 @@ localScale = new Vector3(1F, 1F, 1F)
             var itemCount = SpiceTally.instance.GetCount(sender);
             if (itemCount > 0)
             {
-                args.damageMultAdd += SpiceTally.instance.GetStack(cfgStatDamage.Value, cfgStatDamageStack.Value, itemCount);
+                args.damageMultAdd += SpiceTally.instance.GetStack(cfgStatDamage, cfgStatDamageStack, itemCount);
                 args.baseCurseAdd += SpiceTally.instance.GetStack(cfgStatRORCurse, cfgStatRORCurseStack, itemCount);
             }
         }
@@ -436,7 +420,7 @@ localScale = new Vector3(1F, 1F, 1F)
             slot.inventory.GiveItem(SpiceTally.instance.ItemDef);
             slot.inventory.GiveItem(CurseTally.instance.ItemDef);
 
-            if (cfgSpiceReplacement.Value)
+            if (cfgSpiceReplacement)
                 if (slot.characterBody
                         && slot.characterBody.teamComponent
                         && slot.characterBody.isPlayerControlled

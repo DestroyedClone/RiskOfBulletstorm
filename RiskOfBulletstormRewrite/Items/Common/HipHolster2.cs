@@ -17,7 +17,7 @@ namespace RiskOfBulletstormRewrite.Items.Common
 {
     public class HipHolster : ItemBase<HipHolster>
     {
-        public static ConfigEntry<float> cfgChanceHyperbolic;
+        public static float cfgChanceHyperbolic = 0.15f;
 
         public override string ItemName => "Hip Holster";
 
@@ -25,7 +25,7 @@ namespace RiskOfBulletstormRewrite.Items.Common
 
         public override string[] ItemFullDescriptionParams => new string[]
         {
-            GetChance(cfgChanceHyperbolic).ToString()
+            ToPct(cfgChanceHyperbolic)
         };
 
         public override ItemTier Tier => ItemTier.Tier1;
@@ -137,11 +137,6 @@ namespace RiskOfBulletstormRewrite.Items.Common
             //{ LoadSkill("RoR2/DLC1/VoidSurvivor/ChargeMegaBlaster.asset"), Load("") },
             //{ LoadSkill("RoR2/DLC1/VoidSurvivor/FireCorruptDisk.asset"), Load("RoR2/DLC1/VoidSurvivor/VoidSurvivorTwinBlasterProjectile1.prefab") },
         };
-
-        public override void CreateConfig(ConfigFile config)
-        {
-            cfgChanceHyperbolic = config.Bind(ConfigCategory, Assets.cfgChanceIntegerKey, 0.15f, Assets.cfgChanceIntegerDesc);
-        }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
         {
@@ -517,7 +512,7 @@ localScale = new Vector3(1F, 1F, 1F)
             private void Inventory_onInventoryChanged()
             {
                 var itemCount = instance.GetCount(characterBody);
-                reductionPercentage = Util.ConvertAmplificationPercentageIntoReductionPercentage(cfgChanceHyperbolic.Value * itemCount);
+                reductionPercentage = Util.ConvertAmplificationPercentageIntoReductionPercentage(cfgChanceHyperbolic * itemCount);
             }
 
             public void OnDestroy()

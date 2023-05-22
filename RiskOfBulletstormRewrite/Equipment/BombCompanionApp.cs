@@ -16,14 +16,14 @@ namespace RiskOfBulletstormRewrite.Equipment
         // Add assets (model, idrs, sound)
         //
 
-        public static ConfigEntry<float> cfgRange;
-        public static ConfigEntry<float> cfgTarDamageMultiplier;
-        public static ConfigEntry<float> cfgJellyfishDamageMultiplier;
-        public static ConfigEntry<float> cfgVagrantDamageMultiplier;
-        public static ConfigEntry<float> cfgDunestriderDamageMultiplier;
+        public static float cfgRange = 75;
+        public static float cfgTarDamageMultiplier = 2;
+        public static float cfgJellyfishDamageMultiplier = 3;
+        public static float cfgVagrantDamageMultiplier = 1;
+        public static float cfgDunestriderDamageMultiplier = 1.5f;
 
-        public static ConfigEntry<float> cfgCooldown;
-        public override float Cooldown => cfgCooldown.Value;
+        public static float cfgCooldown;
+        public override float Cooldown => 30;
 
         public override string EquipmentName => "iBomb Companion App";
 
@@ -31,11 +31,11 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public override string[] EquipmentFullDescriptionParams => new string[]
         {
-            cfgRange.Value.ToString(),
-            GetChance(cfgTarDamageMultiplier),
-            GetChance(cfgJellyfishDamageMultiplier),
-            GetChance(cfgVagrantDamageMultiplier),
-            GetChance(cfgDunestriderDamageMultiplier)
+            cfgRange.ToString(),
+            ToPct(cfgTarDamageMultiplier),
+            ToPct(cfgJellyfishDamageMultiplier),
+            ToPct(cfgVagrantDamageMultiplier),
+            ToPct(cfgDunestriderDamageMultiplier)
         };
 
         public override GameObject EquipmentModel => LoadModel();
@@ -138,16 +138,6 @@ namespace RiskOfBulletstormRewrite.Equipment
                     projectile.AddComponent<IsExplosiveProjectile>();
                 }
             }
-        }
-
-        protected override void CreateConfig(ConfigFile config)
-        {
-            cfgCooldown = config.Bind(ConfigCategory, CooldownName, 30f, CooldownDescription);
-            cfgRange = config.Bind(ConfigCategory, "Range", 75f, "Radius of the activation");
-            cfgTarDamageMultiplier = config.Bind(ConfigCategory, "Tar-based Enemy Damage", 2f, "Percentage of your damage dealt against this enemy type.");
-            cfgJellyfishDamageMultiplier = config.Bind(ConfigCategory, "Jellyfish Damage", 3f, "Percentage of your damage dealt against this enemy type.");
-            cfgVagrantDamageMultiplier = config.Bind(ConfigCategory, "Wandering Vagrant Damage", 1f, "Percentage of your damage dealt against this enemy type.");
-            cfgDunestriderDamageMultiplier = config.Bind(ConfigCategory, "Clay Dunestrider Damage", 1.5f, "Percentage of your damage dealt against this enemy type.");
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
@@ -451,7 +441,7 @@ localScale = new Vector3(1F, 1F, 1F)
             {
                 Util.PlaySound("drone_attack_v2_03", slot.gameObject);
                 //HelfireController
-                Collider[] array = Physics.OverlapSphere(slot.characterBody.corePosition, cfgRange.Value, LayerIndex.entityPrecise.mask, QueryTriggerInteraction.Collide);
+                Collider[] array = Physics.OverlapSphere(slot.characterBody.corePosition, cfgRange, LayerIndex.entityPrecise.mask, QueryTriggerInteraction.Collide);
                 GameObject[] array2 = new GameObject[array.Length];
                 int count = 0;
                 for (int i = 0; i < array.Length; i++)
@@ -472,19 +462,19 @@ localScale = new Vector3(1F, 1F, 1F)
                             case "CLAYBRUISER_BODY_NAME":
                             case "CLAY_BODY_NAME":
                             case "CLAYGRENADIER_BODY_NAME":
-                                damageMultiplier = cfgTarDamageMultiplier.Value;
+                                damageMultiplier = cfgTarDamageMultiplier;
                                 break;
 
                             case "JELLYFISH_BODY_NAME":
-                                damageMultiplier = cfgJellyfishDamageMultiplier.Value;
+                                damageMultiplier = cfgJellyfishDamageMultiplier;
                                 break;
 
                             case "VAGRANT_BODY_NAME":
-                                damageMultiplier = cfgVagrantDamageMultiplier.Value;
+                                damageMultiplier = cfgVagrantDamageMultiplier;
                                 break;
 
                             case "CLAYBOSS_BODY_NAME":
-                                damageMultiplier = cfgDunestriderDamageMultiplier.Value;
+                                damageMultiplier = cfgDunestriderDamageMultiplier;
                                 break;
 
                             default:
@@ -514,7 +504,7 @@ localScale = new Vector3(1F, 1F, 1F)
                 EffectData effectData = new EffectData
                 {
                     origin = slot.characterBody.corePosition,
-                    scale = cfgRange.Value * 1.25f,
+                    scale = cfgRange * 1.25f,
                 };
                 EffectManager.SpawnEffect(
                     ExplosionEffect,
@@ -531,7 +521,7 @@ localScale = new Vector3(1F, 1F, 1F)
         {
             Vector3 vector = characterBody ? characterBody.corePosition : Vector3.zero;
             TeamIndex teamIndex = characterBody ? characterBody.teamComponent.teamIndex : TeamIndex.None;
-            float num = cfgRange.Value * cfgRange.Value;
+            float num = cfgRange * cfgRange;
             bool result = false;
             List<IsExplosiveProjectile> instancesList = InstanceTracker.GetInstancesList<IsExplosiveProjectile>();
             List<IsExplosiveProjectile> list = new List<IsExplosiveProjectile>();

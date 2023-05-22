@@ -8,8 +8,8 @@ namespace RiskOfBulletstormRewrite.Items
 {
     public class RingMiserlyProtection : ItemBase<RingMiserlyProtection>
     {
-        public static ConfigEntry<float> cfgMaxHealthPctAdded;
-        public static ConfigEntry<float> cfgMaxHealthPctAddedStack;
+        public static float cfgMaxHealthPctAdded = 1;
+        public static float cfgMaxHealthPctAddedStack = 0.5f;
 
         public override string ItemName => "Ring of Miserly Protection";
 
@@ -17,8 +17,8 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override string[] ItemFullDescriptionParams => new string[]
         {
-            Utils.ItemHelpers.Pct(cfgMaxHealthPctAdded.Value),
-            Utils.ItemHelpers.Pct(cfgMaxHealthPctAddedStack.Value)
+            Utils.ItemHelpers.Pct(cfgMaxHealthPctAdded),
+            Utils.ItemHelpers.Pct(cfgMaxHealthPctAddedStack)
         };
 
         public override ItemTier Tier => ItemTier.Lunar;
@@ -42,12 +42,6 @@ namespace RiskOfBulletstormRewrite.Items
             Hooks();
         }
 
-        public override void CreateConfig(ConfigFile config)
-        {
-            cfgMaxHealthPctAdded = config.Bind(ConfigCategory, Assets.cfgMaxHealthAdditiveMultKey, 1f, Assets.cfgMaxHealthAdditiveMultDesc);
-            cfgMaxHealthPctAddedStack = config.Bind(ConfigCategory, Assets.cfgMaxHealthAdditiveMultPerStackKey, 0.5f, Assets.cfgMaxHealthAdditiveMultPerStackDesc);
-        }
-
         public override ItemDisplayRuleDict CreateItemDisplayRules()
         {
             return new ItemDisplayRuleDict();
@@ -62,7 +56,7 @@ namespace RiskOfBulletstormRewrite.Items
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             var invCount = GetCount(sender);
-            if (invCount > 0) args.healthMultAdd += cfgMaxHealthPctAdded.Value + cfgMaxHealthPctAddedStack.Value * (invCount - 1);
+            if (invCount > 0) args.healthMultAdd += cfgMaxHealthPctAdded + cfgMaxHealthPctAddedStack * (invCount - 1);
         }
 
         private void ShatterRing(bool gaveItem, Interactor interactor)

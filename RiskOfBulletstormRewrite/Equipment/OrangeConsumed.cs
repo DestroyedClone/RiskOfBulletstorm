@@ -7,10 +7,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 {
     public class OrangeConsumed : EquipmentBase<OrangeConsumed>
     {
-        //public static ConfigEntry<float> cfg;
-        public static ConfigEntry<float> cfgCooldown;
-
-        public override float Cooldown => cfgCooldown.Value;
+        public override float Cooldown => 30;
 
         public override string EquipmentName => "Orange (Consumed)";
 
@@ -43,7 +40,6 @@ namespace RiskOfBulletstormRewrite.Equipment
         protected override void CreateConfig(ConfigFile config)
         {
             base.CreateConfig(config);
-            cfgCooldown = config.Bind(ConfigCategory, CooldownName, 5f, CooldownDescription);
         }
 
         protected override bool ActivateEquipment(EquipmentSlot slot)

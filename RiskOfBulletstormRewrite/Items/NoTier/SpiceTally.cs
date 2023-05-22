@@ -15,12 +15,12 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override string[] ItemFullDescriptionParams => new string[]
         {
-            GetChance(Spice2.cfgStatDamage),
-            GetChance(Spice2.cfgStatDamageStack),
-            GetChance(Spice2.cfgStatAccuracy),
-            GetChance(Spice2.cfgStatAccuracyStack),
-            Spice2.cfgStatRORCurse.Value.ToString(),
-            Spice2.cfgStatRORCurseStack.Value.ToString(),
+            ToPct(Spice2.cfgStatDamage),
+            ToPct(Spice2.cfgStatDamageStack),
+            ToPct(Spice2.cfgStatAccuracy),
+            ToPct(Spice2.cfgStatAccuracyStack),
+            Spice2.cfgStatRORCurse.ToString(),
+            Spice2.cfgStatRORCurseStack.ToString(),
         };
 
         public override ItemTier Tier => ItemTier.NoTier;

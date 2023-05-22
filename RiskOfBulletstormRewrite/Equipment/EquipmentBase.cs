@@ -121,7 +121,11 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public string GetChance(ConfigEntry<float> configEntry)
         {
-            return (configEntry.Value * 100).ToString();
+            return ToPct(configEntry.Value);
+        }
+        public string ToPct(float value)
+        {
+            return (value * 100).ToString();
         }
 
         public abstract ItemDisplayRuleDict CreateItemDisplayRules();

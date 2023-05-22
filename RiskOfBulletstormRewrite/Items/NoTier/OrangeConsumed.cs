@@ -14,8 +14,8 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override string[] ItemFullDescriptionParams => new string[]
         {
-            GetChance(Equipment.Orange.cfgMaxHealthIncrease),
-            GetChance(Equipment.Orange.cfgChargeRateReduction)
+            ToPct(Equipment.Orange.cfgMaxHealthIncrease),
+            ToPct(Equipment.Orange.cfgChargeRateReduction)
         };
 
         public override ItemTier Tier => ItemTier.NoTier;
@@ -51,7 +51,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         private float ReduceCooldowns(On.RoR2.Inventory.orig_CalculateEquipmentCooldownScale orig, Inventory self)
         {
-            return orig(self) * Mathf.Pow(1f - Equipment.Orange.cfgChargeRateReduction.Value, self.GetItemCount(ItemDef));
+            return orig(self) * Mathf.Pow(1f - Equipment.Orange.cfgChargeRateReduction, self.GetItemCount(ItemDef));
         }
 
         private void Orange_StatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
@@ -61,7 +61,7 @@ namespace RiskOfBulletstormRewrite.Items
                 var itemCount = GetCount(sender);
                 if (itemCount > 0)
                 {
-                    args.baseHealthAdd += Equipment.Orange.cfgMaxHealthIncrease.Value * itemCount;
+                    args.baseHealthAdd += Equipment.Orange.cfgMaxHealthIncrease * itemCount;
                 }
             }
         }

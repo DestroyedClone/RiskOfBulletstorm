@@ -9,9 +9,9 @@ namespace RiskOfBulletstormRewrite.Items
 {
     public class Antibody : ItemBase<Antibody>
     {
-        public static ConfigEntry<float> cfgChance;
-        public static ConfigEntry<float> cfgMultiplier;
-        public static ConfigEntry<float> cfgMultiplierPerStack;
+        public static float cfgChance = 25;
+        public static float cfgMultiplier = 0.33f;
+        public static float cfgMultiplierPerStack = 0.11f;
 
         public override string ItemName => "Antibody";
 
@@ -19,9 +19,9 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override string[] ItemFullDescriptionParams => new string[]
         {
-            cfgChance.Value.ToString(),
-            GetChance(cfgMultiplier),
-            GetChance(cfgMultiplierPerStack)
+            cfgChance.ToString(),
+            ToPct(cfgMultiplier),
+            ToPct(cfgMultiplierPerStack)
         };
 
         public override ItemTier Tier => ItemTier.Tier1;
@@ -41,13 +41,6 @@ namespace RiskOfBulletstormRewrite.Items
             CreateLang();
             CreateItem();
             Hooks();
-        }
-
-        public override void CreateConfig(ConfigFile config)
-        {
-            cfgChance = config.Bind(ConfigCategory, Assets.cfgChanceIntegerKey, 25f, Assets.cfgChanceIntegerDesc);
-            cfgMultiplier = config.Bind(ConfigCategory, Assets.cfgMultiplierKey, 0.33f, Assets.cfgAntibodyHealMultiplierPctDesc);
-            cfgMultiplierPerStack = config.Bind(ConfigCategory, Assets.cfgMultiplierPerStackKey, 0.11f, Assets.cfgAntibodyHealMultiplierPctPerStackDesc);
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
@@ -350,10 +343,10 @@ localScale = new Vector3(1F, 1F, 1F)
             {
                 if (GetCount(self.body) > 0)
                 {
-                    if (Util.CheckRoll(cfgChance.Value))
+                    if (Util.CheckRoll(cfgChance))
                     {
                         var itemCount = self.body.inventory.GetItemCount(ItemDef);
-                        var multiplier = 1f + cfgMultiplier.Value + cfgMultiplierPerStack.Value * (itemCount - 1);
+                        var multiplier = 1f + cfgMultiplier + cfgMultiplierPerStack * (itemCount - 1);
                         amount *= multiplier;
                     }
                 }

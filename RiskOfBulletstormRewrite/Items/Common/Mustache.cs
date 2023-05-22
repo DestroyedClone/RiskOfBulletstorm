@@ -9,9 +9,9 @@ namespace RiskOfBulletstormRewrite.Items
 {
     public class Mustache : ItemBase<Mustache>
     {
-        public static ConfigEntry<float> cfgRegenAmount;
-        public static ConfigEntry<float> cfgRegenAmountPerStack;
-        public static ConfigEntry<float> cfgDuration;
+        public static float cfgRegenAmount = 2;
+        public static float cfgRegenAmountPerStack = 1;
+        public static float cfgDuration = 8;
 
         public override string ItemName => "Mustache";
 
@@ -19,9 +19,9 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override string[] ItemFullDescriptionParams => new string[]
         {
-            cfgRegenAmount.Value.ToString(),
-            cfgRegenAmountPerStack.Value.ToString(),
-            cfgDuration.Value.ToString()
+            cfgRegenAmount.ToString(),
+            cfgRegenAmountPerStack.ToString(),
+            cfgDuration.ToString()
         };
 
         public override ItemTier Tier => ItemTier.Tier1;
@@ -38,13 +38,6 @@ namespace RiskOfBulletstormRewrite.Items
             CreateLang();
             CreateItem();
             Hooks();
-        }
-
-        public override void CreateConfig(ConfigFile config)
-        {
-            cfgRegenAmount = config.Bind(ConfigCategory, Assets.cfgRegenKey, 2f, Assets.cfgRegenIntegerDesc);
-            cfgRegenAmountPerStack = config.Bind(ConfigCategory, Assets.cfgRegenKeyPerStack, 1f, Assets.cfgRegenIntegerPerStackDesc);
-            cfgDuration = config.Bind(ConfigCategory, Assets.cfgDurationKey, 8f, Assets.cfgDurationDesc);
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
@@ -376,7 +369,7 @@ localScale = new Vector3(1F, 1F, 1F)
         {
             if (characterBody.healthComponent)
             {
-                characterBody.AddTimedBuff(Buffs.MustacheBuff, cfgDuration.Value);
+                characterBody.AddTimedBuff(Buffs.MustacheBuff, cfgDuration);
             }
         }
     }

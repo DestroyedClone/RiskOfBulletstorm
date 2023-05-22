@@ -11,11 +11,11 @@ namespace RiskOfBulletstormRewrite.Items
 {
     public class DodgeRollUtilityReplacement : ItemBase<DodgeRollUtilityReplacement>
     {
-        public static ConfigEntry<float> cfgDamageVulnerabilityMultiplier;
-        public static ConfigEntry<float> cfgDamageVulnerabilityMultiplierPerStack;
-        public static ConfigEntry<float> cfgDamageVulnerabilityDuration;
-        public static ConfigEntry<float> cfgDamageVulnerabilityDurationDecreasePerStack;
-        public static ConfigEntry<float> cfgDamageVulnerabilityDurationMinimum;
+        public static float cfgDamageVulnerabilityMultiplier = .2f;
+        public static float cfgDamageVulnerabilityMultiplierPerStack = .1f;
+        public static float cfgDamageVulnerabilityDuration = 2;
+        public static float cfgDamageVulnerabilityDurationDecreasePerStack = -.1f;
+        public static float cfgDamageVulnerabilityDurationMinimum = .5f;
 
         public override string ItemName => "DodgeRollUtilityReplacement";
 
@@ -51,19 +51,19 @@ namespace RiskOfBulletstormRewrite.Items
 
         public string[] RollSkillDefParams => new string[]
         {
-            GetChance(cfgDamageVulnerabilityMultiplier),
-            GetChance(cfgDamageVulnerabilityMultiplierPerStack),
-            cfgDamageVulnerabilityDuration.Value.ToString(),
-            cfgDamageVulnerabilityDurationDecreasePerStack.Value.ToString(),
-            cfgDamageVulnerabilityDurationMinimum.Value.ToString()
+            ToPct(cfgDamageVulnerabilityMultiplier),
+            ToPct(cfgDamageVulnerabilityMultiplierPerStack),
+            cfgDamageVulnerabilityDuration.ToString(),
+            cfgDamageVulnerabilityDurationDecreasePerStack.ToString(),
+            cfgDamageVulnerabilityDurationMinimum.ToString()
         };
 
         //todo fix this??? kinda cringe
         public static float GetDuration(int stacks)
         {
-            if (stacks <= 1) return cfgDamageVulnerabilityDuration.Value;
-            return cfgDamageVulnerabilityDurationMinimum.Value
-            + ((cfgDamageVulnerabilityDuration.Value - cfgDamageVulnerabilityDurationMinimum.Value) / (1 + cfgDamageVulnerabilityDurationDecreasePerStack.Value * stacks));
+            if (stacks <= 1) return cfgDamageVulnerabilityDuration;
+            return cfgDamageVulnerabilityDurationMinimum
+            + ((cfgDamageVulnerabilityDuration - cfgDamageVulnerabilityDurationMinimum) / (1 + cfgDamageVulnerabilityDurationDecreasePerStack * stacks));
         }
 
         protected override void CreateLang()
@@ -111,15 +111,6 @@ namespace RiskOfBulletstormRewrite.Items
             //HG.ArrayUtils.ArrayAppend(ref Main.ContentPack.entityStateTypes, rollSkillDef.activationState);
             ContentAddition.AddSkillDef(rollSkillDef);
             ContentAddition.AddEntityState<DodgeRollState>(out bool wasAdded);
-        }
-
-        public override void CreateConfig(ConfigFile config)
-        {
-            cfgDamageVulnerabilityMultiplier = config.Bind(ConfigCategory, "Damage Vulnerability Multiplier", .2f, "");
-            cfgDamageVulnerabilityMultiplierPerStack = config.Bind(ConfigCategory, "Damage Vulnerability Multiplier Per Stack", .1f, "");
-            cfgDamageVulnerabilityDuration = config.Bind(ConfigCategory, "Damage Vulnerability Duration", 2f, "");
-            cfgDamageVulnerabilityDurationDecreasePerStack = config.Bind(ConfigCategory, "Damage Vulnerability Duration Decrease Per Stack", -0.1f);
-            cfgDamageVulnerabilityDurationMinimum = config.Bind(ConfigCategory, "Damage Vulnerability Duration Minimum", 0.5f);
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()

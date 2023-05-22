@@ -8,12 +8,11 @@ namespace RiskOfBulletstormRewrite.Equipment
 {
     public class Orange : EquipmentBase<Orange>
     {
-        public static ConfigEntry<float> cfgChargeRateReduction;
+        public static float cfgChargeRateReduction = 0.1f;
 
-        public static ConfigEntry<float> cfgMaxHealthIncrease;
-        public static ConfigEntry<float> cfgHealPercentage;
-        public static ConfigEntry<float> cfgCooldown;
-        public override float Cooldown => cfgCooldown.Value;
+        public static float cfgMaxHealthIncrease = 1;
+        public static float cfgHealPercentage = .1f;
+        public override float Cooldown => 25f;
 
         public override string EquipmentName => "Orange";
 
@@ -21,9 +20,9 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public override string[] EquipmentFullDescriptionParams => new string[]
         {
-            GetChance(cfgMaxHealthIncrease),
-            GetChance(cfgHealPercentage),
-            GetChance(cfgChargeRateReduction)
+            ToPct(cfgMaxHealthIncrease),
+            ToPct(cfgHealPercentage),
+            ToPct(cfgChargeRateReduction)
         };
 
         public override GameObject EquipmentModel => LoadModel();
@@ -37,14 +36,6 @@ namespace RiskOfBulletstormRewrite.Equipment
             CreateLang();
             CreateEquipment();
             Hooks();
-        }
-
-        protected override void CreateConfig(ConfigFile config)
-        {
-            cfgCooldown = config.Bind(ConfigCategory, CooldownName, 25f, CooldownDescription);
-            cfgMaxHealthIncrease = config.Bind(ConfigCategory, "Max Health Increase", 0.1f);
-            cfgHealPercentage = config.Bind(ConfigCategory, "Heal Percentage", 1f);
-            cfgChargeRateReduction = config.Bind(ConfigCategory, "Equipment Charge Rate Reduction", 0.1f);
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
@@ -347,12 +338,8 @@ localScale = new Vector3(1F, 1F, 1F)
             };
             effectData.SetNetworkedObjectReference(slot.gameObject);
             EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/FruitHealEffect"), effectData, true);
-            slot.healthComponent.HealFraction(cfgHealPercentage.Value, default);
+            slot.healthComponent.HealFraction(cfgHealPercentage, default);
             return true;
-        }
-
-        public override void Hooks()
-        {
         }
     }
 }

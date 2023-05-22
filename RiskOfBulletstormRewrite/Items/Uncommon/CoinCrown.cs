@@ -19,8 +19,8 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override string[] ItemFullDescriptionParams => new string[]
         {
-            GetChance(cfgCashMultiplier),
-            GetChance(cfgCashMultiplierPerStack)
+            ToPct(cashMultiplier),
+            ToPct(cashMultiplierPerStack)
         };
 
         public override Sprite ItemIcon => LoadSprite();
@@ -32,8 +32,8 @@ namespace RiskOfBulletstormRewrite.Items
             ItemTag.Utility
         };
 
-        public static ConfigEntry<float> cfgCashMultiplier;
-        public static ConfigEntry<float> cfgCashMultiplierPerStack;
+        public static float cashMultiplier = 0.15f;
+        public static float cashMultiplierPerStack = 0.05f;
 
         public override void Init(ConfigFile config)
         {
@@ -41,12 +41,6 @@ namespace RiskOfBulletstormRewrite.Items
             CreateLang();
             CreateItem();
             Hooks();
-        }
-
-        public override void CreateConfig(ConfigFile config)
-        {
-            cfgCashMultiplier = config.Bind(ConfigCategory, Assets.cfgCoinCrownKey, 0.15f, Assets.cfgCoinCrownDesc);
-            cfgCashMultiplierPerStack = config.Bind(ConfigCategory, Assets.cfgCoinCrownPerStackKey, 0.05f, Assets.cfgCoinCrownPerStackDesc);
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
@@ -355,7 +349,7 @@ localScale = new Vector3(1F, 1F, 1F)
                 var itemCount = GetCount(pcmc.master);
                 if (itemCount > 0)
                 {
-                    uint moneyToGive = (uint)(pcmc.master.money * (cfgCashMultiplier.Value + cfgCashMultiplierPerStack.Value * (itemCount - 1)));
+                    uint moneyToGive = (uint)(pcmc.master.money * (cashMultiplier + cashMultiplierPerStack * (itemCount - 1)));
                     //Chat.AddMessage("Gave money: " + moneyToGive);
                     pcmc.master.GiveMoney(moneyToGive);
                 }

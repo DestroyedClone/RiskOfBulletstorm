@@ -9,8 +9,8 @@ namespace RiskOfBulletstormRewrite.Items
 {
     public class AlphaBullets : ItemBase<AlphaBullets>
     {
-        public static ConfigEntry<float> cfgDamage;
-        public static ConfigEntry<float> cfgDamageStack;
+        public static float damage = 0.05f;
+        public static float damagePerStack = 0.025f;
 
         public override string ItemName => "Alpha Bullets";
 
@@ -18,8 +18,8 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override string[] ItemFullDescriptionParams => new string[]
         {
-            GetChance(cfgDamage),
-            GetChance(cfgDamageStack)
+            ToPct(damage),
+            ToPct(damagePerStack)
         };
 
         public override ItemTier Tier => ItemTier.Tier2;
@@ -39,12 +39,6 @@ namespace RiskOfBulletstormRewrite.Items
             CreateLang();
             CreateItem();
             Hooks();
-        }
-
-        public override void CreateConfig(ConfigFile config)
-        {
-            cfgDamage = config.Bind(ConfigCategory, Assets.cfgDamageKey, 0.05f, "");
-            cfgDamageStack = config.Bind(ConfigCategory, Assets.cfgDamagePerStackKey, 0.025f, "");
         }
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
@@ -74,7 +68,7 @@ namespace RiskOfBulletstormRewrite.Items
                 var itemCount = GetCount(sender);
                 if (buffCount > 0 && itemCount > 0)
                 {
-                    var multiplier = GetStack(cfgDamage, cfgDamageStack, itemCount);
+                    var multiplier = GetStack(damage, damagePerStack, itemCount);
 
                     args.damageMultAdd += buffCount * multiplier;
                 }
