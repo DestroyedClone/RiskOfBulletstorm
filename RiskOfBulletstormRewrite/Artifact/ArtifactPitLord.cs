@@ -54,31 +54,21 @@ namespace RiskOfBulletstormRewrite.Artifact
                 characterMaster.inventory?.GiveItem(RoR2Content.Items.TeleportWhenOob);
         }
 
-
-        public static bool CanCharacterBodyTakeFallDamage(CharacterBody body)
-        {
-            return !body.bodyFlags.HasFlag(CharacterBody.BodyFlags.IgnoreFallDamage);
-        }
-
         private void AllNoFallDamage(On.RoR2.MapZone.orig_TryZoneStart orig, MapZone self, Collider other)
         {
-            CharacterBody body = other.GetComponent<CharacterBody>();
-            if (body)
+            if (other.TryGetComponent(out CharacterBody body))
             {
-                bool canTakeFallDamage = CanCharacterBodyTakeFallDamage(body);
-                if (canTakeFallDamage) body.bodyFlags |= CharacterBody.BodyFlags.IgnoreFallDamage;
-
-                orig(self, other);
-
-                if (canTakeFallDamage) body.bodyFlags &= ~CharacterBody.BodyFlags.IgnoreFallDamage;
-                /* if (body.master && body.master.TryGetComponent<RoR2.CharacterAI.BaseAI>(out RoR2.CharacterAI.BaseAI baseAI))
+                if (!body.bodyFlags.HasFlag(CharacterBody.BodyFlags.IgnoreFallDamage))
                 {
-                    if (baseAI.currentEnemy == null)
-                        baseAI.ForceAcquireNearestEnemyIfNoCurrentEnemy();
-                } */
-                return;
+                    body.bodyFlags |= CharacterBody.BodyFlags.IgnoreFallDamage;
+                    orig(self, other);
+                    body.bodyFlags &= ~CharacterBody.BodyFlags.IgnoreFallDamage;
+                    return;
+                }
             }
+
             orig(self, other);
         }
+
     }
 }

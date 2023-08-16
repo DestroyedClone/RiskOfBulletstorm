@@ -501,7 +501,7 @@ localScale = new Vector3(1F, 1F, 1F)
                 //DefenseMatrixOn
                 DeleteNearbyProjectile(slot.characterBody);
 
-                EffectData effectData = new EffectData
+                /*EffectData effectData = new EffectData
                 {
                     origin = slot.characterBody.corePosition,
                     scale = cfgRange * 1.25f,
@@ -509,9 +509,9 @@ localScale = new Vector3(1F, 1F, 1F)
                 EffectManager.SpawnEffect(
                     ExplosionEffect,
                     effectData,
-                    true);
+                    true);*/
 
-                slot.subcooldownTimer += 2.5f;
+                slot.subcooldownTimer += 0.5f;
                 return true;
             }
             return false;

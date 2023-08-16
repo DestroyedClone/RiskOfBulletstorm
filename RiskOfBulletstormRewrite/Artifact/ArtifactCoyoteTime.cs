@@ -27,7 +27,7 @@ namespace RiskOfBulletstormRewrite.Artifact
         public override void CreateConfig(ConfigFile config)
         {
             base.CreateConfig(config);
-            cfgWindowOfTimeForActivation = config.Bind(ConfigCategory, "Time Window", 0.2f, "The amount of time in seconds that the character can walk off a platform before they can no longer jump.");
+            cfgWindowOfTimeForActivation = config.Bind(ConfigCategory, "Time Window", 0.3f, "The amount of time in seconds that the character can walk off a platform before they can no longer jump.");
         }
 
         public override void Hooks()
@@ -63,9 +63,11 @@ namespace RiskOfBulletstormRewrite.Artifact
                 self.jumpCount = initJumpCount;
                 if (!self.gameObject.TryGetComponent(out RiskOfBulletstorm_CoyoteTimeController _))
                 {
-                    if (EntityStateMachine.FindByCustomName(self.gameObject, "Body")?.IsInMainState() == true)
+                    EntityStateMachine entityStateMachine = EntityStateMachine.FindByCustomName(self.gameObject, "Body");
+                    if (entityStateMachine && entityStateMachine.IsInMainState())
                     {
                         RiskOfBulletstorm_CoyoteTimeController comp = self.gameObject.AddComponent<RiskOfBulletstorm_CoyoteTimeController>();
+                        comp.entityStateMachine = entityStateMachine;
                         comp.characterMotor = self;
                         comp.jumpCountOnStart = initJumpCount;
                     }
@@ -75,10 +77,11 @@ namespace RiskOfBulletstormRewrite.Artifact
 
         private class RiskOfBulletstorm_CoyoteTimeController : MonoBehaviour
         {
+            private float Duration => cfgWindowOfTimeForActivation.Value;
             public CharacterMotor characterMotor;
             public int jumpCountOnStart = 0;
             private float age = 0;
-            private float Duration => cfgWindowOfTimeForActivation.Value;
+            public EntityStateMachine entityStateMachine;
 
             public void Awake()
             {
@@ -92,7 +95,7 @@ namespace RiskOfBulletstormRewrite.Artifact
             {
                 age += Time.fixedDeltaTime;
 
-                if (characterMotor.isGrounded || age >= Duration)
+                if (characterMotor.isGrounded || age >= Duration)// || !entityStateMachine.IsInMainState())
                 {
                     ConsumeJump();
                     Destroy(this);
