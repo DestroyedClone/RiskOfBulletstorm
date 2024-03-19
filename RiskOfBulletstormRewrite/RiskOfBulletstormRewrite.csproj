@@ -18,8 +18,11 @@
   <ItemGroup>
     <Compile Remove="Artifact\ArtifactBossRoom.cs" />
     <Compile Remove="Artifact\ArtifactChallengeMode.cs" />
+    <Compile Remove="Artifact\ArtifactCoyoteTime.cs" />
     <Compile Remove="Artifact\ArtifactEquipmentRecharge.cs" />
+    <Compile Remove="Artifact\ArtifactGungeonSpoof.cs" />
     <Compile Remove="Artifact\ArtifactPitLordPlayer.cs" />
+    <Compile Remove="Artifact\ArtifactUpSpeedOOC.cs" />
     <Compile Remove="Artifact\ExampleArtifact.cs" />
     <Compile Remove="Controllers\BabyMimicBodyBehavior.cs" />
     <Compile Remove="Controllers\BulletQuestController.cs" />
@@ -49,6 +52,7 @@
     <Compile Remove="Items\ExampleItem.cs" />
     <Compile Remove="Items\Boss\MasterRounds\MasterRoundI.cs" />
     <Compile Remove="Items\Legendary\BabyGoodMimic.cs" />
+    <Compile Remove="Items\Legendary\Backpack.cs" />
     <Compile Remove="Items\Legendary\Clone.cs" />
     <Compile Remove="Items\Legendary\Clone_old.cs" />
     <Compile Remove="Items\Legendary\RingTriggers.cs" />
@@ -65,20 +69,17 @@
     <Compile Remove="Items\VoidLegendary\CloneVoid.cs" />
     <Compile Remove="Modules\Materials.cs" />
     <Compile Remove="Modules\Prefabs.cs" />
+    <Compile Remove="WikiHelp\Wiki.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="riskofbulletstormbundle" />
     <None Remove="riskofgungeonassets" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="riskofbulletstormbundle" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Controllers\Pasts\" />
     <Folder Include="Items\Boss\MasterRounds\" />
+    <Folder Include="Items\Legendary\" />
     <Folder Include="Items\VoidBoss\" />
     <Folder Include="Items\VoidLegendary\" />
     <Folder Include="Items\VoidUncommon\" />

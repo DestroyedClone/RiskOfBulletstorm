@@ -2,6 +2,7 @@
 using R2API;
 using RiskOfBulletstormRewrite.Utils;
 using RoR2;
+using RoR2.Items;
 using RoR2.UI;
 using System.Text;
 using UnityEngine;
@@ -358,7 +359,7 @@ localScale = new Vector3(1F, 1F, 1F)
             CharacterMaster.onStartGlobal += GiveComponent;
             //On.RoR2.UI.EquipmentIcon.Update += EquipmentIcon_Update;
             On.RoR2.BodyCatalog.Init += GetBodyIndex;
-            On.RoR2.UI.EquipmentIcon.Update += ShowCurrentSlot;
+            //On.RoR2.UI.EquipmentIcon.Update += ShowCurrentSlot;
 
             if (cfgToolbotSwapsModded.Value)
             {
@@ -438,6 +439,52 @@ localScale = new Vector3(1F, 1F, 1F)
             return value;
         }
 
+        /*
+        public class RBSBackpackComponent : BaseItemBodyBehavior
+        {
+            [ItemDefAssociation(useOnClient = true, useOnServer = true)]
+            public static ItemDef GetItemDef() => instance.ItemDef;
+
+            public LocalUser localUser;
+            public CharacterMaster characterMaster;
+            public Inventory inventory;
+            private uint itemCount = 0U;
+            private byte naturalExtraSlotCount = 0;
+            public byte selectableSlot = 0;
+            public byte lastEquipmentSlot = 0;
+
+            public void OnEnable()
+            {
+                if (!body.isPlayerControlled)
+                {
+                    enabled = false;
+                    return;
+                }
+                localUser = LocalUserManager.GetFirstLocalUser();
+                characterMaster = body.master;
+                inventory = body.inventory;
+
+                if (body.bodyIndex == ToolbotBodyIndex)
+                    naturalExtraSlotCount = 1;
+            }
+
+            public void OnDisable()
+            {
+            }
+
+            private void Inventory_onInventoryChanged()
+            {
+                UpdateCount();
+                if (inventory.activeEquipmentSlot > selectableSlot)
+                    SetActiveEquipmentSlot(selectableSlot);
+            }
+            public void UpdateCount()
+            {
+                itemCount = (byte)inventory.GetItemCount(Backpack.instance.ItemDef);
+                selectableSlot = (byte)(itemCount + naturalExtraSlotCount);
+            }
+        }*/
+
         public class BackpackComponent : MonoBehaviour
         {
             public LocalUser localUser;
@@ -516,7 +563,7 @@ localScale = new Vector3(1F, 1F, 1F)
 
             public void Update()
             {
-                if (!localUser.isUIFocused) //TY KingEnderBrine for the help
+                if (localUser != null && !localUser.isUIFocused) //TY KingEnderBrine for the help
                 {
                     if (inventory && inventory.GetItemCount(instance.ItemDef) > 0)
                     {

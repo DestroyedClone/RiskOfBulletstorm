@@ -13,6 +13,7 @@ namespace RiskOfBulletstormRewrite
         //public static ConfigEntry<NotificationMod> cfgEnableBreachNotifications;
         //public static ConfigEntry<bool> cfgDropEquipment;
         public static ConfigEntry<bool> cfgCanStealFromNewt;
+        //public static ConfigEntry<bool> cfgDropEquipmentFromInaccesibleSlots;
 
         public enum NotificationMod
         {
@@ -44,6 +45,7 @@ namespace RiskOfBulletstormRewrite
                 SceneManager.sceneLoaded += SceneManager_sceneLoaded;
                 SceneManager.sceneUnloaded += SceneManager_sceneUnloaded;
             }
+            //cfgDropEquipmentFromInaccesibleSlots = config.Bind(category, "Drop Inaccessible Equipment Slots", true, "If true, then any items that are in equipment slots that are inaccessible will be dropped.");
             //switch (cfgEnableBreachNotifications.Value)
             //{
             //    case NotificationMod.disable:

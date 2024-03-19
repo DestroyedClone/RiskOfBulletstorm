@@ -86,9 +86,9 @@ namespace RiskOfBulletstormRewrite
                 Utils.ItemHelpers.Pct(DodgeRollUtilityReplacement.cfgDamageVulnerabilityMultiplier),
                 Utils.ItemHelpers.Pct(DodgeRollUtilityReplacement.cfgDamageVulnerabilityMultiplierPerStack)
                 });
-                RegisterBuffInfo(Buffs.ArtifactSpeedUpBuff,
+                /*RegisterBuffInfo(Buffs.ArtifactSpeedUpBuff,
                     "ARTIFACTSPEEDUP",
-                    new string[] { ArtifactUpSpeedOOC.moveSpeedAdditiveMultiplier.ToString() });
+                    new string[] { ArtifactUpSpeedOOC.moveSpeedAdditiveMultiplier.ToString() });*/
             }
 
             [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]

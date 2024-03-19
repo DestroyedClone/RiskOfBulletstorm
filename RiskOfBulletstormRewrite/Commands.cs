@@ -66,35 +66,37 @@ namespace RiskOfBulletstormRewrite
             Debug.Log(sb.ToString());
             HG.StringBuilderPool.ReturnStringBuilder(sb);
         }
-
-
+        /*
         [ConCommand(commandName = "rbs_backpacksetslot",
         flags = ConVarFlags.ExecuteOnServer,
         helpText = "rbs_backpacksetslot index - Sets your equipment slot to the selected slot.")]
         public static void CCBackpackSetSlot(ConCommandArgs args)
         {
-            int? index = args.TryGetArgInt(0);
-            if (index.HasValue)
+            if (!Run.instance)
             {
-                if (args.senderMaster)
-                {
-                    if (args.senderMaster.TryGetComponent(out Backpack.BackpackComponent backpackComponent))
-                    {
-                        //var sb = HG.StringBuilderPool.RentStringBuilder();
-                        if (index > backpackComponent.selectableSlot)
-                        {
-                            index = backpackComponent.selectableSlot;
-                        }
-                        backpackComponent.SetActiveEquipmentSlot((byte)index);
-                    }
-                } else
-                {
-                    Debug.LogError("No character master found!");
-                }
+                Debug.LogWarning("Can't be used outside of a run!");
+                return;
             }
-            else
+            args.CheckArgumentCount(1);
+            int? index = args.TryGetArgInt(0);
+            if (!index.HasValue)
             {
                 Debug.LogError("Couldn't parse the index!");
+                return;
+            }
+            if (!args.senderMaster)
+            {
+                Debug.LogError("No character master found!");
+                return;
+            }
+            if (args.senderMaster.TryGetComponent(out Backpack.BackpackComponent backpackComponent))
+            {
+                //var sb = HG.StringBuilderPool.RentStringBuilder();
+                if (index > backpackComponent.selectableSlot)
+                {
+                    index = backpackComponent.selectableSlot;
+                }
+                backpackComponent.SetActiveEquipmentSlot((byte)index);
             }
         }
 
@@ -143,6 +145,6 @@ namespace RiskOfBulletstormRewrite
             {
                 Debug.LogError("No character master found!");
             }
-        }
+        }*/
     }
 }

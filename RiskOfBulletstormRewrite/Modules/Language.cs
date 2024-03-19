@@ -137,10 +137,11 @@ namespace RiskOfBulletstormRewrite.Modules
                         } */
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
                     Main._logger.LogError($"Failed to load replacement token {replacementToken.assignedToken}"
                     + $"Params: {replacementToken.args.ToString()}");
+                    Main._logger.LogError(ex.ToString());
                 }
             }
         }

@@ -1,4 +1,5 @@
 ﻿using RoR2;
+using System;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -115,6 +116,18 @@ namespace RiskOfBulletstormRewrite.Modules
 
         //the bundle to load assets from
         public static AssetBundle mainAssetBundle;
+        public const string bundleName = "riskofbulletstormbundle";
+        public const string assetBundleFolder = "AssetBundles";
+
+        public static string AssetBundlePath
+        {
+            get
+            {
+                //This returns the path to your assetbundle assuming said bundle is on the same folder as your DLL. If you have your bundle in a folder, you can uncomment the statement below this one.
+                // return System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Main.PInfo.Location), bundleName);
+                return System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Main.pluginInfo.Location), assetBundleFolder, bundleName);
+            }
+        }
 
         public static CostTypeDef stealCostTypeDef;
 
@@ -139,6 +152,11 @@ namespace RiskOfBulletstormRewrite.Modules
             //CreateCostTypeDefs();
         }
 
+        private static void PopulateAssets()
+        {
+            mainAssetBundle = AssetBundle.LoadFromFile(AssetBundlePath);
+        }
+
         public static void CreateCostTypeDefs()
         {
             stealCostTypeDef = new CostTypeDef()
@@ -148,17 +166,6 @@ namespace RiskOfBulletstormRewrite.Modules
                 //costStringStyle =
                 name = "RBS_STEALCOSTTYPEDEF"
             };
-        }
-
-        public static void PopulateAssets()
-        {
-            if (mainAssetBundle == null)
-            {
-                using (var assetStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("RiskOfBulletstormRewrite.riskofbulletstormbundle"))
-                {
-                    mainAssetBundle = AssetBundle.LoadFromStream(assetStream);
-                }
-            }
         }
 
         //https://forum.unity.com/threads/generating-sprites-dynamically-from-png-or-jpeg-files-in-c.343735/#post-3177001
