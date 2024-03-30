@@ -15,39 +15,6 @@ namespace RiskOfBulletstormRewrite.Artifact
 
         public override Sprite ArtifactDisabledIcon => LoadSprite(false);
 
-        public override void Init(ConfigFile config)
-        {
-            CreateLang();
-            CreateArtifact();
-            Hooks();
-        }
-
-        public override void Hooks()
-        {
-            RunArtifactManager.onArtifactEnabledGlobal += RunArtifactManager_onArtifactEnabledGlobal;
-            RunArtifactManager.onArtifactDisabledGlobal += RunArtifactManager_onArtifactDisabledGlobal;
-        }
-
-        private void RunArtifactManager_onArtifactDisabledGlobal([JetBrains.Annotations.NotNull] RunArtifactManager runArtifactManager, [JetBrains.Annotations.NotNull] ArtifactDef artifactDef)
-        {
-            if (artifactDef != ArtifactDef)
-            {
-                return;
-            }
-            CharacterMaster.onStartGlobal -= GiveOobTeleportToCharacter;
-            On.RoR2.MapZone.TryZoneStart -= AllNoFallDamage;
-        }
-
-        private void RunArtifactManager_onArtifactEnabledGlobal([JetBrains.Annotations.NotNull] RunArtifactManager runArtifactManager, [JetBrains.Annotations.NotNull] ArtifactDef artifactDef)
-        {
-            if (artifactDef != ArtifactDef)
-            {
-                return;
-            }
-            CharacterMaster.onStartGlobal += GiveOobTeleportToCharacter;
-            On.RoR2.MapZone.TryZoneStart += AllNoFallDamage;
-        }
-
         private void GiveOobTeleportToCharacter(CharacterMaster characterMaster)
         {
             if (NetworkServer.active)
@@ -70,5 +37,16 @@ namespace RiskOfBulletstormRewrite.Artifact
             orig(self, other);
         }
 
+        public override void OnArtifactEnabled()
+        {
+            CharacterMaster.onStartGlobal += GiveOobTeleportToCharacter;
+            On.RoR2.MapZone.TryZoneStart += AllNoFallDamage;
+        }
+
+        public override void OnArtifactDisabled()
+        {
+            CharacterMaster.onStartGlobal -= GiveOobTeleportToCharacter;
+            On.RoR2.MapZone.TryZoneStart -= AllNoFallDamage;
+        }
     }
 }

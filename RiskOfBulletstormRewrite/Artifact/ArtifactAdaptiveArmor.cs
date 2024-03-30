@@ -15,43 +15,22 @@ namespace RiskOfBulletstormRewrite.Artifact
 
         public override Sprite ArtifactDisabledIcon => LoadSprite(false);
 
-        public override void Init(ConfigFile config)
-        {
-            CreateLang();
-            CreateArtifact();
-            Hooks();
-        }
-
-        public override void Hooks()
-        {
-            RunArtifactManager.onArtifactEnabledGlobal += RunArtifactManager_onArtifactEnabledGlobal;
-            RunArtifactManager.onArtifactDisabledGlobal += RunArtifactManager_onArtifactDisabledGlobal;
-        }
-
-        private void RunArtifactManager_onArtifactDisabledGlobal([JetBrains.Annotations.NotNull] RunArtifactManager runArtifactManager, [JetBrains.Annotations.NotNull] ArtifactDef artifactDef)
-        {
-            if (artifactDef != ArtifactDef)
-            {
-                return;
-            }
-            CharacterMaster.onStartGlobal -= GiveAdaptiveArmorToBoss;
-        }
-
-        private void RunArtifactManager_onArtifactEnabledGlobal([JetBrains.Annotations.NotNull] RunArtifactManager runArtifactManager, [JetBrains.Annotations.NotNull] ArtifactDef artifactDef)
-        {
-            if (artifactDef != ArtifactDef)
-            {
-                return;
-            }
-            CharacterMaster.onStartGlobal += GiveAdaptiveArmorToBoss;
-        }
-
         private void GiveAdaptiveArmorToBoss(CharacterMaster characterMaster)
         {
             if (NetworkServer.active && characterMaster.isBoss && characterMaster.inventory?.GetItemCount(RoR2Content.Items.AdaptiveArmor) <= 0)
             {
                 characterMaster.inventory.GiveItem(RoR2Content.Items.AdaptiveArmor);
             }
+        }
+
+        public override void OnArtifactEnabled()
+        {
+            CharacterMaster.onStartGlobal += GiveAdaptiveArmorToBoss;
+        }
+
+        public override void OnArtifactDisabled()
+        {
+            CharacterMaster.onStartGlobal -= GiveAdaptiveArmorToBoss;
         }
     }
 }

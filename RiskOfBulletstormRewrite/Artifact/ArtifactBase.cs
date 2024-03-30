@@ -2,8 +2,10 @@
 using R2API;
 using RiskOfBulletstormRewrite.Modules;
 using RoR2;
+using RoR2.ExpansionManagement;
 using System;
 using UnityEngine;
+using RiskOfBulletstormRewrite.Modules;
 
 namespace RiskOfBulletstormRewrite.Artifact
 {
@@ -18,9 +20,6 @@ namespace RiskOfBulletstormRewrite.Artifact
         }
     }
 
-    ///<summary>
-    ///Abstract class responsible for Artifacts.
-    ///</summary>
     public abstract class ArtifactBase
     {
         ///<summary>
@@ -34,9 +33,25 @@ namespace RiskOfBulletstormRewrite.Artifact
         public abstract string ArtifactLangTokenName { get; }
 
         ///<summary>
+        ///The auto-generated token for the description.
+        ///</summary>
+        public string ArtifactDescriptionToken
+        {
+            get
+            {
+                return LanguageOverrides.LanguageTokenPrefixArtifact + ArtifactLangTokenName + "_DESCRIPTION";
+            }
+        }
+
+        ///<summary>
         ///Parameters for formatting the description language token.
         ///</summary>
-        public virtual string[] ArtifactFullDescriptionParams { get; }
+        public virtual object[] ArtifactFullDescriptionParams { get; }
+
+        ///<summary>
+        ///The required ExpansionDef for this artifact.
+        ///</summary>
+        public virtual ExpansionDef ArtifactExpansionDef { get; }
 
         ///<summary>
         ///The icon to use for the artifact when it's enabled.
@@ -64,31 +79,15 @@ namespace RiskOfBulletstormRewrite.Artifact
             }
         }
 
-        ///<summary>
-        ///The auto-generated token for the description.
-        ///</summary>
-        public string ArtifactDescriptionToken
-        {
-            get
-            {
-                return "RISKOFBULLETSTORM_ARTIFACT_" + ArtifactLangTokenName + "_DESCRIPTION";
-            }
-        }
-
         //For use only after the run has started.
-
-        ///<summary>
-        ///Boolean for checking whether the artifact is enabled. Run only.
-        ///</summary>
         public bool ArtifactEnabled => RunArtifactManager.instance.IsArtifactEnabled(ArtifactDef);
 
-        ///<summary>
-        ///The main method executed for setting up the class.
-        ///</summary>
-        public abstract void Init(ConfigFile config);
-
-        public virtual void CreateConfig(ConfigFile config)
-        { }
+        public virtual void Init(ConfigFile config)
+        {
+            CreateLang();
+            CreateArtifact();
+            Hooks();
+        }
 
         ///<summary>
         ///Method responsible for creating and deferring the language tokens.
@@ -110,21 +109,47 @@ namespace RiskOfBulletstormRewrite.Artifact
         ///</summary>
         protected void CreateArtifact()
         {
-            var prefix = "RISKOFBULLETSTORM_ARTIFACT_";
+            var prefix = LanguageOverrides.LanguageTokenPrefixArtifact;
             ArtifactDef = ScriptableObject.CreateInstance<ArtifactDef>();
             ArtifactDef.cachedName = prefix + ArtifactLangTokenName;
             ArtifactDef.nameToken = prefix + ArtifactLangTokenName + "_NAME";
             ArtifactDef.descriptionToken = prefix + ArtifactLangTokenName + "_DESCRIPTION";
             ArtifactDef.smallIconSelectedSprite = ArtifactEnabledIcon;
             ArtifactDef.smallIconDeselectedSprite = ArtifactDisabledIcon;
+            if (ArtifactExpansionDef)
+            {
+                ArtifactDef.requiredExpansion = ArtifactExpansionDef;
+            }
 
             ContentAddition.AddArtifactDef(ArtifactDef);
+            RunArtifactManager.onArtifactEnabledGlobal += RunArtifactManager_onArtifactEnabledGlobal;
+            RunArtifactManager.onArtifactDisabledGlobal += RunArtifactManager_onArtifactDisabledGlobal;
         }
 
-        ///<summary>
-        ///Method for calling hooks.
-        ///</summary>
-        public abstract void Hooks();
+        private void RunArtifactManager_onArtifactEnabledGlobal([JetBrains.Annotations.NotNull] RunArtifactManager runArtifactManager, [JetBrains.Annotations.NotNull] ArtifactDef artifactDef)
+        {
+            if (artifactDef != ArtifactDef)
+            {
+                return;
+            }
+            OnArtifactEnabled();
+        }
+
+        private void RunArtifactManager_onArtifactDisabledGlobal([JetBrains.Annotations.NotNull] RunArtifactManager runArtifactManager, [JetBrains.Annotations.NotNull] ArtifactDef artifactDef)
+        {
+            if (artifactDef != ArtifactDef)
+            {
+                return;
+            }
+            OnArtifactDisabled();
+        }
+
+        public abstract void OnArtifactEnabled();
+
+        public abstract void OnArtifactDisabled();
+
+        public virtual void Hooks()
+        { }
 
         public Sprite LoadSprite(bool enabled)
         {
