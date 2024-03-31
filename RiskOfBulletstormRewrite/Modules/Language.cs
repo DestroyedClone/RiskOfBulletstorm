@@ -10,6 +10,9 @@ namespace RiskOfBulletstormRewrite.Modules
     {
         public static ConfigFile config;
 
+        public const string LanguageTokenPrefix = "RISKOFBULLETSTORM_";
+        public const string LanguageTokenPrefixArtifact = LanguageTokenPrefix+"ARTIFACT_";
+
         //public static event Action<ConfigFile> onConfigLoaded;
 
         public struct ReplacementToken
