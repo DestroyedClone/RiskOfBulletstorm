@@ -3,8 +3,8 @@
 		//[INTERACTABLES],
 
 		//[SHRINES],
-		"RISKOFBULLETSTORM_SHRINE_GENERIC_CONTEXT_CONFIRM": "Use Shrine",
-		"RISKOFBULLETSTORM_SHRINE_GENERIC_CONTEXT_DECLINE": "Walk Away",
+		"RISKOFBULLETSTORM_SHRINE_GENERIC_CONTEXT_CONFIRM": "Use Shrine.",
+		"RISKOFBULLETSTORM_SHRINE_GENERIC_CONTEXT_DECLINE": "Walk Away.",
 
 		"RISKOFBULLETSTORM_SHRINE_AMMO_NAME": "Shrine",
 		"RISKOFBULLETSTORM_SHRINE_AMMO_DESCRIPTION": "A shrine to Shell'tan, ammo elemental.",
@@ -21,11 +21,11 @@
 		//[Trusty lockpicks]
 		"RISKOFBULLETSTORM_LOCKPICKS_NAME_LOSE": "{0} (Failed)",
 		"RISKOFBULLETSTORM_LOCKPICKS_NAME_WIN": "{0} (Unlocked)",
-		"RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT": "{0}\nYour equipment seems compatible with this, try using it.",
-		"RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT_LOSE": "{0}\nYour equipment can't fit into the damaged lock.",
-		"RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT_CLIENT": "{0}\nYour equipment seems compatible with this.\nIf it doesn't work, someone broke the lock.",
+		"RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT": "<size=150%>{0}\nYour equipment seems compatible with this, try using it.</size>",
+		"RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT_LOSE": "<size=150%>{0}\nYour equipment can't fit into the damaged lock.</size>",
+		"RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT_CLIENT": "<size=150%>{0}\nYour equipment seems compatible with this.\nIf it doesn't work, someone broke the lock.</size>",
 
 		//[COSTS]	
-		"RISKOFBULLETSTORM_COST_STEAL_FORMAT": "Steal"
+		"RISKOFBULLETSTORM_COST_STEAL_FORMAT": "Steal!"
 	}
 }

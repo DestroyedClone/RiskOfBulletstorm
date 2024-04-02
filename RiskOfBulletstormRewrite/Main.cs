@@ -7,8 +7,8 @@ using RiskOfBulletstormRewrite.Controllers;
 using RiskOfBulletstormRewrite.Equipment;
 using RiskOfBulletstormRewrite.Equipment.EliteEquipment;
 using RiskOfBulletstormRewrite.Items;
+using RiskOfBulletstormRewrite.MarkdownCreation;
 using RiskOfBulletstormRewrite.Modules;
-using RiskOfBulletstormRewrite.WikiHelp;
 using RoR2;
 using System;
 using System.Collections.Generic;
@@ -41,10 +41,10 @@ namespace RiskOfBulletstormRewrite
 
         internal static BepInEx.Logging.ManualLogSource _logger;
 
-        public List<ArtifactBase> Artifacts = new List<ArtifactBase>();
-        public List<ItemBase> Items = new List<ItemBase>();
-        public List<EquipmentBase> Equipments = new List<EquipmentBase>();
-        public List<EliteEquipmentBase> EliteEquipments = new List<EliteEquipmentBase>();
+        public static List<ArtifactBase> Artifacts = new List<ArtifactBase>();
+        public static List<ItemBase> Items = new List<ItemBase>();
+        public static List<EquipmentBase> Equipments = new List<EquipmentBase>();
+        public static List<EliteEquipmentBase> EliteEquipments = new List<EliteEquipmentBase>();
 
         public static List<ItemDef> itemDefsThatCantBeAutoPickedUp = new List<ItemDef>();
         public static List<PickupIndex> pickupIndicesThatCantBePickedUp = new List<PickupIndex>();
@@ -96,13 +96,11 @@ namespace RiskOfBulletstormRewrite
             //debug
             //Run.onRunStartGlobal += Run_onRunStartGlobal;
 
-            if (Wiki.isEnabled)
+            /*if (ReadmeCreator.isEnabled)
             {
-                Wiki.Initialize();
+                ReadmeCreator.Initialization();
             }
-
-            On.RoR2.Networking.NetworkManagerSystemSteam.OnClientConnect += (s, u, t) => { 
-            };
+            };*/
         }
 
         private void GenericPickupController_OnTriggerStay(On.RoR2.GenericPickupController.orig_OnTriggerStay orig, GenericPickupController self, UnityEngine.Collider other)

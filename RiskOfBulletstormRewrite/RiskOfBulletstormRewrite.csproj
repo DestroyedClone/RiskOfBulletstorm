@@ -8,10 +8,16 @@
   <ItemGroup>
     <Compile Remove="Achievements\**" />
     <Compile Remove="Characters\**" />
+    <Compile Remove="Items\Boss\MasterRounds\**" />
+    <Compile Remove="Items\Boss\PastKillingBullet\**" />
     <EmbeddedResource Remove="Achievements\**" />
     <EmbeddedResource Remove="Characters\**" />
+    <EmbeddedResource Remove="Items\Boss\MasterRounds\**" />
+    <EmbeddedResource Remove="Items\Boss\PastKillingBullet\**" />
     <None Remove="Achievements\**" />
     <None Remove="Characters\**" />
+    <None Remove="Items\Boss\MasterRounds\**" />
+    <None Remove="Items\Boss\PastKillingBullet\**" />
   </ItemGroup>
 	
 
@@ -22,7 +28,6 @@
     <Compile Remove="Artifact\ArtifactEquipmentRecharge.cs" />
     <Compile Remove="Artifact\ArtifactGungeonSpoof.cs" />
     <Compile Remove="Artifact\ArtifactPitLordPlayer.cs" />
-    <Compile Remove="Artifact\ArtifactUpSpeedOOC.cs" />
     <Compile Remove="Artifact\ExampleArtifact.cs" />
     <Compile Remove="Controllers\BabyMimicBodyBehavior.cs" />
     <Compile Remove="Controllers\BulletQuestController.cs" />
@@ -30,6 +35,7 @@
     <Compile Remove="Controllers\MasterRoundController.cs" />
     <Compile Remove="Controllers\Pasts\PastKillingController.cs" />
     <Compile Remove="Controllers\Pasts\TransitionToPastEntityState.cs" />
+    <Compile Remove="Equipment\BombCompanionApp.cs" />
     <Compile Remove="Equipment\Bottle.cs" />
     <Compile Remove="Equipment\BrickOfCash.cs" />
     <Compile Remove="Equipment\ChestTeleporter.cs" />
@@ -44,13 +50,13 @@
     <Compile Remove="Equipment\ShadowClone.cs" />
     <Compile Remove="Equipment\WeirdEgg.cs" />
     <Compile Remove="Items\Boss\ClownMask.cs" />
+    <Compile Remove="Items\Boss\PastKillingBullet.cs" />
     <Compile Remove="Items\Boss\PastKillingBulletBanPickup.cs" />
     <Compile Remove="Items\Boss\RatBoots.cs" />
     <Compile Remove="Items\ClownMask.cs" />
     <Compile Remove="Items\Common\AmmoSynthesizer.cs" />
     <Compile Remove="Items\Common\IrradiatedLead.cs" />
     <Compile Remove="Items\ExampleItem.cs" />
-    <Compile Remove="Items\Boss\MasterRounds\MasterRoundI.cs" />
     <Compile Remove="Items\Legendary\BabyGoodMimic.cs" />
     <Compile Remove="Items\Legendary\Backpack.cs" />
     <Compile Remove="Items\Legendary\Clone.cs" />
@@ -61,6 +67,8 @@
     <Compile Remove="Items\Lunar\HipHolster.cs" />
     <Compile Remove="Items\Lunar\Metronome.cs" />
     <Compile Remove="Items\NoTier\BabyMimicIdentifier.cs" />
+    <Compile Remove="Items\NoTier\CloneConsumed.cs" />
+    <Compile Remove="Items\NoTier\CloneVoidConsumed.cs" />
     <Compile Remove="Items\NoTier\SpiceReplacementDisplay.cs" />
     <Compile Remove="Items\Uncommon\AmmoBelt.cs" />
     <Compile Remove="Items\Uncommon\GhostBullets.cs" />
@@ -78,7 +86,7 @@
 
   <ItemGroup>
     <Folder Include="Controllers\Pasts\" />
-    <Folder Include="Items\Boss\MasterRounds\" />
+    <Folder Include="Items\Boss\" />
     <Folder Include="Items\Legendary\" />
     <Folder Include="Items\VoidBoss\" />
     <Folder Include="Items\VoidLegendary\" />

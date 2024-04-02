@@ -14,7 +14,7 @@ namespace RiskOfBulletstormRewrite
             R2API.Utils.CommandHelper.AddToConsoleWhenReady();
         }
 
-        [ConCommand(commandName = "rbs_givebulletparts",
+        /*[ConCommand(commandName = "rbs_givebulletparts",
         flags = ConVarFlags.SenderMustBeServer,
         helpText = "rbs_givebulletparts - Gives the bullet parts.")]
         public static void CCGiveBulletParts(ConCommandArgs args)
@@ -27,7 +27,7 @@ namespace RiskOfBulletstormRewrite
                 args.senderMaster.inventory.GiveItem(PlanarLead.instance.ItemDef);
                 args.senderMaster.inventory.GiveItem(PrimePrimer.instance.ItemDef);
             }
-        }
+        }*/
 
         [ConCommand(commandName = "rbs_getspicechance",
         flags = ConVarFlags.ExecuteOnServer,

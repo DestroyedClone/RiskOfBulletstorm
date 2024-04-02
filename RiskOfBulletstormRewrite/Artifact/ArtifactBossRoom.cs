@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using static RiskOfBulletstormRewrite.Artifact.ArtifactBossRoom;
 
 namespace RiskOfBulletstormRewrite.Artifact
 {
@@ -71,10 +72,11 @@ namespace RiskOfBulletstormRewrite.Artifact
         {
             if (NetworkServer.active)
             {
-                var comps = UnityEngine.Object.FindObjectsOfType<MasterRoundComponent>();
+                var comps = UnityEngine.Object.FindObjectsOfType<MasterRoundMasterComponent>();
                 foreach (var component in comps)
                 {
                     component.teleporterCharging = false;
+                    component.enabled = false;
                 }
                 CheckMasterRoundEventResult();
             }
@@ -91,11 +93,12 @@ namespace RiskOfBulletstormRewrite.Artifact
                     var body = player.master.GetBody();
                     if (body && body.healthComponent && body.healthComponent.alive)
                     {
-                        var masterRoundComponent = player.master.gameObject.GetComponent<MasterRoundComponent>();
-                        if (!masterRoundComponent) masterRoundComponent = player.master.gameObject.AddComponent<MasterRoundComponent>();
+                        var masterRoundComponent = player.master.gameObject.GetComponent<MasterRoundMasterComponent>();
+                        if (!masterRoundComponent) masterRoundComponent = player.master.gameObject.AddComponent<MasterRoundMasterComponent>();
                         masterRoundComponent.allowedHits = maxHits + 1;
                         masterRoundComponent.teleporterCharging = true;
-                        InstanceTracker.Add<MasterRoundComponent>(masterRoundComponent);
+                        masterRoundComponent.enabled = true;
+                        InstanceTracker.Add<MasterRoundMasterComponent>(masterRoundComponent);
                     }
                 }
             }
@@ -113,7 +116,7 @@ namespace RiskOfBulletstormRewrite.Artifact
         {
             bool success = true;
 
-            foreach (var component in InstanceTracker.GetInstancesList<MasterRoundComponent>())
+            foreach (var component in InstanceTracker.GetInstancesList<MasterRoundMasterComponent>())
             {
                 Chat.AddMessage(component.currentHits + " / " + component.allowedHits);
                 if (component.currentHits > component.allowedHits)
@@ -133,13 +136,13 @@ namespace RiskOfBulletstormRewrite.Artifact
                 }
             }
         }
-        public class MasterRoundComponent : MonoBehaviour, IOnTakeDamageServerReceiver
+        public class MasterRoundMasterComponent : MonoBehaviour
         {
             public bool teleporterCharging = false;
             public int currentHits = 0;
             public int allowedHits = 7;
 
-            public const float maxDistance = 50f;
+            public const float maxDistance = 100f;
             public Vector3 teleporterPositionCached;
             public CharacterMaster charMaster;
 
@@ -166,6 +169,27 @@ namespace RiskOfBulletstormRewrite.Artifact
             {
                 teleporterPositionCached = TeleporterInteraction.instance.transform.position;
                 charMaster = gameObject.GetComponent<CharacterMaster>();
+            }
+
+            public void OnEnable()
+            {
+                var body = charMaster.GetBody();
+                if (body && !body.GetComponent<MasterRoundBodyComponent>())
+                {
+                    CharMaster_onBodyStart(body);
+                }
+                charMaster.onBodyStart += CharMaster_onBodyStart;
+            }
+
+            private void CharMaster_onBodyStart(CharacterBody body)
+            {
+                if (!body.GetComponent<MasterRoundBodyComponent>())
+                    body.gameObject.AddComponent<MasterRoundBodyComponent>().masterComponent = this;
+            }
+
+            public void OnDisable()
+            {
+                charMaster.onBodyStart -= CharMaster_onBodyStart;
             }
 
             public void IncrementHit(DamageReport damageReport)
@@ -212,30 +236,36 @@ namespace RiskOfBulletstormRewrite.Artifact
             }
 
 
-            public void FixedUpdate()
+            /*public void FixedUpdate()
             {
                 if (!charBody) return;
                 var corePosition = charBody.corePosition;
                 var distanceFromTeleporter = Vector3.Distance(teleporterPositionCached, corePosition);
                 if (distanceFromTeleporter < maxDistance)
                     return;
-                var difference = distanceFromTeleporter - maxDistance;
-                var fraction = difference / distanceFromTeleporter; //this is wrong
-                //var angle = Vector3.Angle(teleporterPositionCached, corePosition);
-                var newPosition = Vector3.Lerp(teleporterPositionCached, corePosition, fraction);
+
+                var difference = Mathf.Abs(distanceFromTeleporter - maxDistance);
+                var fraction = difference / distanceFromTeleporter;
+                var newPosition = Vector3.Lerp(corePosition, teleporterPositionCached, fraction);
 
                 TeleportHelper.TeleportBody(charBody, newPosition);
-            }
+            }*/
 
-            public void OnTakeDamageServer(DamageReport damageReport)
+            public class MasterRoundBodyComponent : MonoBehaviour, IOnTakeDamageServerReceiver
             {
-                IncrementHit(damageReport);
+                public MasterRoundMasterComponent masterComponent;
+
+                public void OnTakeDamageServer(DamageReport damageReport)
+                {
+                    masterComponent.IncrementHit(damageReport);
+                }
             }
         }
 
         public override void OnArtifactDisabled()
         {
-            throw new System.NotImplementedException();
+            TeleporterInteraction.onTeleporterBeginChargingGlobal -= TeleporterInteraction_onTeleporterBeginChargingGlobal;
+            TeleporterInteraction.onTeleporterChargedGlobal -= TeleporterInteraction_onTeleporterChargedGlobal;
         }
     }
 }

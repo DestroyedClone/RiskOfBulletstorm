@@ -47,7 +47,7 @@ namespace RiskOfBulletstormRewrite.Equipment
         {
             if (slot.characterBody)
             {
-                slot.subcooldownTimer = 1f;
+                slot.subcooldownTimer = 5f;
             }
             return true;
         }
