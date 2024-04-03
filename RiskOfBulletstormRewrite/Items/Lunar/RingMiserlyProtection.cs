@@ -61,20 +61,19 @@ namespace RiskOfBulletstormRewrite.Items
 
         private void ShatterRing(bool gaveItem, Interactor interactor)
         {
-            var body = interactor.gameObject.GetComponent<CharacterBody>();
-            if (body && body.inventory)
+            if (!interactor.gameObject.TryGetComponent(out CharacterBody body)) return;
+            if (!body.inventory) return;
+
+            var InventoryCount = body.inventory.GetItemCount(ItemDef);
+            if (InventoryCount > 0)
             {
-                var InventoryCount = body.inventory.GetItemCount(ItemDef);
-                if (InventoryCount > 0)
+                if (UnityEngine.Networking.NetworkServer.active)
                 {
-                    if (UnityEngine.Networking.NetworkServer.active)
-                    {
-                        body.inventory.RemoveItem(ItemDef);
-                        body.RecalculateStats();
-                    }
-                    Util.PlaySound("Play_char_glass_death", body.gameObject);
-                    EffectManager.SimpleEffect(ShatterEffect, body.gameObject.transform.position, Quaternion.identity, true);
+                    body.inventory.RemoveItem(ItemDef);
+                    body.RecalculateStats();
                 }
+                Util.PlaySound("Play_char_glass_death", body.gameObject);
+                EffectManager.SimpleEffect(ShatterEffect, body.gameObject.transform.position, Quaternion.identity, true);
             }
         }
     }

@@ -90,7 +90,7 @@ namespace RiskOfBulletstormRewrite.Items
             teleportSkillDef.stockToConsume = 1;
 
             ContentAddition.AddSkillDef(teleportSkillDef);
-            ContentAddition.AddEntityState<TeleportUtilitySkillState>(out bool wasAdded);
+            ContentAddition.AddEntityState<TeleportUtilitySkillState>(out bool _);
         }
 
         protected override void CreateLang()

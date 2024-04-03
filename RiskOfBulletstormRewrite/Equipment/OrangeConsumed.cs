@@ -44,6 +44,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         protected override bool ActivateEquipment(EquipmentSlot slot)
         {
+            slot.subcooldownTimer = 5f;
             return true;
         }
     }

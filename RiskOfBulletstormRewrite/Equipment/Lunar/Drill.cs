@@ -1,5 +1,6 @@
 ﻿using BepInEx.Configuration;
 using R2API;
+using RiskOfBulletstormRewrite.Controllers;
 using RiskOfBulletstormRewrite.Utils;
 using RoR2;
 using UnityEngine;
@@ -40,24 +41,29 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         protected override bool ActivateEquipment(EquipmentSlot slot)
         {
-            if (slot.characterBody)
+            if (!slot.characterBody) return false;
+            if (!slot.characterBody.TryGetComponent(out InteractionDriver interactionDriver)) return false;
+
+            var bestInteractableObject = interactionDriver.FindBestInteractableObject();
+            if (!bestInteractableObject) return false;
+
+            if (StoneGateModification.srv_isGoolake)
             {
-                var interactionDriver = slot.characterBody.GetComponent<InteractionDriver>();
-                if (interactionDriver)
+                if (!bestInteractableObject.TryGetComponent(out StoneGateModification.RBSStoneGateLock gateLock))
+                    goto NotStoneGate;
+                gateLock.OpenStoneGate();
+                return true;
+            }
+            NotStoneGate:
+
+            if (!bestInteractableObject.TryGetComponent(out PurchaseInteraction purchaseInteraction)) return false;
+            if (purchaseInteraction.GetComponent<ShopTerminalBehavior>()) return false;
+
+            if (purchaseInteraction)
+            {
+                if (ActivateDrillEffectOnChest(bestInteractableObject, interactionDriver))
                 {
-                    var bestInteractableObject = slot.characterBody.GetComponent<InteractionDriver>().FindBestInteractableObject();
-                    if (bestInteractableObject)
-                    {
-                        var purchaseInteraction = bestInteractableObject.GetComponent<PurchaseInteraction>();
-                        if (!purchaseInteraction.GetComponent<ShopTerminalBehavior>())
-                            if (purchaseInteraction)
-                            {
-                                if (ActivateDrillEffectOnChest(bestInteractableObject, interactionDriver))
-                                {
-                                    return true;
-                                }
-                            }
-                    }
+                    return true;
                 }
             }
             return false;
@@ -121,10 +127,7 @@ namespace RiskOfBulletstormRewrite.Equipment
                 SpawnCombat(interactor, purchaseInteraction.transform, creditMultiplier);
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         /// <summary>

@@ -339,18 +339,17 @@ localScale = new Vector3(1F, 1F, 1F)
 
         private float HealthComponent_Heal(On.RoR2.HealthComponent.orig_Heal orig, HealthComponent self, float amount, ProcChainMask procChainMask, bool nonRegen)
         {
-            if (nonRegen)
+            if (!nonRegen) goto EarlyReturn;
+
+            if (GetCount(self.body) <= 0) goto EarlyReturn;
+
+            if (Util.CheckRoll(cfgChance))
             {
-                if (GetCount(self.body) > 0)
-                {
-                    if (Util.CheckRoll(cfgChance))
-                    {
-                        var itemCount = self.body.inventory.GetItemCount(ItemDef);
-                        var multiplier = 1f + cfgMultiplier + cfgMultiplierPerStack * (itemCount - 1);
-                        amount *= multiplier;
-                    }
-                }
+                var itemCount = self.body.inventory.GetItemCount(ItemDef);
+                var multiplier = 1f + cfgMultiplier + cfgMultiplierPerStack * (itemCount - 1);
+                amount *= multiplier;
             }
+        EarlyReturn:
             return orig(self, amount, procChainMask, nonRegen);
         }
     }

@@ -368,30 +368,33 @@ namespace RiskOfBulletstormRewrite.Controllers
         /// <param name="self"></param>
         private static void AdjustSpreadBullets(On.RoR2.BulletAttack.orig_Fire orig, BulletAttack self)
         {
-            if (self.owner)
-            {
-                var body = self.owner.gameObject.GetComponent<CharacterBody>();
-                if (body)
-                {
-                    var comp = body.masterObject.GetComponent<RBSExtraStatsController>();
-                    if (comp)
-                    {
-                        var accuracy = comp.bulletAccuracy;
+            if (!self.owner) goto EarlyReturn;
 
-                        body.SetSpreadBloom(Mathf.Min(0, body.spreadBloomAngle * accuracy), false);
+            var body = self.owner.gameObject.GetComponent<CharacterBody>();
+            if (!body) goto EarlyReturn;
 
-                        self.maxSpread = SimpleSpread(self.maxSpread, 1.15f);
+            var comp = body.masterObject.GetComponent<RBSExtraStatsController>();
+            if (!comp) goto EarlyReturn;
 
-                        self.minSpread = SimpleSpread(accuracy, self.minSpread);
+            var accuracy = comp.bulletAccuracy;
 
-                        if (body.inputBank) self.aimVector = Vector3.Lerp(self.aimVector, body.inputBank.aimDirection, 1 - accuracy);
+            body.SetSpreadBloom(Mathf.Min(0, body.spreadBloomAngle * accuracy), false);
 
-                        self.spreadPitchScale *= SimpleSpread(accuracy, self.spreadPitchScale);
-                        self.spreadYawScale *= SimpleSpread(accuracy, self.spreadYawScale);
-                    }
-                }
-            }
+            self.maxSpread = SimpleSpread(self.maxSpread, 1.15f);
+
+            self.minSpread = SimpleSpread(accuracy, self.minSpread);
+
+            if (body.inputBank) self.aimVector = Vector3.Lerp(self.aimVector, body.inputBank.aimDirection, 1 - accuracy);
+
+            self.spreadPitchScale *= SimpleSpread(accuracy, self.spreadPitchScale);
+            self.spreadYawScale *= SimpleSpread(accuracy, self.spreadYawScale);
+        EarlyReturn:
             orig(self);
+        }
+
+        private static bool IsProjectileAffected(FireProjectileInfo fireProjectileInfo)
+        {
+            return (cfgShotSpread_WhitelistProjectiles && WhitelistedProjectiles.Contains(fireProjectileInfo.projectilePrefab)) || !cfgShotSpread_WhitelistProjectiles;
         }
 
         /// <summary>
@@ -402,44 +405,45 @@ namespace RiskOfBulletstormRewrite.Controllers
         /// <param name="fireProjectileInfo"></param>
         private static void ProjectileManager_FireProjectile_FireProjectileInfo(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_FireProjectileInfo orig, ProjectileManager self, FireProjectileInfo fireProjectileInfo)
         {
-            if (fireProjectileInfo.owner)
+            if (!fireProjectileInfo.owner) goto EarlyReturn; 
+            if (!fireProjectileInfo.owner.TryGetComponent(out CharacterBody body) || !body.master) goto EarlyReturn;
+            if (!body.master.TryGetComponent(out RBSExtraStatsController comp)) goto EarlyReturn;
+
+            var inputBank = fireProjectileInfo.owner.GetComponent<CharacterBody>()?.inputBank;
+            if (!inputBank) goto EarlyReturn; 
+            
+            float accuracy = comp.projectileAccuracy;
+
+            //if (ShowAnnoyingDebugText) _logger.LogMessage("Projectile Fired: " + fireProjectileInfo.projectilePrefab.name);
+
+            // projectile check
+            if (IsProjectileAffected(fireProjectileInfo))
             {
-                var comp = fireProjectileInfo.owner.GetComponent<CharacterBody>()?.masterObject?.GetComponent<RBSExtraStatsController>();
-                var inputBank = fireProjectileInfo.owner.GetComponent<CharacterBody>()?.inputBank;
-                if (comp && inputBank)
+                Quaternion aimDirectionQuaternion = Util.QuaternionSafeLookRotation(inputBank.aimDirection);
+                Quaternion UpdatedAngle;
+
+                if (accuracy >= 0)
                 {
-                    float accuracy = comp.projectileAccuracy;
-                    Quaternion aimDirectionQuaternion = Util.QuaternionSafeLookRotation(inputBank.aimDirection);
-
-                    //if (ShowAnnoyingDebugText) _logger.LogMessage("Projectile Fired: " + fireProjectileInfo.projectilePrefab.name);
-
-                    // projectile check
-                    if ((cfgShotSpread_WhitelistProjectiles && WhitelistedProjectiles.Contains(fireProjectileInfo.projectilePrefab)) || !cfgShotSpread_WhitelistProjectiles)
-                    {
-                        Quaternion UpdatedAngle;
-
-                        if (accuracy >= 0)
-                        {
-                            UpdatedAngle = Quaternion.Lerp(fireProjectileInfo.rotation, aimDirectionQuaternion, accuracy);
-                        }
-                        else
-                        {
-                            accuracy *= -1;
-                            //UpdatedAngle = Quaternion.LerpUnclamped(fireProjectileInfo.rotation, aimDirectionQuaternion, accuracy);
-
-                            //CappedAccMult *= -1;
-                            //This is a random dir in cone. USED FOR INACCURACY
-                            //TODO
-                            //Quaternion bulletDir = GetRandomInsideCone(BaseSpreadAngle, aimDirection);
-                            //_logger.LogMessage(bulletDir);
-                            //UpdatedAngle = Quaternion.SlerpUnclamped(bulletDir, aimDirectionQuaternion, CappedAccMult);
-                            var minSpread = Mathf.Max(0f, 1f - accuracy);
-                            UpdatedAngle = Util.QuaternionSafeLookRotation(Util.ApplySpread(fireProjectileInfo.rotation.eulerAngles, minSpread, accuracy, 1f, 1f));
-                        }
-                        fireProjectileInfo.rotation = UpdatedAngle;
-                    }
+                    UpdatedAngle = Quaternion.Lerp(fireProjectileInfo.rotation, aimDirectionQuaternion, accuracy);
                 }
+                else
+                {
+                    //accuracy *= -1;
+                    //UpdatedAngle = Quaternion.LerpUnclamped(fireProjectileInfo.rotation, aimDirectionQuaternion, accuracy);
+
+                    //CappedAccMult *= -1;
+                    //This is a random dir in cone. USED FOR INACCURACY
+                    //TODO
+                    //Quaternion bulletDir = GetRandomInsideCone(BaseSpreadAngle, aimDirection);
+                    //_logger.LogMessage(bulletDir);
+                    //UpdatedAngle = Quaternion.SlerpUnclamped(bulletDir, aimDirectionQuaternion, CappedAccMult);
+                    /*var minSpread = Mathf.Max(0f, 1f - accuracy);
+                    UpdatedAngle = Util.QuaternionSafeLookRotation(Util.ApplySpread(fireProjectileInfo.rotation.eulerAngles, minSpread, accuracy, 1f, 1f));*/
+                    UpdatedAngle = Quaternion.LerpUnclamped(fireProjectileInfo.rotation, aimDirectionQuaternion, 1 + accuracy);
+                }
+                fireProjectileInfo.rotation = UpdatedAngle;
             }
+        EarlyReturn:
             orig(self, fireProjectileInfo);
         }
 
@@ -542,7 +546,7 @@ namespace RiskOfBulletstormRewrite.Controllers
 
                 // With bullets we have to start at 1
                 // Then we evaluate it (1 - ~1.1 = -0.1)
-                // We clamp it at zero because a negative multiplier converges the spread on itself and actually increases the spread.
+                // We clamp it at zero because a negative multiplier converges the spread on itself and actually increases the spread. Learned that from tf2 custom weapons, assuming it applies here.
                 bulletAccuracy = 1 + unboundAccuracyStat <= 0 ? 0 : 1 + unboundAccuracyStat;
             }
         }

@@ -347,19 +347,20 @@ localScale = new Vector3(1F, 1F, 1F)
         {
             orig(self, activator);
             if (!activator) return;
-            CharacterBody characterBody = activator.GetComponent<CharacterBody>();
-            if (characterBody?.inventory)
+
+            if (!activator.TryGetComponent(out CharacterBody characterBody)) return;
+
+            if (!characterBody.inventory) return;
+
+            if (GetCount(characterBody) > 0)
             {
-                if (GetCount(characterBody) > 0)
+                var isBloodShrine = self.costType == CostTypeIndex.PercentHealth;
+                var isCost = self.costType > CostTypeIndex.None;
+                if (isCost)
                 {
-                    var isBloodShrine = self.costType == CostTypeIndex.PercentHealth;
-                    var isCost = self.costType > CostTypeIndex.None;
-                    if (isCost)
+                    if (!isBloodShrine)
                     {
-                        if (!isBloodShrine)
-                        {
-                            Heal(characterBody);
-                        }
+                        Heal(characterBody);
                     }
                 }
             }

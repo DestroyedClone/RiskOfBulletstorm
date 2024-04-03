@@ -1,7 +1,6 @@
 ﻿using RiskOfBulletstormRewrite.Artifact;
 using RiskOfBulletstormRewrite.Equipment;
 using RiskOfBulletstormRewrite.Items;
-using RiskOfBulletstormRewrite.Items.Common;
 using RiskOfBulletstormRewrite.Modules;
 using RiskOfBulletstormRewrite.Utils;
 using RoR2;
@@ -268,12 +267,12 @@ namespace RiskOfBulletstormRewrite
                     CustomHyperbolicStacking,
                     BetterUI.ItemStats.StatFormatter.Chance,
                     BetterUI.ItemStats.ItemTag.SkillCooldown);*/
-                BetterUI.ItemStats.RegisterStat(HipHolster.instance.ItemDef,
+                /*BetterUI.ItemStats.RegisterStat(HipHolster.instance.ItemDef,
                     prefix + "HIPHOLSTER_CHANCE",
                     HipHolster.cfgChanceHyperbolic,
                     BetterUI.ItemStats.HyperbolicStacking,
                     BetterUI.ItemStats.StatFormatter.Chance,
-                    BetterUI.ItemStats.ItemTag.SkillCooldown);
+                    BetterUI.ItemStats.ItemTag.SkillCooldown);*/
 
                 BetterUI.ItemStats.RegisterStat(RingMiserlyProtection.instance.ItemDef,
                     prefix + "RINGMISERLYPROTECTION_HEALTH",

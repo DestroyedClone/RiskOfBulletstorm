@@ -55,6 +55,7 @@
     <Compile Remove="Items\Boss\RatBoots.cs" />
     <Compile Remove="Items\ClownMask.cs" />
     <Compile Remove="Items\Common\AmmoSynthesizer.cs" />
+    <Compile Remove="Items\Common\HipHolster2.cs" />
     <Compile Remove="Items\Common\IrradiatedLead.cs" />
     <Compile Remove="Items\ExampleItem.cs" />
     <Compile Remove="Items\Legendary\BabyGoodMimic.cs" />
@@ -70,6 +71,7 @@
     <Compile Remove="Items\NoTier\CloneConsumed.cs" />
     <Compile Remove="Items\NoTier\CloneVoidConsumed.cs" />
     <Compile Remove="Items\NoTier\SpiceReplacementDisplay.cs" />
+    <Compile Remove="Items\NoTier\WeirdEggStageClearTally.cs" />
     <Compile Remove="Items\Uncommon\AmmoBelt.cs" />
     <Compile Remove="Items\Uncommon\GhostBullets.cs" />
     <Compile Remove="Items\Uncommon\RingChestFriendship.cs" />

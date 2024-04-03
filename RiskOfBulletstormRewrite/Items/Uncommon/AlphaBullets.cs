@@ -49,14 +49,14 @@ namespace RiskOfBulletstormRewrite.Items
         public override void Hooks()
         {
             RecalculateStatsAPI.GetStatCoefficients += StatCoefficients;
-            CharacterMaster.onStartGlobal += CharacterMaster_onStartGlobal;
+            CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
         }
 
-        private void CharacterMaster_onStartGlobal(CharacterMaster obj)
+        private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody body)
         {
-            if (NetworkServer.active && obj.inventory)
+            if (NetworkServer.active)
             {
-                obj.gameObject.AddComponent<RBSAlphaBulletController>().characterMaster = obj;
+                body.AddItemBehavior<RBSAlphaBulletBehavior>(GetCount(body));
             }
         }
 
@@ -75,9 +75,12 @@ namespace RiskOfBulletstormRewrite.Items
             }
         }
 
-        public class RBSAlphaBulletController : MonoBehaviour
+        //based off PrimarySkillShurikenBehavior
+        public class RBSAlphaBulletBehavior : CharacterBody.ItemBehavior
         {
-            public CharacterBody body;
+            private SkillLocator skillLocator;
+
+            private InputBankTest inputBank;
             public CharacterMaster characterMaster;
 
             public GenericSkill primary = null;
@@ -86,94 +89,43 @@ namespace RiskOfBulletstormRewrite.Items
             public GenericSkill special = null;
 
             public BuffIndex AlphaBulletBuffIndex => Utils.Buffs.AlphaBulletBuff.buffIndex;
-
-            public bool hasItem = false;
-
-
-            public void Start()
+            private void Awake()
             {
-                body = characterMaster.GetBody();
-                if (body)
+                base.enabled = false;
+            }
+
+            private void OnEnable()
+            {
+                if (this.body)
                 {
-                    return;
-                }
-                characterMaster.onBodyStart += CharacterMaster_onBodyStart;
-                characterMaster.onBodyDestroyed += CharacterMaster_onBodyDestroyed;
-                characterMaster.inventory.onInventoryChanged += Inventory_onInventoryChanged;
-            }
-
-            private void Inventory_onInventoryChanged()
-            {
-                hasItem = instance.GetCount(characterMaster) > 0;
-            }
-
-            private void CharacterMaster_onBodyDestroyed(CharacterBody obj)
-            {
-                body = null;
-            }
-
-            private void CharacterMaster_onBodyStart(CharacterBody obj)
-            {
-                body = obj;
-                if (body.skillLocator)
-                {
-                    var sk = body.skillLocator;
-                    primary = sk.primary;
-                    secondary = sk.secondary;
-                    utility = sk.utility;
-                    special = sk.special;
-                }
-            }
-
-            public void OnDestroy()
-            {
-                characterMaster.onBodyStart -= CharacterMaster_onBodyStart;
-                characterMaster.onBodyDestroyed -= CharacterMaster_onBodyDestroyed;
-                characterMaster.inventory.onInventoryChanged -= Inventory_onInventoryChanged;
-            }
-
-            public void OnDisable()
-            {
-                SetBuffCount(0);
-            }
-
-            public void SetBuffCount(int count)
-            {
-                if (body == null)
-                {
-                    return;
-                }
-
-                var currentBuffCount = body.GetBuffCount(AlphaBulletBuffIndex);
-                if (currentBuffCount == count)
-                {
-                    return;
-                }
-
-                if (currentBuffCount > count)
-                {
-                    for (int i = 0; i < currentBuffCount - count; i++)
+                    this.skillLocator = this.body.GetComponent<SkillLocator>();
+                    this.inputBank = this.body.GetComponent<InputBankTest>();
+                    if (body.skillLocator)
                     {
-                        body.RemoveBuff(AlphaBulletBuffIndex);
-                    }
-                }
-                else
-                {
-                    for (int i = 0; i < count - currentBuffCount; i++)
-                    {
-                        body.AddBuff(AlphaBulletBuffIndex);
+                        var sk = body.skillLocator;
+                        primary = sk.primary;
+                        secondary = sk.secondary;
+                        utility = sk.utility;
+                        special = sk.special;
                     }
                 }
             }
 
+            private void OnDisable()
+            {
+                if (this.body)
+                {
+                    while (this.body.HasBuff(AlphaBulletBuffIndex))
+                    {
+                        this.body.RemoveBuff(AlphaBulletBuffIndex);
+                    }
+                }
+                this.inputBank = null;
+                this.skillLocator = null;
+            }
 
             public void FixedUpdate()
             {
-                if (!hasItem)
-                {
-                    SetBuffCount(0);
-                    return;
-                }
                 var validSkillCount = Inc(primary) + Inc(secondary) + Inc(utility) + Inc(special);
                 SetBuffCount(validSkillCount);
             }
@@ -183,6 +135,29 @@ namespace RiskOfBulletstormRewrite.Items
                 if (!gs)
                     return 0;
                 return gs.stock >= gs.maxStock ? 1 : 0;
+            }
+            public void SetBuffCount(int count)
+            {
+                if (body == null)
+                    return;
+
+                var currentBuffCount = body.GetBuffCount(AlphaBulletBuffIndex);
+                int difference = count - currentBuffCount;
+
+                if (difference > 0)
+                {
+                    for (int i = 0; i < difference; i++)
+                    {
+                        body.AddBuff(AlphaBulletBuffIndex);
+                    }
+                }
+                else if (difference < 0)
+                {
+                    for (int i = 0; i < -difference; i++)
+                    {
+                        body.RemoveBuff(AlphaBulletBuffIndex);
+                    }
+                }
             }
         }
     }

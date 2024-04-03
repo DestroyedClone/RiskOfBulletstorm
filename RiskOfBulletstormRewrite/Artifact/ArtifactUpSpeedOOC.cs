@@ -19,54 +19,31 @@ namespace RiskOfBulletstormRewrite.Artifact
 
         public override Sprite ArtifactDisabledIcon => LoadSprite(false);
 
-        public override void Init(ConfigFile config)
-        {
-            CreateConfig(config);
-            CreateLang();
-            CreateArtifact();
-            Hooks();
-        }
-
         public override void Hooks()
         {
-            RunArtifactManager.onArtifactEnabledGlobal += RunArtifactManager_onArtifactEnabledGlobal;
-            RunArtifactManager.onArtifactDisabledGlobal += RunArtifactManager_onArtifactDisabledGlobal;
-
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
         }
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            if (sender.HasBuff(Utils.Buffs.ArtifactSpeedUpBuff))
-            {
-                args.moveSpeedMultAdd += moveSpeedAdditiveMultiplier;
-            }
-        }
-
-        private void RunArtifactManager_onArtifactDisabledGlobal([JetBrains.Annotations.NotNull] RunArtifactManager runArtifactManager, [JetBrains.Annotations.NotNull] ArtifactDef artifactDef)
-        {
-            if (artifactDef != ArtifactDef)
-            {
-                return;
-            }
-            TeleporterInteraction.onTeleporterChargedGlobal -= OnTeleporterCharged;
-        }
-
-        private void RunArtifactManager_onArtifactEnabledGlobal([JetBrains.Annotations.NotNull] RunArtifactManager runArtifactManager, [JetBrains.Annotations.NotNull] ArtifactDef artifactDef)
-        {
-            if (artifactDef != ArtifactDef)
-            {
-                return;
-            }
-            TeleporterInteraction.onTeleporterChargedGlobal += OnTeleporterCharged;
+            if (!sender.HasBuff(Utils.Buffs.ArtifactSpeedUpBuff)) return;
+            args.moveSpeedMultAdd += moveSpeedAdditiveMultiplier;
         }
 
         public void OnTeleporterCharged(TeleporterInteraction self)
         {
-            if (NetworkServer.active)
-            {
-                self.gameObject.AddComponent<RiskOfBulletstorm_ArtifactSpeedUpController>();
-            }
+            if (!NetworkServer.active) return;
+            self.gameObject.AddComponent<RiskOfBulletstorm_ArtifactSpeedUpController>();
+        }
+
+        public override void OnArtifactEnabled()
+        {
+            TeleporterInteraction.onTeleporterChargedGlobal += OnTeleporterCharged;
+        }
+
+        public override void OnArtifactDisabled()
+        {
+            TeleporterInteraction.onTeleporterChargedGlobal -= OnTeleporterCharged;
         }
 
         public class RiskOfBulletstorm_ArtifactSpeedUpController : MonoBehaviour
@@ -77,13 +54,12 @@ namespace RiskOfBulletstormRewrite.Artifact
 
                 foreach (var player in PlayerCharacterMasterController.instances)
                 {
-                    if (player.master)
+                    if (!player.master) continue;
+
+                    var body = player.master.GetBody();
+                    if (body)
                     {
-                        var body = player.master.GetBody();
-                        if (body)
-                        {
-                            body.AddBuff(Utils.Buffs.ArtifactSpeedUpBuff);
-                        }
+                        body.AddBuff(Utils.Buffs.ArtifactSpeedUpBuff);
                     }
                 }
             }

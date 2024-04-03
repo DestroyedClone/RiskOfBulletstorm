@@ -7,13 +7,14 @@ namespace RiskOfBulletstormRewrite.Controllers
 {
     public class MonstersController : ControllerBase<MonstersController>
     {
-        public static BodyIndex potIndex;
+        public static BodyIndex potBodyIndex;
         public static ConfigEntry<float> cfgSpawnWispFromPotChance;
 
         public override void Init(ConfigFile config)
         {
             CreateConfig(config);
             Hooks();
+            BodyCatalog.availability.CallWhenAvailable(() => { potBodyIndex = BodyCatalog.FindBodyIndex("POT2"); });
         }
 
         public override void CreateConfig(ConfigFile config)
@@ -31,20 +32,18 @@ namespace RiskOfBulletstormRewrite.Controllers
 
         private void RollForSpawnWispOnPotBreak(DamageReport obj)
         {
-            if (NetworkServer.active)
+            if (!NetworkServer.active) return;
+            if (!obj.victimBody) return;
+            if (obj.victimBody.bodyIndex != potBodyIndex) return;
+            if (!Util.CheckRoll(cfgSpawnWispFromPotChance.Value)) return;
+
+            new MasterSummon
             {
-                if (obj?.victimBody?.baseNameToken == "POT2_BODY_NAME"
-                && Util.CheckRoll(cfgSpawnWispFromPotChance.Value))
-                {
-                    var _ = new MasterSummon
-                    {
-                        position = obj.victimBody.corePosition,
-                        ignoreTeamMemberLimit = true,
-                        masterPrefab = GlobalEventManager.CommonAssets.wispSoulMasterPrefabMasterComponent.gameObject,
-                        summonerBodyObject = obj.victim.gameObject
-                    }.Perform();
-                }
-            }
+                position = obj.victimBody.corePosition,
+                ignoreTeamMemberLimit = true,
+                masterPrefab = GlobalEventManager.CommonAssets.wispSoulMasterPrefabMasterComponent.gameObject,
+                summonerBodyObject = obj.victim.gameObject
+            }.Perform();
         }
     }
 }

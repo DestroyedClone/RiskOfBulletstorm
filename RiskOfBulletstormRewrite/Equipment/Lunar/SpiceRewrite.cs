@@ -377,34 +377,32 @@ localScale = new Vector3(1F, 1F, 1F)
         private void CharacterMasterNotificationQueue_PushNotification(On.RoR2.CharacterMasterNotificationQueue.orig_PushNotification orig, CharacterMasterNotificationQueue self, CharacterMasterNotificationQueue.NotificationInfo info, float duration)
         {
             EquipmentDef equipmentInfo = info.data as EquipmentDef;
-            if (equipmentInfo && equipmentInfo == EquipmentDef)
+            if (!equipmentInfo || equipmentInfo != EquipmentDef) goto EarlyReturn;
+
+            var master = self.master;
+            if (!master || !master.inventory) goto EarlyReturn; 
+
+            var spiceConsumedCount = GetSpiceConsumedCount(master);
+            EquipmentIndex replacementEquipmentIndex = EquipmentDef.equipmentIndex;
+            switch (spiceConsumedCount)
             {
-                var master = self.master;
-                if (master && master.inventory)
-                {
-                    var spiceConsumedCount = GetSpiceConsumedCount(master);
-                    EquipmentIndex replacementEquipmentIndex = EquipmentDef.equipmentIndex;
-                    switch (spiceConsumedCount)
-                    {
-                        case 0:
-                            break;
+                case 0:
+                    break;
 
-                        case 1:
-                            replacementEquipmentIndex = SpicePickupEquipmentA.Instance.EquipmentDef.equipmentIndex;
-                            break;
+                case 1:
+                    replacementEquipmentIndex = SpicePickupEquipmentA.Instance.EquipmentDef.equipmentIndex;
+                    break;
 
-                        case 2:
-                            replacementEquipmentIndex = SpicePickupEquipmentB.Instance.EquipmentDef.equipmentIndex;
-                            break;
+                case 2:
+                    replacementEquipmentIndex = SpicePickupEquipmentB.Instance.EquipmentDef.equipmentIndex;
+                    break;
 
-                        default:
-                            replacementEquipmentIndex = SpicePickupEquipmentC.Instance.EquipmentDef.equipmentIndex;
-                            break;
-                    }
-                    info.data = EquipmentCatalog.GetEquipmentDef(replacementEquipmentIndex);
-                }
+                default:
+                    replacementEquipmentIndex = SpicePickupEquipmentC.Instance.EquipmentDef.equipmentIndex;
+                    break;
             }
-
+            info.data = EquipmentCatalog.GetEquipmentDef(replacementEquipmentIndex);
+        EarlyReturn:
             orig(self, info, duration);
         }
 
@@ -420,15 +418,16 @@ localScale = new Vector3(1F, 1F, 1F)
             slot.inventory.GiveItem(SpiceTally.instance.ItemDef);
             slot.inventory.GiveItem(CurseTally.instance.ItemDef);
 
-            if (cfgSpiceReplacement)
-                if (slot.characterBody
-                        && slot.characterBody.teamComponent
-                        && slot.characterBody.isPlayerControlled
-                        && slot.characterBody.teamComponent.teamIndex == TeamIndex.Player
-                        )
-                {
-                    BloatDropListsWithSpice();
-                }
+            if (!cfgSpiceReplacement)
+                return true;
+            if (slot.characterBody
+                && slot.characterBody.teamComponent
+                && slot.characterBody.isPlayerControlled
+                && slot.characterBody.teamComponent.teamIndex == TeamIndex.Player
+                )
+            {
+                BloatDropListsWithSpice();
+            }
             return true;
         }
     }

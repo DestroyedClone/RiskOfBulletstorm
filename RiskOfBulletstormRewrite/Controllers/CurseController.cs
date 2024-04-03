@@ -44,14 +44,13 @@ namespace RiskOfBulletstormRewrite.Controllers
         {
             if (!NetworkServer.active) return;
             var curseCount = inventory.GetItemCount(CurseTally.instance.ItemDef);
-            if (curseCount >= cfgMaxCurse)
+            if (curseCount < cfgMaxCurse) return;
+
+            var lotjcount = inventory.GetItemCount(LordOfTheJammedTargetingItem.instance.ItemDef);
+            if (lotjcount <= 0 && inventory.TryGetComponent(out CharacterMaster master))
             {
-                var lotjcount = inventory.GetItemCount(LordOfTheJammedTargetingItem.instance.ItemDef);
-                if (lotjcount <= 0 && inventory.TryGetComponent(out CharacterMaster master))
-                {
-                    inventory.GiveItem(LOTJItemDef, 1);
-                    GenericPickupController.SendPickupMessage(master, PickupCatalog.FindPickupIndex(LOTJItemDef.itemIndex));
-                }
+                inventory.GiveItem(LOTJItemDef, 1);
+                GenericPickupController.SendPickupMessage(master, PickupCatalog.FindPickupIndex(LOTJItemDef.itemIndex));
             }
         }
     }

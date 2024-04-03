@@ -4,6 +4,7 @@ using RiskOfBulletstormRewrite.Modules;
 using RiskOfBulletstormRewrite.Utils;
 using RoR2;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace RiskOfBulletstormRewrite.Items
 {
@@ -344,6 +345,7 @@ localScale = new Vector3(1F, 1F, 1F)
 
         private void TeleporterInteraction_onTeleporterChargedGlobal(TeleporterInteraction teleporterInteraction)
         {
+            if (!NetworkServer.active) return;
             foreach (var pcmc in PlayerCharacterMasterController.instances)
             {
                 var itemCount = GetCount(pcmc.master);

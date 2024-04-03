@@ -1,5 +1,6 @@
 ﻿using BepInEx.Configuration;
 using R2API;
+using RiskOfBulletstormRewrite.Controllers;
 using RiskOfBulletstormRewrite.Modules;
 using RiskOfBulletstormRewrite.Utils;
 using RoR2;
@@ -332,36 +333,52 @@ localScale = new Vector3(1F, 1F, 1F)
 
         protected override bool ActivateEquipment(EquipmentSlot slot)
         {
-            if (slot.characterBody)
+            if (!slot.characterBody) return false;
+
+            var interactionDriver = slot.characterBody.GetComponent<InteractionDriver>();
+            if (!interactionDriver) return false;
+
+            var bestInteractableObject = slot.characterBody.GetComponent<InteractionDriver>().FindBestInteractableObject();
+            if (!bestInteractableObject) return false;
+
+            if (StoneGateModification.srv_isGoolake)
             {
-                var interactionDriver = slot.characterBody.GetComponent<InteractionDriver>();
-                if (interactionDriver)
-                {
-                    var bestInteractableObject = slot.characterBody.GetComponent<InteractionDriver>().FindBestInteractableObject();
-                    if (bestInteractableObject)
-                    {
-                        var purchaseInteraction = bestInteractableObject.GetComponent<PurchaseInteraction>();
-                        if (purchaseInteraction)
-                        {
-                            if (!purchaseInteraction.GetComponent<ShopTerminalBehavior>())
-                                if (AttemptUnlock(bestInteractableObject, interactionDriver, purchaseInteraction, cfgUnlockChance))
-                                {
-                                    return true;
-                                }
-                        }
-                    }
-                }
+                if (!bestInteractableObject.TryGetComponent(out StoneGateModification.RBSStoneGateLock gateLock))
+                    goto NotStoneGate;
+                if (!gateLock.canUnlockGate)
+                    return false;
+                AttemptUnlockStoneGate(gateLock);
+                return true;
             }
-            return false;
+        NotStoneGate:
+
+            var purchaseInteraction = bestInteractableObject.GetComponent<PurchaseInteraction>();
+            if (!purchaseInteraction) return false;
+
+            if (purchaseInteraction.GetComponent<ShopTerminalBehavior>()) return false;
+
+            return AttemptUnlockChest(bestInteractableObject, interactionDriver, purchaseInteraction, cfgUnlockChance);
         }
 
-        private bool AttemptUnlock(GameObject chestObject, InteractionDriver interactionDriver, PurchaseInteraction purchaseInteraction, float UnlockChance)
+        private void AttemptUnlockStoneGate(StoneGateModification.RBSStoneGateLock gateLock)
         {
-            if (!interactionDriver) return false;
-            var chestBehavior = chestObject.GetComponent<ChestBehavior>();
-            if (!chestBehavior) return false;
+            if (Util.CheckRoll(cfgUnlockChance))
+            {
+                gateLock.OpenStoneGate();
+            }
+            else
+            {
+                gateLock.canUnlockGate = false;
+            }
+        }
+
+        private bool AttemptUnlockChest(GameObject chestObject, InteractionDriver interactionDriver, PurchaseInteraction purchaseInteraction, float UnlockChance)
+        {
+            if (!chestObject.TryGetComponent(out ChestBehavior chestBehavior)) return false;
+
             RBSChestInteractorComponent chestComponent = chestObject.GetComponent<RBSChestInteractorComponent>();
             if (chestComponent && chestComponent.hasUsedLockpicks) return false;
+
             Vector3 offset = Vector3.up * 1f;
 
             if (!purchaseInteraction.isShrine && purchaseInteraction.available && purchaseInteraction.costType == CostTypeIndex.Money)

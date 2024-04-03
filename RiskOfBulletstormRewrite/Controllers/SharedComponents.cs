@@ -1,17 +1,44 @@
-﻿using RoR2;
+﻿using R2API;
+using RoR2;
+using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Networking;
 
 namespace RiskOfBulletstormRewrite.Controllers
 {
     public class SharedComponents
     {
+
+        public static UnityAction<BarrelInteraction, Interactor> onBarrelInteraction;
         public static void Init()
         {
             On.RoR2.ChestBehavior.Start += ChestBehavior_Start_AddRBSChestComponent;
             //On.RoR2.PurchaseInteraction.GetInteractability += PurchaseInteraction_GetInteractability;
             On.RoR2.PurchaseInteraction.GetContextString += ModifyContextStringBasedOnEquipment;
+            //Stage.onServerStageBegin += Stage_onServerStageBegin;
+            StoneGateModification.Init();
+        }
+
+        
+
+        private static void Stage_onServerStageBegin(Stage stage)
+        {
+            if (!stage.sceneDef || stage.sceneDef.cachedName != "goolake") return;
+            var entrance = GameObject.Find("HOLDER: Secret Ring Area Content/Entrance");
+            var GLRuinGate = entrance.transform.Find("GLRuinGate");
+
+            var nameProvider = GLRuinGate.gameObject.AddComponent<GenericDisplayNameProvider>();
+            nameProvider.SetDisplayToken("Mysterious Gate");
+            var highlight = GLRuinGate.gameObject.AddComponent<Highlight>();
+            highlight.displayNameProvider = nameProvider;
+            highlight.targetRenderer = GLRuinGate.transform.Find("BbRuinGate_LOD0").GetComponent<MeshRenderer>();
+            var interaction = GLRuinGate.gameObject.AddComponent<PurchaseInteraction>();
+            interaction.displayNameToken = "Mysterious Gate";
+            var pingInfo = GLRuinGate.gameObject.AddComponent<PingInfoProvider>();
+            pingInfo.pingIconOverride = UnityEngine.AddressableAssets.Addressables.LoadAssetAsync<Sprite>("RoR2/Base/Common/MiscIcons/texMysteryIcon.png").WaitForCompletion();
         }
 
         private static string ModifyContextStringBasedOnEquipment(On.RoR2.PurchaseInteraction.orig_GetContextString orig, PurchaseInteraction self, Interactor activator)

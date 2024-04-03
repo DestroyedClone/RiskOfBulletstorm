@@ -351,8 +351,7 @@ localScale = new Vector3(1F, 1F, 1F)
                 var charBody = charMaster.GetBody();
                 if (charMaster.playerCharacterMasterController
                     && charBody
-                    && FriendlyFireManager.ShouldDirectHitProceed(charMaster.GetBody().healthComponent, slot.characterBody.teamComponent.teamIndex)
-                    )
+                    && FriendlyFireManager.ShouldDirectHitProceed(charMaster.GetBody().healthComponent, slot.characterBody.teamComponent.teamIndex))
                 {
                     switch (cfgEnemyPlayerDamageType.Value)
                     {

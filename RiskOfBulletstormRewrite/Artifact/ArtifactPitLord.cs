@@ -23,15 +23,13 @@ namespace RiskOfBulletstormRewrite.Artifact
 
         private void AllNoFallDamage(On.RoR2.MapZone.orig_TryZoneStart orig, MapZone self, Collider other)
         {
-            if (other.TryGetComponent(out CharacterBody body))
+            if (other.TryGetComponent(out CharacterBody body) 
+                && !body.bodyFlags.HasFlag(CharacterBody.BodyFlags.IgnoreFallDamage))
             {
-                if (!body.bodyFlags.HasFlag(CharacterBody.BodyFlags.IgnoreFallDamage))
-                {
-                    body.bodyFlags |= CharacterBody.BodyFlags.IgnoreFallDamage;
-                    orig(self, other);
-                    body.bodyFlags &= ~CharacterBody.BodyFlags.IgnoreFallDamage;
-                    return;
-                }
+                body.bodyFlags |= CharacterBody.BodyFlags.IgnoreFallDamage;
+                orig(self, other);
+                body.bodyFlags &= ~CharacterBody.BodyFlags.IgnoreFallDamage;
+                return;
             }
 
             orig(self, other);
