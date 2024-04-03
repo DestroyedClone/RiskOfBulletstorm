@@ -51,6 +51,8 @@ namespace RiskOfBulletstormRewrite.Equipment
             {
                 if (!bestInteractableObject.TryGetComponent(out StoneGateModification.RBSStoneGateLock gateLock))
                     goto NotStoneGate;
+                if (!gateLock.canUnlockGate)
+                    return false;
                 gateLock.OpenStoneGate();
                 return true;
             }
