@@ -79,8 +79,20 @@ namespace RiskOfBulletstormRewrite.Controllers
                 {
                     plate.PushPlate();
                 }
+                OpenBarrel();
                 canUnlockGate = false;
             }
+            void OpenBarrel()
+            {
+                var barrelInteraction = this.GetComponent<BarrelInteraction>();
+                barrelInteraction.Networkopened = true;
+                EntityStateMachine component = base.GetComponent<EntityStateMachine>();
+                if (component)
+                {
+                    component.SetNextState(new EntityStates.Barrel.Opening());
+                }
+            }
+
         }
 
         public class RBSPressurePlateController : MonoBehaviour

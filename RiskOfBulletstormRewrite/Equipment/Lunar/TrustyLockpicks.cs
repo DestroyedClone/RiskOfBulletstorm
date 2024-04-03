@@ -365,10 +365,13 @@ localScale = new Vector3(1F, 1F, 1F)
             if (Util.CheckRoll(cfgUnlockChance))
             {
                 gateLock.OpenStoneGate();
+                Util.PlaySound(UnlockSound, gateLock.gameObject);
+                EffectManager.SimpleEffect(UnlockEffect, gateLock.transform.position, Quaternion.identity, true);
             }
             else
             {
                 gateLock.canUnlockGate = false;
+                EffectManager.SimpleEffect(Fail_LockEffect, gateLock.transform.position, Quaternion.identity, true);
             }
         }
 
