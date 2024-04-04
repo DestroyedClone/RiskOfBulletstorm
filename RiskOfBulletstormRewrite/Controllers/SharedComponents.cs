@@ -48,9 +48,17 @@ namespace RiskOfBulletstormRewrite.Controllers
             RBSChestInteractorComponent bulletstormChestInteractor = self.GetComponent<RBSChestInteractorComponent>();
             if (bulletstormChestInteractor)
             {
-                if (bulletstormChestInteractor.InteractorHasValidEquipment(activator))
+                if (RBSChestInteractorComponent.InteractorHasValidEquipment(activator))
                 {
                     return bulletstormChestInteractor.GetContextualString(original);
+                }
+            }
+
+            if (self.TryGetComponent(out StoneGateModification.RBSStoneGateLock gateLock))
+            {
+                if (RBSChestInteractorComponent.InteractorHasValidEquipment(activator))
+                {
+                    return gateLock.GetContextualString(original);
                 }
             }
 
@@ -123,9 +131,9 @@ namespace RiskOfBulletstormRewrite.Controllers
                 highlight.highlightColor = highlightColor;
             }
 
-            private readonly string attemptContextToken = "RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT";
-            private readonly string failContextToken = "RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT_LOSE";
-            private readonly string attemptContextTokenClient = "RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT_CLIENT";
+            public const string attemptContextToken = "RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT";
+            public const string failContextToken = "RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT_LOSE";
+            public const string attemptContextTokenClient = "RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT_CLIENT";
 
             public static EquipmentIndex[] allowedEquips = new EquipmentIndex[]
             {
@@ -133,7 +141,7 @@ namespace RiskOfBulletstormRewrite.Controllers
                 Equipment.Drill.Instance.EquipmentDef.equipmentIndex
             };
 
-            public bool InteractorHasValidEquipment(Interactor interactor)
+            public static bool InteractorHasValidEquipment(Interactor interactor)
             {
                 if (interactor.TryGetComponent(out CharacterBody characterBody)
                     && characterBody.equipmentSlot)

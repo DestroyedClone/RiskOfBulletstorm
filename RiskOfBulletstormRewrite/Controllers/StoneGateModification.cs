@@ -92,6 +92,15 @@ namespace RiskOfBulletstormRewrite.Controllers
                     component.SetNextState(new EntityStates.Barrel.Opening());
                 }
             }
+            public string GetContextualString(string original)
+            {
+                string formattingToken = !canUnlockGate ? RBSChestInteractorComponent.failContextToken : RBSChestInteractorComponent.attemptContextToken;
+                if (NetworkClient.active)
+                {
+                    formattingToken = RBSChestInteractorComponent.attemptContextTokenClient;
+                }
+                return Language.GetStringFormatted(formattingToken, original);
+            }
 
         }
 
