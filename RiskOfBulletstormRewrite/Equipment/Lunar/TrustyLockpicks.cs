@@ -343,9 +343,9 @@ localScale = new Vector3(1F, 1F, 1F)
 
             if (StoneGateModification.srv_isGoolake)
             {
-                if (!bestInteractableObject.TryGetComponent(out StoneGateModification.RBSStoneGateLock gateLock))
+                if (!bestInteractableObject.TryGetComponent(out StoneGateModification.RBSStoneGateLockInteraction gateLock))
                     goto NotStoneGate;
-                if (!gateLock.canUnlockGate)
+                if (gateLock.isLockBroken)
                     return false;
                 AttemptUnlockStoneGate(gateLock);
                 return true;
@@ -360,7 +360,7 @@ localScale = new Vector3(1F, 1F, 1F)
             return AttemptUnlockChest(bestInteractableObject, interactionDriver, purchaseInteraction, cfgUnlockChance);
         }
 
-        private void AttemptUnlockStoneGate(StoneGateModification.RBSStoneGateLock gateLock)
+        private void AttemptUnlockStoneGate(StoneGateModification.RBSStoneGateLockInteraction gateLock)
         {
             if (Util.CheckRoll(cfgUnlockChance))
             {
@@ -370,7 +370,7 @@ localScale = new Vector3(1F, 1F, 1F)
             }
             else
             {
-                gateLock.canUnlockGate = false;
+                gateLock.isLockBroken = true;
                 EffectManager.SimpleEffect(Fail_LockEffect, gateLock.transform.position, Quaternion.identity, true);
             }
         }
@@ -379,8 +379,8 @@ localScale = new Vector3(1F, 1F, 1F)
         {
             if (!chestObject.TryGetComponent(out ChestBehavior chestBehavior)) return false;
 
-            RBSChestInteractorComponent chestComponent = chestObject.GetComponent<RBSChestInteractorComponent>();
-            if (chestComponent && chestComponent.hasUsedLockpicks) return false;
+            RBSChestLockInteraction chestComponent = chestObject.GetComponent<RBSChestLockInteraction>();
+            if (chestComponent && chestComponent.isLockBroken) return false;
 
             Vector3 offset = Vector3.up * 1f;
 
@@ -411,10 +411,10 @@ localScale = new Vector3(1F, 1F, 1F)
                     GameObject selectedEffect = Fail_LockEffect;
 
                     //purchaseInteraction.displayNameToken = (prefix + purchaseInteraction.displayNameToken);
-                    chestObject.AddComponent<RBSChestInteractorComponent>().hasUsedLockpicks = true; //does this even work? lol
+                    chestObject.AddComponent<RBSChestLockInteraction>().isLockBroken = true; //does this even work? lol
                     EffectManager.SimpleEffect(selectedEffect, chestObject.transform.position + offset, Quaternion.identity, true);
                 }
-                chestComponent.hasUsedLockpicks = true;
+                chestComponent.isLockBroken = true;
                 return true;
             }
             else

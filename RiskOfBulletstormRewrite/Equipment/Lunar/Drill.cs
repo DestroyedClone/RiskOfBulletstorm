@@ -49,9 +49,9 @@ namespace RiskOfBulletstormRewrite.Equipment
 
             if (StoneGateModification.srv_isGoolake)
             {
-                if (!bestInteractableObject.TryGetComponent(out StoneGateModification.RBSStoneGateLock gateLock))
+                if (!bestInteractableObject.TryGetComponent(out StoneGateModification.RBSStoneGateLockInteraction gateLock))
                     goto NotStoneGate;
-                if (!gateLock.canUnlockGate)
+                if (gateLock.isLockBroken)
                     return false;
                 gateLock.OpenStoneGate();
                 return true;
@@ -83,8 +83,8 @@ namespace RiskOfBulletstormRewrite.Equipment
             Highlight highlight = chestObject.GetComponent<Highlight>();
             PurchaseInteraction purchaseInteraction = chestObject.GetComponent<PurchaseInteraction>();
             if (!highlight || !purchaseInteraction) return false;
-            RBSChestInteractorComponent chestComponent = chestObject.GetComponent<RBSChestInteractorComponent>();
-            if (chestComponent && chestComponent.hasUsedLockpicks) return false;
+            RBSChestLockInteraction chestComponent = chestObject.GetComponent<RBSChestLockInteraction>();
+            if (chestComponent && chestComponent.isLockBroken) return false;
 
             if (!purchaseInteraction.isShrine && purchaseInteraction.available && purchaseInteraction.costType == CostTypeIndex.Money)
             {

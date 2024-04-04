@@ -37,8 +37,8 @@ namespace RiskOfBulletstormRewrite.Controllers
             bar.displayNameToken = "RISKOFBULLETSTORM_STONEGATE_NAME";
             bar.contextToken = "RISKOFBULLETSTORM_STONEGATE_CONTEXT";
             bar.goldReward = 0;
-            DoorUnlockable.AddComponent<RBSStoneGateLock>();
-            //var comp = DoorUnlockable.AddComponent<RBSChestInteractorComponent>();
+            DoorUnlockable.AddComponent<RBSStoneGateLockInteraction>();
+            //var comp = DoorUnlockable.AddComponent<RBSChestLockInteraction>();
             //comp.StoreHighlightColor(DoorUnlockable.GetComponent<Highlight>());
         }
 
@@ -60,7 +60,7 @@ namespace RiskOfBulletstormRewrite.Controllers
         {
             if (srv_goolakeLockInstance)
             {
-                if (!self.TryGetComponent(out RBSStoneGateLock gateLock)) 
+                if (!self.TryGetComponent(out RBSStoneGateLockInteraction gateLock)) 
                     goto EarlyReturn;
                 return;
             }
@@ -69,18 +69,17 @@ namespace RiskOfBulletstormRewrite.Controllers
             //onBarrelInteraction?.Invoke(self, activator);
         }
 
-        public class RBSStoneGateLock : MonoBehaviour
+        public class RBSStoneGateLockInteraction : RBSLockInteraction
         {
-            public bool canUnlockGate = true;
             public void OpenStoneGate()
             {
-                if (!canUnlockGate) return;
+                if (isLockBroken) return;
                 foreach (var plate in InstanceTracker.GetInstancesList<RBSPressurePlateController>())
                 {
                     plate.PushPlate();
                 }
                 OpenBarrel();
-                canUnlockGate = false;
+                isLockBroken = true;
             }
             void OpenBarrel()
             {
@@ -92,16 +91,6 @@ namespace RiskOfBulletstormRewrite.Controllers
                     component.SetNextState(new EntityStates.Barrel.Opening());
                 }
             }
-            public string GetContextualString(string original)
-            {
-                string formattingToken = !canUnlockGate ? RBSChestInteractorComponent.failContextToken : RBSChestInteractorComponent.attemptContextToken;
-                if (NetworkClient.active)
-                {
-                    formattingToken = RBSChestInteractorComponent.attemptContextTokenClient;
-                }
-                return Language.GetStringFormatted(formattingToken, original);
-            }
-
         }
 
         public class RBSPressurePlateController : MonoBehaviour

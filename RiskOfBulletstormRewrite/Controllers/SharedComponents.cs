@@ -6,12 +6,13 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Networking;
+using static UnityEngine.UI.Image;
 
 namespace RiskOfBulletstormRewrite.Controllers
 {
     public class SharedComponents
     {
-
+        public static EquipmentIndex[] keyTypeEquipmentArray;
         public static UnityAction<BarrelInteraction, Interactor> onBarrelInteraction;
         public static void Init()
         {
@@ -20,9 +21,29 @@ namespace RiskOfBulletstormRewrite.Controllers
             On.RoR2.PurchaseInteraction.GetContextString += ModifyContextStringBasedOnEquipment;
             //Stage.onServerStageBegin += Stage_onServerStageBegin;
             StoneGateModification.Init();
+            EquipmentCatalog.availability.CallWhenAvailable(() =>
+            {
+                keyTypeEquipmentArray = new EquipmentIndex[]
+                {
+                    Equipment.TrustyLockpicks.Instance.EquipmentDef.equipmentIndex,
+                    Equipment.Drill.Instance.EquipmentDef.equipmentIndex
+                };
+            });
+            On.RoR2.BarrelInteraction.GetContextString += BarrelInteraction_GetContextString;
         }
 
-        
+        private static string BarrelInteraction_GetContextString(On.RoR2.BarrelInteraction.orig_GetContextString orig, BarrelInteraction self, Interactor activator)
+        {
+            var original = orig(self, activator);
+            if (self.TryGetComponent(out StoneGateModification.RBSStoneGateLockInteraction gateLock))
+            {
+                if (RBSChestLockInteraction.InteractorHasValidEquipment(activator))
+                {
+                    return gateLock.GetContextualString(original);
+                }
+            }
+            return original;
+        }
 
         private static void Stage_onServerStageBegin(Stage stage)
         {
@@ -45,44 +66,43 @@ namespace RiskOfBulletstormRewrite.Controllers
         {
             var original = orig(self, activator);
 
-            RBSChestInteractorComponent bulletstormChestInteractor = self.GetComponent<RBSChestInteractorComponent>();
-            if (bulletstormChestInteractor)
+            if (self.TryGetComponent(out RBSChestLockInteraction chestLock))
             {
-                if (RBSChestInteractorComponent.InteractorHasValidEquipment(activator))
+                if (RBSChestLockInteraction.InteractorHasValidEquipment(activator))
                 {
-                    return bulletstormChestInteractor.GetContextualString(original);
-                }
-            }
-
-            if (self.TryGetComponent(out StoneGateModification.RBSStoneGateLock gateLock))
-            {
-                if (RBSChestInteractorComponent.InteractorHasValidEquipment(activator))
-                {
-                    return gateLock.GetContextualString(original);
+                    return chestLock.GetContextualString(original);
                 }
             }
 
             return original;
         }
 
+        
         private static Interactability PurchaseInteraction_GetInteractability(On.RoR2.PurchaseInteraction.orig_GetInteractability orig, PurchaseInteraction self, Interactor activator)
         {
             var original = orig(self, activator);
             var gameObject = self.gameObject;
             Highlight highlight = gameObject.GetComponent<Highlight>();
-            RBSChestInteractorComponent bulletstormChestInteractor = gameObject.GetComponent<RBSChestInteractorComponent>();
 
-            if (bulletstormChestInteractor
-                && bulletstormChestInteractor.hasUsedLockpicks
-                && bulletstormChestInteractor.InteractorHasValidEquipment(activator)
-                && activator.GetComponent<CharacterBody>()?.inputBank?.activateEquipment.justPressed == true)
+            if (gameObject.TryGetComponent(out RBSChestLockInteraction chestLock))
             {
-                bulletstormChestInteractor.ChangeHighlightColor(highlight, Highlight.HighlightColor.unavailable);
+                if (chestLock.isLockBroken) goto Done;
+                if (!RBSLockInteraction.InteractorHasValidEquipment(activator)) goto Done;
+                //&& activator.GetComponent<CharacterBody>()?.inputBank?.activateEquipment.justPressed == true)
+
+                chestLock.ChangeHighlightColor(highlight, Highlight.HighlightColor.unavailable);
                 if (original != Interactability.Disabled)
                     return Interactability.Available;
+
+                goto Done;
             }
 
-            bulletstormChestInteractor.ChangeHighlightColor(highlight, bulletstormChestInteractor.originalHighlightColor);
+            if (gameObject.TryGetComponent(out StoneGateModification.RBSStoneGateLockInteraction stoneGateLock))
+            {
+                if (stoneGateLock.isLockBroken) goto Done;
+            }
+            Done:
+            //bulletstormChestInteractor.ChangeHighlightColor(highlight, bulletstormChestInteractor.originalHighlightColor);
             return original;
         }
 
@@ -92,11 +112,50 @@ namespace RiskOfBulletstormRewrite.Controllers
             PurchaseInteraction purchaseInteraction = self.GetComponent<PurchaseInteraction>();
             if (purchaseInteraction.costType != CostTypeIndex.PercentHealth)
             {
-                var comp = self.gameObject.AddComponent<RBSChestInteractorComponent>();
+                var comp = self.gameObject.AddComponent<RBSChestLockInteraction>();
                 comp.chestBehavior = self;
                 comp.purchaseInteraction = purchaseInteraction;
                 comp.StoreHighlightColor(self.GetComponent<Highlight>());
             }
+        }
+
+        public interface IRBSKeyInteraction
+        {
+
+        }
+
+        public class RBSLockInteraction : MonoBehaviour, IRBSKeyInteraction
+        {
+            public const string attemptContextToken = "RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT";
+            public const string failContextToken = "RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT_LOSE";
+            public const string attemptContextTokenClient = "RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT_CLIENT";
+
+            public bool isLockBroken = false;
+
+
+            public string GetContextualString(string original)
+            {
+                string formattingToken = isLockBroken ? failContextToken : attemptContextToken;
+                if (NetworkClient.active)
+                {
+                    formattingToken = attemptContextTokenClient;
+                }
+                return Language.GetStringFormatted(formattingToken, original);
+            }
+
+            public static bool InteractorHasValidEquipment(Interactor interactor)
+            {
+                if (interactor.TryGetComponent(out CharacterBody characterBody)
+                    && characterBody.equipmentSlot)
+                {
+                    if (keyTypeEquipmentArray.Contains(characterBody.equipmentSlot.equipmentIndex))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
         }
 
         /// <summary>
@@ -104,10 +163,8 @@ namespace RiskOfBulletstormRewrite.Controllers
         /// <para><b>Trusty Lockpicks</b>: Affects hasUsedLockpicks </para>
         /// <para><b>Drill</b>: Can't interact with Lockpicked Chests</para>
         /// </summary>
-        public class RBSChestInteractorComponent : MonoBehaviour
+        public class RBSChestLockInteraction : RBSLockInteraction
         {
-            public bool hasUsedLockpicks = false;
-
             //public string nameModifier = "";
             //public string contextModifier = "";
             public PurchaseInteraction purchaseInteraction;
@@ -129,39 +186,6 @@ namespace RiskOfBulletstormRewrite.Controllers
             public void ChangeHighlightColor(Highlight highlight, Highlight.HighlightColor highlightColor)
             {
                 highlight.highlightColor = highlightColor;
-            }
-
-            public const string attemptContextToken = "RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT";
-            public const string failContextToken = "RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT_LOSE";
-            public const string attemptContextTokenClient = "RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT_CLIENT";
-
-            public static EquipmentIndex[] allowedEquips = new EquipmentIndex[]
-            {
-                Equipment.TrustyLockpicks.Instance.EquipmentDef.equipmentIndex,
-                Equipment.Drill.Instance.EquipmentDef.equipmentIndex
-            };
-
-            public static bool InteractorHasValidEquipment(Interactor interactor)
-            {
-                if (interactor.TryGetComponent(out CharacterBody characterBody)
-                    && characterBody.equipmentSlot)
-                {
-                    if (allowedEquips.Contains(characterBody.equipmentSlot.equipmentIndex))
-                    {
-                        return true;
-                    }
-                }
-                return false;
-            }
-
-            public string GetContextualString(string original)
-            {
-                string formattingToken = hasUsedLockpicks ? failContextToken : attemptContextToken;
-                if (NetworkClient.active)
-                {
-                    formattingToken = attemptContextTokenClient;
-                }
-                return Language.GetStringFormatted(formattingToken, original);
             }
 
             public void UpdateTokens()
