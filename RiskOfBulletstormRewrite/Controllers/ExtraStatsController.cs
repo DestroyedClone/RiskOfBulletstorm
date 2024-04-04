@@ -189,8 +189,7 @@ namespace RiskOfBulletstormRewrite.Controllers
 
         public override void Init(ConfigFile config)
         {
-            SetupConfig(config);
-            Hooks();
+            base.Init(config);
             SetupModdedProjectiles();
         }
 

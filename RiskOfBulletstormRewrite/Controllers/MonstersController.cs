@@ -12,8 +12,7 @@ namespace RiskOfBulletstormRewrite.Controllers
 
         public override void Init(ConfigFile config)
         {
-            CreateConfig(config);
-            Hooks();
+            base.Init(config);
             BodyCatalog.availability.CallWhenAvailable(() => { potBodyIndex = BodyCatalog.FindBodyIndex("POT2"); });
         }
 

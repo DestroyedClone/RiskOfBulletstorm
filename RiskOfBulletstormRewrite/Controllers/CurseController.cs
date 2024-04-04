@@ -14,12 +14,6 @@ namespace RiskOfBulletstormRewrite.Controllers
         public ItemDef LOTJItemDef => LordOfTheJammedTargetingItem.instance.ItemDef;
         public int teamwideCurseCount = 0;
 
-        public override void Init(ConfigFile config)
-        {
-            CreateConfig(config);
-            Hooks();
-        }
-
         public override void Hooks()
         {
             Inventory.onInventoryChangedGlobal += GiveLordOfTheJammedItemIfInventoryHasMaxCurse;

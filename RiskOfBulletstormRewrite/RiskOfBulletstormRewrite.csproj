@@ -33,6 +33,7 @@
     <Compile Remove="Controllers\BulletQuestController.cs" />
     <Compile Remove="Controllers\LimitedPickupsController.cs" />
     <Compile Remove="Controllers\MasterRoundController.cs" />
+    <Compile Remove="Controllers\Pasts\PastInfos\PastInfoBase.cs" />
     <Compile Remove="Controllers\Pasts\PastKillingController.cs" />
     <Compile Remove="Controllers\Pasts\TransitionToPastEntityState.cs" />
     <Compile Remove="Equipment\BombCompanionApp.cs" />
@@ -88,6 +89,7 @@
 
   <ItemGroup>
     <Folder Include="Controllers\Pasts\" />
+    <Folder Include="Controllers\Pasts\PastInfos\" />
     <Folder Include="Items\Boss\" />
     <Folder Include="Items\Legendary\" />
     <Folder Include="Items\VoidBoss\" />

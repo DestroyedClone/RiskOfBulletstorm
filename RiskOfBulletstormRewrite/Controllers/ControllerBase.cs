@@ -29,7 +29,12 @@ namespace RiskOfBulletstormRewrite.Controllers
         /// <para>This ensures that these execute in this order, one after another, and is useful for having things available to be used in later methods.</para>
         /// </summary>
         /// <param name="config">The config file that will be passed into this from the main class.</param>
-        public abstract void Init(ConfigFile config);
+        public virtual void Init(ConfigFile config)
+        {
+            CreateConfig(config);
+            CreateLang();
+            Hooks();
+        }
         public virtual void CreateConfig(ConfigFile config){ }
         protected virtual void CreateLang(){}
         public virtual void Hooks(){ }
