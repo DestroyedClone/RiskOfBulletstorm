@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3816222303
+CRC: 1589014362
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: b6b2ffb2bb471bbe66d916a10f55379c
+    Hash: 18cfc7d6b713abbbd52ba59888f5bd03
   TypeTreeHash:
     serializedVersion: 2
     Hash: 04c8befcd4fa360efbf89a569ab92db2
@@ -61,6 +61,7 @@ Assets:
 - Assets/Icons/Materials/ITEM_CLONEVOID.mat
 - Assets/Materials/MustacheTex.mat
 - Assets/Icons/EQUIPMENT_ORANGECONSUMED.png
+- Assets/Models/Prefabs/MetalLock.prefab
 - Assets/Models/TrustyLockpicks.fbx
 - Assets/Icons/EQUIPMENT_SPICE.png
 - Assets/Models/Prefabs/Backpack.prefab
@@ -110,6 +111,7 @@ Assets:
 - Assets/Models/Mustache.fbx
 - Assets/Models/Prefabs/BloodiedScarf.prefab
 - Assets/Icons/ITEM_CLONEVOIDCONSUMED.png
+- Assets/Materials/MetalMat.mat
 - Assets/Icons/ARTIFACT_GUNGEONSPOOF_ENABLED.png
 - Assets/Icons/ARTIFACT_PITLORD_ENABLED.png
 - Assets/Icons/BUFF_DODGEROLL.png
@@ -138,6 +140,7 @@ Assets:
 - Assets/Icons/EQUIPMENT_TRUSTYLOCKPICKS.png
 - Assets/Icons/ITEM_SCOPE.png
 - Assets/Icons/EQUIPMENT_DRILL.png
+- Assets/Models/LockModel.fbx
 - Assets/Models/BattleStandardVoid.fbx
 - Assets/Models/Prefabs/Clone.prefab
 - Assets/Materials/UV_Orange.mat
