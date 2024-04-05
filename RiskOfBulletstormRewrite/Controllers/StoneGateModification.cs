@@ -21,6 +21,14 @@ namespace RiskOfBulletstormRewrite.Controllers
             Stage.onServerStageBegin += UpdateGooLakePerm;
             On.RoR2.BarrelInteraction.OnInteractionBegin += BarrelInteraction_OnInteractionBegin;
             On.RoR2.PressurePlateController.Start += PressurePlateController_Start;
+            On.EntityStates.Interactables.StoneGate.Opening.OnEnter += Opening_OnEnter;
+        }
+
+        private static void Opening_OnEnter(On.EntityStates.Interactables.StoneGate.Opening.orig_OnEnter orig, EntityStates.Interactables.StoneGate.Opening self)
+        {
+            orig(self);
+            if (RBSStoneGateLockInteraction.Instance)
+                UnityEngine.Object.Destroy(RBSStoneGateLockInteraction.Instance.gameObject);
         }
 
         private static void PressurePlateController_Start(On.RoR2.PressurePlateController.orig_Start orig, PressurePlateController self)
@@ -46,7 +54,7 @@ namespace RiskOfBulletstormRewrite.Controllers
         {
             srv_isGoolake = obj && obj.sceneDef && obj.sceneDef.cachedName == "goolake";
             if (srv_goolakeLockInstance) return;
-
+            if (!NetworkServer.active) return;
             var copy = UnityEngine.Object.Instantiate(DoorUnlockable);
 
             copy.transform.position = new Vector3(145.1675f, -97.3314f, -340.2334f);
@@ -71,6 +79,15 @@ namespace RiskOfBulletstormRewrite.Controllers
 
         public class RBSStoneGateLockInteraction : RBSLockInteraction
         {
+            public static RBSStoneGateLockInteraction Instance { get; set; }
+            public void Awake()
+            {
+                Instance = this;
+            }
+            public void OnDestroy()
+            {
+                Instance = null;
+            }
             public void OpenStoneGate()
             {
                 if (isLockBroken) return;
