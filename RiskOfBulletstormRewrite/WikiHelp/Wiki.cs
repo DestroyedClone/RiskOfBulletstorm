@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Text.RegularExpressions;
 using UnityEngine.Networking;
 using Path = System.IO.Path;
@@ -22,12 +23,46 @@ namespace RiskOfBulletstormRewrite.WikiHelp
 {
     public class Wiki
     {
-        public static bool isEnabled = false;
+        public static bool isEnabled = true;
 
         public static void Initialize()
         {
             //On.RoR2.UI.MainMenu.MainMenuController.Start += MainMenuController_Start;
             //On.RoR2.UI.MainMenu.MainMenuController.Start += OutputEquipmentForWiki;
+            On.RoR2.UI.MainMenu.MainMenuController.Start += CreateMainReadMe;
+        }
+
+        private static void CreateMainReadMe(On.RoR2.UI.MainMenu.MainMenuController.orig_Start orig, RoR2.UI.MainMenu.MainMenuController self)
+        {
+            orig(self);
+            StringBuilder sb = HG.StringBuilderPool.RentStringBuilder();
+            void App(string text)
+            {
+                sb.AppendLine(text);
+            }
+            App("# Risk of Bulletstorm");
+            App($"");
+            App($"| [![github issues/request link](https://raw.githubusercontent.com/DestroyedClone/PoseHelper/master/PoseHelper/github_link.webp)](https://github.com/DestroyedClone/RiskOfBulletstorm/issues) | [![discord invite](https://raw.githubusercontent.com/DestroyedClone/PoseHelper/master/PoseHelper/discord_link.webp)](https://discord.gg/DpHu3qXMHK) |\r\n|--|--|\r\n\r\n![Bulletstorm](https://raw.githubusercontent.com/DestroyedClone/RiskOfBulletstorm/master/RiskOfBulletstormRewrite/Readme/Banner.png)\r\n");
+            App($"");
+            App($"**Risk of Bulletstorm** <sup>(**Risk** of a Rain**storm** of **Bullets**)</sup>, is a content mod that adds items, equipment, and mechanics from the [**Enter The Gungeon**](https://www.dodgeroll.com/gungeon/) property by Dodge Roll Games.");
+            App($"");
+            App($"## Warning\r\n* Mod's not done so there's missing models/textures/effects/item displays\r\n* Not tested or setup for multiplayer\r\n* Not tested for any mod incompats");
+            App($"");
+            App($"## Wiki\r\nThere is a rudimentary wiki for this with additional information. \r\n![wiki indicator](https://raw.githubusercontent.com/DestroyedClone/RiskOfBulletstorm/master/RiskOfBulletstormRewrite/Readme/wikihint.png)");
+            App($"");
+            //Item section
+
+            App($"");
+            App($"");
+            App($"");
+            App($"");
+            App($"");
+            App($"");
+            App($"");
+            App($"");
+            App($"");
+            App($"");
+            App($"");
         }
 
         private void OutputEquipmentForWiki(On.RoR2.UI.MainMenu.MainMenuController.orig_Start orig, RoR2.UI.MainMenu.MainMenuController self)

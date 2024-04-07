@@ -1,8 +1,6 @@
 using RiskOfBulletstormRewrite.Equipment;
-using RiskOfBulletstormRewrite.Items;
 using RoR2;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 
 namespace RiskOfBulletstormRewrite
@@ -66,6 +64,7 @@ namespace RiskOfBulletstormRewrite
             Debug.Log(sb.ToString());
             HG.StringBuilderPool.ReturnStringBuilder(sb);
         }
+
         /*
         [ConCommand(commandName = "rbs_backpacksetslot",
         flags = ConVarFlags.ExecuteOnServer,

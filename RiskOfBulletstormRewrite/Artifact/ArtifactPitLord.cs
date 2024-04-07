@@ -1,5 +1,4 @@
-﻿using BepInEx.Configuration;
-using RoR2;
+﻿using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -25,7 +24,7 @@ namespace RiskOfBulletstormRewrite.Artifact
 
         private void AllNoFallDamage(On.RoR2.MapZone.orig_TryZoneStart orig, MapZone self, Collider other)
         {
-            if (other.TryGetComponent(out CharacterBody body) 
+            if (other.TryGetComponent(out CharacterBody body)
                 && !body.bodyFlags.HasFlag(CharacterBody.BodyFlags.IgnoreFallDamage))
             {
                 body.bodyFlags |= CharacterBody.BodyFlags.IgnoreFallDamage;

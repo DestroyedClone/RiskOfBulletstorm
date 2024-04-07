@@ -13,6 +13,7 @@ namespace RiskOfBulletstormRewrite
         //public static ConfigEntry<NotificationMod> cfgEnableBreachNotifications;
         //public static ConfigEntry<bool> cfgDropEquipment;
         public static ConfigEntry<bool> cfgCanStealFromNewt;
+
         //public static ConfigEntry<bool> cfgDropEquipmentFromInaccesibleSlots;
 
         public enum NotificationMod
@@ -218,8 +219,9 @@ namespace RiskOfBulletstormRewrite
         }
 
         #endregion centertext
-        
+
         /*
+
                 #region DropEquipment
 
                 public static void DropEquipment(EquipmentSlot slot, EquipmentDef equipmentDef)
@@ -300,6 +302,7 @@ namespace RiskOfBulletstormRewrite
                 }
 
                 #endregion DropEquipment
+
         */
     }
 }

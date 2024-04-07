@@ -1,6 +1,5 @@
 ﻿using BepInEx.Configuration;
 using R2API;
-using RiskOfBulletstormRewrite.Modules;
 using RoR2;
 using UnityEngine;
 
@@ -46,6 +45,7 @@ namespace RiskOfBulletstormRewrite.Items
         {
             return new ItemDisplayRuleDict();
         }
+
         public override string WikiLink => "https://thunderstore.io/package/DestroyedClone/RiskOfBulletstorm/wiki/190-item-ring-of-miserly-protection/";
 
         public override void Hooks()

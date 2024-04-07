@@ -1,6 +1,4 @@
 ﻿using RoR2;
-using System;
-using System.Reflection;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -63,6 +61,7 @@ namespace RiskOfBulletstormRewrite.Modules
 
         // This section is to keep consistency between config key/descs
         internal const string cfgChanceIntegerKey = "Chance of Activation";
+
         internal const string cfgChanceIntegerDesc = "The chance in percent of activation. 25 = 25%";
 
         internal const string cfgMultiplierKey = "Multiplier";
@@ -113,9 +112,9 @@ namespace RiskOfBulletstormRewrite.Modules
         internal const string cfgCoinCrownVoidPerStackKey = "Cash Additive Per Stack";
         internal const string cfgCoinCrownVoidPerStackDesc = "The amount of extra money to get on kill per stack.";
 
-
         //the bundle to load assets from
         public static AssetBundle mainAssetBundle;
+
         public const string bundleName = "riskofbulletstormbundle";
         public const string assetBundleFolder = "AssetBundles";
 

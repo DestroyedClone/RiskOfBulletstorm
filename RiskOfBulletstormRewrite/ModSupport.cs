@@ -1,12 +1,9 @@
-﻿using RiskOfBulletstormRewrite.Artifact;
-using RiskOfBulletstormRewrite.Equipment;
+﻿using RiskOfBulletstormRewrite.Equipment;
 using RiskOfBulletstormRewrite.Items;
 using RiskOfBulletstormRewrite.Modules;
 using RiskOfBulletstormRewrite.Utils;
 using RoR2;
-using System;
 using System.Runtime.CompilerServices;
-using UnityEngine;
 
 namespace RiskOfBulletstormRewrite
 {
@@ -28,7 +25,6 @@ namespace RiskOfBulletstormRewrite
 
         internal static class BetterUICompat
         {
-
             [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
             internal static void StatsDisplay()
             {
@@ -40,7 +36,6 @@ namespace RiskOfBulletstormRewrite
             [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
             internal static void ItemTags()
             {
-
             }
 
             [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
@@ -48,7 +43,6 @@ namespace RiskOfBulletstormRewrite
             {
                 BetterUI.ItemStats.RegisterTag(new BetterUI.ItemStats.ItemStat(), new BetterUI.ItemStats.ItemTag()
                 {
-
                 });
             }
 

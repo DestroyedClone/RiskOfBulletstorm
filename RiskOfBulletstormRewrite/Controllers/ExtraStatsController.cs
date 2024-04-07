@@ -1,11 +1,7 @@
 ﻿using BepInEx.Configuration;
-using R2API;
-using RiskOfBulletstormRewrite.Modules;
 using RoR2;
 using RoR2.Projectile;
-using System;
 using System.Collections.Generic;
-using System.Net;
 using UnityEngine;
 using static RiskOfBulletstormRewrite.Main;
 using static RiskOfBulletstormRewrite.Utils.ItemHelpers;
@@ -315,7 +311,6 @@ namespace RiskOfBulletstormRewrite.Controllers
                 "\nIt is HIGHLY recommended not to disable, because alot of projectiles could break otherwise.").Value;
             cfgDamageMultiplierPerStack = config.Bind(CategoryNameShotSpread, "Damage Multiplier Past Max Accuracy", 0.01f, "How much should the damage be multiplied per stack past max accuracy?");
 
-
             if (cfgShotSpread_EnableDML)
                 WhitelistedProjectiles.Add(Load<GameObject>("RoR2/Base/Common/MissileProjectile.prefab"));
             if (cfgShotSpread_EnableLoader)
@@ -325,7 +320,6 @@ namespace RiskOfBulletstormRewrite.Controllers
             }
             R2API.RecalculateStatsAPI.GetStatCoefficients += ApplyDamageIncreaseToMaxAccuracy;
         }
-
 
         private static void ApplyDamageIncreaseToMaxAccuracy(CharacterBody sender, R2API.RecalculateStatsAPI.StatHookEventArgs args)
         {
@@ -369,11 +363,9 @@ namespace RiskOfBulletstormRewrite.Controllers
         {
             if (!self.owner) goto EarlyReturn;
 
-            var body = self.owner.gameObject.GetComponent<CharacterBody>();
-            if (!body) goto EarlyReturn;
+            if (!self.owner.gameObject.TryGetComponent(out CharacterBody body)) goto EarlyReturn;
 
-            var comp = body.masterObject.GetComponent<RBSExtraStatsController>();
-            if (!comp) goto EarlyReturn;
+            if (!body.masterObject.TryGetComponent(out RBSExtraStatsController comp)) goto EarlyReturn;
 
             var accuracy = comp.bulletAccuracy;
 
@@ -404,13 +396,13 @@ namespace RiskOfBulletstormRewrite.Controllers
         /// <param name="fireProjectileInfo"></param>
         private static void ProjectileManager_FireProjectile_FireProjectileInfo(On.RoR2.Projectile.ProjectileManager.orig_FireProjectile_FireProjectileInfo orig, ProjectileManager self, FireProjectileInfo fireProjectileInfo)
         {
-            if (!fireProjectileInfo.owner) goto EarlyReturn; 
+            if (!fireProjectileInfo.owner) goto EarlyReturn;
             if (!fireProjectileInfo.owner.TryGetComponent(out CharacterBody body) || !body.master) goto EarlyReturn;
             if (!body.master.TryGetComponent(out RBSExtraStatsController comp)) goto EarlyReturn;
 
             var inputBank = fireProjectileInfo.owner.GetComponent<CharacterBody>()?.inputBank;
-            if (!inputBank) goto EarlyReturn; 
-            
+            if (!inputBank) goto EarlyReturn;
+
             float accuracy = comp.projectileAccuracy;
 
             //if (ShowAnnoyingDebugText) _logger.LogMessage("Projectile Fired: " + fireProjectileInfo.projectilePrefab.name);

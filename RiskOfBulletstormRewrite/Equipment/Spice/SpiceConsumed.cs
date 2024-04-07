@@ -37,7 +37,6 @@ namespace RiskOfBulletstormRewrite.Equipment
             base.Hooks();
         }
 
-
         public override ItemDisplayRuleDict CreateItemDisplayRules()
         {
             return null;

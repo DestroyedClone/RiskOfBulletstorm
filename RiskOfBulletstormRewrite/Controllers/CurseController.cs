@@ -1,5 +1,4 @@
-﻿using BepInEx.Configuration;
-using RiskOfBulletstormRewrite.Items;
+﻿using RiskOfBulletstormRewrite.Items;
 using RoR2;
 using UnityEngine.Networking;
 

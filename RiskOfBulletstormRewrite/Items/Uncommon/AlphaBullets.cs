@@ -1,6 +1,5 @@
 ﻿using BepInEx.Configuration;
 using R2API;
-using RiskOfBulletstormRewrite.Modules;
 using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -45,6 +44,7 @@ namespace RiskOfBulletstormRewrite.Items
         {
             return null;
         }
+
         public override string WikiLink => "https://thunderstore.io/package/DestroyedClone/RiskOfBulletstorm/wiki/177-item-alpha-bullet/";
 
         public override void Hooks()
@@ -90,6 +90,7 @@ namespace RiskOfBulletstormRewrite.Items
             public GenericSkill special = null;
 
             public BuffIndex AlphaBulletBuffIndex => Utils.Buffs.AlphaBulletBuff.buffIndex;
+
             private void Awake()
             {
                 base.enabled = false;
@@ -137,6 +138,7 @@ namespace RiskOfBulletstormRewrite.Items
                     return 0;
                 return gs.stock >= gs.maxStock ? 1 : 0;
             }
+
             public void SetBuffCount(int count)
             {
                 if (body == null)

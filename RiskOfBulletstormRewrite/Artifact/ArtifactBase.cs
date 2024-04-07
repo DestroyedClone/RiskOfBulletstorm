@@ -5,7 +5,6 @@ using RoR2;
 using RoR2.ExpansionManagement;
 using System;
 using UnityEngine;
-using RiskOfBulletstormRewrite.Modules;
 
 namespace RiskOfBulletstormRewrite.Artifact
 {

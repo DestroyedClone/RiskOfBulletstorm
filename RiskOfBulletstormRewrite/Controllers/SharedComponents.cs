@@ -1,12 +1,8 @@
-﻿using R2API;
-using RoR2;
-using System;
+﻿using RoR2;
 using System.Linq;
-using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Networking;
-using static UnityEngine.UI.Image;
 
 namespace RiskOfBulletstormRewrite.Controllers
 {
@@ -77,7 +73,6 @@ namespace RiskOfBulletstormRewrite.Controllers
             return original;
         }
 
-        
         private static Interactability PurchaseInteraction_GetInteractability(On.RoR2.PurchaseInteraction.orig_GetInteractability orig, PurchaseInteraction self, Interactor activator)
         {
             var original = orig(self, activator);
@@ -101,7 +96,7 @@ namespace RiskOfBulletstormRewrite.Controllers
             {
                 if (stoneGateLock.isLockBroken) goto Done;
             }
-            Done:
+        Done:
             //bulletstormChestInteractor.ChangeHighlightColor(highlight, bulletstormChestInteractor.originalHighlightColor);
             return original;
         }
@@ -121,7 +116,6 @@ namespace RiskOfBulletstormRewrite.Controllers
 
         public interface IRBSKeyInteraction
         {
-
         }
 
         public class RBSLockInteraction : MonoBehaviour, IRBSKeyInteraction
@@ -131,7 +125,6 @@ namespace RiskOfBulletstormRewrite.Controllers
             public const string attemptContextTokenClient = "RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT_CLIENT";
 
             public bool isLockBroken = false;
-
 
             public string GetContextualString(string original)
             {
@@ -155,7 +148,6 @@ namespace RiskOfBulletstormRewrite.Controllers
                 }
                 return false;
             }
-
         }
 
         /// <summary>

@@ -1,11 +1,8 @@
 ﻿using R2API;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using UnityEngine;
-using static RiskOfBulletstormRewrite.Controllers.SharedComponents;
 using RoR2;
+using UnityEngine;
 using UnityEngine.Networking;
+using static RiskOfBulletstormRewrite.Controllers.SharedComponents;
 
 namespace RiskOfBulletstormRewrite.Controllers
 {
@@ -49,7 +46,7 @@ namespace RiskOfBulletstormRewrite.Controllers
             var lockRef = Modules.Assets.mainAssetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/MetalLock.prefab");
             var lockBody = UnityEngine.Object.Instantiate(lockRef, DoorUnlockable.transform.Find("mdlBarrel1"));
             lockBody.transform.localPosition = Vector3.zero;
-            lockBody.transform.rotation = Quaternion.Euler(270, 0 ,0);
+            lockBody.transform.rotation = Quaternion.Euler(270, 0, 0);
             //DoorUnlockable.transform.Find("mdlBarrel1/BarrelMesh").gameObject.SetActive(false);
             DoorUnlockable.GetComponent<Highlight>().targetRenderer = lockBody.GetComponent<MeshRenderer>();
 
@@ -78,7 +75,7 @@ namespace RiskOfBulletstormRewrite.Controllers
         {
             if (srv_goolakeLockInstance)
             {
-                if (!self.TryGetComponent(out RBSStoneGateLockInteraction gateLock)) 
+                if (!self.TryGetComponent(out RBSStoneGateLockInteraction gateLock))
                     goto EarlyReturn;
                 return;
             }

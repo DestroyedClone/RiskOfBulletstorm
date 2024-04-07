@@ -57,7 +57,7 @@ namespace RiskOfBulletstormRewrite.Equipment
                 gateLock.OpenStoneGate();
                 return true;
             }
-            NotStoneGate:
+        NotStoneGate:
 
             if (!bestInteractableObject.TryGetComponent(out PurchaseInteraction purchaseInteraction)) return false;
             if (purchaseInteraction.GetComponent<ShopTerminalBehavior>()) return false;

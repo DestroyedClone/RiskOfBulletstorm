@@ -153,6 +153,7 @@ namespace RiskOfBulletstormRewrite.Items
         {
             return ToPct(configEntry.Value);
         }
+
         public string ToPct(float value)
         {
             return (value * 100).ToString();

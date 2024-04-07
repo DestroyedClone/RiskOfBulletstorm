@@ -1,5 +1,4 @@
-﻿using BepInEx.Configuration;
-using RoR2;
+﻿using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
 

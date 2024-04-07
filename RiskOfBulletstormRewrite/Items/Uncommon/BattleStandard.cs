@@ -1,6 +1,5 @@
 ﻿using BepInEx.Configuration;
 using R2API;
-using RiskOfBulletstormRewrite.Modules;
 using RiskOfBulletstormRewrite.Utils;
 using RoR2;
 using UnityEngine;
@@ -39,6 +38,7 @@ namespace RiskOfBulletstormRewrite.Items
             CreateItem();
             Hooks();
         }
+
         public override string WikiLink => "https://thunderstore.io/package/DestroyedClone/RiskOfBulletstorm/wiki/181-item-battle-standard/";
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()

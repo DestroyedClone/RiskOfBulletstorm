@@ -38,6 +38,7 @@ namespace RiskOfBulletstormRewrite.Items
             ItemTag.CannotCopy,
             ItemTag.Utility
         };
+
         public override string WikiLink => "https://thunderstore.io/package/DestroyedClone/RiskOfBulletstorm/wiki/183-item-bloodied-scarf/";
 
         public static SkillDef teleportSkillDef;

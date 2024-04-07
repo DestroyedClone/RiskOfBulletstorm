@@ -1,6 +1,4 @@
-﻿using BepInEx.Configuration;
-using R2API;
-using RiskOfBulletstormRewrite.Modules;
+﻿using R2API;
 using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;

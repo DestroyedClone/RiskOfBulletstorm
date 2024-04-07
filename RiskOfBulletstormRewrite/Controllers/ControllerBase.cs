@@ -14,6 +14,7 @@ namespace RiskOfBulletstormRewrite.Controllers
             instance = this as T;
         }
     }
+
     public abstract class ControllerBase
     {   /// <summary>
         /// Name of its configuration category.
@@ -35,8 +36,14 @@ namespace RiskOfBulletstormRewrite.Controllers
             CreateLang();
             Hooks();
         }
-        public virtual void CreateConfig(ConfigFile config){ }
-        protected virtual void CreateLang(){}
-        public virtual void Hooks(){ }
+
+        public virtual void CreateConfig(ConfigFile config)
+        { }
+
+        protected virtual void CreateLang()
+        { }
+
+        public virtual void Hooks()
+        { }
     }
 }

@@ -3,14 +3,13 @@ using R2API;
 using RiskOfBulletstormRewrite.Items;
 using RiskOfBulletstormRewrite.Utils;
 using RoR2;
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace RiskOfBulletstormRewrite.Equipment
 {
     public class Spice2 : EquipmentBase<Spice2>
     {
-
         //public static float cfgCurseAmount;
         public static bool cfgSpiceReplacement = true;
 
@@ -407,7 +406,7 @@ localScale = new Vector3(1F, 1F, 1F)
             if (!equipmentInfo || equipmentInfo != EquipmentDef) goto EarlyReturn;
 
             var master = self.master;
-            if (!master || !master.inventory) goto EarlyReturn; 
+            if (!master || !master.inventory) goto EarlyReturn;
 
             var spiceConsumedCount = GetSpiceConsumedCount(master);
             EquipmentIndex replacementEquipmentIndex = EquipmentDef.equipmentIndex;

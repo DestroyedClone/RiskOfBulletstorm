@@ -1,12 +1,10 @@
 ﻿using RoR2;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using UnityEngine;
-using System.Linq;
-using RiskOfBulletstormRewrite;
-using BepInEx;
 
 namespace RiskOfBulletstormRewrite.MarkdownCreation
 {
@@ -15,7 +13,8 @@ namespace RiskOfBulletstormRewrite.MarkdownCreation
         public static bool isEnabled = true;
         public static bool showWarning = true;
 
-        static StringBuilder sb;
+        private static StringBuilder sb;
+
         public static void Initialization()
         {
             On.RoR2.UI.MainMenu.MainMenuController.Start += MainMenuController_Start;
@@ -93,6 +92,7 @@ namespace RiskOfBulletstormRewrite.MarkdownCreation
             ItemTier.VoidTier3,
             ItemTier.VoidBoss
         };
+
         public static Dictionary<ItemTier, string> itemTierTokens = new Dictionary<ItemTier, string>()
         {
             { ItemTier.Tier1, "Common" },
@@ -138,6 +138,7 @@ namespace RiskOfBulletstormRewrite.MarkdownCreation
         }
 
         public static bool[] desiredEquipmentArrangement = new bool[] { false, true };
+
         public static void CreateEquipmentSection()
         {
             var sortedList = Main.Equipments
@@ -176,14 +177,15 @@ namespace RiskOfBulletstormRewrite.MarkdownCreation
             string replacement = "`$1`";
 
             string output = Regex.Replace(input, pattern, replacement);
-            output = output.Replace("\n","<br>");
+            output = output.Replace("\n", "<br>");
 
             return output;
         }
+
         public static string GetLangTokenFromToken(string input)
         {
             foreach (var text in new string[] { "_NAME", "RISKOFBULLETSTORM_",
-            "ITEM_", "EQUIPMENT_", "ARTIFACT_"} )
+            "ITEM_", "EQUIPMENT_", "ARTIFACT_"})
             {
                 input = input.Replace(text, "");
             }
