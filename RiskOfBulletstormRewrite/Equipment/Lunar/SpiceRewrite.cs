@@ -4,6 +4,7 @@ using RiskOfBulletstormRewrite.Items;
 using RiskOfBulletstormRewrite.Utils;
 using RoR2;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace RiskOfBulletstormRewrite.Equipment
 {
@@ -341,6 +342,31 @@ localScale = new Vector3(1F, 1F, 1F)
             base.Hooks();
             On.RoR2.CharacterMasterNotificationQueue.PushNotification += CharacterMasterNotificationQueue_PushNotification;
             R2API.RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
+            Run.onRunStartGlobal += EnsureSpiceIsInAllDropLists;
+        }
+
+        private void EnsureSpiceIsInAllDropLists(Run run)
+        {
+            var pickupIndex = PickupCatalog.FindPickupIndex(EquipmentDef.equipmentIndex);
+            foreach (var dropList in new List<List<PickupIndex>>
+            {
+                //run.availableBossDropList,
+                run.availableEquipmentDropList,
+                //run.availableLunarCombinedDropList,
+                run.availableLunarEquipmentDropList,
+                //run.availableLunarItemDropList,
+                //run.availableTier1DropList,
+                //run.availableTier2DropList,
+                //run.availableTier3DropList,
+                //run.availableVoidBossDropList,
+                //run.availableVoidTier1DropList,
+                //run.availableVoidTier2DropList,
+                //run.availableVoidTier3DropList,
+            })
+            {
+                if (dropList.Contains(pickupIndex)) continue;
+                dropList.Add(pickupIndex);
+            }
         }
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
