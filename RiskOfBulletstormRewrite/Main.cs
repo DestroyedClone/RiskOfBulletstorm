@@ -53,6 +53,8 @@ namespace RiskOfBulletstormRewrite
 
         public static PluginInfo pluginInfo;
 
+        private bool enableDebug = true;
+
         private void Awake()
         {
             ContentPack = R2API.ContentManagement.R2APIContentManager.ReserveSerializableContentPack();
@@ -93,14 +95,15 @@ namespace RiskOfBulletstormRewrite
             LanguageOverrides.Initialize();
             On.RoR2.GenericPickupController.OnTriggerStay += GenericPickupController_OnTriggerStay;
 
-            //debug
-            //Run.onRunStartGlobal += Run_onRunStartGlobal;
-
-            /*if (ReadmeCreator.isEnabled)
+            if (enableDebug)
             {
-                ReadmeCreator.Initialization();
+                Run.onRunStartGlobal += Run_onRunStartGlobal;
+
+                if (ReadmeCreator.isEnabled)
+                {
+                    ReadmeCreator.Initialization();
+                }
             }
-            };*/
         }
 
         private void GenericPickupController_OnTriggerStay(On.RoR2.GenericPickupController.orig_OnTriggerStay orig, GenericPickupController self, UnityEngine.Collider other)
