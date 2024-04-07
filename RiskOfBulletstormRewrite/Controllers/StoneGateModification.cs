@@ -46,6 +46,16 @@ namespace RiskOfBulletstormRewrite.Controllers
             bar.contextToken = "RISKOFBULLETSTORM_STONEGATE_CONTEXT";
             bar.goldReward = 0;
             DoorUnlockable.AddComponent<RBSStoneGateLockInteraction>();
+            var lockRef = Modules.Assets.mainAssetBundle.LoadAsset<GameObject>("Assets/Models/Prefabs/MetalLock.prefab");
+            var lockBody = UnityEngine.Object.Instantiate(lockRef, DoorUnlockable.transform.Find("mdlBarrel1"));
+            lockBody.transform.localPosition = Vector3.zero;
+            lockBody.transform.rotation = Quaternion.Euler(270, 0 ,0);
+            //DoorUnlockable.transform.Find("mdlBarrel1/BarrelMesh").gameObject.SetActive(false);
+            DoorUnlockable.GetComponent<Highlight>().targetRenderer = lockBody.GetComponent<MeshRenderer>();
+
+            //var smr = DoorUnlockable.transform.Find("mdlBarrel1/BarrelMesh").GetComponent<SkinnedMeshRenderer>();
+            //smr.SetMaterial(Modules.Assets.mainAssetBundle.LoadAsset<Material>("Assets/Materials/MetalMat.mat"));
+            //smr.sharedMesh = Modules.Assets.mainAssetBundle.LoadAsset<Mesh>("Assets/Models/LockModel.fbx");
             //var comp = DoorUnlockable.AddComponent<RBSChestLockInteraction>();
             //comp.StoreHighlightColor(DoorUnlockable.GetComponent<Highlight>());
         }
