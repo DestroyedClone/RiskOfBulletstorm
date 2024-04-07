@@ -92,6 +92,8 @@ namespace RiskOfBulletstormRewrite.Items
             }
         }
 
+        public virtual string WikiLink { get; }
+
         /// <summary>
         /// This method structures your code execution of this class. An example implementation inside of it would be:
         /// <para>CreateConfig(config);</para>

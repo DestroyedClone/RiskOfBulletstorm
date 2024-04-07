@@ -18,6 +18,7 @@ namespace RiskOfBulletstormRewrite.Artifact
         public override Sprite ArtifactEnabledIcon => LoadSprite(true);
 
         public override Sprite ArtifactDisabledIcon => LoadSprite(false);
+        public override string WikiLink => "https://thunderstore.io/package/DestroyedClone/RiskOfBulletstorm/wiki/1859-artifact-swift-post-battle/";
 
         public override void Hooks()
         {

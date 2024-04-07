@@ -16,8 +16,6 @@ namespace RiskOfBulletstormRewrite.MarkdownCreation
         public static bool showWarning = true;
 
         static StringBuilder sb;
-        public string readmeString =
-            "";
         public static void Initialization()
         {
             On.RoR2.UI.MainMenu.MainMenuController.Start += MainMenuController_Start;
@@ -36,28 +34,32 @@ namespace RiskOfBulletstormRewrite.MarkdownCreation
 
         private static void CreateArtifactSection()
         {
-            var sortedList = ArtifactCatalog.artifactDefs
-                .Where(equip => equip.nameToken.StartsWith("RISKOFBULLETSTORM_"))
+            var sortedList = Main.Artifacts
+                .Where(equip => equip.ArtifactDef.nameToken.StartsWith("RISKOFBULLETSTORM_"))
                 .ToList();
             sb.AppendLine("## Artifacts");
             sb.AppendLine("|Icon| Artifact | Desc |");
             sb.AppendLine("|:--:|:--:|--|");
-            foreach (var artifact in sortedList)
+            foreach (var artifactBase in sortedList)
             {
+                var artifact = artifactBase.ArtifactDef;
                 string descriptionToken = ReplaceStyleTagsWithBackticks(Language.GetString(artifact.descriptionToken));
-                sb.AppendLine(string.Format("| ![](https://github.com/DestroyedClone/RiskOfBulletstorm/raw/master/RiskOfBulletstorm_Unity/Assets/Icons/ARTIFACT_{0}_ENABLED.png)<br>{1}</br> | {1} | {2}",
+
+                sb.AppendLine(string.Format("| ![](https://github.com/DestroyedClone/RiskOfBulletstorm/raw/master/RiskOfBulletstorm_Unity/Assets/Icons/ARTIFACT_{0}_ENABLED.png) | [**{1}**]({2}) | {3}",
                     GetLangTokenFromToken(artifact.nameToken),
                     Language.GetString(artifact.nameToken),
+                    artifactBase.WikiLink,
                     descriptionToken));
             }
         }
 
         public static void CreateHeaderSection()
         {
-            sb.Append("# Risk of Bulletstorm");
+            sb.AppendLine("# Risk of Bulletstorm");
             sb.AppendLine("");
             sb.AppendLine("| [![github issues/request link](https://raw.githubusercontent.com/DestroyedClone/PoseHelper/master/PoseHelper/github_link.webp)](https://github.com/DestroyedClone/RiskOfBulletstorm/issues) | [![discord invite](https://raw.githubusercontent.com/DestroyedClone/PoseHelper/master/PoseHelper/discord_link.webp)](https://discord.gg/DpHu3qXMHK) |");
             sb.AppendLine("|--|--|");
+            sb.AppendLine("");
             sb.AppendLine("![Risk of Bulletstorm logo](https://raw.githubusercontent.com/DestroyedClone/RiskOfBulletstorm/master/RiskOfBulletstormRewrite/Readme/Banner.png)");
             sb.AppendLine("");
             sb.AppendLine("**Risk of Bulletstorm** <sup>(**Risk** of a Rain**storm** of **Bullets**, not Bulletstorm the game!)</sup>, is a content mod that adds items, equipment, and mechanics from the [**Enter The Gungeon**](https://www.dodgeroll.com/gungeon/) property by Dodge Roll Games.");
@@ -91,45 +93,78 @@ namespace RiskOfBulletstormRewrite.MarkdownCreation
             ItemTier.VoidTier3,
             ItemTier.VoidBoss
         };
+        public static Dictionary<ItemTier, string> itemTierTokens = new Dictionary<ItemTier, string>()
+        {
+            { ItemTier.Tier1, "Common" },
+            { ItemTier.Tier2, "Uncommon" },
+            { ItemTier.Tier3, "Legendary" },
+            { ItemTier.Boss, "Boss" },
+            { ItemTier.VoidTier1, "Void Common" },
+            { ItemTier.VoidTier2, "Void Uncommon" },
+            { ItemTier.VoidTier3, "Void Legendary" },
+            { ItemTier.VoidBoss, "Void Boss" },
+        };
 
         public static void CreateItemSection()
         {
-            var sortedList = ItemCatalog.allItemDefs
-                .Where(item => item.nameToken.StartsWith("RISKOFBULLETSTORM_"))
-                .Where(item => desiredTierArrangement.Contains(item.tier))
-                .OrderBy(item => Array.IndexOf(desiredTierArrangement, item.tier))
+            var sortedList = Main.Items
+                .Where(item => item.ItemDef.nameToken.StartsWith("RISKOFBULLETSTORM_"))
+                .Where(item => desiredTierArrangement.Contains(item.ItemDef.tier))
+                .OrderBy(item => Array.IndexOf(desiredTierArrangement, item.ItemDef.tier))
                 .ToList();
             sb.AppendLine("## Items");
             sb.AppendLine("|Icon| Item | Pickup |");
             sb.AppendLine("|:--:|:--:|--|");
-            foreach (var item in sortedList)
+            ItemTier previousItemTier = ItemTier.NoTier;
+            foreach (var itemBase in sortedList)
             {
+                var item = itemBase.ItemDef;
+                if (previousItemTier != itemBase.Tier)
+                {
+                    previousItemTier = itemBase.Tier;
+                    itemTierTokens.TryGetValue(itemBase.Tier, out string tierName);
+                    sb.AppendLine($"| {tierName} |");
+                }
+
                 string pickupToken = ReplaceStyleTagsWithBackticks(Language.GetString(item.pickupToken));
                 string descriptionToken = ReplaceStyleTagsWithBackticks(Language.GetString(item.descriptionToken));
 
-                sb.AppendLine(string.Format("| ![](https://github.com/DestroyedClone/RiskOfBulletstorm/raw/master/RiskOfBulletstorm_Unity/Assets/Icons/ITEM_{0}.png)<br>{1}</br> | {1} | {2}",
+                sb.AppendLine(string.Format("| ![](https://github.com/DestroyedClone/RiskOfBulletstorm/raw/master/RiskOfBulletstorm_Unity/Assets/Icons/ITEM_{0}.png) | [**{1}**]({2}) | {3}",
                     GetLangTokenFromToken(item.nameToken),
                     Language.GetString(item.nameToken),
+                    itemBase.WikiLink,
                     pickupToken));
             }
         }
 
+        public static bool[] desiredEquipmentArrangement = new bool[] { false, true };
         public static void CreateEquipmentSection()
         {
-            var sortedList = EquipmentCatalog.equipmentDefs
-                .Where(equip => equip.nameToken.StartsWith("RISKOFBULLETSTORM_"))
-                .Where(equip => equip.canDrop)
+            var sortedList = Main.Equipments
+                .Where(equip => equip.EquipmentDef.nameToken.StartsWith("RISKOFBULLETSTORM_"))
+                .Where(equip => equip.EquipmentDef.canDrop)
+                .OrderBy(equip => Array.IndexOf(desiredEquipmentArrangement, equip.IsLunar))
                 .ToList();
             sb.AppendLine("## Equipment");
             sb.AppendLine("|Icon| Equipment | Pickup | CD |");
             sb.AppendLine("|:--:|:--:|--|--|");
-            foreach (var equip in sortedList)
+            var notLunar = false;
+            sb.AppendLine($"| Equipment |");
+            foreach (var equipBase in sortedList)
             {
+                if (notLunar != equipBase.IsLunar)
+                {
+                    sb.AppendLine($"| Lunar Equipment |");
+                    notLunar = equipBase.IsLunar;
+                }
+                var equip = equipBase.EquipmentDef;
+
                 string pickupToken = ReplaceStyleTagsWithBackticks(Language.GetString(equip.pickupToken));
                 string descriptionToken = ReplaceStyleTagsWithBackticks(Language.GetString(equip.descriptionToken));
-                sb.AppendLine(string.Format("| ![](https://github.com/DestroyedClone/RiskOfBulletstorm/raw/master/RiskOfBulletstorm_Unity/Assets/Icons/EQUIPMENT_{0}.png)<br>{1}</br> | {1} | {2} | {3}",
+                sb.AppendLine(string.Format("| ![](https://github.com/DestroyedClone/RiskOfBulletstorm/raw/master/RiskOfBulletstorm_Unity/Assets/Icons/EQUIPMENT_{0}.png) | [**{1}**]({2}) | {3} | {4}",
                     GetLangTokenFromToken(equip.nameToken),
                     Language.GetString(equip.nameToken),
+                    equipBase.WikiLink,
                     pickupToken,
                     equip.cooldown));
             }

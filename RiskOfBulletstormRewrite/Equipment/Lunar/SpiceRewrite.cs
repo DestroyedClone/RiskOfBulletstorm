@@ -31,6 +31,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public override bool IsLunar => true;
         public override bool CanBeRandomlyTriggered => false;
+        public override string WikiLink => "https://thunderstore.io/package/DestroyedClone/RiskOfBulletstorm/wiki/212-equipment-spice/";
 
         public override void Init(ConfigFile config)
         {

@@ -29,6 +29,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public override Sprite EquipmentIcon => LoadSprite();
         public override bool CanBeRandomlyTriggered => false;
+        public override string WikiLink => "https://thunderstore.io/package/DestroyedClone/RiskOfBulletstorm/wiki/210-equipment-orange/";
 
         public override void Init(ConfigFile config)
         {

@@ -35,6 +35,7 @@ namespace RiskOfBulletstormRewrite.Items
         public override Sprite ItemIcon => LoadSprite();
 
         public override ItemTag[] ItemTags => new ItemTag[] { ItemTag.Any, ItemTag.Damage };
+        public override string WikiLink => "https://thunderstore.io/package/DestroyedClone/RiskOfBulletstorm/wiki/191-item-scope/";
 
         public override void Init(ConfigFile config)
         {

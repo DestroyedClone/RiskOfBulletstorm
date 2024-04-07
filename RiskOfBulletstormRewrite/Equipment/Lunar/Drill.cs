@@ -28,6 +28,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         private readonly string UnlockSound = EntityStates.Engi.EngiWeapon.FireMines.throwMineSoundString;
         public override bool CanBeRandomlyTriggered => false;
+        public override string WikiLink => "https://thunderstore.io/package/DestroyedClone/RiskOfBulletstorm/wiki/207-equipment-drill/";
 
         public override void Init(ConfigFile config)
         {

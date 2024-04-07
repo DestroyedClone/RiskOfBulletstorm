@@ -29,6 +29,7 @@ namespace RiskOfBulletstormRewrite.Items
         public override GameObject ItemModel => LoadModel();
 
         public override Sprite ItemIcon => LoadSprite();
+        public override string WikiLink => "https://thunderstore.io/package/DestroyedClone/RiskOfBulletstorm/wiki/178-item-antibody/";
 
         public override ItemTag[] ItemTags => new ItemTag[] {
             ItemTag.Any,

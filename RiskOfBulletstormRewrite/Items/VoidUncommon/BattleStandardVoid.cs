@@ -329,6 +329,7 @@ localScale = new Vector3(1F, 1F, 1F)
             });
             return rules;
         }
+        public override string WikiLink => "https://thunderstore.io/package/DestroyedClone/RiskOfBulletstorm/wiki/182-item-leaders-flag/";
 
         public override void Hooks()
         {

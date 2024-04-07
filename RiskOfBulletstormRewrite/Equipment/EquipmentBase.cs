@@ -84,6 +84,7 @@ namespace RiskOfBulletstormRewrite.Equipment
         public virtual bool CanBeRandomlyTriggered { get; } = true;
 
         public virtual Equipment.EquipmentBase DependentEquipment { get; } = null;
+        public virtual string WikiLink { get; }
 
         /// <summary>
         /// The internal name of its parent equipment, so that when its Parent is disabled, so too will it as a child.

@@ -31,6 +31,7 @@ namespace RiskOfBulletstormRewrite.Items
         public override Sprite ItemIcon => LoadSprite();
 
         public override ItemTag[] ItemTags => new ItemTag[] { ItemTag.Any, ItemTag.Healing, ItemTag.InteractableRelated };
+        public override string WikiLink => "https://thunderstore.io/package/DestroyedClone/RiskOfBulletstorm/wiki/189-item-mustache/";
 
         public override void Init(ConfigFile config)
         {

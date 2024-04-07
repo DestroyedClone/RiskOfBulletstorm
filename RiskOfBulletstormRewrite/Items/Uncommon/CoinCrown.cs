@@ -43,6 +43,7 @@ namespace RiskOfBulletstormRewrite.Items
             CreateItem();
             Hooks();
         }
+        public override string WikiLink => "https://thunderstore.io/package/DestroyedClone/RiskOfBulletstorm/wiki/184-item-coin-crown/";
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
         {

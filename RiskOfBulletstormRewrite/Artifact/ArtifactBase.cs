@@ -79,6 +79,8 @@ namespace RiskOfBulletstormRewrite.Artifact
             }
         }
 
+        public virtual string WikiLink { get; }
+
         //For use only after the run has started.
         public bool ArtifactEnabled => RunArtifactManager.instance.IsArtifactEnabled(ArtifactDef);
 

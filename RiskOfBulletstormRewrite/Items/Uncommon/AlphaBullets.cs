@@ -45,6 +45,7 @@ namespace RiskOfBulletstormRewrite.Items
         {
             return null;
         }
+        public override string WikiLink => "https://thunderstore.io/package/DestroyedClone/RiskOfBulletstorm/wiki/177-item-alpha-bullet/";
 
         public override void Hooks()
         {

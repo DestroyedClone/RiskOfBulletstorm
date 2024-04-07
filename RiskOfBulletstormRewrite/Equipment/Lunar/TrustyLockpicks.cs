@@ -26,6 +26,7 @@ namespace RiskOfBulletstormRewrite.Equipment
             cfgUnlockChance.ToString(), //direct percentage so...
             ToPct(cfgPriceMultiplier)
         };
+        public override string WikiLink => "https://thunderstore.io/package/DestroyedClone/RiskOfBulletstorm/wiki/214-equipment-trusty-lockpicks/";
 
         public override GameObject EquipmentModel => LoadModel();
 

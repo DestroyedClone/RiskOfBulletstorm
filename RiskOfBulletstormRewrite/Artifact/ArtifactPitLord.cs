@@ -15,6 +15,8 @@ namespace RiskOfBulletstormRewrite.Artifact
 
         public override Sprite ArtifactDisabledIcon => LoadSprite(false);
 
+        public override string WikiLink => "https://thunderstore.io/package/DestroyedClone/RiskOfBulletstorm/wiki/218-artifact-pit-lord/";
+
         private void GiveOobTeleportToCharacter(CharacterMaster characterMaster)
         {
             if (NetworkServer.active)

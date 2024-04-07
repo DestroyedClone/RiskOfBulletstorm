@@ -2,6 +2,7 @@
 using R2API;
 using RiskOfBulletstormRewrite.Utils;
 using RoR2;
+using System.Linq;
 using UnityEngine;
 
 namespace RiskOfBulletstormRewrite.Equipment
@@ -23,6 +24,7 @@ namespace RiskOfBulletstormRewrite.Equipment
         public override bool CanBeRandomlyTriggered => false;
 
         public override bool IsLunar => true;
+        public override string WikiLink => "https://thunderstore.io/package/DestroyedClone/RiskOfBulletstorm/wiki/208-equipment-iron-coin/";
 
         public override void Init(ConfigFile config)
         {
@@ -391,6 +393,11 @@ localScale = new Vector3(1F, 1F, 1F)
                     }
                     if (body.isElite && body.TryGetComponent(out EquipmentSlot equipmentSlot))
                     {
+                        var eliteDef = EliteCatalog.eliteDefs.FirstOrDefault(elite => elite.eliteEquipmentDef == equipmentSlot);
+                        if (eliteDef)
+                        {
+
+                        }
                         charMaster.inventory.SetEquipmentIndex(EquipmentIndex.None);
                     }
                     var itemCount = charMaster.inventory.GetItemCount(RoR2Content.Items.InvadingDoppelganger);

@@ -35,6 +35,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public static int cfgCashAdder = 15;
         public static int cfgCashAdderStack = 15;
+        public override string WikiLink => "https://thunderstore.io/package/DestroyedClone/RiskOfBulletstorm/wiki/185-item-crown-for-fools/";
 
         public override void Init(ConfigFile config)
         {

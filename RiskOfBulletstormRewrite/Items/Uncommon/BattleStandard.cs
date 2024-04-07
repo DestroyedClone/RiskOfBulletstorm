@@ -39,6 +39,7 @@ namespace RiskOfBulletstormRewrite.Items
             CreateItem();
             Hooks();
         }
+        public override string WikiLink => "https://thunderstore.io/package/DestroyedClone/RiskOfBulletstorm/wiki/181-item-battle-standard/";
 
         public override ItemDisplayRuleDict CreateItemDisplayRules()
         {
