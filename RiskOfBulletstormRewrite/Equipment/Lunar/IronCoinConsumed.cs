@@ -70,15 +70,14 @@ namespace RiskOfBulletstormRewrite.Equipment
         {
             if (slot.characterBody)
             {
-                var result = Util.CheckRoll(1f)
-                    ? "RISKOFBULLETSTORM_EQUIPMENT_IRONCOINCONSUMED_FLAVORSIDE"
-                    : Util.CheckRoll(50f)
-                    ? "RISKOFBULLETSTORM_EQUIPMENT_IRONCOINCONSUMED_FLAVORHEADS"
-                    : "RISKOFBULLETSTORM_EQUIPMENT_IRONCOINCONSUMED_FLAVORTAILS";
-
                 if ((cfgResultPrintByPlayersOnly.Value && slot.characterBody.isPlayerControlled)
                     || !cfgResultPrintByPlayersOnly.Value)
                 {
+                    var result = Util.CheckRoll(1f)
+                        ? "RISKOFBULLETSTORM_EQUIPMENT_IRONCOINCONSUMED_FLAVORSIDE"
+                        : Util.CheckRoll(50f)
+                        ? "RISKOFBULLETSTORM_EQUIPMENT_IRONCOINCONSUMED_FLAVORHEADS"
+                        : "RISKOFBULLETSTORM_EQUIPMENT_IRONCOINCONSUMED_FLAVORTAILS";
                     Chat.SendBroadcastChat(new Chat.SubjectFormatChatMessage
                     {
                         baseToken = "RISKOFBULLETSTORM_EQUIPMENT_IRONCOINCONSUMED_FLAVOR",

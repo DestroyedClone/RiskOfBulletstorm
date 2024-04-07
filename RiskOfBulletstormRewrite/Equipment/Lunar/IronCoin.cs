@@ -394,11 +394,11 @@ localScale = new Vector3(1F, 1F, 1F)
                     if (body.isElite && body.TryGetComponent(out EquipmentSlot equipmentSlot))
                     {
                         var eliteDef = EliteCatalog.eliteDefs.FirstOrDefault(elite => elite.eliteEquipmentDef == equipmentSlot);
-                        if (eliteDef)
+                        if (eliteDef && eliteDef != DLC1Content.Buffs.EliteVoid)
                         {
-
+                            body.AddBuff(eliteDef.eliteEquipmentDef.passiveBuffDef);
+                            charMaster.inventory.SetEquipmentIndex(EquipmentIndex.None);
                         }
-                        charMaster.inventory.SetEquipmentIndex(EquipmentIndex.None);
                     }
                     var itemCount = charMaster.inventory.GetItemCount(RoR2Content.Items.InvadingDoppelganger);
                     if (itemCount > 0)
