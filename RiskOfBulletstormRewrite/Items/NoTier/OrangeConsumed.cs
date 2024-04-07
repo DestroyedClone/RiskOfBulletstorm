@@ -61,7 +61,8 @@ namespace RiskOfBulletstormRewrite.Items
                 var itemCount = GetCount(sender);
                 if (itemCount > 0)
                 {
-                    args.baseHealthAdd += Equipment.Orange.cfgMaxHealthIncrease * itemCount;
+                    //args.baseHealthAdd += Equipment.Orange.cfgMaxHealthIncrease * itemCount;
+                    args.healthMultAdd += Equipment.Orange.cfgMaxHealthIncrease * itemCount;
                 }
             }
         }

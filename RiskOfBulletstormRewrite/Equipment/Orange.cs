@@ -10,7 +10,7 @@ namespace RiskOfBulletstormRewrite.Equipment
     {
         public static float cfgChargeRateReduction = 0.1f;
 
-        public static float cfgMaxHealthIncrease = 1;
+        public static float cfgMaxHealthIncrease = 0.1f;
         public static float cfgHealPercentage = .1f;
         public override float Cooldown => 25f;
 
