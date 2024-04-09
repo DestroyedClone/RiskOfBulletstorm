@@ -60,6 +60,7 @@ namespace RiskOfBulletstormRewrite.Controllers
         private static void UpdateGooLakePerm(Stage obj)
         {
             srv_isGoolake = obj && obj.sceneDef && obj.sceneDef.cachedName == "goolake";
+            if (!srv_isGoolake) return;
             if (srv_goolakeLockInstance) return;
             if (!NetworkServer.active) return;
             var copy = UnityEngine.Object.Instantiate(DoorUnlockable);
