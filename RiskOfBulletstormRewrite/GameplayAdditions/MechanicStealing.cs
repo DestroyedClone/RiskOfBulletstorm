@@ -72,7 +72,7 @@ namespace RiskOfBulletstormRewrite.GameplayAdditions
         private static void KickFromShop_FixedUpdate(On.EntityStates.NewtMonster.KickFromShop.orig_FixedUpdate orig, EntityStates.NewtMonster.KickFromShop self)
         {
             orig(self);
-            if (SceneInfo.instance)
+            if (self.hasAttacked && SceneInfo.instance)
             {
                 GameObject gameObject = SceneInfo.instance.transform.Find("KickOutOfShop").gameObject;
                 if (gameObject)
