@@ -28,6 +28,6 @@
 		"RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT_CLIENT": "<size=150%>{0}\nYour equipment seems compatible with this.\nIf it doesn't work, someone broke the lock.</size>",
 
 		//[COSTS]	
-		"RISKOFBULLETSTORM_COST_STEAL_FORMAT": "Steal!"
+		"RISKOFBULLETSTORM_COST_STEAL_FORMAT": "<style=cIsHealth>Steal!</style>"
 	}
 }

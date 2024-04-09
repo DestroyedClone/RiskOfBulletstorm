@@ -1,8 +1,12 @@
 using BepInEx.Configuration;
 using RoR2;
 using RoR2.UI;
+using System;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using UnityEngine;
+using R2API;
+using RiskOfBulletstormRewrite.GameplayAdditions;
 
 namespace RiskOfBulletstormRewrite
 {
@@ -12,7 +16,6 @@ namespace RiskOfBulletstormRewrite
 
         //public static ConfigEntry<NotificationMod> cfgEnableBreachNotifications;
         //public static ConfigEntry<bool> cfgDropEquipment;
-        public static ConfigEntry<bool> cfgCanStealFromNewt;
 
         //public static ConfigEntry<bool> cfgDropEquipmentFromInaccesibleSlots;
 
@@ -27,6 +30,7 @@ namespace RiskOfBulletstormRewrite
 
         public static void Init(ConfigFile config)
         {
+            MechanicStealing.Init(config);
             cfgCenterNotifications = config.Bind(category, "Center Notification Text", false, "If true, then notification text will be centered.");
             //cfgDisableAutoPickup = config.Bind(category, "Disable Auto Pickups", false);
             //cfgEnableBreachNotifications = config.Bind(category, "Modify Achievement Notificaton", NotificationMod.bulletstorm, "");
@@ -38,14 +42,8 @@ namespace RiskOfBulletstormRewrite
                 On.RoR2.UI.GenericNotification.SetEquipment += SetEquipment;
                 On.RoR2.UI.GenericNotification.SetItem += SetItem;
             }
-            On.EntityStates.NewtMonster.SpawnState.OnEnter += SpawnState_OnEnter;
-            cfgCanStealFromNewt = config.Bind(category, "Steal From Bazaar", true, "If true, you can steal from the bazaar while cloaked. But failing to steal will close the shop for the rest of the run.");
-            if (cfgCanStealFromNewt.Value)
-            {
-                //On.RoR2.ShopTerminalBehavior.Start += ShopTerminalBehavior_Start;
-                SceneManager.sceneLoaded += SceneManager_sceneLoaded;
-                SceneManager.sceneUnloaded += SceneManager_sceneUnloaded;
-            }
+            //On.EntityStates.NewtMonster.SpawnState.OnEnter += SpawnState_OnEnter;
+            
             //cfgDropEquipmentFromInaccesibleSlots = config.Bind(category, "Drop Inaccessible Equipment Slots", true, "If true, then any items that are in equipment slots that are inaccessible will be dropped.");
             //switch (cfgEnableBreachNotifications.Value)
             //{
@@ -62,103 +60,8 @@ namespace RiskOfBulletstormRewrite
             //On.RoR2.UI.EquipmentIcon.Update += EquipmentIcon_Update;
         }
 
-        public static void Bazaar_KickFromShop(CharacterBody newtBody)
-        {
-            if (newtBody && newtBody.healthComponent)
-            {
-                newtBody.healthComponent.health = 500;
-                newtBody.healthComponent.godMode = true;
-                //idk how else to force the kickout
-            }
-        }
 
-        private static void SpawnState_OnEnter(On.EntityStates.NewtMonster.SpawnState.orig_OnEnter orig, EntityStates.NewtMonster.SpawnState self)
-        {
-            orig(self);
-            if (NetworkServer.active)
-                if (RoR2.Util.GetItemCountForTeam(TeamIndex.Player, Items.BannedFromBazaarTally.instance.ItemDef.itemIndex, false) > 0)
-                {
-                    Bazaar_KickFromShop(self.outer.commonComponents.characterBody);
-                }
-        }
 
-        private static void SceneManager_sceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
-        {
-            if (loadSceneMode == LoadSceneMode.Single && scene.name == "bazaar")
-            {
-                On.RoR2.PurchaseInteraction.OnInteractionBegin += PurchaseInteraction_OnInteractionBegin;
-                On.RoR2.PurchaseInteraction.CanBeAffordedByInteractor += PurchaseInteraction_CanBeAffordedByInteractor;
-            }
-        }
-
-        private static void SceneManager_sceneUnloaded(Scene scene)
-        {
-            if (scene.name == "bazaar")
-            {
-                On.RoR2.PurchaseInteraction.OnInteractionBegin -= PurchaseInteraction_OnInteractionBegin;
-                On.RoR2.PurchaseInteraction.CanBeAffordedByInteractor -= PurchaseInteraction_CanBeAffordedByInteractor;
-            }
-        }
-
-        private static void PurchaseInteraction_OnInteractionBegin(On.RoR2.PurchaseInteraction.orig_OnInteractionBegin orig, PurchaseInteraction self, Interactor activator)
-        {
-            var originalCost = self.Networkcost;
-            if (self.GetComponent<ShopTerminalBehavior>()
-                && activator.TryGetComponent(out CharacterBody characterBody)
-                && characterBody.hasCloakBuff
-                && characterBody.inventory)
-            {
-                var stolenItemCount = Items.StolenItemTally.instance.GetCount(characterBody);
-                var rollchance = 100 / (stolenItemCount + 1);
-                if (Util.CheckRoll(rollchance))
-                {
-                    self.Networkcost = 0;
-                    characterBody.inventory.GiveItem(Items.CurseTally.instance.ItemDef);
-                    characterBody.inventory.GiveItem(Items.StolenItemTally.instance.ItemDef);
-                }
-                else
-                {
-                    characterBody.inventory.GiveItem(Items.BannedFromBazaarTally.instance.ItemDef);
-                    NewtSaySteal();
-                    var shopkeeperBodyIndex = BodyCatalog.FindBodyIndex("ShopkeeperBody");
-                    foreach (var body in CharacterBody.readOnlyInstancesList)
-                    {
-                        if (body.bodyIndex == shopkeeperBodyIndex)
-                        {
-                            Bazaar_KickFromShop(body);
-                            break;
-                        }
-                    }
-                }
-            }
-            orig(self, activator);
-            self.Networkcost = originalCost;
-        }
-
-        private static void NewtSaySteal()
-        {
-            //var sfxLocator = BazaarController.instance.shopkeeper.GetComponent<SfxLocator>();
-            Chat.SendBroadcastChat(new Chat.NpcChatMessage
-            {
-                baseToken = "RISKOFBULLETSTORM_DIALOGUE_NEWT_STEALRESPONSE_" + UnityEngine.Random.RandomRangeInt(0, 4),
-                formatStringToken = "RISKOFBULLETSTORM_DIALOGUE_NEWT_FORMAT",
-                //sender = BazaarController.instance.shopkeeper,
-                //sound = sfxLocator?.barkSound
-            });
-        }
-
-        private static bool PurchaseInteraction_CanBeAffordedByInteractor(On.RoR2.PurchaseInteraction.orig_CanBeAffordedByInteractor orig, PurchaseInteraction self, Interactor activator)
-        {
-            var original = orig(self, activator);
-
-            if (self.GetComponent<ShopTerminalBehavior>()
-                && activator.TryGetComponent(out CharacterBody characterBody)
-                && characterBody.hasCloakBuff)
-            {
-                original = true;
-            }
-            return original;
-        }
 
         private static void AchievementNotificationPanel_SetAchievementDef(On.RoR2.UI.AchievementNotificationPanel.orig_SetAchievementDef orig, AchievementNotificationPanel self, AchievementDef achievementDef)
         {

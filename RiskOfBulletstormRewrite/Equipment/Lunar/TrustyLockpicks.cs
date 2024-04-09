@@ -19,6 +19,7 @@ namespace RiskOfBulletstormRewrite.Equipment
         public override string EquipmentName => "Trusty Lockpicks";
 
         public override string EquipmentLangTokenName => "TRUSTYLOCKPICKS";
+        public override bool IsLunar => true;
 
         public override string[] EquipmentFullDescriptionParams => new string[]
         {

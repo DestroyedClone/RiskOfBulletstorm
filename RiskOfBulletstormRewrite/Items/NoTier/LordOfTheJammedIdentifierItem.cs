@@ -1,5 +1,6 @@
 ﻿using BepInEx.Configuration;
 using R2API;
+using RiskOfBulletstormRewrite.GameplayAdditions;
 using RiskOfBulletstormRewrite.Modules;
 using RiskOfBulletstormRewrite.Utils;
 using RoR2;
@@ -327,7 +328,7 @@ localScale = new Vector3(0.03303F, 0.03303F, 0.07704F)
                     if (InstanceTracker.GetInstancesList<LordOfTheJammedController>().Count > 0)
                     {
                         var charBody = gameObject.GetComponent<CharacterBody>();
-                        Tweaks.Bazaar_KickFromShop(charBody);
+                        MechanicStealing.ForceNewtToKickPlayersFromShop(charBody);
                         enabled = false;
                     }
                     age = 0;
