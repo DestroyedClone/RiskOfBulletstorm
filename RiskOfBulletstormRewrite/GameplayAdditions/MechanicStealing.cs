@@ -14,6 +14,9 @@ namespace RiskOfBulletstormRewrite.GameplayAdditions
         public static ConfigEntry<bool> cfgCanStealFromNewt;
         public static ConfigEntry<bool> cfgNewtLeavesShop;
 
+        public static GameObject StompEffect => EntityStates.NewtMonster.KickFromShop.chargeEffectPrefab;
+        public static GameObject ItemTakenEffect = UnityEngine.AddressableAssets.Addressables.LoadAssetAsync<GameObject>("RoR2/Base/JumpBoost/BoostJumpEffect.prefab").WaitForCompletion();
+
         public static void Init(ConfigFile config)
         {
             var category = "Gameplay Modifications";
@@ -79,9 +82,10 @@ namespace RiskOfBulletstormRewrite.GameplayAdditions
                 {
                     gameObject.gameObject.SetActive(false);
                     LockDownShop();
+                    EffectManager.SimpleEffect(StompEffect, self.outer.commonComponents.characterBody.corePosition, Quaternion.identity, false);
                     if (NetworkServer.active)
                     {
-                        //self.outer.commonComponents.characterBody.AddBuff(RoR2Content.Buffs.Cloak);
+                        self.outer.commonComponents.characterBody.AddBuff(RoR2Content.Buffs.Cloak);
                         self.outer.commonComponents.characterBody.master.TrueKill();
                     }
                 }
@@ -120,6 +124,7 @@ namespace RiskOfBulletstormRewrite.GameplayAdditions
             var shop = GameObject.Find("HOLDER: Store/LunarShop/LunarTable/");
             foreach (var buy in shop.GetComponentsInChildren<PurchaseInteraction>())
             {
+                EffectManager.SimpleEffect(ItemTakenEffect, buy.transform.position, Quaternion.Euler(Vector3.up), false);
                 buy.transform.Find("Display").gameObject.SetActive(false);
                 buy.enabled = false;
             }
@@ -127,6 +132,7 @@ namespace RiskOfBulletstormRewrite.GameplayAdditions
             var seershop = GameObject.Find("HOLDER: Store/SeerShop/");
             foreach (var item in seershop.GetComponentsInChildren<PurchaseInteraction>())
             {
+                EffectManager.SimpleEffect(ItemTakenEffect, item.transform.position, Quaternion.Euler(Vector3.up), false);
                 item.transform.Find("HologramPivot").gameObject.SetActive(false);
                 item.enabled = false;
                 item.transform.Find("Model/DisplayPivot/").gameObject.SetActive(false);
@@ -134,6 +140,7 @@ namespace RiskOfBulletstormRewrite.GameplayAdditions
             var soupShop = GameObject.Find("HOLDER: Store/CauldronShop/");
             foreach (var item in soupShop.GetComponentsInChildren<PurchaseInteraction>())
             {
+                EffectManager.SimpleEffect(ItemTakenEffect, item.transform.position, Quaternion.Euler(Vector3.up), false);
                 item.enabled = false;
                 item.transform.Find("HologramPivot").gameObject.SetActive(false);
                 item.transform.Find("mdlBazaarCauldron/PickupDisplay/").gameObject.SetActive(false);
