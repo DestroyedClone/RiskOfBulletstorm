@@ -291,8 +291,13 @@ namespace RiskOfBulletstormRewrite
             if (item.IsSkillReplacement)
             {
             }
-            var enabled = Config.Bind<bool>(item.ConfigCategory, "Enable Item?", true, "Should this item appear in runs?").Value;
-            var aiBlacklist = Config.Bind<bool>(item.ConfigCategory, "Blacklist Item from AI Use?", false, "Should the AI not be able to obtain this item?").Value;
+            bool enabled = false;
+            bool aiBlacklist = false;
+            if (item.Tier != ItemTier.NoTier)
+            {
+                enabled = Config.Bind<bool>(item.ConfigCategory, "Enable Item?", true, "Should this item appear in runs?").Value;
+                aiBlacklist = Config.Bind<bool>(item.ConfigCategory, "Blacklist Item from AI Use?", false, "Should the AI not be able to obtain this item?").Value;
+            }
             if (enabled)
             {
                 itemList.Add(item);
