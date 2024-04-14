@@ -9,7 +9,6 @@ namespace RiskOfBulletstormRewrite
     {
         public static void Initialize()
         {
-            R2API.Utils.CommandHelper.AddToConsoleWhenReady();
         }
 
         /*[ConCommand(commandName = "rbs_givebulletparts",

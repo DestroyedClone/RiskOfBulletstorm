@@ -1,0 +1,25 @@
+﻿{
+  "name": "RiskOfBulletstorm",
+  "version_number": "1.2.2",
+  "website_url": "https://github.com/DestroyedClone/RiskOfBulletstorm/tree/master/RiskOfBulletstormRewrite",
+  "description": "Adds content from Enter the Gungeon.",
+  "dependencies": [
+    "bbepis-BepInExPack-5.4.2113",
+    "RiskofThunder-R2API_Core-5.0.12",
+    "RiskofThunder-R2API_ContentManagement-1.0.4",
+    "RiskofThunder-R2API_DamageType-1.0.4",
+    "RiskofThunder-R2API_Director-2.1.0",
+    "RiskofThunder-R2API_Dot-1.0.1",
+    "RiskofThunder-R2API_Elites-1.0.3",
+    "RiskofThunder-R2API_Items-1.0.3",
+    "RiskofThunder-R2API_Language-1.0.1",
+    "RiskofThunder-R2API_Loadout-1.0.2",
+    "RiskofThunder-R2API_LobbyConfig-1.0.1",
+    "RiskofThunder-R2API_Networking-1.0.2",
+    "RiskofThunder-R2API_Orb-1.0.1",
+    "RiskofThunder-R2API_Prefab-1.0.3",
+    "RiskofThunder-R2API_RecalculateStats-1.3.0",
+    "RiskofThunder-R2API_TempVisualEffect-1.0.2",
+    "RiskofThunder-R2API_Unlockable-1.0.2"
+  ]
+}
