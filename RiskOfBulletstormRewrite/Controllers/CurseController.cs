@@ -20,7 +20,7 @@ namespace RiskOfBulletstormRewrite.Controllers
             On.RoR2.CombatDirector.OnEnable += CombatDirector_OnEnable;
         }
 
-        private void UpdateTeamCurseCount(Inventory obj)
+        private void UpdateTeamCurseCount(Inventory _)
         {
             teamwideCurseCount = Util.GetItemCountForTeam(TeamIndex.Player, CurseTally.instance.ItemDef.itemIndex, false, true);
         }

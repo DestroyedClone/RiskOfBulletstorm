@@ -2,6 +2,7 @@ using RiskOfBulletstormRewrite.Equipment;
 using RoR2;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace RiskOfBulletstormRewrite
 {
@@ -32,6 +33,11 @@ namespace RiskOfBulletstormRewrite
         helpText = "rbs_spawnprefab path x y z")]
         public static void CCSpawnPrefab(ConCommandArgs args)
         {
+            if (!Main.enableDebug)
+            {
+                Debug.LogWarning("debug isn't on");
+                return;
+            }
             var reference = UnityEngine.AddressableAssets.Addressables.LoadAssetAsync<GameObject>(args.GetArgString(0)).WaitForCompletion();
             var position = args.senderBody.corePosition;
             if (args.Count > 1)
@@ -46,6 +52,11 @@ namespace RiskOfBulletstormRewrite
         helpText = "rbs_spawneffect path x y z")]
         public static void CCSpawnEffect(ConCommandArgs args)
         {
+            if (!Main.enableDebug)
+            {
+                Debug.LogWarning("debug isn't on");
+                return;
+            }
             var reference = UnityEngine.AddressableAssets.Addressables.LoadAssetAsync<GameObject>(args.GetArgString(0)).WaitForCompletion();
             var position = args.senderBody.corePosition;
             if (args.Count > 1)
@@ -60,7 +71,7 @@ namespace RiskOfBulletstormRewrite
         [ConCommand(commandName = "rbs_getspicechance",
         flags = ConVarFlags.ExecuteOnServer,
         helpText = "rbs_getspicechance")]
-        public static void CCGetSpiceChance(ConCommandArgs args)
+        public static void CCGetSpiceChance(ConCommandArgs _)
         {
             var run = Run.instance;
             var pickupIndex = PickupCatalog.FindPickupIndex(Spice2.Instance.EquipmentDef.equipmentIndex);
@@ -82,12 +93,7 @@ namespace RiskOfBulletstormRewrite
             var sb = HG.StringBuilderPool.RentStringBuilder();
             foreach (var kvp in dict)
             {
-                var spiceCount = 0;
-                foreach (var index in kvp.Value)
-                {
-                    if (index == pickupIndex)
-                        spiceCount++;
-                }
+                var spiceCount = kvp.Value.Count(index => index == pickupIndex);
                 var chance = (spiceCount / kvp.Value.Count) * 100;
                 sb.AppendLine($"{kvp.Key} Count: {spiceCount}/{kvp.Value.Count} ({chance}% chance)");
             }

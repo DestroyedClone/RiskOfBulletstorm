@@ -366,6 +366,8 @@ localScale = new Vector3(1F, 1F, 1F)
                 if (dropList.Contains(pickupIndex)) continue;
                 dropList.Add(pickupIndex);
             }
+            BasicPickupDropTable.RegenerateAll(run);
+            ExplicitPickupDropTable.RegenerateAll(run);
         }
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)

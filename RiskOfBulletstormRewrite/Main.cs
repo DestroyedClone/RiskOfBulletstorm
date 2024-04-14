@@ -26,12 +26,6 @@ namespace RiskOfBulletstormRewrite
     [BepInDependency(R2API.R2API.PluginGUID, R2API.R2API.PluginVersion)]
     [BepInDependency("com.xoxfaby.BetterUI", BepInDependency.DependencyFlags.SoftDependency)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.EveryoneNeedSameModVersion)]
-    [R2APISubmoduleDependency(nameof(ItemAPI),
-    nameof(LanguageAPI),
-    nameof(ContentAddition),
-    nameof(EliteAPI),
-    nameof(RecalculateStatsAPI),
-    nameof(DirectorAPI))]
     public class Main : BaseUnityPlugin
     {
         public const string ModGuid = "com.DestroyedClone.RiskOfBulletstorm";
@@ -52,14 +46,14 @@ namespace RiskOfBulletstormRewrite
 
         public static PluginInfo pluginInfo;
 
-        private readonly bool enableDebug = true;
+        public static readonly bool enableDebug = true;
 
-        private void Awake()
+        public void Awake()
         {
             ContentPack = R2API.ContentManagement.R2APIContentManager.ReserveSerializableContentPack();
         }
 
-        private void Start()
+        public void Start()
         {
             _logger = Logger;
             pluginInfo = Info;
@@ -291,7 +285,7 @@ namespace RiskOfBulletstormRewrite
             if (item.IsSkillReplacement)
             {
             }
-            bool enabled = false;
+            bool enabled = true;
             bool aiBlacklist = false;
             if (item.Tier != ItemTier.NoTier)
             {

@@ -90,7 +90,6 @@
 		"RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP_USES_3": "MORE",
 		"RISKOFBULLETSTORM_EQUIPMENT_SPICE_PICKUP_FORMAT": "<b>{0}</b>\nIncreases <style=cIsDamage>combat prowess</style>, with <style=cDeath>absolutely no downside</style>!",
 
-		//if they use the same token, the statsheet throws an error
 		"RISKOFBULLETSTORM_EQUIPMENT_SPICEA_NAME": "Spice",
 		"RISKOFBULLETSTORM_EQUIPMENT_SPICEB_NAME": "Spice",
 		"RISKOFBULLETSTORM_EQUIPMENT_SPICEC_NAME": "Spice",
