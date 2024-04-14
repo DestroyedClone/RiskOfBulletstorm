@@ -52,7 +52,7 @@ namespace RiskOfBulletstormRewrite
 
         public static PluginInfo pluginInfo;
 
-        private bool enableDebug = true;
+        private readonly bool enableDebug = true;
 
         private void Awake()
         {

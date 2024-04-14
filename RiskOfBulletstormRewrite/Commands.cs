@@ -27,6 +27,37 @@ namespace RiskOfBulletstormRewrite
             }
         }*/
 
+
+        [ConCommand(commandName = "rbs_spawnprefab",
+        flags = ConVarFlags.ExecuteOnServer,
+        helpText = "rbs_spawnprefab path x y z")]
+        public static void CCSpawnPrefab(ConCommandArgs args)
+        {
+            var reference = UnityEngine.AddressableAssets.Addressables.LoadAssetAsync<GameObject>(args.GetArgString(0)).WaitForCompletion();
+            var position = args.senderBody.corePosition;
+            if (args.Count > 1)
+            {
+                position = new Vector3(args.GetArgFloat(1), args.GetArgFloat(2), args.GetArgFloat(3));
+            }
+            var copy = UnityEngine.Object.Instantiate(reference);
+            copy.transform.position = position;
+        }
+        [ConCommand(commandName = "rbs_spawneffect",
+        flags = ConVarFlags.ExecuteOnServer,
+        helpText = "rbs_spawneffect path x y z")]
+        public static void CCSpawnEffect(ConCommandArgs args)
+        {
+            var reference = UnityEngine.AddressableAssets.Addressables.LoadAssetAsync<GameObject>(args.GetArgString(0)).WaitForCompletion();
+            var position = args.senderBody.corePosition;
+            if (args.Count > 1)
+            {
+                position = new Vector3(args.GetArgFloat(1), args.GetArgFloat(2), args.GetArgFloat(3));
+            }
+            var copy = UnityEngine.Object.Instantiate(reference);
+            copy.transform.position = position;
+            EffectManager.SimpleMuzzleFlash(reference, args.senderBody.gameObject, "HealthBarOrigin", false);
+        }
+
         [ConCommand(commandName = "rbs_getspicechance",
         flags = ConVarFlags.ExecuteOnServer,
         helpText = "rbs_getspicechance")]

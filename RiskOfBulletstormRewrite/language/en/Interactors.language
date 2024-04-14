@@ -27,7 +27,8 @@
 		"RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT_LOSE": "<size=150%>{0}\nYour equipment can't fit into the damaged lock.</size>",
 		"RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT_CLIENT": "<size=150%>{0}\nYour equipment seems compatible with this.\nIf it doesn't work, someone broke the lock.</size>",
 
-		//[COSTS]	
-		"RISKOFBULLETSTORM_COST_STEAL_FORMAT": "<style=cIsHealth>Steal!</style>"
+		//[COSTS]
+		"RISKOFBULLETSTORM_COST_STEAL_FORMAT": "<style=cIsHealth>Steal!</style>",
+		"RISKOFBULLETSTORM_COST_STEAL_FORMAT_WARN": "<style=cIsHealth>Steal!\n<size=150%>This could upset the shopkeeper...</size></style>"
 	}
 }

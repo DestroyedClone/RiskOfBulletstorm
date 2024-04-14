@@ -14,7 +14,7 @@ namespace RiskOfBulletstormRewrite.Items
         public static GameObject blinkPrefab;
 
         private float stopwatch;
-        private Vector3 blinkVector = Vector3.zero;
+        //private Vector3 blinkVector = Vector3.zero;
 
         [SerializeField]
         public float duration = 0.1f;
@@ -53,16 +53,16 @@ namespace RiskOfBulletstormRewrite.Items
         private bool goodPlacement;
 
         //private GameObject areaIndicatorInstance;
-        private GameObject cachedCrosshairPrefab;
+        //private GameObject cachedCrosshairPrefab;
 
         private CrosshairUtils.OverrideRequest crosshairOverrideRequest;
 
-        private Transform modelRoot;
+        //private Transform modelRoot;
 
         public override void OnEnter()
         {
             base.OnEnter();
-            modelRoot = base.GetModelTransform().GetComponentInChildren<SkinnedMeshRenderer>()?.rootBone;
+            //modelRoot = base.GetModelTransform().GetComponentInChildren<SkinnedMeshRenderer>()?.rootBone;
 
             //areaIndicatorInstance = UnityEngine.Object.Instantiate<GameObject>(modelRoot?.parent.parent.gameObject ?? ArrowRain.areaIndicatorPrefab);//(ArrowRain.areaIndicatorPrefab);
 
@@ -82,7 +82,7 @@ namespace RiskOfBulletstormRewrite.Items
 
             this.duration = baseDuration / this.attackSpeedStat;
             base.characterBody.SetAimTimer(this.duration + 2f);
-            cachedCrosshairPrefab = base.characterBody.defaultCrosshairPrefab;
+            //cachedCrosshairPrefab = base.characterBody.defaultCrosshairPrefab;
             this.UpdateAreaIndicator();
         }
 
@@ -126,15 +126,15 @@ namespace RiskOfBulletstormRewrite.Items
             return base.inputBank.aimDirection;
         }
 
-        private void CreateBlinkEffect(Vector3 origin)
+        private void CreateBlinkEffect(Vector3 _)
         {
             return;
-            EffectData effectData = new EffectData
+            /*EffectData effectData = new EffectData
             {
                 rotation = Util.QuaternionSafeLookRotation(this.blinkVector),
                 origin = origin
             };
-            EffectManager.SpawnEffect(blinkPrefab, effectData, false);
+            EffectManager.SpawnEffect(blinkPrefab, effectData, false);*/
         }
 
         public override void Update()

@@ -76,7 +76,7 @@ namespace RiskOfBulletstormRewrite.Controllers
         {
             if (srv_goolakeLockInstance)
             {
-                if (!self.TryGetComponent(out RBSStoneGateLockInteraction gateLock))
+                if (!self.GetComponent<RBSStoneGateLockInteraction>())
                     goto EarlyReturn;
                 return;
             }

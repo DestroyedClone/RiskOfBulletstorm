@@ -110,7 +110,7 @@ namespace RiskOfBulletstormRewrite.Items
 
             //HG.ArrayUtils.ArrayAppend(ref Main.ContentPack.entityStateTypes, rollSkillDef.activationState);
             ContentAddition.AddSkillDef(rollSkillDef);
-            ContentAddition.AddEntityState<DodgeRollState>(out bool wasAdded);
+            ContentAddition.AddEntityState<DodgeRollState>(out bool _);
         }
 
         public override string WikiLink => "https://thunderstore.io/package/DestroyedClone/RiskOfBulletstorm/wiki/187-item-teachings-of-dodge-roll/";

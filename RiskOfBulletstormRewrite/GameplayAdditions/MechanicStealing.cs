@@ -101,7 +101,7 @@ namespace RiskOfBulletstormRewrite.GameplayAdditions
                 //idk how else to force the kickout
             }
         }
-        private static void SpawnState_OnEnter(On.EntityStates.NewtMonster.SpawnState.orig_OnEnter orig, EntityStates.NewtMonster.SpawnState self)
+        /*private static void SpawnState_OnEnter(On.EntityStates.NewtMonster.SpawnState.orig_OnEnter orig, EntityStates.NewtMonster.SpawnState self)
         {
             orig(self);
             if (NetworkServer.active)
@@ -109,7 +109,7 @@ namespace RiskOfBulletstormRewrite.GameplayAdditions
                 {
                     ForceNewtToKickPlayersFromShop(self.outer.commonComponents.characterBody);
                 }
-        }
+        }*/
         public static bool ShouldShopClose()
         {
             return RoR2.Util.GetItemCountForTeam(TeamIndex.Player, Items.BannedFromBazaarTally.instance.ItemDef.itemIndex, false) > 0;

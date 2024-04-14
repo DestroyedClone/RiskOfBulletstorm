@@ -14,7 +14,7 @@ namespace RiskOfBulletstormRewrite.Items
         public float speedMultiplier = 2f;
 
         private Vector3 idealDirection;
-        private ChildLocator childLocator;
+        //private ChildLocator childLocator;
         private Animator animator;
 
         //this is really gay (derogatory) and doesnt work (fake)
@@ -38,7 +38,7 @@ namespace RiskOfBulletstormRewrite.Items
 
             this.duration = GetDuration();
             calculatedRotationValue = 360 / duration;
-            childLocator = base.GetModelChildLocator();
+            //childLocator = base.GetModelChildLocator();
             animator = base.GetModelAnimator();
             modelRoot = base.GetModelTransform().GetComponentInChildren<SkinnedMeshRenderer>()?.rootBone;
             if (modelRoot)
