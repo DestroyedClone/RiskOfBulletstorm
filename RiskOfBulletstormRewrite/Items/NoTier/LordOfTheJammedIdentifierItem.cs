@@ -328,7 +328,7 @@ localScale = new Vector3(0.03303F, 0.03303F, 0.07704F)
                     if (InstanceTracker.GetInstancesList<LordOfTheJammedController>().Count > 0)
                     {
                         var charBody = gameObject.GetComponent<CharacterBody>();
-                        MechanicStealing.ForceNewtToKickPlayersFromShop(charBody);
+                        MechanicStealing.ForceNewtToKickPlayersFromShop(charBody, true);
                         enabled = false;
                     }
                     age = 0;

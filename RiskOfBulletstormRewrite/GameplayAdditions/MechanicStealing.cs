@@ -92,8 +92,12 @@ namespace RiskOfBulletstormRewrite.GameplayAdditions
             }
         }
 
-        public static void ForceNewtToKickPlayersFromShop(CharacterBody newtBody)
+        public static void ForceNewtToKickPlayersFromShop(CharacterBody newtBody, bool isLOTJ = false)
         {
+            if (isLOTJ)
+            {
+                NewtSayLOTJ();
+            }
             if (newtBody && newtBody.healthComponent)
             {
                 newtBody.healthComponent.health = 500;
@@ -191,12 +195,28 @@ namespace RiskOfBulletstormRewrite.GameplayAdditions
             self.Networkcost = originalCost;
         }
 
+        private static void NewtSayLOTJ()
+        {
+            NewtSayRandom("RISKOFBULLETSTORM_DIALOGUE_NEWT_LOTJ_", 3);
+        }
+
         private static void NewtSaySteal()
+        {
+            NewtSayRandom("RISKOFBULLETSTORM_DIALOGUE_NEWT_STEALRESPONSE_", 5);
+        }
+
+        private static void NewtSayRandom(string tokenPrefix, int maxNum)
+        {
+            var messageToken = tokenPrefix + UnityEngine.Random.RandomRangeInt(0, maxNum);
+            Server_NewtSayMessage(messageToken);
+        }
+
+        private static void Server_NewtSayMessage(string messageToken)
         {
             //var sfxLocator = BazaarController.instance.shopkeeper.GetComponent<SfxLocator>();
             Chat.SendBroadcastChat(new Chat.NpcChatMessage
             {
-                baseToken = "RISKOFBULLETSTORM_DIALOGUE_NEWT_STEALRESPONSE_" + UnityEngine.Random.RandomRangeInt(0, 4),
+                baseToken = messageToken,
                 formatStringToken = "RISKOFBULLETSTORM_DIALOGUE_NEWT_FORMAT",
                 //sender = BazaarController.instance.shopkeeper,
                 //sound = sfxLocator?.barkSound
