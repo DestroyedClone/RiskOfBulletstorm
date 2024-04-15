@@ -94,7 +94,7 @@ namespace RiskOfBulletstormRewrite
             foreach (var kvp in dict)
             {
                 var spiceCount = kvp.Value.Count(index => index == pickupIndex);
-                var chance = (spiceCount / kvp.Value.Count) * 100;
+                float chance = (float)(spiceCount / kvp.Value.Count) * 100;
                 sb.AppendLine($"{kvp.Key} Count: {spiceCount}/{kvp.Value.Count} ({chance}% chance)");
             }
             Debug.Log(sb.ToString());
