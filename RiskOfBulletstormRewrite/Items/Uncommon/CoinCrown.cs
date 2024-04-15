@@ -32,7 +32,7 @@ namespace RiskOfBulletstormRewrite.Items
             ItemTag.Utility
         };
 
-        public static float cashMultiplier = 0.15f;
+        public static float cashMultiplier = 0.20f;
         public static float cashMultiplierPerStack = 0.05f;
 
         public override void Init(ConfigFile config)

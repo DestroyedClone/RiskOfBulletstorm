@@ -29,7 +29,7 @@
 		"RISKOFBULLETSTORM_EQUIPMENT_MOLOTOV_LORE": "Molotov cocktails aren't guns, and so they are frowned upon by long-dwelling Gungeoneers. They get the job done regardless.\nKnowing the Hegemony wouldn't let her bring her own weaponry to the Gungeon, the Convict smuggled these few bottles in with the transport's cargo.",
 
 		"RISKOFBULLETSTORM_EQUIPMENT_ORANGE_NAME": "Orange",
-		"RISKOFBULLETSTORM_EQUIPMENT_ORANGE_PICKUP": "<b>You're not Alexander</b>\nHeals on use, increases max health.",
+		"RISKOFBULLETSTORM_EQUIPMENT_ORANGE_PICKUP": "<b>You're not Alexander</b>\nHeals on use, increases max health and reduces equipment cooldown.",
 		"RISKOFBULLETSTORM_EQUIPMENT_ORANGE_DESCRIPTION": "<style=cIsUtility>Eat</style> to <style=cIsHealing>increase maximum health by {0}%</style>, <style=cIsHealing>heal for {0}% health, and <style=cIsUtility>reduce equipment cooldown by {2}%</style>. Consumed on use.",
 		"RISKOFBULLETSTORM_EQUIPMENT_ORANGE_LORE": "With this orange, your style... it's impetuous. Your defense, impregnable.",
 

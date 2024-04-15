@@ -8,7 +8,7 @@ namespace RiskOfBulletstormRewrite.Items
 {
     public class Scope : ItemBase<Scope>
     {
-        public static float cfgSpreadReduction = 0.2f;
+        public static float cfgSpreadReduction = 0.1f;
         public static float cfgSpreadReductionPerStack = 0.02f;
 
         public override string ItemName => "Scope";

@@ -7,8 +7,8 @@ namespace RiskOfBulletstormRewrite.Items
 {
     public class RingMiserlyProtection : ItemBase<RingMiserlyProtection>
     {
-        public static float cfgMaxHealthPctAdded = 1;
-        public static float cfgMaxHealthPctAddedStack = 0.5f;
+        public static float cfgMaxHealthPctAdded = 0.5f;
+        public static float cfgMaxHealthPctAddedStack = 0.25f;
 
         public override string ItemName => "Ring of Miserly Protection";
 

@@ -17,7 +17,7 @@ namespace RiskOfBulletstormRewrite.Items
         //private Vector3 blinkVector = Vector3.zero;
 
         [SerializeField]
-        public float duration = 0.1f;
+        public float duration = 0.05f;
 
         [SerializeField]
         public string beginSoundString;

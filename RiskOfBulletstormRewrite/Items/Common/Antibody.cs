@@ -8,7 +8,7 @@ namespace RiskOfBulletstormRewrite.Items
 {
     public class Antibody : ItemBase<Antibody>
     {
-        public static float cfgChance = 25;
+        public static float cfgChance = 30;
         public static float cfgMultiplier = 0.33f;
         public static float cfgMultiplierPerStack = 0.11f;
 
