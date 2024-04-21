@@ -58,7 +58,7 @@ namespace RiskOfBulletstormRewrite
                     }
                     BetterUI.Buffs.RegisterBuffInfo(buffDef, prefix + baseToken + "_NAME", prefix + baseToken + "_DESC");
                 }
-                RegisterBuffInfo(Buffs.AlphaBulletBuff, "ALPHABULLET", new string[]
+                /*RegisterBuffInfo(Buffs.AlphaBulletBuff, "ALPHABULLET", new string[]
                 {
                 GetFloat(AlphaBullets.damage),
                 GetFloat(AlphaBullets.damagePerStack)
@@ -66,7 +66,7 @@ namespace RiskOfBulletstormRewrite
                 RegisterBuffInfo(Buffs.MustacheBuff, "MUSTACHE", new string[]{
                 GetFloat(Mustache.cfgRegenAmount),
                 GetFloat(Mustache.cfgRegenAmountPerStack)});
-                /*(Buffs.MetronomeTrackerBuff, "METRONOME", new string[]{});*/
+                (Buffs.MetronomeTrackerBuff, "METRONOME", new string[]{});
                 RegisterBuffInfo(Buffs.BloodiedScarfBuff, "BLOODIEDSCARF", new string[]{
                 GetFloat(BloodiedScarf.cfgDamageVulnerabilityMultiplier),
                 GetFloat(BloodiedScarf.cfgDamageVulnerabilityMultiplierPerStack)
@@ -134,13 +134,13 @@ namespace RiskOfBulletstormRewrite
 
                 #region Uncommon
 
-                BetterUI.ItemStats.RegisterStat(AlphaBullets.instance.ItemDef,
+                /*BetterUI.ItemStats.RegisterStat(AlphaBullets.instance.ItemDef,
                     prefix + "ALPHABULLETS_DAMAGEBONUS",
                     AlphaBullets.damage,
                     AlphaBullets.damagePerStack,
                     BetterUI.ItemStats.LinearStacking,
                     BetterUI.ItemStats.StatFormatter.Percent,
-                    BetterUI.ItemStats.ItemTag.Damage);
+                    BetterUI.ItemStats.ItemTag.Damage);*/
                 //todo get stat for buff count * damage
 
                 /* BetterUI.ItemStats.RegisterStat(AmmoBelt.instance.ItemDef,

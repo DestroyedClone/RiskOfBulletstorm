@@ -12,7 +12,7 @@ namespace RiskOfBulletstormRewrite.Equipment
         public override string EquipmentName => "Orange (Consumed)";
 
         public override string EquipmentLangTokenName => "ORANGECONSUMED";
-        public override string[] EquipmentFullDescriptionParams => Equipment.Orange.Instance.EquipmentFullDescriptionParams;
+        public override object[] EquipmentFullDescriptionParams => Equipment.Orange.Instance.EquipmentFullDescriptionParams;
 
         public override GameObject EquipmentModel => LoadModel();
 

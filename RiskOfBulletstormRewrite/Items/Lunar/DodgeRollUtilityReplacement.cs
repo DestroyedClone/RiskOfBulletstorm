@@ -80,7 +80,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public void CreateSkillDef()
         {
-            rollSkillDef = ScriptableObject.CreateInstance<GroundedSkillDef>();
+            rollSkillDef = ScriptableObject.CreateInstance<SkillDef>();
             rollSkillDef.activationState = new SerializableEntityStateType(typeof(DodgeRollState));
             rollSkillDef.activationStateMachineName = "Body";
             rollSkillDef.baseMaxStock = 1;

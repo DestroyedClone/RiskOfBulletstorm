@@ -21,7 +21,7 @@ namespace RiskOfBulletstormRewrite.Equipment
         public override string EquipmentLangTokenName => "TRUSTYLOCKPICKS";
         public override bool IsLunar => true;
 
-        public override string[] EquipmentFullDescriptionParams => new string[]
+        public override object[] EquipmentFullDescriptionParams => new string[]
         {
             cfgUnlockChance.ToString(), //direct percentage so...
             ToPct(cfgPriceMultiplier)

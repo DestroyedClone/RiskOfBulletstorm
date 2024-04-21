@@ -18,11 +18,11 @@ namespace RiskOfBulletstormRewrite.Items
         private Animator animator;
 
         //this is really gay (derogatory) and doesnt work (fake)
-        private Transform modelRoot;
+        //private Transform modelRoot;
 
-        private Vector3 modelRootOldScale = Vector3.one;
-        private Quaternion modelRootOldRot = Quaternion.identity;
-        private float calculatedRotationValue = 1;
+        //private Vector3 modelRootOldScale = Vector3.one;
+        //private Quaternion modelRootOldRot = Quaternion.identity;
+        //private float calculatedRotationValue = 1;
 
         //stupid fucking piece of broken shit fuckyou
         /* private float calcPercentageToApplyVulnerability = 0.5f;
@@ -37,15 +37,15 @@ namespace RiskOfBulletstormRewrite.Items
             base.OnEnter();
 
             this.duration = GetDuration();
-            calculatedRotationValue = 360 / duration;
+            //calculatedRotationValue = 360 / duration;
             //childLocator = base.GetModelChildLocator();
             animator = base.GetModelAnimator();
-            modelRoot = base.GetModelTransform().GetComponentInChildren<SkinnedMeshRenderer>()?.rootBone;
+            /*modelRoot = base.GetModelTransform().GetComponentInChildren<SkinnedMeshRenderer>()?.rootBone;
             if (modelRoot)
             {
                 modelRootOldScale = modelRoot.localScale;
                 modelRootOldRot = modelRoot.localRotation;
-            }
+            }*/
             if (base.isAuthority)
             {
                 base.gameObject.layer = LayerIndex.fakeActor.intVal;
@@ -55,7 +55,10 @@ namespace RiskOfBulletstormRewrite.Items
             {
                 characterBody.AddBuff(RoR2Content.Buffs.Intangible);
             }
-            if (!base.characterMotor.isGrounded) base.characterMotor.velocity.y = 15f;
+            if (!base.characterMotor.isGrounded)
+            {
+                base.characterMotor.velocity.y *= 0.5f;
+            }
             if (animator)
                 animator.enabled = false;
             if (characterMotor)
@@ -79,7 +82,7 @@ namespace RiskOfBulletstormRewrite.Items
         {
             base.Update();
 
-            if (modelRoot)
+            /*if (modelRoot)
             {
                 //var newRot = Vector3.Lerp(modelRootOldRot, )
                 //this is goofy as fuck
@@ -88,7 +91,7 @@ namespace RiskOfBulletstormRewrite.Items
                 var newRotation = modelRootOldRot.eulerAngles + addedRot;
                 modelRoot.localRotation = Quaternion.Euler(newRotation);
                 modelRoot.localScale = Vector3.one * 0.7f;
-            }
+            }*/
         }
 
         public override void FixedUpdate()
@@ -131,11 +134,11 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override void OnExit()
         {
-            if (modelRoot)
+            /*if (modelRoot)
             {
                 modelRoot.localScale = modelRootOldScale;
                 modelRoot.localRotation = modelRootOldRot;
-            }
+            }*/
             base.gameObject.layer = LayerIndex.defaultLayer.intVal;
             base.characterMotor.Motor.RebuildCollidableLayers();
             /*             if (base.isAuthority)

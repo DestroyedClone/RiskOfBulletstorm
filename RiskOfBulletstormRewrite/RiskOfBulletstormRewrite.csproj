@@ -73,6 +73,7 @@
     <Compile Remove="Items\NoTier\CloneVoidConsumed.cs" />
     <Compile Remove="Items\NoTier\SpiceReplacementDisplay.cs" />
     <Compile Remove="Items\NoTier\WeirdEggStageClearTally.cs" />
+    <Compile Remove="Items\Uncommon\AlphaBullets.cs" />
     <Compile Remove="Items\Uncommon\AmmoBelt.cs" />
     <Compile Remove="Items\Uncommon\GhostBullets.cs" />
     <Compile Remove="Items\Uncommon\RingChestFriendship.cs" />

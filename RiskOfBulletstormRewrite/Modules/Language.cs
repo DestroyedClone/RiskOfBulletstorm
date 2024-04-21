@@ -12,6 +12,12 @@ namespace RiskOfBulletstormRewrite.Modules
 
         public const string LanguageTokenPrefix = "RISKOFBULLETSTORM_";
         public const string LanguageTokenPrefixArtifact = LanguageTokenPrefix + "ARTIFACT_";
+        public const string LanguageTokenPrefixItem = LanguageTokenPrefix + "ITEM_";
+        public const string LanguageTokenPrefixEquipment = LanguageTokenPrefix + "EQUIPMENT_";
+        public const string LanguageTokenPrefixEliteEquipment = LanguageTokenPrefix + "ELITE_EQUIPMENT_";
+        public const string LanguageTokenPrefixElite = LanguageTokenPrefix + "ELITE_";
+
+        public const string LanguageTokenPrefixBuffs = LanguageTokenPrefix + "BUFF_";
 
         //public static event Action<ConfigFile> onConfigLoaded;
 

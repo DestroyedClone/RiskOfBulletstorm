@@ -5,6 +5,7 @@ using RiskOfBulletstormRewrite.Utils;
 using RoR2;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 
 namespace RiskOfBulletstormRewrite.Equipment
 {
@@ -341,31 +342,46 @@ localScale = new Vector3(1F, 1F, 1F)
             base.Hooks();
             On.RoR2.CharacterMasterNotificationQueue.PushNotification += CharacterMasterNotificationQueue_PushNotification;
             R2API.RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
-            Run.onRunStartGlobal += EnsureSpiceIsInAllDropLists;
+            Run.onRunStartGlobal += StartOfRunDroplistSetup;
         }
 
-        private void EnsureSpiceIsInAllDropLists(Run run)
+        public static Dictionary<List<PickupIndex>, float> dropListSpiceAddCount = new Dictionary<List<PickupIndex>, float>();
+
+        private void StartOfRunDroplistSetup(Run run)
         {
+            dropListSpiceAddCount.Clear();
+            //outputs:
+            // 0/5/10/15 items => 1 spice
+            // 20/27 items => 2 spice
+            float ProduceDropCount(List<PickupIndex> dropList)
+            {
+                if (dropList.Count <= 10) return 1;
+                return dropList.Count / 10;
+            }
             var pickupIndex = PickupCatalog.FindPickupIndex(EquipmentDef.equipmentIndex);
             foreach (var dropList in new List<List<PickupIndex>>
             {
-                //run.availableBossDropList,
+                run.availableBossDropList,
                 run.availableEquipmentDropList,
-                //run.availableLunarCombinedDropList,
+                run.availableLunarCombinedDropList,
                 run.availableLunarEquipmentDropList,
-                //run.availableLunarItemDropList,
-                //run.availableTier1DropList,
-                //run.availableTier2DropList,
-                //run.availableTier3DropList,
-                //run.availableVoidBossDropList,
-                //run.availableVoidTier1DropList,
-                //run.availableVoidTier2DropList,
-                //run.availableVoidTier3DropList,
+                run.availableLunarItemDropList,
+                run.availableTier1DropList,
+                run.availableTier2DropList,
+                run.availableTier3DropList,
+                run.availableVoidBossDropList,
+                run.availableVoidTier1DropList,
+                run.availableVoidTier2DropList,
+                run.availableVoidTier3DropList,
             })
             {
-                if (dropList.Contains(pickupIndex)) continue;
-                dropList.Add(pickupIndex);
+                var dropCount = ProduceDropCount(dropList);
+                dropListSpiceAddCount.Add(dropList, dropCount);
+                if (dropList == run.availableEquipmentDropList || dropList == run.availableLunarEquipmentDropList)
+                    if (!dropList.Contains(pickupIndex))
+                    dropList.Add(pickupIndex);
             }
+
             BasicPickupDropTable.RegenerateAll(run);
             ExplicitPickupDropTable.RegenerateAll(run);
         }
@@ -385,18 +401,11 @@ localScale = new Vector3(1F, 1F, 1F)
             if (!Run.instance) return;
             var run = Run.instance;
             var pickupIndex = PickupCatalog.FindPickupIndex(EquipmentDef.equipmentIndex);
-            run.availableBossDropList.Add(pickupIndex);
-            run.availableEquipmentDropList.Add(pickupIndex);
-            run.availableLunarCombinedDropList.Add(pickupIndex);
-            run.availableLunarEquipmentDropList.Add(pickupIndex);
-            run.availableLunarItemDropList.Add(pickupIndex);
-            run.availableTier1DropList.Add(pickupIndex);
-            run.availableTier2DropList.Add(pickupIndex);
-            run.availableTier3DropList.Add(pickupIndex);
-            run.availableVoidBossDropList.Add(pickupIndex);
-            run.availableVoidTier1DropList.Add(pickupIndex);
-            run.availableVoidTier2DropList.Add(pickupIndex);
-            run.availableVoidTier3DropList.Add(pickupIndex);
+            foreach (var pair in dropListSpiceAddCount)
+            {
+                for (int i = 0; i < pair.Value; i++)
+                    pair.Key.Add(pickupIndex);
+            }
 
             BasicPickupDropTable.RegenerateAll(run);
             ExplicitPickupDropTable.RegenerateAll(run);

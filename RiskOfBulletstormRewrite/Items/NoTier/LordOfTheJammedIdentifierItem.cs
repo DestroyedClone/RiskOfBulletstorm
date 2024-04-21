@@ -320,6 +320,13 @@ localScale = new Vector3(0.03303F, 0.03303F, 0.07704F)
             public float age = 0;
             public float duration = 5f;
 
+            public CharacterBody newtBody;
+
+            public void Start()
+            {
+                newtBody = GetComponent<CharacterBody>();
+            }
+
             public void FixedUpdate()
             {
                 age += Time.fixedDeltaTime;
@@ -327,8 +334,7 @@ localScale = new Vector3(0.03303F, 0.03303F, 0.07704F)
                 {
                     if (InstanceTracker.GetInstancesList<LordOfTheJammedController>().Count > 0)
                     {
-                        var charBody = gameObject.GetComponent<CharacterBody>();
-                        MechanicStealing.ForceNewtToKickPlayersFromShop(charBody, true);
+                        MechanicStealing.ForceNewtToKickPlayersFromShop(newtBody, true);
                         enabled = false;
                     }
                     age = 0;

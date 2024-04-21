@@ -85,7 +85,7 @@ namespace RiskOfBulletstormRewrite.Controllers
             //onBarrelInteraction?.Invoke(self, activator);
         }
 
-        public class RBSStoneGateLockInteraction : RBSLockInteraction
+        public class RBSStoneGateLockInteraction : RBSBaseLockInteraction
         {
             public static RBSStoneGateLockInteraction Instance { get; set; }
             public void Awake()

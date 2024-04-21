@@ -1,4 +1,5 @@
 ﻿using RoR2;
+using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
@@ -12,10 +13,10 @@ namespace RiskOfBulletstormRewrite.Controllers
         public static UnityAction<BarrelInteraction, Interactor> onBarrelInteraction;
         public static void Init()
         {
-            On.RoR2.ChestBehavior.Start += ChestBehavior_Start_AddRBSChestComponent;
+            On.RoR2.ChestBehavior.Awake += ChestBehavior_Awake;
             //On.RoR2.PurchaseInteraction.GetInteractability += PurchaseInteraction_GetInteractability;
+            On.RoR2.PurchaseInteraction.GetInteractability += PurchaseInteraction_GetInteractability2NoHighlight;
             On.RoR2.PurchaseInteraction.GetContextString += ModifyContextStringBasedOnEquipment;
-            //Stage.onServerStageBegin += Stage_onServerStageBegin;
             StoneGateModification.Init();
             EquipmentCatalog.availability.CallWhenAvailable(() =>
             {
@@ -26,6 +27,36 @@ namespace RiskOfBulletstormRewrite.Controllers
                 };
             });
             On.RoR2.BarrelInteraction.GetContextString += BarrelInteraction_GetContextString;
+
+        }
+
+        private static void ChestBehavior_Awake(On.RoR2.ChestBehavior.orig_Awake orig, ChestBehavior self)
+        {
+            orig(self);
+            PurchaseInteraction purchaseInteraction = self.GetComponent<PurchaseInteraction>();
+            if (purchaseInteraction.costType != CostTypeIndex.PercentHealth)
+            {
+                var comp = self.gameObject.AddComponent<RBSChestLockInteraction>();
+                comp.chestBehavior = self;
+                comp.purchaseInteraction = purchaseInteraction;
+                comp.StoreHighlightColor(self.GetComponent<Highlight>());
+            }
+        }
+
+        private static Interactability PurchaseInteraction_GetInteractability2NoHighlight(On.RoR2.PurchaseInteraction.orig_GetInteractability orig, PurchaseInteraction self, Interactor activator)
+        {
+            var original = orig(self, activator);
+            if (self.gameObject.TryGetComponent(out RBSChestLockInteraction chestLock))
+            {
+                if (chestLock.isLockBroken) goto Done;
+                if (!RBSBaseLockInteraction.InteractorHasValidEquipment(activator, out EquipmentIndex validEquipmentIndex)) goto Done;
+                chestLock.UpdateItemDisplay(validEquipmentIndex);
+                return Interactability.Available;
+            }
+            Done: 
+            if (chestLock)
+                chestLock.UpdateItemDisplay(EquipmentIndex.None);
+            return original;
         }
 
         private static string BarrelInteraction_GetContextString(On.RoR2.BarrelInteraction.orig_GetContextString orig, BarrelInteraction self, Interactor activator)
@@ -33,29 +64,12 @@ namespace RiskOfBulletstormRewrite.Controllers
             var original = orig(self, activator);
             if (self.TryGetComponent(out StoneGateModification.RBSStoneGateLockInteraction gateLock))
             {
-                if (RBSChestLockInteraction.InteractorHasValidEquipment(activator))
+                if (RBSChestLockInteraction.InteractorHasValidEquipment(activator, out EquipmentIndex validEquipmentIndex))
                 {
                     return gateLock.GetContextualString(original);
                 }
             }
             return original;
-        }
-
-        private static void Stage_onServerStageBegin(Stage stage)
-        {
-            if (!stage.sceneDef || stage.sceneDef.cachedName != "goolake") return;
-            var entrance = GameObject.Find("HOLDER: Secret Ring Area Content/Entrance");
-            var GLRuinGate = entrance.transform.Find("GLRuinGate");
-
-            var nameProvider = GLRuinGate.gameObject.AddComponent<GenericDisplayNameProvider>();
-            nameProvider.SetDisplayToken("Mysterious Gate");
-            var highlight = GLRuinGate.gameObject.AddComponent<Highlight>();
-            highlight.displayNameProvider = nameProvider;
-            highlight.targetRenderer = GLRuinGate.transform.Find("BbRuinGate_LOD0").GetComponent<MeshRenderer>();
-            var interaction = GLRuinGate.gameObject.AddComponent<PurchaseInteraction>();
-            interaction.displayNameToken = "Mysterious Gate";
-            var pingInfo = GLRuinGate.gameObject.AddComponent<PingInfoProvider>();
-            pingInfo.pingIconOverride = UnityEngine.AddressableAssets.Addressables.LoadAssetAsync<Sprite>("RoR2/Base/Common/MiscIcons/texMysteryIcon.png").WaitForCompletion();
         }
 
         private static string ModifyContextStringBasedOnEquipment(On.RoR2.PurchaseInteraction.orig_GetContextString orig, PurchaseInteraction self, Interactor activator)
@@ -64,7 +78,7 @@ namespace RiskOfBulletstormRewrite.Controllers
 
             if (self.TryGetComponent(out RBSChestLockInteraction chestLock))
             {
-                if (RBSChestLockInteraction.InteractorHasValidEquipment(activator))
+                if (RBSChestLockInteraction.InteractorHasValidEquipment(activator, out EquipmentIndex validEquipmentIndex))
                 {
                     return chestLock.GetContextualString(original);
                 }
@@ -77,17 +91,20 @@ namespace RiskOfBulletstormRewrite.Controllers
         {
             var original = orig(self, activator);
             var gameObject = self.gameObject;
-            Highlight highlight = gameObject.GetComponent<Highlight>();
+            Highlight highlight = self.GetComponent<Highlight>();
 
             if (gameObject.TryGetComponent(out RBSChestLockInteraction chestLock))
             {
-                if (chestLock.isLockBroken) goto Done;
-                if (!RBSLockInteraction.InteractorHasValidEquipment(activator)) goto Done;
+                if (chestLock.isLockBroken) goto RestoreOriginalHighlight;
+                if (!RBSBaseLockInteraction.InteractorHasValidEquipment(activator, out EquipmentIndex validEquipmentIndex)) goto RestoreOriginalHighlight;
                 //&& activator.GetComponent<CharacterBody>()?.inputBank?.activateEquipment.justPressed == true)
 
-                chestLock.ChangeHighlightColor(highlight, Highlight.HighlightColor.unavailable);
+                //chestLock.ChangeHighlightColor(highlight, Highlight.HighlightColor.unavailable);
                 if (original != Interactability.Disabled)
                     return Interactability.Available;
+
+                RestoreOriginalHighlight:
+                chestLock.ChangeHighlightColor(highlight, chestLock.originalHighlightColor);
 
                 goto Done;
             }
@@ -101,30 +118,56 @@ namespace RiskOfBulletstormRewrite.Controllers
             return original;
         }
 
-        private static void ChestBehavior_Start_AddRBSChestComponent(On.RoR2.ChestBehavior.orig_Start orig, ChestBehavior self)
-        {
-            orig(self);
-            PurchaseInteraction purchaseInteraction = self.GetComponent<PurchaseInteraction>();
-            if (purchaseInteraction.costType != CostTypeIndex.PercentHealth)
-            {
-                var comp = self.gameObject.AddComponent<RBSChestLockInteraction>();
-                comp.chestBehavior = self;
-                comp.purchaseInteraction = purchaseInteraction;
-                comp.StoreHighlightColor(self.GetComponent<Highlight>());
-            }
-        }
-
         public interface IRBSKeyInteraction
         {
         }
 
-        public class RBSLockInteraction : MonoBehaviour, IRBSKeyInteraction
+        public class RBSBaseLockInteraction : MonoBehaviour, IRBSKeyInteraction
         {
             public const string attemptContextToken = "RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT";
             public const string failContextToken = "RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT_LOSE";
             public const string attemptContextTokenClient = "RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT_CLIENT";
 
             public bool isLockBroken = false;
+
+            //client
+            public GameObject itemDisplayInstance = null;
+            public GameObject oldDisplayInstance = null;
+            public EquipmentIndex displayEquipment = EquipmentIndex.None;
+            public Transform displayTransform = null;
+
+            public void OnEnable()
+            {
+                displayTransform = transform;
+            }
+
+            public void UpdateItemDisplay(EquipmentIndex equipmentIndex)
+            {
+                if (displayEquipment == equipmentIndex) return;
+                displayEquipment = equipmentIndex;
+                if (itemDisplayInstance)// && some condition )
+                {
+                    DestroyItemDisplay();
+                }
+                CreateItemDisplay();
+            }
+
+            public void DestroyItemDisplay()
+            {
+                if (!itemDisplayInstance) return;
+                oldDisplayInstance = itemDisplayInstance;
+                Destroy(oldDisplayInstance);
+                itemDisplayInstance = null;
+            }
+
+            public void CreateItemDisplay()
+            {
+                if (displayEquipment == EquipmentIndex.None) return;
+                var equipmentDef = EquipmentCatalog.GetEquipmentDef(displayEquipment);
+                var display = equipmentDef.pickupModelPrefab;
+                itemDisplayInstance = UnityEngine.Object.Instantiate(display, transform);
+                itemDisplayInstance.transform.position = displayTransform.position;
+            }
 
             public string GetContextualString(string original)
             {
@@ -136,12 +179,14 @@ namespace RiskOfBulletstormRewrite.Controllers
                 return Language.GetStringFormatted(formattingToken, original);
             }
 
-            public static bool InteractorHasValidEquipment(Interactor interactor)
+            public static bool InteractorHasValidEquipment(Interactor interactor, out EquipmentIndex equipmentIndex)
             {
+                equipmentIndex = EquipmentIndex.None;
                 if (interactor.TryGetComponent(out CharacterBody characterBody)
                     && characterBody.equipmentSlot)
                 {
-                    if (keyTypeEquipmentArray.Contains(characterBody.equipmentSlot.equipmentIndex))
+                    equipmentIndex = characterBody.equipmentSlot.equipmentIndex;
+                    if (keyTypeEquipmentArray.Contains(equipmentIndex))
                     {
                         return true;
                     }
@@ -155,7 +200,7 @@ namespace RiskOfBulletstormRewrite.Controllers
         /// <para><b>Trusty Lockpicks</b>: Affects hasUsedLockpicks </para>
         /// <para><b>Drill</b>: Can't interact with Lockpicked Chests</para>
         /// </summary>
-        public class RBSChestLockInteraction : RBSLockInteraction
+        public class RBSChestLockInteraction : RBSBaseLockInteraction
         {
             //public string nameModifier = "";
             //public string contextModifier = "";
@@ -171,7 +216,8 @@ namespace RiskOfBulletstormRewrite.Controllers
                 if (!highlight) return;
                 if (!highlightColorStored)
                 {
-                    originalHighlightColor = highlight.highlightColor; highlightColorStored = true;
+                    originalHighlightColor = highlight.highlightColor; 
+                    highlightColorStored = true;
                 }
             }
 
@@ -182,6 +228,24 @@ namespace RiskOfBulletstormRewrite.Controllers
 
             public void UpdateTokens()
             {
+            }
+        }
+
+        public class RBSDestroyGameObjectDistance : MonoBehaviour
+        {
+            public int distance = 5;
+
+            private float stopwatch = 5;
+            public float cooldown;
+
+            public void FixedUpdate()
+            {
+                stopwatch -= Time.fixedDeltaTime;
+                if (stopwatch < 0)
+                {
+                    stopwatch = cooldown;
+
+                }
             }
         }
     }

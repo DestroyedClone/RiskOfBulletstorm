@@ -18,7 +18,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         public override string EquipmentLangTokenName => "ORANGE";
 
-        public override string[] EquipmentFullDescriptionParams => new string[]
+        public override object[] EquipmentFullDescriptionParams => new string[]
         {
             ToPct(cfgMaxHealthIncrease),
             ToPct(cfgHealPercentage),

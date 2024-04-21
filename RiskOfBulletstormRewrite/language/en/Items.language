@@ -49,7 +49,7 @@
 
 		"RISKOFBULLETSTORM_ITEM_COINCROWN_NAME": "Coin Crown",
 		"RISKOFBULLETSTORM_ITEM_COINCROWN_PICKUP": "<b>Play Well, Get Money</b>\nIncreases money on teleporter event completion.",
-		"RISKOFBULLETSTORM_ITEM_COINCROWN_DESCRIPTION": "After <style=cIsUtility>completing a teleporter event</style>, increase your <style=cIsUtility>money</style> by <style=cIsUtility>{0}%</style> <style=cStack>(+{1}% per stack)</style>.",
+		"RISKOFBULLETSTORM_ITEM_COINCROWN_DESCRIPTION": "After <style=cIsUtility>completing a teleporter event</style>, increase your <style=cIsUtility>money</style> by <style=cIsUtility>{0}%</style> <style=cStack>(+{1}% per stack)</style>. Item stacks are <style=cIsUtility>team-wide</style>.",
 		"RISKOFBULLETSTORM_ITEM_COINCROWN_LORE": "A pre-Gungeon relic.",
 
 		"RISKOFBULLETSTORM_ITEM_GHOSTBULLETS_NAME": "Ghost Bullets",
@@ -165,7 +165,7 @@
 
 		"RISKOFBULLETSTORM_ITEM_COINCROWNVOID_NAME": "Crown For Fools",
 		"RISKOFBULLETSTORM_ITEM_COINCROWNVOID_PICKUP": "<b>Play Long, Get Rich</b>\nIncreases gold gain during the teleporter event.",
-		"RISKOFBULLETSTORM_ITEM_COINCROWNVOID_DESCRIPTION": "During a teleporter event, increases your <style=cIsUtility>gold from kills</style> by <style=cIsUtility>+{0}</style> <style=cStack>(+{1} per stack)</style>. <style=cIsVoid>Corrupts all Coin Crowns</style>.",
+		"RISKOFBULLETSTORM_ITEM_COINCROWNVOID_DESCRIPTION": "During a teleporter event, increases your <style=cIsUtility>gold from kills</style> by <style=cIsUtility>+{0}</style> <style=cStack>(+{1} per stack)</style>. Item stacks are <style=cIsUtility>team-wide</style>. <style=cIsVoid>Corrupts all Coin Crowns</style>.",
 		"RISKOFBULLETSTORM_ITEM_COINCROWNVOID_LORE": "A Gungeon relic, led to be corrupted and corrupt each user who wore it.",
 
 		//[VOIDLEGENDARY]

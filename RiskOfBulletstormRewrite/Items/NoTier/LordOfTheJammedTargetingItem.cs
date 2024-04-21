@@ -45,10 +45,8 @@ namespace RiskOfBulletstormRewrite.Items
         {
             if (itemIndex == ItemDef.itemIndex)
             {
-                var tracker = inventory.gameObject.GetComponent<LOTJTracker>();
-                if (!tracker)
-                    tracker = inventory.gameObject.AddComponent<LOTJTracker>();
-                tracker.ownerMaster = inventory.gameObject.GetComponent<CharacterMaster>();
+                if (!inventory.gameObject.GetComponent<LOTJTracker>())
+                    inventory.gameObject.AddComponent<LOTJTracker>();
             }
         }
 
@@ -66,6 +64,7 @@ namespace RiskOfBulletstormRewrite.Items
 
             public void Start()
             {
+                ownerMaster = GetComponent<CharacterMaster>();
                 ownerMaster.onBodyStart += OwnerMaster_onBodyStart;
                 ownerMaster.onBodyDestroyed += OwnerMaster_onBodyDestroyed;
 
@@ -85,40 +84,54 @@ namespace RiskOfBulletstormRewrite.Items
 
             private void AttemptSpawn()
             {
-                if (!bossMaster && ownerBody)
+                if (bossMaster || !ownerBody)
                 {
-                    var masterSummon = new MasterSummon()
+                    return;
+                }
+                var masterSummon = new MasterSummon()
+                {
+                    ignoreTeamMemberLimit = true,
+                    //masterPrefab = Enemies.LordofTheJammedMonster.masterPrefab,
+                    masterPrefab = MasterCatalog.FindMasterPrefab("BrotherGlassMaster"),
+                    position = TeleporterInteraction.instance
+                    ? TeleporterInteraction.instance.transform.position
+                    : transform.position,
+                    teamIndexOverride = TeamIndex.Monster
+                };
+                masterSummon.preSpawnSetupCallback += (charMaster) =>
+                {
+                    charMaster.inventory.GiveItem(RoR2Content.Items.Ghost);
+                    charMaster.inventory.GiveItem(RoR2Content.Items.TeleportWhenOob);
+                    charMaster.inventory.GiveItem(LordOfTheJammedIdentifierItem.instance.ItemDef);
+                    charMaster.inventory.GiveItem(RoR2Content.Items.Syringe, 30);
+                };
+
+                bossMaster = masterSummon.Perform();
+                if (!bossMaster) return;
+
+                bossBody = bossMaster.GetBody();
+
+                foreach (EntityStateMachine entityStateMachine in bossBody.GetComponents<EntityStateMachine>())
+                {
+                    if (entityStateMachine.customName == "Body")
                     {
-                        ignoreTeamMemberLimit = true,
-                        //masterPrefab = Enemies.LordofTheJammedMonster.masterPrefab,
-                        masterPrefab = MasterCatalog.FindMasterPrefab("BrotherGlassMaster"),
-                        position = TeleporterInteraction.instance
-                        ? TeleporterInteraction.instance.transform.position
-                        : transform.position,
-                        teamIndexOverride = TeamIndex.Monster
-                    };
-
-                    bossMaster = masterSummon.Perform();
-                    if (!bossMaster) return;
-                    bossMaster.inventory.GiveItem(RoR2Content.Items.Ghost);
-                    bossMaster.inventory.GiveItem(RoR2Content.Items.TeleportWhenOob);
-                    bossMaster.inventory.GiveItem(LordOfTheJammedIdentifierItem.instance.ItemDef);
-
-                    bossBody = bossMaster.GetBody();
-
-                    if (bossMaster.TryGetComponent<BaseAI>(out BaseAI baseAI))
-                    {
-                        baseAI.currentEnemy = new BaseAI.Target(baseAI)
-                        {
-                            characterBody = ownerBody
-                        };
-                        baseAI.neverRetaliateFriendlies = true;
-                        baseAI.enemyAttentionDuration = Mathf.Infinity;
-                        /*foreach (var skillDriver in baseAI.skillDrivers)
-                        {
-                            skillDriver.moveTargetType = AISkillDriver.TargetType.Custom;
-                        }*/
+                        entityStateMachine.SetState(new EntityStates.Heretic.SpawnState());
+                        return;
                     }
+                }
+
+                if (bossMaster.TryGetComponent(out BaseAI baseAI))
+                {
+                    baseAI.currentEnemy = new BaseAI.Target(baseAI)
+                    {
+                        characterBody = ownerBody
+                    };
+                    baseAI.neverRetaliateFriendlies = true;
+                    baseAI.enemyAttentionDuration = Mathf.Infinity;
+                    /*foreach (var skillDriver in baseAI.skillDrivers)
+                    {
+                        skillDriver.moveTargetType = AISkillDriver.TargetType.Custom;
+                    }*/
                 }
             }
 

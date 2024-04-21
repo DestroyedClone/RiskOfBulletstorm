@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using RoR2.ExpansionManagement;
 
 namespace RiskOfBulletstormRewrite.Equipment
 {
@@ -21,31 +22,52 @@ namespace RiskOfBulletstormRewrite.Equipment
         }
     }
 
-    public abstract class EquipmentBase
+    public abstract partial class EquipmentBase
     {
         public const string CooldownDescription = "What is the cooldown in seconds of this equipment?";
         public const string CooldownName = "Cooldown";
-
-        /// <summary>
-        /// Name of the Equipment, for the Config and Internals
-        /// </summary>
+        ///<summary>
+        ///Name of the equipment.
+        ///</summary>
         public abstract string EquipmentName { get; }
 
-        /// <summary>
-        /// Primary Token for language.
-        /// <para>Ex: "GAWK" => used in RBS_GAWK_NAME, RBS_GAWK_DESC, ETC</para>
-        /// </summary>
+        ///<summary>
+        ///Language Token Name responsible for the internals.
+        /// <para>"ITEMNAME" => RBS_ITEMNAME_NAME</para>
+        ///</summary>
         public abstract string EquipmentLangTokenName { get; }
+
+        ///<summary>
+        ///The auto-generated token for the pickup.
+        ///</summary>
+        public virtual string EquipmentPickupToken
+        {
+            get
+            {
+                return LanguageOverrides.LanguageTokenPrefixEquipment + EquipmentLangTokenName + "_PICKUP";
+            }
+        }
 
         /// <summary>
         /// Optional parameters for the Equipment Pickup Token
         /// </summary>
-        public virtual string[] EquipmentPickupDescParams { get; }
+        public virtual object[] EquipmentPickupDescParams { get; }
+
+        ///<summary>
+        ///The auto-generated token for the description.
+        ///</summary>
+        public virtual string EquipmentDescriptionToken
+        {
+            get
+            {
+                return LanguageOverrides.LanguageTokenPrefixEquipment + EquipmentLangTokenName + "_DESCRIPTION";
+            }
+        }
 
         /// <summary>
         /// Optional parameters for the Equipment Description Token
         /// </summary>
-        public virtual string[] EquipmentFullDescriptionParams { get; }
+        public virtual object[] EquipmentFullDescriptionParams { get; }
 
         /// <summary>
         /// Primary Token for language.
@@ -59,19 +81,32 @@ namespace RiskOfBulletstormRewrite.Equipment
         /// </summary>
         public virtual string EquipmentUniqueDescriptionToken { get; }
 
+        ///<summary>
+        ///The equipment's pickup model.
+        ///</summary>
         public abstract GameObject EquipmentModel { get; }
+
+        ///<summary>
+        ///The equipment's icon sprite.
+        ///</summary>
         public abstract Sprite EquipmentIcon { get; }
 
         public virtual bool AppearsInSinglePlayer { get; } = true;
 
         public virtual bool AppearsInMultiPlayer { get; } = true;
 
+        /// <summary>
+        /// Whether or not this equipment is accessible in the droplist. Consider enabling for consumed items.
+        /// </summary>
         public virtual bool CanDrop { get; } = true;
 
         public virtual float Cooldown { get; } = 60f;
 
         public virtual bool EnigmaCompatible { get; } = true;
 
+        /// <summary>
+        /// Enables its pickupdisplay to use boss particles.
+        /// </summary>
         public virtual bool IsBoss { get; } = false;
 
         public virtual bool IsLunar { get; } = false;
@@ -88,38 +123,22 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         /// <summary>
         /// The internal name of its parent equipment, so that when its Parent is disabled, so too will it as a child.
-        /// <para>Ex: AppleConsumed has its ParentEquipmentName as "Apple". AppleConsumed loses its ability to be disabled and requires
-        /// Apple to be disabled.</para>
+        /// <para>Ex: AppleConsumed has its ParentEquipmentName as "Apple". AppleConsumed loses its ability to be disabled and requires Apple to be disabled.</para>
         /// </summary>
         public virtual string ParentEquipmentName { get; } = null;
 
         public EquipmentDef EquipmentDef;
         public GameObject ItemBodyModelPrefab;
 
-        public string ConfigCategory
-        {
-            get
-            {
-                return "Equipment: " + EquipmentName;
-            }
-        }
+        public abstract ItemDisplayRuleDict CreateItemDisplayRules();
 
-        public virtual string EquipmentPickupToken
-        {
-            get
-            {
-                return "RISKOFBULLETSTORM_EQUIPMENT_" + EquipmentLangTokenName + "_PICKUP";
-            }
-        }
+        public virtual UnlockableDef UnlockableDef { get; set; } = null;
+        public virtual bool UnlockableDefAutoSetup { get; } = false;
 
-        public virtual string EquipmentDescriptionToken
-        {
-            get
-            {
-                return "RISKOFBULLETSTORM_EQUIPMENT_" + EquipmentLangTokenName + "_DESCRIPTION";
-            }
-        }
-
+        ///<summary>
+        ///The required ExpansionDef for this artifact.
+        ///</summary>
+        public virtual ExpansionDef ExpansionDef { get; }
         public string GetChance(ConfigEntry<float> configEntry)
         {
             return ToPct(configEntry.Value);
@@ -129,8 +148,6 @@ namespace RiskOfBulletstormRewrite.Equipment
         {
             return (value * 100).ToString();
         }
-
-        public abstract ItemDisplayRuleDict CreateItemDisplayRules();
 
         /// <summary>
         /// This method structures your code execution of this class. An example implementation inside of it would be:
@@ -142,20 +159,24 @@ namespace RiskOfBulletstormRewrite.Equipment
         /// <para>P.S. CreateItemDisplayRules(); does not have to be called in this, as it already gets called in CreateEquipment();</para>
         /// </summary>
         /// <param name="config">The config file that will be passed into this from the main class.</param>
-        public abstract void Init(ConfigFile config);
+        public virtual void Init(ConfigFile config)
+        {
+            CreateConfig(config);
+            CreateLang();
+            CreateEquipment();
+            Hooks();
+        }
+
+        public string ConfigCategory
+        {
+            get
+            {
+                return "Equipment: " + EquipmentName;
+            }
+        }
 
         protected virtual void CreateConfig(ConfigFile config)
         { }
-
-        public virtual UnlockableDef UnlockableDef { get; set; } = null;
-
-        public virtual UnlockableDef CreateUnlockableDef()
-        {
-            UnlockableDef unlockableDef = ScriptableObject.CreateInstance<UnlockableDef>();
-            unlockableDef.achievementIcon = LoadSprite();
-            unlockableDef.cachedName = $"RiskOfBulletstorm.Equipment.{EquipmentLangTokenName}";
-            return unlockableDef;
-        }
 
         /// <summary>
         /// Take care to call base.CreateLang()!
@@ -200,7 +221,7 @@ namespace RiskOfBulletstormRewrite.Equipment
 
         protected void CreateEquipment()
         {
-            var prefix = "RISKOFBULLETSTORM_EQUIPMENT_";
+            var prefix = LanguageOverrides.LanguageTokenPrefixEquipment;
             EquipmentDef = ScriptableObject.CreateInstance<EquipmentDef>();
             EquipmentDef.name = prefix + EquipmentLangTokenName;
             EquipmentDef.nameToken = prefix + EquipmentLangTokenName + "_NAME";
@@ -217,60 +238,40 @@ namespace RiskOfBulletstormRewrite.Equipment
             EquipmentDef.isBoss = IsBoss;
             EquipmentDef.isLunar = IsLunar;
             EquipmentDef.canBeRandomlyTriggered = CanBeRandomlyTriggered;
+            if (ExpansionDef)
+            {
+                EquipmentDef.requiredExpansion = ExpansionDef;
+            }
 
             if (IsLunar)
             {
                 EquipmentDef.colorIndex = ColorCatalog.ColorIndex.LunarItem;
             }
 
-            UnlockableDef = CreateUnlockableDef();
+            /*if (UnlockableDefAutoSetup)
+                //UnlockableDef = Assets.CreateUnlockableDef("Equipment." + EquipmentLangTokenName, EquipmentDef.pickupIconSprite);
             if (UnlockableDef != null)
             {
                 ContentAddition.AddUnlockableDef(UnlockableDef);
                 EquipmentDef.unlockableDef = UnlockableDef;
-            }
-            if (!CanBeDroppedByPlayer)
-            {
-            }
-
-            //EquipmentDef.colorIndex
+            }*/
 
             ItemAPI.Add(new CustomEquipment(EquipmentDef, CreateItemDisplayRules()));
             On.RoR2.EquipmentSlot.PerformEquipmentAction += PerformEquipmentAction;
+            if (EquipmentTargetFinderType != TargetFinderType.None)// && TargetingIndicatorPrefabBase)
+            {
+                On.RoR2.EquipmentSlot.UpdateTargets += EquipmentSlot_UpdateTargets;
+            }
         }
 
-        public virtual void DropEquipment(EquipmentSlot equipmentSlot, EquipmentDef equipmentDef)
-        {
-            //Tweaks.DropEquipment(equipmentSlot, equipmentDef);
-        }
-
-        public virtual void ActivateEquipmentOnRandomUse(EquipmentSlot slot)
-        {
-        }
-
-        //runs on server
         private bool PerformEquipmentAction(On.RoR2.EquipmentSlot.orig_PerformEquipmentAction orig, RoR2.EquipmentSlot self, EquipmentDef equipmentDef)
         {
-            /*if (Tweaks.EquipmentCanBeDropped(equipmentDef)
-                )
-            /*    && Tweaks.PlayerCharacterMasterCanSendBodyInput(self, out LocalUser localUser, out Player player, out CameraRigController cameraRigController))
-            {
-                if (player.GetButtonDown(5)) //interact
-                {
-                    Tweaks.DropEquipment(self, equipmentDef);
-                    return true;
-                }
-            }
-            {
-                bool inputCheck = self.inputBank && self.inputBank.interact.down;
-                if (inputCheck)
-                {
-                    DropEquipment(self, equipmentDef);
-                    return false;
-                }
-            }*/
             if (equipmentDef == EquipmentDef)
             {
+                if (EquipmentTargetFinderType != TargetFinderType.None)
+                {
+                    self.UpdateTargets(equipmentDef.equipmentIndex, ShouldAnticipateTarget(self));
+                }
                 return ActivateEquipment(self);
             }
             else
@@ -279,12 +280,29 @@ namespace RiskOfBulletstormRewrite.Equipment
             }
         }
 
-        //runs on server
         protected abstract bool ActivateEquipment(EquipmentSlot slot);
 
-        public virtual void Hooks()
-        { }
+        /*public Sprite LoadEquipmentIcon(string equipmentNameToken = "")
+        {
+            var token = equipmentNameToken == "" ? EquipmentLangTokenName : equipmentNameToken;
+            return Assets.LoadSprite($"tex{token}Icon");
+        }
 
+        public GameObject LoadPickupModel(string equipmentNameToken = "")
+        {
+            var token = equipmentNameToken == "" ? EquipmentLangTokenName : equipmentNameToken;
+            return Assets.LoadObject($"Pickup{token}.prefab");
+        }*/
+
+        /*public Sprite LoadSprite(string spriteName)
+        {
+            return Assets.LoadSprite(spriteName);
+        }
+
+        public GameObject LoadModel(string modelName)
+        {
+            return Assets.LoadObject(modelName);
+        }*/
         public Sprite LoadSprite(string equipmentNameToken = "")
         {
             var token = equipmentNameToken == "" ? EquipmentLangTokenName : equipmentNameToken;
@@ -297,139 +315,7 @@ namespace RiskOfBulletstormRewrite.Equipment
             return Assets.LoadObject($"{token}.prefab");
         }
 
-        public static implicit operator EquipmentBase(Type v)
-        {
-            return (EquipmentBase)System.Activator.CreateInstance(v);
-        }
-
-        #region Targeting Setup
-
-        //Targeting Support
-        public virtual bool UseTargeting { get; } = false;
-
-        public GameObject TargetingIndicatorPrefabBase = null;
-
-        public enum TargetingType
-        {
-            Enemies,
-            Friendlies,
-        }
-
-        public virtual TargetingType TargetingTypeEnum { get; } = TargetingType.Enemies;
-
-        //Based on MysticItem's targeting code.
-        protected void UpdateTargeting(On.RoR2.EquipmentSlot.orig_Update orig, EquipmentSlot self)
-        {
-            orig(self);
-
-            if (self.equipmentIndex == EquipmentDef.equipmentIndex)
-            {
-                var targetingComponent = self.GetComponent<TargetingControllerComponent>();
-                if (!targetingComponent)
-                {
-                    targetingComponent = self.gameObject.AddComponent<TargetingControllerComponent>();
-                    targetingComponent.VisualizerPrefab = TargetingIndicatorPrefabBase;
-                }
-
-                if (self.stock > 0)
-                {
-                    switch (TargetingTypeEnum)
-                    {
-                        case (TargetingType.Enemies):
-                            targetingComponent.ConfigureTargetFinderForEnemies(self);
-                            break;
-
-                        case (TargetingType.Friendlies):
-                            targetingComponent.ConfigureTargetFinderForFriendlies(self);
-                            break;
-                    }
-                }
-                else
-                {
-                    targetingComponent.Invalidate();
-                    targetingComponent.Indicator.active = false;
-                }
-            }
-        }
-
-        public class TargetingControllerComponent : MonoBehaviour
-        {
-            public GameObject TargetObject;
-            public GameObject VisualizerPrefab;
-            public Indicator Indicator;
-            public BullseyeSearch TargetFinder;
-            public Action<BullseyeSearch> AdditionalBullseyeFunctionality = (search) => { };
-
-            public void Awake()
-            {
-                Indicator = new Indicator(gameObject, null);
-            }
-
-            public void OnDestroy()
-            {
-                Invalidate();
-            }
-
-            public void Invalidate()
-            {
-                TargetObject = null;
-                Indicator.targetTransform = null;
-            }
-
-            public void ConfigureTargetFinderBase(EquipmentSlot self)
-            {
-                if (TargetFinder == null) TargetFinder = new BullseyeSearch();
-                TargetFinder.teamMaskFilter = TeamMask.allButNeutral;
-                TargetFinder.teamMaskFilter.RemoveTeam(self.characterBody.teamComponent.teamIndex);
-                TargetFinder.sortMode = BullseyeSearch.SortMode.Angle;
-                TargetFinder.filterByLoS = true;
-                float num;
-                Ray ray = CameraRigController.ModifyAimRayIfApplicable(self.GetAimRay(), self.gameObject, out num);
-                TargetFinder.searchOrigin = ray.origin;
-                TargetFinder.searchDirection = ray.direction;
-                TargetFinder.maxAngleFilter = 10f;
-                TargetFinder.viewer = self.characterBody;
-            }
-
-            public void ConfigureTargetFinderForEnemies(EquipmentSlot self)
-            {
-                ConfigureTargetFinderBase(self);
-                TargetFinder.teamMaskFilter = TeamMask.GetUnprotectedTeams(self.characterBody.teamComponent.teamIndex);
-                TargetFinder.RefreshCandidates();
-                TargetFinder.FilterOutGameObject(self.gameObject);
-                AdditionalBullseyeFunctionality(TargetFinder);
-                PlaceTargetingIndicator(TargetFinder.GetResults());
-            }
-
-            public void ConfigureTargetFinderForFriendlies(EquipmentSlot self)
-            {
-                ConfigureTargetFinderBase(self);
-                TargetFinder.teamMaskFilter = TeamMask.none;
-                TargetFinder.teamMaskFilter.AddTeam(self.characterBody.teamComponent.teamIndex);
-                TargetFinder.RefreshCandidates();
-                TargetFinder.FilterOutGameObject(self.gameObject);
-                AdditionalBullseyeFunctionality(TargetFinder);
-                PlaceTargetingIndicator(TargetFinder.GetResults());
-            }
-
-            public void PlaceTargetingIndicator(IEnumerable<HurtBox> TargetFinderResults)
-            {
-                HurtBox hurtbox = TargetFinderResults.Any() ? TargetFinderResults.First() : null;
-
-                if (hurtbox)
-                {
-                    TargetObject = hurtbox.healthComponent.gameObject;
-                    Indicator.visualizerPrefab = VisualizerPrefab;
-                    Indicator.targetTransform = hurtbox.transform;
-                }
-                else
-                {
-                    Invalidate();
-                }
-                Indicator.active = hurtbox;
-            }
-        }
-
-        #endregion Targeting Setup
+        public virtual void Hooks()
+        { }
     }
 }

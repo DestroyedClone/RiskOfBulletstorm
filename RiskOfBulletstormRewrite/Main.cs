@@ -6,6 +6,7 @@ using RiskOfBulletstormRewrite.Artifact;
 using RiskOfBulletstormRewrite.Controllers;
 using RiskOfBulletstormRewrite.Equipment;
 using RiskOfBulletstormRewrite.Equipment.EliteEquipment;
+using RiskOfBulletstormRewrite.Interactables;
 using RiskOfBulletstormRewrite.Items;
 using RiskOfBulletstormRewrite.MarkdownCreation;
 using RiskOfBulletstormRewrite.Modules;
@@ -46,7 +47,7 @@ namespace RiskOfBulletstormRewrite
 
         public static PluginInfo pluginInfo;
 
-        public static readonly bool enableDebug = true;
+        public static readonly bool enableDebug = false;
 
         public void Awake()
         {
@@ -250,6 +251,13 @@ namespace RiskOfBulletstormRewrite
                 ControllerBase monsterBase = (ControllerBase)System.Activator.CreateInstance(monsterType);
                 //monsterBase.Init(Config);
             }*/
+            var InteractableTypes = Assembly.GetExecutingAssembly().GetTypes().Where(type => !type.IsAbstract && type.IsSubclassOf(typeof(InteractableBase)));
+
+            foreach (var interactableType in InteractableTypes)
+            {
+                InteractableBase interactableBase = (InteractableBase)System.Activator.CreateInstance(interactableType);
+                interactableBase.Init(Config);
+            }
         }
 
         #region Validators
