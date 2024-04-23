@@ -3,8 +3,14 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using RoR2;
+using RoR2.Skills;
 using RiskOfBulletstormRewrite.Utils;
 using System.Reflection;
+using RiskOfBulletstormRewrite.Modules;
+using R2API;
+using BepInEx.Configuration;
+using System.Diagnostics;
+using System.Linq;
 
 namespace RiskOfBulletstormRewrite.Characters
 {
@@ -24,190 +30,188 @@ namespace RiskOfBulletstormRewrite.Characters
     {
         public abstract string CharacterName { get; }
         public abstract string CharacterLangTokenName { get; }
+        public virtual string CharacterNameToken
+        {
+            get
+            {
+                return LanguageOverrides.LanguageTokenPrefix + CharacterLangTokenName + "_NAME";
+            }
+        }
+        public virtual string CharacterSubtitleToken
+        {
+            get
+            {
+                return LanguageOverrides.LanguageTokenPrefix + CharacterLangTokenName + "_SUBTITLE";
+            }
+        }
+        public virtual string CharacterDescriptionToken
+        {
+            get
+            {
+                return LanguageOverrides.LanguageTokenPrefix + CharacterLangTokenName + "_DESCRIPTION";
+            }
+        }
+        public virtual string CharacterLoreToken
+        {
+            get
+            {
+                return LanguageOverrides.LanguageTokenPrefix + CharacterLangTokenName + "_LORE";
+            }
+        }
         public abstract Sprite CharacterIcon { get; }
-        public abstract Type characterMainState { get; }
-        public virtual Type characterSpawnState { get; }
-        public virtual GameObject bodyPrefab { get; set; }
-        public virtual CharacterModel characterBodyModel { get; set; }
+        public virtual GameObject BodyPrefab { get; set; }
+        public virtual GameObject MasterPrefab { get; set; }
+        public virtual SkillLocator SkillLocator { get; set; }
+        public virtual string ConfigCategory { get; set; }
+
+        public virtual List<SkillDef> PrimarySkillDefs { get; set; } = new List<SkillDef>();
+        public virtual List<SkillDef> SecondarySkillDefs { get; set; } = new List<SkillDef>();
+        public virtual List<SkillDef> UtilitySkillDefs { get; set; } = new List<SkillDef>();
+        public virtual List<SkillDef> SpecialSkillDefs { get; set; } = new List<SkillDef>();
+        public virtual List<SkillFamily> SkillFamilies { get; set; } = new List<SkillFamily>();
 
         //public abstract ItemDisplaysBase itemDisplays { get; }
 
-        public virtual void Init()
+
+        public virtual void Init(ConfigFile config)
         {
-            InitializeCharacter();
-        }
-        public virtual void InitializeCharacter()
-        {
-            InitializeCharacterBodyAndModel();
+            InitializeCharacterBody();
             InitializeCharacterMaster();
 
             InitializeEntityStateMachine();
             InitializeSkills();
 
-            InitializeHitboxes();
-            InitializeHurtboxes(bodyPrefab.GetComponent<HealthComponent>());
-
-            InitializeSkins();
-            InitializeItemDisplays();
-
-            //survivor?
-            InitializeDoppelganger();
+            AddContentManagement();
         }
 
-        protected virtual void InitializeCharacterBodyAndModel()
+        public virtual void AddContentManagement()
         {
-            bodyPrefab = Modules.Prefabs.CreateBodyPrefab(characterName + "Body", "mdl" + characterName, bodyInfo);
-            InitializeCharacterModel();
-        }
-        protected virtual void InitializeCharacterModel()
-        {
-            characterBodyModel = Modules.Prefabs.SetupCharacterModel(bodyPrefab, customRendererInfos);
-        }
-
-        protected virtual void InitializeCharacterMaster() { }
-        protected virtual void InitializeEntityStateMachine()
-        {
-            bodyPrefab.GetComponent<EntityStateMachine>().mainStateType = new EntityStates.SerializableEntityStateType(characterMainState);
-            Modules.Content.AddEntityState(characterMainState);
-            if (characterSpawnState != null)
-            {
-                bodyPrefab.GetComponent<EntityStateMachine>().initialStateType = new EntityStates.SerializableEntityStateType(characterSpawnState);
-                Modules.Content.AddEntityState(characterSpawnState);
-            }
-        }
-
-        public abstract void InitializeSkills();
-
-        public virtual void InitializeHitboxes() { }
-
-        public virtual void InitializeHurtboxes(HealthComponent healthComponent)
-        {
-            Modules.Prefabs.SetupHurtBoxes(healthComponent);
-        }
-
-        public virtual void InitializeSkins() { }
-
-        public virtual void InitializeDoppelganger()
-        {
-            Modules.Prefabs.CreateGenericDoppelganger(instance.bodyPrefab, characterName + "MonsterMaster", "Merc");
-        }
-
-        public virtual void InitializeItemDisplays()
-        {
-
-            ItemDisplayRuleSet itemDisplayRuleSet = ScriptableObject.CreateInstance<ItemDisplayRuleSet>();
-            itemDisplayRuleSet.name = "idrs" + characterName;
-
-            characterBodyModel.itemDisplayRuleSet = itemDisplayRuleSet;
-        }
-
-        public void SetItemDisplays()
-        {
-            if (itemDisplays != null)
-            {
-                itemDisplays.SetItemDIsplays(characterBodyModel.itemDisplayRuleSet);
-            }
-        }
-
-    }
-
-    // for simplifying characterbody creation
-    public class BodyInfo
-    {
-        public string bodyName = "";
-        public string bodyNameToken = "";
-        public string subtitleNameToken = "";
-        /// <summary>
-        /// body prefab you're cloning for your character- commando is the safest
-        /// </summary>
-        public string bodyNameToClone = "Commando";
-
-        public Color bodyColor = Color.grey;
-
-        public Texture characterPortrait = null;
-        public float sortPosition = 69f;
-
-        public GameObject crosshair = null;
-        public GameObject podPrefab = null;
-
-        //stats
-        public float maxHealth = 100f;
-        public float healthRegen = 1f;
-        public float armor = 0f;
-        /// <summary>
-        /// base shield is a thing apparently. neat
-        /// </summary>
-        public float shield = 0f;
-
-        public float damage = 12f;
-        public float attackSpeed = 1f;
-        public float crit = 1f;
-
-        public float moveSpeed = 7f;
-        public float jumpPower = 15f;
-
-        //growth
-        public bool autoCalculateLevelStats = true;
-
-        public float healthGrowth = 30f;
-        public float regenGrowth = 0.2f;
-        public float shieldGrowth = 0f;
-        public float armorGrowth = 0f;
-
-        public float damageGrowth = 2.4f;
-        public float attackSpeedGrowth = 0f;
-        public float critGrowth = 0f;
-
-        public float moveSpeedGrowth = 0f;
-        public float jumpPowerGrowth = 0f;// jump power per level exists for some reason
-
-        //other
-        public float acceleration = 80f;
-        public int jumpCount = 1;
-
-        //camera
-        public Vector3 modelBasePosition = new Vector3(0f, -0.92f, 0f);
-        public Vector3 cameraPivotPosition = new Vector3(0f, 1.6f, 0f);
-        public Vector3 aimOriginPosition = new Vector3(0f, 2f, 0f);
-
-        public float cameraParamsVerticalOffset = 1.2f;
-        public float cameraParamsDepth = -12;
-
-        private CharacterCameraParams _cameraParams;
-        public CharacterCameraParams cameraParams
-        {
-            get
-            {
-                if (_cameraParams == null)
+            ContentAddition.AddBody(BodyPrefab);
+            ContentAddition.AddMaster(MasterPrefab);
+            foreach (var skills in new List<SkillDef>[] { PrimarySkillDefs, SecondarySkillDefs, UtilitySkillDefs, SpecialSkillDefs })
+                foreach (var skill in skills)
                 {
-                    _cameraParams = ScriptableObject.CreateInstance<CharacterCameraParams>();
-                    _cameraParams.data.minPitch = -70;
-                    _cameraParams.data.maxPitch = 70;
-                    _cameraParams.data.wallCushion = 0.1f;
-                    _cameraParams.data.pivotVerticalOffset = cameraParamsVerticalOffset;
-                    _cameraParams.data.idealLocalCameraPos = new Vector3(0, 0, cameraParamsDepth);
+                    ContentAddition.AddSkillDef(skill);
                 }
-                return _cameraParams;
-            }
-            set => _cameraParams = value;
-        }
-
-        public float SurvivorHeightToSet
-        {
-            //todo dynamically set good camera params based on a height that you want
-            set
+            foreach (var skillFamily in SkillFamilies)
             {
-                float height = value;
+                ContentAddition.AddSkillFamily(skillFamily);
             }
         }
-    }
 
-    // for simplifying rendererinfo creation
-    public class CustomRendererInfo
-    {
-        public string childName;
-        public Material material = null;
-        public bool ignoreOverlays = false;
-        public bool dontHotpoo = false;
+        protected virtual void InitializeCharacterBody() { }
+        protected virtual void InitializeCharacterMaster()
+        {
+            if (!MasterPrefab) return;
+            
+            MasterPrefab.GetComponent<CharacterMaster>().bodyPrefab = BodyPrefab;
+        }
+        protected virtual void InitializeEntityStateMachine() { }
+        public virtual void InitializeSkills()
+        {
+            SetupPassive();
+            SetupPrimary();
+            SetupSecondary();
+            SetupUtility();
+            SetupSpecial();
+        }
+
+
+        public virtual void SetupDefaultLoadout(int primaryIndex, int secondaryIndex, int utilityIndex, int specialIndex)
+        {
+            bool Check(int index, List<SkillDef> list)
+            {
+                if (index == -1)
+                {
+                    return false;
+                }
+                else
+                {
+                    if (list.Count > 0)
+                    {
+                        if (list.Count - 1 < index)
+                        {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+            }
+
+            if (Check(primaryIndex, PrimarySkillDefs)) SkillLocator.primary.AssignSkill(PrimarySkillDefs[primaryIndex]);
+            if (Check(secondaryIndex, SecondarySkillDefs)) SkillLocator.secondary.AssignSkill(SecondarySkillDefs[secondaryIndex]);
+            if (Check(utilityIndex, UtilitySkillDefs)) SkillLocator.utility.AssignSkill(UtilitySkillDefs[utilityIndex]);
+            if (Check(specialIndex, SpecialSkillDefs)) SkillLocator.special.AssignSkill(SpecialSkillDefs[specialIndex]);
+        }
+
+        public virtual void SetupPassive()
+        {
+            //Setup skills add to List
+            //Then call base
+            //
+        }
+
+        public void CreateAndSetNewSkillFamily(GenericSkill skillSlot, string slotName)
+        {
+            if (!skillSlot)
+            {
+                UnityEngine.Debug.LogError($"no skillSlot!");
+            }
+            SkillFamily skillFamily = ScriptableObject.CreateInstance<SkillFamily>();
+            (skillFamily as ScriptableObject).name = LanguageOverrides.LanguageTokenPrefix + CharacterLangTokenName + "_" + slotName + "_SKILLFAMILY";
+            skillSlot._skillFamily = skillFamily;
+            skillFamily.variants = new SkillFamily.Variant[0];
+            SkillFamilies.Add(skillFamily);
+        }
+
+        private void AddSkillToSkillFamily(SkillDef skillDef, SkillFamily skillFamily)
+        {
+            HG.ArrayUtils.ArrayAppend(ref Main.ContentPack.entityStateTypes, skillDef.activationState);
+
+            Array.Resize(ref skillFamily.variants, skillFamily.variants.Length + 1);
+            skillFamily.variants[skillFamily.variants.Length - 1] = new SkillFamily.Variant
+            {
+                skillDef = skillDef,
+                unlockableDef = null,
+                viewableNode = new ViewablesCatalog.Node(skillDef.skillNameToken, false, null),
+            };
+            if (!skillFamily.defaultSkillDef)
+                skillFamily.defaultVariantIndex = 0;
+        }
+
+        private void AddSkillsToSkillFamily(List<SkillDef> skillDefs, SkillFamily skillFamily)
+        {
+            if (!skillFamily) return;
+            if (skillDefs.Count == 0) return;
+            foreach (var skillDef in skillDefs)
+            {
+                AddSkillToSkillFamily(skillDef, skillFamily);
+            }
+        }
+
+        public virtual void SetupPrimary()
+        {
+            if (SkillLocator.primary)
+            AddSkillsToSkillFamily(PrimarySkillDefs, SkillLocator.primary.skillFamily);
+        }
+
+        public virtual void SetupSecondary()
+        {
+            if (SkillLocator.secondary)
+                AddSkillsToSkillFamily(SecondarySkillDefs, SkillLocator.secondary.skillFamily);
+        }
+
+        public virtual void SetupUtility()
+        {
+            if (SkillLocator.utility)
+                AddSkillsToSkillFamily(UtilitySkillDefs, SkillLocator.utility.skillFamily);
+        }
+
+        public virtual void SetupSpecial()
+        {
+            if (SkillLocator.special)
+                AddSkillsToSkillFamily(SpecialSkillDefs, SkillLocator.special.skillFamily);
+        }
+
     }
 }

@@ -7,15 +7,18 @@
 
   <ItemGroup>
     <Compile Remove="Achievements\**" />
-    <Compile Remove="Characters\**" />
+    <Compile Remove="Characters\Enemies\WeirdEgg\**" />
+    <Compile Remove="Characters\Survivors\**" />
     <Compile Remove="Items\Boss\MasterRounds\**" />
     <Compile Remove="Items\Boss\PastKillingBullet\**" />
     <EmbeddedResource Remove="Achievements\**" />
-    <EmbeddedResource Remove="Characters\**" />
+    <EmbeddedResource Remove="Characters\Enemies\WeirdEgg\**" />
+    <EmbeddedResource Remove="Characters\Survivors\**" />
     <EmbeddedResource Remove="Items\Boss\MasterRounds\**" />
     <EmbeddedResource Remove="Items\Boss\PastKillingBullet\**" />
     <None Remove="Achievements\**" />
-    <None Remove="Characters\**" />
+    <None Remove="Characters\Enemies\WeirdEgg\**" />
+    <None Remove="Characters\Survivors\**" />
     <None Remove="Items\Boss\MasterRounds\**" />
     <None Remove="Items\Boss\PastKillingBullet\**" />
   </ItemGroup>
@@ -29,6 +32,9 @@
     <Compile Remove="Artifact\ArtifactGungeonSpoof.cs" />
     <Compile Remove="Artifact\ArtifactPitLordPlayer.cs" />
     <Compile Remove="Artifact\ExampleArtifact.cs" />
+    <Compile Remove="Characters\Enemies\Lord of the Jammed\LOTJSlash.cs" />
+    <Compile Remove="Characters\Enemies\MonsterBase.cs" />
+    <Compile Remove="Characters\SurvivorBase.cs" />
     <Compile Remove="Controllers\BabyMimicBodyBehavior.cs" />
     <Compile Remove="Controllers\BulletQuestController.cs" />
     <Compile Remove="Controllers\LimitedPickupsController.cs" />

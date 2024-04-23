@@ -1,6 +1,8 @@
 ﻿using RiskOfBulletstormRewrite.Items;
 using RoR2;
+using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
+using static RiskOfBulletstormRewrite.Items.LordOfTheJammedIdentifierItem;
 
 namespace RiskOfBulletstormRewrite.Controllers
 {
@@ -12,12 +14,15 @@ namespace RiskOfBulletstormRewrite.Controllers
 
         public ItemDef LOTJItemDef => LordOfTheJammedTargetingItem.instance.ItemDef;
         public int teamwideCurseCount = 0;
+        //https://github.com/Moffein/BazaarLimit/blob/21b1342309b51cdf560460fd0d11a6ee79ca4a7f/BazaarLimit/Class1.cs#L26
+        private static readonly SceneDef bazaarSceneDef = Addressables.LoadAssetAsync<SceneDef>("RoR2/Base/bazaar/bazaar.asset").WaitForCompletion();
 
         public override void Hooks()
         {
             Inventory.onInventoryChangedGlobal += GiveLordOfTheJammedItemIfInventoryHasMaxCurse;
             Inventory.onInventoryChangedGlobal += UpdateTeamCurseCount;
             On.RoR2.CombatDirector.OnEnable += CombatDirector_OnEnable;
+            On.EntityStates.NewtMonster.SpawnState.OnEnter += SpawnState_OnEnter;
         }
 
         private void UpdateTeamCurseCount(Inventory _)
@@ -45,6 +50,18 @@ namespace RiskOfBulletstormRewrite.Controllers
                 inventory.GiveItem(LOTJItemDef, 1);
                 GenericPickupController.SendPickupMessage(master, PickupCatalog.FindPickupIndex(LOTJItemDef.itemIndex));
             }
+        }
+
+        private void SpawnState_OnEnter(On.EntityStates.NewtMonster.SpawnState.orig_OnEnter orig, EntityStates.NewtMonster.SpawnState self)
+        {
+            if (NetworkServer.active && SceneCatalog.GetSceneDefForCurrentScene() == bazaarSceneDef)
+            {
+                if (!self.outer.GetComponent<NewtKickFromShopIfLOTJBehaviour>())
+                {
+                    self.outer.gameObject.AddComponent<NewtKickFromShopIfLOTJBehaviour>();
+                }
+            }
+            orig(self);
         }
     }
 }

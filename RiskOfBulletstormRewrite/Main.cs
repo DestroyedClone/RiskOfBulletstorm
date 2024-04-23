@@ -3,6 +3,8 @@ using HarmonyLib;
 using R2API;
 using R2API.Utils;
 using RiskOfBulletstormRewrite.Artifact;
+using RiskOfBulletstormRewrite.Characters;
+using RiskOfBulletstormRewrite.Characters.Enemies;
 using RiskOfBulletstormRewrite.Controllers;
 using RiskOfBulletstormRewrite.Equipment;
 using RiskOfBulletstormRewrite.Equipment.EliteEquipment;
@@ -59,6 +61,7 @@ namespace RiskOfBulletstormRewrite
             _logger = Logger;
             pluginInfo = Info;
             LanguageOverrides.config = Config;
+            Utils.AvailabilityManager.Initialize();
 
             LocationOfProgram = Path.GetDirectoryName(Info.Location);
 
@@ -79,6 +82,7 @@ namespace RiskOfBulletstormRewrite
                         pickupIndicesThatCantBePickedUp.Add(pickupIndex);
                     }
                 }
+                Logger.LogMessage(LordofTheJammedMonster.Instance.BodyPrefab.name);
             };
 
             ModSupport.CheckForModSupport();
@@ -258,6 +262,17 @@ namespace RiskOfBulletstormRewrite
                 InteractableBase interactableBase = (InteractableBase)System.Activator.CreateInstance(interactableType);
                 interactableBase.Init(Config);
             }
+
+
+            var CharacterTypes = Assembly.GetExecutingAssembly().GetTypes().Where(type => !type.IsAbstract && type.IsSubclassOf(typeof(CharacterBase)));
+
+            foreach (var characterType in CharacterTypes)
+            {
+                CharacterBase characterBase = (CharacterBase)System.Activator.CreateInstance(characterType);
+                characterBase.Init(Config);
+            }
+
+
         }
 
         #region Validators

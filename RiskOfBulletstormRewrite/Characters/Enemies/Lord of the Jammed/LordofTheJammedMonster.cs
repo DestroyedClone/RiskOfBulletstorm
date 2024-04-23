@@ -1,100 +1,268 @@
 ﻿using EntityStates;
 using R2API;
-using RiskOfBulletstormRewrite.Characters.Enemies;
+//using RiskOfBulletstormRewrite.Characters.Enemies;
+using RiskOfBulletstormRewrite.Characters;
+using RiskOfBulletstormRewrite.Modules;
 using RoR2;
 using RoR2.Skills;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using RiskOfBulletstormRewrite.Characters.Enemies.Lord_of_the_Jammed;
+using RoR2.CharacterAI;
+using System.Linq;
+using UnityEngine.Networking;
+using RiskOfBulletstormRewrite.GameplayAdditions;
+using RoR2.Projectile;
 
-namespace RiskOfBulletstormRewrite.Enemies
+namespace RiskOfBulletstormRewrite.Characters.Enemies
 {
-    public class LordofTheJammedMonster : MonsterBase<LordofTheJammedMonster>
+    public class LordofTheJammedMonster : CharacterBase<LordofTheJammedMonster>
     {
-        public static GameObject characterPrefab;
-        public static GameObject masterPrefab;
-
         public static SkillDef primaryReplacement;
         public static SkillDef secondaryReplacement;
         public static SkillDef utilityReplacement;
         public static SkillDef specialReplacement;
 
-        public override string MonsterName => "LordJammed";
+        public override string CharacterName => "LordJammed";
 
-        public override string MonsterLangTokenName => "LORDOFTHEJAMMED";
-        public override string MonsterLangTokenSubtitle => "LORDOFTHEJAMMED_BODY_SUBTITLE";
+        public override string CharacterLangTokenName => "LORDOFTHEJAMMED";
 
-        public override GameObject CreateBodyPrefab()
+        public override Sprite CharacterIcon => Assets.NullSprite;
+
+        protected override void InitializeCharacterBody()
         {
-            characterPrefab = PrefabAPI.InstantiateClone(Resources.Load<GameObject>("prefabs/characterbodies/JellyfishBody"), MonsterName + "Body", true);
-            ContentAddition.AddBody(characterPrefab);
-            CharacterBody bodyComponent = characterPrefab.GetComponent<CharacterBody>();
+            BodyPrefab = PrefabAPI.InstantiateClone(UnityEngine.AddressableAssets.Addressables.LoadAssetAsync<GameObject>("RoR2/Junk/BrotherGlass/BrotherGlassBody.prefab").WaitForCompletion(), "RBS_LordOfTheJammedBody", true);
+            CharacterBody bodyComponent = BodyPrefab.GetComponent<CharacterBody>();
             //bodyComponent.bodyIndex = -1; //def: 19
-            bodyComponent.baseNameToken = TokenPrefix + MonsterLangTokenName + "_BODY_NAME"; // name token
-            bodyComponent.subtitleNameToken = TokenPrefix + MonsterLangTokenName + "_BODY_SUBTITLE"; // subtitle token- used for umbras
-            //bodyComponent.bodyFlags = CharacterBody.BodyFlags.;
+            bodyComponent.baseNameToken = CharacterNameToken; // name token
+            bodyComponent.subtitleNameToken = CharacterSubtitleToken; // subtitle token- used for umbras
+            bodyComponent.bodyFlags =
+                CharacterBody.BodyFlags.ImmuneToGoo
+                | CharacterBody.BodyFlags.IgnoreFallDamage
+                | CharacterBody.BodyFlags.ImmuneToVoidDeath
+                | CharacterBody.BodyFlags.OverheatImmune;
             //bodyComponent.mainRootSpeed = 0;
-            bodyComponent.baseMaxHealth = 10000;
-            bodyComponent.levelMaxHealth = 10000;
-            bodyComponent.baseRegen = 1000f;
-            bodyComponent.levelRegen = 1000f;
+            bodyComponent.baseMaxHealth = 9999;
+            bodyComponent.levelMaxHealth = 0;
+            bodyComponent.baseRegen = 9999f;
+            bodyComponent.levelRegen = 0f;
             bodyComponent.baseMaxShield = 0;
             bodyComponent.levelMaxShield = 0;
-            //bodyComponent.baseMoveSpeed = 12;
+            bodyComponent.baseMoveSpeed = 12;
             bodyComponent.levelMoveSpeed = 0;
             //bodyComponent.baseAcceleration = 80;
             //bodyComponent.baseJumpPower = 0;
-            bodyComponent.levelJumpPower = 0;
+            //bodyComponent.levelJumpPower = 0;
             //bodyComponent.baseDamage = 15;
             //bodyComponent.levelDamage = 1.5f;
             bodyComponent.baseAttackSpeed = 1;
-            bodyComponent.levelAttackSpeed = 0;
-            bodyComponent.baseCrit = 0;
+            //bodyComponent.levelAttackSpeed = 0;
+            //bodyComponent.baseCrit = 0;
             //bodyComponent.levelCrit = 0;
             bodyComponent.baseArmor = 10000; // 0.0099 damage multiplier
             bodyComponent.levelArmor = 0;
             bodyComponent.baseJumpCount = 0;
-            bodyComponent.sprintingSpeedMultiplier = 1.45f;
+            bodyComponent.sprintingSpeedMultiplier = 1f;
 
-            HealthComponent healthComponent = characterPrefab.GetComponent<HealthComponent>();
+            HealthComponent healthComponent = BodyPrefab.GetComponent<HealthComponent>();
             healthComponent.dontShowHealthbar = true;
-            healthComponent.godMode = true;
+        }
 
-            characterPrefab.GetComponent<SphereCollider>().enabled = false;
-            return characterPrefab;
+        [SystemInitializer(typeof(BuffCatalog), typeof(BodyCatalog))]
+        public static void AddBuffs()
+        {
+            var bodyPrefab = LordofTheJammedMonster.Instance.BodyPrefab;
+            var body = bodyPrefab.GetComponent<CharacterBody>();
         }
 
         public override void SetupPassive()
         {
-            MonsterSkillLocator.passiveSkill.skillNameToken = TokenPrefix + "PASSIVE_NAME";
-            MonsterSkillLocator.passiveSkill.skillDescriptionToken = TokenPrefix + "PASSIVE_DESC";
+            SkillLocator = BodyPrefab.GetComponent<SkillLocator>();
+            SkillLocator.passiveSkill = new SkillLocator.PassiveSkill
+            {
+                skillNameToken = "RISKOFBULLETSTORM_LORDOFTHEJAMMED_PASSIVE_NAME",
+                skillDescriptionToken = "RISKOFBULLETSTORM_LORDOFTHEJAMMED_PASSIVE_DESC",
+                enabled = true,
+            };
             base.SetupPassive();
         }
 
-        public override void SetupSecondary()
+        public override void SetupUtility()
         {
-            CreateAndSetNewSkillFamily(MonsterSkillLocator.secondary, "SECONDARY");
+            SkillLocator.utility.enabled = false;
+        }
 
-            var mySkillDef = ScriptableObject.CreateInstance<SkillDef>();
-            mySkillDef.activationState = new SerializableEntityStateType(typeof(LOTJSlash));
-            mySkillDef.activationStateMachineName = "Weapon";
-            mySkillDef.baseMaxStock = 1;
-            mySkillDef.baseRechargeInterval = 3;
-            mySkillDef.beginSkillCooldownOnSkillEnd = false;
-            mySkillDef.canceledFromSprinting = false;
-            mySkillDef.fullRestockOnAssign = true;
-            mySkillDef.interruptPriority = InterruptPriority.PrioritySkill;
-            mySkillDef.isCombatSkill = true;
-            mySkillDef.mustKeyPress = true;
-            mySkillDef.rechargeStock = 1;
-            mySkillDef.requiredStock = 1;
-            mySkillDef.stockToConsume = 1;
-            //mySkillDef.icon = SurvivorSkillLocator.utility.skillDef.icon;
-            mySkillDef.skillName = TokenPrefix + "_SECONDARY";
-            mySkillDef.skillNameToken = $"{mySkillDef.skillName}_NAME";
-            mySkillDef.skillDescriptionToken = $"{mySkillDef.skillName}_DESC";
-            (mySkillDef as ScriptableObject).name = mySkillDef.skillName;
-            mySkillDef.keywordTokens = new string[] { };
-            SecondarySkillDefs.Add(mySkillDef);
-            base.SetupSecondary();
+        protected override void InitializeEntityStateMachine()
+        {
+            ContentAddition.AddEntityState<LOTJSpawnState>(out bool _);
+
+            foreach (EntityStateMachine entityStateMachine in BodyPrefab.GetComponents<EntityStateMachine>())
+            {
+                if (entityStateMachine.customName == "Body")
+                {
+                    entityStateMachine.initialStateType = new SerializableEntityStateType(typeof(LOTJSpawnState));
+                    return;
+                }
+            }
+            base.InitializeEntityStateMachine();
+        }
+
+        protected override void InitializeCharacterMaster()
+        {
+            MasterPrefab = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/Junk/BrotherGlass/BrotherGlassMaster.prefab").WaitForCompletion(), "RBS_LordOfTheJammedMaster", true);
+
+            MasterPrefab.AddComponent<LordOfTheJammedMasterBehaviour>();
+            MasterPrefab.AddComponent<LordOfTheJammedController>().lordMaster = MasterPrefab.GetComponent<CharacterMaster>();
+
+            var skillDrivers = MasterPrefab.GetComponents<AISkillDriver>();
+            foreach (var skillDriver in skillDrivers)
+            {
+                if (skillDriver.customName == "SprintBash")
+                {
+                    skillDriver.maxDistance = 50;
+                    //skillDriver.skillSlot = SkillSlot.Secondary;
+                    //skillDriver.buttonPressType = AISkillDriver.ButtonPressType.TapContinuous;
+                }
+                else if (skillDriver.customName == "Walk After Target Off Nodegraph")
+                {
+                    skillDriver.enabled = true;
+                    skillDriver.maxDistance = Mathf.Infinity;
+                }
+                    
+                else
+                    skillDriver.enabled = false;
+            }
+
+
+            base.InitializeCharacterMaster();
+        }
+
+        public class LordOfTheJammedMasterBehaviour : MonoBehaviour
+        {
+            public GameObject jetpack;
+            public CharacterMaster characterMaster;
+            public void Start()
+            {
+                if (!NetworkServer.active) return;
+
+                var inv = gameObject.GetComponent<Inventory>();
+                inv.GiveItem(RoR2Content.Items.TeleportWhenOob);
+                inv.GiveItem(RoR2Content.Items.Ghost);
+                inv.GiveItem(RoR2Content.Items.Syringe, 30);
+                inv.GiveItem(Items.LordOfTheJammedIdentifierItem.instance.ItemDef);
+
+                characterMaster = GetComponent<CharacterMaster>();
+                characterMaster.onBodyStart += LordOfTheJammedMasterBehaviour_onBodyStart;
+                LordOfTheJammedMasterBehaviour_onBodyStart(characterMaster.GetBody());
+            }
+
+            private void LordOfTheJammedMasterBehaviour_onBodyStart(CharacterBody body)
+            {
+                if (jetpack) return;
+                if (!body) return;
+
+                jetpack = UnityEngine.Object.Instantiate<GameObject>(LegacyResourcesAPI.Load<GameObject>("Prefabs/NetworkedObjects/BodyAttachments/JetpackController"));
+                jetpack.GetComponent<JetpackController>().duration = Mathf.Infinity;
+                jetpack.GetComponent<NetworkedBodyAttachment>().AttachToGameObjectAndSpawn(body.gameObject, null);
+            }
+        }
+
+        public class LordOfTheJammedController : MonoBehaviour
+        {
+            private CharacterBody lordBody;
+            public CharacterMaster lordMaster;
+
+            public static GameObject ProjectilePrefab => Assets.LoadAddressable<GameObject>("RoR2/DLC1/VoidBarnacle/VoidBarnacleBullet.prefab");
+            private const float damageCoefficient = 1f;
+            private const int verticalIntensity = 2;
+            private const float horizontalIntensity = 1f;
+
+            public bool subscribed = false;
+
+            public void OnEnable()
+            {
+                InstanceTracker.Add(this);
+            }
+
+            public void OnDisable()
+            {
+                InstanceTracker.Remove(this);
+            }
+
+            public void Start()
+            {
+                if (!lordMaster)
+                {
+                    enabled = false;
+                    return;
+                }
+
+                lordBody = lordMaster.GetBody();
+                if (lordBody && !subscribed)
+                {
+                    lordMaster.onBodyStart += LordMaster_onBodyStart;
+                    lordMaster.onBodyDestroyed += LordMaster_onBodyDestroyed;
+                }
+                LordMaster_onBodyStart(lordBody);
+            }
+
+            private void LordMaster_onBodyDestroyed(CharacterBody obj)
+            {
+                subscribed = false;
+            }
+
+            private void LordMaster_onBodyStart(CharacterBody obj)
+            {
+                lordBody = obj;
+                lordBody.onSkillActivatedServer += LordBody_onSkillActivatedServer;
+
+                subscribed = true;
+            }
+
+            private void LordBody_onSkillActivatedServer(GenericSkill genericSkill)
+            {
+                Throw(genericSkill.characterBody);
+            }
+
+            //https://github.com/GnomeModder/ChefMod/blob/main/thecook-vs/CHEFMod/States/Primary/Boosted/Mince.cs
+            private void Throw(CharacterBody characterBody)
+            {
+                bool isCrit = characterBody.RollCrit();
+                FireProjectileInfo info = new FireProjectileInfo()
+                {
+                    projectilePrefab = ProjectilePrefab,
+                    position = characterBody.corePosition,
+                    owner = characterBody.gameObject,
+                    //damage = base.characterBody.damage * (4f / (chefPlugin.minceHorizontolIntensity.Value + intensity)),
+                    damage = characterBody.damage * damageCoefficient,
+                    force = 0f,
+                    crit = isCrit,
+                    damageColorIndex = DamageColorIndex.Default,
+                    target = null,
+                };
+
+                Vector3 aimDirection = characterBody.inputBank.GetAimRay().direction;
+                aimDirection.y = 0f;
+                aimDirection.Normalize();
+                float orientation = Mathf.Atan2(aimDirection.z, aimDirection.x);
+
+                for (int i = -1 * verticalIntensity; i <= verticalIntensity; i++)
+                {
+                    float phi;
+                    if (verticalIntensity != 0) phi = i * (1f / (2f * verticalIntensity)) * Mathf.PI;
+                    float r = Mathf.Cos(phi);
+                    int circum = Mathf.Max(1, Mathf.FloorToInt(horizontalIntensity * Mathf.PI * 2 * r));
+                    for (int j = 0; j < circum; j++)
+                    {
+                        float theta = orientation + 2 * Mathf.PI * ((float)j / (float)circum);
+                        Vector3 direction = new Vector3(r * Mathf.Cos(theta), Mathf.Sin(phi), r * Mathf.Sin(theta));
+
+                        info.rotation = Util.QuaternionSafeLookRotation(direction);
+
+                        ProjectileManager.instance.FireProjectile(info);
+                    }
+                }
+            }
         }
     }
 }

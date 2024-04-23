@@ -92,33 +92,17 @@ namespace RiskOfBulletstormRewrite.Items
                 {
                     ignoreTeamMemberLimit = true,
                     //masterPrefab = Enemies.LordofTheJammedMonster.masterPrefab,
-                    masterPrefab = MasterCatalog.FindMasterPrefab("BrotherGlassMaster"),
+                    masterPrefab = Characters.Enemies.LordofTheJammedMonster.Instance.MasterPrefab,
                     position = TeleporterInteraction.instance
                     ? TeleporterInteraction.instance.transform.position
                     : transform.position,
                     teamIndexOverride = TeamIndex.Monster
-                };
-                masterSummon.preSpawnSetupCallback += (charMaster) =>
-                {
-                    charMaster.inventory.GiveItem(RoR2Content.Items.Ghost);
-                    charMaster.inventory.GiveItem(RoR2Content.Items.TeleportWhenOob);
-                    charMaster.inventory.GiveItem(LordOfTheJammedIdentifierItem.instance.ItemDef);
-                    charMaster.inventory.GiveItem(RoR2Content.Items.Syringe, 30);
                 };
 
                 bossMaster = masterSummon.Perform();
                 if (!bossMaster) return;
 
                 bossBody = bossMaster.GetBody();
-
-                foreach (EntityStateMachine entityStateMachine in bossBody.GetComponents<EntityStateMachine>())
-                {
-                    if (entityStateMachine.customName == "Body")
-                    {
-                        entityStateMachine.SetState(new EntityStates.Heretic.SpawnState());
-                        return;
-                    }
-                }
 
                 if (bossMaster.TryGetComponent(out BaseAI baseAI))
                 {
