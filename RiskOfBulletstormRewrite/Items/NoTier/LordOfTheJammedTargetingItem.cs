@@ -45,12 +45,12 @@ namespace RiskOfBulletstormRewrite.Items
         {
             if (itemIndex == ItemDef.itemIndex)
             {
-                if (!inventory.gameObject.GetComponent<LOTJTracker>())
-                    inventory.gameObject.AddComponent<LOTJTracker>();
+                if (!inventory.gameObject.GetComponent<LordOfTheJammedOwnerBehaviour>())
+                    inventory.gameObject.AddComponent<LordOfTheJammedOwnerBehaviour>();
             }
         }
 
-        public class LOTJTracker : MonoBehaviour
+        public class LordOfTheJammedOwnerBehaviour : MonoBehaviour
         {
             public CharacterMaster ownerMaster = null;
             public CharacterBody ownerBody = null;
