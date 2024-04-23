@@ -66,13 +66,9 @@ namespace RiskOfBulletstormRewrite.Characters.Enemies
 
             HealthComponent healthComponent = BodyPrefab.GetComponent<HealthComponent>();
             healthComponent.dontShowHealthbar = true;
-        }
 
-        [SystemInitializer(typeof(BuffCatalog), typeof(BodyCatalog))]
-        public static void AddBuffs()
-        {
-            var bodyPrefab = LordofTheJammedMonster.Instance.BodyPrefab;
-            var body = bodyPrefab.GetComponent<CharacterBody>();
+            var bodyBehaviour = BodyPrefab.AddComponent<LordOfTheJammedBodyBehaviour>();
+            bodyBehaviour.lordBody = bodyComponent;
         }
 
         public override void SetupPassive()
@@ -112,7 +108,6 @@ namespace RiskOfBulletstormRewrite.Characters.Enemies
             MasterPrefab = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/Junk/BrotherGlass/BrotherGlassMaster.prefab").WaitForCompletion(), "RBS_LordOfTheJammedMaster", true);
 
             MasterPrefab.AddComponent<LordOfTheJammedMasterBehaviour>();
-            MasterPrefab.AddComponent<LordOfTheJammedController>().lordMaster = MasterPrefab.GetComponent<CharacterMaster>();
 
             var skillDrivers = MasterPrefab.GetComponents<AISkillDriver>();
             foreach (var skillDriver in skillDrivers)
@@ -125,7 +120,6 @@ namespace RiskOfBulletstormRewrite.Characters.Enemies
                 }
                 else if (skillDriver.customName == "Walk After Target Off Nodegraph")
                 {
-                    skillDriver.enabled = true;
                     skillDriver.maxDistance = Mathf.Infinity;
                 }
                     
@@ -167,56 +161,34 @@ namespace RiskOfBulletstormRewrite.Characters.Enemies
             }
         }
 
-        public class LordOfTheJammedController : MonoBehaviour
+        public class LordOfTheJammedBodyBehaviour : MonoBehaviour
         {
-            private CharacterBody lordBody;
             public CharacterMaster lordMaster;
+            public CharacterBody lordBody;
 
             public static GameObject ProjectilePrefab => Assets.LoadAddressable<GameObject>("RoR2/DLC1/VoidBarnacle/VoidBarnacleBullet.prefab");
             private const float damageCoefficient = 1f;
             private const int verticalIntensity = 2;
             private const float horizontalIntensity = 1f;
 
-            public bool subscribed = false;
+            public void Awake()
+            {
+                if (!lordBody)
+                    lordBody = GetComponent<CharacterBody>();
+            }
 
             public void OnEnable()
             {
+                if (lordBody)
+                    lordBody.onSkillActivatedServer += LordBody_onSkillActivatedServer;
                 InstanceTracker.Add(this);
             }
 
             public void OnDisable()
             {
+                if (lordBody)
+                    lordBody.onSkillActivatedServer -= LordBody_onSkillActivatedServer;
                 InstanceTracker.Remove(this);
-            }
-
-            public void Start()
-            {
-                if (!lordMaster)
-                {
-                    enabled = false;
-                    return;
-                }
-
-                lordBody = lordMaster.GetBody();
-                if (lordBody && !subscribed)
-                {
-                    lordMaster.onBodyStart += LordMaster_onBodyStart;
-                    lordMaster.onBodyDestroyed += LordMaster_onBodyDestroyed;
-                }
-                LordMaster_onBodyStart(lordBody);
-            }
-
-            private void LordMaster_onBodyDestroyed(CharacterBody obj)
-            {
-                subscribed = false;
-            }
-
-            private void LordMaster_onBodyStart(CharacterBody obj)
-            {
-                lordBody = obj;
-                lordBody.onSkillActivatedServer += LordBody_onSkillActivatedServer;
-
-                subscribed = true;
             }
 
             private void LordBody_onSkillActivatedServer(GenericSkill genericSkill)
@@ -263,6 +235,7 @@ namespace RiskOfBulletstormRewrite.Characters.Enemies
                     }
                 }
             }
+
         }
     }
 }

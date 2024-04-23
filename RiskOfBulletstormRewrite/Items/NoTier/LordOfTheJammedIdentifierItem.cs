@@ -181,7 +181,7 @@ localScale = new Vector3(0.03303F, 0.03303F, 0.07704F)
                 age += Time.fixedDeltaTime;
                 if (age >= duration)
                 {
-                    if (InstanceTracker.GetInstancesList<LordOfTheJammedController>().Count > 0)
+                    if (InstanceTracker.GetInstancesList<LordOfTheJammedBodyBehaviour>().Count > 0)
                     {
                         MechanicStealing.ForceNewtToKickPlayersFromShop(newtBody, true);
                         enabled = false;
