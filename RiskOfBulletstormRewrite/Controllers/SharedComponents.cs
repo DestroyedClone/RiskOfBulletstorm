@@ -218,22 +218,18 @@ namespace RiskOfBulletstormRewrite.Controllers
             {
                 if (!interactor) return;
                 displayEquipment = equipmentIndex;
+                var equipmentIsValid = EquipmentIsValid(displayEquipment);
                 if (itemDisplayInstance)
                 {
-                    if (EquipmentIsValid(displayEquipment))
+                    if (equipmentIsValid)
                         itemDisplayInstance.GetComponent<PickupDisplay>().SetPickupIndex(PickupCatalog.FindPickupIndex(displayEquipment));
                     else
                         DestroyItemDisplay();
                     return;
                 }
-                CreateItemDisplay(interactor);
-
+                if (equipmentIsValid)
+                    CreateItemDisplay(interactor);
                 return;
-                if (displayEquipment == equipmentIndex) return;
-                displayEquipment = equipmentIndex;
-                if (itemDisplayInstance)
-                    DestroyItemDisplay();
-                CreateItemDisplay(interactor);
             }
 
             private void DestroyItemDisplay()
@@ -250,7 +246,7 @@ namespace RiskOfBulletstormRewrite.Controllers
                 itemDisplayInstance.GetComponent<PickupDisplay>().SetPickupIndex(PickupCatalog.FindPickupIndex(displayEquipment));
                 var dest = itemDisplayInstance.GetComponent<PickupDisplayDestroyIfOwnerAway>();
                 dest.owner = interactor.gameObject.GetComponent<CharacterBody>();
-                dest.maxDistance = interactor.maxInteractionDistance;
+                dest.maxDistance = interactor.maxInteractionDistance + 1;
                 dest.baseTransform = GetComponent<ModelLocator>().modelTransform;
                 itemDisplayInstance.transform.localPosition = Vector3.zero;
             }

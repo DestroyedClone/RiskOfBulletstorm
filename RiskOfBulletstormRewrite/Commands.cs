@@ -3,6 +3,7 @@ using RoR2;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using RiskOfBulletstormRewrite.MarkdownCreation;
 
 namespace RiskOfBulletstormRewrite
 {
@@ -26,6 +27,24 @@ namespace RiskOfBulletstormRewrite
                 args.senderMaster.inventory.GiveItem(PrimePrimer.instance.ItemDef);
             }
         }*/
+        public static byte printReadmeState = 0;
+        [ConCommand(commandName = "rbs_printreadme",
+        flags = ConVarFlags.ExecuteOnServer,
+        helpText = "rbs_printreadme 1")]
+        public static void CCPrintReadme(ConCommandArgs args)
+        {
+            if (printReadmeState == 0)
+            {
+                printReadmeState = 1;
+                Debug.Log($"Run the command again to confirm. Will cause a brief performance dip after printing. Only prints once.");
+                return;
+            }
+            if (printReadmeState == 1)
+            {
+                ReadmeCreator.Initialization();
+                printReadmeState = 2;
+            }
+        }
 
 
         [ConCommand(commandName = "rbs_spawnprefab",
