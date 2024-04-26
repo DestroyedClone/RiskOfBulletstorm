@@ -13,11 +13,8 @@ namespace RiskOfBulletstormRewrite.Items
         //private Transform modelTransform;
         public static GameObject blinkPrefab;
 
-        private float stopwatch;
+        //private float stopwatch;
         //private Vector3 blinkVector = Vector3.zero;
-
-        [SerializeField]
-        public float duration = 0.05f;
 
         [SerializeField]
         public string beginSoundString;
@@ -80,8 +77,8 @@ namespace RiskOfBulletstormRewrite.Items
             fireSoundString = PrepWall.fireSoundString;
             maxSlopeAngle = PrepWall.maxSlopeAngle;
 
-            this.duration = baseDuration / this.attackSpeedStat;
-            base.characterBody.SetAimTimer(this.duration + 2f);
+            //this.duration = baseDuration / this.attackSpeedStat;
+            //base.characterBody.SetAimTimer(this.duration + 2f);
             //cachedCrosshairPrefab = base.characterBody.defaultCrosshairPrefab;
             this.UpdateAreaIndicator();
         }
@@ -146,8 +143,8 @@ namespace RiskOfBulletstormRewrite.Items
         public override void FixedUpdate()
         {
             base.FixedUpdate();
-            this.stopwatch += Time.fixedDeltaTime;
-            if (this.stopwatch >= this.duration && !base.inputBank.skill3.down && base.isAuthority)
+            //this.stopwatch += Time.fixedDeltaTime;
+            if (!base.inputBank.skill3.down && base.isAuthority) //this.stopwatch >= this.duration && 
             {
                 CreateBlinkEffect(outer.commonComponents.characterBody.corePosition);
                 this.outer.SetNextStateToMain();
