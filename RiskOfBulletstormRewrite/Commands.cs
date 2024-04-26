@@ -47,6 +47,15 @@ namespace RiskOfBulletstormRewrite
             var copy = UnityEngine.Object.Instantiate(reference);
             copy.transform.position = position;
         }
+
+        [ConCommand(commandName = "rbs_getglyphstring",
+        flags = ConVarFlags.None,
+        helpText = "")]
+        public static void CCGetGlyphString(ConCommandArgs args)
+        {
+            var first = args.GetArgString(0);
+        }
+
         [ConCommand(commandName = "rbs_spawneffect",
         flags = ConVarFlags.ExecuteOnServer,
         helpText = "rbs_spawneffect path x y z")]

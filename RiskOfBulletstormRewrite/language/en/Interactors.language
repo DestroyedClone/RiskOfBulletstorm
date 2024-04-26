@@ -26,6 +26,7 @@
 		"RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT": "<size=150%>{0}\nYour equipment seems compatible with this, try using it.</size>",
 		"RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT_LOSE": "<size=150%>{0}\nYour equipment can't fit into the damaged lock.</size>",
 		"RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT_CLIENT": "<size=150%>{0}\nYour equipment seems compatible with this.\nIf it doesn't work, someone broke the lock.</size>",
+		"RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT_CLIENT_NOMONEY": "Use your equipment on this chest.\nIf it doesn't work, someone broke the lock.",
 
 		//[COSTS]
 		"RISKOFBULLETSTORM_COST_STEAL_FORMAT": "<style=cIsHealth>Steal!</style>",

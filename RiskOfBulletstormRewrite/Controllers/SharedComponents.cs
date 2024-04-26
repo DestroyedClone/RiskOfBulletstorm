@@ -1,5 +1,9 @@
-﻿using RoR2;
+﻿using BepInEx;
+using R2API;
+using RoR2;
 using System;
+using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
@@ -11,11 +15,14 @@ namespace RiskOfBulletstormRewrite.Controllers
     {
         public static EquipmentIndex[] keyTypeEquipmentArray;
         public static UnityAction<BarrelInteraction, Interactor> onBarrelInteraction;
+
+        public static GameObject EquipmentPreviewPrefab;
         public static void Init()
         {
             On.RoR2.ChestBehavior.Awake += ChestBehavior_Awake;
             //On.RoR2.PurchaseInteraction.GetInteractability += PurchaseInteraction_GetInteractability;
-            On.RoR2.PurchaseInteraction.GetInteractability += PurchaseInteraction_GetInteractability2NoHighlight;
+            //On.RoR2.PurchaseInteraction.GetInteractability += PurchaseInteraction_GetInteractability2NoHighlight;
+            On.RoR2.PurchaseInteraction.GetInteractability += ShowEquipmentPrefabIfValid;
             On.RoR2.PurchaseInteraction.GetContextString += ModifyContextStringBasedOnEquipment;
             StoneGateModification.Init();
             EquipmentCatalog.availability.CallWhenAvailable(() =>
@@ -28,6 +35,55 @@ namespace RiskOfBulletstormRewrite.Controllers
             });
             On.RoR2.BarrelInteraction.GetContextString += BarrelInteraction_GetContextString;
 
+            var go = new GameObject();
+            EquipmentPreviewPrefab = PrefabAPI.InstantiateClone(go, "RBS_EquipmentPreviewPrefab", false);
+            UnityEngine.Object.Destroy(go);
+            var a = EquipmentPreviewPrefab.AddComponent<PickupDisplay>();
+            var b = EquipmentPreviewPrefab.AddComponent<PickupDisplayDestroyIfOwnerAway>();
+            b.pickupDisplay = a;
+        }
+
+        private static Interactability ShowEquipmentPrefabIfValid(On.RoR2.PurchaseInteraction.orig_GetInteractability orig, PurchaseInteraction self, Interactor activator)
+        {
+            var original = orig(self, activator);
+            var userEquipmentIndex = EquipmentIndex.None;
+            if (self.gameObject.TryGetComponent(out RBSChestLockInteraction chestLock))
+            {
+                RBSBaseLockInteraction.InteractorHasValidEquipment(activator, out userEquipmentIndex);
+            }
+            if (chestLock)
+                chestLock.UpdateItemDisplay(userEquipmentIndex, activator);
+            return original;
+        }
+
+        private class PickupDisplayDestroyIfOwnerAway : MonoBehaviour
+        {
+            public CharacterBody owner;
+            public PickupDisplay pickupDisplay;
+            public Transform baseTransform;
+            public float maxDistance = 100;
+
+            public float stopwatch = 1;
+            public float duration = 1;
+
+            public void FixedUpdate()
+            {
+                stopwatch -= Time.fixedDeltaTime;
+                if (stopwatch > 0)
+                {
+                    return;
+                }
+                stopwatch = duration;
+                if (!owner)
+                {
+                    Destroy(gameObject);
+                    return;
+                }
+                if (Vector3.Distance(transform.position, owner.inputBank.aimOrigin) > maxDistance)
+                {
+                    Destroy(gameObject);
+                }
+            }
         }
 
         private static void ChestBehavior_Awake(On.RoR2.ChestBehavior.orig_Awake orig, ChestBehavior self)
@@ -46,16 +102,17 @@ namespace RiskOfBulletstormRewrite.Controllers
         private static Interactability PurchaseInteraction_GetInteractability2NoHighlight(On.RoR2.PurchaseInteraction.orig_GetInteractability orig, PurchaseInteraction self, Interactor activator)
         {
             var original = orig(self, activator);
+            var userEquipmentIndex = EquipmentIndex.None;
             if (self.gameObject.TryGetComponent(out RBSChestLockInteraction chestLock))
             {
                 if (chestLock.isLockBroken) goto Done;
-                if (!RBSBaseLockInteraction.InteractorHasValidEquipment(activator, out EquipmentIndex validEquipmentIndex)) goto Done;
-                chestLock.UpdateItemDisplay(validEquipmentIndex);
-                return Interactability.Available;
+                if (!RBSBaseLockInteraction.InteractorHasValidEquipment(activator, out userEquipmentIndex)) goto Done;
+                //return Interactability.Available;
+                return original;
             }
             Done: 
             if (chestLock)
-                chestLock.UpdateItemDisplay(EquipmentIndex.None);
+                chestLock.UpdateItemDisplay(userEquipmentIndex, activator);
             return original;
         }
 
@@ -95,6 +152,7 @@ namespace RiskOfBulletstormRewrite.Controllers
 
             if (gameObject.TryGetComponent(out RBSChestLockInteraction chestLock))
             {
+                Highlight.HighlightColor chosenColor = chestLock.originalHighlightColor;
                 if (chestLock.isLockBroken) goto RestoreOriginalHighlight;
                 if (!RBSBaseLockInteraction.InteractorHasValidEquipment(activator, out EquipmentIndex validEquipmentIndex)) goto RestoreOriginalHighlight;
                 //&& activator.GetComponent<CharacterBody>()?.inputBank?.activateEquipment.justPressed == true)
@@ -104,7 +162,7 @@ namespace RiskOfBulletstormRewrite.Controllers
                     return Interactability.Available;
 
                 RestoreOriginalHighlight:
-                chestLock.ChangeHighlightColor(highlight, chestLock.originalHighlightColor);
+                chestLock.ChangeHighlightColor(highlight, chosenColor);
 
                 goto Done;
             }
@@ -120,8 +178,14 @@ namespace RiskOfBulletstormRewrite.Controllers
 
         public interface IRBSKeyInteraction
         {
+
         }
 
+        /// <summary>
+        /// Component for the purpose of storing information regarding things that have a locked condition.
+        /// <para><b>Trusty Lockpicks</b>: Affects hasUsedLockpicks </para>
+        /// <para><b>Drill</b>: Can't interact with Lockpicked Chests</para>
+        /// </summary>
         public class RBSBaseLockInteraction : MonoBehaviour, IRBSKeyInteraction
         {
             public const string attemptContextToken = "RISKOFBULLETSTORM_LOCKPICKS_CONTEXT_ATTEMPT";
@@ -132,41 +196,63 @@ namespace RiskOfBulletstormRewrite.Controllers
 
             //client
             public GameObject itemDisplayInstance = null;
-            public GameObject oldDisplayInstance = null;
+            //public GameObject oldDisplayInstance = null;
             public EquipmentIndex displayEquipment = EquipmentIndex.None;
             public Transform displayTransform = null;
 
+            public PurchaseInteraction purchaseInteraction;
+
+            public void Awake()
+            {
+                var go = new GameObject("displaytransform");
+                go.transform.parent = transform;
+                go.transform.localPosition = Vector3.up * 4;
+                displayTransform = go.transform;
+            }
+
             public void OnEnable()
             {
-                displayTransform = transform;
             }
 
-            public void UpdateItemDisplay(EquipmentIndex equipmentIndex)
+            public void UpdateItemDisplay(EquipmentIndex equipmentIndex, Interactor interactor)
             {
+                if (!interactor) return;
+                displayEquipment = equipmentIndex;
+                if (itemDisplayInstance)
+                {
+                    if (EquipmentIsValid(displayEquipment))
+                        itemDisplayInstance.GetComponent<PickupDisplay>().SetPickupIndex(PickupCatalog.FindPickupIndex(displayEquipment));
+                    else
+                        DestroyItemDisplay();
+                    return;
+                }
+                CreateItemDisplay(interactor);
+
+                return;
                 if (displayEquipment == equipmentIndex) return;
                 displayEquipment = equipmentIndex;
-                if (itemDisplayInstance)// && some condition )
-                {
+                if (itemDisplayInstance)
                     DestroyItemDisplay();
-                }
-                CreateItemDisplay();
+                CreateItemDisplay(interactor);
             }
 
-            public void DestroyItemDisplay()
+            private void DestroyItemDisplay()
             {
                 if (!itemDisplayInstance) return;
-                oldDisplayInstance = itemDisplayInstance;
-                Destroy(oldDisplayInstance);
+                Destroy(itemDisplayInstance);
                 itemDisplayInstance = null;
             }
 
-            public void CreateItemDisplay()
+            private void CreateItemDisplay(Interactor interactor)
             {
-                if (displayEquipment == EquipmentIndex.None) return;
-                var equipmentDef = EquipmentCatalog.GetEquipmentDef(displayEquipment);
-                var display = equipmentDef.pickupModelPrefab;
-                itemDisplayInstance = UnityEngine.Object.Instantiate(display, transform);
-                itemDisplayInstance.transform.position = displayTransform.position;
+                //if (displayEquipment == EquipmentIndex.None) return;
+                itemDisplayInstance = UnityEngine.Object.Instantiate(EquipmentPreviewPrefab, displayTransform);
+                itemDisplayInstance.GetComponent<PickupDisplay>().SetPickupIndex(PickupCatalog.FindPickupIndex(displayEquipment));
+                var dest = itemDisplayInstance.GetComponent<PickupDisplayDestroyIfOwnerAway>();
+                dest.owner = interactor.gameObject.GetComponent<CharacterBody>();
+                dest.maxDistance = interactor.maxInteractionDistance;
+                dest.baseTransform = GetComponent<ModelLocator>().modelTransform;
+                itemDisplayInstance.transform.localPosition = Vector3.zero;
             }
 
             public string GetContextualString(string original)
@@ -193,18 +279,17 @@ namespace RiskOfBulletstormRewrite.Controllers
                 }
                 return false;
             }
+
+            public static bool EquipmentIsValid(EquipmentIndex equipmentIndex)
+            {
+                return keyTypeEquipmentArray.Contains(equipmentIndex);
+            }
         }
 
-        /// <summary>
-        /// Component for the purpose of storing information regarding chests.
-        /// <para><b>Trusty Lockpicks</b>: Affects hasUsedLockpicks </para>
-        /// <para><b>Drill</b>: Can't interact with Lockpicked Chests</para>
-        /// </summary>
         public class RBSChestLockInteraction : RBSBaseLockInteraction
         {
             //public string nameModifier = "";
             //public string contextModifier = "";
-            public PurchaseInteraction purchaseInteraction;
 
             public ChestBehavior chestBehavior;
 
@@ -228,24 +313,6 @@ namespace RiskOfBulletstormRewrite.Controllers
 
             public void UpdateTokens()
             {
-            }
-        }
-
-        public class RBSDestroyGameObjectDistance : MonoBehaviour
-        {
-            public int distance = 5;
-
-            private float stopwatch = 5;
-            public float cooldown;
-
-            public void FixedUpdate()
-            {
-                stopwatch -= Time.fixedDeltaTime;
-                if (stopwatch < 0)
-                {
-                    stopwatch = cooldown;
-
-                }
             }
         }
     }
