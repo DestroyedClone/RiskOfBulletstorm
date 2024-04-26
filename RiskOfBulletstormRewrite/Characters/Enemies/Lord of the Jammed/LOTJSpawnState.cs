@@ -9,6 +9,8 @@ namespace RiskOfBulletstormRewrite.Characters.Enemies.Lord_of_the_Jammed
     //Heretic.SpawnState
     //BrotherMonster.ThrownSpawnState
     //BrotherMonster.SkySpawnState
+    //EntityStates.FlyingVermin.Mode.GrantFlight
+    //EntityStates.Vulture.Fly
     public class LOTJSpawnState : BaseState
     {
         public LOTJSpawnState()
@@ -42,6 +44,25 @@ namespace RiskOfBulletstormRewrite.Characters.Enemies.Lord_of_the_Jammed
                     temporaryOverlay.animateShaderAlpha = true;
                 }
             }
+            this.characterGravityParameterProvider = base.gameObject.GetComponent<ICharacterGravityParameterProvider>();
+            this.characterFlightParameterProvider = base.gameObject.GetComponent<ICharacterFlightParameterProvider>();
+            if (this.characterGravityParameterProvider != null)
+            {
+                CharacterGravityParameters gravityParameters = this.characterGravityParameterProvider.gravityParameters;
+                gravityParameters.channeledAntiGravityGranterCount++;
+                this.characterGravityParameterProvider.gravityParameters = gravityParameters;
+            }
+            if (this.characterFlightParameterProvider != null)
+            {
+                CharacterFlightParameters flightParameters = this.characterFlightParameterProvider.flightParameters;
+                flightParameters.channeledFlightGranterCount++;
+                this.characterFlightParameterProvider.flightParameters = flightParameters;
+            }
+            if (base.characterMotor)
+            {
+                //base.characterMotor.velocity.y = Fly.launchSpeed;
+                base.characterMotor.Motor.ForceUnground();
+            }
         }
 
         public override void FixedUpdate()
@@ -52,5 +73,9 @@ namespace RiskOfBulletstormRewrite.Characters.Enemies.Lord_of_the_Jammed
                 this.outer.SetNextStateToMain();
             }
         }
+
+        protected ICharacterGravityParameterProvider characterGravityParameterProvider;
+
+        protected ICharacterFlightParameterProvider characterFlightParameterProvider;
     }
 }

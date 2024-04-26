@@ -91,12 +91,14 @@ namespace RiskOfBulletstormRewrite.Characters.Enemies
         protected override void InitializeEntityStateMachine()
         {
             ContentAddition.AddEntityState<LOTJSpawnState>(out bool _);
+            ContentAddition.AddEntityState<ForceUngroundCharacterMain>(out bool _);
 
             foreach (EntityStateMachine entityStateMachine in BodyPrefab.GetComponents<EntityStateMachine>())
             {
                 if (entityStateMachine.customName == "Body")
                 {
                     entityStateMachine.initialStateType = new SerializableEntityStateType(typeof(LOTJSpawnState));
+                    entityStateMachine.mainStateType = new SerializableEntityStateType(typeof(ForceUngroundCharacterMain));
                     return;
                 }
             }
@@ -114,7 +116,7 @@ namespace RiskOfBulletstormRewrite.Characters.Enemies
             {
                 if (skillDriver.customName == "SprintBash")
                 {
-                    skillDriver.maxDistance = 50;
+                    skillDriver.maxDistance = 100;
                     //skillDriver.skillSlot = SkillSlot.Secondary;
                     //skillDriver.buttonPressType = AISkillDriver.ButtonPressType.TapContinuous;
                 }
@@ -133,7 +135,7 @@ namespace RiskOfBulletstormRewrite.Characters.Enemies
 
         public class LordOfTheJammedMasterBehaviour : MonoBehaviour
         {
-            public GameObject jetpack;
+            //public GameObject jetpack;
             public CharacterMaster characterMaster;
             public void Start()
             {
@@ -146,18 +148,6 @@ namespace RiskOfBulletstormRewrite.Characters.Enemies
                 inv.GiveItem(Items.LordOfTheJammedIdentifierItem.instance.ItemDef);
 
                 characterMaster = GetComponent<CharacterMaster>();
-                characterMaster.onBodyStart += LordOfTheJammedMasterBehaviour_onBodyStart;
-                LordOfTheJammedMasterBehaviour_onBodyStart(characterMaster.GetBody());
-            }
-
-            private void LordOfTheJammedMasterBehaviour_onBodyStart(CharacterBody body)
-            {
-                if (jetpack) return;
-                if (!body) return;
-
-                jetpack = UnityEngine.Object.Instantiate<GameObject>(LegacyResourcesAPI.Load<GameObject>("Prefabs/NetworkedObjects/BodyAttachments/JetpackController"));
-                jetpack.GetComponent<JetpackController>().duration = Mathf.Infinity;
-                jetpack.GetComponent<NetworkedBodyAttachment>().AttachToGameObjectAndSpawn(body.gameObject, null);
             }
         }
 
