@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using RiskOfBulletstormRewrite.MarkdownCreation;
+using RiskOfBulletstormRewrite.Characters.Enemies;
+using RiskOfBulletstormRewrite.Items;
+using UnityEngine.AddressableAssets;
 
 namespace RiskOfBulletstormRewrite
 {
@@ -36,7 +39,7 @@ namespace RiskOfBulletstormRewrite
             if (printReadmeState == 0)
             {
                 printReadmeState = 1;
-                Debug.Log($"Run the command again to confirm. Will cause a brief performance dip after printing. Only prints once.");
+                Debug.Log($"Run the command again to confirm. Hooks mainmenu");
                 return;
             }
             if (printReadmeState == 1)
@@ -44,6 +47,15 @@ namespace RiskOfBulletstormRewrite
                 ReadmeCreator.Initialization();
                 printReadmeState = 2;
             }
+        }
+
+        [ConCommand(commandName = "rbs_previewlotjmat",
+        flags = ConVarFlags.ExecuteOnServer,
+        helpText = "")]
+        public static void CCPreviewLOTJMat(ConCommandArgs args)
+        {
+            if (args.GetArgInt(0) != 2001) return;
+            LordOfTheJammedIdentifierItem.LOTJDisplaySetup.materialToSet = Addressables.LoadAssetAsync<Material>(args.GetArgString(1)).WaitForCompletion();
         }
 
 

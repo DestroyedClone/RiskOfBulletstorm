@@ -37,7 +37,7 @@ namespace RiskOfBulletstormRewrite.Items
             Hooks();
         }
 
-        private static readonly Material blackMat = Assets.LoadAddressable<Material>("RoR2/Base/Common/matDebugBlack.mat");
+        private static readonly Material blackMat = Assets.LoadAddressable<Material>("RoR2/Base/goolake/matGoolake.mat");
 
         public static void CreateAssets()
         {
@@ -92,6 +92,7 @@ namespace RiskOfBulletstormRewrite.Items
         public class LOTJDisplaySetup : MonoBehaviour
         {
             private SkinnedMeshRenderer meshRenderer;
+            public static Material materialToSet { get; set; } = blackMat;
 
             public void Start()
             {
@@ -112,7 +113,7 @@ namespace RiskOfBulletstormRewrite.Items
 
             public void FixedUpdate()
             {
-                meshRenderer.SetMaterial(blackMat); ;
+                meshRenderer.SetMaterial(materialToSet); ;
             }
         }
 
