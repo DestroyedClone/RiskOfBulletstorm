@@ -174,7 +174,7 @@ namespace RiskOfBulletstormRewrite.Characters.Enemies
 
             SetDisplay(gunSword, "HandL", new Vector3(-0.0173f, 0.1263f, 0.1854f), new Vector3(10f, 310f, 330f), new Vector3(0.04F, 0.04F, 0.04F), "active");
 
-            SetDisplay(gunSword, "HandL", new Vector3(0.031309F, 0.078954F, 0.109679F), new Vector3(329.6324F, 9.65174F, 355.6856F), new Vector3(0.04F, 0.04F, 0.04F), "idle");
+            SetDisplay(gunSword, "HandL", new Vector3(0.1313f, 0.479f, 0.3097f), new Vector3(329.6324F, 9.65174F, 355.6856F), new Vector3(0.04F, 0.04F, 0.04F), "idle");
 
         }
 

@@ -66,7 +66,7 @@ namespace RiskOfBulletstormRewrite.Characters.Enemies.Lord_of_the_Jammed
             }
 
             //from debugtoolkit
-            if (base.isAuthority)
+            /*if (base.isAuthority)
             {
                 //var kcm = outer.GetComponent<KinematicCharacterMotor>();
                 //kcm.CollidableLayers = 0;
@@ -74,7 +74,7 @@ namespace RiskOfBulletstormRewrite.Characters.Enemies.Lord_of_the_Jammed
 
                 base.gameObject.layer = LayerIndex.fakeActor.intVal;
                 base.characterMotor.Motor.RebuildCollidableLayers();
-            }
+            }*/
         }
 
         public override void FixedUpdate()
