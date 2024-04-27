@@ -13,6 +13,10 @@ using System.Linq;
 using UnityEngine.Networking;
 using RiskOfBulletstormRewrite.GameplayAdditions;
 using RoR2.Projectile;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using KinematicCharacterController;
 
 namespace RiskOfBulletstormRewrite.Characters.Enemies
 {
@@ -28,6 +32,12 @@ namespace RiskOfBulletstormRewrite.Characters.Enemies
         public override string CharacterLangTokenName => "LORDOFTHEJAMMED";
 
         public override Sprite CharacterIcon => Assets.NullSprite;
+
+        public static GameObject skull;
+        public static GameObject gunSword;
+        public static GameObject crown;
+
+        private static readonly Material blackMat = Assets.LoadAddressable<Material>("RoR2/Base/goolake/matGoolake.mat");
 
         protected override void InitializeCharacterBody()
         {
@@ -69,6 +79,151 @@ namespace RiskOfBulletstormRewrite.Characters.Enemies
 
             var bodyBehaviour = BodyPrefab.AddComponent<LordOfTheJammedBodyBehaviour>();
             bodyBehaviour.lordBody = bodyComponent;
+
+            //from debugtoolkit
+            var kcm = bodyComponent.GetComponent<KinematicCharacterMotor>();
+            kcm.CollidableLayers = 0;
+
+            SetupCharacterDisplay();
+        }
+
+        private void SetupCharacterDisplay()
+        {
+            LOTJDisplayController locator = BodyPrefab.AddComponent<LOTJDisplayController>();
+
+            var yellowRedMat = Assets.LoadAddressable<Material>("RoR2/Base/Beetle/matSulfurBeetle.mat");
+            void SetMaterial(GameObject gameObject, Material material)
+            {
+                SkinnedMeshRenderer skinnedMeshRenderer = gameObject.GetComponent<SkinnedMeshRenderer>();
+                if (!skinnedMeshRenderer)
+                {
+                    //Main._logger.LogError($"SkinnedMeshRenderer Not Found For {gameObject.name}!"); <- this one
+                    MeshRenderer meshRenderer = gameObject.GetComponent<MeshRenderer>();
+                    if (!meshRenderer)
+                    {
+                        //Main._logger.LogError($"MeshRenderer also falied.");
+                    }
+                    else
+                    {
+                        meshRenderer.SetMaterial(material);
+                    }
+                    return;
+                }
+                skinnedMeshRenderer.SetMaterial(material);
+            }
+
+            GameObject clone(string path, string name)
+            {
+                return PrefabAPI.InstantiateClone(Assets.LoadAddressable<GameObject>(path), name, false);
+            }
+
+            skull = clone("RoR2/Base/DeathMark/mdlDeathMark.fbx", "LOTJSkull");
+            SetMaterial(skull, yellowRedMat);
+
+            //scythe = clone("RoR2/Base/HealOnCrit/mdlScythe.fbx", "LOTJWeapon_Scythe");
+            //var scytheMat = Assets.LoadAddressable<Material>("RoR2/Base/HealOnCrit/matScythe.mat");
+            //SetMaterial(scythe, scytheMat);
+
+            gunSword = clone("RoR2/Base/Bandit2/BanditShotgun.fbx", "LOTJWeapon_Shotgun");
+            var shotgunMat = Assets.LoadAddressable<Material>("RoR2/Base/Bandit2/matBandit2Shotgun.mat");
+            SetMaterial(gunSword, shotgunMat);
+
+            var scy = UnityEngine.Object.Instantiate(Assets.LoadAddressable<GameObject>("RoR2/Base/HealOnCrit/mdlScythe.fbx"));
+            scy.transform.parent = gunSword.transform;
+            scy.transform.localPosition = new Vector3(0,0,15);
+            scy.transform.localRotation = Quaternion.Euler(0, 350, 0);
+            scy.transform.localScale = new Vector3(5,5,5);
+            var scytheMat = Assets.LoadAddressable<Material>("RoR2/Base/HealOnCrit/matScythe.mat");
+            SetMaterial(scy, scytheMat);
+
+            crown = clone("RoR2/Base/artifactworld/mdlArtifactCrown.fbx", "LOTJCrown");
+            UnityEngine.Object.Destroy(crown.transform.Find("ArtifactCrownJewelMesh").gameObject);
+            SetMaterial(crown.transform.Find("ArtifactCrownMesh").gameObject, yellowRedMat);
+
+            Transform modelTransform = BodyPrefab.GetComponent<ModelLocator>().modelTransform;
+            modelTransform.Find("BrotherHammerConcrete").gameObject.SetActive(false);
+            modelTransform.Find("BrotherStibPieces").gameObject.SetActive(false);
+            modelTransform.Find("BrotherClothPieces").gameObject.SetActive(false);
+           // modelTransform.Find("BrotherHeadArmorMesh").gameObject.SetActive(false);
+
+
+            var charModel = modelTransform.GetComponent<CharacterModel>();
+            locator.meshRenderer = modelTransform.Find("BrotherBodyMesh").GetComponent<SkinnedMeshRenderer>();
+
+            void SetDisplay(GameObject prefab, string childName, Vector3 pos, Vector3 angle, Vector3 scale, string childType)
+            {
+                var child = charModel.GetComponent<ChildLocator>().FindChild(childName);
+                var copy = UnityEngine.Object.Instantiate(prefab, child);
+                copy.name += $"( {childType})";
+                copy.transform.localPosition = pos;
+                copy.transform.localRotation = Quaternion.Euler(angle);
+                copy.transform.localScale = scale;
+                switch (childType)
+                {
+                    case "idle":
+                        locator.idleChildren.Add(copy);
+                        break;
+                    case "active":
+                        locator.activeChildren.Add(copy);
+                        copy.SetActive(false);
+                        break;
+                    case "static":
+                        locator.staticChildren.Add(copy);
+                        break;
+                }
+            }
+
+            SetDisplay(skull, "Head", new Vector3(0.00142F, 0.05512F, 0.07683F), new Vector3(286.3012F, 14.24653F, 351.1197F), Vector3.one * 0.1f, "static");
+            SetDisplay(crown, "Head", new Vector3(0.5987F, 0.33382F, 0.07866F), new Vector3(0F, 0F, 0F), new Vector3(0.1F, 0.1F, 0.1F), "static");
+
+            SetDisplay(gunSword, "HandL", new Vector3(-0.066372F, -0.014386F, 0.085188F), new Vector3(14.15931F, 310.6348F, 336.7441F), new Vector3(0.04F, 0.04F, 0.04F), "active");
+
+            SetDisplay(gunSword, "HandL", new Vector3(0.031309F, 0.078954F, 0.109679F), new Vector3(329.6324F, 9.65174F, 355.6856F), new Vector3(0.04F, 0.04F, 0.04F), "idle");
+
+        }
+
+        public class LOTJDisplayController : MonoBehaviour
+        {
+            public List<GameObject> idleChildren = new List<GameObject>();
+            public List<GameObject> activeChildren = new List<GameObject>();
+            public List<GameObject> staticChildren = new List<GameObject>();
+
+            private bool isAttacking = false;
+            private float stopwatch = 0;
+            private float duration = 0.5f;
+
+            public SkinnedMeshRenderer meshRenderer;
+            public static Material materialToSet { get; set; } = blackMat;
+
+            public void Attack()
+            {
+                if (isAttacking) return;
+                stopwatch = duration;
+                ToggleDisplay(true);
+            }
+            public void FixedUpdate()
+            {
+                meshRenderer.SetMaterial(materialToSet);
+
+                if (!isAttacking) return;
+                stopwatch -= Time.fixedDeltaTime;
+                if (stopwatch < 0)
+                {
+                    ToggleDisplay(false);
+                }
+            }
+            public void ToggleDisplay(bool attacking)
+            {
+                isAttacking = attacking;
+                foreach (var child in activeChildren)
+                {
+                    child.SetActive(attacking);
+                }
+                foreach (var child in idleChildren)
+                {
+                    child.SetActive(!attacking);
+                }
+            }
         }
 
         public override void SetupPassive()
@@ -135,8 +290,6 @@ namespace RiskOfBulletstormRewrite.Characters.Enemies
 
         public class LordOfTheJammedMasterBehaviour : MonoBehaviour
         {
-            //public GameObject jetpack;
-            public CharacterMaster characterMaster;
             public void Start()
             {
                 if (!NetworkServer.active) return;
@@ -145,9 +298,6 @@ namespace RiskOfBulletstormRewrite.Characters.Enemies
                 inv.GiveItem(RoR2Content.Items.TeleportWhenOob);
                 inv.GiveItem(RoR2Content.Items.Ghost);
                 inv.GiveItem(RoR2Content.Items.Syringe, 30);
-                inv.GiveItem(Items.LordOfTheJammedIdentifierItem.instance.ItemDef);
-
-                characterMaster = GetComponent<CharacterMaster>();
             }
         }
 
@@ -161,10 +311,14 @@ namespace RiskOfBulletstormRewrite.Characters.Enemies
             private const int verticalIntensity = 2;
             private const float horizontalIntensity = 1f;
 
+            public LOTJDisplayController displayController;
+
             public void Awake()
             {
                 if (!lordBody)
                     lordBody = GetComponent<CharacterBody>();
+                if (!displayController)
+                    displayController = GetComponent<LOTJDisplayController>();
             }
 
             public void OnEnable()
@@ -183,6 +337,7 @@ namespace RiskOfBulletstormRewrite.Characters.Enemies
 
             private void LordBody_onSkillActivatedServer(GenericSkill genericSkill)
             {
+                displayController.Attack();
                 Throw(genericSkill.characterBody);
             }
 
@@ -226,6 +381,33 @@ namespace RiskOfBulletstormRewrite.Characters.Enemies
                 }
             }
 
+        }
+
+        public class NewtKickFromShopIfLOTJBehaviour : MonoBehaviour
+        {
+            public float age = 0;
+            public float duration = 5f;
+
+            public CharacterBody newtBody;
+
+            public void Start()
+            {
+                newtBody = GetComponent<CharacterBody>();
+            }
+
+            public void FixedUpdate()
+            {
+                age += Time.fixedDeltaTime;
+                if (age >= duration)
+                {
+                    if (InstanceTracker.GetInstancesList<LordOfTheJammedBodyBehaviour>().Count > 0)
+                    {
+                        MechanicStealing.ForceNewtToKickPlayersFromShop(newtBody, true);
+                        enabled = false;
+                    }
+                    age = 0;
+                }
+            }
         }
     }
 }

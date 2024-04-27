@@ -1,8 +1,8 @@
-﻿using RiskOfBulletstormRewrite.Items;
+﻿using RiskOfBulletstormRewrite.Characters.Enemies;
+using RiskOfBulletstormRewrite.Items;
 using RoR2;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
-using static RiskOfBulletstormRewrite.Items.LordOfTheJammedIdentifierItem;
 
 namespace RiskOfBulletstormRewrite.Controllers
 {
@@ -56,9 +56,9 @@ namespace RiskOfBulletstormRewrite.Controllers
         {
             if (NetworkServer.active && SceneCatalog.GetSceneDefForCurrentScene() == bazaarSceneDef)
             {
-                if (!self.outer.GetComponent<NewtKickFromShopIfLOTJBehaviour>())
+                if (!self.outer.GetComponent<LordofTheJammedMonster.NewtKickFromShopIfLOTJBehaviour>())
                 {
-                    self.outer.gameObject.AddComponent<NewtKickFromShopIfLOTJBehaviour>();
+                    self.outer.gameObject.AddComponent<LordofTheJammedMonster.NewtKickFromShopIfLOTJBehaviour>();
                 }
             }
             orig(self);

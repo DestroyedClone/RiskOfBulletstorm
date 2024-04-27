@@ -55,7 +55,7 @@ namespace RiskOfBulletstormRewrite
         public static void CCPreviewLOTJMat(ConCommandArgs args)
         {
             if (args.GetArgInt(0) != 2001) return;
-            LordOfTheJammedIdentifierItem.LOTJDisplaySetup.materialToSet = Addressables.LoadAssetAsync<Material>(args.GetArgString(1)).WaitForCompletion();
+            LordofTheJammedMonster.LOTJDisplayController.materialToSet = Addressables.LoadAssetAsync<Material>(args.GetArgString(1)).WaitForCompletion();
         }
 
 
