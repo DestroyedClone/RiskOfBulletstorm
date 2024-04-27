@@ -25,24 +25,9 @@ namespace RiskOfBulletstormRewrite.Artifact
                 characterMaster.inventory?.GiveItem(RoR2Content.Items.TeleportWhenOob);
         }
 
-        private void AllNoFallDamage(On.RoR2.MapZone.orig_TryZoneStart orig, MapZone self, Collider other)
-        {
-            if (other.TryGetComponent(out CharacterBody body)
-                && !body.bodyFlags.HasFlag(CharacterBody.BodyFlags.IgnoreFallDamage))
-            {
-                body.bodyFlags |= CharacterBody.BodyFlags.IgnoreFallDamage;
-                orig(self, other);
-                body.bodyFlags &= ~CharacterBody.BodyFlags.IgnoreFallDamage;
-                return;
-            }
-
-            orig(self, other);
-        }
-
         public override void OnArtifactEnabled()
         {
             CharacterMaster.onStartGlobal += GiveOobTeleportToCharacter;
-            //On.RoR2.MapZone.TryZoneStart += AllNoFallDamage;
             Stage.onServerStageBegin += Stage_onServerStageBegin;
             On.RoR2.TeleportHelper.OnTeleport += TeleportHelper_OnTeleport;
             On.RoR2.GlobalEventManager.OnCharacterHitGroundServer += GlobalEventManager_OnCharacterHitGroundServer;
@@ -76,7 +61,6 @@ namespace RiskOfBulletstormRewrite.Artifact
         public override void OnArtifactDisabled()
         {
             CharacterMaster.onStartGlobal -= GiveOobTeleportToCharacter;
-            //On.RoR2.MapZone.TryZoneStart += AllNoFallDamage;
             Stage.onServerStageBegin -= Stage_onServerStageBegin;
             On.RoR2.TeleportHelper.OnTeleport -= TeleportHelper_OnTeleport;
             On.RoR2.GlobalEventManager.OnCharacterHitGroundServer -= GlobalEventManager_OnCharacterHitGroundServer;

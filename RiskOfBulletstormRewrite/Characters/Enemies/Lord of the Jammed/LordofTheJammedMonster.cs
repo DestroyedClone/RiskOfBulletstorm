@@ -186,10 +186,10 @@ namespace RiskOfBulletstormRewrite.Characters.Enemies
 
             private bool isAttacking = false;
             private float stopwatch = 0;
-            private float duration = 0.5f;
+            private readonly float duration = 0.5f;
 
             public SkinnedMeshRenderer meshRenderer;
-            public static Material materialToSet { get; set; } = blackMat;
+            public static Material MaterialToSet { get; set; } = blackMat;
 
             public void Attack()
             {
@@ -199,7 +199,7 @@ namespace RiskOfBulletstormRewrite.Characters.Enemies
             }
             public void FixedUpdate()
             {
-                meshRenderer.SetMaterial(materialToSet);
+                meshRenderer.SetMaterial(MaterialToSet);
 
                 if (!isAttacking) return;
                 stopwatch -= Time.fixedDeltaTime;

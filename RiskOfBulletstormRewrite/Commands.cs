@@ -35,7 +35,7 @@ namespace RiskOfBulletstormRewrite
         [ConCommand(commandName = "rbs_printreadme",
         flags = ConVarFlags.ExecuteOnServer,
         helpText = "rbs_printreadme 1")]
-        public static void CCPrintReadme(ConCommandArgs args)
+        public static void CCPrintReadme(ConCommandArgs _)
         {
             if (printReadmeState == 0)
             {
@@ -68,7 +68,7 @@ namespace RiskOfBulletstormRewrite
         public static void CCPreviewLOTJMat(ConCommandArgs args)
         {
             if (args.GetArgInt(0) != 2001) return;
-            LordofTheJammedMonster.LOTJDisplayController.materialToSet = Addressables.LoadAssetAsync<Material>(args.GetArgString(1)).WaitForCompletion();
+            LordofTheJammedMonster.LOTJDisplayController.MaterialToSet = Addressables.LoadAssetAsync<Material>(args.GetArgString(1)).WaitForCompletion();
         }
 
 
@@ -90,14 +90,6 @@ namespace RiskOfBulletstormRewrite
             }
             var copy = UnityEngine.Object.Instantiate(reference);
             copy.transform.position = position;
-        }
-
-        [ConCommand(commandName = "rbs_getglyphstring",
-        flags = ConVarFlags.None,
-        helpText = "")]
-        public static void CCGetGlyphString(ConCommandArgs args)
-        {
-            var first = args.GetArgString(0);
         }
 
         [ConCommand(commandName = "rbs_spawneffect",

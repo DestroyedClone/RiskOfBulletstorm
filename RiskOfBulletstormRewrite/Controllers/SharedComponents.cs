@@ -20,8 +20,6 @@ namespace RiskOfBulletstormRewrite.Controllers
         public static void Init()
         {
             On.RoR2.ChestBehavior.Awake += ChestBehavior_Awake;
-            //On.RoR2.PurchaseInteraction.GetInteractability += PurchaseInteraction_GetInteractability;
-            //On.RoR2.PurchaseInteraction.GetInteractability += PurchaseInteraction_GetInteractability2NoHighlight;
             On.RoR2.PurchaseInteraction.GetInteractability += ShowEquipmentPrefabIfValid;
             On.RoR2.PurchaseInteraction.GetContextString += ModifyContextStringBasedOnEquipment;
             StoneGateModification.Init();
@@ -99,29 +97,12 @@ namespace RiskOfBulletstormRewrite.Controllers
             }
         }
 
-        private static Interactability PurchaseInteraction_GetInteractability2NoHighlight(On.RoR2.PurchaseInteraction.orig_GetInteractability orig, PurchaseInteraction self, Interactor activator)
-        {
-            var original = orig(self, activator);
-            var userEquipmentIndex = EquipmentIndex.None;
-            if (self.gameObject.TryGetComponent(out RBSChestLockInteraction chestLock))
-            {
-                if (chestLock.isLockBroken) goto Done;
-                if (!RBSBaseLockInteraction.InteractorHasValidEquipment(activator, out userEquipmentIndex)) goto Done;
-                //return Interactability.Available;
-                return original;
-            }
-            Done: 
-            if (chestLock)
-                chestLock.UpdateItemDisplay(userEquipmentIndex, activator);
-            return original;
-        }
-
         private static string BarrelInteraction_GetContextString(On.RoR2.BarrelInteraction.orig_GetContextString orig, BarrelInteraction self, Interactor activator)
         {
             var original = orig(self, activator);
             if (self.TryGetComponent(out StoneGateModification.RBSStoneGateLockInteraction gateLock))
             {
-                if (RBSChestLockInteraction.InteractorHasValidEquipment(activator, out EquipmentIndex validEquipmentIndex))
+                if (RBSChestLockInteraction.InteractorHasValidEquipment(activator, out _))
                 {
                     return gateLock.GetContextualString(original);
                 }
@@ -135,44 +116,12 @@ namespace RiskOfBulletstormRewrite.Controllers
 
             if (self.TryGetComponent(out RBSChestLockInteraction chestLock))
             {
-                if (RBSChestLockInteraction.InteractorHasValidEquipment(activator, out EquipmentIndex validEquipmentIndex))
+                if (RBSChestLockInteraction.InteractorHasValidEquipment(activator, out _))
                 {
                     return chestLock.GetContextualString(original);
                 }
             }
 
-            return original;
-        }
-
-        private static Interactability PurchaseInteraction_GetInteractability(On.RoR2.PurchaseInteraction.orig_GetInteractability orig, PurchaseInteraction self, Interactor activator)
-        {
-            var original = orig(self, activator);
-            var gameObject = self.gameObject;
-            Highlight highlight = self.GetComponent<Highlight>();
-
-            if (gameObject.TryGetComponent(out RBSChestLockInteraction chestLock))
-            {
-                Highlight.HighlightColor chosenColor = chestLock.originalHighlightColor;
-                if (chestLock.isLockBroken) goto RestoreOriginalHighlight;
-                if (!RBSBaseLockInteraction.InteractorHasValidEquipment(activator, out EquipmentIndex validEquipmentIndex)) goto RestoreOriginalHighlight;
-                //&& activator.GetComponent<CharacterBody>()?.inputBank?.activateEquipment.justPressed == true)
-
-                //chestLock.ChangeHighlightColor(highlight, Highlight.HighlightColor.unavailable);
-                if (original != Interactability.Disabled)
-                    return Interactability.Available;
-
-                RestoreOriginalHighlight:
-                chestLock.ChangeHighlightColor(highlight, chosenColor);
-
-                goto Done;
-            }
-
-            if (gameObject.TryGetComponent(out StoneGateModification.RBSStoneGateLockInteraction stoneGateLock))
-            {
-                if (stoneGateLock.isLockBroken) goto Done;
-            }
-        Done:
-            //bulletstormChestInteractor.ChangeHighlightColor(highlight, bulletstormChestInteractor.originalHighlightColor);
             return original;
         }
 
