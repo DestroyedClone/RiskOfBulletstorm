@@ -80,10 +80,6 @@ namespace RiskOfBulletstormRewrite.Characters.Enemies
             var bodyBehaviour = BodyPrefab.AddComponent<LordOfTheJammedBodyBehaviour>();
             bodyBehaviour.lordBody = bodyComponent;
 
-            //from debugtoolkit
-            var kcm = bodyComponent.GetComponent<KinematicCharacterMotor>();
-            kcm.CollidableLayers = 0;
-
             SetupCharacterDisplay();
         }
 
@@ -176,7 +172,7 @@ namespace RiskOfBulletstormRewrite.Characters.Enemies
             SetDisplay(skull, "Head", new Vector3(0.00142F, 0.05512F, 0.07683F), new Vector3(286.3012F, 14.24653F, 351.1197F), Vector3.one * 0.1f, "static");
             SetDisplay(crown, "Head", new Vector3(0.5987F, 0.33382F, 0.07866F), new Vector3(0F, 0F, 0F), new Vector3(0.1F, 0.1F, 0.1F), "static");
 
-            SetDisplay(gunSword, "HandL", new Vector3(-0.066372F, -0.014386F, 0.085188F), new Vector3(14.15931F, 310.6348F, 336.7441F), new Vector3(0.04F, 0.04F, 0.04F), "active");
+            SetDisplay(gunSword, "HandL", new Vector3(-0.0173f, 0.1263f, 0.1854f), new Vector3(10f, 310f, 330f), new Vector3(0.04F, 0.04F, 0.04F), "active");
 
             SetDisplay(gunSword, "HandL", new Vector3(0.031309F, 0.078954F, 0.109679F), new Vector3(329.6324F, 9.65174F, 355.6856F), new Vector3(0.04F, 0.04F, 0.04F), "idle");
 

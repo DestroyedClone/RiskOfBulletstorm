@@ -202,7 +202,7 @@ namespace RiskOfBulletstormRewrite.Controllers
 
             public PurchaseInteraction purchaseInteraction;
 
-            public void Awake()
+            public virtual void Awake()
             {
                 var go = new GameObject("displaytransform");
                 go.transform.parent = transform;

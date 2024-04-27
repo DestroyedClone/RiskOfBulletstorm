@@ -88,8 +88,9 @@ namespace RiskOfBulletstormRewrite.Controllers
         public class RBSStoneGateLockInteraction : RBSBaseLockInteraction
         {
             public static RBSStoneGateLockInteraction Instance { get; set; }
-            public void Awake()
+            public override void Awake()
             {
+                base.Awake();
                 Instance = this;
             }
             public void OnDestroy()

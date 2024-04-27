@@ -7,6 +7,7 @@ using RiskOfBulletstormRewrite.MarkdownCreation;
 using RiskOfBulletstormRewrite.Characters.Enemies;
 using RiskOfBulletstormRewrite.Items;
 using UnityEngine.AddressableAssets;
+using KinematicCharacterController;
 
 namespace RiskOfBulletstormRewrite
 {
@@ -47,6 +48,18 @@ namespace RiskOfBulletstormRewrite
                 ReadmeCreator.Initialization();
                 printReadmeState = 2;
             }
+        }
+
+
+        [ConCommand(commandName = "rbs_setcollideablelayer",
+        flags = ConVarFlags.ExecuteOnServer,
+        helpText = "")]
+        public static void CCSetLayer(ConCommandArgs args)
+        {
+            if (args.GetArgInt(0) != 2001) return;
+            var kcm = args.senderBody.GetComponent<KinematicCharacterMotor>();
+            kcm.CollidableLayers = args.GetArgInt(1);
+            kcm.RebuildCollidableLayers();
         }
 
         [ConCommand(commandName = "rbs_previewlotjmat",

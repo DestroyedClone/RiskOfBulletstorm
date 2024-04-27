@@ -1,5 +1,6 @@
 ﻿using System;
 using EntityStates;
+using KinematicCharacterController;
 using RiskOfBulletstormRewrite.Utils;
 using RoR2;
 using UnityEngine;
@@ -62,6 +63,17 @@ namespace RiskOfBulletstormRewrite.Characters.Enemies.Lord_of_the_Jammed
             {
                 //base.characterMotor.velocity.y = Fly.launchSpeed;
                 base.characterMotor.Motor.ForceUnground();
+            }
+
+            //from debugtoolkit
+            if (base.isAuthority)
+            {
+                //var kcm = outer.GetComponent<KinematicCharacterMotor>();
+                //kcm.CollidableLayers = 0;
+                //kcm.RebuildCollidableLayers();
+
+                base.gameObject.layer = LayerIndex.fakeActor.intVal;
+                base.characterMotor.Motor.RebuildCollidableLayers();
             }
         }
 

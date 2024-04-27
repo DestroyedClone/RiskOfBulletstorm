@@ -33,6 +33,7 @@
     <Compile Remove="Artifact\ArtifactPitLordPlayer.cs" />
     <Compile Remove="Artifact\ExampleArtifact.cs" />
     <Compile Remove="Characters\Enemies\Lord of the Jammed\LOTJSlash.cs" />
+    <Compile Remove="Characters\Enemies\Lord of the Jammed\NoclipCharacterMain.cs" />
     <Compile Remove="Characters\Enemies\MonsterBase.cs" />
     <Compile Remove="Characters\SurvivorBase.cs" />
     <Compile Remove="Controllers\BabyMimicBodyBehavior.cs" />
