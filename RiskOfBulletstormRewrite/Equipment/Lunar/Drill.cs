@@ -11,9 +11,9 @@ namespace RiskOfBulletstormRewrite.Equipment
 {
     public class Drill : EquipmentBase<Drill>
     {
-        public static float ChestCostCommonDirectorMultiplier = 1.5f;
-        public static float ChestCostUncommonDirectorMultiplier = 2.5f;
-        public static float ChestCostLegendaryDirectorMultiplier = 3.5f;
+        public static float ChestCostCommonDirectorMultiplier = 2f;
+        public static float ChestCostUncommonDirectorMultiplier = 3f;
+        public static float ChestCostLegendaryDirectorMultiplier = 4f;
         public override float Cooldown => 60;
 
         public override string EquipmentName => "Drill";
