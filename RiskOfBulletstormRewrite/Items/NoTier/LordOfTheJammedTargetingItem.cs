@@ -104,12 +104,9 @@ namespace RiskOfBulletstormRewrite.Items
 
                 bossBody = bossMaster.GetBody();
 
-                if (bossMaster.TryGetComponent(out BaseAI baseAI))
+                if (bossMaster.TryGetComponent(out baseAI))
                 {
-                    baseAI.currentEnemy = new BaseAI.Target(baseAI)
-                    {
-                        characterBody = ownerBody
-                    };
+                    baseAI.currentEnemy.gameObject = ownerBody.gameObject;
                     baseAI.neverRetaliateFriendlies = true;
                     baseAI.enemyAttentionDuration = Mathf.Infinity;
                     /*foreach (var skillDriver in baseAI.skillDrivers)
@@ -135,10 +132,10 @@ namespace RiskOfBulletstormRewrite.Items
             public void FixedUpdate()
             {
                 RedirectAttention();
-                stopwatch += Time.fixedDeltaTime;
-                if (stopwatch <= duration)
+                stopwatch -= Time.fixedDeltaTime;
+                if (stopwatch <= 0)
                 {
-                    stopwatch = 0;
+                    stopwatch = duration;
                     AttemptSpawn();
                 }
             }
@@ -146,10 +143,7 @@ namespace RiskOfBulletstormRewrite.Items
             public void RedirectAttention()
             {
                 if (ownerBody && baseAI)
-                    baseAI.currentEnemy = new BaseAI.Target(baseAI)
-                    {
-                        characterBody = ownerBody
-                    };
+                    baseAI.currentEnemy.gameObject = ownerBody.gameObject;
             }
 
             public void OnDestroy()

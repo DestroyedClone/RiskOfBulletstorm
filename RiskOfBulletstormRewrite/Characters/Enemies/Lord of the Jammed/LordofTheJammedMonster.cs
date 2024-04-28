@@ -261,10 +261,14 @@ namespace RiskOfBulletstormRewrite.Characters.Enemies
             MasterPrefab = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/Junk/BrotherGlass/BrotherGlassMaster.prefab").WaitForCompletion(), "RBS_LordOfTheJammedMaster", true);
 
             MasterPrefab.AddComponent<LordOfTheJammedMasterBehaviour>();
-
+            var baseAI = MasterPrefab.GetComponent<BaseAI>();
+            
             var skillDrivers = MasterPrefab.GetComponents<AISkillDriver>();
             foreach (var skillDriver in skillDrivers)
             {
+                //skillDriver.resetCurrentEnemyOnNextDriverSelection = false;
+                //skillDriver.moveTargetType = AISkillDriver.TargetType.Custom;
+
                 if (skillDriver.customName == "SprintBash")
                 {
                     skillDriver.maxDistance = 100;
@@ -274,8 +278,8 @@ namespace RiskOfBulletstormRewrite.Characters.Enemies
                 else if (skillDriver.customName == "Walk After Target Off Nodegraph")
                 {
                     skillDriver.maxDistance = Mathf.Infinity;
+                    skillDriver.selectionRequiresTargetLoS = false;
                 }
-                    
                 else
                     skillDriver.enabled = false;
             }
