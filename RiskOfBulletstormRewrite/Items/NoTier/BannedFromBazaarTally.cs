@@ -20,9 +20,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override bool Hidden => true;
 
-        public override ItemTag[] ItemTags => new ItemTag[]
-        {
-        };
+        public override ItemTag[] ItemTags => PlayerOnlyItemTags;
 
         public override void Init(ConfigFile config)
         {

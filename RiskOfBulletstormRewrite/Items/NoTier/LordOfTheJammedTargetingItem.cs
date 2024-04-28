@@ -19,9 +19,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override Sprite ItemIcon => LoadSprite();
 
-        public override ItemTag[] ItemTags => new ItemTag[]
-        {
-        };
+        public override ItemTag[] ItemTags => PlayerOnlyItemTags;
 
         public override void Init(ConfigFile config)
         {

@@ -264,5 +264,15 @@ namespace RiskOfBulletstormRewrite.Items
         {
             return (ItemBase)System.Activator.CreateInstance(v);
         }
+
+        public ItemTag[] PlayerOnlyItemTags = new ItemTag[]
+        {
+            ItemTag.WorldUnique,
+            ItemTag.CannotDuplicate,
+            ItemTag.AIBlacklist,
+            ItemTag.CannotCopy,
+            ItemTag.CannotSteal,
+            ItemTag.BrotherBlacklist
+        };
     }
 }

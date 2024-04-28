@@ -18,10 +18,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override Sprite ItemIcon => LoadSprite(); //sprite is fine, its gonna show up in inv
 
-        public override ItemTag[] ItemTags => new ItemTag[]
-        {
-            ItemTag.AIBlacklist,
-        };
+        public override ItemTag[] ItemTags => PlayerOnlyItemTags;
 
         public override void Init(ConfigFile config)
         {
