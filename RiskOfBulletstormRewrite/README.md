@@ -1,3 +1,4 @@
+
  # Risk of Bulletstorm
 
 | [![github issues/request link](https://raw.githubusercontent.com/DestroyedClone/PoseHelper/master/PoseHelper/github_link.webp)](https://github.com/DestroyedClone/RiskOfBulletstorm/issues) | [![discord invite](https://raw.githubusercontent.com/DestroyedClone/PoseHelper/master/PoseHelper/discord_link.webp)](https://discord.gg/DpHu3qXMHK) |
@@ -24,7 +25,6 @@ There is a rudimentary wiki for this with additional information.
 | ![](https://github.com/DestroyedClone/RiskOfBulletstorm/raw/master/RiskOfBulletstorm_Unity/Assets/Icons/ITEM_MUSTACHE.png) | [**Mustache**](https://thunderstore.io/package/DestroyedClone/RiskOfBulletstorm/wiki/189-item-mustache/) | <b>A Familiar Face</b><br>Spending money soothes the soul.
 | ![](https://github.com/DestroyedClone/RiskOfBulletstorm/raw/master/RiskOfBulletstorm_Unity/Assets/Icons/ITEM_SCOPE.png) | [**Scope**](https://thunderstore.io/package/DestroyedClone/RiskOfBulletstorm/wiki/191-item-scope/) | <b>Steady Aim</b><br>A standard scope. Increases accuracy!
 | Uncommon |
-| ![](https://github.com/DestroyedClone/RiskOfBulletstorm/raw/master/RiskOfBulletstorm_Unity/Assets/Icons/ITEM_ALPHABULLET.png) | [**Alpha Bullet**](https://thunderstore.io/package/DestroyedClone/RiskOfBulletstorm/wiki/177-item-alpha-bullet/) | <b>First!</b><br>Grants extra damage at full stocks.
 | ![](https://github.com/DestroyedClone/RiskOfBulletstorm/raw/master/RiskOfBulletstorm_Unity/Assets/Icons/ITEM_BATTLESTANDARD.png) | [**Battle Standard**](https://thunderstore.io/package/DestroyedClone/RiskOfBulletstorm/wiki/181-item-battle-standard/) | <b>Set Your Own!</b><br>Improves the effectiveness of companions and charmed enemies.
 | ![](https://github.com/DestroyedClone/RiskOfBulletstorm/raw/master/RiskOfBulletstorm_Unity/Assets/Icons/ITEM_COINCROWN.png) | [**Coin Crown**](https://thunderstore.io/package/DestroyedClone/RiskOfBulletstorm/wiki/184-item-coin-crown/) | <b>Play Well, Get Money</b><br>Increases money on teleporter event completion.
 | Void Uncommon |
@@ -34,7 +34,7 @@ There is a rudimentary wiki for this with additional information.
 |Icon| Equipment | Pickup | CD |
 |:--:|:--:|--|--|
 | Equipment |
-| ![](https://github.com/DestroyedClone/RiskOfBulletstorm/raw/master/RiskOfBulletstorm_Unity/Assets/Icons/EQUIPMENT_ORANGE.png) | [**Orange**](https://thunderstore.io/package/DestroyedClone/RiskOfBulletstorm/wiki/210-equipment-orange/) | <b>You're not Alexander</b><br>Heals on use, increases max health. | 25
+| ![](https://github.com/DestroyedClone/RiskOfBulletstorm/raw/master/RiskOfBulletstorm_Unity/Assets/Icons/EQUIPMENT_ORANGE.png) | [**Orange**](https://thunderstore.io/package/DestroyedClone/RiskOfBulletstorm/wiki/210-equipment-orange/) | <b>You're not Alexander</b><br>Heals on use, increases max health and reduces equipment cooldown. | 25
 | Lunar Equipment |
 | ![](https://github.com/DestroyedClone/RiskOfBulletstorm/raw/master/RiskOfBulletstorm_Unity/Assets/Icons/EQUIPMENT_DRILL.png) | [**Drill**](https://thunderstore.io/package/DestroyedClone/RiskOfBulletstorm/wiki/207-equipment-drill/) | <b>Sawgeant</b><br>Opens locked chests. Loud. | 60
 | ![](https://github.com/DestroyedClone/RiskOfBulletstorm/raw/master/RiskOfBulletstorm_Unity/Assets/Icons/EQUIPMENT_IRONCOIN.png) | [**Iron Coin**](https://thunderstore.io/package/DestroyedClone/RiskOfBulletstorm/wiki/208-equipment-iron-coin/) | <b>Valar Morgunis</b><br>Pay this coin to kill all enemies with no reward. | 60
@@ -46,6 +46,9 @@ There is a rudimentary wiki for this with additional information.
 | ![](https://github.com/DestroyedClone/RiskOfBulletstorm/raw/master/RiskOfBulletstorm_Unity/Assets/Icons/ARTIFACT_ADAPTIVEARMORBOSSES_ENABLED.png) | [**Artifact of the Adaptive Armor**](https://thunderstore.io/package/DestroyedClone/RiskOfBulletstorm/wiki/219-artifact-adaptive-armor/) | All teleporter bosses gain the Final Boss's adaptive armor.
 | ![](https://github.com/DestroyedClone/RiskOfBulletstorm/raw/master/RiskOfBulletstorm_Unity/Assets/Icons/ARTIFACT_PITLORD_ENABLED.png) | [**Artifact of the Pit Lord**](https://thunderstore.io/package/DestroyedClone/RiskOfBulletstorm/wiki/218-artifact-pit-lord/) | Players and monsters land safely back on stage after falling off.
 | ![](https://github.com/DestroyedClone/RiskOfBulletstorm/raw/master/RiskOfBulletstorm_Unity/Assets/Icons/ARTIFACT_UPSPEEDOOC_ENABLED.png) | [**Artifact of the Swift Post-Battle**](https://thunderstore.io/package/DestroyedClone/RiskOfBulletstorm/wiki/1859-artifact-swift-post-battle/) | After completing the teleporter event, all players gain a speed boost.
+
+
+
 # Extra + Tweaks
 There are some extra tweaks that are available in the config to bring the feel closer to Gungeon.
 * Center Notification Text
@@ -64,11 +67,17 @@ Certain items and actions give the player Curse, which makes the game more diffi
  - Combat Director gets more credits based on the amount of curse the team has.
  - Reaching max curse will spawn the Lord of the Jammed.
 
+
+## Other
+* Q: Where's the old stuff?
+	* A: In progress.
+
 ## Credits
 * KomradeSpectre - Item Creation Mod Boilerplate
 * bongopd - [ArtificerRangeTeleport](https://thunderstore.io/package/bongopd/ArtificerRangeTeleport/) (Heavy reference for Bloodied Scarf)
 * EnforcerGang - CHEF
 	* Pass through enemies during utility (Dodgeroll)
 	* Boosted Cleaver code (LOTJ attack)
+* DebugToolKit - Noclip reference
 
 > Written with [StackEdit](https://stackedit.io/).
