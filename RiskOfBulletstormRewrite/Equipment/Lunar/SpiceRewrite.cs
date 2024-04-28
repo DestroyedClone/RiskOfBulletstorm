@@ -15,7 +15,7 @@ namespace RiskOfBulletstormRewrite.Equipment
         public static bool cfgSpiceReplacement = true;
 
         public static float cfgStatAccuracy = 0.2f;
-        public static float cfgStatAccuracyStack = -0.1f;
+        public static float cfgStatAccuracyStack = -0.05f;
         public static float cfgStatDamage = 0.2f;
         public static float cfgStatDamageStack = 0.1f;
         public static float cfgStatRORCurse = 0.1f;
