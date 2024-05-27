@@ -7,13 +7,14 @@ using System.Globalization;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
+using System.Collections.Generic;
 using UnityEngine.Networking;
 
 namespace RiskOfBulletstormRewrite.Controllers
 {
     public class SharedComponents
     {
-        public static EquipmentIndex[] keyTypeEquipmentArray;
+        public static EquipmentIndex[] keyTypeEquipmentArray = new EquipmentIndex[] { };
         public static UnityAction<BarrelInteraction, Interactor> onBarrelInteraction;
 
         public static GameObject EquipmentPreviewPrefab;
@@ -25,11 +26,16 @@ namespace RiskOfBulletstormRewrite.Controllers
             StoneGateModification.Init();
             EquipmentCatalog.availability.CallWhenAvailable(() =>
             {
-                keyTypeEquipmentArray = new EquipmentIndex[]
+                List<EquipmentIndex> equips = new List<EquipmentIndex>();
+                if (Main.Equipments.Contains(Equipment.TrustyLockpicks.Instance))
                 {
-                    Equipment.TrustyLockpicks.Instance.EquipmentDef.equipmentIndex,
-                    Equipment.Drill.Instance.EquipmentDef.equipmentIndex
-                };
+                    equips.Add(Equipment.TrustyLockpicks.Instance.EquipmentDef.equipmentIndex);
+                }
+                if (Main.Equipments.Contains(Equipment.TrustyLockpicks.Instance))
+                {
+                    equips.Add(Equipment.Drill.Instance.EquipmentDef.equipmentIndex);
+                }
+                keyTypeEquipmentArray = equips.ToArray();
             });
             On.RoR2.BarrelInteraction.GetContextString += BarrelInteraction_GetContextString;
 
