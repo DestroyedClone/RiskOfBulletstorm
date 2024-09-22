@@ -8,13 +8,13 @@ namespace RiskOfBulletstormRewrite.Utils
     {
         public static void Initialize()
         {
-            On.RoR2.EntityStateCatalog.Init += EntityStateCatalog_Init;
+            On.RoR2.EntityStateCatalog.Init += EntityStateCatalog_Init1;
         }
 
-        private static void EntityStateCatalog_Init(On.RoR2.EntityStateCatalog.orig_Init orig)
+        private static System.Collections.IEnumerator EntityStateCatalog_Init1(On.RoR2.EntityStateCatalog.orig_Init orig)
         {
-            orig();
             AvailabilityManager.EntityStateMachine.availability.MakeAvailable();
+            return orig();
         }
 
         public static class EntityStateMachine

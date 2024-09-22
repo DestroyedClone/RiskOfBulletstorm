@@ -25,9 +25,9 @@ namespace RiskOfBulletstormRewrite.Items
 
         public override ItemTier Tier => ItemTier.NoTier;
 
-        public override GameObject ItemModel => Assets.NullModel;
+        public override GameObject ItemModel => Modules.Assets.NullModel;
 
-        public override Sprite ItemIcon => Assets.LoadSprite($"EQUIPMENT_SPICE");
+        public override Sprite ItemIcon => Modules.Assets.LoadSprite($"EQUIPMENT_SPICE");
 
         public override bool Hidden => false;
 

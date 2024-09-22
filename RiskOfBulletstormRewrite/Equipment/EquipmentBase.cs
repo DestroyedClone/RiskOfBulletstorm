@@ -306,13 +306,13 @@ namespace RiskOfBulletstormRewrite.Equipment
         public Sprite LoadSprite(string equipmentNameToken = "")
         {
             var token = equipmentNameToken == "" ? EquipmentLangTokenName : equipmentNameToken;
-            return Assets.LoadSprite($"EQUIPMENT_{token}");
+            return Modules.Assets.LoadSprite($"EQUIPMENT_{token}");
         }
 
         public GameObject LoadModel(string equipmentNameToken = "")
         {
             var token = equipmentNameToken == "" ? EquipmentLangTokenName : equipmentNameToken;
-            return Assets.LoadObject($"{token}.prefab");
+            return Modules.Assets.LoadObject($"{token}.prefab");
         }
 
         public virtual void Hooks()

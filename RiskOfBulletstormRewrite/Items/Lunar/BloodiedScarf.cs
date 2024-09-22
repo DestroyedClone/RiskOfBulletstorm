@@ -74,7 +74,7 @@ namespace RiskOfBulletstormRewrite.Items
             teleportSkillDef.dontAllowPastMaxStocks = false;
             teleportSkillDef.forceSprintDuringState = true;
             teleportSkillDef.fullRestockOnAssign = true;
-            teleportSkillDef.icon = Assets.LoadSprite("SKILL_BLOODIEDSCARF");
+            teleportSkillDef.icon = Modules.Assets.LoadSprite("SKILL_BLOODIEDSCARF");
             teleportSkillDef.interruptPriority = InterruptPriority.Vehicle;
             teleportSkillDef.isCombatSkill = false;
             teleportSkillDef.keywordTokens = new string[]

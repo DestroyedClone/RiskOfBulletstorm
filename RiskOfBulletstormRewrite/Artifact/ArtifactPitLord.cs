@@ -30,12 +30,12 @@ namespace RiskOfBulletstormRewrite.Artifact
             CharacterMaster.onStartGlobal += GiveOobTeleportToCharacter;
             Stage.onServerStageBegin += Stage_onServerStageBegin;
             On.RoR2.TeleportHelper.OnTeleport += TeleportHelper_OnTeleport;
-            On.RoR2.GlobalEventManager.OnCharacterHitGroundServer += GlobalEventManager_OnCharacterHitGroundServer;
+            On.RoR2.GlobalEventManager.OnCharacterHitGroundServer += GlobalEventManager_OnCharacterHitGroundServer1;
         }
 
-        private void GlobalEventManager_OnCharacterHitGroundServer(On.RoR2.GlobalEventManager.orig_OnCharacterHitGroundServer orig, GlobalEventManager self, CharacterBody characterBody, Vector3 impactVelocity)
+        private void GlobalEventManager_OnCharacterHitGroundServer1(On.RoR2.GlobalEventManager.orig_OnCharacterHitGroundServer orig, GlobalEventManager self, CharacterBody characterBody, CharacterMotor.HitGroundInfo hitGroundInfo)
         {
-            orig(self, characterBody, impactVelocity);
+            orig(self, characterBody, hitGroundInfo);
             if (!recentlyTeleported.Contains(characterBody)) return;
             characterBody.bodyFlags &= ~CharacterBody.BodyFlags.IgnoreFallDamage;
             recentlyTeleported.Remove(characterBody);
@@ -63,7 +63,7 @@ namespace RiskOfBulletstormRewrite.Artifact
             CharacterMaster.onStartGlobal -= GiveOobTeleportToCharacter;
             Stage.onServerStageBegin -= Stage_onServerStageBegin;
             On.RoR2.TeleportHelper.OnTeleport -= TeleportHelper_OnTeleport;
-            On.RoR2.GlobalEventManager.OnCharacterHitGroundServer -= GlobalEventManager_OnCharacterHitGroundServer;
+            On.RoR2.GlobalEventManager.OnCharacterHitGroundServer -= GlobalEventManager_OnCharacterHitGroundServer1;
         }
     }
 }

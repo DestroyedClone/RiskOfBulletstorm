@@ -165,7 +165,7 @@ namespace RiskOfBulletstormRewrite.Items
 
         public static ItemTierDef ResolveTierDef(ItemTier itemTier)
         {
-            return Assets.ResolveTierDef(itemTier);
+            return Modules.Assets.ResolveTierDef(itemTier);
         }
 
         protected void CreateItem()
@@ -251,13 +251,13 @@ namespace RiskOfBulletstormRewrite.Items
         public Sprite LoadSprite(string itemNameToken = "")
         {
             var token = itemNameToken == "" ? ItemLangTokenName : itemNameToken;
-            return Assets.LoadSprite($"ITEM_{token}");
+            return Modules.Assets.LoadSprite($"ITEM_{token}");
         }
 
         public GameObject LoadModel(string itemNameToken = "")
         {
             var token = itemNameToken == "" ? ItemLangTokenName : itemNameToken;
-            return Assets.LoadObject($"{token}.prefab");
+            return Modules.Assets.LoadObject($"{token}.prefab");
         }
 
         public static implicit operator ItemBase(Type v)

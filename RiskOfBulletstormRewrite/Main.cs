@@ -65,7 +65,7 @@ namespace RiskOfBulletstormRewrite
 
             LocationOfProgram = Path.GetDirectoryName(Info.Location);
 
-            Assets.Init();
+            Modules.Assets.Init();
             SharedComponents.Init();
 
             Utils.Buffs.CreateBuffs();

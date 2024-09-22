@@ -91,7 +91,7 @@ namespace RiskOfBulletstormRewrite.Items
             rollSkillDef.dontAllowPastMaxStocks = false;
             rollSkillDef.forceSprintDuringState = true;
             rollSkillDef.fullRestockOnAssign = true;
-            rollSkillDef.icon = Assets.LoadSprite("SKILL_DODGEROLL");
+            rollSkillDef.icon = Modules.Assets.LoadSprite("SKILL_DODGEROLL");
             rollSkillDef.interruptPriority = InterruptPriority.Vehicle;
             rollSkillDef.isCombatSkill = false;
             rollSkillDef.keywordTokens = new string[]

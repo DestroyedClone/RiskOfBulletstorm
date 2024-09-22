@@ -18,29 +18,29 @@ namespace RiskOfBulletstormRewrite.Utils
         {
             //Buffs
             MustacheBuff = AddBuff("Power of Commerce",
-            Assets.LoadSprite("BUFF_MUSTACHE"),
+            Modules.Assets.LoadSprite("BUFF_MUSTACHE"),
             Color.yellow, false, true);
 
             BloodiedScarfBuff = AddBuff("Vulnerable",
-            Assets.LoadSprite("BUFF_BLOODIEDSCARF"),
+            Modules.Assets.LoadSprite("BUFF_BLOODIEDSCARF"),
             Color.red, true, false);
             AlphaBulletBuff = AddBuff("Alpha Bullet Damage",
-            Assets.LoadSprite("BUFF_ALPHABULLET"),
+            Modules.Assets.LoadSprite("BUFF_ALPHABULLET"),
             Color.yellow, false, true);
             DodgeRollBuff = AddBuff("Dodgeroll Buff",
-            Assets.LoadSprite("BUFF_DODGEROLL"),
+            Modules.Assets.LoadSprite("BUFF_DODGEROLL"),
             Color.yellow,
             true, false);
 
             ArtifactSpeedUpBuff = AddBuff("Speed Up",
-                Assets.LoadSprite("BUFF_SPEEDUPOOC"),
+                Modules.Assets.LoadSprite("BUFF_SPEEDUPOOC"),
                 Color.blue,
                 false,
                 false);
 
             //Trackers
             MetronomeTrackerBuff = AddBuff("Metronome Stacks (Display)",
-                Assets.LoadSprite("BUFF_METRONOME"),
+                Modules.Assets.LoadSprite("BUFF_METRONOME"),
                 Color.blue,
                 false,
                 true);

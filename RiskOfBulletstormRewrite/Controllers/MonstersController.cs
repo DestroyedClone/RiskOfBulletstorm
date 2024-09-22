@@ -19,7 +19,7 @@ namespace RiskOfBulletstormRewrite.Controllers
         public override void CreateConfig(ConfigFile config)
         {
             var category = "Monsters";
-            cfgSpawnWispFromPotChance = config.Bind(category, "Chance to Spawn Wisp From Pot", 0.5f, Assets.cfgChanceIntegerDesc);
+            cfgSpawnWispFromPotChance = config.Bind(category, "Chance to Spawn Wisp From Pot", 0.5f, Modules.Assets.cfgChanceIntegerDesc);
         }
 
         public override void Hooks()

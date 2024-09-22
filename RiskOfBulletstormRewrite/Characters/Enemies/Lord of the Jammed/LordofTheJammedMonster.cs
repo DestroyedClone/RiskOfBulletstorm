@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using KinematicCharacterController;
+using RiskOfBulletstormRewrite.Modules;
 
 namespace RiskOfBulletstormRewrite.Characters.Enemies
 {
@@ -31,13 +32,13 @@ namespace RiskOfBulletstormRewrite.Characters.Enemies
 
         public override string CharacterLangTokenName => "LORDOFTHEJAMMED";
 
-        public override Sprite CharacterIcon => Assets.NullSprite;
+        public override Sprite CharacterIcon => RiskOfBulletstormRewrite.Modules.Assets.NullSprite;
 
         public static GameObject skull;
         public static GameObject gunSword;
         public static GameObject crown;
 
-        private static readonly Material blackMat = Assets.LoadAddressable<Material>("RoR2/Base/goolake/matGoolake.mat");
+        private static readonly Material blackMat = RiskOfBulletstormRewrite.Modules.Assets.LoadAddressable<Material>("RoR2/Base/goolake/matGoolake.mat");
 
         protected override void InitializeCharacterBody()
         {
@@ -87,7 +88,7 @@ namespace RiskOfBulletstormRewrite.Characters.Enemies
         {
             LOTJDisplayController locator = BodyPrefab.AddComponent<LOTJDisplayController>();
 
-            var yellowRedMat = Assets.LoadAddressable<Material>("RoR2/Base/Beetle/matSulfurBeetle.mat");
+            var yellowRedMat = Modules.Assets.LoadAddressable<Material>("RoR2/Base/Beetle/matSulfurBeetle.mat");
             void SetMaterial(GameObject gameObject, Material material)
             {
                 SkinnedMeshRenderer skinnedMeshRenderer = gameObject.GetComponent<SkinnedMeshRenderer>();
@@ -110,7 +111,7 @@ namespace RiskOfBulletstormRewrite.Characters.Enemies
 
             GameObject clone(string path, string name)
             {
-                return PrefabAPI.InstantiateClone(Assets.LoadAddressable<GameObject>(path), name, false);
+                return PrefabAPI.InstantiateClone(Modules.Assets.LoadAddressable<GameObject>(path), name, false);
             }
 
             skull = clone("RoR2/Base/DeathMark/mdlDeathMark.fbx", "LOTJSkull");
@@ -121,15 +122,15 @@ namespace RiskOfBulletstormRewrite.Characters.Enemies
             //SetMaterial(scythe, scytheMat);
 
             gunSword = clone("RoR2/Base/Bandit2/BanditShotgun.fbx", "LOTJWeapon_Shotgun");
-            var shotgunMat = Assets.LoadAddressable<Material>("RoR2/Base/Bandit2/matBandit2Shotgun.mat");
+            var shotgunMat = Modules.Assets.LoadAddressable<Material>("RoR2/Base/Bandit2/matBandit2Shotgun.mat");
             SetMaterial(gunSword, shotgunMat);
 
-            var scy = UnityEngine.Object.Instantiate(Assets.LoadAddressable<GameObject>("RoR2/Base/HealOnCrit/mdlScythe.fbx"));
+            var scy = UnityEngine.Object.Instantiate(Modules.Assets.LoadAddressable<GameObject>("RoR2/Base/HealOnCrit/mdlScythe.fbx"));
             scy.transform.parent = gunSword.transform;
             scy.transform.localPosition = new Vector3(0,0,15);
             scy.transform.localRotation = Quaternion.Euler(0, 350, 0);
             scy.transform.localScale = new Vector3(5,5,5);
-            var scytheMat = Assets.LoadAddressable<Material>("RoR2/Base/HealOnCrit/matScythe.mat");
+            var scytheMat = Modules.Assets.LoadAddressable<Material>("RoR2/Base/HealOnCrit/matScythe.mat");
             SetMaterial(scy, scytheMat);
 
             crown = clone("RoR2/Base/artifactworld/mdlArtifactCrown.fbx", "LOTJCrown");
@@ -306,7 +307,7 @@ namespace RiskOfBulletstormRewrite.Characters.Enemies
             public CharacterMaster lordMaster;
             public CharacterBody lordBody;
 
-            public static GameObject ProjectilePrefab => Assets.LoadAddressable<GameObject>("RoR2/DLC1/VoidBarnacle/VoidBarnacleBullet.prefab");
+            public static GameObject ProjectilePrefab => Modules.Assets.LoadAddressable<GameObject>("RoR2/DLC1/VoidBarnacle/VoidBarnacleBullet.prefab");
             private const float damageCoefficient = 1f;
             private const int verticalIntensity = 2;
             private const float horizontalIntensity = 1f;
